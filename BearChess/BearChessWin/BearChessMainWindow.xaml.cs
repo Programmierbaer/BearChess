@@ -1491,6 +1491,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard.MoveEvent += EChessBoardMoveEvent;
             _eChessBoard.FenEvent += EChessBoardFenEvent;
             _eChessBoard.AwaitedPosition += EChessBoardAwaitedPositionEvent;
+            if (!_eChessBoard.IsConnected)
+            {
+                DisconnectFromCertabo();
+                return;
+            }
 
             menuItemConnectToCertabo.Header = "Disconnect";
             menuItemMChessLink.IsEnabled = false;
@@ -1556,6 +1561,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard = new MChessLinkLoader(_configuration.FolderPath);
             _eChessBoard.MoveEvent += EChessBoardMoveEvent;
             _eChessBoard.FenEvent += EChessBoardFenEvent;
+            if (!_eChessBoard.IsConnected)
+            {
+
+                _fileLogger?.LogInfo("Disconnect from MChessLink chess board");
+                _eChessBoard.MoveEvent -= EChessBoardMoveEvent;
+                _eChessBoard.FenEvent -= EChessBoardFenEvent;
+                _eChessBoard.Close();
+                _eChessBoard = null;
+                menuItemConnectToMChessLink.Header = "Connect";
+                menuItemCertabo.IsEnabled = true;
+                textBlockEBoard.Text = "Electronic board: disconnected";
+                imageConnect.Visibility = Visibility.Visible;
+                imageDisconnect.Visibility = Visibility.Collapsed;
+                buttonConnect.ToolTip = "Connect to Millennium ChessLink";
+                return; ;
+            }
             menuItemConnectToMChessLink.Header = "Disconnect";
             menuItemCertabo.IsEnabled = false;
             textBlockEBoard.Text = "Electronic board: Connected to Millennium ChessLink";

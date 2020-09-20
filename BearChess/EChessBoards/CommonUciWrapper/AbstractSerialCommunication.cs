@@ -150,7 +150,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 if (_isFirstInstance)
                 {
-                    _serialPort.Close();
+                    _serialPort?.Close();
                 }
 
                 _clientPipe?.Close();
