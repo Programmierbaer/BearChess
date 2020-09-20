@@ -1,0 +1,27 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.ChessClocksWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        mc:Ignorable="d" SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStyle="ToolWindow"
+        Title="Clock White" Height="150" Width="300" Closing="ChessClocksWindow_OnClosing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border Margin="5,0,5,0" Name="borderWarning" Height="10" Grid.Row="0" Background="Red" Visibility="Hidden">
+        </Border>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <bearChessWin:DigitalNumberUserControl x:Name="digitalNumberUserControlHour1" Margin="5,5,5,5" />
+            <bearChessWin:DigitalNumberUserControl x:Name="digitalNumberUserControlHour2" Margin="0,5,5,5" />
+            <bearChessWin:DigitalNumberDelimiterUserControl x:Name="delimiterUserControl1" />
+            <bearChessWin:DigitalNumberUserControl x:Name="digitalNumberUserControlMin1" Margin="5,5,5,5" />
+            <bearChessWin:DigitalNumberUserControl x:Name="digitalNumberUserControlMin2" Margin="0,5,5,5" />
+            <bearChessWin:DigitalNumberDelimiterUserControl x:Name="delimiterUserControl2" />
+            <bearChessWin:DigitalNumberUserControl x:Name="digitalNumberUserControlSec1" Margin="5,5,5,5" />
+            <bearChessWin:DigitalNumberUserControl x:Name="digitalNumberUserControlSec2" Margin="0,5,5,5" />
+        </StackPanel>
+    </Grid>
+</Window>

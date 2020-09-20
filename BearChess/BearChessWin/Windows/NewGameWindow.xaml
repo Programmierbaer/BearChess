@@ -1,0 +1,163 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.NewGameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
+        Title="Bear Chess - New Game" Height="390" Width="660">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Margin="2" Grid.Row="0" BorderBrush="Gray" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Column="0" Grid.Row="0" Margin="5" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition  />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Grid.Row="0" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Margin="0,0,58,0" Source="../Assets/Stone/Symbol/KingW.png" Width="32" Height="32"></Image>
+                            <ComboBox Name="comboBoxPlayerWhite" Width="200" Height="30" VerticalContentAlignment="Center" SelectionChanged="ComboBoxPlayerWhite_OnSelectionChanged" />
+                        </StackPanel>
+                        <CheckBox Name="checkBoxPonderWhite" Margin="90,5,5,5" Visibility="Visible">Thinking on opponent's time</CheckBox>
+                    </StackPanel>
+                    <Button Name="buttonConfigureWhite" Margin="5" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="ButtonConfigureWhite_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Configure">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="32" Width="32" Source="../Assets/Icons/cog.png"></Image>
+
+                        </StackPanel>
+                    </Button>
+                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Margin="0,0,58,0" Source="../Assets/Stone/Symbol/KingB.png" Width="32" Height="32"></Image>
+                            <ComboBox Name="comboBoxPlayerBlack" Width="200" Height="30" VerticalContentAlignment="Center"  SelectionChanged="ComboBoxPlayerBlack_OnSelectionChanged"/>
+                        </StackPanel>
+                        <CheckBox Name="checkBoxPonderBlack" Margin="90,5,5,5">Thinking on opponent's time</CheckBox>
+                    </StackPanel>
+                    <Button Name="buttonConfigureBlack" Margin="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Click="ButtonConfigureBlack_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Configure">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="32" Width="32" Source="../Assets/Icons/cog.png"></Image>
+                        </StackPanel>
+                    </Button>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" VerticalAlignment="Top" Visibility="Hidden">
+                        <Label VerticalAlignment="Center">Extra for human player:</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserExtraTime2" Height="40" MinValue="0"
+                                                        MaxValue="99" Value="0" />
+                        <Label VerticalAlignment="Center">min.</Label>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Column="0" Grid.Row="1" Margin="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                    
+                    <TextBlock VerticalAlignment="Center" Margin="10,5" Grid.Column="0">Start from:</TextBlock>
+                        <StackPanel VerticalAlignment="Center" Margin="5" Grid.Column="1" Orientation="Horizontal">
+                            <RadioButton Name="radioButtonStartPosition" Margin="0,5" GroupName="start" IsChecked="True">Base position</RadioButton>
+                            <RadioButton Name="radioButtonCurrentPosition" Margin="5" GroupName="start">Current position</RadioButton>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <CheckBox Name="checkBoxAllowTakeMoveBack" Margin="5" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">Allow to take a move back</CheckBox>
+                <Grid Grid.Column="0" Grid.Row="2" Margin="5">
+
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <Label Width="90">Time control:</Label>
+                        <ComboBox Name="comboBoxTimeControl" Width="200" Height="30" VerticalContentAlignment="Center"
+                                  SelectionChanged="ComboBoxTimeControl_OnSelectionChanged">
+                            <ComboBoxItem IsSelected="True">Time per game</ComboBoxItem>
+                            <ComboBoxItem>Time per game with increment</ComboBoxItem>
+                            <ComboBoxItem>Time per given moves</ComboBoxItem>
+                            <ComboBoxItem>Average time per move</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+
+                </Grid>
+                <Border Name="borderTimePerGame" Grid.Column="1" Grid.Row="2" BorderBrush="Gray" BorderThickness="0"
+                        Margin="5"
+                        Visibility="Visible" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGame" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">min.</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderTimePerGameWithIncrement" Grid.Column="1" Grid.Row="2" BorderBrush="Gray" Margin="5"
+                        BorderThickness="0" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameWith" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">min.</Label>
+                        <Label VerticalAlignment="Center">plus</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameIncrement"
+                                                        Height="40"
+                                                        MinValue="1" MaxValue="60" Value="1" />
+                        <Label VerticalAlignment="Center">sec. per move</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderTimePerGivenMoves" Grid.Column="1" Grid.Row="2" BorderBrush="Gray"
+                        BorderThickness="0" Margin="5"
+                        Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivenMoves" Height="40"
+                                                        MinValue="1" MaxValue="99" Value="1" />
+                        <Label VerticalAlignment="Center">moves</Label>
+                        <Label VerticalAlignment="Center">in</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivensMovesMin"
+                                                        Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">min.</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderAverageTimePerMove" Grid.Column="1" Grid.Row="2" BorderBrush="Gray"
+                        BorderThickness="0" Margin="5"
+                        Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlAverageTime" Height="40"
+                                                        MinValue="1" MaxValue="99" Value="1" />
+                        <Label VerticalAlignment="Center">sec.</Label>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Margin="10,5,5,5" VerticalAlignment="Top">
+                    <Label VerticalAlignment="Center">Extra time for human player:</Label>
+                    <local:NumericUpDownUserControl x:Name="numericUpDownUserExtraTime" Height="40" MinValue="0"
+                                                    MaxValue="99" Value="0" />
+                    <Label VerticalAlignment="Center">min.</Label>
+                </StackPanel>
+                <CheckBox Name="checkBoxStartAfterMoveOnBoard" VerticalAlignment="Center" Margin="5" Grid.Column="1" Grid.Row="3">
+                    <TextBlock TextWrapping="Wrap">Start the clock after the move is executed on the electronic board.</TextBlock>
+                </CheckBox>
+            </Grid>
+        </Border>
+        <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="False" Margin="5">
+            <Button Name="buttonOk" Click="ButtonOk_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left" Background="Transparent" BorderBrush="Transparent">
+                <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32"></Image>
+            </Button>
+            <Button Name="buttonCancel" Click="ButtonCancel_OnClick" Margin="5,5,20,5" DockPanel.Dock="Right"  Background="Transparent" BorderBrush="Transparent">
+                <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32"></Image>
+            </Button>
+        </DockPanel>
+    </Grid>
+</Window>

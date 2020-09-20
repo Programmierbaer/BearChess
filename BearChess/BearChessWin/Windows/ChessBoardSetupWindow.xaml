@@ -1,0 +1,83 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.ChessBoardSetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight"
+        Title="Setup Board and Pieces" Height="250" Width="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <GroupBox Name="groupBoxBoards" Margin="5" Grid.Column="0" Grid.Row="0" Header="Board">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ComboBox Name="comboBoxBoards" SelectionChanged="ComboBoxBoards_OnSelectionChanged" Width="200"
+                          Height="25" VerticalContentAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2"
+                          Margin="5" Grid.Column="0" Grid.Row="0" />
+
+
+                <Button Name="buttonOpenBoard" Click="ButtonOpenBoard_OnClick" Margin="5" Grid.Column="0" Grid.Row="1"
+                        HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent">
+                    <Image Margin="5" Source="../Assets/Icons/file_manager.png" Width="32" Height="32" />
+                </Button>
+                <Button Name="buttonDeleteBoard" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Grid.Row="1"
+                        Background="Transparent" BorderBrush="Transparent" Click="ButtonDeleteBoard_OnClick">
+                    <Image Margin="5" Source="../Assets/Icons/bin.png" Width="32" Height="32" />
+                </Button>
+                <CheckBox Name="checkBoxShowLastMove" Margin="5" Grid.Column="0" Grid.Row="2" Content="Show last move"/>
+                <CheckBox Name="checkBoxShowBestMove" Margin="5" Grid.Column="0" Grid.Row="3" Content="Show best move"/>
+
+            </Grid>
+        </GroupBox>
+        <GroupBox Name="groupBoxPieces" Margin="5" Grid.Column="1" Grid.Row="0" Header="Pieces">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ComboBox Name="comboBoxPieces" Width="200" Height="25" VerticalAlignment="Top" Margin="5"
+                          Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" SelectionChanged="ComboBoxPieces_OnSelectionChanged"/>
+
+                <Button Name="buttonOpenPieces" Click="ButtonOpenPieces_OnClick" Margin="5" Grid.Column="0"
+                        Grid.Row="1" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent">
+                    <Image Margin="5" Source="../Assets/Icons/file_manager.png" Width="32" Height="32" />
+                </Button>
+                <Button Name="buttonDeletePieces" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Grid.Row="1"
+                        Background="Transparent" BorderBrush="Transparent" Click="ButtonDeletePieces_OnClick">
+                    <Image Margin="5" Source="../Assets/Icons/bin.png" Width="32" Height="32" />
+                </Button>
+
+            </Grid>
+        </GroupBox>
+        <Button Margin="5" HorizontalAlignment="Left" Grid.Column="0" Background="Transparent"
+                BorderBrush="Transparent"
+                Grid.Row="1" Click="ButtonBase_OnClick">
+            <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32" />
+        </Button>
+        <Button Name="buttonCancel" Margin="5" HorizontalAlignment="Right" Grid.Column="1" Background="Transparent"
+                BorderBrush="Transparent"
+                Grid.Row="1" Click="ButtonCancel_OnClick">
+            <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32" />
+        </Button>
+    </Grid>
+</Window>

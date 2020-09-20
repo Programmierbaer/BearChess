@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="www.SoLaNoSoft.com.BearChessWin.EngineInfoUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+             mc:Ignorable="d" Background="AliceBlue"
+             d:DesignHeight="150" d:DesignWidth="480">
+    <Border BorderThickness="1" BorderBrush="Gray">
+        <StackPanel Name="stackPanelMain">
+            <DockPanel LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Margin="5" FontWeight="DemiBold" Text="Name:"/>
+                <TextBlock DockPanel.Dock="Left" Width="200" HorizontalAlignment="Left" Margin="5" Name="textBlockName" Text="BearChess"/>
+                <Button DockPanel.Dock="Left" Name="buttonPlayStop" Width="32"  Click="ButtonPlayStop_OnClick" Margin="5" Background="Transparent" BorderBrush="Transparent">
+                    <StackPanel>
+                        <Image Name="imagePlay" Source="../Assets/Icons/control_play_blue.png"></Image>
+                        <Image Name="imagePause" Source="../Assets/Icons/control_pause_blue.png" Visibility="Collapsed"></Image>
+                    </StackPanel>
+                </Button>
+                <Button DockPanel.Dock="Left" Name="buttonPlus" Width="32"  Margin="5" Click="ButtonPlus_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Add info line">
+                    <Image Source="../Assets/Icons/toggle_expand.png"></Image>
+                </Button>
+                <Button DockPanel.Dock="Left" Name="buttonMinus" Width="32" Margin="5" Click="ButtonMinus_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Remove info line">
+                    <Image Source="../Assets/Icons/toggle.png"></Image>
+                </Button>
+                <Button DockPanel.Dock="Left" Name="buttonClose" Width="32" Margin="5" Click="ButtonClose_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close engine">
+                    <Image Source="../Assets/Icons/control_power_blue.png"></Image>
+                </Button>
+                <Image Margin="5" Name="imageColorWhite" DockPanel.Dock="Right" Width="32"
+                       Height="32" Source="../Assets/Stone/Symbol/KingW.png" Visibility="Collapsed" />
+                <Image  Margin="5" Name="imageColorBlack" DockPanel.Dock="Right" Width="32"
+                       Height="32" Source="../Assets/Stone/Symbol/KingB.png" Visibility="Visible" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Name="textBlockDepth" HorizontalAlignment="Left" Width="90" Margin="5" Text="Depth:"/>
+                <TextBlock DockPanel.Dock="Left" Name="textBlockCurrentMove" HorizontalAlignment="Left" Width="110" Margin="5" Text="Current:"/>
+            </DockPanel>
+            <local:EngineInfoLineUserControl x:Name="engineInfoLineUserControl1" />
+        </StackPanel>
+    </Border>
+</UserControl>

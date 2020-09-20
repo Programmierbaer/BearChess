@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>1.4.1.0</Version>
+    <Authors>Lars Nowk</Authors>
+    <Company>Lars Nowk</Company>
+    <Product>Certabo UCI Engine</Product>
+    <Description>Certabo Chessboard as UCI Engine</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\CertaboUci\CertaboUci\UciWrapper.cs" Link="UciWrapper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CommonUciWrapper\CommonUciWrapper.csproj" />
+    <ProjectReference Include="..\..\CertaboEBoardWrapper\CertaboEBoardWrapper.csproj" />
+    <ProjectReference Include="..\..\ChessBoard\CertaboChessBoard.csproj" />
+  </ItemGroup>
+
+</Project>

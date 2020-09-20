@@ -1,0 +1,53 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.UciConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Title="UCI Engine Configuration" Height="620" Width="400" SizeToContent="Width">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Name="textBlockName" Margin="5">Name:</TextBlock>
+            <TextBox Name="textBoxName" Width="330"  Margin="5"></TextBox>
+        </StackPanel>
+        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+            <DockPanel >
+                <CheckBox Name="checkBoxUseOpeningBook" VerticalAlignment="Center" VerticalContentAlignment="Center" DockPanel.Dock="Left" Margin="5">Use opening book:</CheckBox>
+
+                <ComboBox Name="comboBoxOpeningBooks" Margin="5" DockPanel.Dock="Left"></ComboBox>
+            </DockPanel>
+        </Border>
+        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+        <ScrollViewer Height="400" VerticalScrollBarVisibility="Visible">
+            <Grid Name="gridMain">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </ScrollViewer>
+        </Border>
+        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="5" Text="File:" FontWeight="DemiBold"></TextBlock>
+                <TextBlock Name="textBlockFileName" Margin="0,5,5,5"></TextBlock>
+            </StackPanel>
+        </Border>
+        <DockPanel Margin="10" LastChildFill="False">
+            <Button DockPanel.Dock="Left"  Name="buttonOk" Click="ButtonOk_OnClick" BorderBrush="Transparent" Background="Transparent">
+                <Image Source="../Assets/Icons/accept_button.png"  Width="32" Height="32"></Image>
+            </Button>
+         
+            <Button  DockPanel.Dock="Right"  Name="buttonCancel" Click="ButtonCancel_OnClick" BorderBrush="Transparent" Background="Transparent">
+                <Image Source="../Assets/Icons/cancel.png"  Width="32" Height="32"></Image>
+            </Button>
+            <Button  DockPanel.Dock="Right"  Margin="0,0,10,0" Name="buttonDefault" Click="ButtonDefault_OnClick" BorderBrush="Transparent" Background="Transparent"
+                     ToolTip="Reset to default values">
+                <Image Source="../Assets/Icons/undo.png"  Width="32" Height="32"></Image>
+            </Button>
+        </DockPanel>
+    </StackPanel>
+</Window>

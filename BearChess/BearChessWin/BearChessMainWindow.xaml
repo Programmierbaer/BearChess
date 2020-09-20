@@ -1,0 +1,179 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.BearChessMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded"
+        mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke"
+        Title="BearChess" Height="540" Width="450" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize"> 
+    <StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Menu Grid.Row="0"  Margin="5,0,5,0" Background="Transparent" >
+               
+                <MenuItem Header="Actions" >
+                    <MenuItem Header="Start a new game" Name="menuItemNewGame" Click="MenuItemNewGame_OnClick"  >
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Run in analyze mode" Name="menuItemAnalyzeMode" Click="MenuItemAnalyzeMode_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/robot.png"  ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Setup position" Name="menuItemSetupPosition" Click="MenuItemSetupPosition_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/chess_board.png" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Close" Name="menuItemClose" Click="MenuItemClose_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/door_out.png" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Games" >
+                    <MenuItem Name="menuItemGamesLoad" Header="Show" Click="MenuItemGamesLoad_OnClick" >
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/bearchess_2.png" Stretch="UniformToFill" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="menuItemGamesSave" Header="Save" Click="MenuItemGamesSave_OnClick" >
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/diskette.png" Stretch="UniformToFill" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="menuItemSaveAs" Header="Save as new game" Click="MenuItemGamesSaveAsNew_OnClick" >
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/file_save_as.png" Stretch="UniformToFill" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                </MenuItem>
+                <MenuItem Header="Engines">
+                    <MenuItem Header="Load &amp; manage engines" Name="menuItemEngineLoad" Click="MenuItemEngineLoad_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/robot.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Books">
+
+                    <MenuItem Header="Load &amp; manage opening books" Name="menuItemLoadBook" Click="MenuItemLoadBook_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/book_open.png" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Settings">
+                    <MenuItem Name="menuItemSettingsBoard" Header="Board &amp; Pieces..." Click="MenuItemSettingsBoard_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/Board2DPieces32.png" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="menuItemRotateBoard" Header="Rotate board" Click="MenuItemRotateBoard_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/arrow_rotate_anticlockwise.png" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="menuItemSettingsMoves" Header="Notation..."
+                          Click="MenuItemSettingsMoves_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/text_list_numbers.png" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="menuItemSettingsClock" Header="Clocks">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/digit_separator.png" ></Image>
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemSimpleClock" Header="Small" Click="MenuItemSimpleClock_OnClick">
+                            <MenuItem.Icon >
+                                <Image Name="imageSmallTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemBigClock" Header="Big" Click="MenuItemBigClock_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageBigTick" Source="Assets/Icons/tick.png" Visibility="Hidden"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="Electronic Boards">
+                    <MenuItem Name="menuItemCertabo"  Header="Certabo" >
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/Certabo_icon.ico" ></Image>
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToCertabo" Header="Connect" Click="MenuItemConnectCertabo_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/connect.png"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemConfigureCertabo" Header="Configure"
+                              Click="MenuItemConfigureCertabo_OnClick" >
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/cog.png"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                    </MenuItem>
+                    <MenuItem Header="Millennium ChessLink" Name="menuItemMChessLink">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/Millennium ChessLink.png" ></Image>
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToMChessLink" Header="Connect"
+                              Click="MenuItemConnectMChessLink_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/connect.png"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemConfigureMChessLink" Header="Configure"
+                              Click="MenuItemConfigureChessLink_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/cog.png"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                    </MenuItem>
+                    <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" /> -->
+                </MenuItem>
+                <MenuItem Header="Windows">
+                    <MenuItem Header="Show">
+                        <MenuItem Name="menuItemWindowClocks" Click="MenuItemWindowClocks_OnClick" Header="Clocks"></MenuItem>
+                        <MenuItem Name="menuItemWindowMoves" Click="MenuItemWindowMoves_OnClick"  Header="Moves"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Name="menuItemWindowsArrange" Header="Arrange" Click="MenuItemWindowsArrange_OnClick"></MenuItem>
+                </MenuItem>
+            </Menu>
+            <local:GraphicsChessBoardUserControl Margin="5,5,5,0" Grid.Column="0" Grid.Row="1"
+                                             x:Name="chessBoardUcGraphics" Visibility="Visible" />
+
+        </Grid>
+        <DockPanel  Margin="5">
+            <Button  VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect" Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonConnect_OnClick">
+                <StackPanel Orientation="Horizontal">
+                    <Image Name="imageConnect" Source="Assets/Icons/connect.png" Width="16"></Image>
+                    <Image Name="imageDisconnect" Visibility="Collapsed" Source="Assets/Icons/disconnect.png" Width="16"></Image>
+                    <TextBlock Name="textBlockButtonConnect" Margin="5,0,0,0">Connect</TextBlock>
+                </StackPanel>
+            </Button>
+            <Image DockPanel.Dock="Left" VerticalAlignment="Center" Margin="5,0" Source="Assets/Icons/book_open.png" Width="16"/>
+            <TextBlock  VerticalAlignment="Center" DockPanel.Dock="Left" Margin="5" Name="textBlockEcoCode" Text="---"/>
+        </DockPanel>
+
+        <Separator></Separator>
+        <StatusBar VerticalAlignment="Bottom"  >
+            <StatusBarItem>
+                <TextBlock Name="textBlockRunningMode">Mode: none</TextBlock>
+            </StatusBarItem>
+            <Separator></Separator>
+            <StatusBarItem>
+                <TextBlock Name="textBlockEBoard">Electronic board: disconnected</TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+    </StackPanel>
+</Window>

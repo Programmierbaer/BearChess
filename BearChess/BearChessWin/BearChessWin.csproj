@@ -1,0 +1,720 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{141B2A0E-19B7-4FB4-AA02-B0D9C176FD4A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>www.SoLaNoSoft.com.BearChessWin</RootNamespace>
+    <AssemblyName>BearChessWin</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>false</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>BearChess.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="BoardFieldsSetup.cs" />
+    <Compile Include="BoardPiecesSetup.cs" />
+    <Compile Include="BookInfo.cs" />
+    <Compile Include="ClockTime.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="ConfigurationSettings.cs" />
+    <Compile Include="UciConfigControls\UciTextBoxUserControl.xaml.cs">
+      <DependentUpon>UciTextBoxUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ChessBoardUserControl.xaml.cs">
+      <DependentUpon>ChessBoardUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DigitalNumberDelimiterUserControl.xaml.cs">
+      <DependentUpon>DigitalNumberDelimiterUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DigitalNumberUserControl.xaml.cs">
+      <DependentUpon>DigitalNumberUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DisplayFigureType.cs" />
+    <Compile Include="UserControls\DisplayMoveType.cs" />
+    <Compile Include="UserControls\EngineInfoLineUserControl.xaml.cs">
+      <DependentUpon>EngineInfoLineUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UciConfigControls\IUciConfigUserControl.cs" />
+    <Compile Include="UciConfigControls\UciCheckBoxUserControl.xaml.cs">
+      <DependentUpon>UciCheckBoxUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UciConfigControls\UciComboBoxUserControl.xaml.cs">
+      <DependentUpon>UciComboBoxUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UciConfigControls\UciNumericUpdownUserControl.xaml.cs">
+      <DependentUpon>UciNumericUpdownUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MoveUserControl.xaml.cs">
+      <DependentUpon>MoveUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TextChessBoardUserControl.xaml.cs">
+      <DependentUpon>TextChessBoardUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\BookWindow.xaml.cs">
+      <DependentUpon>BookWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ChessBoardSetupWindow.xaml.cs">
+      <DependentUpon>ChessBoardSetupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ChessClockSimpleWindow.xaml.cs">
+      <DependentUpon>ChessClockSimpleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ChessClocksWindow.xaml.cs">
+      <DependentUpon>ChessClocksWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ConfirmBoardImageWindow.xaml.cs">
+      <DependentUpon>ConfirmBoardImageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ConfirmPiecesWindow.xaml.cs">
+      <DependentUpon>ConfirmPiecesWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DatabaseWindow.xaml.cs">
+      <DependentUpon>DatabaseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EBoardTestWindow.xaml.cs">
+      <DependentUpon>EBoardTestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EngineWindow.xaml.cs">
+      <DependentUpon>EngineWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\IChessClocksWindow.cs" />
+    <Compile Include="Windows\MoveListWindow.xaml.cs">
+      <DependentUpon>MoveListWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\MovesConfigWindow.xaml.cs">
+      <DependentUpon>MovesConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\NewGameWindow.xaml.cs">
+      <DependentUpon>NewGameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NumericUpDownUserControl.xaml.cs">
+      <DependentUpon>NumericUpDownUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TimeControl.cs" />
+    <Compile Include="TimeControlEnum.cs" />
+    <Compile Include="Windows\PositionSetupWindow.xaml.cs">
+      <DependentUpon>PositionSetupWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PromoteWindow.xaml.cs">
+      <DependentUpon>PromoteWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SaveGameWindow.xaml.cs">
+      <DependentUpon>SaveGameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectFigureWindow.xaml.cs">
+      <DependentUpon>SelectFigureWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectInstalledBookWindow.xaml.cs">
+      <DependentUpon>SelectInstalledBookWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SelectInstalledEngineWindow.xaml.cs">
+      <DependentUpon>SelectInstalledEngineWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\UciConfigValue.cs" />
+    <Compile Include="Windows\UciConfigWindow.xaml.cs">
+      <DependentUpon>UciConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UciInfo.cs" />
+    <Compile Include="UciInstaller.cs" />
+    <Compile Include="UciLoader.cs" />
+    <Compile Include="Windows\WinConfigureCertabo.xaml.cs">
+      <DependentUpon>WinConfigureCertabo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WinConfigureMChessLink.xaml.cs">
+      <DependentUpon>WinConfigureMChessLink.xaml</DependentUpon>
+    </Compile>
+    <Page Include="BearChessMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UciConfigControls\UciTextBoxUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ChessBoardUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DigitalNumberDelimiterUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DigitalNumberUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UciConfigControls\UciCheckBoxUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UciConfigControls\UciComboBoxUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UciConfigControls\UciNumericUpdownUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MoveUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TextChessBoardUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\BookWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\EngineInfoLineUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\EngineInfoUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\EngineUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ChessBoardSetupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ChessClockSimpleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ChessClocksWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ConfirmBoardImageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ConfirmPiecesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DatabaseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EBoardTestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EngineWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GraphicsChessBoardUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Assets\Fonts\FontConverter.cs" />
+    <Compile Include="BearChessMainWindow.xaml.cs">
+      <DependentUpon>BearChessMainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EngineInfoUserControl.xaml.cs">
+      <DependentUpon>EngineInfoUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EngineUserControl.xaml.cs">
+      <DependentUpon>EngineUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GraphicsChessBoardUserControl.xaml.cs">
+      <DependentUpon>GraphicsChessBoardUserControl.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Windows\MoveListWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MovesConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\NewGameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\NumericUpDownUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\PositionSetupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\PromoteWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SaveGameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SelectFigureWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SelectInstalledBookWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SelectInstalledEngineWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\UciConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WinConfigureCertabo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WinConfigureMChessLink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="Assets\Fonts\Alpha.ttf" />
+    <Resource Include="Assets\Fonts\AVENFONT.TTF" />
+    <Resource Include="Assets\Fonts\CASEFONT.TTF" />
+    <Resource Include="Assets\Fonts\ChessAlpha2.ttf" />
+    <Resource Include="Assets\Fonts\CONDFONT.TTF" />
+    <Resource Include="Assets\Fonts\KINGFONT.TTF" />
+    <Resource Include="Assets\Fonts\LEIPFONT.TTF" />
+    <Resource Include="Assets\Fonts\LUCEFONT.TTF" />
+    <Resource Include="Assets\Fonts\MAGNFONT.TTF" />
+    <Resource Include="Assets\Fonts\MAYAFONT.TTF" />
+    <Resource Include="Assets\Fonts\MERIFONT.TTF" />
+    <Resource Include="Assets\Fonts\MISCHESS.TTF" />
+    <Resource Include="Assets\Fonts\MVALFONT.TTF" />
+    <None Include="Connected Services\lichess\ConnectedService.json" />
+    <None Include="Connected Services\lichess\OpenAPI.nswag" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\bullet_arrow_left.png" />
+    <Resource Include="Assets\bullet_arrow_left_2.png" />
+    <Resource Include="Assets\bullet_arrow_right.png" />
+    <Resource Include="Assets\bullet_arrow_right_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Stone\a1.png" />
+    <Resource Include="Assets\Stone\a2.png" />
+    <Resource Include="Assets\Stone\a3.png" />
+    <Resource Include="Assets\Stone\a4.png" />
+    <Resource Include="Assets\Stone\a5.png" />
+    <Resource Include="Assets\Stone\a6.png" />
+    <Resource Include="Assets\Stone\a7.png" />
+    <Resource Include="Assets\Stone\a8.png" />
+    <Resource Include="Assets\Stone\b1.png" />
+    <Resource Include="Assets\Stone\b2.png" />
+    <Resource Include="Assets\Stone\b3.png" />
+    <Resource Include="Assets\Stone\b4.png" />
+    <Resource Include="Assets\Stone\b5.png" />
+    <Resource Include="Assets\Stone\b6.png" />
+    <Resource Include="Assets\Stone\b7.png" />
+    <Resource Include="Assets\Stone\b8.png" />
+    <Resource Include="Assets\Stone\c1.png" />
+    <Resource Include="Assets\Stone\c2.png" />
+    <Resource Include="Assets\Stone\c3.png" />
+    <Resource Include="Assets\Stone\c4.png" />
+    <Resource Include="Assets\Stone\c5.png" />
+    <Resource Include="Assets\Stone\c6.png" />
+    <Resource Include="Assets\Stone\c7.png" />
+    <Resource Include="Assets\Stone\c8.png" />
+    <Resource Include="Assets\Stone\d1.png" />
+    <Resource Include="Assets\Stone\d2.png" />
+    <Resource Include="Assets\Stone\d3.png" />
+    <Resource Include="Assets\Stone\d4.png" />
+    <Resource Include="Assets\Stone\d5.png" />
+    <Resource Include="Assets\Stone\d6.png" />
+    <Resource Include="Assets\Stone\d7.png" />
+    <Resource Include="Assets\Stone\d8.png" />
+    <Resource Include="Assets\Stone\e1.png" />
+    <Resource Include="Assets\Stone\e2.png" />
+    <Resource Include="Assets\Stone\e3.png" />
+    <Resource Include="Assets\Stone\e4.png" />
+    <Resource Include="Assets\Stone\e5.png" />
+    <Resource Include="Assets\Stone\e6.png" />
+    <Resource Include="Assets\Stone\e7.png" />
+    <Resource Include="Assets\Stone\e8.png" />
+    <Resource Include="Assets\Stone\f1.png" />
+    <Resource Include="Assets\Stone\f2.png" />
+    <Resource Include="Assets\Stone\f3.png" />
+    <Resource Include="Assets\Stone\f4.png" />
+    <Resource Include="Assets\Stone\f5.png" />
+    <Resource Include="Assets\Stone\f6.png" />
+    <Resource Include="Assets\Stone\f7.png" />
+    <Resource Include="Assets\Stone\f8.png" />
+    <Resource Include="Assets\Stone\g1.png" />
+    <Resource Include="Assets\Stone\g2.png" />
+    <Resource Include="Assets\Stone\g3.png" />
+    <Resource Include="Assets\Stone\g4.png" />
+    <Resource Include="Assets\Stone\g5.png" />
+    <Resource Include="Assets\Stone\g6.png" />
+    <Resource Include="Assets\Stone\g7.png" />
+    <Resource Include="Assets\Stone\g8.png" />
+    <Resource Include="Assets\Stone\h1.png" />
+    <Resource Include="Assets\Stone\h2.png" />
+    <Resource Include="Assets\Stone\h3.png" />
+    <Resource Include="Assets\Stone\h4.png" />
+    <Resource Include="Assets\Stone\h5.png" />
+    <Resource Include="Assets\Stone\h6.png" />
+    <Resource Include="Assets\Stone\h7.png" />
+    <Resource Include="Assets\Stone\h8.png" />
+    <Resource Include="Assets\Stone\Symbol\BishopB.png" />
+    <Resource Include="Assets\Stone\Symbol\BishopW.png" />
+    <Resource Include="Assets\Stone\Symbol\KingB.png" />
+    <Resource Include="Assets\Stone\Symbol\KingW.png" />
+    <Resource Include="Assets\Stone\Symbol\KnightB.png" />
+    <Resource Include="Assets\Stone\Symbol\KnightW.png" />
+    <Resource Include="Assets\Stone\Symbol\PawnB.png" />
+    <Resource Include="Assets\Stone\Symbol\PawnW.png" />
+    <Resource Include="Assets\Stone\Symbol\QueenB.png" />
+    <Resource Include="Assets\Stone\Symbol\QueenW.png" />
+    <Resource Include="Assets\Stone\Symbol\RookB.png" />
+    <Resource Include="Assets\Stone\Symbol\RookW.png" />
+    <Resource Include="BearChess.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BearChessBase\BearChessBase.csproj">
+      <Project>{72BAD856-2F5E-45DB-9FF1-42D68A4998F5}</Project>
+      <Name>BearChessBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessEChessBoard\BearChessEChessBoard.csproj">
+      <Project>{a6bcdc78-1edc-40c7-936f-880423360ba3}</Project>
+      <Name>BearChessEChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessTools\BearChessTools.csproj">
+      <Project>{58eab818-7176-4ba9-a62a-ac2f27b089ae}</Project>
+      <Name>BearChessTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CertaboLoader\CertaboLoader.csproj">
+      <Project>{40462629-633b-4944-873d-5beed2a60d88}</Project>
+      <Name>CertaboLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MChessLinkLoader\MChessLinkLoader.csproj">
+      <Project>{fee3096b-8a9c-496b-b7f5-03e733614dd2}</Project>
+      <Name>MChessLinkLoader</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\chessboard_base.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\accept_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\connect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\lightbulb_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\lightbulb_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\images_flickr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\images_flickr - 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\cog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Chess_Board.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\chessboard_base_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\checkerboard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\bullet_arrow_pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\bullet_play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\book_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\book_open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Millennium ChessLink.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\robot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\file_extension_exe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bearchess_2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\bearchess_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\bearchess.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\setpieces.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Board2DPieces32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\text_list_numbers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\bin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\arrow_rotate_anticlockwise.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Array.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Board64 black.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\White K.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\White Q.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\White R.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\White B.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\White N.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\White P.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Black B.ico" />
+    <Resource Include="Assets\Icons\Black K.ico" />
+    <Resource Include="Assets\Icons\Black N.ico" />
+    <Resource Include="Assets\Icons\Black P.ico" />
+    <Resource Include="Assets\Icons\Black Q.ico" />
+    <Resource Include="Assets\Icons\Black R.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\bullet_toggle_plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\toggle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\toggle_expand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\control_play_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\control_pause_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\control_power_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\disconnect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\door_out.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.1 %28x86 und x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\time.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\digit_separator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\tick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\file_save_as.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\file_manager.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\diskette.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\folder_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\RedBorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Certabo_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\GreenBorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\YellowBorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\control_start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\control_end.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\control_fastforward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\control_rewind.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\control_play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\robotPause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\control_back.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,20 @@
+﻿<Application x:Class="www.SoLaNoSoft.com.BearChessWin.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="BearChessMainWindow.xaml">
+    <Application.Resources>
+        <FontFamily x:Key="Adventure">pack://application:,,,/Assets/Fonts/#Chess Adventurer</FontFamily>
+        <FontFamily x:Key="Alpha">pack://application:,,,/Assets/Fonts/#Chess Alpha</FontFamily>
+        <FontFamily x:Key="Cases">pack://application:,,,/Assets/Fonts/#Chess Cases</FontFamily>
+        <FontFamily x:Key="Alpha2">pack://application:,,,/Assets/Fonts/#Chess Alpha 2</FontFamily>
+        <FontFamily x:Key="Condal">pack://application:,,,/Assets/Fonts/#Chess Condal</FontFamily>
+        <FontFamily x:Key="Kingdom">pack://application:,,,/Assets/Fonts/#Chess Kingdom</FontFamily>
+        <FontFamily x:Key="Leipzig">pack://application:,,,/Assets/Fonts/#Chess Leipzig</FontFamily>
+        <FontFamily x:Key="Lucena">pack://application:,,,/Assets/Fonts/#Chess Lucena</FontFamily>
+        <FontFamily x:Key="Magnetic">pack://application:,,,/Assets/Fonts/#Chess Magnetic</FontFamily>
+        <FontFamily x:Key="Maya">pack://application:,,,/Assets/Fonts/#Chess Maya</FontFamily>
+        <FontFamily x:Key="Merida">pack://application:,,,/Assets/Fonts/#Chess Merida</FontFamily>
+        <FontFamily x:Key="Miscel">pack://application:,,,/Assets/Fonts/#Chess Miscel</FontFamily>
+        <FontFamily x:Key="Mediaeval">pack://application:,,,/Assets/Fonts/#Chess Mediaeval</FontFamily>
+    </Application.Resources>
+</Application>
