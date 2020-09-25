@@ -181,6 +181,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        public void Go(string command)
+        {
+            if (_bookMove == null || _bookMove.EmptyMove)
+            {
+                SendToEngine($"go {command}");
+            }
+            else
+            {
+                OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, $"bestmove {_bookMove.FromField}{_bookMove.ToField}"));
+            }
+        }
+
+
         public void GoInfinite()
         {
             SendToEngine("go infinite");

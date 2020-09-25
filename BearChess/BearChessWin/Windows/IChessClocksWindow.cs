@@ -15,11 +15,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void Show();
         void Hide();
         void Close();
+        bool CountDown { get; set; }
         event CancelEventHandler Closing;
         event EventHandler Closed;
         double Top { get; set; }
         double Left { get; set; }
         double Height { get; set; }
         double Width { get; set; }
+
     }
 }

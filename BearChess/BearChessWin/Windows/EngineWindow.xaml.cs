@@ -278,7 +278,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void Go(int color, string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName= "")
         {
-            _fileLogger?.LogInfo($"Send Go wTime:{wTime}  bTime{bTime} wInc{wInc}  bInc:{bInc} for engines with color {color}");
+            _fileLogger?.LogInfo($"Send Go wTime:{wTime}  bTime{bTime} wInc{wInc}  bInc:{bInc} for engines {engineName} with color {color}");
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
                 if (_pausedEngines.ContainsKey(engine.Key))
@@ -289,6 +289,35 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     engine.Value.UciEngine.Go(wTime, bTime, wInc, bInc);
                 }
+            }
+        }
+
+        public void GoCommand(int color, string command, string engineName = "")
+        {
+            _fileLogger?.LogInfo($"Send Go {command} for engines {engineName} with color {color}");
+            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            {
+                if (_pausedEngines.ContainsKey(engine.Key))
+                {
+                    continue;
+                }
+                if (color == Fields.COLOR_EMPTY || engine.Value.Color == color)
+                {
+                    engine.Value.UciEngine.Go(command);
+                }
+            }
+        }
+
+        public void GoCommand(string command, string engineName = "")
+        {
+            _fileLogger?.LogInfo($"Send Go {command} for all {_loadedEngines.Count} engines");
+            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            {
+                if (_pausedEngines.ContainsKey(engine.Key))
+                {
+                    continue;
+                }
+                engine.Value.UciEngine.Go(command);
             }
         }
 

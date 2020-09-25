@@ -674,7 +674,7 @@
             <Image  VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/control_end.png" />
         </Button>
      
-        <Button  Grid.Column="7" Grid.Row="9" Name="movePause" Background="Transparent" BorderBrush="Transparent"  Click="MovePause_OnClick" ToolTip="Start/Stop engine" >
+        <Button  Grid.Column="7" Grid.Row="9" Name="buttonPauseEngine" Background="Transparent" BorderBrush="Transparent"  Click="MovePause_OnClick" ToolTip="Start/Stop engine" >
             <StackPanel>
               <Image Margin="1" Name="imageRobot" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/robot.png" />
               <Image Margin="1" Name="imageRobotPause" Visibility="Collapsed" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/robotPause.png" />

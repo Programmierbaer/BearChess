@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 
@@ -9,7 +10,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// <summary>
     /// Interaktionslogik für ChessClockSimpleWindow.xaml
     /// </summary>
-    public partial class ChessClockSimpleWindow : Window ,IChessClocksWindow
+    public partial class ChessClockSimpleWindow : Window , IChessClocksWindow
     {
 
         private readonly string _capture;
@@ -18,18 +19,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DateTime _initTime;
         private DateTime _goTime;
         private DateTime _stopTime;
+
         private TimeSpan _duration;
         private readonly Thread _thread;
         private int _extraSeconds = 0;
         private static readonly object _locker = new object();
         private readonly Configuration _configuration;
+        private Stopwatch _stopwatch;
+      
 
+        public bool CountDown { get; set; }
         public event EventHandler TimeOutEvent;
+
 
         public ChessClockSimpleWindow(string capture, Configuration configuration, double top, double left, double width, double height)
         {
             InitializeComponent();
-
+           _stopwatch = new Stopwatch();
+            CountDown = true;
             _capture = capture;
             _configuration = configuration;
             Top = _configuration.GetWinDoubleValue($"ChessClockSimpleWindow{capture}Top", Configuration.WinScreenInfo.Top, top > 150 ? (top - 150).ToString() : "0");
@@ -49,6 +56,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         }
 
+      
+
         public ClockTime GetClockTime()
         {
             return new ClockTime(_startTime);
@@ -61,8 +70,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _stop = true;
             _startTime = _initTime;
             _duration = TimeSpan.Zero;
+            _stopwatch.Reset();
             SetDigitalNumbers(_initTime.Hour.ToString(), _initTime.Minute.ToString(), _initTime.Second.ToString());
         }
+
+
 
         public void SetTime(ClockTime clockTime, int extraSeconds = 0)
         {
@@ -71,6 +83,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetTime(int hh, int mm, int ss, int extraSeconds = 0)
         {
+            _stopwatch.Reset();
             SetDigitalNumbers(hh.ToString(), mm.ToString(), ss.ToString());
             DateTime dateTime = DateTime.Now;
             _startTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
@@ -86,7 +99,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (!_stop)
             {
+                _stopwatch.Stop();
                 _stop = true;
+                if (!CountDown)
+                {
+                    var stopwatchElapsed = _stopwatch.Elapsed;
+                    SetDigitalNumbers(stopwatchElapsed.Hours.ToString(), stopwatchElapsed.Minutes.ToString(),
+                                      stopwatchElapsed.Seconds.ToString());
+                    return;
+
+                }
+
                 _startTime = _startTime.AddSeconds(_extraSeconds) - _duration;
                 SetDigitalNumbers(_startTime.Hour.ToString(),
                                   _startTime.Minute.ToString(),
@@ -104,9 +127,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void Go()
         {
+            _stopwatch.Start();
             _goTime = DateTime.Now;
             _stop = false;
         }
+
 
         private void updateTime()
         {
@@ -120,25 +145,39 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 Dispatcher.Invoke(() =>
                 {
-                    _duration = DateTime.Now - _goTime;
-                    _stopTime = _startTime - _duration;
-                    if (_stopTime.Hour == 0 && _stopTime.Minute == 0 && _stopTime.Second <= 30)
+                    if (!CountDown)
                     {
-                        borderWarning.Visibility = Visibility.Visible;
+                        var stopwatchElapsed = _stopwatch.Elapsed;
+                        if (!_stop)
+                        {
+                            SetDigitalNumbers(stopwatchElapsed.Hours.ToString(), stopwatchElapsed.Minutes.ToString(),
+                                              stopwatchElapsed.Seconds.ToString());
+                        }
+
                     }
                     else
                     {
-                        borderWarning.Visibility = Visibility.Hidden;
-                    }
-                    if (!_stop)
-                    {
-                        SetDigitalNumbers(_stopTime.Hour.ToString(), _stopTime.Minute.ToString(),
-                                          _stopTime.Second.ToString());
+                        _duration = DateTime.Now - _goTime;
+                        _stopTime = _startTime - _duration;
+                        if (_stopTime.Hour == 0 && _stopTime.Minute == 0 && _stopTime.Second <= 30)
+                        {
+                            borderWarning.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            borderWarning.Visibility = Visibility.Hidden;
+                        }
+
+                        if (!_stop)
+                        {
+                            SetDigitalNumbers(_stopTime.Hour.ToString(), _stopTime.Minute.ToString(),
+                                              _stopTime.Second.ToString());
+                        }
                     }
 
                 });
 
-                if (_stopTime.Hour == 0 && _stopTime.Minute == 0 && _stopTime.Second == 0)
+                if (CountDown &&  _stopTime.Hour == 0 && _stopTime.Minute == 0 && _stopTime.Second == 0)
                 {
                     TimeOutEvent?.Invoke(this, new EventArgs());
                     _stop = true;

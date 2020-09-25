@@ -487,20 +487,20 @@
       <Project>{72BAD856-2F5E-45DB-9FF1-42D68A4998F5}</Project>
       <Name>BearChessBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BearChessEChessBoard\BearChessEChessBoard.csproj">
-      <Project>{a6bcdc78-1edc-40c7-936f-880423360ba3}</Project>
+    <ProjectReference Include="..\BearChessEChessBoard\BearChessEChessBoard\BearChessEChessBoard.csproj">
+      <Project>{A6BCDC78-1EDC-40C7-936F-880423360BA3}</Project>
       <Name>BearChessEChessBoard</Name>
     </ProjectReference>
     <ProjectReference Include="..\BearChessTools\BearChessTools.csproj">
       <Project>{58eab818-7176-4ba9-a62a-ac2f27b089ae}</Project>
       <Name>BearChessTools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CertaboLoader\CertaboLoader.csproj">
+    <ProjectReference Include="..\CertaboLoader\CertaboLoader\CertaboLoader.csproj">
       <Project>{40462629-633b-4944-873d-5beed2a60d88}</Project>
       <Name>CertaboLoader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MChessLinkLoader\MChessLinkLoader.csproj">
-      <Project>{fee3096b-8a9c-496b-b7f5-03e733614dd2}</Project>
+    <ProjectReference Include="..\MChessLinkLoader\MChessLinkLoader\MChessLinkLoader.csproj">
+      <Project>{FEE3096B-8A9C-496B-B7F5-03E733614DD2}</Project>
       <Name>MChessLinkLoader</Name>
     </ProjectReference>
   </ItemGroup>

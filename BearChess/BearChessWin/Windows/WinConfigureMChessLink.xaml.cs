@@ -38,6 +38,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             radioButtonBright.IsChecked = !dimLeds;
             radioButtonSync.IsChecked = flashInSync;
             radioButtonAlternate.IsChecked = !flashInSync;
+            textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
 
         }
 

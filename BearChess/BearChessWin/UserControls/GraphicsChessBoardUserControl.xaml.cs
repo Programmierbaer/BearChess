@@ -213,7 +213,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 moveStepAllForward.Visibility = Visibility.Hidden;
                 moveStepBack.Visibility = Visibility.Hidden;
                 moveStepForward.Visibility = Visibility.Hidden;
-                movePause.Visibility = Visibility.Hidden;
+                buttonPauseEngine.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -222,7 +222,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 moveStepAllForward.Visibility = Visibility.Visible;
                 moveStepBack.Visibility = Visibility.Visible;
                 moveStepForward.Visibility = Visibility.Visible;
-                movePause.Visibility = Visibility.Visible;
+                buttonPauseEngine.Visibility = Visibility.Visible;
             }
         }
 
@@ -239,7 +239,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 moveStepAllForward.Visibility = Visibility.Hidden;
                 moveStepBack.Visibility = Visibility.Hidden;
                 moveStepForward.Visibility = Visibility.Hidden;
-                movePause.Visibility = Visibility.Hidden;
+                buttonPauseEngine.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -248,7 +248,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 moveStepAllForward.Visibility = Visibility.Visible;
                 moveStepBack.Visibility = Visibility.Visible;
                 moveStepForward.Visibility = Visibility.Visible;
-                movePause.Visibility = Visibility.Visible;
+                buttonPauseEngine.Visibility = Visibility.Visible;
             }
         }
 
@@ -942,12 +942,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 imageRobot.Visibility = Visibility.Collapsed;
                 imageRobotPause.Visibility = Visibility.Visible;
             }
+            buttonPauseEngine.Visibility = Visibility.Visible;
         }
 
         public void HideRobot()
         {
             imageRobot.Visibility = Visibility.Collapsed;
             imageRobotPause.Visibility = Visibility.Collapsed;
+            buttonPauseEngine.Visibility = Visibility.Hidden;
         }
 
         #region private

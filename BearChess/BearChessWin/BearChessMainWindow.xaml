@@ -38,7 +38,7 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Games" >
-                    <MenuItem Name="menuItemGamesLoad" Header="Show" Click="MenuItemGamesLoad_OnClick" >
+                    <MenuItem Name="menuItemGamesLoad" Header="Show &amp; Load" Click="MenuItemGamesLoad_OnClick" >
                         <MenuItem.Icon >
                             <Image Source="Assets/Icons/bearchess_2.png" Stretch="UniformToFill" ></Image>
                         </MenuItem.Icon>
@@ -48,11 +48,7 @@
                             <Image Source="Assets/Icons/diskette.png" Stretch="UniformToFill" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemSaveAs" Header="Save as new game" Click="MenuItemGamesSaveAsNew_OnClick" >
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/file_save_as.png" Stretch="UniformToFill" ></Image>
-                        </MenuItem.Icon>
-                    </MenuItem>
+                 
 
                 </MenuItem>
                 <MenuItem Header="Engines">
