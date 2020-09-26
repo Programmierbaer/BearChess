@@ -254,15 +254,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 uciConfigValue.OptionName = uciConfigValue.OptionName + optionSplit[i] + " ";
                 string firstOrDefault = _uciInfo.OptionValues.FirstOrDefault(o => o.Contains(uciConfigValue.OptionName));
-                if (!string.IsNullOrWhiteSpace(firstOrDefault))
+                if (string.IsNullOrWhiteSpace(currentValue))
                 {
-                    var strings = firstOrDefault.Split(" ".ToCharArray());
-                    uciConfigValue.CurrentValue = strings[strings.Length - 1];
+                    if (!string.IsNullOrWhiteSpace(firstOrDefault))
+                    {
+                        var strings = firstOrDefault.Split(" ".ToCharArray());
+                        uciConfigValue.CurrentValue = strings[strings.Length - 1];
+                    }
+                    else
+                    {
+                        uciConfigValue.CurrentValue = string.Empty;
+                    }
                 }
-                else
-                {
-                    uciConfigValue.CurrentValue = string.Empty;
-                }
+
                 i++;
             } while (i < optionSplit.Length);
 

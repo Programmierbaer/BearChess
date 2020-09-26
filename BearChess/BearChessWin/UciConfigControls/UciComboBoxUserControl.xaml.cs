@@ -30,7 +30,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
         public UciComboBoxUserControl(UciConfigValue configValue) : this()
         {
-            ConfigValue = configValue;
+          
             if (string.IsNullOrWhiteSpace(configValue.CurrentValue))
             {
                 configValue.CurrentValue = configValue.DefaultValue;
@@ -49,12 +49,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 comboBox.ToolTip = $"Default: {configValue.DefaultValue}" ;
             }
+            ConfigValue = configValue;
         }
 
 
         private void ComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ConfigValue.CurrentValue = comboBox.SelectedItem.ToString();
+            if (ConfigValue != null)
+            {
+                ConfigValue.CurrentValue = comboBox.SelectedItem.ToString();
+            }
         }
     }
 }

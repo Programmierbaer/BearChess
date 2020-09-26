@@ -26,7 +26,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public UciCheckBoxUserControl(UciConfigValue configValue) : this()
         {
-            ConfigValue = configValue;
+          
             if (string.IsNullOrWhiteSpace(configValue.CurrentValue))
             {
                 configValue.CurrentValue = configValue.DefaultValue;
@@ -35,17 +35,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 checkBox.IsChecked = value;
             }
-            
+            ConfigValue = configValue;
         }
 
         private void CheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            ConfigValue.CurrentValue = "true";
+            if (ConfigValue != null)
+            {
+                ConfigValue.CurrentValue = "true";
+            }
         }
 
         private void CheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            ConfigValue.CurrentValue = "false";
+            if (ConfigValue != null)
+            {
+                ConfigValue.CurrentValue = "false";
+            }
         }
     }
 }

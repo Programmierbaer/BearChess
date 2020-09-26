@@ -84,7 +84,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     SelectedEngine.AddOptionValue(uciInfoOptionValue);
                 }
                 XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
-                TextWriter textWriter = new StreamWriter(Path.Combine(_uciPath,SelectedEngine.Id + ".uci"), false);
+                TextWriter textWriter = new StreamWriter(Path.Combine(_uciPath, SelectedEngine.Id,SelectedEngine.Id + ".uci"), false);
                 serializer.Serialize(textWriter, SelectedEngine);
                 textWriter.Close();
                 _uciInfos.First(u => u.Id.Equals(uciInfo.Id)).Name = uciInfo.Name;

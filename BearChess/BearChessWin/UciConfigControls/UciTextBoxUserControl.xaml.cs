@@ -23,15 +23,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public UciTextBoxUserControl(UciConfigValue configValue) : this()
         {
-            ConfigValue = configValue;
+           
             textBoxValue.Text = configValue.CurrentValue;
-            textBoxValue.ToolTip = string.IsNullOrWhiteSpace(ConfigValue.CurrentValue) ? null : ConfigValue.CurrentValue;
+            textBoxValue.ToolTip = string.IsNullOrWhiteSpace(configValue.CurrentValue) ? null : configValue.CurrentValue;
+            ConfigValue = configValue;
         }
 
         private void TextBoxValue_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            ConfigValue.CurrentValue = textBoxValue.Text;
-            textBoxValue.ToolTip = string.IsNullOrWhiteSpace(ConfigValue.CurrentValue) ? null : ConfigValue.CurrentValue;
+            if (ConfigValue != null)
+            {
+                ConfigValue.CurrentValue = textBoxValue.Text;
+                textBoxValue.ToolTip =
+                    string.IsNullOrWhiteSpace(ConfigValue.CurrentValue) ? null : ConfigValue.CurrentValue;
+            }
         }
     }
 }

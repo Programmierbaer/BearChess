@@ -23,7 +23,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public UciNumericUpDownUserControl(UciConfigValue configValue) :this()
         {
-            ConfigValue = configValue;
             if (string.IsNullOrWhiteSpace(configValue.CurrentValue))
             {
                 configValue.CurrentValue = configValue.DefaultValue;
@@ -31,13 +30,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
             numericUpDownUserControl.MinValue = int.Parse(configValue.MinValue);
             numericUpDownUserControl.MaxValue = int.Parse(configValue.MaxValue);
             numericUpDownUserControl.Value = int.Parse(configValue.CurrentValue);
+            ConfigValue = configValue;
 
         }
 
 
         private void NumericUpDownUserControl_OnValueChanged(object sender, int e)
         {
-            ConfigValue.CurrentValue = numericUpDownUserControl.Value.ToString();
+            if (ConfigValue != null)
+            {
+                ConfigValue.CurrentValue = numericUpDownUserControl.Value.ToString();
+            }
         }
     }
 }
