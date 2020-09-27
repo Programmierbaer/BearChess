@@ -73,6 +73,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _currentWhitePlayer;
         private string _currentBlackPlayer;
         private string _lastResult;
+        private string _prevFenPosition;
 
         public BearChessMainWindow()
         {
@@ -256,6 +257,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard?.Stop();
             _eChessBoard?.NewGame();
             _chessBoard.NewGame();
+            _prevFenPosition = _chessBoard.GetFenPosition();
             chessBoardUcGraphics.BasePosition();
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
             _chessClocksWindowBlack?.Stop();
@@ -633,12 +635,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _runningGame = false;
                 _engineWindow?.Stop();
                 _eChessBoard?.Stop();
+                _eChessBoard?.SetAllLedsOff();
                 _chessClocksWindowWhite?.Stop();
                 _chessClocksWindowBlack?.Stop();
                 menuItemNewGame.Header = "Start a new game";
                 textBlockRunningMode.Text = "Mode: none";
                 menuItemSetupPosition.IsEnabled = true;
                 menuItemAnalyzeMode.IsEnabled = true;
+                
                 return;
             }
 
@@ -692,7 +696,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _eChessBoard?.SetFen(_chessBoard.GetFenPosition(), string.Empty);
             }
-
+            _prevFenPosition = _eChessBoard?.GetFen();
             _pureEngineMatch = false;
             _pureEngineMatchStoppedByBearChess = false;
             _gameAgainstEngine = true;
@@ -805,9 +809,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_timeControl.TimeControlType == TimeControlEnum.TimePerGame)
             {
                 var hour = _timeControl.Value1 / 60;
+                var hourH = (_timeControl.Value1 + _timeControl.HumanValue) / 60;
                 if (_timeControl.HumanValue>0 && newGameWindow.PlayerBlack.Equals("Player"))
                 {
-                    _chessClocksWindowBlack.SetTime(hour, _timeControl.Value1 + _timeControl.HumanValue - hour * 60, 0);
+                    _chessClocksWindowBlack.SetTime(hourH, (_timeControl.Value1 + _timeControl.HumanValue) - hourH * 60, 0);
                 }
                 else
                 {
@@ -816,7 +821,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 if (_timeControl.HumanValue > 0 && newGameWindow.PlayerWhite.Equals("Player"))
                 {
-                    _chessClocksWindowWhite.SetTime(hour, _timeControl.Value1 +_timeControl.HumanValue - hour * 60, 0);
+                    _chessClocksWindowWhite.SetTime(hourH, (_timeControl.Value1 + _timeControl.HumanValue) - hourH * 60, 0);
                 }
                 else
                 {
@@ -827,9 +832,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_timeControl.TimeControlType == TimeControlEnum.TimePerGameIncrement)
             {
                 var hour = _timeControl.Value1 / 60;
+                var hourH = (_timeControl.Value1 + _timeControl.HumanValue) / 60;
                 if (_timeControl.HumanValue > 0 && newGameWindow.PlayerBlack.Equals("Player"))
                 {
-                    _chessClocksWindowBlack.SetTime(hour, _timeControl.Value1 + _timeControl.HumanValue - hour * 60,0, _timeControl.Value2);
+                    _chessClocksWindowBlack.SetTime(hourH, (_timeControl.Value1 + _timeControl.HumanValue) - hourH * 60,0, _timeControl.Value2);
                 }
                 else
                 {
@@ -838,7 +844,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 if (_timeControl.HumanValue > 0 && newGameWindow.PlayerWhite.Equals("Player"))
                 {
-                    _chessClocksWindowWhite.SetTime(hour, _timeControl.Value1 + _timeControl.HumanValue - hour * 60, 0,_timeControl.Value2);
+                    _chessClocksWindowWhite.SetTime(hourH, (_timeControl.Value1 + _timeControl.HumanValue) - hourH * 60, 0,_timeControl.Value2);
                 }
                 else
                 {
@@ -849,23 +855,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (_timeControl.TimeControlType == TimeControlEnum.TimePerMoves)
             {
-                var hour = _timeControl.Value1 / 60;
+                var hour = _timeControl.Value2 / 60;
+                var hourH = (_timeControl.Value2 + _timeControl.HumanValue) / 60;
                 if (_timeControl.HumanValue > 0 && newGameWindow.PlayerBlack.Equals("Player"))
                 {
-                    _chessClocksWindowBlack.SetTime(hour, _timeControl.Value1 + _timeControl.HumanValue - hour * 60, 0);
+                    _chessClocksWindowBlack.SetTime(hourH, (_timeControl.Value2 + _timeControl.HumanValue) - hourH * 60, 0);
                 }
                 else
                 {
-                    _chessClocksWindowBlack.SetTime(hour, _timeControl.Value1 - hour * 60, 0);
+                    _chessClocksWindowBlack.SetTime(hour, _timeControl.Value2 - hour * 60, 0);
                 }
 
                 if (_timeControl.HumanValue > 0 && newGameWindow.PlayerWhite.Equals("Player"))
                 {
-                    _chessClocksWindowWhite.SetTime(hour, _timeControl.Value1 + _timeControl.HumanValue - hour * 60, 0);
+                    _chessClocksWindowWhite.SetTime(hourH, (_timeControl.Value2 + _timeControl.HumanValue) - hourH * 60, 0);
                 }
                 else
                 {
-                    _chessClocksWindowWhite.SetTime(hour, _timeControl.Value1 - hour * 60, 0);
+                    _chessClocksWindowWhite.SetTime(hour, _timeControl.Value2 - hour * 60, 0);
                 }
                 
             }
@@ -1793,9 +1800,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         #region EBoards
 
-        private void DisconnectFromCertabo()
+        private void DisconnectFromEBoard()
         {
-            _fileLogger?.LogInfo("Disconnect from Certabo chess board");
+
             _eChessBoard.MoveEvent -= EChessBoardMoveEvent;
             _eChessBoard.FenEvent -= EChessBoardFenEvent;
             _eChessBoard.Close();
@@ -1805,6 +1812,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockEBoard.Text = "Electronic board: disconnected";
             imageConnect.Visibility = Visibility.Visible;
             imageDisconnect.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void DisconnectFromCertabo()
+        {
+            _fileLogger?.LogInfo("Disconnect from Certabo chess board");
+            DisconnectFromEBoard();
             buttonConnect.ToolTip = "Connect to Certabo chess board";
         }
 
@@ -1851,10 +1865,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void EChessBoardFenEvent(object sender, string fenPosition)
         {
             _fileLogger?.LogDebug($"Fen position from e-chessboard: {fenPosition}");
+            _fileLogger?.LogDebug($"Pre position from e-chessboard: {_prevFenPosition}");
             if (!_runningGame)
             {
                 EChessBoardFenEvent(fenPosition);
             }
+            //else
+            //{
+
+            //    if (_timeControl.AllowTakeBack && !string.IsNullOrWhiteSpace(_prevFenPosition) &&  _prevFenPosition.Split(" ".ToCharArray(),StringSplitOptions.RemoveEmptyEntries)[0].StartsWith(fenPosition.Split(" ".ToCharArray(),StringSplitOptions.RemoveEmptyEntries)[0]))
+            //    {
+            //        Dispatcher?.Invoke(() => { MenuItemNewGame_OnClick(this, null); });
+            //    }
+            //}
         }
 
         private void EChessBoardMoveEvent(object sender, string move)
@@ -1874,15 +1897,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void DisconnectFromChessLink()
         {
             _fileLogger?.LogInfo("Disconnect from MChessLink chess board");
-            _eChessBoard.MoveEvent -= EChessBoardMoveEvent;
-            _eChessBoard.FenEvent -= EChessBoardFenEvent;
-            _eChessBoard.Close();
-            _eChessBoard = null;
-            menuItemConnectToMChessLink.Header = "Connect";
-            menuItemCertabo.IsEnabled = true;
-            textBlockEBoard.Text = "Electronic board: disconnected";
-            imageConnect.Visibility = Visibility.Visible;
-            imageDisconnect.Visibility = Visibility.Collapsed;
+            DisconnectFromEBoard();
             buttonConnect.ToolTip = "Connect to Millennium ChessLink";
         }
 
@@ -1984,7 +1999,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
+        
             _fileLogger?.LogDebug($"Update internal chessboard and GUI for move from e-chessboard: {move}");
+            _fileLogger?.LogDebug($"Fen: {_prevFenPosition}");
+            _prevFenPosition = _chessBoard.GetFenPosition();
             _chessBoard.MakeMove(fromField, toField);
             var fromFieldFieldName = Fields.GetFieldName(fromField);
             var toFieldFieldName = Fields.GetFieldName(toField);

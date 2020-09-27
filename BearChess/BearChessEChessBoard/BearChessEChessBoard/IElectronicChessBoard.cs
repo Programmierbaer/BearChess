@@ -55,6 +55,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         string GetFen();
 
+     
         /// <summary>
         /// Indicates to start a new game
         /// </summary>

@@ -48,6 +48,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// </summary>
         string GetFen();
 
+     
         /// <summary>
         /// Indicates to start a new game
         /// </summary>

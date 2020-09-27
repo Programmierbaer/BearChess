@@ -108,6 +108,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _eChessBoard.GetFen();
         }
 
+       
+
         /// <inheritdoc />
         public void NewGame()
         {

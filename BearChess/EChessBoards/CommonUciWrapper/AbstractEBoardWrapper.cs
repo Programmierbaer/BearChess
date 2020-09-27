@@ -146,6 +146,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             return _internalChessBoard.GetPosition();
         }
 
+     
         public void NewGame()
         {
             _fileLogger?.LogDebug("C: New game");
@@ -202,6 +203,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             _waitForFen.Enqueue(position);
             _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2));
             _stop = false;
+         
         }
 
         public void Close()
@@ -263,6 +265,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             _internalChessBoard = new InternalChessBoard();
             _internalChessBoard.NewGame();
             _inDemoMode = false;
+           
         }
 
         private void HandleBoard()
@@ -351,6 +354,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 if (move.Length >= 4)
                 {
                     _fileLogger?.LogDebug($"C: Move detected: {move}");
+                    
                     currentFen = piecesFen.FromBoard;
                     if (string.IsNullOrWhiteSpace(potentialMove))
                     {
@@ -364,6 +368,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         _fileLogger?.LogDebug($"C: OnMoveEvent: move equal to potential move: {move}");
                         potentialMove = string.Empty;
                         OnMoveEvent(piecesFen.FromBoard);
+                   
                         continue;
                     }
 
@@ -373,22 +378,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         potentialMove = move;
                         continue;
                     }
-                    //if (string.IsNullOrWhiteSpace(prevMove))
-                    //{
-                    //    prevMove = move;
-                    //    //  _fileLogger?.LogDebug($"C: Move: {move}");
-                    //    OnMoveEvent(piecesFen);
-                    //}
-                    //else
-                    //{
-                    //    if (prevMove.Equals(move) || !prevMove.StartsWith(move.Substring(0,2)))
-                    //    {
-                    //        OnMoveEvent(piecesFen);
-                    //        prevMove = move;
-                    //    }
-                    //}
-
-
                 }
             }
 
@@ -397,7 +386,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         
 
         /// <summary>
-        /// New fen position received from certabo chess board. Translate to a move
+        /// New fen position received from chess board. Translate to a move
         /// </summary>
         private void OnMoveEvent(string fenPosition)
         {
@@ -417,7 +406,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         }
 
         /// <summary>
-        /// New fen position received from certabo chess board
+        /// New fen position received from chess board
         /// </summary>
         private void OnFenEvent(string fenPosition, string changedFigure)
         {
