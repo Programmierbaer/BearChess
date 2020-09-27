@@ -9,25 +9,23 @@ using www.SoLaNoSoft.com.BearChessWin.Assets.Fonts;
 namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
-    /// Interaktionslogik für MoveUserControl.xaml
+    ///     Interaktionslogik für MoveUserControl.xaml
     /// </summary>
     public partial class MoveUserControl : UserControl
     {
-
-        public event EventHandler<int> SelectedMoveChanged;
+        private readonly FontConverter _fontConverter;
+        private int _blackCapturedFigureId;
+        private int _blackFigureId;
+        private string _blackMove;
+        private DisplayFigureType _figureType = DisplayFigureType.Symbol;
+        private int _moveNumber;
 
         private DisplayMoveType _moveType = DisplayMoveType.FromToField;
-        private DisplayFigureType _figureType = DisplayFigureType.Symbol;
+        private int _promotedFigureId;
+        private int _whiteCapturedFigureId;
 
         private int _whiteFigureId;
-        private int _blackFigureId;
-        private int _whiteCapturedFigureId;
-        private int _blackCapturedFigureId;
-        private int _promotedFigureId;
         private string _whiteMove;
-        private string _blackMove;
-        private readonly FontConverter _fontConverter;
-        private int _moveNumber;
 
         public MoveUserControl()
         {
@@ -36,30 +34,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockBlackMove.Text = string.Empty;
             textBlockWhiteFigure.Text = string.Empty;
             textBlockBlackFigure.Text = string.Empty;
-            FontFamily fontFamily = new FontFamily(new Uri("pack://application:,,,/"), $"./Assets/Fonts/#Chess Merida");
+            var fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
             textBlockWhiteFigureSymbol.FontFamily = fontFamily;
             textBlockBlackFigureSymbol.FontFamily = fontFamily;
             _fontConverter = new FontConverter();
             SetDisplayTypes();
         }
 
-        private void SetDisplayTypes()
-        {
-            if (_figureType == DisplayFigureType.Symbol)
-            {
-                textBlockBlackFigure.Visibility = Visibility.Hidden;
-                textBlockWhiteFigure.Visibility = Visibility.Hidden;
-                textBlockWhiteFigureSymbol.Visibility = Visibility.Visible;
-                textBlockBlackFigureSymbol.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                textBlockWhiteFigureSymbol.Visibility = Visibility.Hidden;
-                textBlockBlackFigureSymbol.Visibility = Visibility.Hidden;
-                textBlockBlackFigure.Visibility = Visibility.Visible;
-                textBlockWhiteFigure.Visibility = Visibility.Visible;
-            }
-        }
+        public event EventHandler<int> SelectedMoveChanged;
+
 
         public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType)
         {
@@ -67,6 +50,66 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _moveType = moveType;
             SetDisplayTypes();
             ShowMove();
+        }
+
+        public void SetSize(int factor)
+        {
+            switch (factor)
+            {
+                case 1:
+                {
+                    textBlockMoveNumber.FontSize = 12;
+                    textBlockWhiteMove.FontSize = 12;
+                    textBlockBlackMove.FontSize = 12;
+                    textBlockBlackMove.FontSize = 12;
+                    textBlockWhiteFigure.FontSize = 12;
+                    textBlockBlackFigure.FontSize = 12;
+                    textBlockWhiteFigureSymbol.FontSize = 12;
+                    textBlockBlackFigureSymbol.FontSize = 12;
+                    columnDefinition1.Width = new GridLength(30);
+                    columnDefinition2.Width = new GridLength(50);
+                    columnDefinition3.Width = new GridLength(50);
+                    columnDefinition11.Width = new GridLength(15);
+                    columnDefinition21.Width = new GridLength(15);
+
+                    break;
+                }
+                case 2:
+                {
+                    textBlockMoveNumber.FontSize = 18;
+                    textBlockWhiteMove.FontSize = 18;
+                    textBlockBlackMove.FontSize = 18;
+                    textBlockBlackMove.FontSize = 18;
+                    textBlockWhiteFigure.FontSize = 18;
+                    textBlockBlackFigure.FontSize = 18;
+                    textBlockWhiteFigureSymbol.FontSize = 18;
+                    textBlockBlackFigureSymbol.FontSize = 18;
+                    columnDefinition1.Width = new GridLength(45);
+                    columnDefinition2.Width = new GridLength(75);
+                    columnDefinition3.Width = new GridLength(75);
+                    columnDefinition11.Width = new GridLength(23);
+                    columnDefinition21.Width = new GridLength(23);
+
+                    break;
+                }
+                default:
+                {
+                    textBlockMoveNumber.FontSize = 12;
+                    textBlockWhiteMove.FontSize = 12;
+                    textBlockBlackMove.FontSize = 12;
+                    textBlockBlackMove.FontSize = 12;
+                    textBlockWhiteFigure.FontSize = 12;
+                    textBlockBlackFigure.FontSize = 12;
+                    textBlockWhiteFigureSymbol.FontSize = 12;
+                    textBlockBlackFigureSymbol.FontSize = 12;
+                    columnDefinition1.Width = new GridLength(30);
+                    columnDefinition2.Width = new GridLength(50);
+                    columnDefinition3.Width = new GridLength(50);
+                    columnDefinition11.Width = new GridLength(15);
+                    columnDefinition21.Width = new GridLength(15);
+                    break;
+                }
+            }
         }
 
         public void SetMoveNumber(int number)
@@ -102,13 +145,33 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ShowMove();
         }
 
+        private void SetDisplayTypes()
+        {
+            if (_figureType == DisplayFigureType.Symbol)
+            {
+                textBlockBlackFigure.Visibility = Visibility.Hidden;
+                textBlockWhiteFigure.Visibility = Visibility.Hidden;
+                textBlockWhiteFigureSymbol.Visibility = Visibility.Visible;
+                textBlockBlackFigureSymbol.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                textBlockWhiteFigureSymbol.Visibility = Visibility.Hidden;
+                textBlockBlackFigureSymbol.Visibility = Visibility.Hidden;
+                textBlockBlackFigure.Visibility = Visibility.Visible;
+                textBlockWhiteFigure.Visibility = Visibility.Visible;
+            }
+        }
+
+
         private void ShowMove()
         {
             if (!string.IsNullOrWhiteSpace(_whiteMove))
-            { 
-               textBlockWhiteFigure.Text = string.Empty;
-               textBlockWhiteFigureSymbol.Text = string.Empty;
-                textBlockWhiteMove.Text = GetMoveDisplay(_whiteMove, _whiteFigureId, _whiteCapturedFigureId, _promotedFigureId);
+            {
+                textBlockWhiteFigure.Text = string.Empty;
+                textBlockWhiteFigureSymbol.Text = string.Empty;
+                textBlockWhiteMove.Text =
+                    GetMoveDisplay(_whiteMove, _whiteFigureId, _whiteCapturedFigureId, _promotedFigureId);
                 var s = FigureId.FigureIdToFenCharacter[_whiteFigureId];
                 textBlockWhiteFigureSymbol.Text = string.Empty;
                 if (!textBlockWhiteMove.Text.StartsWith("0-"))
@@ -134,7 +197,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (!string.IsNullOrWhiteSpace(_blackMove))
             {
-                textBlockBlackMove.Text = GetMoveDisplay(_blackMove, _blackFigureId,_blackCapturedFigureId, _promotedFigureId);
+                textBlockBlackMove.Text =
+                    GetMoveDisplay(_blackMove, _blackFigureId, _blackCapturedFigureId, _promotedFigureId);
                 textBlockBlackFigureSymbol.Text = string.Empty;
                 textBlockBlackFigure.Text = string.Empty;
                 if (!textBlockBlackMove.Text.StartsWith("0-"))
@@ -173,6 +237,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     return "0-0";
                 }
+
                 if (move.Equals("e1c1"))
                 {
                     return "0-0-0";
@@ -185,13 +250,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     return "0-0";
                 }
+
                 if (move.Equals("e8c8"))
                 {
                     return "0-0-0";
                 }
             }
 
-            string p = string.Empty;
+            var p = string.Empty;
             if (promotedFigureId != FigureId.NO_PIECE)
             {
                 p = FigureId.FigureIdToFenCharacter[promotedFigureId].ToUpper();
@@ -201,18 +267,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (capturedFigureId == FigureId.OUTSIDE_PIECE || capturedFigureId == FigureId.NO_PIECE)
                 {
-                    return move.Substring(0, 2) + "-" + move.Substring(2)+p;
+                    return move.Substring(0, 2) + "-" + move.Substring(2) + p;
                 }
 
-                return move.Substring(0, 2) + "x" + move.Substring(2)+p;
+                return move.Substring(0, 2) + "x" + move.Substring(2) + p;
             }
+
             if (capturedFigureId == FigureId.OUTSIDE_PIECE || capturedFigureId == FigureId.NO_PIECE)
             {
                 return move.Substring(2) + p;
             }
 
             return "x" + move.Substring(2) + p;
-
         }
 
         private void TextBlockBlackFigure_OnMouseDown(object sender, MouseButtonEventArgs e)

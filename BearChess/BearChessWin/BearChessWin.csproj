@@ -716,5 +716,8 @@
   <ItemGroup>
     <Resource Include="Assets\control_back.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\text_smallcaps.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,9 +7,18 @@
         Title="Moves" Height="450" Width="230" WindowStyle="ToolWindow">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" Name="listBoxMoves0" Width="190" SelectionMode="Single" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ListBox Grid.Column="0" Grid.Row="0" Name="listBoxMoves0" Width="190" SelectionMode="Single" />
+
+        <Button Grid.Column="0" Grid.Row="1" Margin="5" Name="buttonInc" Click="ButtonInc_OnClick" Width="32" Height="32" HorizontalAlignment="Left">
+            <Image Source="../Assets/Icons/text_smallcaps.png"  />
+        </Button>
+
 
     </Grid>
 </Window>

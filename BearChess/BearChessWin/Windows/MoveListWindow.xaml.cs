@@ -27,6 +27,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Configuration _configuration;
         private MoveUserControl _currentMoveUserControl;
         private DisplayFigureType _figureType;
+        private int _fontSize = 1;
 
         private int _lastMoveNumber;
         private DisplayMoveType _moveType;
@@ -35,6 +36,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             InitializeComponent();
             _configuration = configuration;
+            _fontSize = int.Parse(_configuration.GetConfigValue("MoveListSize", "1"));
             Top = _configuration.GetWinDoubleValue("MoveListWindowTop", Configuration.WinScreenInfo.Top,
                                                    (top + 20).ToString(CultureInfo.InvariantCulture));
             Left = _configuration.GetWinDoubleValue("MoveListWindowLeft", Configuration.WinScreenInfo.Left,
@@ -47,7 +49,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _moveType = (DisplayMoveType) Enum.Parse(typeof(DisplayMoveType),
                                                      _configuration.GetConfigValue(
                                                          "DisplayMoveType", DisplayMoveType.FromToField.ToString()));
+            if (_fontSize == 1)
+            {
+                Width = 230;
+                listBoxMoves0.Width = 190;
+            }
+            else
+            {
+                Width = 400;
+                listBoxMoves0.Width = 380;
+            }
         }
+
 
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
 
@@ -121,6 +134,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             else
             {
                 _currentMoveUserControl = new MoveUserControl();
+                _currentMoveUserControl.SetSize(_fontSize);
                 _currentMoveUserControl.SetDisplayTypes(_figureType, _moveType);
                 _currentMoveUserControl.SetMoveNumber(moveNumber);
                 _currentMoveUserControl.SetMove(color, figureId, capturedFigureId, move, promotedFigureId);
@@ -152,6 +166,38 @@ namespace www.SoLaNoSoft.com.BearChessWin
         protected virtual void OnSelectedMoveChanged(SelectedMoveOfMoveList e)
         {
             SelectedMoveChanged?.Invoke(this, e);
+        }
+
+        private void ButtonInc_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_fontSize == 1)
+            {
+                _fontSize = 2;
+                Width = 400;
+                listBoxMoves0.Width = 380;
+                foreach (var item in listBoxMoves0.Items)
+                {
+                    if (item is MoveUserControl userControl)
+                    {
+                        userControl.SetSize(2);
+                    }
+                }
+            }
+            else
+            {
+                _fontSize = 1;
+                Width = 230;
+                listBoxMoves0.Width = 190;
+                foreach (var item in listBoxMoves0.Items)
+                {
+                    if (item is MoveUserControl userControl)
+                    {
+                        userControl.SetSize(1);
+                    }
+                }
+            }
+
+            _configuration.SetConfigValue("MoveListSize", _fontSize.ToString());
         }
     }
 }
