@@ -1914,7 +1914,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 MessageBoxImage.Error, MessageBoxResult.OK);
 
                 return;
-                ;
             }
 
             menuItemConnectToMChessLink.Header = "Disconnect";
@@ -1999,7 +1998,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-        
             _fileLogger?.LogDebug($"Update internal chessboard and GUI for move from e-chessboard: {move}");
             _fileLogger?.LogDebug($"Fen: {_prevFenPosition}");
             _prevFenPosition = _chessBoard.GetFenPosition();

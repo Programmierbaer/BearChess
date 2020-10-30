@@ -24,7 +24,7 @@
                 <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="COM-Ports:" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
                 <ComboBox Margin="5,5,5,5" Name="comboBoxComPorts" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" Width="100"
                           HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="32"/>
-                <Button Name="buttonCheck"  Grid.Column="2" Grid.Row="1" Margin="10,5,5,5"  Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden">
+                <Button Name="buttonCheck"  Grid.Column="2" Grid.Row="1" Margin="10,5,5,5"  Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ButtonCheck_OnClick" >
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Name="textBlockCheck"  VerticalAlignment="Center">Check...</TextBlock>
                         <Image Source="../Assets/Icons/connect.png" Width="32"></Image>

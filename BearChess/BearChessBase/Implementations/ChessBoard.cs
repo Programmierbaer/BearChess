@@ -7,33 +7,10 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
-
-
     public class ChessBoard : IChessBoard
     {
 
-        private class AllMoveClass
-        {
-            private readonly Dictionary<int,IMove> moves = new Dictionary<int, IMove>();
-            private readonly Dictionary<int,string> fens = new Dictionary<int, string>();
-
-            public void SetMove(int color, IMove move, string fenPosition)
-            {
-                moves[color] = move;
-                fens[color] = fenPosition;
-            }
-
-            public IMove GetMove(int color)
-            {
-                return moves.ContainsKey(color) ? moves[color] : null;
-            }
-
-            public string GetFen(int color)
-            {
-                return fens.ContainsKey(color) ? fens[color] : null;
-            }
-
-        }
+       
 
         private readonly Castling[] _canCastling = new Castling[2];
         private readonly bool[] _castled = { false, false };
@@ -1359,6 +1336,20 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
         }
 
+        /// <inheritdoc />
+        public AllMoveClass GetPrevMove()
+        {
+            var keysCount = _allPlayedMoves.Keys.Count;
+            if (keysCount > 1)
+            {
+                var allPlayedMove = _allPlayedMoves[keysCount - 1];
+                //_allPlayedMoves.Remove(keysCount - 1);
+                return allPlayedMove;
+            }
+
+            return null;
+        }
+
         public void MakeMove(int fromField, int toField, int promotionFigureId)
         {
             var chessFigure = _figures[fromField];
@@ -1416,7 +1407,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
 
             var fenPosition = GetFenPosition();
-             var substring = fenPosition.Split(" ".ToCharArray())[0];
+            var substring = fenPosition.Split(" ".ToCharArray())[0];
             if (chessFigure.GeneralFigureId == FigureId.PAWN)
             {
                 _repetition.Clear();

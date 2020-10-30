@@ -70,6 +70,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
+            var infoWindow = new InfoWindow();
+            infoWindow.Owner = this;
+            infoWindow.Show();
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             try
@@ -77,6 +80,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var certaboLoader = new CertaboLoader();
                 certaboLoader.Calibrate();
                 certaboLoader.SetAllLedsOff();
+                infoWindow.Close();
                 MessageBox.Show("Calibration finished", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Information);
                 certaboLoader.Close();
             }
@@ -84,7 +88,38 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 MessageBox.Show($"{ex.Message}", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
 
+        }
+
+        private void ButtonCheck_OnClick(object sender, RoutedEventArgs e)
+        {
+            var certaboLoader = new CertaboLoader(true,CertaboLoader.EBoardName);
+            var portName = comboBoxComPorts.SelectionBoxItem.ToString();
+            if (portName.Contains("auto"))
+            {
+                var portNames = BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
+                foreach (var name in portNames)
+                {
+                    if (certaboLoader.CheckComPort(name))
+                    {
+                        MessageBox.Show($@"Check successful for {name}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+                }
+                MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+
+            }
+
+            if (certaboLoader.CheckComPort(portName))
+            {
+                MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Check failed for {portName} ", "Check", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
     }

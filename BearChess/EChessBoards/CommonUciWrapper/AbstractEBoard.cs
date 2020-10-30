@@ -26,6 +26,7 @@
         public bool IsCalibrated { get; protected set; }
         public bool PiecesAreOnBasePosition { get; }
         public bool IsConnected { get; protected set; }
+
         public string UnknownPieceCode => "unknown";
 
         public void SetLedForFields(string fromFieldName, string toFieldName)
@@ -33,6 +34,7 @@
             SetLedForFields(new[] { fromFieldName, toFieldName });
         }
 
+        public abstract bool CheckComPort(string portName);
 
         public abstract void SetLedForFields(string[] fieldNames);
 
@@ -62,13 +64,11 @@
             _playWithWhite = false;
         }
 
-
         public void NewGame()
         {
             _logger?.LogDebug("B: New game");
             EnsureConnection();
         }
-
 
         public void SetComPort(string portName)
         {
@@ -95,7 +95,6 @@
             _logger?.LogError("B: chess board not found");
             return false;
         }
-
 
         public void Dispose()
         {

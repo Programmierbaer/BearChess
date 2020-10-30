@@ -93,6 +93,31 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             IsConnected = EnsureConnection();
         }
 
+        public EChessBoard(ILogging logger)
+        {
+            _isFirstInstance = true;
+
+            _logger = logger;
+
+        }
+
+
+        public override bool CheckComPort(string portName)
+        {
+            lock (_locker)
+            {
+                _serialCommunication = new SerialCommunication(true, _logger, portName);
+                if (_serialCommunication.CheckConnect(portName))
+                {
+                    var readLine = _serialCommunication.GetRawFromBoard();
+                    _serialCommunication.DisConnectFromCheck();
+                    return readLine.Length > 0;
+                }
+
+                return false;
+            }
+        }
+
         public override void SetLedForFields(string[] fieldNames)
         {
             if (!EnsureConnection()) return;

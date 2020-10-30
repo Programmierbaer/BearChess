@@ -17,6 +17,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         }
 
 
+        public override string GetRawFromBoard()
+        {
+            throw new NotImplementedException();
+        }
+
         public override string GetCalibrateData()
         {
             return string.Empty;

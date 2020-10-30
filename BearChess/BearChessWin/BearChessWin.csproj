@@ -148,6 +148,9 @@
       <DependentUpon>EngineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\IChessClocksWindow.cs" />
+    <Compile Include="Windows\InfoWindow.xaml.cs">
+      <DependentUpon>InfoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\MoveListWindow.xaml.cs">
       <DependentUpon>MoveListWindow.xaml</DependentUpon>
     </Compile>
@@ -302,6 +305,10 @@
     <Compile Include="UserControls\GraphicsChessBoardUserControl.xaml.cs">
       <DependentUpon>GraphicsChessBoardUserControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="Windows\InfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\MoveListWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

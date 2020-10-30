@@ -45,7 +45,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         private int prevLedField = 0;
 
 
-        private Dictionary<string, int> unknowCodeCounter = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> unKnowCodeCounter = new Dictionary<string, int>();
         private readonly byte[] _lastSendBytes = { 0, 0, 0, 0, 0, 0, 0, 0 };
         public static byte ColA = 0x1;
         public static byte ColB = 0x1 << 1;
@@ -75,6 +75,26 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             IsConnected = EnsureConnection();
         }
 
+        public EChessBoard( ILogging logger)
+        {
+            _isFirstInstance = true;
+            _logger = logger;
+
+        }
+
+
+        public override bool CheckComPort(string portName)
+        {
+            _serialCommunication = new SerialCommunication(true, _logger, portName);
+            if (_serialCommunication.CheckConnect(portName))
+            {
+                var readLine = _serialCommunication.GetRawFromBoard();
+                _serialCommunication.DisConnectFromCheck();
+                return readLine.Length>0;
+            }
+
+            return false;
+        }
 
         public override void SetLedForFields(string[] fieldNames)
         {
@@ -233,23 +253,23 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     fenLine = GetFenLine(codes, out unknownCodes);
                     if (unknownCodes.Length == 1)
                     {
-                        if (unknowCodeCounter.ContainsKey(unknownCodes[0]))
+                        if (unKnowCodeCounter.ContainsKey(unknownCodes[0]))
                         {
-                            unknowCodeCounter[unknownCodes[0]]++;
+                            unKnowCodeCounter[unknownCodes[0]]++;
                         }
                         else
                         {
-                            unknowCodeCounter[unknownCodes[0]] = 1;
+                            unKnowCodeCounter[unknownCodes[0]] = 1;
                         }
                         var calibrationData = _calibrateStorage.GetCalibrationData();
                         if (!calibrationData.WhiteQueenCodes.Contains("#"))
                         {
-                            if (unknowCodeCounter[unknownCodes[0]] > 10)
+                            if (unKnowCodeCounter[unknownCodes[0]] > 10)
                             {
                                 _boardCodesToChessPiece[unknownCodes[0]] = WhiteQueenFen;
                                 calibrationData.WhiteQueenCodes += "#" + unknownCodes[0];
                                 _calibrateStorage.SaveCalibrationData(calibrationData);
-                                unknowCodeCounter.Clear();
+                                unKnowCodeCounter.Clear();
                                 _logger?.LogDebug($"Add new white queen code: {unknownCodes[0]}");
                             }
                         }
@@ -270,23 +290,23 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     fenLine += GetFenLine(codes, out unknownCodes).Replace("/", string.Empty);
                     if (unknownCodes.Length == 1)
                     {
-                        if (unknowCodeCounter.ContainsKey(unknownCodes[0]))
+                        if (unKnowCodeCounter.ContainsKey(unknownCodes[0]))
                         {
-                            unknowCodeCounter[unknownCodes[0]]++;
+                            unKnowCodeCounter[unknownCodes[0]]++;
                         }
                         else
                         {
-                            unknowCodeCounter[unknownCodes[0]] = 1;
+                            unKnowCodeCounter[unknownCodes[0]] = 1;
                         }
                         var calibrationData = _calibrateStorage.GetCalibrationData();
                         if (!calibrationData.BlackQueenCodes.Contains("#"))
                         {
-                            if (unknowCodeCounter[unknownCodes[0]] > 10)
+                            if (unKnowCodeCounter[unknownCodes[0]] > 10)
                             {
                                 _boardCodesToChessPiece[unknownCodes[0]] = BlackQueenFen;
                                 calibrationData.BlackQueenCodes += "#" + unknownCodes[0];
                                 _calibrateStorage.SaveCalibrationData(calibrationData);
-                                unknowCodeCounter.Clear();
+                                unKnowCodeCounter.Clear();
                                 _logger?.LogDebug($"Add new black queen code: {unknownCodes[0]}");
                             }
                         }
@@ -300,23 +320,23 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         fenLine = GetFenLine(codes, out unknownCodes);
                         if (unknownCodes.Length == 1)
                         {
-                            if (unknowCodeCounter.ContainsKey(unknownCodes[0]))
+                            if (unKnowCodeCounter.ContainsKey(unknownCodes[0]))
                             {
-                                unknowCodeCounter[unknownCodes[0]]++;
+                                unKnowCodeCounter[unknownCodes[0]]++;
                             }
                             else
                             {
-                                unknowCodeCounter[unknownCodes[0]] = 1;
+                                unKnowCodeCounter[unknownCodes[0]] = 1;
                             }
                             var calibrationData = _calibrateStorage.GetCalibrationData();
                             if (!calibrationData.WhiteQueenCodes.Contains("#"))
                             {
-                                if (unknowCodeCounter[unknownCodes[0]] > 10)
+                                if (unKnowCodeCounter[unknownCodes[0]] > 10)
                                 {
                                     _boardCodesToChessPiece[unknownCodes[0]] = WhiteQueenFen;
                                     calibrationData.WhiteQueenCodes += "#" + unknownCodes[0];
                                     _calibrateStorage.SaveCalibrationData(calibrationData);
-                                    unknowCodeCounter.Clear();
+                                    unKnowCodeCounter.Clear();
                                     _logger?.LogDebug($"Add new white queen code: {unknownCodes[0]}");
                                 }
                             }
@@ -337,23 +357,23 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         fenLine += GetFenLine(codes, out unknownCodes).Replace("/", string.Empty);
                         if (unknownCodes.Length == 1)
                         {
-                            if (unknowCodeCounter.ContainsKey(unknownCodes[0]))
+                            if (unKnowCodeCounter.ContainsKey(unknownCodes[0]))
                             {
-                                unknowCodeCounter[unknownCodes[0]]++;
+                                unKnowCodeCounter[unknownCodes[0]]++;
                             }
                             else
                             {
-                                unknowCodeCounter[unknownCodes[0]] = 1;
+                                unKnowCodeCounter[unknownCodes[0]] = 1;
                             }
                             var calibrationData = _calibrateStorage.GetCalibrationData();
                             if (!calibrationData.BlackQueenCodes.Contains("#"))
                             {
-                                if (unknowCodeCounter[unknownCodes[0]] > 10)
+                                if (unKnowCodeCounter[unknownCodes[0]] > 10)
                                 {
                                     _boardCodesToChessPiece[unknownCodes[0]] = BlackQueenFen;
                                     calibrationData.BlackQueenCodes += "#" + unknownCodes[0];
                                     _calibrateStorage.SaveCalibrationData(calibrationData);
-                                    unknowCodeCounter.Clear();
+                                    unKnowCodeCounter.Clear();
                                     _logger?.LogDebug($"Add new black queen code: {unknownCodes[0]}");
                                 }
                             }

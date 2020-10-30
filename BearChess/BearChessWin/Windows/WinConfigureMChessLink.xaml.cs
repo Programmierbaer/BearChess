@@ -12,13 +12,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class WinConfigureMChessLink : Window
     {
-        private readonly Configuration _configuration;
-        private EChessBoardConfiguration _eChessBoardConfiguration;
-        private string _fileName;
+      
+        private readonly EChessBoardConfiguration _eChessBoardConfiguration;
+        private readonly string _fileName;
 
         public WinConfigureMChessLink(Configuration configuration)
         {
-            _configuration = configuration;
             InitializeComponent();
             List<string> allPortNames = new List<string> { "<auto>" };
             var portNames = BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
@@ -30,7 +29,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockInformation.Visibility = Visibility.Visible;
             }
 
-            _fileName = Path.Combine(_configuration.FolderPath, MChessLinkLoader.EBoardName, $"{MChessLinkLoader.EBoardName}Cfg.xml");
+            _fileName = Path.Combine(configuration.FolderPath, MChessLinkLoader.EBoardName, $"{MChessLinkLoader.EBoardName}Cfg.xml");
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             var flashInSync = _eChessBoardConfiguration.FlashInSync;
             var dimLeds = _eChessBoardConfiguration.DimLeds;
@@ -57,8 +56,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
             DialogResult = false;
         }
 
-        private void ComboBoxComPorts_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ButtonCheck_OnClick(object sender, RoutedEventArgs e)
         {
+            var chessLinkLoader = new MChessLinkLoader(true, MChessLinkLoader.EBoardName);
+            var portName = comboBoxComPorts.SelectionBoxItem.ToString();
+            if (portName.Contains("auto"))
+            {
+                var portNames = BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
+                foreach (var name in portNames)
+                {
+                    if (chessLinkLoader.CheckComPort(name))
+                    {
+                        MessageBox.Show($@"Check successful for {name}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+                }
+                MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+
+            }
+
+            if (chessLinkLoader.CheckComPort(portName))
+            {
+                MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"Check failed for {portName} ", "Check", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
     }

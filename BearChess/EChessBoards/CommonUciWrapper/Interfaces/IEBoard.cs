@@ -50,7 +50,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// <returns>true if calibration data present</returns>
         bool IsCalibrated { get; }
 
-     
         /// <summary>
         /// Returns the pieces fen line from board 
         /// </summary>
@@ -77,6 +76,13 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// </summary>
         /// <param name="portName">Name of the COM-Port</param>
         void SetComPort(string portName);
+
+        /// <summary>
+        /// Checks if the board is connected on the given COM port<paramref name="portName"/>.
+        /// </summary>
+        /// <param name="portName">COM port to check</param>
+        /// <returns>Returns true if the board is connected</returns>
+        bool CheckComPort(string portName);
 
         string UnknownPieceCode { get; }
 

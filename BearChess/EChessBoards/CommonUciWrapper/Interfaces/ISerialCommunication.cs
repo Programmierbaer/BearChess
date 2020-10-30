@@ -15,6 +15,11 @@
         DataFromBoard GetFromBoard();
 
         /// <summary>
+        /// Returns read data from board
+        /// </summary>
+        string GetRawFromBoard();
+
+        /// <summary>
         /// Starts communication with the board for reading and sending
         /// </summary>
         void StartCommunication();
@@ -33,6 +38,12 @@
         void DisConnect();
 
         /// <summary>
+        /// Close connection to board
+        /// </summary>
+        void DisConnectFromCheck();
+
+
+        /// <summary>
         /// Stops the communication but keep connected
         /// </summary>
         void StopCommunication();
@@ -47,6 +58,12 @@
         /// </summary>
         /// <returns>true if successful</returns>
         bool Connect();
+
+        /// <summary>
+        /// Open the connection 
+        /// </summary>
+        /// <returns>true if successful</returns>
+        bool CheckConnect(string comPort);
 
         /// <summary>
         /// Returns the data for calibrating the board

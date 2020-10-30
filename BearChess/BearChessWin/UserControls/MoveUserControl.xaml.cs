@@ -21,7 +21,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _moveNumber;
 
         private DisplayMoveType _moveType = DisplayMoveType.FromToField;
-        private int _promotedFigureId;
+        private int _promotedFigureIdWhite;
+        private int _promotedFigureIdBlack;
         private int _whiteCapturedFigureId;
 
         private int _whiteFigureId;
@@ -67,8 +68,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockWhiteFigureSymbol.FontSize = 12;
                     textBlockBlackFigureSymbol.FontSize = 12;
                     columnDefinition1.Width = new GridLength(30);
-                    columnDefinition2.Width = new GridLength(50);
-                    columnDefinition3.Width = new GridLength(50);
+                    columnDefinition2.Width = new GridLength(60);
+                    columnDefinition3.Width = new GridLength(60);
                     columnDefinition11.Width = new GridLength(15);
                     columnDefinition21.Width = new GridLength(15);
 
@@ -85,8 +86,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockWhiteFigureSymbol.FontSize = 18;
                     textBlockBlackFigureSymbol.FontSize = 18;
                     columnDefinition1.Width = new GridLength(45);
-                    columnDefinition2.Width = new GridLength(75);
-                    columnDefinition3.Width = new GridLength(75);
+                    columnDefinition2.Width = new GridLength(85);
+                    columnDefinition3.Width = new GridLength(85);
                     columnDefinition11.Width = new GridLength(23);
                     columnDefinition21.Width = new GridLength(23);
 
@@ -103,8 +104,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockWhiteFigureSymbol.FontSize = 12;
                     textBlockBlackFigureSymbol.FontSize = 12;
                     columnDefinition1.Width = new GridLength(30);
-                    columnDefinition2.Width = new GridLength(50);
-                    columnDefinition3.Width = new GridLength(50);
+                    columnDefinition2.Width = new GridLength(60);
+                    columnDefinition3.Width = new GridLength(60);
                     columnDefinition11.Width = new GridLength(15);
                     columnDefinition21.Width = new GridLength(15);
                     break;
@@ -132,6 +133,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _whiteFigureId = figureId;
                 _whiteCapturedFigureId = capturedFigureId;
                 _whiteMove = move;
+                _promotedFigureIdWhite = promotedFigureId;
             }
             else
             {
@@ -139,9 +141,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _blackFigureId = figureId;
                 _blackCapturedFigureId = capturedFigureId;
                 _blackMove = move;
+                _promotedFigureIdBlack = promotedFigureId;
             }
 
-            _promotedFigureId = promotedFigureId;
+      
             ShowMove();
         }
 
@@ -171,7 +174,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockWhiteFigure.Text = string.Empty;
                 textBlockWhiteFigureSymbol.Text = string.Empty;
                 textBlockWhiteMove.Text =
-                    GetMoveDisplay(_whiteMove, _whiteFigureId, _whiteCapturedFigureId, _promotedFigureId);
+                    GetMoveDisplay(_whiteMove, _whiteFigureId, _whiteCapturedFigureId, _promotedFigureIdWhite);
                 var s = FigureId.FigureIdToFenCharacter[_whiteFigureId];
                 textBlockWhiteFigureSymbol.Text = string.Empty;
                 if (!textBlockWhiteMove.Text.StartsWith("0-"))
@@ -198,7 +201,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (!string.IsNullOrWhiteSpace(_blackMove))
             {
                 textBlockBlackMove.Text =
-                    GetMoveDisplay(_blackMove, _blackFigureId, _blackCapturedFigureId, _promotedFigureId);
+                    GetMoveDisplay(_blackMove, _blackFigureId, _blackCapturedFigureId, _promotedFigureIdBlack);
                 textBlockBlackFigureSymbol.Text = string.Empty;
                 textBlockBlackFigure.Text = string.Empty;
                 if (!textBlockBlackMove.Text.StartsWith("0-"))

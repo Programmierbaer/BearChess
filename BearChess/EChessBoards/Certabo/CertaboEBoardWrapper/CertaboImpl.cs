@@ -6,6 +6,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
 {
     public class CertaboImpl : AbstractEBoardWrapper
     {
+
+        public CertaboImpl(string name, string basePath) : base(name, basePath)
+        {
+        }
+
         public CertaboImpl(string name, string basePath, bool isFirstInstance, string comPortName) : base(
             name, basePath, isFirstInstance, comPortName)
         {
@@ -20,6 +25,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
         {
             return new EChessBoard(basePath: _basePath,logger: _fileLogger, isFirstInstance: _isFirstInstance,
                                    portName: _comPortName);
+        }
+
+        protected override IEBoard GetEBoard(bool check)
+        {
+            return new EChessBoard( logger: _fileLogger);
         }
 
         public override void Calibrate()

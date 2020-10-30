@@ -5,7 +5,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
     public interface IEBoardWrapper
     {
         /// <summary>
-        /// If demo mode is true, all position changed are possible.
+        /// If demo mode is true, all position changes are possible.
         /// </summary>
         void SetDemoMode(bool inDemoMode);
 
@@ -48,7 +48,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// </summary>
         string GetFen();
 
-     
         /// <summary>
         /// Indicates to start a new game
         /// </summary>
@@ -91,7 +90,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// </summary>
         event EventHandler<string> FenEvent;
 
-
         event EventHandler AwaitedPosition;
 
         /// <summary>
@@ -104,6 +102,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// </summary>
         /// <param name="portName">Name of the COM-Port</param>
         void SetCOMPort(string portName);
+
+        /// <summary>
+        /// Set COM-Port
+        /// </summary>
+        /// <param name="portName">Name of the COM-Port</param>
+        bool CheckCOMPort(string portName);
 
         void DimLeds(bool dimLeds);
 

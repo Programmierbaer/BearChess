@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
 {
@@ -102,6 +103,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// </summary>
         /// <param name="pgnMove">PGN notation</param>
         void MakeMove(string pgnMove);
+
+        AllMoveClass GetPrevMove();
 
         /// <summary>
         /// Returns true if the move from <paramref name="fromField"/> to <paramref name="toField"/> is valid.

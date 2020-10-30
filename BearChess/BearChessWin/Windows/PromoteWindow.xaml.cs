@@ -18,10 +18,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (color == Fields.COLOR_WHITE)
             {
                 stackPanelBlack.Visibility = Visibility.Collapsed;
+                stackPanelWhite.Visibility = Visibility.Visible;
                 buttonWhiteQueen.IsDefault = true;
             }
             else
             {
+                stackPanelBlack.Visibility = Visibility.Visible;
                 stackPanelWhite.Visibility = Visibility.Collapsed;
                 buttonBlackQueen.IsDefault = true;
             }

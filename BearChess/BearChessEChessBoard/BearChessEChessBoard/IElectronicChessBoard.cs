@@ -109,6 +109,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetComPort(string portName);
 
         /// <summary>
+        /// Set COM-Port to <paramref name="portName"/>.
+        /// </summary>
+        bool CheckComPort(string portName);
+
+        /// <summary>
         /// Dim all LEDs
         /// </summary>
         void DimLeds(bool dimLeds);

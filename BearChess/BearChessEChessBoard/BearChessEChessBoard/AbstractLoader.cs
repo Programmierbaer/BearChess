@@ -10,6 +10,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         private IEBoardWrapper _eChessBoard;
         private  string _configFile;
         protected string Name { get; }
+        protected bool Check { get; }
 
         public event EventHandler<string> MoveEvent;
         public event EventHandler<string> FenEvent;
@@ -17,6 +18,21 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public bool IsInDemoMode => _eChessBoard.IsInDemoMode;
         public bool IsConnected => _eChessBoard.IsConnected;
+
+
+
+        protected AbstractLoader(bool check, string name)
+        {
+            Name = name;
+            Check = check;
+            var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                                        "BearChess", Name);
+            _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
+            EChessBoardConfiguration configuration = ReadConfiguration();
+            // ReSharper disable once VirtualMemberCallInConstructor
+            _eChessBoard = GetEBoardImpl(basePath, configuration);
+        }
+
 
         protected AbstractLoader(string folderPath, string name)
         {
@@ -32,7 +48,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "BearChess", name);
             Init(basePath);
-
         }
 
         private void Init(string basePath)
@@ -53,10 +68,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.FenEvent += this._eChessBoard_FenEvent;
             _eChessBoard.MoveEvent += this._eChessBoard_MoveEvent;
             _eChessBoard.AwaitedPosition += _eChessBoard_AwaitedPosition;
-            
+
         }
 
-       
 
         protected abstract IEBoardWrapper GetEBoardImpl(string basePath, EChessBoardConfiguration configuration);
 
@@ -108,8 +122,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _eChessBoard.GetFen();
         }
 
-       
-
         /// <inheritdoc />
         public void NewGame()
         {
@@ -155,7 +167,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public void SetComPort(string portName)
         {
+            
             _eChessBoard.SetCOMPort(portName);
+        }
+
+        /// <inheritdoc />
+        public bool CheckComPort(string portName)
+        {
+
+            return _eChessBoard.CheckCOMPort(portName);
         }
 
         /// <inheritdoc />

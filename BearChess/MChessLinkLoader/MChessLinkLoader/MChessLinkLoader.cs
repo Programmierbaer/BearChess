@@ -10,6 +10,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkLoader
 
         public static string EBoardName = "MChessLink";
 
+        public MChessLinkLoader(bool check, string name) : base(check, name)
+        {
+
+        }
+
         public MChessLinkLoader() : base(EBoardName)
         {
         }
@@ -20,10 +25,16 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkLoader
 
         protected override IEBoardWrapper GetEBoardImpl(string basePath, EChessBoardConfiguration configuration)
         {
+            if (Check)
+            {
+                return new MChessLinkImpl(name: Name, basePath: basePath);
+            }
             var mChessLinkImpl = new MChessLinkImpl(name: Name, basePath: basePath, isFirstInstance: true, comPortName: configuration.PortName);
             mChessLinkImpl.FlashInSync(configuration.FlashInSync);
             mChessLinkImpl.DimLeds(configuration.DimLeds);
             return mChessLinkImpl;
         }
+
+   
     }
 }

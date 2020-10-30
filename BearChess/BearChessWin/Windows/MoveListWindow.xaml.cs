@@ -43,6 +43,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                     (left + width + 10).ToString(CultureInfo.InvariantCulture));
             Height = _configuration.GetWinDoubleValue("MoveListWindowHeight", Configuration.WinScreenInfo.Height,
                                                       (height / 2).ToString(CultureInfo.InvariantCulture));
+            // Width = _configuration.GetWinDoubleValue("MoveListWindowWidth", Configuration.WinScreenInfo.Height, (width / 2).ToString(CultureInfo.InvariantCulture));
             _figureType = (DisplayFigureType) Enum.Parse(typeof(DisplayFigureType),
                                                          _configuration.GetConfigValue(
                                                              "DisplayFigureType", DisplayFigureType.Symbol.ToString()));
@@ -56,8 +57,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                Width = 400;
-                listBoxMoves0.Width = 380;
+                Width = 300;
+                listBoxMoves0.Width = 280;
             }
         }
 
@@ -173,8 +174,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_fontSize == 1)
             {
                 _fontSize = 2;
-                Width = 400;
-                listBoxMoves0.Width = 380;
+                Width = 300;
+                listBoxMoves0.Width = 280;
                 foreach (var item in listBoxMoves0.Items)
                 {
                     if (item is MoveUserControl userControl)

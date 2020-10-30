@@ -34,6 +34,18 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             return new DataFromBoard(string.Empty);
         }
 
+        public override string GetRawFromBoard()
+        {
+            try
+            {
+                return _serialPort.ReadLine();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
         public override string GetCalibrateData()
         {
 

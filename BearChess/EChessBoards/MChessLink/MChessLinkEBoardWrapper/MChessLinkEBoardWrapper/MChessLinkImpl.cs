@@ -5,6 +5,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
 {
     public class MChessLinkImpl : AbstractEBoardWrapper
     {
+        public MChessLinkImpl(string name, string basePath) : base(name, basePath)
+        {
+        }
+
         /// <inheritdoc />
         public MChessLinkImpl(string name, string basePath, bool isFirstInstance, string comPortName) : base(
             name, basePath, isFirstInstance, comPortName)
@@ -23,6 +27,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
             return new EChessBoard(basePath: _basePath, logger: _fileLogger, isFirstInstance: _isFirstInstance,
                                    portName: _comPortName);
         }
+
+        protected override IEBoard GetEBoard(bool check)
+        {
+            return new EChessBoard(logger: _fileLogger);
+        }
+
 
         /// <inheritdoc />
         public override void Calibrate()

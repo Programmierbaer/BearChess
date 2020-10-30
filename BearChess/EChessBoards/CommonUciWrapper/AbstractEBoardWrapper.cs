@@ -29,6 +29,25 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         public event EventHandler<string> FenEvent;
         public event EventHandler AwaitedPosition;
 
+        protected AbstractEBoardWrapper(string name, string basePath)
+        {
+            Name = name;
+            _basePath = basePath;
+            _isFirstInstance = true;
+            var number = _isFirstInstance ? 1 : 2;
+            try
+            {
+                _fileLogger = new FileLogger(Path.Combine(basePath, "log", $"{Name}_{number}.log"), 10, 10);
+            }
+            catch
+            {
+                _fileLogger = null;
+            }
+
+            // ReSharper disable once VirtualMemberCallInConstructor
+            _board = GetEBoard(true);
+        }
+
         protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName)
         {
             Name = name;
@@ -59,6 +78,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         }
 
         protected abstract IEBoard GetEBoard();
+        protected abstract IEBoard GetEBoard(bool check);
 
         public void SetDemoMode(bool inDemoMode)
         {
@@ -146,7 +166,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             return _internalChessBoard.GetPosition();
         }
 
-     
         public void NewGame()
         {
             _fileLogger?.LogDebug("C: New game");
@@ -247,7 +266,14 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             _board.SetComPort(portName);
         }
 
-        
+        public bool CheckCOMPort(string portName)
+        {
+            _fileLogger?.LogDebug($"C: Set COM-Port to: {portName}");
+            return _board.CheckComPort(portName);
+
+        }
+
+
         #region private
 
         private void Init()
