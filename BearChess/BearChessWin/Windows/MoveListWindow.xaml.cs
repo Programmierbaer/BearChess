@@ -147,6 +147,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastMoveNumber = moveNumber;
         }
 
+        public void MarkMove(int number)
+        {
+            if (listBoxMoves0.Items.Count > number)
+            {
+                ((MoveUserControl) listBoxMoves0.Items[number]).Mark(true);
+            }
+        }
+
+        public void ClearMark()
+        {
+            foreach (var item in listBoxMoves0.Items)
+            {
+                if (item is MoveUserControl userControl)
+                {
+                    userControl.Mark(false);
+                }
+            }
+        }
+
         private void currentMoveUserControl_SelectedMoveChanged(object sender, int e)
         {
             if (sender is MoveUserControl moveUserControl)

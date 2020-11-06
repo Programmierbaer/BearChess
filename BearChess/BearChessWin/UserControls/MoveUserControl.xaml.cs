@@ -27,6 +27,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private int _whiteFigureId;
         private string _whiteMove;
+        private Brush _background;
+        private Brush _markBackground;
 
         public MoveUserControl()
         {
@@ -40,6 +42,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockBlackFigureSymbol.FontFamily = fontFamily;
             _fontConverter = new FontConverter();
             SetDisplayTypes();
+            _background = Background;
+            _markBackground = new SolidColorBrush(Colors.LightBlue);
         }
 
         public event EventHandler<int> SelectedMoveChanged;
@@ -51,6 +55,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _moveType = moveType;
             SetDisplayTypes();
             ShowMove();
+        }
+
+        public void Mark(bool mark)
+        {
+            Background = mark ? _markBackground : _background;
         }
 
         public void SetSize(int factor)

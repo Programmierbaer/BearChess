@@ -287,13 +287,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                if (_playedMoveList.Length == 0) _playedMoveList = _chessBoard.GetPlayedMoveList();
+                if (_playedMoveList.Length == 0)
+                {
+                    _playedMoveList = _chessBoard.GetPlayedMoveList();
+                }
+
                 _currentMoveIndex = 0;
                 var chessBoard = new ChessBoard();
                 chessBoard.Init();
                 chessBoard.NewGame();
                 chessBoardUcGraphics.RepaintBoard(chessBoard);
             }
+            _moveListWindow?.ClearMark();
+            _moveListWindow?.MarkMove(0);
         }
 
         private void ChessBoardUcGraphics_TakeFullForwardEvent(object sender, EventArgs e)
@@ -312,9 +318,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var chessBoard = new ChessBoard();
             chessBoard.Init();
             chessBoard.NewGame();
-            for (var i = 0; i < _currentMoveIndex; i++) chessBoard.MakeMove(_playedMoveList[i]);
+            for (var i = 0; i < _currentMoveIndex; i++)
+            {
+                chessBoard.MakeMove(_playedMoveList[i]);
+            }
 
             chessBoardUcGraphics.RepaintBoard(chessBoard);
+            _moveListWindow?.ClearMark();
+            _moveListWindow?.MarkMove(0);
         }
 
         private void ChessBoardUcGraphics_TakeStepForwardEvent(object sender, EventArgs e)
@@ -335,10 +346,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var chessBoard = new ChessBoard();
                 chessBoard.Init();
                 chessBoard.NewGame();
-                for (var i = 0; i < _currentMoveIndex; i++) chessBoard.MakeMove(_playedMoveList[i]);
+                for (var i = 0; i < _currentMoveIndex; i++)
+                {
+                    chessBoard.MakeMove(_playedMoveList[i]);
+                }
 
                 chessBoardUcGraphics.RepaintBoard(chessBoard);
             }
+            _moveListWindow?.ClearMark();
+            _moveListWindow?.MarkMove(_currentMoveIndex / 2);
         }
 
         private void ChessBoardUcGraphics_TakeStepBackEvent(object sender, EventArgs e)
@@ -361,9 +377,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var chessBoard = new ChessBoard();
             chessBoard.Init();
             chessBoard.NewGame();
-            for (var i = 0; i < _currentMoveIndex; i++) chessBoard.MakeMove(_playedMoveList[i]);
+            for (var i = 0; i < _currentMoveIndex; i++)
+            {
+                chessBoard.MakeMove(_playedMoveList[i]);
+            }
 
             chessBoardUcGraphics.RepaintBoard(chessBoard);
+            _moveListWindow?.ClearMark();
+            _moveListWindow?.MarkMove(_currentMoveIndex / 2);
         }
 
         private void ChessBoardUcGraphics_TakeFullBackEvent(object sender, EventArgs e)
@@ -1437,6 +1458,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var toFieldFieldName = Fields.GetFieldName(toField);
             if (_chessBoard.MoveIsValid(fromField, toField))
             {
+                _prevFenPosition = _chessBoard.GetFenPosition();
                 if (!string.IsNullOrWhiteSpace(promote))
                     _chessBoard.MakeMove(fromField, toField, FigureId.FenCharacterToFigureId[promote]);
                 else
@@ -1814,9 +1836,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _fileLogger?.LogDebug($"Fen position from e-chessboard: {fenPosition}");
             _fileLogger?.LogDebug($"Pre position from e-chessboard: {_prevFenPosition}");
-            if (_runningGame && _allowTakeMoveBack)
+            if (_runningGame && !_allowTakeMoveBack)
             {
-
+                return;
             }
 
             if (!string.IsNullOrWhiteSpace(_prevFenPosition))
@@ -1825,7 +1847,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var p = _prevFenPosition.Split(" ".ToCharArray())[0];
                 if (f.Equals(p))
                 {
-                    
+                    Dispatcher?.Invoke(() =>
+                    {
+                        _engineWindow?.Stop();
+                    _chessClocksWindowBlack?.Stop();
+                    _chessClocksWindowWhite?.Stop();
+                    });
                     _eChessBoard?.SetAllLedsOff();
                     if (_playedMoveList.Length == 0)
                     {
@@ -1851,10 +1878,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     Dispatcher?.Invoke(() =>
                     {
                         chessBoardUcGraphics.RepaintBoard(chessBoard);
+                        _moveListWindow?.ClearMark();
+                        _moveListWindow?.MarkMove(_currentMoveIndex / 2);
                     });
                     
                     _eChessBoard?.ShowMove(allMoves, false);
-//                    _prevFenPosition = chessBoard.GetFenPosition();
+                    //                    _prevFenPosition = chessBoard.GetFenPosition();
+                   
                     return;
                 }
             }
@@ -2149,7 +2179,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var chessBoard = new ChessBoard();
             chessBoard.Init();
             chessBoard.NewGame();
-            for (var i = 0; i < e.MoveNumber * 2 - 1; i++) chessBoard.MakeMove(_playedMoveList[i]);
+            for (var i = 0; i < e.MoveNumber * 2 - 1; i++)
+            {
+                chessBoard.MakeMove(_playedMoveList[i]);
+            }
 
             if (e.Color == Fields.COLOR_BLACK)
             {
@@ -2162,6 +2195,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             chessBoardUcGraphics.RepaintBoard(chessBoard);
+            _moveListWindow?.ClearMark();
+            _moveListWindow?.MarkMove(e.MoveNumber-1);
         }
 
         private void ChessClocksWindowBlack_Closed(object sender, EventArgs e)
