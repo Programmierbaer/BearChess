@@ -952,6 +952,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonPauseEngine.Visibility = Visibility.Hidden;
         }
 
+        public void AllowTakeBack(bool allow)
+        {
+            moveStepAllBack.Visibility = allow ? Visibility.Visible : Visibility.Hidden;
+            moveStepAllForward.Visibility = allow ? Visibility.Visible : Visibility.Hidden;
+            moveStepBack.Visibility = allow ? Visibility.Visible : Visibility.Hidden;
+            moveStepForward.Visibility = allow ? Visibility.Visible : Visibility.Hidden;
+        }
+
         #region private
 
         private BitmapImage GetImageResource(int convert)

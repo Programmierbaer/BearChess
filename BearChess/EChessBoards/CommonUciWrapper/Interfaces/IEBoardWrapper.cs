@@ -22,7 +22,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// <summary>
         /// Shows the LED for the last move in <paramref name="allMoves"/>.
         /// </summary>
-        void ShowMove(string allMoves);
+        void ShowMove(string allMoves, bool waitFor);
 
         void ShowMove(string fromField, string toField);
 

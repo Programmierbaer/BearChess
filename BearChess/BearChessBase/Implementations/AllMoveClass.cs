@@ -5,23 +5,29 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
     public class AllMoveClass
     {
-        private readonly Dictionary<int, IMove> moves = new Dictionary<int, IMove>();
-        private readonly Dictionary<int, string> fens = new Dictionary<int, string>();
+        public int MoveNumber { get; }
+        private readonly Dictionary<int, IMove> _moves = new Dictionary<int, IMove>();
+        private readonly Dictionary<int, string> _fens = new Dictionary<int, string>();
+
+        public AllMoveClass(int moveNumber)
+        {
+            MoveNumber = moveNumber;
+        }
 
         public void SetMove(int color, IMove move, string fenPosition)
         {
-            moves[color] = move;
-            fens[color] = fenPosition;
+            _moves[color] = move;
+            _fens[color] = fenPosition;
         }
 
         public IMove GetMove(int color)
         {
-            return moves.ContainsKey(color) ? moves[color] : null;
+            return _moves.ContainsKey(color) ? _moves[color] : null;
         }
 
         public string GetFen(int color)
         {
-            return fens.ContainsKey(color) ? fens[color] : null;
+            return _fens.ContainsKey(color) ? _fens[color] : null;
         }
 
     }

@@ -104,6 +104,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// <param name="pgnMove">PGN notation</param>
         void MakeMove(string pgnMove);
 
+        /// <summary>
+        /// Returns the previous move
+        /// </summary>
+        /// <returns></returns>
         AllMoveClass GetPrevMove();
 
         /// <summary>
@@ -117,6 +121,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         void SetPosition(string fenPosition);
 
         void SetPosition(int moveNumber, int color);
+
+        void SetCurrentMove(int moveNumber, int color);
+
         /// <summary>
         /// Returns the fen string of the current position.
         /// </summary>        

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
              mc:Ignorable="d" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
-             d:DesignHeight="320" d:DesignWidth="350" >
+             d:DesignHeight="520" d:DesignWidth="450" >
     <UserControl.Resources>
         <BitmapImage x:Key="bitmapGreenFrame" UriSource="../Assets/Icons/GreenBorder.png" />
         <BitmapImage x:Key="bitmapYellowFrame" UriSource="../Assets/Icons/YellowBorder.png" />
@@ -95,12 +95,12 @@
     <Grid Name="gridBoard">
         <Grid.Resources>
             <Style x:Key="backgroundField" TargetType="Image">
-                <Setter Property="Width" Value="{Binding ChessBackgroundFieldSize, FallbackValue='30'}" />
-                <Setter Property="Height" Value="{Binding ChessBackgroundFieldSize, FallbackValue='30'}" />
+                <Setter Property="Width" Value="{Binding ChessBackgroundFieldSize, FallbackValue='50'}" />
+                <Setter Property="Height" Value="{Binding ChessBackgroundFieldSize, FallbackValue='50'}" />
             </Style>
             <Style TargetType="Image">
-                <Setter Property="Width" Value="{Binding ChessFieldSize, FallbackValue='30'}" />
-                <Setter Property="Height" Value="{Binding ChessFieldSize, FallbackValue='30'}" />
+                <Setter Property="Width" Value="{Binding ChessFieldSize, FallbackValue='48'}" />
+                <Setter Property="Height" Value="{Binding ChessFieldSize, FallbackValue='48'}" />
             </Style>
             <Style TargetType="Button">
                 <Setter Property="Width" Value="{Binding ControlButtonSize}" />
@@ -108,8 +108,8 @@
             </Style>
 
             <Style  x:Key="controlButtons"  TargetType="Image">
-                <Setter Property="Width" Value="{Binding ControlButtonSize, FallbackValue='32'}" />
-                <Setter Property="Height" Value="{Binding ControlButtonSize, FallbackValue='32'}" />
+                <Setter Property="Width" Value="{Binding ControlButtonSize, FallbackValue='40'}" />
+                <Setter Property="Height" Value="{Binding ControlButtonSize, FallbackValue='40'}" />
             </Style>
 
         </Grid.Resources>
@@ -122,7 +122,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="15" />
+            <ColumnDefinition Width="30" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -134,7 +134,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="15" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 

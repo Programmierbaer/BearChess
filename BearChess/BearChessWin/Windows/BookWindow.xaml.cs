@@ -14,6 +14,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class BookWindow : Window
     {
+        private readonly Configuration _configuration;
         private readonly BookInfo _bookInfo;
         private  OpeningBook _openingBook;
         private readonly List<string> _allMoves = new List<string>();
@@ -24,10 +25,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             InitializeComponent();
         }
 
-        public BookWindow(BookInfo bookInfo) : this()
+        public BookWindow(Configuration configuration,BookInfo bookInfo) : this()
         {
+            _configuration = configuration;
             _bookInfo = bookInfo;
             Title += $" {_bookInfo.Name}";
+            Top = _configuration.GetWinDoubleValue("BookWindowTop", Configuration.WinScreenInfo.Top);
+            Left = _configuration.GetWinDoubleValue("BookWindowLeft", Configuration.WinScreenInfo.Left);
             _openingBook = new OpeningBook();
             _openingBook.LoadBook(_bookInfo.FileName, false);
             SetMoves(_openingBook.GetMoveList());
@@ -97,6 +101,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void BookWindow_OnClosing(object sender, CancelEventArgs e)
         {
             _openingBook = null;
+            _configuration.SetDoubleValue("BookWindowTop", Top);
+            _configuration.SetDoubleValue("BookWindowLeft", Left);
         }
     }
 }

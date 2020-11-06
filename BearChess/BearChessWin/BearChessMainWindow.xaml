@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded"
         mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke"
-        Title="BearChess" Height="540" Width="450" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize"> 
+        Title="BearChess" Height="740" Width="650" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize"> 
     <StackPanel>
         <Grid>
             <Grid.RowDefinitions>
@@ -77,11 +77,20 @@
                             <Image Source="Assets/Icons/arrow_rotate_anticlockwise.png" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemSettingsMoves" Header="Notation..."
-                          Click="MenuItemSettingsMoves_OnClick">
+                    <MenuItem Name="menuItemSettingsMoves" Header="Notation/Moves...">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/text_list_numbers.png" ></Image>
                         </MenuItem.Icon>
+                        <MenuItem Name="menuItemConfigureNotation" Header="Configure..." Click="MenuItemSettingsMoves_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/text_list_numbers.png" ></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemMovesShowOnStart" Header="Show on start" Click="MenuItemMovesShowOnStart_OnClick">
+                        <MenuItem.Icon >
+                            <Image Name="imageShowMoves" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     </MenuItem>
                     <MenuItem Name="menuItemSettingsClock" Header="Clocks">
                         <MenuItem.Icon>
@@ -95,6 +104,11 @@
                         <MenuItem Name="menuItemBigClock" Header="Big" Click="MenuItemBigClock_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageBigTick" Source="Assets/Icons/tick.png" Visibility="Hidden"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemClockShowOnStart" Header="Show on start" Click="MenuItemClockShowOnStart_OnClick">
+                            <MenuItem.Icon >
+                                <Image Name="imageShowClocks" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
@@ -152,8 +166,8 @@
         <DockPanel  Margin="5">
             <Button  VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect" Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonConnect_OnClick">
                 <StackPanel Orientation="Horizontal">
-                    <Image Name="imageConnect" Source="Assets/Icons/connect.png" Width="16"></Image>
-                    <Image Name="imageDisconnect" Visibility="Collapsed" Source="Assets/Icons/disconnect.png" Width="16"></Image>
+                    <Image Name="imageConnect" Source="Assets/Icons/disconnect.png" Width="16"></Image>
+                    <Image Name="imageDisconnect" Visibility="Collapsed" Source="Assets/Icons/connect.png" Width="16"></Image>
                     <TextBlock Name="textBlockButtonConnect" Margin="5,0,0,0">Connect</TextBlock>
                 </StackPanel>
             </Button>

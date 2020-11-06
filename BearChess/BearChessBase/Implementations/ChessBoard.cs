@@ -693,6 +693,24 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             SetPosition(_allPlayedMoves[moveNumber-1].GetFen(color));
         }
 
+
+        public void SetCurrentMove(int moveNumber, int color)
+        {
+            List<IMove> allMoves = new List<IMove>();
+            var playedMoveList = GetPlayedMoveList();
+            for (int i = 0; i < moveNumber; i++)
+            {
+//                var move = _allPlayedMoves[i].GetMove(Fields.COLOR_WHITE);
+                allMoves.Add(playedMoveList[i]);
+
+                //move = _allPlayedMoves[i].GetMove(Fields.COLOR_BLACK);
+                //allMoves.Add(move);
+            }
+            Init();
+            NewGame();
+            allMoves.ForEach(MakeMove);
+        }
+
         /// <inheritdoc />
         public string GetFenPosition()
         {
@@ -1340,7 +1358,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public AllMoveClass GetPrevMove()
         {
             var keysCount = _allPlayedMoves.Keys.Count;
-            if (keysCount > 1)
+            if (keysCount > 0)
             {
                 var allPlayedMove = _allPlayedMoves[keysCount - 1];
                 //_allPlayedMoves.Remove(keysCount - 1);
@@ -1431,7 +1449,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             DrawByRepetition = _repetition[substring] > 2;
             if (EnemyColor == Fields.COLOR_WHITE)
             {
-                var allPlayedMove = new AllMoveClass();
+                var allPlayedMove = new AllMoveClass(keysCount);
                 allPlayedMove.SetMove(Fields.COLOR_WHITE, new Move(fromField, toField, Fields.COLOR_WHITE,chessFigure.FigureId,  CapturedFigure, promotionFigureId),
                                       fenPosition);
             

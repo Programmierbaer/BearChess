@@ -49,16 +49,31 @@ namespace www.SoLaNoSoft.com.BearChessWin
             chessBoardUserControl.RepaintBoard(_chessBoard);
         }
 
+        public void SetFenPosition(string fenPosition)
+        {
+            if (textBoxFenPosition.Text.StartsWith(fenPosition))
+            {
+                return;
+            }
+            textBoxFenPosition.Text = fenPosition;
+            var chessBoard = new ChessBoard();
+            chessBoard.Init();
+            chessBoard.NewGame();
+            chessBoard.SetPosition(textBoxFenPosition.Text);
+            chessBoardUserControl.SetInPositionMode(true, textBoxFenPosition.Text);
+            checkBoxWhiteShortCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
+            checkBoxWhiteLongCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Long);
+            checkBoxBlackShortCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Short);
+            checkBoxBlackLongCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Long);
+            radioButtonWhiteOnMove.IsChecked = chessBoard.CurrentColor == Fields.COLOR_WHITE;
+            radioButtonBlackOnMove.IsChecked = chessBoard.CurrentColor == Fields.COLOR_BLACK;
+            chessBoardUserControl.SetPiecesMaterial();
+            chessBoardUserControl.RepaintBoard(chessBoard);
+        }
+
         private void ButtonSetPosition_OnClick(object sender, RoutedEventArgs e)
         {
-            _chessBoard.SetPosition(textBoxFenPosition.Text);
-            checkBoxWhiteShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
-            checkBoxWhiteLongCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Long);
-            checkBoxBlackShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Short);
-            checkBoxBlackLongCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Long);
-            radioButtonWhiteOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_WHITE;
-            radioButtonBlackOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_BLACK;
-            chessBoardUserControl.RepaintBoard(_chessBoard);
+            SetFenPosition(textBoxFenPosition.Text);
         }
 
         private void TextBoxFenPosition_OnGotMouseCapture(object sender, MouseEventArgs e)

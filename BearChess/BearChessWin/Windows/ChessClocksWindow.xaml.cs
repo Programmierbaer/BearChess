@@ -40,8 +40,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration = configuration;
             Top = _configuration.GetWinDoubleValue($"ChessClocksWindow{capture}Top", Configuration.WinScreenInfo.Top, top >150 ? (top-150).ToString() : "0");
             Left = _configuration.GetWinDoubleValue($"ChessClocksWindow{capture}Left", Configuration.WinScreenInfo.Left, left.ToString());
-            _thread = new Thread(updateTime) { IsBackground = true };
-            _thread.Start();
+          
             Color color = capture.Equals("White",StringComparison.OrdinalIgnoreCase) ? Colors.White : Colors.Black;
             Color inversColor = color == Colors.White ? Colors.Black : Colors.White;
             Background = new SolidColorBrush(color);
@@ -54,6 +53,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             delimiterUserControl1.SetColor(inversColor);
             delimiterUserControl2.SetColor(inversColor);
             Title = "Clock " + capture;
+            _thread = new Thread(updateTime) { IsBackground = true };
+            _thread.Start();
         }
 
         public ClockTime GetClockTime()

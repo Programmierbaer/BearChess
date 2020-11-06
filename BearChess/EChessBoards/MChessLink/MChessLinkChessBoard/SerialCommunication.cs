@@ -19,7 +19,25 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override string GetRawFromBoard()
         {
-            throw new NotImplementedException();
+            int readByte = int.MaxValue;
+            string readLine = string.Empty;
+            try
+            {
+                var convertToSend = ConvertToSend("S");
+                _serialPort.Write(convertToSend, 0, convertToSend.Length);
+                while (readByte > 0)
+                {
+                    readByte = _serialPort.ReadByte();
+                    var convertFromRead = ConvertFromRead(readByte);
+                    readLine += convertFromRead;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogDebug($"S: Catch {ex.Message}");
+            }
+
+            return readLine;
         }
 
         public override string GetCalibrateData()

@@ -123,10 +123,15 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     }
                     if (withConnection && !_pauseReading)
                     {
+                        while (_byteDataToBoard.Count > 1)
+                        {
+                            _byteDataToBoard.TryDequeue(out _);
+                        }
                         if (_byteDataToBoard.TryDequeue(out byte[] data))
                         {
                             if (_isFirstInstance)
                             {
+                                _logger?.LogDebug($"C: Send byte array: {BitConverter.ToString(data)}");
                                 _serialPort.Write(data, 0, data.Length);
                                 Thread.Sleep(10);
                             }

@@ -23,7 +23,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Shows the LED for the last move in <paramref name="allMoves"/>, limited by spaces.
         /// </summary>
-        void ShowMove(string allMoves);
+        void ShowMove(string allMoves, bool waitFor);
 
         /// <summary>
         /// Show fields <paramref name="fromField"/> and <paramref name="toField"/> on board.
@@ -55,7 +55,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         string GetFen();
 
-     
         /// <summary>
         /// Indicates to start a new game
         /// </summary>

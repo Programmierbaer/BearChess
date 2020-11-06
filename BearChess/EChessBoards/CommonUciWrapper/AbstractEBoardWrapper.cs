@@ -92,7 +92,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// <inheritdoc />
         public bool IsConnected => _board?.IsConnected ?? false;
 
-        public void ShowMove(string allMoves)
+        public void ShowMove(string allMoves, bool waitFor)
         {
             if (string.IsNullOrWhiteSpace(allMoves))
             {
@@ -118,8 +118,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             _fileLogger?.LogDebug($"C: Show Move {lastMove}");
             var position = _internalChessBoard.GetPosition();
             _fileLogger?.LogDebug($"C: Wait for: {position}");
-            // Set LEDs on for received move and wait until board is in same position
-            _waitForFen.Enqueue(position);
+            if (waitFor)
+            {
+                // Set LEDs on for received move and wait until board is in same position
+                _waitForFen.Enqueue(position);
+            }
             _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2));
             _stop = false;
         }
@@ -145,6 +148,10 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 _fileLogger.LogDebug("Set all LEDs off");
                 _board?.SetAllLedsOff();
+                while (_waitForFen.Count > 0)
+                {
+                    _waitForFen.TryDequeue(out _);
+                }
             }
 
             _allLedOff = true;
