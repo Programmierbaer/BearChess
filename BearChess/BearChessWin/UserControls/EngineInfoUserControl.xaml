@@ -9,8 +9,20 @@
     <Border BorderThickness="1" BorderBrush="Gray">
         <StackPanel Name="stackPanelMain">
             <DockPanel LastChildFill="False">
-                <TextBlock DockPanel.Dock="Left" Margin="5" FontWeight="DemiBold" Text="Name:"/>
-                <TextBlock DockPanel.Dock="Left" Width="200" HorizontalAlignment="Left" Margin="5" Name="textBlockName" Text="BearChess"/>
+                <Grid DockPanel.Dock="Left">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" DockPanel.Dock="Left" Margin="5" FontWeight="DemiBold" Text="Name:" Width="40"/>
+                    <TextBlock Grid.Row="0"  Grid.Column="1" DockPanel.Dock="Left" Width="200" HorizontalAlignment="Left" Margin="5" Name="textBlockName" Text="BearChess"/>
+                    <TextBlock Grid.Row="1"  Grid.Column="0" DockPanel.Dock="Bottom" Name="textBlockElo" HorizontalAlignment="Left" Width="40" Margin="5" Text="Elo:"/>
+                    <TextBlock Grid.Row="1"   Grid.Column="1" DockPanel.Dock="Bottom" Name="textBlockEloValue" HorizontalAlignment="Left" Width="40" Margin="5" Text="----"/>
+                </Grid>
                 <Button DockPanel.Dock="Left" Name="buttonPlayStop" Width="32"  Click="ButtonPlayStop_OnClick" Margin="5" Background="Transparent" BorderBrush="Transparent">
                     <StackPanel>
                         <Image Name="imagePlay" Source="../Assets/Icons/control_play_blue.png"></Image>
@@ -30,6 +42,11 @@
                        Height="32" Source="../Assets/Stone/Symbol/KingW.png" Visibility="Collapsed" />
                 <Image  Margin="5" Name="imageColorBlack" DockPanel.Dock="Right" Width="32"
                        Height="32" Source="../Assets/Stone/Symbol/KingB.png" Visibility="Visible" />
+            </DockPanel>
+
+            <DockPanel LastChildFill="False" Visibility="Collapsed">
+                <TextBlock DockPanel.Dock="Left" Name="textBlockElo2" HorizontalAlignment="Left" Width="40" Margin="5" Text="Elo:"/>
+                <TextBlock DockPanel.Dock="Left" Name="textBlockEloValue2" HorizontalAlignment="Left" Width="40" Margin="5" Text="----"/>
             </DockPanel>
 
             <DockPanel LastChildFill="False">

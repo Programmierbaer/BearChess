@@ -129,7 +129,7 @@
                                 <Image Source="Assets/Icons/cog.png"></Image>
                             </MenuItem.Icon>
                         </MenuItem>
-
+                     
                     </MenuItem>
                     <MenuItem Header="Millennium ChessLink" Name="menuItemMChessLink">
                         <MenuItem.Icon>
@@ -148,6 +148,11 @@
                             </MenuItem.Icon>
                         </MenuItem>
 
+                    </MenuItem>
+                    <MenuItem Header="Black pieces in front" Name="menuItemFlipBoard" Click="MenuItemFlipBoard_OnClick">
+                        <MenuItem.Icon >
+                            <Image Name="imageFlipBoardTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                        </MenuItem.Icon>
                     </MenuItem>
                     <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" /> -->
                 </MenuItem>
@@ -178,11 +183,11 @@
         <Separator></Separator>
         <StatusBar VerticalAlignment="Bottom"  >
             <StatusBarItem>
-                <TextBlock Name="textBlockRunningMode">Mode: none</TextBlock>
+                <TextBlock Name="textBlockRunningMode">Mode: Easy playing</TextBlock>
             </StatusBarItem>
             <Separator></Separator>
             <StatusBarItem>
-                <TextBlock Name="textBlockEBoard">Electronic board: disconnected</TextBlock>
+                <TextBlock Name="textBlockEBoard">Electronic board: Disconnected</TextBlock>
             </StatusBarItem>
         </StatusBar>
     </StackPanel>

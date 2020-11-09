@@ -57,9 +57,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ShowMove();
         }
 
-        public void Mark(bool mark)
+        public void Mark(int color)
         {
-            Background = mark ? _markBackground : _background;
+            if (color == Fields.COLOR_WHITE)
+            {
+                gridColumnWhite.Background = _markBackground;
+            }
+            else
+            {
+
+                gridColumnBlack.Background = _markBackground;
+            }
+        }
+
+        public void UnMark()
+        {
+            gridColumnWhite.Background = _background;
+            gridColumnBlack.Background = _background;
+            
         }
 
         public void SetSize(int factor)

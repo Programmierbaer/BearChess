@@ -62,7 +62,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCalibrate_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show(
+            if (MessageBox.Show(this,
                     $"Place all chessmen on the chess base position.{Environment.NewLine}Press 'Ok' when you are ready.",
                     "Calibrate",
                     MessageBoxButton.OKCancel, MessageBoxImage.Information) != MessageBoxResult.OK)
@@ -81,12 +81,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 certaboLoader.Calibrate();
                 certaboLoader.SetAllLedsOff();
                 infoWindow.Close();
-                MessageBox.Show("Calibration finished", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(this,"Calibration finished", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Information);
                 certaboLoader.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"{ex.Message}", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this,$"{ex.Message}", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
 

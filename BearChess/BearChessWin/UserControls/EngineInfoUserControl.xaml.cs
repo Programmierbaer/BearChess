@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,6 +63,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Color = color;
             EngineName = uciInfo.Name;
             textBlockName.ToolTip = uciInfo.OriginName;
+            var firstOrDefault = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
+            if (firstOrDefault != null)
+            {
+                var strings = firstOrDefault.Split(" ".ToCharArray());
+                textBlockEloValue.Text = strings[strings.Length - 1];
+            }
             if (color == Fields.COLOR_WHITE)
             {
                 imageColorWhite.Visibility = Visibility.Visible;

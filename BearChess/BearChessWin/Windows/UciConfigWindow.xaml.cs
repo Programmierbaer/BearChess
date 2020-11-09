@@ -61,7 +61,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         continue;
                     }
 
-                    if (option.StartsWith($"option name {optionSplit[2]}"))
+                    string oName = string.Empty;
+                    for (int i = 2; i < optionSplit.Length - 2; i++)
+                    {
+                        oName = oName + optionSplit[i] + " ";
+                    }
+                    if (option.StartsWith($"option name {oName.Trim()} value"))
                     {
                         currentValue = optionSplit[optionSplit.Length - 1];
                         break;
@@ -110,7 +115,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             List<UciConfigValue> result = new List<UciConfigValue>();
             foreach (UIElement gridMainChild in gridMain.Children)
             {
-                if (!(gridMainChild is IUciConfigUserControl)) continue;
+                if (!(gridMainChild is IUciConfigUserControl))
+                {
+                    continue;
+                }
+
                 IUciConfigUserControl uciConfigUserControl = gridMainChild as IUciConfigUserControl;
                 result.Add(uciConfigUserControl.ConfigValue);
             }

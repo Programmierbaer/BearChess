@@ -147,11 +147,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastMoveNumber = moveNumber;
         }
 
-        public void MarkMove(int number)
+        public void MarkMove(int number, int color)
         {
+            if (number < 0)
+            {
+                return;
+            }
             if (listBoxMoves0.Items.Count > number)
             {
-                ((MoveUserControl) listBoxMoves0.Items[number]).Mark(true);
+                ((MoveUserControl) listBoxMoves0.Items[number]).Mark(color);
             }
         }
 
@@ -161,7 +165,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (item is MoveUserControl userControl)
                 {
-                    userControl.Mark(false);
+                    userControl.UnMark();
                 }
             }
         }
