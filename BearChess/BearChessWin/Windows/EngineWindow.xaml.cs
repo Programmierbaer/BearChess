@@ -9,6 +9,7 @@ using System.Windows;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -62,6 +63,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Dictionary<string, LoadedUciEngine> _loadedEngines = new Dictionary<string, LoadedUciEngine>();
         private readonly ConcurrentDictionary<string,bool> _pausedEngines = new ConcurrentDictionary<string, bool>();
         private FileLogger _fileLogger;
+        private LogWindow _logWindow;
 
         public event EventHandler<EngineEventArgs> EngineEvent;
 
@@ -74,6 +76,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _whiteOnTop = true;
             Top = _configuration.GetWinDoubleValue("EngineWindowTop",Configuration.WinScreenInfo.Top);
             Left = _configuration.GetWinDoubleValue("EngineWindowLeft",Configuration.WinScreenInfo.Left);
+        }
+
+        public void CloseLogWindow()
+        {
+            _logWindow?.CloseLogWindow();
+            _logWindow = null;
+        }
+
+        public void ShowLogWindow()
+        {
+            if ((_logWindow == null))
+            {
+                _logWindow = new LogWindow(_configuration);
+                _logWindow.Owner = this;
+                _logWindow.SendEvent += _logWindow_SendEvent;
+                _logWindow.Show();
+            }
+
+            foreach (var loadedEnginesKey in _loadedEngines.Keys)
+            {
+                _logWindow?.AddFor(loadedEnginesKey);
+            }
         }
 
         public void Reorder(bool whiteOnTop)
@@ -115,8 +139,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
+            var showInfo = bool.Parse(_configuration.GetConfigValue("showucilog", "false"));
             _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {playedMoves.Length} played moves");
-            FileLogger fileLogger = new FileLogger(Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
+            if ((_logWindow == null) && showInfo)
+            {
+                _logWindow = new LogWindow(_configuration);
+                _logWindow.Owner = this;
+                _logWindow.SendEvent += _logWindow_SendEvent;
+                _logWindow.Show();
+            }
+            _logWindow?.AddFor(uciInfo.Name);
+            UciLogger fileLogger = new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
+            fileLogger.UciCommunicationEvent += FileLogger_UciCommunicationEvent;
             EngineInfoUserControl engineInfoUserControl = new EngineInfoUserControl(uciInfo, color);
             engineInfoUserControl.MultiPvEvent += EngineInfoUserControl_MultiPvEvent;
             engineInfoUserControl.CloseEvent += EngineInfoUserControl_CloseEvent;
@@ -133,6 +168,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             stackPanelEngines.Children.Add(engineInfoUserControl);
+
+        }
+
+        private void _logWindow_SendEvent(object sender, LogWindow.SendEventArgs e)
+        {
+            if (_loadedEngines.ContainsKey(e.EngineName))
+            {
+                _loadedEngines[e.EngineName].UciEngine.SendToEngine(e.Command);
+            }
+        }
+
+        private void FileLogger_UciCommunicationEvent(object sender, UciEventArgs e)
+        {
+            _logWindow?.ShowLog(e.Name, e.Command.Replace("<<",string.Empty).Replace(">>",string.Empty), e.Direction);
         }
 
         private void EngineInfoUserControl_StartStopEvent(object sender, EngineInfoUserControl.StartStopEventArgs startStop)
@@ -157,6 +206,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             loadedUciEngine.UciEngine.IsReady();
             loadedUciEngine.UciEngine.Quit();
             _loadedEngines.Remove(engineName);
+            _logWindow?.RemoveFor(engineName);
             var infoUserControl = stackPanelEngines.Children.Cast<EngineInfoUserControl>()
                 .FirstOrDefault(f => f.EngineName.Equals(engineName));
             if (infoUserControl != null)
@@ -425,5 +475,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetDoubleValue("EngineWindowTop", Top);
             _configuration.SetDoubleValue("EngineWindowLeft", Left);
         }
+
+      
     }
 }

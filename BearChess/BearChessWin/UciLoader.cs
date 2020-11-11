@@ -87,6 +87,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             threadReading.Start();
             var threadSending = new Thread(SendToEngine) { IsBackground = true };
             threadSending.Start();
+          
         }
 
         private void _engineProcess_Disposed(object sender, EventArgs e)
@@ -232,7 +233,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void SendToEngine(string command)
+        public void SendToEngine(string command)
         {
             //_logger?.LogDebug($">> {command}");
             _sendToUciEngine.Enqueue(command);
@@ -335,10 +336,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 while (true)
                 {
                     var readToEnd = _engineProcess.StandardOutput.ReadLine();
-
+                    _logger?.LogDebug($"<< {readToEnd}");
                     if (!string.IsNullOrWhiteSpace(readToEnd) && readToEnd.Equals(waitingFor))
                     {
-                        _logger?.LogDebug($"<< {readToEnd}");
                         if (waitingFor.Equals("uciok"))
                         {
                             waitingFor = "readyok";

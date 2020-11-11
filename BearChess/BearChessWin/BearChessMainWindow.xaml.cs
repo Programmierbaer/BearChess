@@ -83,6 +83,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private TimeControl _timeControl;
         private bool _runInSetupMode;
         private bool _flipBoard = false;
+        private bool _showUciLog = false;
 
         public BearChessMainWindow()
         {
@@ -205,6 +206,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             _playersColor[Fields.COLOR_BLACK] = false;
             _playersColor[Fields.COLOR_WHITE] = false;
+            _showUciLog = bool.Parse(_configuration.GetConfigValue("showucilog", "false"));
+            imageUciLog.Visibility = _showUciLog ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void MenuItemClockShowOnStart_OnClick(object sender, RoutedEventArgs e)
@@ -2360,6 +2363,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _flipBoard = !_flipBoard;
             _eChessBoard?.PlayWithWhite(!_flipBoard);
             imageFlipBoardTick.Visibility = _flipBoard ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        private void MenuItemShowUciLog_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showUciLog = !_showUciLog;
+            _configuration.SetConfigValue("showucilog", _showUciLog.ToString());
+            imageUciLog.Visibility = _showUciLog ? Visibility.Visible : Visibility.Hidden;
+            if (!_showUciLog)
+            {
+                _engineWindow?.CloseLogWindow();
+            }
+            else
+            {
+                _engineWindow?.ShowLogWindow();
+            }
         }
     }
 }

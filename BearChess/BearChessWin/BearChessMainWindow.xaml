@@ -57,6 +57,11 @@
                             <Image Source="Assets/Icons/robot.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Show communication window" Name="menuItemShowUciLog" Click="MenuItemShowUciLog_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/tick.png" Name="imageUciLog"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Books">
 

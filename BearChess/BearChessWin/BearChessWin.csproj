@@ -120,6 +120,9 @@
     <Compile Include="UserControls\TextChessBoardUserControl.xaml.cs">
       <DependentUpon>TextChessBoardUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UciLogInfoUserControl.xaml.cs">
+      <DependentUpon>UciLogInfoUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\BookWindow.xaml.cs">
       <DependentUpon>BookWindow.xaml</DependentUpon>
     </Compile>
@@ -150,6 +153,9 @@
     <Compile Include="Windows\IChessClocksWindow.cs" />
     <Compile Include="Windows\InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LogWindow.xaml.cs">
+      <DependentUpon>LogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MoveListWindow.xaml.cs">
       <DependentUpon>MoveListWindow.xaml</DependentUpon>
@@ -236,6 +242,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\UciLogInfoUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\BookWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -306,6 +316,10 @@
       <DependentUpon>GraphicsChessBoardUserControl.xaml</DependentUpon>
     </Compile>
     <Page Include="Windows\InfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\LogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -725,6 +739,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\text_smallcaps.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\clear_formatting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\bullet_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\clipboard_sign.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

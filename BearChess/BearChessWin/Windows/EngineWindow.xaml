@@ -8,7 +8,6 @@
     <Grid>
         <DockPanel LastChildFill="False">
             <StackPanel DockPanel.Dock="Top" Name="stackPanelEngines" Orientation="Vertical" Margin="5"/>
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5"/>
         </DockPanel>
     </Grid>
 </Window>
