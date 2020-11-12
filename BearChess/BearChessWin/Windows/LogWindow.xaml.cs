@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using www.SoLaNoSoft.com.BearChessWin.UserControls;
 
 namespace www.SoLaNoSoft.com.BearChessWin.Windows
@@ -52,7 +53,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             InitializeComponent();
             Top = _configuration.GetWinDoubleValue("LogWindowTop", Configuration.WinScreenInfo.Top);
             Left = _configuration.GetWinDoubleValue("LogWindowLeft", Configuration.WinScreenInfo.Left);
-            Height = _configuration.GetWinDoubleValue("LogWindowHeight", Configuration.WinScreenInfo.Height);
+            Height = _configuration.GetWinDoubleValue("LogWindowHeight", Configuration.WinScreenInfo.Height, "325");
             var thread = new Thread(showInfo) {IsBackground = true};
             thread.Start();
         }
@@ -67,7 +68,13 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             uciLogInfoUserControl.CloseEvent += UciLogInfoUserControl_CloseEvent;
             uciLogInfoUserControl.SendEvent += UciLogInfoUserControl_SendEvent;
             _allLogInfoUserControls[name] = uciLogInfoUserControl;
-            stackPanelUciLogInfos.Children.Add(_allLogInfoUserControls[name] );
+            gridUciLogInfos.RowDefinitions.Add(new RowDefinition()
+                                               {
+                                                   Height = new GridLength(1, GridUnitType.Star)
+                                               });
+            Grid.SetRow(uciLogInfoUserControl,gridUciLogInfos.Children.Count);
+            gridUciLogInfos.Children.Add(_allLogInfoUserControls[name] );
+
         }
 
         public void RemoveFor(string name)
@@ -75,7 +82,13 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             if (_allLogInfoUserControls.ContainsKey(name))
             {
                 _allLogInfoUserControls.TryRemove(name, out UciLogInfoUserControl control);
-                stackPanelUciLogInfos.Children.Remove(control);
+                var index = Grid.GetRow(control);
+                gridUciLogInfos.Children.Remove(control);
+                gridUciLogInfos.RowDefinitions.RemoveAt(index);
+                for (int i = 0; i < gridUciLogInfos.Children.Count; i++)
+                {
+                    Grid.SetRow(gridUciLogInfos.Children[i],i);
+                }
             }
         }
 
@@ -94,7 +107,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             {
                 var engineName = userControl.EngineName;
                 _allLogInfoUserControls.TryRemove(engineName, out UciLogInfoUserControl control);
-                stackPanelUciLogInfos.Children.Remove(control);
+                var index = Grid.GetRow(control);
+                gridUciLogInfos.Children.Remove(control);
+                gridUciLogInfos.RowDefinitions.RemoveAt(index);
+                for (int i = 0; i < gridUciLogInfos.Children.Count; i++)
+                {
+                    Grid.SetRow(gridUciLogInfos.Children[i], i);
+                }
+                // gridUciLogInfos.Children.Remove(control);
+                
             }
         }
 

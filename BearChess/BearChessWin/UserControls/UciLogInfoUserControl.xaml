@@ -5,15 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="260" d:DesignWidth="450">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="200" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Name="textBlockName" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" />
 
         <ListBox Margin="5" Grid.Row="1" Name="listBoxInfo" />
+
         <StackPanel Margin="5" Grid.Row="2" Orientation="Horizontal">
             <Button Name="buttonStop" VerticalAlignment="Center" Margin="5,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="ButtonStop_OnClick"
                     ToolTip="Stop/Go">
@@ -43,4 +45,5 @@
             </Button>
         </StackPanel>
     </Grid>
+
 </UserControl>
