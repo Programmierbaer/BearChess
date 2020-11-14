@@ -660,7 +660,9 @@
                 Background="DarkGray">
             <TextBlock Name="textBlock0" Text=" " HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Border>
-
+        <Button Grid.Column="0" Grid.Row="9"  Name="resetStartPosition" Background="Transparent" BorderBrush="Transparent" ToolTip="Reset to base position" Click="ResetStartPosition_OnClick" >
+            <Image VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/Array.ico" />
+        </Button>
         <Button Grid.Column="1" Grid.Row="9"  Name="moveStepAllBack" Background="Transparent" BorderBrush="Transparent" ToolTip="Back to first move" Click="MoveStepAllBack_OnClick" >
             <Image VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/control_start.png" />
         </Button>

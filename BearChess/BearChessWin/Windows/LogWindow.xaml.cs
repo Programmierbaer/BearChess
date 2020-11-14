@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using www.SoLaNoSoft.com.BearChessWin.UserControls;
 
-namespace www.SoLaNoSoft.com.BearChessWin.Windows
+namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
     ///     Interaktionslogik für LogWindow.xaml

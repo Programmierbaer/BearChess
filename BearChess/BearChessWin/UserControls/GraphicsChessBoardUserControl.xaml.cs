@@ -70,6 +70,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler TakeFullBackEvent;
         public event EventHandler TakeFullForwardEvent;
         public event EventHandler PausePlayEvent;
+        public event EventHandler ResetBasePositionEvent;
 
 
         private readonly HashSet<int> _whiteFields = new HashSet<int>(new[]
@@ -1055,7 +1056,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             TakeFullForwardEvent?.Invoke(this, new EventArgs());
         }
 
-     
+        private void ResetStartPosition_OnClick(object sender, RoutedEventArgs e)
+        {
+            ResetBasePositionEvent?.Invoke(this, new EventArgs());
+        }
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_inPositionMode)
@@ -1423,6 +1427,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         //        }
         //    }
         //}
+
       
     }
 }

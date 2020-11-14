@@ -38,7 +38,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private Configuration()
         {
-            FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"bearchess");
+            FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"BearChess");
             if (!Directory.Exists(FolderPath))
             {
                 try

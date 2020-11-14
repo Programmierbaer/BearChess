@@ -32,21 +32,18 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     {
         private string fileName { get; set; }
 
-        public EcoCodeReader()
+        public EcoCodeReader(string[] pathNames)
         {
-            var folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "bearchess");
-            if (!Directory.Exists(folderPath))
+            fileName = string.Empty;
+            foreach (var pathName in pathNames)
             {
-                try
+                fileName = Path.Combine(pathName, "bearchess.eco");
+                if (File.Exists(fileName))
                 {
-                    Directory.CreateDirectory(folderPath);
-                }
-                catch
-                {
-                    //
+                    return;
                 }
             }
-            fileName = Path.Combine(folderPath, "bearchess.eco");
+
         }
 
         public EcoCode[] Load()

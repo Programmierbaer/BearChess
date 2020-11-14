@@ -140,6 +140,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             chessBoardUcGraphics.TakeStepBackEvent += ChessBoardUcGraphics_TakeStepBackEvent;
             chessBoardUcGraphics.TakeStepForwardEvent += ChessBoardUcGraphics_TakeStepForwardEvent;
             chessBoardUcGraphics.TakeFullForwardEvent += ChessBoardUcGraphics_TakeFullForwardEvent;
+            chessBoardUcGraphics.ResetBasePositionEvent += ChessBoardUcGraphics_ResetBasePositionEvent;
 
             if (_installedFieldsSetup.ContainsKey(_currentBoardFieldsSetupId))
             {
@@ -167,7 +168,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ReadInstalledEngines();
             ReadInstalledBooks();
 
-            var ecoCodeReader = new EcoCodeReader();
+            var ecoCodeReader = new EcoCodeReader(new[] {_configuration.FolderPath, fileInfo.DirectoryName});
             //var ecoCodes = ecoCodeReader.LoadArenaFile(@"d:\Arena\ecocodes9.txt");
             //var ecoCodes = ecoCodeReader.LoadFile(@"d:\eco.txt");
             //var ecoCodes = ecoCodeReader.LoadCsvFile(@"d:\eco.csv");
@@ -209,6 +210,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showUciLog = bool.Parse(_configuration.GetConfigValue("showucilog", "false"));
             imageUciLog.Visibility = _showUciLog ? Visibility.Visible : Visibility.Hidden;
         }
+
+     
 
         private void MenuItemClockShowOnStart_OnClick(object sender, RoutedEventArgs e)
         {
@@ -278,38 +281,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _engineWindow?.Stop();
             _chessClocksWindowBlack?.Stop();
             _chessClocksWindowWhite?.Stop();
-            if (_runningGame && MessageBox.Show("Reset to start a new game?", "Reset", MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) ==
-                MessageBoxResult.Yes)
-            {
-                _prevFenPosition = _chessBoard.GetFenPosition();
-                chessBoardUcGraphics.BasePosition();
-                chessBoardUcGraphics.RepaintBoard(_chessBoard);
-                _chessClocksWindowBlack?.Reset();
-                _chessClocksWindowWhite?.Reset();
-                menuItemNewGame.Header = "Start a new game";
-                _moveListWindow?.Clear();
-                var fenPosition = _chessBoard.GetFenPosition();
-                _bookWindows.ForEach(b => b.SetMoves(fenPosition));
-                _currentMoveIndex = 0;
-                _playedMoveList = new IMove[0];
-            }
-            else
-            {
-                if (_playedMoveList.Length == 0)
-                {
-                    _playedMoveList = _chessBoard.GetPlayedMoveList();
-                }
 
-                _currentMoveIndex = 0;
-                var chessBoard = new ChessBoard();
-                chessBoard.Init();
-                chessBoard.NewGame();
-                chessBoardUcGraphics.RepaintBoard(chessBoard);
+            if (_playedMoveList.Length == 0)
+            {
+                _playedMoveList = _chessBoard.GetPlayedMoveList();
             }
+
+            _currentMoveIndex = 0;
+            var chessBoard = new ChessBoard();
+            chessBoard.Init();
+            chessBoard.NewGame();
+            chessBoardUcGraphics.RepaintBoard(chessBoard);
+
             _eChessBoard?.NewGame();
             _moveListWindow?.ClearMark();
-            _moveListWindow?.MarkMove(0,Fields.COLOR_WHITE);
+            _moveListWindow?.MarkMove(0, Fields.COLOR_WHITE);
         }
 
         private void ChessBoardUcGraphics_TakeFullForwardEvent(object sender, EventArgs e)
@@ -437,6 +423,43 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ChessBoardUcGraphics_TakeFullBackEvent(object sender, EventArgs e)
         {
             TakeFullBack();
+        }
+
+        private void ChessBoardUcGraphics_ResetBasePositionEvent(object sender, EventArgs e)
+        {
+            chessBoardUcGraphics.UnMarkAllFields();
+            _engineWindow?.Stop();
+            _eChessBoard?.Stop();
+            _eChessBoard?.SetAllLedsOff();
+            if (_runningGame && MessageBox.Show("Reset to start a new game?", "Reset", MessageBoxButton.YesNo,
+                                                MessageBoxImage.Question) !=
+                MessageBoxResult.Yes)
+            {
+                return;
+            }
+            _moveListWindow?.Clear();
+            if (_runningGame)
+            {
+                _runningGame = false;
+                _chessClocksWindowWhite?.Stop();
+                _chessClocksWindowBlack?.Stop();
+                menuItemNewGame.Header = "Start a new game";
+                textBlockRunningMode.Text = "Mode: Easy playing";
+                menuItemSetupPosition.IsEnabled = true;
+                menuItemAnalyzeMode.IsEnabled = true;
+                chessBoardUcGraphics.AllowTakeBack(true);
+
+            }
+
+            _chessBoard.Init();
+            _chessBoard.NewGame();
+            _engineWindow?.SendToEngine("position startpos");
+
+            chessBoardUcGraphics.BasePosition();
+            chessBoardUcGraphics.RepaintBoard(_chessBoard);
+            _eChessBoard?.NewGame();
+            _prevFenPosition = _eChessBoard?.GetFen();
+            _bookWindows.ForEach(b => b.ClearMoves());
         }
 
         private void ChessBoardUcGraphicsPausePlayEvent(object sender, EventArgs e)
@@ -829,7 +852,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _configuration.GetConfigValue("LastBlackEngine", string.Empty));
             newGameWindow.SetTimeControl(_timeControl);
             var showDialog = newGameWindow.ShowDialog();
-            if (!showDialog.HasValue || !showDialog.Value) return;
+            if (!showDialog.HasValue || !showDialog.Value)
+            {
+                return;
+            }
 
             _allowTakeMoveBack = newGameWindow.AllowTakeMoveBack;
             _currentWhitePlayer = newGameWindow.PlayerWhite;
@@ -2322,6 +2348,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetDoubleValue("ChessBoardUcGraphicsChessFieldSize", chessBoardUcGraphics.ChessFieldSize);
             _configuration.SetDoubleValue("ChessBoardUcGraphicsControlButtonSize",
                 chessBoardUcGraphics.ControlButtonSize);
+            _engineWindow?.CloseLogWindow();
             _engineWindow?.Quit();
             _engineWindow?.Close();
             _eChessBoard?.Close();

@@ -43,6 +43,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                 _pgnLoader.Load(fileName);
                 _pgnGames = _pgnLoader.Games;
                 dataGridGames.ItemsSource = _pgnGames;
+                Title = $"Games on: {fileName}";
             }
         }
 
@@ -57,6 +58,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                 _pgnGames = _pgnLoader.Games;
                 dataGridGames.ItemsSource = _pgnGames;
                 _configuration.SetConfigValue("DatabaseFile", openFileDialog.FileName);
+                Title = $"Games on: {openFileDialog.FileName}";
             }
         }
 
@@ -81,6 +83,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                 _pgnGames = _pgnLoader.Games;
                 dataGridGames.ItemsSource = _pgnGames;
                 _configuration.SetConfigValue("DatabaseFile",saveFileDialog.FileName);
+                Title = $"Games on: {saveFileDialog.FileName}";
             }
         }
 

@@ -251,6 +251,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        public void SendToEngine(string command,  string engineName = "")
+        {
+            _fileLogger?.LogInfo($"Send: {command}");
+            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            {
+                engine.Value.UciEngine.SendToEngine(command);
+            }
+        }
+
         public void NewGame(string engineName = "")
         {
             _fileLogger?.LogInfo("New game");
