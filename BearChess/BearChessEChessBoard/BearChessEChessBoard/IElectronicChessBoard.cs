@@ -51,9 +51,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         DataFromBoard GetPiecesFen();
 
         /// <summary>
-        /// Returns the current position as fen 
+        /// Returns the current position (awaited) as fen 
         /// </summary>
         string GetFen();
+
+        /// <summary>
+        /// Returns the current position on board
+        /// </summary>
+        /// <returns></returns>
+        string GetBoardFen();
 
         /// <summary>
         /// Indicates to start a new game

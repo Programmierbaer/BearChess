@@ -147,6 +147,10 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             if (!_allLedOff)
             {
                 _fileLogger.LogDebug("Set all LEDs off");
+                while (_waitForFen.Count > 0)
+                {
+                    _waitForFen.TryDequeue(out _);
+                }
                 _board?.SetAllLedsOff();
                 while (_waitForFen.Count > 0)
                 {
@@ -173,6 +177,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             return _internalChessBoard.GetPosition();
         }
 
+        public string GetBoardFen()
+        {
+            return _board?.GetPiecesFen().FromBoard;
+        }
+
         public void NewGame()
         {
             _fileLogger?.LogDebug("C: New game");
@@ -191,7 +200,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 _fileLogger?.LogError("C: No fen position");
                 return;
             }
-
+            
             _fileLogger?.LogError($"C: set fen position: {fen}");
             _internalChessBoard = new InternalChessBoard();
             _internalChessBoard.NewGame();
@@ -199,7 +208,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             var position = _internalChessBoard.GetPosition();
             if (string.IsNullOrWhiteSpace(allMoves))
             {
-
                 _fileLogger?.LogDebug($"C: Wait for: {position}");
                 // Set LEDs on for received move and wait until board is in same position
                 _waitForFen.Enqueue(position);
@@ -235,8 +243,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         public void Close()
         {
             _stop = true;
+            SetAllLedsOff();
             _stopCommunication = true;
-
             _board?.Dispose();
             _board = null;
         }

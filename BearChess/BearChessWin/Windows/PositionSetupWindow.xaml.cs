@@ -19,6 +19,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _currentFigureTag = 0;
         private readonly IChessBoard _chessBoard;
         private readonly string _fenPosition;
+        private readonly bool _acceptMouse;
 
         public string NewFenPosition => chessBoardUserControl.GetFenPosition();
         public bool WhiteShortCastle => checkBoxWhiteShortCastle.IsChecked.HasValue && checkBoxWhiteShortCastle.IsChecked.Value;
@@ -28,25 +29,40 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public bool WhiteOnMove => radioButtonWhiteOnMove.IsChecked.HasValue && radioButtonWhiteOnMove.IsChecked.Value;
 
 
-        public PositionSetupWindow(string fenPosition)
+        public PositionSetupWindow(string fenPosition, bool acceptMouse)
         {
             InitializeComponent();
 
             _fenPosition = fenPosition;
-            chessBoardUserControl.SetInPositionMode(true, fenPosition);
+            _acceptMouse = acceptMouse;
+            chessBoardUserControl.SetInPositionMode(true, fenPosition,acceptMouse);
             textBoxFenPosition.Text = fenPosition;
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
             _chessBoard.SetPosition(fenPosition);
-            checkBoxWhiteShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
-            checkBoxWhiteLongCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Long);
-            checkBoxBlackShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Short);
-            checkBoxBlackLongCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Long);
-            radioButtonWhiteOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_WHITE;
-            radioButtonBlackOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_BLACK;
+            if (_acceptMouse)
+            {
+                checkBoxWhiteShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
+                checkBoxWhiteLongCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Long);
+                checkBoxBlackShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Short);
+                checkBoxBlackLongCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Long);
+                radioButtonWhiteOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_WHITE;
+                radioButtonBlackOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_BLACK;
+            }
+            else
+            {
+                radioButtonWhiteOnMove.IsChecked = true;
+                checkBoxWhiteShortCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_WHITE).Field == Fields.FE1 && _chessBoard.GetFigureOn(Fields.FH1).FigureId==FigureId.WHITE_ROOK;
+                checkBoxWhiteLongCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_WHITE).Field == Fields.FE1 && _chessBoard.GetFigureOn(Fields.FA1).FigureId==FigureId.WHITE_ROOK;
+                checkBoxBlackShortCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_BLACK).Field == Fields.FE8 && _chessBoard.GetFigureOn(Fields.FH8).FigureId == FigureId.BLACK_ROOK;
+                checkBoxBlackLongCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_BLACK).Field == Fields.FE8 && _chessBoard.GetFigureOn(Fields.FA8).FigureId == FigureId.BLACK_ROOK;
+            }
             chessBoardUserControl.SetPiecesMaterial();
             chessBoardUserControl.RepaintBoard(_chessBoard);
+            buttonBase.IsEnabled = _acceptMouse;
+            buttonClear.IsEnabled = _acceptMouse;
+            buttonReset.IsEnabled = _acceptMouse;
         }
 
         public void SetFenPosition(string fenPosition)
@@ -60,13 +76,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
             chessBoard.Init();
             chessBoard.NewGame();
             chessBoard.SetPosition(textBoxFenPosition.Text);
-            chessBoardUserControl.SetInPositionMode(true, textBoxFenPosition.Text);
-            checkBoxWhiteShortCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
-            checkBoxWhiteLongCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Long);
-            checkBoxBlackShortCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Short);
-            checkBoxBlackLongCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Long);
-            radioButtonWhiteOnMove.IsChecked = chessBoard.CurrentColor == Fields.COLOR_WHITE;
-            radioButtonBlackOnMove.IsChecked = chessBoard.CurrentColor == Fields.COLOR_BLACK;
+            chessBoardUserControl.SetInPositionMode(true, textBoxFenPosition.Text, _acceptMouse);
+            if (_acceptMouse)
+            {
+                checkBoxWhiteShortCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
+                checkBoxWhiteLongCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Long);
+                checkBoxBlackShortCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Short);
+                checkBoxBlackLongCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Long);
+                radioButtonWhiteOnMove.IsChecked = chessBoard.CurrentColor == Fields.COLOR_WHITE;
+                radioButtonBlackOnMove.IsChecked = chessBoard.CurrentColor == Fields.COLOR_BLACK;
+            }
+
             chessBoardUserControl.SetPiecesMaterial();
             chessBoardUserControl.RepaintBoard(chessBoard);
         }
@@ -88,6 +108,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void UIElementSetupBorder_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (!_acceptMouse)
+            {
+                return;
+            }
             if (!(sender is Border border))
             {
                 return;

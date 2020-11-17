@@ -44,9 +44,14 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         DataFromBoard GetPiecesFen();
 
         /// <summary>
-        /// Returns the current position as fen 
+        /// Returns the current (awaited) position as fen 
         /// </summary>
         string GetFen();
+
+        /// <summary>
+        /// Returns the current position on board as fen
+        /// </summary>
+        string GetBoardFen();
 
         /// <summary>
         /// Indicates to start a new game

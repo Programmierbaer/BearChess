@@ -16,7 +16,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public EBoardTestWindow()
         {
             InitializeComponent();
-            boardUserControl.SetInPositionMode(true, string.Empty);
+            boardUserControl.SetInPositionMode(true, string.Empty,true);
             boardUserControl.ClearPosition();
         }
 

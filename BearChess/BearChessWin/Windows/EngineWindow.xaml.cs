@@ -46,13 +46,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             public string Name { get; }
             public string FromEngine { get; }
             public int Color { get; }
+            public bool FirstEngine { get; }
 
-            public EngineEventArgs(string name, string fromEngine, int color)
+            public EngineEventArgs(string name, string fromEngine, int color, bool firstEngine)
             {
 
                 Name = name;
                 FromEngine = fromEngine;
                 Color = color;
+                FirstEngine = firstEngine;
             }
         }
 
@@ -64,6 +66,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly ConcurrentDictionary<string,bool> _pausedEngines = new ConcurrentDictionary<string, bool>();
         private FileLogger _fileLogger;
         private LogWindow _logWindow;
+        private string _firstEngineName;
 
         public event EventHandler<EngineEventArgs> EngineEvent;
 
@@ -76,6 +79,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _whiteOnTop = true;
             Top = _configuration.GetWinDoubleValue("EngineWindowTop",Configuration.WinScreenInfo.Top);
             Left = _configuration.GetWinDoubleValue("EngineWindowLeft",Configuration.WinScreenInfo.Left);
+            _firstEngineName = string.Empty;
         }
 
         public void CloseLogWindow()
@@ -102,6 +106,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void Reorder(bool whiteOnTop)
         {
+            _firstEngineName = string.Empty;
             _whiteOnTop = whiteOnTop;
             List<EngineInfoUserControl> engineInfoUserControls;
             if (whiteOnTop)
@@ -115,6 +120,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             stackPanelEngines.Children.Clear();
             foreach (var engineInfoUserControl in engineInfoUserControls)
             {
+                if (string.IsNullOrWhiteSpace(_firstEngineName))
+                {
+                    _firstEngineName = engineInfoUserControl.EngineName;
+                }
                 stackPanelEngines.Children.Add(engineInfoUserControl);
             }
 
@@ -150,6 +159,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _logWindow.Show();
             }
             _logWindow?.AddFor(uciInfo.Name);
+            if (string.IsNullOrWhiteSpace(_firstEngineName))
+            {
+                _firstEngineName = uciInfo.Name;
+            }
             UciLogger fileLogger = new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
             fileLogger.UciCommunicationEvent += FileLogger_UciCommunicationEvent;
             EngineInfoUserControl engineInfoUserControl = new EngineInfoUserControl(uciInfo, color);
@@ -214,6 +227,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 infoUserControl.CloseEvent -= EngineInfoUserControl_CloseEvent;
                 infoUserControl.MultiPvEvent -= EngineInfoUserControl_MultiPvEvent;
             }
+
+            _firstEngineName = string.Empty;
             List<EngineInfoUserControl> engineInfoUserControls;
             if (_whiteOnTop)
             {
@@ -226,6 +241,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             stackPanelEngines.Children.Clear();
             foreach (var engineInfoUserControl in engineInfoUserControls)
             {
+                if (string.IsNullOrWhiteSpace(_firstEngineName))
+                {
+                    _firstEngineName = engineInfoUserControl.EngineName;
+                }
                 stackPanelEngines.Children.Add(engineInfoUserControl);
             }
 
@@ -421,11 +440,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _loadedEnginesControls[e.Name].ShowInfo(e.FromEngine);
             if (e.FromEngine.StartsWith("bestmove"))
             {
-                EngineEvent?.Invoke(this, new EngineEventArgs(e.Name, e.FromEngine, _loadedEngines[e.Name].Color));
+                EngineEvent?.Invoke(this, new EngineEventArgs(e.Name, e.FromEngine, _loadedEngines[e.Name].Color, e.Name.Equals(_firstEngineName)));
             }
             if (e.FromEngine.Contains(" pv "))
             {
-                EngineEvent?.Invoke(this, new EngineEventArgs(e.Name, e.FromEngine, _loadedEngines[e.Name].Color));
+                EngineEvent?.Invoke(this, new EngineEventArgs(e.Name, e.FromEngine, _loadedEngines[e.Name].Color, e.Name.Equals(_firstEngineName)));
             }
 
             string scoreString = string.Empty;
@@ -468,7 +487,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (currentMultiPv == 1 && !string.IsNullOrWhiteSpace(scoreString))
             {
-                EngineEvent?.Invoke(this, new EngineEventArgs(e.Name, scoreString, _loadedEngines[e.Name].Color));
+                EngineEvent?.Invoke(this, new EngineEventArgs(e.Name, scoreString, _loadedEngines[e.Name].Color,e.Name.Equals(_firstEngineName)));
                 _fileLogger?.LogInfo($"Score from engine {e.Name}: {scoreString}");
             }
         }

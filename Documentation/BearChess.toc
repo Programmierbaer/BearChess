@@ -1,0 +1,40 @@
+\contentsline {section}{\numberline {1}Quick start}{4}%
+\contentsline {section}{\numberline {2}Directories}{4}%
+\contentsline {section}{\numberline {3}Calibration}{4}%
+\contentsline {section}{\numberline {4}Configuration}{5}%
+\contentsline {subsection}{\numberline {4.1}Intention of 'Analyze mode', 'UCI engine' and 'Opening book'}{6}%
+\contentsline {section}{\numberline {5}Use Cases}{7}%
+\contentsline {subsection}{\numberline {5.1}Play against another UCI engine}{7}%
+\contentsline {subsubsection}{\numberline {5.1.1}Fritz}{7}%
+\contentsline {paragraph}{\numberline {5.1.1.1}Engine Match}{7}%
+\contentsline {subsubsection}{\numberline {5.1.2}Arena}{8}%
+\contentsline {paragraph}{\numberline {5.1.2.1}With one Certabo engine and one UCI Engine}{9}%
+\contentsline {paragraph}{\numberline {5.1.2.2}With one Certabo engine}{10}%
+\contentsline {subparagraph}{}{11}%
+\contentsline {paragraph}{\numberline {5.1.2.3}Engine Tournament}{11}%
+\contentsline {subsection}{\numberline {5.2}Use an UCI engine for analysis}{12}%
+\contentsline {subsubsection}{\numberline {5.2.1}Fritz}{12}%
+\contentsline {paragraph}{\numberline {5.2.1.1}Engine Match}{12}%
+\contentsline {subsubsection}{\numberline {5.2.2}Arena}{14}%
+\contentsline {subsection}{\numberline {5.3}Start from a position}{15}%
+\contentsline {subsubsection}{\numberline {5.3.1}Arena}{15}%
+\contentsline {section}{\numberline {6}Important To Know}{15}%
+\contentsline {subsection}{\numberline {6.1}Log files}{15}%
+\contentsline {subsection}{\numberline {6.2}Calibration}{15}%
+\contentsline {subsection}{\numberline {6.3}Pawn conversion to a second queen}{15}%
+\contentsline {subsection}{\numberline {6.4}COM port}{16}%
+\contentsline {subsection}{\numberline {6.5}Opening books}{16}%
+\contentsline {section}{\numberline {7}Trouble shooting}{16}%
+\contentsline {subsection}{\numberline {7.1}The chess moves are not or not correctly displayed}{16}%
+\contentsline {subsection}{\numberline {7.2}The engine makes the moves itself}{16}%
+\contentsline {section}{\numberline {8}Known Issues}{16}%
+\contentsline {section}{\numberline {9}Next Steps}{17}%
+\contentsline {section}{\numberline {10}Changelog}{18}%
+\contentsline {subsection}{\numberline {10.1}Version 1.4.0 =\textgreater 1.4.1}{18}%
+\contentsline {subsection}{\numberline {10.2}Version 1.3.0 =\textgreater 1.4.0}{18}%
+\contentsline {subsection}{\numberline {10.3}Version 1.2.2 =\textgreater 1.3.0}{18}%
+\contentsline {subsection}{\numberline {10.4}Version 1.2.1 =\textgreater 1.2.2}{18}%
+\contentsline {subsection}{\numberline {10.5}Version 1.2.0 =\textgreater 1.2.1}{18}%
+\contentsline {subsection}{\numberline {10.6}Version 1.1.1 =\textgreater 1.2.0}{18}%
+\contentsline {subsection}{\numberline {10.7}Version 1.1 =\textgreater 1.1.1}{19}%
+\contentsline {subsection}{\numberline {10.8}Version 1.0 =\textgreater 1.1}{19}%

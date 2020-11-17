@@ -15,6 +15,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public class EngineEventArgs : EventArgs
         {
+        
             public string Name { get; }
             public string FromEngine { get; }
 
@@ -166,7 +167,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name,$"bestmove {_bookMove.FromField}{_bookMove.ToField}" ));
+                OnEngineReadingEvent(
+                    new EngineEventArgs(_uciInfo.Name, $"bestmove {_bookMove.FromField}{_bookMove.ToField}"));
             }
         }
 

@@ -139,7 +139,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 Thread.Sleep(100);
 
-                if (_stop)
+                if (_stop || _startTime.Equals(DateTime.MinValue))
                 {
                     continue;
                 }

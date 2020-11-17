@@ -122,6 +122,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _eChessBoard.GetFen();
         }
 
+        public string GetBoardFen()
+        {
+            return _eChessBoard.GetBoardFen();
+        }
+
         /// <inheritdoc />
         public void NewGame()
         {

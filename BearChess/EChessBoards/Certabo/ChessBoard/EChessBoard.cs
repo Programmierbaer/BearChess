@@ -115,8 +115,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 }
 
                 _logger?.LogDebug($"B: set leds for {joinedString}");
-                _prevJoinedString = joinedString;
-                ;
+                _prevJoinedString = joinedString; 
+
                 byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
                 Array.Copy(AllOff, result, AllOff.Length);
                 if (_flashLeds && fieldNames.Length == 2)
@@ -152,6 +152,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             {
                 _logger?.LogDebug("B: Send all off");
                 _serialCommunication.Send(AllOff);
+                _prevJoinedString = string.Empty;
             }
         }
 

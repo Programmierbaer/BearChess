@@ -101,6 +101,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _whiteFileName;
         private readonly ConcurrentDictionary<int,bool>  _markedGreenFields = new  ConcurrentDictionary<int, bool>();
         private readonly HashSet<int> _markedNonGreenFields = new HashSet<int>();
+        private bool _acceptMouse = true;
 
 
         public GraphicsChessBoardUserControl()
@@ -227,8 +228,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        public void SetInPositionMode(bool inPositionMode, string fenPosition)
+        public void SetInPositionMode(bool inPositionMode, string fenPosition, bool acceptMouse)
         {
+            _acceptMouse = acceptMouse;
             _inPositionMode = inPositionMode;
             if (_inPositionMode)
             {
@@ -1062,6 +1064,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (!_acceptMouse)
+            {
+                return;
+            }
             if (_inPositionMode)
             {
                 HandlePositionMode(sender, e);
