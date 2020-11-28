@@ -15,9 +15,9 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <bearChessWin:GraphicsChessBoardUserControl Margin="5" x:Name="chessBoardUserControl" Grid.Column="0" Grid.Row="0" />
+        <bearChessWin:GraphicsChessBoardUserControl  Margin="5" x:Name="chessBoardUserControl" Grid.Column="0" Grid.Row="0" />
         <StackPanel Margin="5" Grid.Row="0" Grid.Column="1">
-            <DockPanel VerticalAlignment="Top">
+            <DockPanel VerticalAlignment="Top" Name="dockPanelSetFen">
                 <Button DockPanel.Dock="Left" Width="40" Margin="2" Content="Set" Name="buttonSetPosition"
                         Click="ButtonSetPosition_OnClick" />
                 <TextBox DockPanel.Dock="Right" Margin="5,2,2,2" Name="textBoxFenPosition"
@@ -36,7 +36,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <StackPanel Margin="5" Grid.Row="0" Grid.Column="0">
+                    <StackPanel Margin="5" Grid.Row="0" Grid.Column="0" Name="stackPanelPieces1">
                         <Border Margin="5" Height="40" Width="40" BorderBrush="DarkGray" BorderThickness="1"
                                 MouseDown="UIElementSetupBorder_OnMouseDown">
                             <Image Source="../Assets/Icons/White P.ico" Width="32" Height="32" Tag="1"></Image>
@@ -51,7 +51,7 @@
                         </Border>
                         
                     </StackPanel>
-                    <StackPanel Margin="5" Grid.Row="0" Grid.Column="1">
+                    <StackPanel Margin="5" Grid.Row="0" Grid.Column="1" Name="stackPanelPieces2">
 
                         <Border Margin="5" Height="40" Width="40" BorderBrush="DarkGray"
                                 BorderThickness="1" MouseDown="UIElementSetupBorder_OnMouseDown">

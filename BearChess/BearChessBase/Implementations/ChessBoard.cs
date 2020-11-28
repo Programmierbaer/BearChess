@@ -10,8 +10,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     public class ChessBoard : IChessBoard
     {
 
-       
-
         private readonly Castling[] _canCastling = new Castling[2];
         private readonly bool[] _castled = { false, false };
         private readonly int[] _kingPosition = { 0, 0 };
@@ -25,6 +23,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         private readonly OutsideFigure _outsideFigure;
         private readonly Dictionary<int, AllMoveClass> _allPlayedMoves;
         private readonly Dictionary<string, int> _repetition;
+        private string _initialFenPosition;
         public bool DrawByRepetition { get; private set; }
         public bool DrawByMaterial { get; private set; }
 
@@ -38,6 +37,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             CapturedFigure = _outsideFigure;
             _allPlayedMoves = new Dictionary<int, AllMoveClass>();
             _repetition = new Dictionary<string, int>();
+            _initialFenPosition = string.Empty;
         }
 
 
@@ -193,6 +193,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _repetition.Clear();
             DrawByRepetition = false;
             DrawByMaterial = false;
+            _initialFenPosition = string.Empty;
 
             CurrentColor = Fields.COLOR_WHITE;
 
@@ -475,6 +476,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _figures[field] = new NoFigure(this, field);
         }
 
+        public string GetInitialFenPosition()
+        {
+            return _initialFenPosition;
+        }
+
         /// <inheritdoc />
         public void SetFigureOnPosition(int figureId, int field)
         {
@@ -679,6 +685,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     return;
                 }
                 FullMoveNumber = Convert.ToInt32(epdArray[5]);
+                _initialFenPosition = fenPosition;
             }
             catch
             {

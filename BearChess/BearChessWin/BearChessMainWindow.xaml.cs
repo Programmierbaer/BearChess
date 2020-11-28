@@ -724,7 +724,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (_timeControl.TimeControlType == TimeControlEnum.AverageTimePerMove)
                         {
                             var second = _timeControl.Value1 * 8 * 1000;
-                            if (!_timeControl.AverageTimInSec) second *= 60;
+                            if (!_timeControl.AverageTimInSec)
+                            {
+                                second *= 60;
+                            }
 
                             _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"wtime {second} btime {second} movestogo 9");
                         }
@@ -823,7 +826,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _runInAnalyzeMode = false;
             menuItemSetupPosition.IsEnabled = false;
             menuItemAnalyzeMode.IsEnabled = false;
-            textBlockRunningMode.Text = "Mode: playing a game";
+            textBlockRunningMode.Text = "Mode: Playing a game";
             _eChessBoard?.SetDemoMode(false);
             _eChessBoard?.SetAllLedsOff();
 
@@ -907,7 +910,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _runInAnalyzeMode = false;
             menuItemSetupPosition.IsEnabled = false;
             menuItemAnalyzeMode.IsEnabled = false;
-            textBlockRunningMode.Text = "Mode: playing a game";
+            textBlockRunningMode.Text = "Mode: Playing a game";
             _eChessBoard?.SetDemoMode(false);
             _eChessBoard?.SetAllLedsOff();
 
@@ -1214,7 +1217,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _engineWindow?.Stop();
             _engineWindow?.NewGame();
             _runInAnalyzeMode = !_runInAnalyzeMode;
-            menuItemAnalyzeMode.Header = _runInAnalyzeMode ? "Stop analyze mode" : "Run in analyze mode";
+            menuItemAnalyzeMode.Header = _runInAnalyzeMode ? "Stop analysis mode" : "Run in analysis mode";
             textBlockRunningMode.Text = _runInAnalyzeMode ? "Mode: Analyzing" : "Mode: Easy playing";
             _eChessBoard?.SetDemoMode(_runInAnalyzeMode);
             //_eChessBoard?.SetAllLedsOff();
@@ -1402,13 +1405,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (string.IsNullOrWhiteSpace(_configuration.GetConfigValue("DatabaseFile", string.Empty)))
             {
-                var openFileDialog = new OpenFileDialog {Filter = "Games|*.pgn;"};
-                var showFileDialog = openFileDialog.ShowDialog(this);
-                if (showFileDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+                var saveFileDialog = new SaveFileDialog() { Filter = "Games|*.pgn;" };
+                var saveDialog = saveFileDialog.ShowDialog(this);
+                if (saveDialog.Value && !string.IsNullOrWhiteSpace(saveFileDialog.FileName))
                 {
-                    _configuration.SetConfigValue("DatabaseFile", openFileDialog.FileName);
-                    _pgnLoader.Load(openFileDialog.FileName);
+                    _pgnLoader.Load(saveFileDialog.FileName);
+                    _configuration.SetConfigValue("DatabaseFile", saveFileDialog.FileName);
+                
                 }
+
                 else
                 {
                     return;
@@ -1416,11 +1421,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             var pgnCreator = new PgnCreator();
-            foreach (var move in _chessBoard.GetPlayedMoveList()) pgnCreator.AddMove(move);
+            foreach (var move in _chessBoard.GetPlayedMoveList())
+            {
+                pgnCreator.AddMove(move);
+            }
 
             var saveGameWindow = new SaveGameWindow(_currentWhitePlayer, _currentBlackPlayer, _lastResult, "BearChess",
-                    DateTime.Now.ToString("dd.MM.yyyy"), pgnCreator.GetMoveList())
-                {Owner = this};
+                                                    DateTime.Now.ToString("dd.MM.yyyy"), pgnCreator.GetMoveList())
+                                 {Owner = this};
             var showDialog = saveGameWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -1432,7 +1440,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     Result = saveGameWindow.Result,
                     GameDate = saveGameWindow.GameDate
                 };
-                foreach (var move in pgnCreator.GetAllMoves) pgnGame.AddMove(move);
+                foreach (var move in pgnCreator.GetAllMoves)
+                {
+                    pgnGame.AddMove(move);
+                }
 
                 _pgnLoader.AddGame(pgnGame);
             }
@@ -1493,7 +1504,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             UciInfo uciInfo = null;
             var selectInstalledEngineWindow =
                 new SelectInstalledEngineWindow(_installedEngines.Values.ToArray(), _installedBooks.Keys.ToArray(),
-                    _configuration.GetConfigValue("LastEngine", string.Empty), _uciPath)
+                                                _configuration.GetConfigValue("LastEngine", string.Empty), _uciPath)
                 {
                     Owner = this
                 };
@@ -1519,7 +1530,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             chessBoardUcGraphics.ShowRobot(true);
-            _engineWindow.LoadUciEngine(uciInfo, _chessBoard.GetPlayedMoveList());
+
+            _engineWindow.LoadUciEngine(uciInfo, _chessBoard.GetInitialFenPosition(), _chessBoard.GetPlayedMoveList());
+
             if (_runInAnalyzeMode)
             {
                 var fenPosition = _chessBoard.GetFenPosition();
@@ -1582,8 +1595,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void Engine_MakeMoveEvent(int fromField, int toField, string promote)
         {
-            if (fromField < 0 || toField < 0) return;
-
+            if (fromField < 0 || toField < 0)
+            {
+                return;
+            }
+            _engineWindow?.Stop();
             var fromFieldFigureId = _chessBoard.GetFigureOn(fromField).FigureId;
             var fromFieldFieldName = Fields.GetFieldName(fromField);
             var toFieldFieldName = Fields.GetFieldName(toField);
@@ -1591,9 +1607,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _prevFenPosition = _chessBoard.GetFenPosition();
                 if (!string.IsNullOrWhiteSpace(promote))
+                {
                     _chessBoard.MakeMove(fromField, toField, FigureId.FenCharacterToFigureId[promote]);
+                }
                 else
+                {
                     _chessBoard.MakeMove(fromField, toField);
+                }
             }
 
             if (_chessBoard.DrawByRepetition)
@@ -1646,8 +1666,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName);
                 }
 
-                if (!_runningGame) return;
-
+                if (!_runningGame)
+                {
+                    return;
+                }
+                _engineWindow?.GoInfiniteForCoach(_runningGame);
                 if (_chessBoard.CurrentColor == Fields.COLOR_WHITE)
                 {
                     _chessClocksWindowBlack?.Stop();
@@ -1717,32 +1740,41 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void engineWindow_EngineEvent(object sender, EngineWindow.EngineEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(e.FromEngine)) return;
+            if (string.IsNullOrWhiteSpace(e.FromEngine))
+            {
+                return;
+            }
 
             var strings = e.FromEngine.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            if (strings.Length < 2) return;
-            
+            if (strings.Length < 2)
+            {
+                return;
+            }
+
             if ((e.FirstEngine || _pureEngineMatch) && bool.Parse(_configuration.GetConfigValue("ShowBestMove", "false")) && e.FromEngine.Contains(" pv "))
             {
-                string s;
-                for (var i = 0; i < strings.Length; i++)
+                if (!e.FromEngine.Contains(" multipv ") || e.FromEngine.Contains(" multipv 1 "))
                 {
-                    s = strings[i];
-                    if (s.Equals("pv"))
+                    string s;
+                    for (var i = 0; i < strings.Length; i++)
                     {
-                        Dispatcher?.Invoke(() =>
+                        s = strings[i];
+                        if (s.Equals("pv"))
                         {
-                            //chessBoardUcGraphics.UnMarkAllFields();
-                            chessBoardUcGraphics.MarkFields(new[]
-                                {
-                                    Fields.GetFieldNumber(
-                                        strings[i + 1].Substring(0, 2)),
-                                    Fields.GetFieldNumber(
-                                        strings[i + 1].Substring(2, 2))
-                                },
-                                false);
-                        });
-                        break;
+                            Dispatcher?.Invoke(() =>
+                            {
+                                //chessBoardUcGraphics.UnMarkAllFields();
+                                chessBoardUcGraphics.MarkFields(new[]
+                                                                {
+                                                                    Fields.GetFieldNumber(
+                                                                        strings[i + 1].Substring(0, 2)),
+                                                                    Fields.GetFieldNumber(
+                                                                        strings[i + 1].Substring(2, 2))
+                                                                },
+                                                                false);
+                            });
+                            break;
+                        }
                     }
                 }
             }
@@ -1752,7 +1784,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            if ( strings[0].StartsWith("bestmove", StringComparison.OrdinalIgnoreCase) && strings[1].Length >= 4)
+            if (e.FirstEngine  && strings[0].StartsWith("bestmove", StringComparison.OrdinalIgnoreCase) && strings[1].Length >= 4)
             {
                 Dispatcher?.Invoke(() => { chessBoardUcGraphics.UnMarkAllFields(); });
                 if (_pureEngineMatchStoppedByBearChess)
@@ -1781,7 +1813,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 Engine_MakeMoveEvent(Fields.GetFieldNumber(strings[1].Substring(0, 2)),
                                      Fields.GetFieldNumber(strings[1].Substring(2, 2)), promote);
                 var keyCollection = _engineMatchScore.Keys.ToArray();
-                if (keyCollection.Length < 2) return;
+                if (keyCollection.Length < 2)
+                {
+                    return;
+                }
 
                 _engineMatchScore[keyCollection[0]].Final();
                 _engineMatchScore[keyCollection[1]].Final();
@@ -1806,7 +1841,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
             }
 
-            if (_pureEngineMatch)
+            if (_pureEngineMatch && e.FirstEngine)
             {
                 if (strings[0].StartsWith("Score", StringComparison.OrdinalIgnoreCase) && strings[1].Length >= 1)
                 {
@@ -2035,7 +2070,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
-            if (_runInSetupMode)
+            if (_runInSetupMode || _runInAnalyzeMode)
             {
                 EChessBoardFenEvent(fenPosition);
             }
@@ -2193,7 +2228,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _prevFenPosition = _chessBoard.GetFenPosition();
-            _chessBoard.MakeMove(fromField, toField);
+            if (move.Length > 4)
+            {
+                _chessBoard.MakeMove(fromField, toField, FigureId.FenCharacterToFigureId[move.Substring(4,1)]);
+            }
+            else
+            {
+                _chessBoard.MakeMove(fromField, toField);
+            }
+
             var fromFieldFieldName = Fields.GetFieldName(fromField);
             var toFieldFieldName = Fields.GetFieldName(toField);
             Dispatcher?.Invoke(() =>

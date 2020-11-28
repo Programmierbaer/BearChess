@@ -8,6 +8,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
     public class SerialCommunication : AbstractSerialCommunication
     {
         private const string _allEmpty = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
+        private const string _withQueensEmpty = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
 
         public SerialCommunication(bool isFirstInstance, ILogging logger, string portName) : base(isFirstInstance, logger, portName, "Certabo")
         {
@@ -169,7 +170,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         private bool ValidCalibrateCodes(string codes)
         {
-            if (!codes.Contains(_allEmpty))
+            if (!codes.Contains(_allEmpty) && !codes.Contains(_withQueensEmpty))
             {
                 return false;
             }

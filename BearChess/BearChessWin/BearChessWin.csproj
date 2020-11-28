@@ -126,6 +126,9 @@
     <Compile Include="Windows\BookWindow.xaml.cs">
       <DependentUpon>BookWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\CalibrateBaseWindow.xaml.cs">
+      <DependentUpon>CalibrateBaseWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ChessBoardSetupWindow.xaml.cs">
       <DependentUpon>ChessBoardSetupWindow.xaml</DependentUpon>
     </Compile>
@@ -259,6 +262,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\EngineUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CalibrateBaseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -748,6 +755,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\clipboard_sign.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\CalibrateBase.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

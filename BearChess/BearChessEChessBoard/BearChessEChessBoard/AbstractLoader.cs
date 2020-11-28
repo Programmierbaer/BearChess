@@ -155,6 +155,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void Calibrate()
         {
             _eChessBoard.Calibrate();
+            _eChessBoard.SetAllLedsOn();
+            _eChessBoard.SetAllLedsOff();
         }
 
         /// <inheritdoc />

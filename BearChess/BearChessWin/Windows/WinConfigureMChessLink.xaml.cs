@@ -30,6 +30,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _fileName = Path.Combine(configuration.FolderPath, MChessLinkLoader.EBoardName, $"{MChessLinkLoader.EBoardName}Cfg.xml");
+            var fileInfo = new FileInfo(_fileName);
+            if (!Directory.Exists(fileInfo.DirectoryName))
+            {
+                Directory.CreateDirectory(fileInfo.DirectoryName);
+            }
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             var flashInSync = _eChessBoardConfiguration.FlashInSync;
             var dimLeds = _eChessBoardConfiguration.DimLeds;
@@ -47,7 +52,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value;
             _eChessBoardConfiguration.DimLeds = radioButtonDim.IsChecked.HasValue && radioButtonDim.IsChecked.Value;
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
-            EChessBoardConfiguration.Save(_eChessBoardConfiguration,_fileName);
+            EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
 

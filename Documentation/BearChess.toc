@@ -1,40 +1,55 @@
 \contentsline {section}{\numberline {1}Quick start}{4}%
-\contentsline {section}{\numberline {2}Directories}{4}%
-\contentsline {section}{\numberline {3}Calibration}{4}%
-\contentsline {section}{\numberline {4}Configuration}{5}%
-\contentsline {subsection}{\numberline {4.1}Intention of 'Analyze mode', 'UCI engine' and 'Opening book'}{6}%
-\contentsline {section}{\numberline {5}Use Cases}{7}%
-\contentsline {subsection}{\numberline {5.1}Play against another UCI engine}{7}%
-\contentsline {subsubsection}{\numberline {5.1.1}Fritz}{7}%
-\contentsline {paragraph}{\numberline {5.1.1.1}Engine Match}{7}%
-\contentsline {subsubsection}{\numberline {5.1.2}Arena}{8}%
-\contentsline {paragraph}{\numberline {5.1.2.1}With one Certabo engine and one UCI Engine}{9}%
-\contentsline {paragraph}{\numberline {5.1.2.2}With one Certabo engine}{10}%
-\contentsline {subparagraph}{}{11}%
-\contentsline {paragraph}{\numberline {5.1.2.3}Engine Tournament}{11}%
-\contentsline {subsection}{\numberline {5.2}Use an UCI engine for analysis}{12}%
-\contentsline {subsubsection}{\numberline {5.2.1}Fritz}{12}%
-\contentsline {paragraph}{\numberline {5.2.1.1}Engine Match}{12}%
-\contentsline {subsubsection}{\numberline {5.2.2}Arena}{14}%
-\contentsline {subsection}{\numberline {5.3}Start from a position}{15}%
-\contentsline {subsubsection}{\numberline {5.3.1}Arena}{15}%
-\contentsline {section}{\numberline {6}Important To Know}{15}%
-\contentsline {subsection}{\numberline {6.1}Log files}{15}%
-\contentsline {subsection}{\numberline {6.2}Calibration}{15}%
-\contentsline {subsection}{\numberline {6.3}Pawn conversion to a second queen}{15}%
-\contentsline {subsection}{\numberline {6.4}COM port}{16}%
-\contentsline {subsection}{\numberline {6.5}Opening books}{16}%
-\contentsline {section}{\numberline {7}Trouble shooting}{16}%
-\contentsline {subsection}{\numberline {7.1}The chess moves are not or not correctly displayed}{16}%
-\contentsline {subsection}{\numberline {7.2}The engine makes the moves itself}{16}%
-\contentsline {section}{\numberline {8}Known Issues}{16}%
-\contentsline {section}{\numberline {9}Next Steps}{17}%
-\contentsline {section}{\numberline {10}Changelog}{18}%
-\contentsline {subsection}{\numberline {10.1}Version 1.4.0 =\textgreater 1.4.1}{18}%
-\contentsline {subsection}{\numberline {10.2}Version 1.3.0 =\textgreater 1.4.0}{18}%
-\contentsline {subsection}{\numberline {10.3}Version 1.2.2 =\textgreater 1.3.0}{18}%
-\contentsline {subsection}{\numberline {10.4}Version 1.2.1 =\textgreater 1.2.2}{18}%
-\contentsline {subsection}{\numberline {10.5}Version 1.2.0 =\textgreater 1.2.1}{18}%
-\contentsline {subsection}{\numberline {10.6}Version 1.1.1 =\textgreater 1.2.0}{18}%
-\contentsline {subsection}{\numberline {10.7}Version 1.1 =\textgreater 1.1.1}{19}%
-\contentsline {subsection}{\numberline {10.8}Version 1.0 =\textgreater 1.1}{19}%
+\contentsline {section}{\numberline {2}Introduction}{4}%
+\contentsline {subsection}{\numberline {2.1}Modes}{5}%
+\contentsline {section}{\numberline {3}Main window}{6}%
+\contentsline {subsection}{\numberline {3.1}Actions}{8}%
+\contentsline {subsection}{\numberline {3.2}Games}{8}%
+\contentsline {subsection}{\numberline {3.3}Engines}{9}%
+\contentsline {subsection}{\numberline {3.4}Books}{9}%
+\contentsline {subsection}{\numberline {3.5}Settings}{9}%
+\contentsline {subsection}{\numberline {3.6}Electronic Boards}{10}%
+\contentsline {subsection}{\numberline {3.7}Windows}{10}%
+\contentsline {section}{\numberline {4}Install, Configure and Load a chess engine}{11}%
+\contentsline {subsection}{\numberline {4.1}Install a new engine}{11}%
+\contentsline {subsubsection}{\numberline {4.1.1}Use opening book {\color {red}*}}{13}%
+\contentsline {subsection}{\numberline {4.2}Configure an engine}{13}%
+\contentsline {subsection}{\numberline {4.3}Load an engine}{13}%
+\contentsline {section}{\numberline {5}Load and Manage Opening Books}{13}%
+\contentsline {section}{\numberline {6}Configure Board and Pieces}{17}%
+\contentsline {subsection}{\numberline {6.1}Install new board colors and pieces}{19}%
+\contentsline {subsubsection}{\numberline {6.1.1}New board colors}{20}%
+\contentsline {subsubsection}{\numberline {6.1.2}New pieces}{20}%
+\contentsline {section}{\numberline {7}Configure Notation and Moves}{23}%
+\contentsline {section}{\numberline {8}Configure clock style}{24}%
+\contentsline {section}{\numberline {9}Electronic chessboards}{25}%
+\contentsline {subsection}{\numberline {9.1}Configure Certabo boards}{25}%
+\contentsline {subsubsection}{\numberline {9.1.1}Calibration}{28}%
+\contentsline {subsubsection}{\numberline {9.1.2}Connect}{30}%
+\contentsline {subsection}{\numberline {9.2}Configure Millennium ChessLink}{30}%
+\contentsline {subsubsection}{\numberline {9.2.1}Connect}{33}%
+\contentsline {section}{\numberline {10}Start a game}{34}%
+\contentsline {subsection}{\numberline {10.1}Select opponent}{35}%
+\contentsline {subsection}{\numberline {10.2}Start from}{35}%
+\contentsline {subsection}{\numberline {10.3}Allow to take a move back}{36}%
+\contentsline {subsection}{\numberline {10.4}Time control}{36}%
+\contentsline {subsection}{\numberline {10.5}Influence of BearChess in engine games}{37}%
+\contentsline {section}{\numberline {11}Analysis mode}{38}%
+\contentsline {subsection}{\numberline {11.1}With electronic chessboard}{38}%
+\contentsline {subsection}{\numberline {11.2}Without electronic chessboard}{39}%
+\contentsline {section}{\numberline {12}Setup position}{40}%
+\contentsline {subsection}{\numberline {12.1}With support of an electronic chessboard}{41}%
+\contentsline {subsection}{\numberline {12.2}Without support of an electronic chessboard}{42}%
+\contentsline {section}{\numberline {13}Games}{43}%
+\contentsline {subsection}{\numberline {13.1}Save}{44}%
+\contentsline {subsection}{\numberline {13.2}Show and load}{44}%
+\contentsline {section}{\numberline {14}Engine window}{45}%
+\contentsline {section}{\numberline {15}Extended engine support}{48}%
+\contentsline {section}{\numberline {16}Important To Know}{50}%
+\contentsline {subsection}{\numberline {16.1}Certabo: Calibration}{50}%
+\contentsline {subsection}{\numberline {16.2}Certabo: Pawn conversion to a queen}{50}%
+\contentsline {section}{\numberline {17}Trouble shooting}{50}%
+\contentsline {subsection}{\numberline {17.1}The chess moves are not or not correctly displayed}{50}%
+\contentsline {section}{\numberline {18}Known Issues}{50}%
+\contentsline {section}{\numberline {19}Next Steps}{50}%
+\contentsline {section}{\numberline {20}Changelog}{51}%
+\contentsline {subsection}{\numberline {20.1}Version 0.3.0 =\textgreater 0.3.1}{51}%

@@ -72,9 +72,9 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                             if (_isFirstInstance)
                             {
                                 _logger?.LogDebug($"S: Send {data}");
+                                lastReadToSend = data;
                                 var convertToSend = ConvertToSend(data);
                                 _serialPort.Write(convertToSend, 0, convertToSend.Length);
-                                lastReadToSend = data;
                                 continue;
                             }
                         }
@@ -103,7 +103,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                             {
                                 continue;
                             }
-                            _logger?.LogDebug($"AS: Read from board: {readLine}");
+                            _logger?.LogDebug($"SC: Read from board: {readLine}");
                             if (readLine.Contains("s"))
                             {
 
@@ -117,14 +117,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                         string currentPosition = tmpLine.Substring(tmpLine.IndexOf("s", StringComparison.Ordinal), 67);
                                         if (!_currentPosition.Equals(currentPosition))
                                         {
-                                            _logger?.LogDebug($"S: Current position: {_currentPosition}");
+                                            _logger?.LogDebug($"SC: Current position: {_currentPosition}");
                                         }
                                         _currentPosition = currentPosition;
                                         _dataFromBoard.Enqueue(_currentPosition);
                                         if (tmpLine.Length > 67)
                                         {
                                             tmpLine = tmpLine.Substring(67);
-                                            _logger?.LogDebug($"S: new tmp line: {tmpLine}");
+                                            _logger?.LogDebug($"SC: new tmp line: {tmpLine}");
                                             if (!tmpLine.StartsWith("s"))
                                             {
                                                 break;
@@ -150,13 +150,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 catch (Exception ex)
                 {
                     withConnection = false;
-                    _logger?.LogError($"S: Error with serial port: {readLine} ");
-                    _logger?.LogError($"S: Error with serial port: {ex.Message} ");
+                    _logger?.LogError($"SC: Error with serial port: {readLine} ");
+                    _logger?.LogError($"SC: Error with serial port: {ex.Message} ");
                     //break;
                 }
             }
             IsCommunicating = false;
-            _logger?.LogDebug("S: Exit Communicate");
+            _logger?.LogDebug("SC: Exit Communicate");
         }
 
         private byte[] ConvertToSend(string data)

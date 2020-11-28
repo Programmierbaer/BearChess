@@ -190,18 +190,21 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             if (Calibrate(boardData))
             {
                 var calibrateData = new CalibrateData();
-                calibrateData.BasePositionCodes = boardData;
                 foreach (var key in _boardCodesToChessPiece.Keys)
                 {
                     if (_boardCodesToChessPiece[key].Equals(BlackQueenFen))
                     {
-                        calibrateData.BlackQueenCodes = key;
+                        calibrateData.BlackQueenCodes = string.IsNullOrEmpty(calibrateData.BlackQueenCodes) ? key : calibrateData.BlackQueenCodes+'#'+key;
+                        boardData =  boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
+                        continue;
                     }
                     if (_boardCodesToChessPiece[key].Equals(WhiteQueenFen))
                     {
-                        calibrateData.WhiteQueenCodes = key;
+                        calibrateData.WhiteQueenCodes = string.IsNullOrEmpty(calibrateData.WhiteQueenCodes) ? key : calibrateData.WhiteQueenCodes + '#' + key;
+                        boardData = boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
                     }
                 }
+                calibrateData.BasePositionCodes = boardData;
                 _calibrateStorage.SaveCalibrationData(calibrateData);
                 IsCalibrated = true;
             }
@@ -464,6 +467,19 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 Array.Copy(dataArray, i, code, 0, 5);
                 _boardCodesToChessPiece[string.Join(" ", code)] = BlackPawnFen;
             }
+
+            Array.Copy(dataArray, 95, code, 0, 5);
+            if (!code.All(f => f.Equals("0")))
+            {
+                _boardCodesToChessPiece[string.Join(" ", code)] = BlackQueenFen;
+            }
+
+            Array.Copy(dataArray, 215, code, 0, 5);
+            if (!code.All(f => f.Equals("0")))
+            {
+                _boardCodesToChessPiece[string.Join(" ", code)] = WhiteQueenFen;
+            }
+
             for (int i = 240; i < 280; i += 5)
             {
                 Array.Copy(dataArray, i, code, 0, 5);

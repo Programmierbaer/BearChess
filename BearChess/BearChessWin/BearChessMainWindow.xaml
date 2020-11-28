@@ -21,7 +21,7 @@
                             <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Run in analyze mode" Name="menuItemAnalyzeMode" Click="MenuItemAnalyzeMode_OnClick">
+                    <MenuItem Header="Run in analysis mode" Name="menuItemAnalyzeMode" Click="MenuItemAnalyzeMode_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/robot.png"  ></Image>
                         </MenuItem.Icon>
@@ -38,17 +38,16 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Games" >
-                    <MenuItem Name="menuItemGamesLoad" Header="Show &amp; Load" Click="MenuItemGamesLoad_OnClick" >
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/bearchess_2.png" Stretch="UniformToFill" ></Image>
-                        </MenuItem.Icon>
-                    </MenuItem>
                     <MenuItem Name="menuItemGamesSave" Header="Save" Click="MenuItemGamesSave_OnClick" >
                         <MenuItem.Icon >
                             <Image Source="Assets/Icons/diskette.png" Stretch="UniformToFill" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                 
+                    <MenuItem Name="menuItemGamesLoad" Header="Show &amp; Load" Click="MenuItemGamesLoad_OnClick" >
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/bearchess_2.png" Stretch="UniformToFill" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
 
                 </MenuItem>
                 <MenuItem Header="Engines">

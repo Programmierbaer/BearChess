@@ -35,12 +35,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             _fenPosition = fenPosition;
             _acceptMouse = acceptMouse;
-            chessBoardUserControl.SetInPositionMode(true, fenPosition,acceptMouse);
+            
             textBoxFenPosition.Text = fenPosition;
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
             _chessBoard.SetPosition(fenPosition);
+            dockPanelSetFen.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
+            stackPanelPieces1.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
+            stackPanelPieces2.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
+            buttonBase.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
+            buttonClear.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
+            buttonReset.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
+//            buttonBase.IsEnabled = _acceptMouse;
+//            buttonClear.IsEnabled = _acceptMouse;
+//            buttonReset.IsEnabled = _acceptMouse;
             if (_acceptMouse)
             {
                 checkBoxWhiteShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
@@ -52,22 +61,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                radioButtonWhiteOnMove.IsChecked = true;
+                
                 checkBoxWhiteShortCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_WHITE).Field == Fields.FE1 && _chessBoard.GetFigureOn(Fields.FH1).FigureId==FigureId.WHITE_ROOK;
                 checkBoxWhiteLongCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_WHITE).Field == Fields.FE1 && _chessBoard.GetFigureOn(Fields.FA1).FigureId==FigureId.WHITE_ROOK;
                 checkBoxBlackShortCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_BLACK).Field == Fields.FE8 && _chessBoard.GetFigureOn(Fields.FH8).FigureId == FigureId.BLACK_ROOK;
                 checkBoxBlackLongCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_BLACK).Field == Fields.FE8 && _chessBoard.GetFigureOn(Fields.FA8).FigureId == FigureId.BLACK_ROOK;
             }
+            chessBoardUserControl.SetInPositionMode(true, fenPosition, acceptMouse);
             chessBoardUserControl.SetPiecesMaterial();
             chessBoardUserControl.RepaintBoard(_chessBoard);
-            buttonBase.IsEnabled = _acceptMouse;
-            buttonClear.IsEnabled = _acceptMouse;
-            buttonReset.IsEnabled = _acceptMouse;
+
+
         }
 
         public void SetFenPosition(string fenPosition)
         {
-            if (textBoxFenPosition.Text.StartsWith(fenPosition))
+            SetFenPosition(fenPosition,false);
+        }
+
+        private void SetFenPosition(string fenPosition, bool fromTextBox)
+        {
+            if (!fromTextBox && textBoxFenPosition.Text.StartsWith(fenPosition))
             {
                 return;
             }
@@ -93,7 +107,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonSetPosition_OnClick(object sender, RoutedEventArgs e)
         {
-            SetFenPosition(textBoxFenPosition.Text);
+            SetFenPosition(textBoxFenPosition.Text, true);
         }
 
         private void TextBoxFenPosition_OnGotMouseCapture(object sender, MouseEventArgs e)

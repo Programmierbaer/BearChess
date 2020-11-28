@@ -243,6 +243,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 moveStepBack.Visibility = Visibility.Hidden;
                 moveStepForward.Visibility = Visibility.Hidden;
                 buttonPauseEngine.Visibility = Visibility.Hidden;
+                resetStartPosition.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -252,6 +253,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 moveStepBack.Visibility = Visibility.Visible;
                 moveStepForward.Visibility = Visibility.Visible;
                 buttonPauseEngine.Visibility = Visibility.Visible;
+                resetStartPosition.Visibility = Visibility.Visible;
             }
         }
 

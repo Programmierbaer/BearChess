@@ -67,6 +67,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private FileLogger _fileLogger;
         private LogWindow _logWindow;
         private string _firstEngineName;
+        private string _lastCommand;
 
         public event EventHandler<EngineEventArgs> EngineEvent;
 
@@ -80,6 +81,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Top = _configuration.GetWinDoubleValue("EngineWindowTop",Configuration.WinScreenInfo.Top);
             Left = _configuration.GetWinDoubleValue("EngineWindowLeft",Configuration.WinScreenInfo.Left);
             _firstEngineName = string.Empty;
+            _lastCommand = string.Empty;
         }
 
         public void CloseLogWindow()
@@ -141,8 +143,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             stackPanelEngines.Children.Clear();
         }
 
-      
-        public void LoadUciEngine(UciInfo uciInfo, IMove[] playedMoves, int color = Fields.COLOR_EMPTY)
+        public void LoadUciEngine(UciInfo uciInfo, string fenPosition, IMove[] playedMoves, int color = Fields.COLOR_EMPTY)
         {
             if (_loadedEngines.ContainsKey(uciInfo.Name))
             {
@@ -150,7 +151,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             var showInfo = bool.Parse(_configuration.GetConfigValue("showucilog", "false"));
-            _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {playedMoves.Length} played moves");
+            _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {fenPosition} and  {playedMoves.Length} played moves");
             if ((_logWindow == null) && showInfo)
             {
                 _logWindow = new LogWindow(_configuration);
@@ -170,18 +171,39 @@ namespace www.SoLaNoSoft.com.BearChessWin
             engineInfoUserControl.CloseEvent += EngineInfoUserControl_CloseEvent;
             engineInfoUserControl.StartStopEvent += EngineInfoUserControl_StartStopEvent;
             UciLoader uciLoader = new UciLoader(uciInfo, fileLogger, Path.Combine(_configuration.FolderPath, "book"));
-            
+
             uciLoader.EngineReadingEvent += UciLoader_EngineReadingEvent;
             _loadedEnginesControls[uciInfo.Name] = engineInfoUserControl;
             _loadedEngines[uciInfo.Name] = new LoadedUciEngine(uciLoader, color);
             _loadedEngines[uciInfo.Name].SetConfigValues();
+            if (!string.IsNullOrWhiteSpace(fenPosition))
+            {
+                _loadedEngines[uciInfo.Name].UciEngine.SetFen(fenPosition, string.Empty);
+            }
+
             foreach (var playedMove in playedMoves)
             {
                 _loadedEngines[uciInfo.Name].UciEngine.MakeMove(playedMove.FromFieldName.ToLower(), playedMove.ToFieldName.ToLower(), FigureId.FigureIdToFenCharacter[playedMove.PromotedFigure]);
             }
 
             stackPanelEngines.Children.Add(engineInfoUserControl);
+            if (!string.IsNullOrWhiteSpace(_lastCommand))
+            {
+                if (_lastCommand.Equals("infinite"))
+                {
+                    _loadedEngines[uciInfo.Name].UciEngine.GoInfinite();
+                }
+                else
+                {
+                    _loadedEngines[uciInfo.Name].UciEngine.SendToEngine(_lastCommand);
+                }
+            }
+        }
 
+
+        public void LoadUciEngine(UciInfo uciInfo, IMove[] playedMoves, int color = Fields.COLOR_EMPTY)
+        {
+            LoadUciEngine(uciInfo, string.Empty, playedMoves, color);
         }
 
         private void _logWindow_SendEvent(object sender, LogWindow.SendEventArgs e)
@@ -273,8 +295,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SendToEngine(string command,  string engineName = "")
         {
             _fileLogger?.LogInfo($"Send: {command}");
+            _lastCommand = command;
+            var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
+
                 engine.Value.UciEngine.SendToEngine(command);
             }
         }
@@ -286,6 +311,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 engine.Value.UciEngine.NewGame();
             }
+
+            _lastCommand = string.Empty;
         }
 
         public void AddMove(string fromField, string toField, string promote, string engineName = "")
@@ -295,6 +322,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 engine.Value.UciEngine.AddMove(fromField, toField, promote);
             }
+            _lastCommand = string.Empty;
         }
 
         public void MakeMove(string fromField, string toField, string promote, string engineName="")
@@ -304,6 +332,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 engine.Value.UciEngine.MakeMove(fromField, toField, promote);
             }
+            _lastCommand = string.Empty;
         }
 
         public void SetFen(string fen, string moves, string engineName = "")
@@ -313,12 +342,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 engine.Value.UciEngine.SetFen(fen, moves);
             }
+            _lastCommand = string.Empty;
         }
 
 
         public void Stop(string engineName = "")
         {
-            _fileLogger?.LogInfo("Stop");
             _fileLogger?.LogInfo("Send Stop");
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
@@ -330,6 +359,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 engine.Value.UciEngine.IsReady();
             }
+            _lastCommand = string.Empty;
         }
 
         public void Quit(string engineName = "")
@@ -339,63 +369,127 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 engine.Value.UciEngine.Quit();
             }
+            _lastCommand = string.Empty;
         }
 
         public void Go(string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "")
         {
-            _fileLogger?.LogInfo($"Send Go wTime:{wTime}  bTime{bTime} wInc{wInc}  bInc:{bInc} for all {_loadedEngines.Count} engines");
+            _fileLogger?.LogInfo($"Send Go wTime:{wTime}  bTime:{bTime} wInc:{wInc}  bInc:{bInc} for all {_loadedEngines.Count} engines");
+            var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
                 if (_pausedEngines.ContainsKey(engine.Key))
                 {
                     continue;
                 }
-                engine.Value.UciEngine.Go(wTime,bTime,wInc,bInc);
-            }
-        }
 
-        public void Go(int color, string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName= "")
-        {
-            _fileLogger?.LogInfo($"Send Go wTime:{wTime}  bTime{bTime} wInc{wInc}  bInc:{bInc} for engines {engineName} with color {color}");
-            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
-            {
-                if (_pausedEngines.ContainsKey(engine.Key))
+                if (anyWithColor && engine.Value.Color == Fields.COLOR_EMPTY)
                 {
-                    continue;
+                    engine.Value.UciEngine.GoInfinite();
                 }
-                if (color == Fields.COLOR_EMPTY || engine.Value.Color == color)
+                else
                 {
                     engine.Value.UciEngine.Go(wTime, bTime, wInc, bInc);
                 }
             }
+            _lastCommand = string.Empty;
+        }
+
+        public void Go(int color, string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName= "")
+        {
+            _fileLogger?.LogInfo($"Send Go wTime:{wTime}  bTime:{bTime} wInc:{wInc}  bInc:{bInc} for engines {engineName} with color {color}");
+            var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
+            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            {
+                if (_pausedEngines.ContainsKey(engine.Key))
+                {
+                    continue;
+                }
+                if (anyWithColor && engine.Value.Color == Fields.COLOR_EMPTY)
+                {
+                    engine.Value.UciEngine.GoInfinite();
+                }
+                else
+                {
+                    if (color == Fields.COLOR_EMPTY || engine.Value.Color == color)
+                    {
+                        engine.Value.UciEngine.Go(wTime, bTime, wInc, bInc);
+                    }
+                }
+            }
+            _lastCommand = string.Empty;
         }
 
         public void GoCommand(int color, string command, string engineName = "")
         {
             _fileLogger?.LogInfo($"Send Go {command} for engines {engineName} with color {color}");
+            var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
                 if (_pausedEngines.ContainsKey(engine.Key))
                 {
                     continue;
                 }
-                if (color == Fields.COLOR_EMPTY || engine.Value.Color == color)
+                if (anyWithColor && engine.Value.Color == Fields.COLOR_EMPTY)
                 {
-                    engine.Value.UciEngine.Go(command);
+                    engine.Value.UciEngine.GoInfinite();
+                }
+                else
+                {
+                    if (color == Fields.COLOR_EMPTY || engine.Value.Color == color)
+                    {
+                        engine.Value.UciEngine.Go(command);
+                    }
                 }
             }
+            _lastCommand = string.Empty;
         }
 
         public void GoCommand(string command, string engineName = "")
         {
             _fileLogger?.LogInfo($"Send Go {command} for all {_loadedEngines.Count} engines");
+            var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
                 if (_pausedEngines.ContainsKey(engine.Key))
                 {
                     continue;
                 }
-                engine.Value.UciEngine.Go(command);
+                if (anyWithColor && engine.Value.Color == Fields.COLOR_EMPTY)
+                {
+                    engine.Value.UciEngine.GoInfinite();
+                }
+                else
+                {
+                    engine.Value.UciEngine.Go(command);
+                }
+            }
+            _lastCommand = string.Empty;
+        }
+
+        public void GoInfiniteForCoach(bool runningGame)
+        {
+            if (!runningGame)
+            {
+                return;
+            }
+
+            var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
+            if (!anyWithColor)
+            {
+                return;
+            }
+
+            _fileLogger?.LogInfo($"Send Go infinite for coaches");
+            foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
+            {
+                if (_pausedEngines.ContainsKey(engine.Key))
+                {
+                    continue;
+                }
+
+                engine.Value.UciEngine.GoInfinite();
+
             }
         }
 
@@ -413,6 +507,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     engine.Value.UciEngine.GoInfinite();
                 }
             }
+
+            _lastCommand = "infinite";
         }
 
         public void MakeMove(string fromField, string toField, string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "")

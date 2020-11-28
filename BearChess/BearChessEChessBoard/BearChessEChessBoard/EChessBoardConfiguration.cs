@@ -48,6 +48,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             try
             {
+
                 XmlSerializer serializer = new XmlSerializer(typeof(EChessBoardConfiguration));
                 TextWriter textWriter = new StreamWriter(fileName, false);
                 serializer.Serialize(textWriter, configuration);

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
              mc:Ignorable="d" 
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
-             d:DesignHeight="520" d:DesignWidth="450" >
+             d:DesignHeight="520" d:DesignWidth="480" >
     <UserControl.Resources>
         <BitmapImage x:Key="bitmapGreenFrame" UriSource="../Assets/Icons/GreenBorder.png" />
         <BitmapImage x:Key="bitmapYellowFrame" UriSource="../Assets/Icons/YellowBorder.png" />

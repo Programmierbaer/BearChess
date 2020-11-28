@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 using www.SoLaNoSoft.com.BearChess.CertaboLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -62,13 +63,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCalibrate_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show(this,
-                    $"Place all chessmen on the chess base position.{Environment.NewLine}Press 'Ok' when you are ready.",
-                    "Calibrate",
-                    MessageBoxButton.OKCancel, MessageBoxImage.Information) != MessageBoxResult.OK)
+            var calibrateBaseWindow = new CalibrateBaseWindow();
+            calibrateBaseWindow.Owner = this;
+            var showDialog = calibrateBaseWindow.ShowDialog();
+            if (!showDialog.HasValue || !showDialog.Value)
             {
                 return;
             }
+            //if (MessageBox.Show(this,
+            //                    $"Place all chessmen on the chess base position.{Environment.NewLine}Press 'Ok' when you are ready.",
+            //                    "Calibrate",
+            //                    MessageBoxButton.OKCancel, MessageBoxImage.Information) != MessageBoxResult.OK)
+            //{
+            //    return;
+            //}
 
             var infoWindow = new InfoWindow();
             infoWindow.Owner = this;

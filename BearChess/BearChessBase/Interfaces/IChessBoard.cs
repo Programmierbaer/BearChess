@@ -130,6 +130,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         string GetFenPosition();
 
         /// <summary>
+        /// Returns the fen string of the initial position if not started from base position
+        /// </summary>        
+        string GetInitialFenPosition();
+
+        /// <summary>
         /// Set the figure <paramref name="figureId"/> on field <paramref name="field"/>.
         /// </summary>
         void SetFigureOnPosition(int figureId, int field);
