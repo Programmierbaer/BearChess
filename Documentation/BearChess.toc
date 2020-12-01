@@ -52,4 +52,5 @@
 \contentsline {section}{\numberline {18}Known Issues}{50}%
 \contentsline {section}{\numberline {19}Next Steps}{50}%
 \contentsline {section}{\numberline {20}Changelog}{51}%
-\contentsline {subsection}{\numberline {20.1}Version 0.3.0 =\textgreater 0.3.1}{51}%
+\contentsline {subsection}{\numberline {20.1}Version 0.3.1 =\textgreater 0.3.1.1}{51}%
+\contentsline {subsection}{\numberline {20.2}Version 0.3.0 =\textgreater 0.3.1}{51}%

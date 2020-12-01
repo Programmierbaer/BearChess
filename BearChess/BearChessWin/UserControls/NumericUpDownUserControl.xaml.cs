@@ -109,6 +109,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     scrollBarNumber.Value = Rotate ? MaxValue : MinValue;
                 }
+                else
+                {
+                    scrollBarNumber.Value = newValue;
+                }
             }
             textBlockNumber.Text = scrollBarNumber.Value.ToString(CultureInfo.InvariantCulture);
             OnValueChanged(Value);
@@ -120,7 +124,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            string currentValue = Value.ToString(CultureInfo.InvariantCulture);
+            string currentValue =  Value.ToString(CultureInfo.InvariantCulture);
             if (textBlockNumber.Text.Equals(currentValue))
             {
                 return;
@@ -140,6 +144,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
         protected virtual void OnValueChanged(int e)
         {
             ValueChanged?.Invoke(this, e);
+        }
+
+        private void TextBlockNumber_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (scrollBarNumber == null)
+            {
+                return;
+            }
+            string currentValue = Value.ToString(CultureInfo.InvariantCulture);
+            if (textBlockNumber.Text.Equals(currentValue))
+            {
+                return;
+            }
+
+            if (int.TryParse(textBlockNumber.Text, out int newValue))
+            {
+                Value = newValue;
+            }
+            else
+            {
+                textBlockNumber.Text = currentValue;
+            }
         }
     }
 }

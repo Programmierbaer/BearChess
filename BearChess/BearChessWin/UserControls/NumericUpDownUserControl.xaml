@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Border BorderThickness="0" BorderBrush="Gray">
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-        <TextBox Name="textBlockNumber" Margin="2,5,2,5" TextAlignment="Right" VerticalAlignment="Bottom" Height="25" Width="50" Text="12345" TextChanged="TextBlockNumber_OnTextChanged"/>
+        <TextBox Name="textBlockNumber" Margin="2,5,2,5" TextAlignment="Right" VerticalAlignment="Bottom" Height="25" Width="50" Text="12345"  LostFocus="TextBlockNumber_OnLostFocus"/>
         <ScrollBar Name="scrollBarNumber" Margin="2" Minimum="0" Maximum="99" SmallChange="1"
                    ValueChanged="ScrollBarMajor_OnValueChanged">
             <ScrollBar.RenderTransform>

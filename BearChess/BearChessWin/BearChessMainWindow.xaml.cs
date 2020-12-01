@@ -1599,6 +1599,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
             _engineWindow?.Stop();
             var fromFieldFigureId = _chessBoard.GetFigureOn(fromField).FigureId;
             var fromFieldFieldName = Fields.GetFieldName(fromField);
@@ -1626,7 +1627,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 });
                 _lastResult = "1/2";
                 MessageBox.Show("Draw by position repetition ", "Game finished", MessageBoxButton.OK,
-                    MessageBoxImage.Stop);
+                                MessageBoxImage.Stop);
                 return;
             }
 
@@ -1641,7 +1642,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 });
                 _lastResult = "1/2";
                 MessageBox.Show("Draw by insufficient material", "Game finished", MessageBoxButton.OK,
-                    MessageBoxImage.Stop);
+                                MessageBoxImage.Stop);
                 return;
             }
 
@@ -1658,8 +1659,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 _engineWindow?.MakeMove(fromFieldFieldName, toFieldFieldName, promote);
                 _moveListWindow?.AddMove(_chessBoard.EnemyColor, fromFieldFigureId, _chessBoard.CapturedFigure.FigureId,
-                    $"{fromFieldFieldName}{toFieldFieldName}",
-                    FigureId.FenCharacterToFigureId[promote]);
+                                         $"{fromFieldFieldName}{toFieldFieldName}",
+                                         FigureId.FenCharacterToFigureId[promote]);
                 if (!_pureEngineMatch)
                 {
                     _eChessBoard?.SetAllLedsOff();
@@ -1670,6 +1671,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     return;
                 }
+
                 _engineWindow?.GoInfiniteForCoach(_runningGame);
                 if (_chessBoard.CurrentColor == Fields.COLOR_WHITE)
                 {
@@ -1680,7 +1682,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (_timeControl.TimeControlType == TimeControlEnum.AverageTimePerMove)
                         {
                             var second = _timeControl.Value1 * 8 * 1000;
-                            if (!_timeControl.AverageTimInSec) second *= 60;
+                            if (!_timeControl.AverageTimInSec)
+                            {
+                                second *= 60;
+                            }
 
                             _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"wtime {second} btime {second} movestogo 9");
                         }
@@ -1693,8 +1698,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 wTime = wTime + _timeControl.Value2 * 1000;
                                 bTime = bTime + _timeControl.Value2 * 1000;
                                 _engineWindow?.Go(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString(),
-                                    (_timeControl.Value2 * 1000).ToString(),
-                                    (_timeControl.Value2 * 1000).ToString());
+                                                  (_timeControl.Value2 * 1000).ToString(),
+                                                  (_timeControl.Value2 * 1000).ToString());
                             }
                             else
                             {
@@ -1712,7 +1717,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (_timeControl.TimeControlType == TimeControlEnum.AverageTimePerMove)
                         {
                             var second = _timeControl.Value1 * 8 * 1000;
-                            if (!_timeControl.AverageTimInSec) second *= 60;
+                            if (!_timeControl.AverageTimInSec)
+                            {
+                                second *= 60;
+                            }
 
                             _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"wtime {second} btime {second} movestogo 9");
                         }
@@ -1725,8 +1733,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 wTime = wTime + _timeControl.Value2 * 1000;
                                 bTime = bTime + _timeControl.Value2 * 1000;
                                 _engineWindow?.Go(Fields.COLOR_BLACK, wTime.ToString(), bTime.ToString(),
-                                    (_timeControl.Value2 * 1000).ToString(),
-                                    (_timeControl.Value2 * 1000).ToString());
+                                                  (_timeControl.Value2 * 1000).ToString(),
+                                                  (_timeControl.Value2 * 1000).ToString());
                             }
                             else
                             {
@@ -1745,6 +1753,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
+            if (e.FromEngine.Contains("bestmove"))
+            {
+                _fileLogger?.LogDebug("bestmove");
+            }
             var strings = e.FromEngine.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             if (strings.Length < 2)
             {
@@ -1784,7 +1796,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            if (e.FirstEngine  && strings[0].StartsWith("bestmove", StringComparison.OrdinalIgnoreCase) && strings[1].Length >= 4)
+            if ((e.FirstEngine || _pureEngineMatch) && strings[0].StartsWith("bestmove", StringComparison.OrdinalIgnoreCase) && strings[1].Length >= 4)
             {
                 Dispatcher?.Invoke(() => { chessBoardUcGraphics.UnMarkAllFields(); });
                 if (_pureEngineMatchStoppedByBearChess)
