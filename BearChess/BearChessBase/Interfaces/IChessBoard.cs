@@ -29,6 +29,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         IChessFigure[] GetFiguresOnLine(Fields.Lines line);
 
         /// <summary>
+        /// Returns all figures for color <paramref name="color"/>.
+        /// </summary>
+        IChessFigure[] GetFigures(int color);
+
+        /// <summary>
         /// Returns the <see cref="IChessFigure"/> king for color <paramref name="color"/>.
         /// </summary>        
         IChessFigure GetKingFigure(int color);

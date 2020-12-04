@@ -118,9 +118,16 @@ namespace www.SoLaNoSoft.com.BearChessWin.Assets.Fonts
 
         public string ConvertFont(string figureCharacter, string fontName)
         {
-            if (_fontMapping.ContainsKey(fontName) && _fontMapping[fontName].ContainsKey(figureCharacter))
+
+            if (_fontMapping.ContainsKey(fontName))
             {
-                return _fontMapping[fontName][figureCharacter];
+                string result = string.Empty;
+                for (var i = 0; i < figureCharacter.Length; i++)
+                {
+                        result += _fontMapping[fontName][figureCharacter[i].ToString()];
+                }
+
+                return result;
             }
 
             return _fontMapping[string.Empty][figureCharacter];

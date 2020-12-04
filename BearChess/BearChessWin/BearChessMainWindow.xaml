@@ -116,6 +116,16 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <MenuItem Header="Captured pieces">
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/balance_unbalance.png"  />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemMaterialShowOnStart" Header="Show on start" Click="MenuItemMaterialShowOnStart_OnClick">
+                            <MenuItem.Icon >
+                                <Image Name="imageShowMaterial" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Electronic Boards">
                     <MenuItem Name="menuItemCertabo"  Header="Certabo" >
@@ -164,6 +174,7 @@
                     <MenuItem Header="Show">
                         <MenuItem Name="menuItemWindowClocks" Click="MenuItemWindowClocks_OnClick" Header="Clocks"></MenuItem>
                         <MenuItem Name="menuItemWindowMoves" Click="MenuItemWindowMoves_OnClick"  Header="Moves"></MenuItem>
+                        <MenuItem Name="menuItemWindowMaterial" Click="MenuItemWindowMaterial_OnClick"  Header="Captured Pieces"></MenuItem>
                     </MenuItem>
                     <MenuItem Name="menuItemWindowsArrange" Header="Arrange" Click="MenuItemWindowsArrange_OnClick"></MenuItem>
                 </MenuItem>

@@ -133,6 +133,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return Fields.LineFields(line).Select(lineField => _figures[lineField]).ToArray();
         }
 
+        public IChessFigure[] GetFigures(int color)
+        {
+            return _figures.Where(f => f.Color == color).ToArray();
+        }
+
         /// <inheritdoc />
         public IChessFigure GetKingFigure(int color)
         {

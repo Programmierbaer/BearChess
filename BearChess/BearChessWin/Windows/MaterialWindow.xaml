@@ -1,0 +1,25 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.MaterialWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
+        mc:Ignorable="d" WindowStyle="ToolWindow" Closing="MaterialWindow_OnClosing"
+        Title="Captured Pieces" Height="100" MinHeight="100" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Name="buttonBalance" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="30" Margin="5"  Click="ButtonBalance_OnClick" ToolTip="Switch 'Difference'/'All'">
+            <Image Source="../Assets/Icons/balance_unbalance.png" ></Image>
+        </Button>
+        <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="textBlockDifference" Grid.Row="1" Grid.Column="0" >Diff.</TextBlock>
+        <TextBlock Margin="5,5,0,5" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="1" Grid.Row="0" Name="textBlockTop" ></TextBlock>
+        <TextBlock Margin="5,0,0,5" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Grid.Row="1" Grid.Column="1" Name="textBlockBottom"></TextBlock>
+    </Grid>
+</Window>
