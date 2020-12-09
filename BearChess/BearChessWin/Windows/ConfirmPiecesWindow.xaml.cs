@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -13,13 +14,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         private readonly HashSet<string> _allNames;
         private readonly string _path;
+        private readonly string _fileName;
 
         public BoardPiecesSetup BoardPiecesSetup { get; private set; }
 
-        public ConfirmPiecesWindow(string path, string[] allNames)
+        public ConfirmPiecesWindow(string path, string[] allNames, string fileName)
         {
             InitializeComponent();
             _path = path;
+            _fileName = fileName;
             textBoxName.Text = string.Empty;
             textBoxName.ToolTip = "Give the piece set a name";
             _allNames = new HashSet<string>(allNames);
@@ -45,12 +48,113 @@ namespace www.SoLaNoSoft.com.BearChessWin
             DialogResult = true;
         }
 
+        private void LoadBigImage(string fileName)
+        {
+            var bitmapImage = new BitmapImage(new Uri(fileName));
+
+            var bitmapImageWidth = bitmapImage.PixelWidth / 6;
+            var bitmapImageHeight = bitmapImage.PixelHeight / 2;
+
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect(0, 0, (int)bitmapImageWidth , (int)bitmapImageHeight-1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageRookW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth , 0, (int)bitmapImageWidth , (int)bitmapImageHeight-1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageKnightW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth)*2, 0, (int)bitmapImageWidth, (int)bitmapImageHeight-1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageBishopW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth)*3, 0, (int)bitmapImageWidth, (int)bitmapImageHeight-1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageQueenW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth)*4, 0, (int)bitmapImageWidth, (int)bitmapImageHeight-1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageKingW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 5, 0, (int)bitmapImageWidth , (int)bitmapImageHeight-1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imagePawnW.Source = image;
+
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect(0, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageRookB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageKnightB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 2, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageBishopB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 3, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageQueenB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 4, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageKingB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 5, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imagePawnB.Source = image;
+
+
+        }
+
         private void ConfirmPiecesWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             BoardPiecesSetup = new BoardPiecesSetup();
             try
             {
                 BoardPiecesSetup.Id = "pieces_"+Guid.NewGuid().ToString("N");
+                if (!string.IsNullOrWhiteSpace(_fileName))
+                {
+                    BoardPiecesSetup.WhiteKingFileName = _fileName;
+                    LoadBigImage(BoardPiecesSetup.WhiteKingFileName);
+                    return;
+                }
                 var allFiles = Directory.GetFiles(_path, "*.png", SearchOption.TopDirectoryOnly);
                 foreach (var allFile in allFiles)
                 {

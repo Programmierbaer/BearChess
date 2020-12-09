@@ -243,11 +243,13 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         public void Close()
         {
             _stop = true;
+            _allLedOff = false;
             SetAllLedsOff();
             _stopCommunication = true;
             _board?.Dispose();
             _board = null;
         }
+
 
         public void Stop()
         {

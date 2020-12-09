@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
+using InTheHand.Net.Bluetooth;
+using InTheHand.Net.Sockets;
 
 namespace www.SoLaNoSoft.com.BearChessTools
 {
@@ -22,6 +25,26 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 }
             }
             return result.ToArray();
+        }
+
+        public static string[] GetBTComPort()
+        {
+            var cli = new BluetoothClient();
+            var portNames = GetPortNames();
+            IReadOnlyCollection<BluetoothDeviceInfo> bluetoothDeviceInfos = cli.DiscoverDevices();
+            foreach (var bluetoothDeviceInfo in bluetoothDeviceInfos)
+            {
+                var deviceName = bluetoothDeviceInfo.DeviceName;
+                // MILLENNIUM CHESS
+                 if (deviceName.Equals("raspberrypi", StringComparison.OrdinalIgnoreCase))
+                //if (deviceName.Equals("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
+                {
+                    bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
+                    return GetPortNames();
+                }
+
+            }
+            return new string[0];
         }
     }
 }

@@ -63,10 +63,10 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <ComboBox Name="comboBoxPieces" Width="200" Height="25" VerticalAlignment="Top" Margin="5"
+                <ComboBox Name="comboBoxPieces" Width="200" Height="25" VerticalAlignment="Top" Margin="5" 
                           Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" SelectionChanged="ComboBoxPieces_OnSelectionChanged"/>
 
-                <Button Name="buttonOpenPieces" Click="ButtonOpenPieces_OnClick" Margin="5" Grid.Column="0"
+                <Button Name="buttonOpenPieces" Click="ButtonOpenPieces_OnClick" Margin="5" Grid.Column="0"  AllowDrop="True" Drop="ComboBoxPieces_OnDrop" DragOver="GroupBoxPieces_OnDragOver"
                         Grid.Row="1" HorizontalAlignment="Left" Background="Transparent" BorderBrush="Transparent">
                     <Image Margin="5" Source="../Assets/Icons/file_manager.png" Width="32" Height="32" />
                 </Button>

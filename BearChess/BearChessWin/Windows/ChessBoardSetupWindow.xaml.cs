@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 using Microsoft.Win32;
@@ -127,7 +128,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    var confirmPiecesWindow = new ConfirmPiecesWindow(dialog.SelectedPath, new string[0]) { Owner = this };
+                    var confirmPiecesWindow = new ConfirmPiecesWindow(dialog.SelectedPath, new string[0],string.Empty) { Owner = this };
                     var confirm = confirmPiecesWindow.ShowDialog();
                     if (confirm.HasValue && confirm.Value)
                     {
@@ -213,6 +214,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-      
+
+        private void ComboBoxPieces_OnDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files != null)
+                {
+                    var fileInfo = new FileInfo(files[0]);
+                    var confirmPiecesWindow = new ConfirmPiecesWindow(fileInfo.DirectoryName, new string[0], fileInfo.FullName) { Owner = this };
+                    var confirm = confirmPiecesWindow.ShowDialog();
+                    if (confirm.HasValue && confirm.Value)
+                    {
+                        var boardPiecesSetup = confirmPiecesWindow.BoardPiecesSetup;
+                        XmlSerializer serializer = new XmlSerializer(typeof(BoardPiecesSetup));
+                        TextWriter textWriter = new StreamWriter(Path.Combine(_piecesPath, boardPiecesSetup.Id + ".cfg"), false);
+                        serializer.Serialize(textWriter, boardPiecesSetup);
+                        textWriter.Close();
+                        _installedPieces[boardPiecesSetup.Id] = boardPiecesSetup;
+                        comboBoxPieces.ItemsSource = null;
+                        comboBoxPieces.ItemsSource = _installedPieces.Values.OrderBy(f => f.Name);
+                        comboBoxPieces.SelectedItem = _installedPieces[boardPiecesSetup.Id];
+                        // PiecesSetupChangedEvent?.Invoke(this, new EventArgs());
+                    }
+                }
+            }
+        }
+
+
+        private void GroupBoxPieces_OnDragOver(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files == null || files.Length !=1 || !files[0].EndsWith(".png",StringComparison.OrdinalIgnoreCase))
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
     }
 }

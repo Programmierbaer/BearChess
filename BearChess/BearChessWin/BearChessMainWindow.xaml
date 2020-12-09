@@ -174,7 +174,7 @@
                     <MenuItem Header="Show">
                         <MenuItem Name="menuItemWindowClocks" Click="MenuItemWindowClocks_OnClick" Header="Clocks"></MenuItem>
                         <MenuItem Name="menuItemWindowMoves" Click="MenuItemWindowMoves_OnClick"  Header="Moves"></MenuItem>
-                        <MenuItem Name="menuItemWindowMaterial" Click="MenuItemWindowMaterial_OnClick"  Header="Captured Pieces"></MenuItem>
+                        <MenuItem Name="menuItemWindowMaterial" Click="MenuItemWindowMaterial_OnClick"  Header="Captured pieces"></MenuItem>
                     </MenuItem>
                     <MenuItem Name="menuItemWindowsArrange" Header="Arrange" Click="MenuItemWindowsArrange_OnClick"></MenuItem>
                 </MenuItem>

@@ -31,6 +31,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         protected AbstractSerialCommunication(bool isFirstInstance, ILogging logger, string portName, string boardName)
         {
+
+            
             if (!string.IsNullOrWhiteSpace(portName))
             {
                 _setPortName = portName;

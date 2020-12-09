@@ -80,7 +80,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
                                     $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(1, 1).ToLower()}{move.ToFieldName.ToLower()}";
                             }
 
-
                         }
                     }
                     else

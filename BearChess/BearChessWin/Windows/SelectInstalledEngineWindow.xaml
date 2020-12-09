@@ -11,7 +11,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <DataGrid Name="dataGridEngine" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False" MouseDoubleClick="DataGridEngine_OnMouseDoubleClick" 
-                  SelectionMode="Single" IsReadOnly="True">
+                  SelectionMode="Single" IsReadOnly="True" AllowDrop="True" Drop="DataGridEngine_OnDrop" DragOver="DataGridEngine_OnDragOver" >
             <DataGrid.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="CornflowerBlue"/>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
@@ -37,7 +37,8 @@
             <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonDelete" Click="ButtonDelete_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Uninstall selected engine">
                 <Image Source="../Assets/Icons/bin.png" Width="32" Height="32"></Image>
             </Button>
-            <Button Margin="5" DockPanel.Dock="Right" Name="buttonInstall" Click="ButtonInstall_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Install a new engine">
+            <Button Margin="5" DockPanel.Dock="Right" Name="buttonInstall" Click="ButtonInstall_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Install a new engine"
+                    AllowDrop="True" Drop="DataGridEngine_OnDrop" DragOver="DataGridEngine_OnDragOver" >
                 <Image Source="../Assets/Icons/file_extension_exe.png" Width="32" Height="32"></Image>
             </Button>
 

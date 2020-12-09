@@ -134,93 +134,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var showDialog = openFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
-                try
-                {
-                    UciInstaller uciInstaller = new UciInstaller();
-                    UciInfo uciInfo = uciInstaller.Install(openFileDialog.FileName);
-                    if (!uciInfo.Valid)
-                    {
-                        throw new Exception($"{uciInfo.FileName} is not a valid UCI engine");
-                    }
-
-                    if (_installedEngines.Contains(uciInfo.Name))
-                    {
-                        MessageBox.Show(
-                            this,
-                            $"Engine '{uciInfo.Name}' already installed!", "UCI Engine", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-
-                    bool isAdded = false;
-                    uciInfo.Id = "uci" + Guid.NewGuid().ToString("N");
-                    if (MessageBox.Show(this, $"Install UCI engine{Environment.NewLine}{uciInfo.OriginName}{Environment.NewLine}Author: {uciInfo.Author}",
-                            "UCI Engine", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                    {
-                        _installedEngines.Add(uciInfo.Name);
-                        var uciPath = Path.Combine(_uciPath, uciInfo.Id);
-                        if (!Directory.Exists(uciPath))
-                        {
-                            Directory.CreateDirectory(uciPath);
-                        }
-
-                        XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
-                        TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
-                        serializer.Serialize(textWriter, uciInfo);
-                        textWriter.Close();
-                        UciConfigWindow uciConfigWindow = new UciConfigWindow(uciInfo, _installedBooks) { Owner = this };
-                        var dialog = uciConfigWindow.ShowDialog();
-
-                        if (dialog.HasValue && dialog.Value)
-                        {
-                            var info = uciConfigWindow.GetUciInfo();
-                            for (int i = 0; i < _uciInfos.Count; i++)
-                            {
-                                if (_uciInfos[i].Name.CompareTo(info.Name)<0)
-                                {
-                                    continue;
-
-                                }
-
-                                isAdded = true;
-                                _uciInfos.Insert(i, info);
-                                break;
-                            }
-
-                            if (!isAdded)
-                            {
-                                _uciInfos.Add(info);
-                            }
-                            //_uciInfos.Add(info);
-                            serializer = new XmlSerializer(typeof(UciInfo));
-                            textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
-                            serializer.Serialize(textWriter, info);
-                            textWriter.Close();
-                        }
-                        else
-                        {
-                            for (int i = 0; i < _uciInfos.Count; i++)
-                            {
-                                if (_uciInfos[i].Name.CompareTo(uciInfo.Name) < 0)
-                                {
-                                    continue;
-
-                                }
-                                isAdded = true;
-                                _uciInfos.Insert(i, uciInfo);
-                                break;
-                            }
-                            if (!isAdded)
-                            {
-                                _uciInfos.Add(uciInfo);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(this, ex.Message, "Error on install chess engine", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                }
+                LoadNewEngine(openFileDialog.FileName);
             }
         }
 
@@ -240,6 +154,127 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _installedEngines = new HashSet<string>(_uciInfos.Select(u => u.Name));
+        }
+
+
+        private void LoadNewEngine(string fileName)
+        {
+            try
+            {
+                UciInstaller uciInstaller = new UciInstaller();
+                UciInfo uciInfo = uciInstaller.Install(fileName);
+                if (!uciInfo.Valid)
+                {
+                    throw new Exception($"{uciInfo.FileName} is not a valid UCI engine");
+                }
+
+                if (_installedEngines.Contains(uciInfo.Name))
+                {
+                    MessageBox.Show(
+                        this,
+                        $"Engine '{uciInfo.Name}' already installed!", "UCI Engine", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                bool isAdded = false;
+                uciInfo.Id = "uci" + Guid.NewGuid().ToString("N");
+                if (MessageBox.Show(this, $"Install UCI engine{Environment.NewLine}{uciInfo.OriginName}{Environment.NewLine}Author: {uciInfo.Author}",
+                        "UCI Engine", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    _installedEngines.Add(uciInfo.Name);
+                    var uciPath = Path.Combine(_uciPath, uciInfo.Id);
+                    if (!Directory.Exists(uciPath))
+                    {
+                        Directory.CreateDirectory(uciPath);
+                    }
+
+                    XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
+                    TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
+                    serializer.Serialize(textWriter, uciInfo);
+                    textWriter.Close();
+                    UciConfigWindow uciConfigWindow = new UciConfigWindow(uciInfo, _installedBooks) { Owner = this };
+                    var dialog = uciConfigWindow.ShowDialog();
+
+                    if (dialog.HasValue && dialog.Value)
+                    {
+                        var info = uciConfigWindow.GetUciInfo();
+                        for (int i = 0; i < _uciInfos.Count; i++)
+                        {
+                            if (_uciInfos[i].Name.CompareTo(info.Name) < 0)
+                            {
+                                continue;
+
+                            }
+
+                            isAdded = true;
+                            _uciInfos.Insert(i, info);
+                            break;
+                        }
+
+                        if (!isAdded)
+                        {
+                            _uciInfos.Add(info);
+                        }
+                        //_uciInfos.Add(info);
+                        serializer = new XmlSerializer(typeof(UciInfo));
+                        textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
+                        serializer.Serialize(textWriter, info);
+                        textWriter.Close();
+                    }
+                    else
+                    {
+                        for (int i = 0; i < _uciInfos.Count; i++)
+                        {
+                            if (_uciInfos[i].Name.CompareTo(uciInfo.Name) < 0)
+                            {
+                                continue;
+
+                            }
+                            isAdded = true;
+                            _uciInfos.Insert(i, uciInfo);
+                            break;
+                        }
+                        if (!isAdded)
+                        {
+                            _uciInfos.Add(uciInfo);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "Error on install chess engine", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private void DataGridEngine_OnDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files != null)
+                {
+                    var fileInfo = new FileInfo(files[0]);
+                    LoadNewEngine(fileInfo.FullName);
+                }
+            }
+        }
+
+        private void DataGridEngine_OnDragOver(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files == null || files.Length != 1 || !files[0].EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
         }
     }
 }

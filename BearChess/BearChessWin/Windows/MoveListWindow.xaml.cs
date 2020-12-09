@@ -85,7 +85,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             listBoxMoves0.Items.Clear();
         }
 
-        public void AddMove(IMove move)
+        public void AddMove(IMove move, string isInCheck)
         {
             var moveNumber = _lastMoveNumber;
             if (move.FigureColor == Fields.COLOR_WHITE)
@@ -94,7 +94,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             AddMove(moveNumber, move.FigureColor, move.Figure, move.CapturedFigure,
-                    $"{move.FromFieldName}{move.ToFieldName}", move.PromotedFigure);
+                    $"{move.FromFieldName}{move.ToFieldName}{isInCheck}", move.PromotedFigure);
         }
 
         public void AddMove(int color, int figureId, int capturedFigureId, string move, int promotedFigureId)

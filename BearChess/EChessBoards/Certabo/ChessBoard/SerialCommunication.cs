@@ -114,7 +114,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _logger?.LogDebug("C: Communicate");
             IsCommunicating = true;
             bool withConnection = true;
-            while (!_stopReading)
+            while (!_stopReading || _byteDataToBoard.Count > 0)
             {
                 try
                 {

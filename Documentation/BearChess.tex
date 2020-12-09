@@ -14,10 +14,10 @@
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.3.1.1}
+\fancyhead[R]{Version 0.3.2.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{01.12.2020} 
+\date{06.12.2020} 
 
 \begin{document}
 \maketitle
@@ -186,6 +186,7 @@ BearChess can handle Polyglot and Arena opening books.
 	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png}  \textbf{Rotate board} if you like to play with black. 
 	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation/Moves} opens a windows where you can change the appearance of the notation, e.g. figurine or letters.
 	\item  \includegraphics[scale=0.5]{digit_separator.png}  \textbf{Clocks} switches between large and small clocks.
+	\item  \includegraphics[scale=0.5]{balance_unbalance.png}  \textbf{Captured pieces} shows the captured pieces window at startup or on demand.
 \end{itemize}
 
 \subsection{Electronic Boards}
@@ -211,6 +212,7 @@ BearChess can handle Polyglot and Arena opening books.
 \begin{itemize}
 	\item \textbf{Show} brings clocks or move list windows to the foreground if they are currently not visible.
 	\item \textbf{Arrange} auto arange all windows to fit on your screen and not overlapping.
+	\item \textbf{Captured pieces} shows the captured pieces. Either all or as a difference. 
 \end{itemize}
 
 \section{Install, Configure and Load a chess engine}
@@ -239,7 +241,15 @@ BearChess does not include a chess engine. Click on "Load \& manage engines" to 
 
 \subsection{Install a new engine}
 
-To install a new engine click on \includegraphics[scale=0.5]{file_extension_exe.png} and select an UCI engine file, e.g. the latest Stockfish exe file. If the file detected as UCI engine, confirm your selection.\\
+To install a new engine click on \includegraphics[scale=0.5]{file_extension_exe.png} and select an UCI engine file, e.g. the latest Stockfish exe file. Or you just drag \& drop the exe file onto the button.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{DropEngine.png}
+	\caption{Drop an engine file}
+	\label{fig:DropEngine}
+\end{figure}
+
+ If the file detected as UCI engine, confirm your selection.\\
 Next, a configuration dialog box appears where you can configure the engine and give it a name.
 \begin{figure}[H]
 	\centering
@@ -397,6 +407,7 @@ If BearChess find both files inside the directory it builds an empty chessboard 
 \end{figure}
 
 \subsubsection{New pieces}
+There a two ways to install a new set of pieces. One png file for each piece or one png file with all pieces inside. \\
 Click on \includegraphics[scale=0.5]{file_manager.png} to select a directory where the files are located.\\ \textbf{Important:} The png files must have a transparent background color, otherwise they would paint over the fields.
 BearChess accepts following names for the different pieces:
 \begin{itemize}
@@ -414,14 +425,34 @@ BearChess accepts following names for the different pieces:
 	\item \textbf{Black pawn:} \verb|PawnB.png, BlackPawn.png, bp.png|
 \end{itemize}
 
+
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.9]{Pieces.png}
-	\caption{Example for new pieces }
+	\includegraphics[scale=0.7]{Pieces.png}
+	\caption{Example one png file for each piece}
 	\label{fig:Pieces}
 \end{figure}
 
-If BearChess find all files inside the directory it builds an piece set to confirm your choice. A name for your set is required.
+If BearChess find all files inside the directory it builds an piece set to confirm your choice.\\
+
+If BearChess find only one png file inside the directory it assumes that this file contains all pieces at once.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=6.5]{Leipzig.png}
+	\caption{One png file with all pieces}
+	\label{fig:Leipzig}
+\end{figure}
+
+The png must have the pieces in the order and colors shown above.\\
+If you have one png file for all pieces, you can just drgp \& drop the png file onto the
+open file dialog icon. It avoids the effort of having to have a separate directory for each file.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{DropPieceSet.png}
+	\caption{Drop new pieces }
+	\label{fig:DropPieceSet}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -430,6 +461,7 @@ If BearChess find all files inside the directory it builds an piece set to confi
 	\label{fig:ConfirmPieces}
 \end{figure}
 
+BearChess builds an piece set to confirm your choice. A name for your set is required.
 Now you can combine your boards with your pieces.
 
 \begin{figure}[H]
@@ -478,6 +510,42 @@ BearChess offers two different clocks: small and big
 	\caption{Big clocks }
 	\label{fig:BigClocks}
 \end{figure}
+
+\section{Show captured pieces}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{CapturedPieces1.png}
+	\caption{Show captured pieces }
+	\label{fig:CapturedPieces1}
+\end{figure}
+
+Opens a window that shows the captured pieces.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{CapturedPieces2.png}
+	\caption{Show captured pieces on start }
+	\label{fig:CapturedPieces2}
+\end{figure}
+You can configure this window so that it is displayed at startup.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{CapturedPieces3.png}
+	\caption{Show all captured pieces }
+	\label{fig:CapturedPieces3}
+\end{figure}
+
+Figure \ref{fig:CapturedPieces3} shows all captured pieces. Black is one queen, one knight a two pawns ahead.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{CapturedPieces4.png}
+	\caption{Show captured pieces as difference}
+	\label{fig:CapturedPieces4}
+\end{figure}
+Figure \ref{fig:CapturedPieces4} shows the same information as difference.
+
+The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between both views.
 
 
 \section{Electronic chessboards}
@@ -1015,13 +1083,22 @@ If you have performed the calibration without extra queens and are performing a 
 \pagebreak
 
 \section{Changelog}
-\subsection{Version 0.3.1 =\textgreater 0.3.1.1}
+\subsection{Version 0.3.1.1 =\textgreater 0.3.2.0}
+\begin{itemize}
+	\item Show check and mate signs in move list.
+	\item Show captured pieces.	
+    \item Save configuration for "Black pieces in front.
+	\item Improvements in the configuration chessmen.
+	\item Improvements to install a new engine.
+\end{itemize}
+
+\subsection{Version 0.3.1.0 =\textgreater 0.3.1.1}
 \begin{itemize}
 	\item \textbf{Hotfix} Error at pure engine match.
 	\item Improvements in the handling of UCI configuration values.
 \end{itemize}
 
-\subsection{Version 0.3.0 =\textgreater 0.3.1}
+\subsection{Version 0.3.0.0 =\textgreater 0.3.1.0}
 \begin{itemize}
 	    \item Improvements in the calibration for Certabo chessboards.
 	    \item Fixed an error on pawn conversation.
