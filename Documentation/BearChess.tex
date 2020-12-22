@@ -14,10 +14,10 @@
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.3.2.0}
+\fancyhead[R]{Version 0.3.3.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{06.12.2020} 
+\date{12.12.2020} 
 
 \begin{document}
 \maketitle
@@ -54,9 +54,9 @@ Send errors, comments, suggestions for improvement or requests to lars@solanosof
 	\item Start BearChess with a double-click on BearChessWin.exe
 	\item Connect your electronic chessboard to your computer.
 	\item Set all chessmen to their start position.
-	\item Configure the electronic chessboard connection.
+	\item Configure the electronic chessboard connection (\textbf{\ref{ElectronicChessBoard}  \nameref{ElectronicChessBoard}} on page \pageref{ElectronicChessBoard}).
 	\item Connect to the electronic chessboard.
-	\item Load a chess engine.
+	\item Load a chess engine (\textbf{\ref{InstallEngine}  \nameref{InstallEngine}} on page \pageref{InstallEngine})
 	\item Start a game and make your first move on the eletronic chessboard.
 \end{itemize}
 
@@ -239,7 +239,7 @@ BearChess does not include a chess engine. Click on "Load \& manage engines" to 
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window
 \end{itemize}
 
-\subsection{Install a new engine}
+\subsection{Install a new engine} \label{InstallEngine}
 
 To install a new engine click on \includegraphics[scale=0.5]{file_extension_exe.png} and select an UCI engine file, e.g. the latest Stockfish exe file. Or you just drag \& drop the exe file onto the button.
 \begin{figure}[H]
@@ -265,8 +265,14 @@ The name is freely assignable, must be unique across all engines. But this way y
 \end{itemize}
 
 
-\subsubsection{Use opening book {\color{red}*}}
-Some engines comes with there own opening book and you have an option to use them or not. You can also tell BearChess to use an opening book before the moves are calculated by the engines.
+\subsubsection{Use opening book}
+Some engines comes with there own opening book and you have an option to use them or not. You can also tell BearChess to use an opening book before the moves are calculated by the engines. You can configure how BearChess determines the book move. 
+\begin{itemize}
+	\item \textbf{Best} Always chooses the best move
+	\item \textbf{Flexible} Selects one of the best moves
+    \item \textbf{Wide} Selects any book move
+\end{itemize}
+Look at chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pageref{OpeningBooks} how to install an opening book.
 
 
 \subsection{Configure an engine}
@@ -286,7 +292,7 @@ To load an installed engine, select an engine and click on \includegraphics[scal
 	\label{fig:LoadEngine2}
 \end{figure}
 
-\section{Load and Manage Opening Books}
+\section{Load and Manage Opening Books} \label{OpeningBooks}
 
 \begin{figure}[H]
 	\centering
@@ -548,7 +554,7 @@ Figure \ref{fig:CapturedPieces4} shows the same information as difference.
 The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between both views.
 
 
-\section{Electronic chessboards}
+\section{Electronic chessboards} \label{ElectronicChessBoard}
 BearChess supports two electronic chessboards: Certabo boards and Millennium boards via the ChessLink module. Both boards communicates via an USB port as serial COM port. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.
 
 \subsection{Configure Certabo boards}
@@ -736,7 +742,9 @@ If you start a new game you can select the opponents and the time control.
 	\label{fig:NewGame2}
 \end{figure}
 
-Select the opponents for white \includegraphics[scale=0.4]{KingW.png} and black \includegraphics[scale=0.4]{KingB.png}. "Player" means a human opponent. You can select "Player" for white and black if you want to play a game against another human opponent on your chessboard. You can select an engine for white and black if you want to play a pure engine match.
+Select the opponents for white \includegraphics[scale=0.4]{KingW.png} and black \includegraphics[scale=0.4]{KingB.png}. "Player" means a human opponent. You can select "Player" for white and black if you want to play a game against another human opponent on your chessboard. You can select an engine for white and black if you want to play a pure engine match.\\
+\includegraphics[scale=0.4]{user_silhouette.png} is a shortcut to select "Player".\\
+
 
 {\color{red}*} You cannot use an electronic chessboard for a pure engine match. This is still in development.\\
 
@@ -1068,26 +1076,37 @@ If you have performed the calibration without extra queens and are performing a 
 
 \section{Known Issues}
 \begin{itemize}
+    \item \textbf{UCI configuration} Buttons are not supported.	
+    \item \textbf{UCI configuration} Some textual informations are wrong interpreted.	
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time, e.g. the clocks for white and black.
+	\item If you want to play an engine match with the same engine for black and white you have to install the engine twice with a different name.
 \end{itemize}
 
 \section{Next Steps}
 \begin{itemize}
 	\item Error correction.
 	\item Develop missing functionality {\color{red}\textbf{*}}
-	\item Improvements on handling opening books.
+	\item Improvements on handling UCI configuration.
 	\item Improvements on handling saved games.
 \end{itemize}
 
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.3.2.0 =\textgreater 0.3.3.0}
+\begin{itemize}
+    \item Support of opening books for engines.
+    \item Opening book: When castling, the correct squares are displayed.
+	\item Improvements and bug fixes in "New Game" dialog.
+	\item Minor fixes.	
+\end{itemize}
+
 \subsection{Version 0.3.1.1 =\textgreater 0.3.2.0}
 \begin{itemize}
 	\item Show check and mate signs in move list.
 	\item Show captured pieces.	
-    \item Save configuration for "Black pieces in front.
+    \item Save configuration for "Black pieces in front".
 	\item Improvements in the configuration chessmen.
 	\item Improvements to install a new engine.
 \end{itemize}

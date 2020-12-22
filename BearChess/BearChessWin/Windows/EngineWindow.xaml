@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" SizeToContent="Height" ResizeMode="NoResize" Closing="EngineWindow_OnClosing"
-        Title="Engines" Height="200" Width="650">
+        Title="Engines" Height="200" Width="650" Icon="../Assets/Icons/robot.png">
     <Grid>
         <DockPanel LastChildFill="False">
             <StackPanel DockPanel.Dock="Top" Name="stackPanelEngines" Orientation="Vertical" Margin="5"/>

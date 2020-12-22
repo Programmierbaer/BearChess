@@ -47,6 +47,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _switchSide = switchSide;
         }
 
+        public void Clear()
+        {
+            _topLine = string.Empty;
+            _topLineDiff = string.Empty;
+            _bottomLine = string.Empty;
+            _bottomLineDiff = string.Empty;
+            ShowMaterial();
+        }
+
         public void ShowMaterial(IChessFigure[] topFigures, IChessFigure[] bottomFigures)
         {
             _topLine = string.Empty;

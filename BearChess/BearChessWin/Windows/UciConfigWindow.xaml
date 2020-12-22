@@ -5,18 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="UCI Engine Configuration" Height="620" Width="400" SizeToContent="Width">
+        Title="UCI Engine Configuration" Height="650" Width="400" SizeToContent="Width">
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Name="textBlockName" Margin="5">Name:</TextBlock>
             <TextBox Name="textBoxName" Width="330"  Margin="5"></TextBox>
         </StackPanel>
         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <DockPanel >
-                <CheckBox Name="checkBoxUseOpeningBook" VerticalAlignment="Center" VerticalContentAlignment="Center" DockPanel.Dock="Left" Margin="5">Use opening book:</CheckBox>
-
-                <ComboBox Name="comboBoxOpeningBooks" Margin="5" DockPanel.Dock="Left"></ComboBox>
-            </DockPanel>
+            <StackPanel>
+               <DockPanel >
+                    <CheckBox Name="checkBoxUseOpeningBook" VerticalAlignment="Center" VerticalContentAlignment="Center" DockPanel.Dock="Left" Margin="5">Use opening book:</CheckBox>
+                    <ComboBox Name="comboBoxOpeningBooks" Margin="5" DockPanel.Dock="Left"></ComboBox>
+                </DockPanel>
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <RadioButton Name="radioButtonBest" Margin="10,0,5,0" GroupName="Variation"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Always choose the best move">Best</RadioButton>
+                    <RadioButton Name="radioButtonFlexible" Margin="5,0,5,0" GroupName="Variation"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Choose one of the better moves">Flexible</RadioButton>
+                    <RadioButton Name="radioButtonWide" Margin="5,0,5,0" GroupName="Variation" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Choose any move">Wide</RadioButton>
+                </StackPanel>
+            </StackPanel>
         </Border>
         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
         <ScrollViewer Height="400" VerticalScrollBarVisibility="Visible">

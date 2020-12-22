@@ -16,6 +16,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public string FileName { get; set; }
         public bool Valid { get; set; }
         public string OpeningBook { get; set; }
+        public string OpeningBookVariation { get; set; }
         [XmlArray("OptionValues")]
         public string[] OptionValues { get; set; }
 
@@ -23,6 +24,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             Options = new string[0];
             OptionValues = new string[0];
+            OpeningBookVariation = "1";
         }
 
         public UciInfo(string fileName) : this()

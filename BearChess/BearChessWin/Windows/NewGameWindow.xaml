@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="Bear Chess - New Game" Height="390" Width="660">
+        Title="New Game" Height="390" Width="660">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -31,7 +31,8 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Grid.Row="0" Margin="5">
                         <StackPanel Orientation="Horizontal">
@@ -46,6 +47,12 @@
 
                         </StackPanel>
                     </Button>
+                    <Button Name="buttonPlayerWhite" Margin="5" Grid.Column="2" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="ButtonPlayerWhite_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Select Player">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="32" Width="32" Source="../Assets/Icons/user_silhouette.png"></Image>
+
+                        </StackPanel>
+                    </Button>
                     <StackPanel Grid.Column="0" Grid.Row="1" Margin="5">
                         <StackPanel Orientation="Horizontal">
                             <Image Margin="0,0,58,0" Source="../Assets/Stone/Symbol/KingB.png" Width="32" Height="32"></Image>
@@ -56,6 +63,12 @@
                     <Button Name="buttonConfigureBlack" Margin="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Click="ButtonConfigureBlack_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Configure">
                         <StackPanel Orientation="Horizontal">
                             <Image Height="32" Width="32" Source="../Assets/Icons/cog.png"></Image>
+                        </StackPanel>
+                    </Button>
+                    <Button Name="buttonPlayerBlack" Margin="5" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Click="ButtonPlayerBlack_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Select Player">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="32" Width="32" Source="../Assets/Icons/user_silhouette.png"></Image>
+
                         </StackPanel>
                     </Button>
                 </Grid>

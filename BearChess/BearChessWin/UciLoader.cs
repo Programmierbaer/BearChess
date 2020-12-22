@@ -45,13 +45,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _uciInfo = uciInfo;
             _logger = logger;
-            _logger?.LogInfo($"Load engine {uciInfo.Name}");
+            _logger?.LogInfo($"Load engine {uciInfo.Name} with id {uciInfo.Id}");
             _openingBook = null;
             _bookMove = null;
             if (!string.IsNullOrWhiteSpace(_uciInfo.OpeningBook))
             {
-                _openingBook = new OpeningBook();
-                _openingBook.LoadBook(Path.Combine(bookPath,uciInfo.OpeningBook), false);
+                _openingBook = OpeningBookLoader.LoadBook(uciInfo.OpeningBook, false);
             }
             _engineProcess = new Process
             {
@@ -106,6 +105,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _allMoves.Clear();
             _allMoves.Add("position startpos moves ");
             SendToEngine("ucinewgame");
+            _bookMove = _openingBook?.GetMove(new BookMove(string.Empty,string.Empty,0));
             IsReady();
             
         }
@@ -132,8 +132,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void AddMove(string fromField, string toField, string promote)
         {
+            _logger?.LogDebug($"Add move: {fromField}{toField}{promote}");
             _allMoves.Add($"{fromField}{toField}{promote}".Trim().ToLower());
             _bookMove = _openingBook?.GetMove(_allMoves.ToArray());
+            if (_bookMove != null && !_bookMove.EmptyMove)
+            {
+                _logger?.LogDebug($"Book move: {_bookMove.FromField}{_bookMove.ToField}");
+            }
         }
 
         public void MakeMove(string fromField, string toField, string promote)
@@ -143,11 +148,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _allMoves.Add("position startpos moves");
                 SendToEngine("ucinewgame");
             }
+            _logger?.LogDebug($"Make move: {fromField}{toField}{promote}");
             _allMoves.Add($"{fromField}{toField}{promote}".Trim().ToLower());
             _bookMove = _openingBook?.GetMove(_allMoves.ToArray());
             if (_bookMove == null || _bookMove.EmptyMove)
             {
                 SendToEngine(string.Join(" ", _allMoves));
+            }
+            else
+            {
+                _logger?.LogDebug($"Book move: {_bookMove.FromField}{_bookMove.ToField}");
             }
         }
 
@@ -158,6 +168,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _allMoves.Add("position startpos moves");
                 SendToEngine("ucinewgame");
             }
+            _logger?.LogDebug($"Make move: {fromField}{toField}{promote}");
             _allMoves.Add($"{fromField}{toField}{promote}".Trim().ToLower());
             _bookMove = _openingBook?.GetMove(_allMoves.ToArray());
             if (_bookMove == null || _bookMove.EmptyMove)
@@ -167,6 +178,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
+                _logger?.LogDebug($"Book move: {_bookMove.FromField}{_bookMove.ToField}");
                 OnEngineReadingEvent(
                     new EngineEventArgs(_uciInfo.Name, $"bestmove {_bookMove.FromField}{_bookMove.ToField}"));
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -18,7 +19,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             InitializeComponent();
         }
 
-        public UciConfigWindow(UciInfo uciInfo, string[] installedBooks, bool canChangeName = true) : this()
+        public UciConfigWindow(UciInfo uciInfo,  bool canChangeName = true) : this()
         {
             Title += $" {uciInfo.OriginName}";
             _uciInfo = uciInfo;
@@ -31,8 +32,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             textBlockFileName.Text = uciInfo.FileName;
             textBlockFileName.ToolTip = uciInfo.FileName;
+            var installedBooks = OpeningBookLoader.GetInstalledBooks();
             comboBoxOpeningBooks.ItemsSource = installedBooks;
             comboBoxOpeningBooks.SelectedIndex = 0;
+            radioButtonBest.IsEnabled = false;
+            radioButtonFlexible.IsEnabled = false;
+            radioButtonWide.IsEnabled = false;
+            OpeningBook.VariationsEnum variation = (OpeningBook.VariationsEnum)int.Parse(uciInfo.OpeningBookVariation);
+            radioButtonBest.IsChecked = variation == OpeningBook.VariationsEnum.BestMove;
+            radioButtonFlexible.IsChecked = variation == OpeningBook.VariationsEnum.Flexible;
+            radioButtonWide.IsChecked = variation == OpeningBook.VariationsEnum.Wide;
+
             if (!string.IsNullOrWhiteSpace(uciInfo.OpeningBook))
             {
                 for (int i = 0; i < installedBooks.Length; i++)
@@ -83,6 +93,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        private string GetVariation()
+        {
+            if (radioButtonBest.IsChecked.HasValue && radioButtonBest.IsChecked.Value)
+            {
+                return ((int)OpeningBook.VariationsEnum.BestMove).ToString();
+            }
+            if (radioButtonFlexible.IsChecked.HasValue && radioButtonFlexible.IsChecked.Value)
+            {
+                return ((int)OpeningBook.VariationsEnum.Flexible).ToString();
+            }
+
+            return ((int)OpeningBook.VariationsEnum.Wide).ToString();
+        }
+        
         public UciInfo GetUciInfo()
         {
             var uciInfo = new UciInfo(_uciInfo.FileName)
@@ -92,7 +116,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 Name = string.IsNullOrWhiteSpace(textBoxName.Text) ? _uciInfo.OriginName : textBoxName.Text,
                 OriginName = _uciInfo.OriginName,
                 Valid = _uciInfo.Valid,
-                OpeningBook = checkBoxUseOpeningBook.IsChecked.HasValue && checkBoxUseOpeningBook.IsChecked.Value ? comboBoxOpeningBooks.SelectedItem.ToString() : string.Empty
+                OpeningBook = checkBoxUseOpeningBook.IsChecked.HasValue && checkBoxUseOpeningBook.IsChecked.Value ? comboBoxOpeningBooks.SelectedItem.ToString() : string.Empty,
+                OpeningBookVariation = GetVariation()
             };
             foreach (var uciInfoOption in _uciInfo.Options)
             {
@@ -449,5 +474,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             }
         }
+
+     
     }
 }

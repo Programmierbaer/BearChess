@@ -6,13 +6,12 @@ namespace UnitTestsBearChessBase
     [TestClass]
     public class UnitTestPolyglot
     {
+        
         [TestMethod]
-        public void FirstTest()
+        public void GetKeyTests()
         {
             PolyglotReader polyglotReader = new PolyglotReader();
-            polyglotReader.ReadFile(@"..\..\..\default_book.bin");
-           //  polyglotReader.ReadFile(@"..\..\..\Perfect2017.bin");
-       
+      
             // starting position
             string key = polyglotReader.GetKey("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1").ToString("X").ToLower();
             Assert.AreEqual("463b96181691fc9c",key);
@@ -49,10 +48,6 @@ namespace UnitTestsBearChessBase
             // position after a2a4 b7b5 h2h4 b5b4 c2c4 b4c3 a1a3
             key = polyglotReader.GetKey("rnbqkbnr/p1pppppp/8/8/P6P/R1p5/1P1PPPP1/1NBQKBNR b Kkq - 0 4").ToString("X").ToLower();
             Assert.AreEqual("5c3f9b829b279560", key);
-
-
-
-
 
         }
     }

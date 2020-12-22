@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTestOpeningBook.cs" />
     <Compile Include="UnitTestPgnNotation.cs" />
     <Compile Include="UnitTestPolyglot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Perfect2017.bin" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

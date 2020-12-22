@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
@@ -9,14 +8,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     [Serializable]
     public class EcoCode
     {
+
         public string Code { get; set; }
         public string Name { get; set; }
         public string Moves { get; set; }
         public string FenCode { get; set; }
-
+        
         public EcoCode()
         {
-            
         }
 
         public EcoCode(string code, string name, string moves, string fenCode)
@@ -26,46 +25,61 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             Moves = moves;
             FenCode = fenCode;
         }
+
     }
 
     public class EcoCodeReader
     {
-        private string fileName { get; set; }
 
+        private string _fileName { get; }
+        
         public EcoCodeReader(string[] pathNames)
         {
-            fileName = string.Empty;
+            _fileName = string.Empty;
             foreach (var pathName in pathNames)
             {
-                fileName = Path.Combine(pathName, "bearchess.eco");
-                if (File.Exists(fileName))
+                _fileName = Path.Combine(pathName, "bearchess.eco");
+                if (File.Exists(_fileName))
                 {
                     return;
                 }
             }
-
         }
+
 
         public EcoCode[] Load()
         {
-            if (File.Exists(fileName))
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(EcoCode[]));
-                TextReader textReader = new StreamReader(fileName);
-                EcoCode[] result = (EcoCode[])serializer.Deserialize(textReader);
-                textReader.Close();
-                return result;
-            }
+            if (File.Exists(_fileName))
+                try
+                {
+                    var serializer = new XmlSerializer(typeof(EcoCode[]));
+                    TextReader textReader = new StreamReader(_fileName);
+                    var result = (EcoCode[]) serializer.Deserialize(textReader);
+                    textReader.Close();
+
+                    return result;
+                }
+                catch
+                {
+                    //
+                }
+
             return new EcoCode[0];
         }
 
         public void Save(EcoCode[] ecoCodes)
         {
-
-            XmlSerializer serializer = new XmlSerializer(typeof(EcoCode[]));
-            TextWriter textWriter = new StreamWriter(fileName, false);
-            serializer.Serialize(textWriter, ecoCodes);
-            textWriter.Close();
+            try
+            {
+                var serializer = new XmlSerializer(typeof(EcoCode[]));
+                TextWriter textWriter = new StreamWriter(_fileName, false);
+                serializer.Serialize(textWriter, ecoCodes);
+                textWriter.Close();
+            }
+            catch
+            {
+                //
+            }
         }
 
 
@@ -75,50 +89,51 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 return new EcoCode[0];
             }
-            List<EcoCode> result = new List<EcoCode>();
-            var allLines = File.ReadAllLines(fileName);
-            HashSet<string> allFenCodes = new HashSet<string>();
-            foreach (var allLine in allLines)
+
+            var result = new List<EcoCode>();
+            try
             {
-                var strings = allLine.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (strings.Length > 2)
+                var allLines = File.ReadAllLines(fileName);
+                var allFenCodes = new HashSet<string>();
+                foreach (var allLine in allLines)
                 {
-                    var fenCode = GetFenCode(strings[strings.Length - 1]);
-                    if (allFenCodes.Contains(fenCode))
+                    var strings = allLine.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    if (strings.Length > 2)
                     {
-                        continue;
+                        var fenCode = GetFenCode(strings[strings.Length - 1]);
+                        if (allFenCodes.Contains(fenCode))
+                        {
+                            continue;
+                        }
+
+                        allFenCodes.Add(fenCode);
+                        var name = string.Empty;
+                        for (var i = 1; i < strings.Length - 1; i++) name += strings[i];
+                        result.Add(new EcoCode(strings[0],
+                            name.Replace("\"", string.Empty).Replace(strings[0], string.Empty).Trim(),
+                            strings[strings.Length - 1], fenCode));
                     }
-                    allFenCodes.Add(fenCode);
-                    string name = string.Empty;
-                    for (int i=1; i<strings.Length-1; i++)
-                    {
-                        name += strings[i];
-                    }
-                    result.Add(new EcoCode(strings[0], name.Replace("\"",string.Empty).Replace(strings[0],string.Empty).Trim(), strings[strings.Length-1], fenCode));
                 }
+
+                Save(result.ToArray());
             }
-            Save(result.ToArray());
-            
+            catch
+            {
+                //
+            }
+
             return result.ToArray();
         }
 
         private string GetFenCode(string moves)
         {
-
             var chessBoard = new ChessBoard();
             chessBoard.Init();
             chessBoard.NewGame();
             var strings = moves.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             foreach (var s in strings)
             {
-                if (s.Contains("."))
-                {
-                    chessBoard.MakeMove(s.Substring(s.IndexOf(".")+1));
-                }
-                else
-                {
-                    chessBoard.MakeMove(s);
-                }
+                chessBoard.MakeMove(s.Contains(".") ? s.Substring(s.IndexOf(".") + 1) : s);
             }
 
             return chessBoard.GetFenPosition();
@@ -131,12 +146,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 return new EcoCode[0];
             }
-            List<EcoCode> result = new List<EcoCode>();
+
+            var result = new List<EcoCode>();
             var allLines = File.ReadAllLines(fileName);
-            string code = string.Empty;
-            string openingName = string.Empty;
-            string moves = string.Empty;
-            HashSet<string> allFenCodes = new HashSet<string>();
+            var code = string.Empty;
+            var openingName = string.Empty;
+            var moves = string.Empty;
+            var allFenCodes = new HashSet<string>();
             foreach (var line in allLines)
             {
                 if (string.IsNullOrWhiteSpace(line) || line.StartsWith(";"))
@@ -167,6 +183,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
                 moves += line + " ";
             }
+
             Save(result.ToArray());
             return result.ToArray();
         }
@@ -177,9 +194,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 return new EcoCode[0];
             }
-            List<EcoCode> result = new List<EcoCode>();
+
+            var result = new List<EcoCode>();
             var allLines = File.ReadAllLines(fileName);
-            HashSet<string> allFenCodes = new HashSet<string>();
+            var allFenCodes = new HashSet<string>();
             foreach (var line in allLines)
             {
                 if (!line.StartsWith("{") || !line.Contains("}"))
@@ -189,18 +207,19 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
                 var openingName = line.Substring(1, line.IndexOf("}") - 1);
                 var code = openingName.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                var moves = line.Substring(line.IndexOf("}")+1).Replace(". ",".");
+                var moves = line.Substring(line.IndexOf("}") + 1).Replace(". ", ".");
                 var fenCode = GetFenCode(moves);
                 if (allFenCodes.Contains(fenCode))
                 {
                     continue;
                 }
+
                 allFenCodes.Add(fenCode);
-                result.Add(new EcoCode(code,openingName.Replace(code,string.Empty).Trim(),moves, fenCode));
+                result.Add(new EcoCode(code, openingName.Replace(code, string.Empty).Trim(), moves, fenCode));
             }
+
             Save(result.ToArray());
             return result.ToArray();
         }
-
     }
 }

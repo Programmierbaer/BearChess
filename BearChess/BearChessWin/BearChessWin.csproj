@@ -83,7 +83,6 @@
     </ApplicationDefinition>
     <Compile Include="BoardFieldsSetup.cs" />
     <Compile Include="BoardPiecesSetup.cs" />
-    <Compile Include="BookInfo.cs" />
     <Compile Include="ClockTime.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationSettings.cs" />
@@ -768,6 +767,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\balance_unbalance.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\user_silhouette.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

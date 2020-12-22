@@ -34,30 +34,30 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             textBlockMoves.Text = moveList;
         }
 
-        public SaveGameWindow(string white, string black, string result, string eventName, string date, string moveList) : this(moveList)
+        public SaveGameWindow(string white, string black, string result, string eventName, string date,
+                              string moveList) : this(moveList)
         {
             textBoxWhite.Text = white;
             textBoxBlack.Text = black;
             textBoxEvent.Text = eventName;
             textBoxDate.Text = date;
-            if (result.StartsWith("1"))
+            if (result.StartsWith("1/2"))
+            {
+                radioButton11.IsChecked = true;
+            }
+            else if (result.StartsWith("1"))
             {
                 radioButton10.IsChecked = true;
             }
-            else
-            if (result.StartsWith("0"))
+            else if (result.StartsWith("0"))
             {
                 radioButton01.IsChecked = true;
             }
             else
-            if (result.StartsWith("*"))
             {
                 radioButtonStar.IsChecked = true;
             }
-            else
-            {
-                radioButton11.IsChecked = true;
-            }
+
         }
 
         private string getResult()

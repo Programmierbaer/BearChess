@@ -3,7 +3,7 @@
     public class BookMove
     {
         public string FromField { get; }
-        public string ToField { get; }
+        public string ToField { get; set; }
         public uint Weight { get; set; }
         public int PlyCount { get; }
         public uint NextMovePointer { get; }

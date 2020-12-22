@@ -11,10 +11,10 @@
 \contentsline {subsection}{\numberline {3.7}Windows}{10}%
 \contentsline {section}{\numberline {4}Install, Configure and Load a chess engine}{11}%
 \contentsline {subsection}{\numberline {4.1}Install a new engine}{12}%
-\contentsline {subsubsection}{\numberline {4.1.1}Use opening book {\color {red}*}}{14}%
+\contentsline {subsubsection}{\numberline {4.1.1}Use opening book}{14}%
 \contentsline {subsection}{\numberline {4.2}Configure an engine}{14}%
 \contentsline {subsection}{\numberline {4.3}Load an engine}{14}%
-\contentsline {section}{\numberline {5}Load and Manage Opening Books}{14}%
+\contentsline {section}{\numberline {5}Load and Manage Opening Books}{15}%
 \contentsline {section}{\numberline {6}Configure Board and Pieces}{18}%
 \contentsline {subsection}{\numberline {6.1}Install new board colors and pieces}{20}%
 \contentsline {subsubsection}{\numberline {6.1.1}New board colors}{21}%
@@ -30,7 +30,7 @@
 \contentsline {subsubsection}{\numberline {10.2.1}Connect}{35}%
 \contentsline {section}{\numberline {11}Start a game}{36}%
 \contentsline {subsection}{\numberline {11.1}Select opponent}{37}%
-\contentsline {subsection}{\numberline {11.2}Start from}{37}%
+\contentsline {subsection}{\numberline {11.2}Start from}{38}%
 \contentsline {subsection}{\numberline {11.3}Allow to take a move back}{38}%
 \contentsline {subsection}{\numberline {11.4}Time control}{38}%
 \contentsline {subsection}{\numberline {11.5}Influence of BearChess in engine games}{39}%
@@ -52,7 +52,8 @@
 \contentsline {subsection}{\numberline {18.1}The chess moves are not or not correctly displayed}{52}%
 \contentsline {section}{\numberline {19}Known Issues}{52}%
 \contentsline {section}{\numberline {20}Next Steps}{52}%
-\contentsline {section}{\numberline {21}Changelog}{53}%
-\contentsline {subsection}{\numberline {21.1}Version 0.3.1.1 =\textgreater 0.3.2.0}{53}%
-\contentsline {subsection}{\numberline {21.2}Version 0.3.1.0 =\textgreater 0.3.1.1}{53}%
-\contentsline {subsection}{\numberline {21.3}Version 0.3.0.0 =\textgreater 0.3.1.0}{53}%
+\contentsline {section}{\numberline {21}Changelog}{54}%
+\contentsline {subsection}{\numberline {21.1}Version 0.3.2.0 =\textgreater 0.3.3.0}{54}%
+\contentsline {subsection}{\numberline {21.2}Version 0.3.1.1 =\textgreater 0.3.2.0}{54}%
+\contentsline {subsection}{\numberline {21.3}Version 0.3.1.0 =\textgreater 0.3.1.1}{54}%
+\contentsline {subsection}{\numberline {21.4}Version 0.3.0.0 =\textgreater 0.3.1.0}{54}%

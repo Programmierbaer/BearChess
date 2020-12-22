@@ -64,6 +64,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void ClearMoves()
         {
             _allMoves.Clear();
+            dataGridMoves.ItemsSource = _openingBook.GetMoveList();
         }
 
         public void SetMoves(string fenPosition)
@@ -81,7 +82,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (_concurrentFenPositions.TryDequeue(out string fenPosition))
                 {
-                    Dispatcher?.Invoke(() => { dataGridMoves.ItemsSource = _openingBook.GetMoveList(fenPosition); });
+                    Dispatcher?.Invoke(() => { dataGridMoves.ItemsSource = _openingBook.GetMoveList(fenPosition, true); });
                 }
                 Thread.Sleep(10);
             }

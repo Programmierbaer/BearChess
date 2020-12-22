@@ -15,7 +15,6 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public string Direction { get; }
         public string Name { get; }
 
-
         public UciEventArgs(string name, string command, string direction)
         {
             Name = name;
@@ -112,8 +111,11 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
             _historyCount = historyCount;
             _maxFileSizeInMb = maxFileSizeInMb;
-            var thread = new Thread(DoWork) { IsBackground = true };
-            thread.Start();
+            if (!ErrorOccurred)
+            {
+                var thread = new Thread(DoWork) {IsBackground = true};
+                thread.Start();
+            }
         }
 
 
@@ -251,7 +253,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
                     continue;
                 }
 
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 while (_fileQueue.TryDequeue(out string result))
                 {
                     sb.Append(result);

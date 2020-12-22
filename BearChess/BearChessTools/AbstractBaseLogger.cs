@@ -13,7 +13,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public LogLevel LogLevel { get; set; }
 
         /// <inheritdoc />
-        public bool Active { get; set; }
+        public bool Active { get;  set; }
 
         /// <inheritdoc />
         public abstract void LogInfo(string logMessage);

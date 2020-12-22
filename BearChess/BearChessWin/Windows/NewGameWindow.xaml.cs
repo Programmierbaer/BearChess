@@ -155,6 +155,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxPonderBlack.IsChecked = timeControl.PonderBlack;
             numericUpDownUserExtraTime.Value = timeControl.HumanValue;
             radioButtonSecond.IsChecked = timeControl.AverageTimInSec;
+            radioButtonMinute.IsChecked = !timeControl.AverageTimInSec;
             checkBoxAllowTakeMoveBack.IsChecked = timeControl.AllowTakeBack;
             checkBoxStartAfterMoveOnBoard.IsChecked = timeControl.WaitForMoveOnBoard;
         }
@@ -229,7 +230,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonConfigureWhite_OnClick(object sender, RoutedEventArgs e)
         {
             var uciConfigWindow =
-                new UciConfigWindow(_allUciInfos[comboBoxPlayerWhite.SelectedItem.ToString()], _installedBooks, false);
+                new UciConfigWindow(_allUciInfos[comboBoxPlayerWhite.SelectedItem.ToString()],  false);
             var showDialog = uciConfigWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -239,13 +240,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonConfigureBlack_OnClick(object sender, RoutedEventArgs e)
         {
-            var uciConfigWindow = new UciConfigWindow(_allUciInfos[comboBoxPlayerBlack.SelectedItem.ToString()],
-                                                      _installedBooks, false);
+            var uciConfigWindow = new UciConfigWindow(_allUciInfos[comboBoxPlayerBlack.SelectedItem.ToString()], false);
             var showDialog = uciConfigWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
                 PlayerBlackConfigValues = uciConfigWindow.GetUciInfo();
             }
+        }
+
+        private void ButtonPlayerBlack_OnClick(object sender, RoutedEventArgs e)
+        {
+            comboBoxPlayerBlack.SelectedIndex = 0;
+        }
+
+        private void ButtonPlayerWhite_OnClick(object sender, RoutedEventArgs e)
+        {
+            comboBoxPlayerWhite.SelectedIndex = 0;
         }
     }
 }

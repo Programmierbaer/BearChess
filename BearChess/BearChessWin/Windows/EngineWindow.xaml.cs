@@ -92,7 +92,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void ShowLogWindow()
         {
-            if ((_logWindow == null))
+            if (_logWindow == null)
             {
                 _logWindow = new LogWindow(_configuration);
                 _logWindow.Owner = this;
@@ -128,8 +128,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 stackPanelEngines.Children.Add(engineInfoUserControl);
             }
-
-            
         }
 
         public void UnloadUciEngines()
@@ -151,11 +149,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             var showInfo = bool.Parse(_configuration.GetConfigValue("showucilog", "false"));
-            _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {fenPosition} and  {playedMoves.Length} played moves");
+            if (string.IsNullOrWhiteSpace(fenPosition))
+            {
+                _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {fenPosition} and {playedMoves.Length} played moves");
+            }
+            else
+            {
+                _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {fenPosition} and {playedMoves.Length} played moves");
+            }
+            _fileLogger?.LogInfo($"  Engine id: {uciInfo.Id}");
             if ((_logWindow == null) && showInfo)
             {
-                _logWindow = new LogWindow(_configuration);
-                _logWindow.Owner = this;
+                _logWindow = new LogWindow(_configuration) {Owner = this};
                 _logWindow.SendEvent += _logWindow_SendEvent;
                 _logWindow.Show();
             }
@@ -166,13 +171,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             UciLogger fileLogger = new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
             fileLogger.UciCommunicationEvent += FileLogger_UciCommunicationEvent;
+
             EngineInfoUserControl engineInfoUserControl = new EngineInfoUserControl(uciInfo, color);
             engineInfoUserControl.MultiPvEvent += EngineInfoUserControl_MultiPvEvent;
             engineInfoUserControl.CloseEvent += EngineInfoUserControl_CloseEvent;
             engineInfoUserControl.StartStopEvent += EngineInfoUserControl_StartStopEvent;
+            
             UciLoader uciLoader = new UciLoader(uciInfo, fileLogger, Path.Combine(_configuration.FolderPath, "book"));
-
             uciLoader.EngineReadingEvent += UciLoader_EngineReadingEvent;
+            
             _loadedEnginesControls[uciInfo.Name] = engineInfoUserControl;
             _loadedEngines[uciInfo.Name] = new LoadedUciEngine(uciLoader, color);
             _loadedEngines[uciInfo.Name].SetConfigValues();
@@ -183,7 +190,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             foreach (var playedMove in playedMoves)
             {
-                _loadedEngines[uciInfo.Name].UciEngine.MakeMove(playedMove.FromFieldName.ToLower(), playedMove.ToFieldName.ToLower(), FigureId.FigureIdToFenCharacter[playedMove.PromotedFigure]);
+                _loadedEngines[uciInfo.Name].UciEngine.MakeMove(playedMove.FromFieldName.ToLower(), 
+                                                                playedMove.ToFieldName.ToLower(),
+                                                                FigureId.FigureIdToFenCharacter[playedMove.PromotedFigure]);
             }
 
             stackPanelEngines.Children.Add(engineInfoUserControl);
@@ -299,7 +308,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
-
                 engine.Value.UciEngine.SendToEngine(command);
             }
         }

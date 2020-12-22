@@ -9,7 +9,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     public class OpeningBook
     {
 
-        private enum VariationsEnum
+        public enum VariationsEnum
         {
             BestMove = 0,
             Flexible = 1,
@@ -32,10 +32,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public int PositionsCount { get; private set; }
         public int MovesCount { get; private set; }
 
-        public OpeningBook()
-        {
-        }
-
+       
         public bool LoadBook(string fileName, bool checkFile)
         {
             Available = false;
@@ -130,27 +127,70 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 return new BookMove[0];
             }
-           
-            var bookMoves = GetMoveList(_emptyMove);
+
+            var chessBoard = new ChessBoard();
+            chessBoard.Init();
+            chessBoard.NewGame();
+            var bookMoves = GetMoveList(_emptyMove, false);
+            bool kingMove = false;
+            bool rochade = false;
+            string replaceWith = string.Empty;
             foreach (var move in moveList)
             {
                 if (move.StartsWith("position"))
                 {
                     continue;
                 }
+
+                var fromField = move.Substring(0, 2).ToLower();
+                var toField = move.Substring(2, 2).ToLower();
+                //var chessFigure = chessBoard.GetFigureOn(Fields.GetFieldNumber(fromField));
+                //kingMove = chessFigure.GeneralFigureId == FigureId.KING;
+                rochade = false;
+                chessBoard.MakeMove(fromField, toField);
+                //if (kingMove)
+                //{
+                //    if (fromField.Equals("e1") && toField.Equals("g1"))
+                //    {
+                //        replaceWith = toField;
+                //        rochade = true;
+                //    }
+                //    if (fromField.Equals("e1") && toField.Equals("c1"))
+                //    {
+                //        replaceWith = toField;
+                //        rochade = true;
+                //    }
+                //    if (fromField.Equals("e8") && toField.Equals("g8"))
+                //    {
+                //        replaceWith = toField;
+                //        rochade = true;
+                //    }
+                //    if (fromField.Equals("e8") && toField.Equals("c8"))
+                //    {
+                //        replaceWith = toField;
+                //        rochade = true;
+                //    }
+                //}
+
                 BookMove foundMove = null;
                 foreach (var bookMove in bookMoves)
                 {
+                    //if (rochade && bookMove.FromField.Equals(fromField))
+                    //{
+                    //    bookMove.ToField = replaceWith;
+                    //}
                     if ($"{bookMove.FromField}{bookMove.ToField}".Equals(move))
                     {
                         foundMove = bookMove;
+                        foundMove.FenPosition = chessBoard.GetFenPosition();
                         break;
                     }
                 }
 
                 if (foundMove != null)
                 {
-                    bookMoves = GetMoveList(foundMove);
+                    //bookMoves = GetMoveList(foundMove.FenPosition,true);
+                    bookMoves = GetMoveList(foundMove, true);
                 }
                 else
                 {
@@ -161,50 +201,162 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return bookMoves;
         }
 
-        public BookMove[] GetMoveList(BookMove previousMove)
+        public BookMove[] GetMoveList(BookMove previousMove, bool checkCastle)
         {
             if (string.IsNullOrWhiteSpace(previousMove.FromField))
             {
                 return _abkReader != null ? _abkReader.FirstMoves() : _polyglotReader.GetMoves(FenCodes.BasePosition);
             }
-            return _abkReader != null
-                ? _abkReader.GetMoves(previousMove)
-                : _polyglotReader.GetMoves(previousMove.FenPosition);
+
+            var bookMoves = _abkReader != null
+                                ? _abkReader.GetMoves(previousMove)
+                                : _polyglotReader.GetMoves(previousMove.FenPosition);
+            if (checkCastle)
+            {
+                var chessBoard = new ChessBoard();
+                chessBoard.Init();
+                chessBoard.NewGame();
+                chessBoard.SetPosition(previousMove.FenPosition);
+                foreach (var bookMove in bookMoves)
+                {
+                    if (bookMove.FromField.Equals("e1") && bookMove.ToField.Equals("h1"))
+                    {
+                        var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
+                        if (chessFigure.GeneralFigureId == FigureId.KING)
+                        {
+                            bookMove.ToField = "g1";
+                        }
+                    }
+
+                    if (bookMove.FromField.Equals("e1") && bookMove.ToField.Equals("a1"))
+                    {
+                        var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
+                        if (chessFigure.GeneralFigureId == FigureId.KING)
+                        {
+                            bookMove.ToField = "c1";
+                        }
+                    }
+
+                    if (bookMove.FromField.Equals("e8") && bookMove.ToField.Equals("h8"))
+                    {
+                        var chessFigure = chessBoard.GetFigureOn(Fields.FE8);
+                        if (chessFigure.GeneralFigureId == FigureId.KING)
+                        {
+                            bookMove.ToField = "g8";
+                        }
+                    }
+
+                    if (bookMove.FromField.Equals("e8") && bookMove.ToField.Equals("a8"))
+                    {
+                        var chessFigure = chessBoard.GetFigureOn(Fields.FE8);
+                        if (chessFigure.GeneralFigureId == FigureId.KING)
+                        {
+                            bookMove.ToField = "c8";
+                        }
+                    }
+
+                }
+            }
+
+            return bookMoves;
         }
 
-        public BookMove[] GetMoveList(string fenPosition)
+        public BookMove[] GetMoveList(string fenPosition, bool checkCastle)
         {
-            return _polyglotReader != null
+            var bookMoves = 
+            _polyglotReader != null
                 ? _polyglotReader.GetMoves(fenPosition)
                 : new BookMove[0];
+            if (checkCastle)
+            {
+                var chessBoard = new ChessBoard();
+                chessBoard.Init();
+                chessBoard.NewGame();
+                chessBoard.SetPosition(fenPosition);
+                foreach (var bookMove in bookMoves)
+                {
+                    if (bookMove.FromField.Equals("e1") && bookMove.ToField.Equals("h1"))
+                    {
+                        var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
+                        if (chessFigure.GeneralFigureId == FigureId.KING)
+                        {
+                            bookMove.ToField = "g1";
+                        }
+                    }
+
+                    if (bookMove.FromField.Equals("e1") && bookMove.ToField.Equals("a1"))
+                    {
+                        var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
+                        if (chessFigure.GeneralFigureId == FigureId.KING)
+                        {
+                            bookMove.ToField = "c1";
+                        }
+                    }
+
+                    if (bookMove.FromField.Equals("e8") && bookMove.ToField.Equals("h8"))
+                    {
+                        var chessFigure = chessBoard.GetFigureOn(Fields.FE8);
+                        if (chessFigure.GeneralFigureId == FigureId.KING)
+                        {
+                            bookMove.ToField = "g8";
+                        }
+                    }
+
+                    if (bookMove.FromField.Equals("e8") && bookMove.ToField.Equals("a8"))
+                    {
+                        var chessFigure = chessBoard.GetFigureOn(Fields.FE8);
+                        if (chessFigure.GeneralFigureId == FigureId.KING)
+                        {
+                            bookMove.ToField = "c8";
+                        }
+                    }
+
+                }
+            }
+
+            return bookMoves;
         }
 
         public BookMove[] GetMoveList()
         {
-            return GetMoveList(_emptyMove);
+            return GetMoveList(_emptyMove, false);
+        }
+
+
+        public BookMove[] GetCandidateMoveList()
+        {
+            return GetCandidates(GetMoveList());
         }
 
         #region private
 
-        private BookMove GetMove(BookMove[] moves)
+        private BookMove[] GetCandidates(BookMove[] moves)
         {
-            if (moves.Length == 0)
-            {
-                return _emptyMove;
-            }
             List<BookMove> candidates = new List<BookMove>();
-            if (_variation == VariationsEnum.BestMove || moves.Length==1)
+            if (_variation == VariationsEnum.BestMove || moves.Length == 1)
             {
-                return moves[0];
+                return new BookMove[] { moves[0]};
             }
             long sumWeights = moves.Sum(w => w.Weight);
+            if (sumWeights == 0)
+            {
+                sumWeights = 1;
+            }
             foreach (var bookMove in moves)
             {
+                if (_variation == VariationsEnum.Wide)
+                {
+                    candidates.Add(bookMove);
+                    continue;
+
+                }
                 long moveWeight = 100 * bookMove.Weight / sumWeights;
                 if (_variation == VariationsEnum.Flexible && moveWeight <= 5)
                 {
                     continue;
                 }
+
+
                 for (int i = 0; i < moveWeight; i++)
                 {
                     candidates.Add(bookMove);
@@ -213,11 +365,24 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
             if (candidates.Count == 0)
             {
-                return moves[0];
+                return moves;
             }
+
+            return candidates.ToArray();
+        }
+
+
+        private BookMove GetMove(BookMove[] moves)
+        {
+            if (moves.Length == 0)
+            {
+                return _emptyMove;
+            }
+
+            var bookMoves = GetCandidates(moves);
             BookMove move =
-                candidates.ToArray().OrderBy(m => (LineRandomness.Next(2) % 2) == 0)
-                          .ToArray()[LineRandomness.Next(0, candidates.Count)];
+                bookMoves.ToArray().OrderBy(m => (LineRandomness.Next(2) % 2) == 0)
+                          .ToArray()[LineRandomness.Next(0, bookMoves.Length)];
             return move;
         }
 
