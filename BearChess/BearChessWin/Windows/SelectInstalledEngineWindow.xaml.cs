@@ -71,7 +71,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            var uciConfigWindow = new UciConfigWindow(SelectedEngine);
+            var uciConfigWindow = new UciConfigWindow(SelectedEngine, true, false);
             var showDialog = uciConfigWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -193,7 +193,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
                     serializer.Serialize(textWriter, uciInfo);
                     textWriter.Close();
-                    UciConfigWindow uciConfigWindow = new UciConfigWindow(uciInfo) { Owner = this };
+                    UciConfigWindow uciConfigWindow = new UciConfigWindow(uciInfo, true, false) { Owner = this };
                     var dialog = uciConfigWindow.ShowDialog();
 
                     if (dialog.HasValue && dialog.Value)

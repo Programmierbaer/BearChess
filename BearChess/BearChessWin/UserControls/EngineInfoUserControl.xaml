@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
              mc:Ignorable="d" Background="AliceBlue"
-             d:DesignHeight="150" d:DesignWidth="480">
+             d:DesignHeight="150" d:DesignWidth="520">
     <Border BorderThickness="1" BorderBrush="Gray">
         <StackPanel Name="stackPanelMain">
             <DockPanel LastChildFill="False">
@@ -37,6 +37,9 @@
                 </Button>
                 <Button DockPanel.Dock="Left" Name="buttonClose" Width="32" Margin="5" Click="ButtonClose_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close engine">
                     <Image Source="../Assets/Icons/control_power_blue.png"></Image>
+                </Button>
+                <Button DockPanel.Dock="Left" Name="buttonConfig" Width="32" Margin="5" Click="ButtonConfig_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Configure engine">
+                    <Image Source="../Assets/Icons/cog.png"></Image>
                 </Button>
                 <Image Margin="5" Name="imageColorWhite" DockPanel.Dock="Right" Width="32"
                        Height="32" Source="../Assets/Stone/Symbol/KingW.png" Visibility="Collapsed" />

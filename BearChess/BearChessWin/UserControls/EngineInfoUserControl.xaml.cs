@@ -46,6 +46,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler<MultiPvEventArgs> MultiPvEvent;
         public event EventHandler<string> CloseEvent;
         public event EventHandler<StartStopEventArgs> StartStopEvent;
+        public event EventHandler<string> ConfigEvent;
 
         private readonly ConcurrentQueue<string> _infoLine = new ConcurrentQueue<string>();
         private readonly List<EngineInfoLineUserControl> _engineInfoLineUserControls = new List<EngineInfoLineUserControl>();
@@ -63,11 +64,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Color = color;
             EngineName = uciInfo.Name;
             textBlockName.ToolTip = uciInfo.OriginName;
-            var firstOrDefault = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
-            if (firstOrDefault != null)
+            var uciElo = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
+            if (uciElo != null)
             {
-                var strings = firstOrDefault.Split(" ".ToCharArray());
-                textBlockEloValue.Text = strings[strings.Length - 1];
+                var uciEloLimit = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
+                if (uciEloLimit != null)
+                {
+                    if (uciEloLimit.Contains("true"))
+                    {
+                        var strings = uciElo.Split(" ".ToCharArray());
+                        textBlockEloValue.Text = strings[strings.Length - 1];
+                    }
+                }
             }
             if (color == Fields.COLOR_WHITE)
             {
@@ -308,6 +316,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             StartStopEvent?.Invoke(this, new StartStopEventArgs(_uciInfo.Name, _stopVisible));
             _stopVisible = !_stopVisible;
          
+        }
+
+        private void ButtonConfig_OnClick(object sender, RoutedEventArgs e)
+        {
+            ConfigEvent?.Invoke(this,_uciInfo.Name);
         }
     }
 }

@@ -132,9 +132,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             chessBoard.Init();
             chessBoard.NewGame();
             var bookMoves = GetMoveList(_emptyMove, false);
-            bool kingMove = false;
-            bool rochade = false;
-            string replaceWith = string.Empty;
             foreach (var move in moveList)
             {
                 if (move.StartsWith("position"))
@@ -144,41 +141,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
                 var fromField = move.Substring(0, 2).ToLower();
                 var toField = move.Substring(2, 2).ToLower();
-                //var chessFigure = chessBoard.GetFigureOn(Fields.GetFieldNumber(fromField));
-                //kingMove = chessFigure.GeneralFigureId == FigureId.KING;
-                rochade = false;
+              
                 chessBoard.MakeMove(fromField, toField);
-                //if (kingMove)
-                //{
-                //    if (fromField.Equals("e1") && toField.Equals("g1"))
-                //    {
-                //        replaceWith = toField;
-                //        rochade = true;
-                //    }
-                //    if (fromField.Equals("e1") && toField.Equals("c1"))
-                //    {
-                //        replaceWith = toField;
-                //        rochade = true;
-                //    }
-                //    if (fromField.Equals("e8") && toField.Equals("g8"))
-                //    {
-                //        replaceWith = toField;
-                //        rochade = true;
-                //    }
-                //    if (fromField.Equals("e8") && toField.Equals("c8"))
-                //    {
-                //        replaceWith = toField;
-                //        rochade = true;
-                //    }
-                //}
 
                 BookMove foundMove = null;
                 foreach (var bookMove in bookMoves)
                 {
-                    //if (rochade && bookMove.FromField.Equals(fromField))
-                    //{
-                    //    bookMove.ToField = replaceWith;
-                    //}
+
                     if ($"{bookMove.FromField}{bookMove.ToField}".Equals(move))
                     {
                         foundMove = bookMove;
@@ -189,7 +158,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
                 if (foundMove != null)
                 {
-                    //bookMoves = GetMoveList(foundMove.FenPosition,true);
                     bookMoves = GetMoveList(foundMove, true);
                 }
                 else

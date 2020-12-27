@@ -230,7 +230,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonConfigureWhite_OnClick(object sender, RoutedEventArgs e)
         {
             var uciConfigWindow =
-                new UciConfigWindow(_allUciInfos[comboBoxPlayerWhite.SelectedItem.ToString()],  false);
+                new UciConfigWindow(_allUciInfos[comboBoxPlayerWhite.SelectedItem.ToString()],  false, false);
             var showDialog = uciConfigWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -240,7 +240,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonConfigureBlack_OnClick(object sender, RoutedEventArgs e)
         {
-            var uciConfigWindow = new UciConfigWindow(_allUciInfos[comboBoxPlayerBlack.SelectedItem.ToString()], false);
+            var uciConfigWindow = new UciConfigWindow(_allUciInfos[comboBoxPlayerBlack.SelectedItem.ToString()], false, false);
             var showDialog = uciConfigWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {

@@ -13,16 +13,32 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class UciConfigWindow : Window
     {
         private readonly UciInfo _uciInfo;
+        private readonly bool _showButtons;
 
+
+        public class ButtonConfigEventArgs : EventArgs
+        {
+            public string EngineName { get; }
+            public string ConfigCmd { get; }
+
+            public ButtonConfigEventArgs(string engineName, string configCmd)
+            {
+                EngineName = engineName;
+                ConfigCmd = configCmd;
+            }
+        }
+
+        public event EventHandler<ButtonConfigEventArgs> ButtonConfigEvent;
         public UciConfigWindow()
         {
             InitializeComponent();
         }
 
-        public UciConfigWindow(UciInfo uciInfo,  bool canChangeName = true) : this()
+        public UciConfigWindow(UciInfo uciInfo,  bool canChangeName, bool showButtons) : this()
         {
             Title += $" {uciInfo.OriginName}";
             _uciInfo = uciInfo;
+            _showButtons = showButtons;
             textBlockName.ToolTip = uciInfo.OriginName;
             textBoxName.Text = uciInfo.Name;
             textBoxName.IsEnabled = canChangeName;
@@ -58,8 +74,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
             int optionsLength = uciInfo.Options.Length / 2;
             int count = 0;
             int rowIndex = 0;
-            foreach (string option in uciInfo.Options)
+            foreach (var option in uciInfo.Options)
             {
+                if (option.StartsWith("option name UCI_EngineAbout", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+                if (option.StartsWith("option name Licensed To", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
                 var currentValue = string.Empty;
                 foreach (string optionValue in uciInfo.OptionValues)
                 {
@@ -71,17 +96,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         continue;
                     }
 
-                    string oName = string.Empty;
+                    var oName = string.Empty;
                     for (int i = 2; i < optionSplit.Length - 2; i++)
                     {
                         oName = oName + optionSplit[i] + " ";
                     }
-                    if (option.StartsWith($"option name {oName.Trim()} value"))
+                    if (option.StartsWith($"option name {oName.Trim()} type"))
                     {
                         currentValue = optionSplit[optionSplit.Length - 1];
                         break;
                     }
                 }
+
                 count++;
                 int colIndex = count > optionsLength ? 0 : 2;
                 AddControl(option, currentValue, colIndex, rowIndex);
@@ -162,13 +188,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            UciConfigValue uciConfigValue = new UciConfigValue();
-            uciConfigValue.CurrentValue = currentValue;
+            UciConfigValue uciConfigValue = new UciConfigValue {CurrentValue = currentValue};
 
-            int i = 2;
+            var i = 2;
             do
             {
-
                 if (optionSplit[i].Equals("type"))
                 {
                     i++;
@@ -280,7 +304,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                     }
 
-
                     uciConfigValue.AddComboItem(comboItem);
 
                     continue;
@@ -317,6 +340,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     break;
                 case "string":
                     AddTextBox(uciConfigValue, colIndex, rowIndex);
+                    break;
+                case "button":
+                    AddButton(uciConfigValue, colIndex, rowIndex);
                     break;
                 default:
                     AddUnknown(uciConfigValue, colIndex, rowIndex);
@@ -383,7 +409,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             var uciComboBoxUserControl = new UciComboBoxUserControl(uciConfigValue);
-
 
             var textBlock = new TextBlock()
             {
@@ -452,6 +477,47 @@ namespace www.SoLaNoSoft.com.BearChessWin
             gridMain.Children.Add(uciNumericUpDownUserControl);
 
         }
+
+        private void AddButton(UciConfigValue uciConfigValue, int colIndex, int rowIndex)
+        {
+            if (rowIndex == gridMain.RowDefinitions.Count)
+            {
+                gridMain.RowDefinitions.Add(new RowDefinition()
+                                            {
+                                                Height = GridLength.Auto
+                                            });
+            }
+
+            var button = new Button()
+                         {
+                             Content = new TextBlock()
+                                       {
+                                           Text = uciConfigValue.OptionName,
+                                           Margin = new Thickness(1),
+
+                                       },
+                             Margin = new Thickness(5),
+                             HorizontalAlignment = HorizontalAlignment.Left,
+                             VerticalAlignment = VerticalAlignment.Center,
+                             Tag = uciConfigValue.OptionName
+                         };
+            button.Click += btnConfig_Click;
+            Grid.SetRow(button, rowIndex);
+            Grid.SetColumn(button, colIndex);
+            gridMain.Children.Add(button);
+        }
+
+        private void btnConfig_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_showButtons)
+            {
+                MessageBox.Show(this, "Buttons only work when the engine is loaded", "Not applicable", MessageBoxButton.OK,MessageBoxImage.Warning);
+                return;
+            }
+            var s = ((Button) sender).Tag.ToString();
+            ButtonConfigEvent?.Invoke(this, new ButtonConfigEventArgs(textBoxName.Text, $"setoption name {s}"));
+        }
+
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {

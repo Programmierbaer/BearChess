@@ -6,9 +6,9 @@
 \contentsline {subsection}{\numberline {3.2}Games}{8}%
 \contentsline {subsection}{\numberline {3.3}Engines}{9}%
 \contentsline {subsection}{\numberline {3.4}Books}{9}%
-\contentsline {subsection}{\numberline {3.5}Settings}{9}%
+\contentsline {subsection}{\numberline {3.5}Settings}{10}%
 \contentsline {subsection}{\numberline {3.6}Electronic Boards}{10}%
-\contentsline {subsection}{\numberline {3.7}Windows}{10}%
+\contentsline {subsection}{\numberline {3.7}Windows}{11}%
 \contentsline {section}{\numberline {4}Install, Configure and Load a chess engine}{11}%
 \contentsline {subsection}{\numberline {4.1}Install a new engine}{12}%
 \contentsline {subsubsection}{\numberline {4.1.1}Use opening book}{14}%
@@ -53,7 +53,8 @@
 \contentsline {section}{\numberline {19}Known Issues}{52}%
 \contentsline {section}{\numberline {20}Next Steps}{52}%
 \contentsline {section}{\numberline {21}Changelog}{54}%
-\contentsline {subsection}{\numberline {21.1}Version 0.3.2.0 =\textgreater 0.3.3.0}{54}%
-\contentsline {subsection}{\numberline {21.2}Version 0.3.1.1 =\textgreater 0.3.2.0}{54}%
-\contentsline {subsection}{\numberline {21.3}Version 0.3.1.0 =\textgreater 0.3.1.1}{54}%
-\contentsline {subsection}{\numberline {21.4}Version 0.3.0.0 =\textgreater 0.3.1.0}{54}%
+\contentsline {subsection}{\numberline {21.1}Version 0.3.3.0 =\textgreater 0.3.4.0}{54}%
+\contentsline {subsection}{\numberline {21.2}Version 0.3.2.0 =\textgreater 0.3.3.0}{54}%
+\contentsline {subsection}{\numberline {21.3}Version 0.3.1.1 =\textgreater 0.3.2.0}{54}%
+\contentsline {subsection}{\numberline {21.4}Version 0.3.1.0 =\textgreater 0.3.1.1}{54}%
+\contentsline {subsection}{\numberline {21.5}Version 0.3.0.0 =\textgreater 0.3.1.0}{54}%

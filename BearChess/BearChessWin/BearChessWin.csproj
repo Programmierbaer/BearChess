@@ -771,5 +771,8 @@
   <ItemGroup>
     <Resource Include="Assets\Icons\user_silhouette.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\folder.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

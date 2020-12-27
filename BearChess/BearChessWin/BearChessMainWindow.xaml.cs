@@ -816,7 +816,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                 }
 
-                if (_runningGame) _chessClocksWindowWhite?.Go();
+                if (_runningGame)
+                {
+                    _chessClocksWindowWhite?.Go();
+                }
             }
             else
             {
@@ -1036,7 +1039,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (!newGameWindow.PlayerBlack.Equals("Player"))
             {
-                _engineWindow?.LoadUciEngine(newGameWindow.PlayerBlackConfigValues, _chessBoard.GetPlayedMoveList(),
+                _engineWindow?.LoadUciEngine(newGameWindow.PlayerBlackConfigValues, _chessBoard.GetPlayedMoveList(), true,
                     Fields.COLOR_BLACK);
                 _configuration.SetConfigValue("LastBlackEngine", _installedEngines[newGameWindow.PlayerBlack].Id);
             }
@@ -1048,7 +1051,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (!newGameWindow.PlayerWhite.Equals("Player"))
             {
-                _engineWindow?.LoadUciEngine(newGameWindow.PlayerWhiteConfigValues, _chessBoard.GetPlayedMoveList(),
+                _engineWindow?.LoadUciEngine(newGameWindow.PlayerWhiteConfigValues, _chessBoard.GetPlayedMoveList(), true,
                     Fields.COLOR_WHITE);
                 _configuration.SetConfigValue("LastWhiteEngine", _installedEngines[newGameWindow.PlayerWhite].Id);
             }
@@ -1661,7 +1664,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _configuration.SetConfigValue("LastEngine", uciInfo.Id);
-            LoadEngine(uciInfo);
+            LoadEngine(uciInfo, false);
 
             if (_runInAnalyzeMode)
             {
@@ -1680,12 +1683,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var firstOrDefault = _installedEngines.Values.FirstOrDefault(u => u.Id.Equals(lastEngineId));
                 if (firstOrDefault != null)
                 {
-                    LoadEngine(firstOrDefault);
+                    LoadEngine(firstOrDefault, false);
                 }
             }
         }
 
-        private void LoadEngine(UciInfo uciInfo)
+        private void LoadEngine(UciInfo uciInfo, bool lookForBookMoves)
         {
             if (_engineWindow == null)
             {
@@ -1697,7 +1700,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             chessBoardUcGraphics.ShowRobot(true);
 
-            _engineWindow.LoadUciEngine(uciInfo, _chessBoard.GetInitialFenPosition(), _chessBoard.GetPlayedMoveList());
+            _engineWindow.LoadUciEngine(uciInfo, _chessBoard.GetInitialFenPosition(), _chessBoard.GetPlayedMoveList(), lookForBookMoves);
         }
         
         private void ReadInstalledEngines()

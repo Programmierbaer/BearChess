@@ -14,10 +14,10 @@
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.3.3.0}
+\fancyhead[R]{Version 0.3.4.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{12.12.2020} 
+\date{27.12.2020} 
 
 \begin{document}
 \maketitle
@@ -80,7 +80,7 @@ BearChess follows the design of Single Document Interface (SDI). You can place d
 BearChess is running in different modes. The current mode is displayed in the lower left corner.
 \begin{itemize}
 	
-	\item \textbf{Easy playing} This is the mode in the beginning. You just can simply start making your moves on the screen on your electronic chessboard. In addition to support you can start chess programs or load opening books. But these only give hints, but do not play as opponents. This mode is automatically set if you are not playing in another mode.
+	\item \textbf{Easy playing} This is the mode in the beginning. You just can simply start making your moves on the screen or on your electronic chessboard. In addition to support you can start chess programs or load opening books. But these only give hints, but do not play as opponents. This mode is automatically set if you are not playing in another mode.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[scale=1.0]{ModeEasyPlaying.png}
@@ -159,6 +159,7 @@ All games are saved in a PGN file.
 \end{figure}
 \begin{itemize}
 	\item  \includegraphics[scale=0.5]{robot.png} \textbf{Load \& manage engines} opens a new window in which you can install, load or configure your chess engines.
+	\item \textbf{Load last engine on start} if you always want to play immediately with an engine in 'Easy playing' mode.	
 	\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
 \end{itemize}
 
@@ -263,7 +264,8 @@ The name is freely assignable, must be unique across all engines. But this way y
 	\item \includegraphics[scale=0.5]{undo.png} Reset to default values
 	\item \includegraphics[scale=0.5]{cancel.png} Cancel
 \end{itemize}
-
+The small \includegraphics[scale=0.3]{folder.png} button opens a file or directory selection dialog, depending on the configuration name (file, path, dir).\\
+The configuration type 'button', e.g. 'Clear Hash', works only if the engine is loaded.
 
 \subsubsection{Use opening book}
 Some engines comes with there own opening book and you have an option to use them or not. You can also tell BearChess to use an opening book before the moves are calculated by the engines. You can configure how BearChess determines the book move. 
@@ -1026,6 +1028,7 @@ If the engine allows to configure its ELO number, it appears under the name.
 	\item \includegraphics[scale=0.5]{toggle_expand.png} Add a info line.
 	\item \includegraphics[scale=0.5]{toggle.png} Remove a info line.
 	\item \includegraphics[scale=0.5]{control_power_blue.png} Close the engine. Not visible if you play a game.
+	\item \includegraphics[scale=0.5]{cog.png} Opens the configuration dialog.	
 \end{itemize}
 
 If you have configured that currently the best move should be displayed, the analysis of the topmost engine is taken.
@@ -1076,24 +1079,30 @@ If you have performed the calibration without extra queens and are performing a 
 
 \section{Known Issues}
 \begin{itemize}
-    \item \textbf{UCI configuration} Buttons are not supported.	
-    \item \textbf{UCI configuration} Some textual informations are wrong interpreted.	
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time, e.g. the clocks for white and black.
 	\item If you want to play an engine match with the same engine for black and white you have to install the engine twice with a different name.
+	\item \textbf{Show captured pieces} cannot handle if one color has more than one queen.
 \end{itemize}
 
 \section{Next Steps}
 \begin{itemize}
 	\item Error correction.
 	\item Develop missing functionality {\color{red}\textbf{*}}
-	\item Improvements on handling UCI configuration.
+	\item Bluetooth support.
 	\item Improvements on handling saved games.
 \end{itemize}
 
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.3.3.0 =\textgreater 0.3.4.0}
+\begin{itemize}
+	\item Correction and extension of the evaluating of UCI configuration values.
+	\item Correction at the start of a new game (Engine was not started)
+	\item Minor fixes.	
+\end{itemize}
+
 \subsection{Version 0.3.2.0 =\textgreater 0.3.3.0}
 \begin{itemize}
     \item Support of opening books for engines.
