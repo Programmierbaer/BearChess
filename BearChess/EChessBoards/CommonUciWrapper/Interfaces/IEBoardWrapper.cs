@@ -114,6 +114,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// <param name="portName">Name of the COM-Port</param>
         bool CheckCOMPort(string portName);
 
+        /// <summary>
+        /// Returns the current COM-Port
+        /// </summary>
+        /// <returns></returns>
+        string GetCurrentCOMPort();
+
         void DimLeds(bool dimLeds);
 
         void FlashInSync(bool flashSync);

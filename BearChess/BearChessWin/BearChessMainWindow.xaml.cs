@@ -15,6 +15,7 @@ using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 using FileLogger = www.SoLaNoSoft.com.BearChessTools.FileLogger;
@@ -94,6 +95,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly PgnLoader _pgnLoader;
         private readonly string _piecesPath;
         private readonly string _uciPath;
+        private readonly string _dbPath;
         private bool _allowTakeMoveBack;
         private ChessBoardSetupWindow _chessBoardSetupWindow;
         private IChessClocksWindow _chessClocksWindowBlack;
@@ -130,6 +132,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _flipBoard = false;
         private bool _showUciLog = false;
         private bool _loadLastEngine = false;
+        private bool _useBluetoothChesssLink;
 
         public BearChessMainWindow()
         {
@@ -139,7 +142,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var productVersion = FileVersionInfo.GetVersionInfo(Application.ResourceAssembly.Location).ProductVersion;
             Title =  $"{Title} v{assemblyName.Version}  - {fileInfo.LastWriteTimeUtc:dd MMMM yyyy  HH:mm:ss}  -  {productVersion}";
             _configuration = Configuration.Instance;
-           // var btComPort = BearChessTools.SerialCommunicationTools.GetBTComPort();
             Top = _configuration.GetWinDoubleValue("MainWinTop", Configuration.WinScreenInfo.Top);
             Left = _configuration.GetWinDoubleValue("MainWinLeft", Configuration.WinScreenInfo.Left);
             if (Top == 0 && Left == 0)
@@ -152,6 +154,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _bookPath   = Path.Combine(_configuration.FolderPath, "book");
             _boardPath  = Path.Combine(_configuration.FolderPath, "board");
             _piecesPath = Path.Combine(_configuration.FolderPath, "pieces");
+            _dbPath     = Path.Combine(_configuration.FolderPath, "db");
             
             if (!Directory.Exists(_logPath))
             {
@@ -176,6 +179,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (!Directory.Exists(_piecesPath))
             {
                 Directory.CreateDirectory(_piecesPath);
+            }
+            if (!Directory.Exists(_dbPath))
+            {
+                Directory.CreateDirectory(_dbPath);
             }
 
             _fileLogger = new FileLogger(Path.Combine(_logPath, "bearchess.log"), 10, 10);
@@ -252,7 +259,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastResult = "*";
             _playedMoveList = new IMove[0];
             _currentMoveIndex = 0;
-            
+            _useBluetoothChesssLink  = _configuration.GetConfigValue("usebluetoothChesslink","false").Equals("true");
+            imageChessLinkBluetooth.Visibility = _useBluetoothChesssLink ? Visibility.Visible : Visibility.Hidden;
             _showClocks = _configuration.GetConfigValue("showClocks", "false").Equals("true");
             imageShowClocks.Visibility = _showClocks ? Visibility.Visible : Visibility.Hidden;
             if (_showClocks)
@@ -289,6 +297,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 LoadLastEngine();
             }
+
+            var database = new Database(_dbPath, _fileLogger);
         }
 
 
@@ -2428,8 +2438,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void MenuItemConfigureChessLink_OnClick(object sender, RoutedEventArgs e)
         {
-            var winConfigureMChessLink = new WinConfigureMChessLink(_configuration) {Owner = this};
+            var winConfigureMChessLink = new WinConfigureMChessLink(_configuration,_useBluetoothChesssLink) {Owner = this};
             winConfigureMChessLink.ShowDialog();
+        }
+
+        private void MenuItemBluetoothChessLink_OnClick(object sender, RoutedEventArgs e)
+        {
+            _useBluetoothChesssLink = !_useBluetoothChesssLink;
+            _configuration.SetConfigValue("usebluetoothChesslink", _useBluetoothChesssLink.ToString());
+            imageChessLinkBluetooth.Visibility = _useBluetoothChesssLink ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void MenuItemEChessBoardTest_OnClick(object sender, RoutedEventArgs e)
@@ -2785,5 +2802,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         #endregion
 
+      
     }
 }

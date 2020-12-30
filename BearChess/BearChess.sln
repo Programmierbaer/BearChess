@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MChessLinkUciCore", "EChess
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CertaboUciCore", "EChessBoards\Certabo\CertaboUciCore\CertaboUciCore\CertaboUciCore.csproj", "{6C78BA97-1AE4-475B-BBA6-4C5A13E320CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BearChessDatabase", "BearChessDatabase\BearChessDatabase.csproj", "{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -377,6 +379,26 @@ Global
 		{6C78BA97-1AE4-475B-BBA6-4C5A13E320CF}.Release|x64.Build.0 = Release|Any CPU
 		{6C78BA97-1AE4-475B-BBA6-4C5A13E320CF}.Release|x86.ActiveCfg = Release|Any CPU
 		{6C78BA97-1AE4-475B-BBA6-4C5A13E320CF}.Release|x86.Build.0 = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|x64.Build.0 = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Debug|x86.Build.0 = Debug|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|ARM.Build.0 = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|ARM64.Build.0 = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|x64.ActiveCfg = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|x64.Build.0 = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|x86.ActiveCfg = Release|Any CPU
+		{FBC89B8A-E40D-4464-8AEB-CA963F7554AD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

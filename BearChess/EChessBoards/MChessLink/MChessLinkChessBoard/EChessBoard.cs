@@ -4,6 +4,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 {
     public class EChessBoard : AbstractEBoard
     {
+
         private readonly string[] _ledToField =
         {
             "h1", "h1h2", "h2h3", "h3h4", "h4h5", "h5h6", "h6h7", "h7h8", "h8",
@@ -85,10 +86,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private bool _lowerLeft = true;
         private bool _lowerRight = true;
 
-        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName)
+        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth)
         {
             _logger = logger;
             _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName);
+            _serialCommunication.UseBluetooth = useBluetooth;
             _isFirstInstance = isFirstInstance;
             IsConnected = EnsureConnection();
         }

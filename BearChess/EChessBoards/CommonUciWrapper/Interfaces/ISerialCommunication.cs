@@ -10,6 +10,11 @@
         bool IsCommunicating { get; }
 
         /// <summary>
+        /// Indicates that COM ports may over bluetooth
+        /// </summary>
+        bool UseBluetooth { get; set; }
+
+        /// <summary>
         /// Returns read data from board
         /// </summary>
         DataFromBoard GetFromBoard();

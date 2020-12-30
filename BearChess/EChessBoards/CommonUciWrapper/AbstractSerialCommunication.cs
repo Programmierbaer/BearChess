@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
+using InTheHand.Net.Bluetooth;
+using InTheHand.Net.Sockets;
 
 namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 {
@@ -73,7 +75,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public string CurrentComPort { get; private set; }
         public bool IsCommunicating { get; protected set; }
-
+        public bool UseBluetooth { get;  set; }
 
         public DataFromBoard GetFromBoard()
         {
@@ -284,7 +286,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (CheckConnect(portName))
                     {
 
-
                         var readLine = GetRawFromBoard();
                         DisConnectFromCheck();
                         if (readLine.Length > 0)
@@ -327,6 +328,25 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             return true;
         }
 
+        public static string[] GetBTComPort()
+        {
+            var cli = new BluetoothClient();
+            IReadOnlyCollection<BluetoothDeviceInfo> bluetoothDeviceInfos = cli.DiscoverDevices();
+            foreach (var bluetoothDeviceInfo in bluetoothDeviceInfos)
+            {
+                var deviceName = bluetoothDeviceInfo.DeviceName;
+                // MILLENNIUM CHESS
+                // if (deviceName.Equals("raspberrypi", StringComparison.OrdinalIgnoreCase))
+                if (deviceName.Equals("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
+                {
+                    bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
+
+                }
+
+            }
+            return GetPortNames();
+        }
+
         public static string[] GetPortNames()
         {
             var result = new List<string>();
@@ -351,7 +371,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             if (string.IsNullOrWhiteSpace(_setPortName)
                 || _setPortName.Equals("<auto>", StringComparison.OrdinalIgnoreCase))
             {
-                var comPortNames = GetPortNames();
+                var comPortNames = UseBluetooth ? GetBTComPort() : GetPortNames();
                 _logger?.LogDebug($"S: Portnames: {string.Join(",", comPortNames)}");
                 return comPortNames;
             }

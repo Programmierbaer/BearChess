@@ -36,15 +36,15 @@ namespace www.SoLaNoSoft.com.BearChessTools
             {
                 var deviceName = bluetoothDeviceInfo.DeviceName;
                 // MILLENNIUM CHESS
-                 if (deviceName.Equals("raspberrypi", StringComparison.OrdinalIgnoreCase))
-                //if (deviceName.Equals("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
+                // if (deviceName.Equals("raspberrypi", StringComparison.OrdinalIgnoreCase))
+                if (deviceName.Equals("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
                 {
                     bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
                     return GetPortNames();
                 }
 
             }
-            return new string[0];
+            return GetPortNames(); 
         }
     }
 }

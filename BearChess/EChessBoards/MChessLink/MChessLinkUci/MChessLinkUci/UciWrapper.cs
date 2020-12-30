@@ -22,12 +22,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkUci
                 portNames += $"var {portName} ";
             }
 
-            _messagesToGui.Enqueue("info string MChessLink Board 1.2.1");
-            _messagesToGui.Enqueue("id name MChessLink Board 1.2.1");
+            _messagesToGui.Enqueue("info string MChessLink Board 1.3.0");
+            _messagesToGui.Enqueue("id name MChessLink Board 1.3.0");
             _messagesToGui.Enqueue("id author Lars Nowak");
             _messagesToGui.Enqueue("option name Play with white pieces type check default true");
             _messagesToGui.Enqueue("option name Dim LEDs type check default false");
             _messagesToGui.Enqueue("option name Flash in sync type check default false");
+            _messagesToGui.Enqueue("option name Bluetooth type check default false");
             _messagesToGui.Enqueue($"option name COM-Port type combo default <auto> {portNames}");
         }
 

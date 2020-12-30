@@ -84,6 +84,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// <returns>Returns true if the board is connected</returns>
         bool CheckComPort(string portName);
 
+        string GetCurrentCOMPort();
+
         string UnknownPieceCode { get; }
 
         void DimLeds(bool dimLeds);

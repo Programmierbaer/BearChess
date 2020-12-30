@@ -23,8 +23,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboUci
                 portNames += $"var {portName} ";
             }
 
-            _messagesToGui.Enqueue("info string Certabo Board 1.4.1");
-            _messagesToGui.Enqueue("id name Certabo Board 1.4.1");
+            _messagesToGui.Enqueue("info string Certabo Board 1.4.2");
+            _messagesToGui.Enqueue("id name Certabo Board 1.4.2");
             _messagesToGui.Enqueue("id author Lars Nowak");
             _messagesToGui.Enqueue("option name Calibrate type button");
             _messagesToGui.Enqueue("option name Play with white pieces type check default true");
@@ -58,6 +58,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboUci
             {
                 var portName = command.Substring(command.IndexOf("value", StringComparison.OrdinalIgnoreCase) + 5).Trim();
                 _configuration.PortName = portName;
+                _messagesToGui.Enqueue($"info string COM Port {portName}");
                 SaveConfiguration();
                 eBoardWrapper?.SetCOMPort(portName);
                 return true;

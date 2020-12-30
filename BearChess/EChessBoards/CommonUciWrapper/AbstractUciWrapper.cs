@@ -227,6 +227,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         if (eBoardWrapper != null && eBoardWrapper.IsConnected)
                         {
                             _messagesToGui.Enqueue("readyok");
+                            _messagesToGui.Enqueue($"info string Current COM Port {eBoardWrapper.GetCurrentCOMPort()}");
+
                         }
 
                         if ((eBoardWrapper == null) || (!eBoardWrapper.IsConnected))

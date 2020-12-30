@@ -79,6 +79,11 @@
             }
         }
 
+        public string GetCurrentCOMPort()
+        {
+            return _serialCommunication.CurrentComPort;
+        }
+
         protected bool EnsureConnection()
         {
             if (IsConnected)

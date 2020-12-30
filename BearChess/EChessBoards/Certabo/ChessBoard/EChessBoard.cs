@@ -96,6 +96,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             return false;
         }
 
+        public string GetCurrentCOMPort()
+        {
+            return _serialCommunication.CurrentComPort;
+        }
+
         public override void SetLedForFields(string[] fieldNames)
         {
             if (!EnsureConnection()) return;

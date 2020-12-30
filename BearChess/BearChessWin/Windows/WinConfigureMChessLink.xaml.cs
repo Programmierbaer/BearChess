@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
+using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -16,11 +21,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly EChessBoardConfiguration _eChessBoardConfiguration;
         private readonly string _fileName;
 
-        public WinConfigureMChessLink(Configuration configuration)
+        public WinConfigureMChessLink(Configuration configuration, bool useBluetooth)
         {
             InitializeComponent();
             List<string> allPortNames = new List<string> { "<auto>" };
-            var portNames = BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
+            List<string> portNames = null;
+
+            if (useBluetooth) { 
+
+                var comPortSearchWindow = new COMPortSearchWindow();
+                comPortSearchWindow.Show();
+                portNames = BearChessTools.SerialCommunicationTools.GetBTComPort().ToList();
+
+                comPortSearchWindow.Close();
+
+
+            }
+            else
+            {
+                portNames =  BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
+            }
+
             allPortNames.AddRange(portNames);
             comboBoxComPorts.ItemsSource = allPortNames;
             comboBoxComPorts.SelectedIndex = 0;
@@ -44,6 +65,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             radioButtonAlternate.IsChecked = !flashInSync;
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
 
+        }
+
+        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)

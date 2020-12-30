@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
@@ -24,6 +25,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         private bool _inDemoMode = false;
         protected string _basePath;
         protected string _comPortName;
+        protected bool _useBluetooth;
 
         public event EventHandler<string> MoveEvent;
         public event EventHandler<string> FenEvent;
@@ -48,13 +50,19 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             _board = GetEBoard(true);
         }
 
-        protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName)
+        protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName):this(name, basePath,isFirstInstance,comPortName, false)
+        {
+
+        }
+
+        protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName, bool useBluetooth)
         {
             Name = name;
 
             _basePath = basePath;
             _isFirstInstance = isFirstInstance;
             _comPortName = comPortName;
+            _useBluetooth = useBluetooth;
             var number = _isFirstInstance ? 1 : 2;
             try
             {
@@ -69,6 +77,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         }
 
         public abstract void Calibrate();
+        public string GetCurrentCOMPort()
+        {
+            return _board?.GetCurrentCOMPort();
+        }
+
         public abstract void DimLeds(bool dimLeds);
         public abstract void FlashInSync(bool flashSync);
 

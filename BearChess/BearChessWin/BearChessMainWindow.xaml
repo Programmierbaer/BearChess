@@ -166,6 +166,12 @@
                                 <Image Source="Assets/Icons/cog.png"></Image>
                             </MenuItem.Icon>
                         </MenuItem>
+                        <MenuItem Name="menuItemBluetoothMChessLink" Header="Bluetooth"
+                                  Click="MenuItemBluetoothChessLink_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageChessLinkBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
 
                     </MenuItem>
                     <MenuItem Header="Black pieces in front" Name="menuItemFlipBoard" Click="MenuItemFlipBoard_OnClick">

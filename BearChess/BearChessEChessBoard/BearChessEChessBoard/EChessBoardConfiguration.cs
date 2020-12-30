@@ -13,6 +13,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string PortName { get; set; }
         public bool DimLeds { get; set; }
         public bool FlashInSync { get; set; }
+        public bool UseBluetooth { get; set; }
 
         public static EChessBoardConfiguration Load(string fileName)
         {
@@ -28,6 +29,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.PortName = savedConfig.PortName;
                     configuration.DimLeds = savedConfig.DimLeds;
                     configuration.FlashInSync = savedConfig.FlashInSync;
+                    configuration.UseBluetooth = savedConfig.UseBluetooth;
                 }
                 else
                 {
