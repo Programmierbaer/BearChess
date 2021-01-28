@@ -1,5 +1,5 @@
 ﻿using System;
-using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
@@ -103,6 +103,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         event EventHandler AwaitedPosition;
 
+        event EventHandler BasePositionEvent;
+
         /// <summary>
         /// Return a best move
         /// </summary>
@@ -117,6 +119,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// Set COM-Port to <paramref name="portName"/>.
         /// </summary>
         bool CheckComPort(string portName);
+
+        /// <summary>
+        /// Returns the current COM-Port
+        /// </summary>
+        /// <returns></returns>
+        string GetCurrentComPort();
 
         /// <summary>
         /// Dim all LEDs

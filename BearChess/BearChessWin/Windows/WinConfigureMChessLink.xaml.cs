@@ -32,9 +32,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 portNames = BearChessTools.SerialCommunicationTools.GetBTComPort().ToList();
-
                 comPortSearchWindow.Close();
-
 
             }
             else

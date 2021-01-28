@@ -111,8 +111,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void AddMove(int moveNumber, int color, int figureId, int capturedFigureId, string move,
                             int promotedFigureId)
         {
+           
             if (moveNumber < _lastMoveNumber)
             {
+                if (_currentMoveUserControl == null)
+                {
+                    _currentMoveUserControl = new MoveUserControl();
+                    _currentMoveUserControl.SetSize(_fontSize);
+                    _currentMoveUserControl.SetDisplayTypes(_figureType, _moveType);
+                    _currentMoveUserControl.SetMoveNumber(moveNumber);
+                    _currentMoveUserControl.SetMove(color, figureId, capturedFigureId, move, promotedFigureId);
+                    _currentMoveUserControl.SelectedMoveChanged += currentMoveUserControl_SelectedMoveChanged;
+                    listBoxMoves0.Items.Add(_currentMoveUserControl);
+                    listBoxMoves0.ScrollIntoView(_currentMoveUserControl);
+                }
                 for (var i = moveNumber; i < _lastMoveNumber; i++)
                 {
                     listBoxMoves0.Items.RemoveAt(listBoxMoves0.Items.Count - 1);
@@ -124,10 +136,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
                 _lastMoveNumber = color == Fields.COLOR_BLACK ? moveNumber : moveNumber - 1;
+
                 _currentMoveUserControl = (MoveUserControl) listBoxMoves0.Items[listBoxMoves0.Items.Count - 1];
+
             }
 
-            if (moveNumber.Equals(_lastMoveNumber))
+            if (moveNumber.Equals(_lastMoveNumber) && _currentMoveUserControl!=null)
             {
                 _currentMoveUserControl.SetMove(color, figureId, capturedFigureId, move, promotedFigureId);
                 listBoxMoves0.ScrollIntoView(_currentMoveUserControl);

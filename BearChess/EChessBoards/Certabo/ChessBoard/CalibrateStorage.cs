@@ -46,7 +46,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         {
             try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(CalibrateData));
+                var serializer = new XmlSerializer(typeof(CalibrateData));
                 TextWriter textWriter = new StreamWriter(_storageFile, false);
                 serializer.Serialize(textWriter, _calibrateData);
                 textWriter.Close();
@@ -77,7 +77,12 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 //
             }
 
-            return new CalibrateData();
+            return new CalibrateData()
+                   {
+                       BasePositionCodes = string.Empty,
+                       WhiteQueenCodes = string.Empty,
+                       BlackQueenCodes = string.Empty
+                   };
         }
 
 
@@ -87,7 +92,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             {
                 if (File.Exists(_storageFile))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(CalibrateData));
+                    var serializer = new XmlSerializer(typeof(CalibrateData));
                     TextReader textReader = new StreamReader(_storageFile);
                     CalibrateData savedConfig = (CalibrateData) serializer.Deserialize(textReader);
                     _calibrateData = new CalibrateData
@@ -137,12 +142,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
             try
             {
-                if (white)
-                {
-                    return _calibrateData.WhiteQueenCodes;
-                }
-
-                return _calibrateData.BlackQueenCodes;
+                return white ? _calibrateData.WhiteQueenCodes : _calibrateData.BlackQueenCodes;
             }
             catch
             {

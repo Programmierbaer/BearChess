@@ -1,5 +1,6 @@
 ﻿using System;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 {
@@ -43,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         public OpeningBookWrapper(string fileName, ILogging logger = null)
         {
             _logger = logger;
-            _openingBook = new www.SoLaNoSoft.com.BearChessBase.Implementations.OpeningBook();
+            _openingBook = new OpeningBook();
             _openingBook.LoadBook(fileName, true);
             AcceptFenPosition = _openingBook.AcceptFenPosition;
         }

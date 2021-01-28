@@ -18,10 +18,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private static Configuration _instance;
         private static readonly object Locker = new object();
+        public const string STARTUP_WHITE_ENGINE_ID = "startupWhite.uci";
+        public const string STARTUP_BLACK_ENGINE_ID = "startupBlack.uci";
 
         private readonly ConfigurationSettings<string, string> _appSettings;
         private string ConfigFileName { get; }
         private string TimeControlFileName { get; }
+        private string StartupTimeControlFileName { get; }
         public string FolderPath { get; }
         
 
@@ -51,6 +54,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
             TimeControlFileName = Path.Combine(FolderPath, "bearchess_tc.xml");
+            StartupTimeControlFileName = Path.Combine(FolderPath, "bearchess_start_tc.xml");
             ConfigFileName = Path.Combine(FolderPath, "bearchess.xml");
             if (File.Exists(ConfigFileName))
             {
@@ -122,22 +126,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textWriter.Close();
         }
 
-        public void Save(TimeControl timeControl)
+        /// <summary>
+        /// Save the <paramref name="timeControl"/> as <paramref name="asStartup"/> or just as last configured time control
+        /// </summary>
+        /// <param name="timeControl"></param>
+        /// <param name="asStartup"></param>
+        public void Save(TimeControl timeControl, bool asStartup)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
-            TextWriter textWriter = new StreamWriter(TimeControlFileName, false);
+            TextWriter textWriter =  new StreamWriter(asStartup ? StartupTimeControlFileName : TimeControlFileName, false);
             serializer.Serialize(textWriter, timeControl);
             textWriter.Close();
         }
 
-        public TimeControl LoadTimeControl()
+        public TimeControl LoadTimeControl(bool asStartup)
         {
-            if (!File.Exists(TimeControlFileName))
+            if (!File.Exists(asStartup ? StartupTimeControlFileName : TimeControlFileName))
             {
                 return null;
             }
             XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
-            TextReader textReader = new StreamReader(TimeControlFileName);
+            TextReader textReader = new StreamReader(asStartup ? StartupTimeControlFileName : TimeControlFileName);
             TimeControl timeControl = (TimeControl)serializer.Deserialize(textReader);
             textReader.Close();
             return timeControl;

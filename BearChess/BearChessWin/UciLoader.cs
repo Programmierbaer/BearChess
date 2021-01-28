@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 
 
@@ -68,8 +69,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             };
             _engineProcess.Start();
-            _engineProcess.Exited += this._engineProcess_Exited;
-            _engineProcess.Disposed += this._engineProcess_Disposed;
+            _engineProcess.Exited += this.EngineProcess_Exited;
+            _engineProcess.Disposed += this.EngineProcess_Disposed;
             Thread thread = new Thread(InitEngine) { IsBackground = true };
             thread.Start();
             if (!thread.Join(10000))
@@ -92,12 +93,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
           
         }
 
-        private void _engineProcess_Disposed(object sender, EventArgs e)
+        private void EngineProcess_Disposed(object sender, EventArgs e)
         {
             _logger?.LogWarning("process disposed");
         }
 
-        private void _engineProcess_Exited(object sender, EventArgs e)
+        private void EngineProcess_Exited(object sender, EventArgs e)
         {
             _logger?.LogWarning("process exited");
         }

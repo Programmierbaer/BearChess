@@ -14,10 +14,10 @@
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.3.4.0}
+\fancyhead[R]{Version 0.4.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{27.12.2020} 
+\date{27.01.2021} 
 
 \begin{document}
 \maketitle
@@ -80,7 +80,7 @@ BearChess follows the design of Single Document Interface (SDI). You can place d
 BearChess is running in different modes. The current mode is displayed in the lower left corner.
 \begin{itemize}
 	
-	\item \textbf{Easy playing} This is the mode in the beginning. You just can simply start making your moves on the screen or on your electronic chessboard. In addition to support you can start chess programs or load opening books. But these only give hints, but do not play as opponents. This mode is automatically set if you are not playing in another mode.
+	\item \textbf{Easy playing} This is the mode in the beginning. You just can simply start making your moves on the screen or on your electronic chessboard, almost without regard to the chess rules. In addition to support you can start chess programs or load opening books. But these only give hints, but do not play as opponents. This mode is automatically set if you are not playing in another mode. It is similar to the analyze mode but let you more easily start a new game from any position.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[scale=1.0]{ModeEasyPlaying.png}
@@ -131,10 +131,11 @@ Above you have access to different functions of BearChess.
 	\label{fig:Actions}
 \end{figure}
 \begin{itemize}
-	\item \includegraphics[scale=0.2]{bearchess.png} \textbf{Start a new game} opens a new window to select opponents and time control.
+	\item \includegraphics[scale=0.2]{bearchess.png} \textbf{Play a new game} opens a new window to select opponents and time control.
 	\item \includegraphics[scale=0.5]{robot.png} \textbf{Run in analyze mode} allows you to analyze games or positions with suppport of several chess engines.
 	\item \includegraphics[scale=0.03]{Chess_Board.png} \textbf{Setup position}
-	\item \includegraphics[scale=0.5]{door_out.png} \textbf{Close} exits BearChess
+	\item \textbf{Run startup game on start} immediately starts a new game when you start BearChess. For more information read chapter \textbf{\ref{startupgame}  \nameref{startupgame}} on page \pageref{startupgame}.
+	\item \includegraphics[scale=0.5]{door_out.png} \textbf{Close} exits BearChess.
 \end{itemize}
 
 \subsection{Games}
@@ -146,7 +147,7 @@ Above you have access to different functions of BearChess.
 \end{figure}
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{diskette.png} \textbf{Save} your current game.
-	\item \includegraphics[scale=0.2]{bearchess_2.png}  \textbf{Show \& Load} opens a new window in which you can see and load all your previously saved games.
+	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Show \& Load} opens a new window in which you can see and load all your previously saved games.
 \end{itemize}
 All games are saved in a PGN file.
 
@@ -159,7 +160,7 @@ All games are saved in a PGN file.
 \end{figure}
 \begin{itemize}
 	\item  \includegraphics[scale=0.5]{robot.png} \textbf{Load \& manage engines} opens a new window in which you can install, load or configure your chess engines.
-	\item \textbf{Load last engine on start} if you always want to play immediately with an engine in 'Easy playing' mode.	
+	\item \textbf{Load last engine on start} if you always want to load immediately an engine when you start BearChess. It has no effect if you have activated the option "Run startup game on start".
 	\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
 \end{itemize}
 
@@ -171,7 +172,7 @@ All games are saved in a PGN file.
 	\label{fig:Books}
 \end{figure}
 \begin{itemize}
-	\item \includegraphics[scale=0.5]{book_open.png} \textbf{Load \& manage opening books} opens a new window in which you can install or load  your opening books.
+	\item \includegraphics[scale=0.5]{books_stack.png} \textbf{Load \& manage opening books} opens a new window in which you can install or load  your opening books.
 \end{itemize}
 BearChess can handle Polyglot and Arena opening books.
 
@@ -200,7 +201,9 @@ BearChess can handle Polyglot and Arena opening books.
 \begin{itemize}
 	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.
+	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
 	\item \textbf{Black pieces in front} assumes that you have placed the black chessmen in front of you.
+	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
 \end{itemize}
 
 \subsection{Windows}
@@ -282,6 +285,18 @@ Look at chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pag
 To change the configuration of an installed engine click on \includegraphics[scale=0.5]{cog.png}\\
 The same configuration dialog box as during installation is shown where you can configure the engine or just change the name.
 
+\subsection{Additional configuration for an installed engine}
+
+If you want to save the same program with a different configuration, e.g. an additional configuration with adjusted Elo strength, you can save the configuration under a different name.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{ConfigureStockfish_2.png}
+	\caption{Save as new configuration}
+	\label{fig:LoadEngine3}
+\end{figure}
+Click on \includegraphics[scale=0.5]{cog_add.png} to save the configuration with a new name.\\
+
 
 \subsection{Load an engine}
 
@@ -298,7 +313,7 @@ To load an installed engine, select an engine and click on \includegraphics[scal
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{LoadManageBooks1.png}
+	\includegraphics[scale=1.0]{books.png}
 	\caption{Open Load and Manage Opening Books  }
 	\label{fig:LoadManageBooks1}
 \end{figure}
@@ -658,7 +673,15 @@ In the lower right corner a new button appears, which allows you to easily conne
 	\label{fig:MillenniumChessLink1}
 \end{figure}
 
-For your Millennium ChessLink you may need to configure the COM port used. You can also change how the LEDs should light up.
+For your Millennium ChessLink you may need to configure the COM port used. You can also change how the LEDs should light up.\\
+If your PC supports Bluetooth, you can also connect to the ChessLink module via Bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows. 
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MillenniumChessLink9.png}
+	\caption{Search for Bluetooth }
+	\label{fig:MillenniumChessLink9}
+\end{figure}
+Read chapter \textbf{\ref{Bluetooth}  \nameref{Bluetooth}} on page \pageref{Bluetooth} for more information.
 
 \begin{figure}[H]
 	\centering
@@ -699,6 +722,18 @@ If you select <auto> and no board is found, you will receive the following error
 
 You can change how the LEDs should light up. The brightness and whether the LEDs should flash alternately or synchronously when indicating moves.
 
+\subsubsection{Configure Bluetooth} \label{Bluetooth}
+
+If the "Bluetooth" option is set, the following window will be displayed for a short time if you open the configuration dialog.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{MillenniumChessLink10.png}
+	\caption{Search for Bluetooth}
+	\label{fig:MillenniumChessLink10}
+\end{figure}
+
+During this time or if you connect to the first time, Windows may ask you to connect to the Millennium ChessLink module. In this case, confirm this. Once you have successfully connected to the ChessLink module via Bluetooth, you should deactivate the "Bluetooth" option.
 
 \subsubsection{Connect}
 \begin{figure}[H]
@@ -724,7 +759,7 @@ In the lower right corner a new button appears, which allows you to easily conne
 	\label{fig:MillenniumChessLink8}
 \end{figure}
 
-\section{Start a game}
+\section{Play a game}
 
 \begin{figure}[H]
 	\centering
@@ -748,10 +783,17 @@ Select the opponents for white \includegraphics[scale=0.4]{KingW.png} and black 
 \includegraphics[scale=0.4]{user_silhouette.png} is a shortcut to select "Player".\\
 
 
-{\color{red}*} You cannot use an electronic chessboard for a pure engine match. This is still in development.\\
+\textbf{Hint:} You cannot use an electronic chessboard for a pure engine match.\\
 
-\includegraphics[scale=0.4]{cog.png} opens the engine configuration dialog. This is the same dialog as for Load and manage engines. However, all changes are only used for this game and are not saved permanently.\\
-{\color{red}*} "Thinking on opponent's time" is also known as ponder. Use the configuration dialog to activate or deactivate it. The checkbox control is still in development.\\
+\includegraphics[scale=0.4]{cog.png} opens the engine configuration dialog. This is the same dialog as for load and manage engines. However, all changes are only used for this game and are not saved permanently.\\
+Below the engine selection, there are up to three information which gives you a quick overview of the current engine configuration.
+
+\begin{itemize}
+	\item \textbf{Ponder} if the engine supports pondering, the icons \includegraphics[scale=0.4]{tick.png} and \includegraphics[scale=0.4]{delete.png} shows the current state.
+	\item \textbf{Elo} if the engine supports allows to restrict the Elo performance, the current value is shown.
+	\item  \includegraphics[scale=0.4]{book_open.png} for "yes" and \includegraphics[scale=0.4]{book.png} for "no" shows the current state of using an opening book.
+\end{itemize}
+
 
 \subsection{Start from}
 Select your start position. The default is the base position, but you can start from any position on the board.
@@ -782,11 +824,42 @@ If you are not using an electronic chessboard, you can use the move controls bel
 	\item \textbf{Time per game with increment} limits the entire game to the given minutes but give extra seconds for every move.
 	\item \textbf{Time per given move} limits the game for moves in a certain time frame, e.g. 40 moves in 60 minutes.
 	\item \textbf{Average time per move} requires the engine to execute the moves in an average time of seconds or minutes.
+	\item \textbf{Adapted time} gives the program the same average time in which the player makes his moves.	
 \end{itemize}
 
 \textbf{"Extra time for human player"} add extra minutes for human opponents.\\
 
-\textbf{{\color{red}*} "Start the clock after the move is executed on the electronic board"} avoids a time gap to execute the moves of the engines on the board.
+\textbf{"Start the clock after the move is executed on the electronic board"} avoids a time gap to execute the moves of the engines on the board.
+
+\subsection{Configuration for startup game} \label{startupgame}
+
+For your convenience, you can configure and save a game definition that will be used if you have the "Run startup game at startup" option turned on.  Read more in chapter \textbf{\ref{runstartupgame}  \nameref{runstartupgame}} on page \pageref{runstartupgame}.
+
+\begin{itemize}
+	  \item \includegraphics[scale=0.5]{layer_save.png} Saves the definition.
+  	  \item \includegraphics[scale=0.5]{layer_open.png} Loads the definition.
+\end{itemize}
+
+\subsection{Easy start or restart of a game} 
+
+The button \includegraphics[scale=0.2]{bearchess_2.png} 
+
+If your not active playing a game
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{resetToBasePosition2.png}
+	\caption{Start a game}
+	\label{fig:resetToBasePosition2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{resetToBasePosition.png}
+	\caption{Reset to base position}
+	\label{fig:resetToBasePosition}
+\end{figure}
+
 
 \subsection{Influence of BearChess in engine games}
 Chess engines generally do not have the ability to give up or to recognize a draw, e.g. by repeating moves. In a match between two engines BearChess checks the moves and the current rating. 
@@ -966,6 +1039,21 @@ There are three buttons to quickly set the base position or empty the board.
 With the button \includegraphics[scale=0.5]{accept_button.png} the new position is placed on the chessboard.\\
 \textbf{{\color{red}*}} It is not completely checked whether the position is valid. This also applies to castling rights.
 
+\section{Run startup game on start} \label{runstartupgame}
+
+If you start BearChess and want to start a game immediately, chapter \textbf{\ref{startupgame}  \nameref{startupgame}} on page \pageref{startupgame} describes how to configure and save the definition.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{runonstartup.png}
+	\caption{Run a game on startup}
+	\label{fig:RunOnStartup1}
+\end{figure}
+
+This is like turning on a chess computer that is immediately ready to play.
+
+
+
 \section{Games}
 
 \begin{figure}[H]
@@ -1009,7 +1097,7 @@ If you double click on a row, the game is displayed on the board.
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
 
-{\color{red}*} Currently BearChess does not support a search a filter function.
+{\color{red}*} Currently BearChess does not support a search or filter function.
 
 \section{Engine window}
 
@@ -1073,6 +1161,7 @@ If you have performed the calibration without extra queens and are performing a 
 \subsection{The chess moves are not or not correctly displayed}
 \begin{itemize}
 	\item Check the correct COM port in the configuration dialog.
+	\item Reconnect to the chessboard.	
 	\item Check the position of the chessmen. Moves are only accepted if the chessmen are on the correct square. Fields with missing or wrong figure light up.
 \end{itemize}
 
@@ -1089,17 +1178,25 @@ If you have performed the calibration without extra queens and are performing a 
 \begin{itemize}
 	\item Error correction.
 	\item Develop missing functionality {\color{red}\textbf{*}}
-	\item Bluetooth support.
-	\item Improvements on handling saved games.
+	\item Bluetooth support for Certabo chessboards.
+	\item Improvements on handling saved games and extend PGN support.
+	\item Faster reaction to changes on the chessboard.
 \end{itemize}
 
 \pagebreak
 
 \section{Changelog}
-\subsection{Version 0.3.3.0 =\textgreater 0.3.4.0}
+\subsection{Version 0.3.3.0 =\textgreater 0.4.0.0}
 \begin{itemize}
+	\item New time configuration "Adapted time".
+	\item Implementation of the "Start the clock after the move is executed on the electronic board" time setting.
+    \item Bluetooth support for Millennium ChessLink.
+	\item Recognizing the base position as a new start of a game.
+	\item Configuration of a startup game.
+	\item Changing the behaviour of "Easy playing" mode
 	\item Correction and extension of the evaluating of UCI configuration values.
-	\item Correction at the start of a new game (Engine was not started)
+	\item Correction at the start of a new game (Engine was not started).
+	\item Correction if the engine starts with white.
 	\item Minor fixes.	
 \end{itemize}
 

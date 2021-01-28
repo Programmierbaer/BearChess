@@ -1,7 +1,4 @@
-﻿using System.Net.Http.Headers;
-using www.SoLaNoSoft.com.BearChess.CertaboChessBoard;
-using www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper;
-using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+﻿using www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboLoader

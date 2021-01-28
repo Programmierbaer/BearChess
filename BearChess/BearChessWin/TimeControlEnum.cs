@@ -8,6 +8,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         TimePerGame,
         TimePerGameIncrement,
         TimePerMoves,
-        AverageTimePerMove
+        AverageTimePerMove,
+        Adapted
     }
 }

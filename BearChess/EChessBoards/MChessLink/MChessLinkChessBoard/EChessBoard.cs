@@ -1,4 +1,6 @@
 ﻿using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 {
@@ -86,11 +88,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private bool _lowerLeft = true;
         private bool _lowerRight = true;
 
-        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth)
+        public EChessBoard(ILogging logger, bool isFirstInstance, string portName, bool useBluetooth)
         {
             _logger = logger;
-            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName);
-            _serialCommunication.UseBluetooth = useBluetooth;
+            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName)
+            {
+                UseBluetooth = useBluetooth
+            };
             _isFirstInstance = isFirstInstance;
             IsConnected = EnsureConnection();
         }
@@ -217,6 +221,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
             return new DataFromBoard(result.Substring(0, result.Length - 1), dataFromBoard.Repeated);
 
+        }
+
+        public override void NewGame()
+        {
+            _logger.LogDebug("New game");
+            EnsureConnection();
         }
 
         private string GetFenLine(string substring)

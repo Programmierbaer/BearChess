@@ -22,5 +22,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Minute = dateTime.Minute;
             Second = dateTime.Second;
         }
+
+        public ClockTime(TimeSpan dateTime)
+        {
+            Hour = dateTime.Hours;
+            Minute = dateTime.Minutes;
+            Second = dateTime.Seconds;
+        }
+
+
     }
 }

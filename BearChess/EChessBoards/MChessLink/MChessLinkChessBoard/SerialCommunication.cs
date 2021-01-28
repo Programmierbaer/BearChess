@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 {
@@ -145,7 +146,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                             }
                         }
                     }
-                    Thread.Sleep(10);
+                    Thread.Sleep(5);
                 }
                 catch (Exception ex)
                 {

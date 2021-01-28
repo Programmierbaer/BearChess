@@ -38,8 +38,16 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Margin="0,0,58,0" Source="../Assets/Stone/Symbol/KingW.png" Width="32" Height="32"></Image>
                             <ComboBox Name="comboBoxPlayerWhite" Width="200" Height="30" VerticalContentAlignment="Center" SelectionChanged="ComboBoxPlayerWhite_OnSelectionChanged" />
+
                         </StackPanel>
-                        <CheckBox Name="checkBoxPonderWhite" Margin="90,5,5,5" Visibility="Visible">Thinking on opponent's time</CheckBox>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock  Name="textBlockPonderWhite" Margin="90,0,5,0"  VerticalAlignment="Center">Ponder:</TextBlock>
+                            <Image  Margin="5,0,10,0" Name="imagePonderWhite" Width="16" Height="16" Source="../Assets/Icons/tick.png" Visibility="Visible"></Image>
+                            <Image Margin="5,0,10,0" Name="imagePonderWhite2" Width="16" Height="16" Source="../Assets/Icons/delete.png" Visibility="Collapsed"></Image>
+                            <TextBlock  Name="textBlockEloWhite" Margin="5,0,18,0" Width="70" VerticalAlignment="Center">Elo: 3333</TextBlock>
+                            <Image Margin="5,0,0,0" Name="imageBookWhite" Width="24" Height="24" Source="../Assets/Icons/book_open.png"></Image>
+                            <Image  Margin="5,0,0,0" Name="imageBookWhite2" Width="24" Height="24" Source="../Assets/Icons/book.png" Visibility="Collapsed"></Image>
+                        </StackPanel>
                     </StackPanel>
                     <Button Name="buttonConfigureWhite" Margin="5" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="ButtonConfigureWhite_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Configure">
                         <StackPanel Orientation="Horizontal">
@@ -58,7 +66,15 @@
                             <Image Margin="0,0,58,0" Source="../Assets/Stone/Symbol/KingB.png" Width="32" Height="32"></Image>
                             <ComboBox Name="comboBoxPlayerBlack" Width="200" Height="30" VerticalContentAlignment="Center"  SelectionChanged="ComboBoxPlayerBlack_OnSelectionChanged"/>
                         </StackPanel>
-                        <CheckBox Name="checkBoxPonderBlack" Margin="90,5,5,5">Thinking on opponent's time</CheckBox>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Name="textBlockPonderBlack" Margin="90,0,5,0" VerticalAlignment="Center">Ponder:</TextBlock>
+                            <Image Margin="5,0,10,0" Name="imagePonderBlack2" Width="16" Height="16" Source="../Assets/Icons/delete.png" Visibility="Collapsed"></Image>
+                            <Image Margin="5,0,10,0" Name="imagePonderBlack" Width="16" Height="16" Source="../Assets/Icons/tick.png" Visibility="Visible"></Image>
+                            <TextBlock Name="textBlockEloBlack" Margin="5,0,18,0" Width="70" VerticalAlignment="Center">Elo: 3333</TextBlock>
+                            <Image Margin="5,0,0,0" Name="imageBookBlack" Width="24" Height="24" Source="../Assets/Icons/book_open.png"></Image>
+                            <Image  Margin="5,0,0,0" Name="imageBookBlack2" Width="24" Height="24" Source="../Assets/Icons/book.png" Visibility="Collapsed"></Image>
+
+                        </StackPanel>
                     </StackPanel>
                     <Button Name="buttonConfigureBlack" Margin="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" Click="ButtonConfigureBlack_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Configure">
                         <StackPanel Orientation="Horizontal">
@@ -97,6 +113,7 @@
                             <ComboBoxItem>Time per game with increment</ComboBoxItem>
                             <ComboBoxItem>Time per given moves</ComboBoxItem>
                             <ComboBoxItem>Average time per move</ComboBoxItem>
+                            <ComboBoxItem>Adapted time</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
 
@@ -147,8 +164,9 @@
                         <RadioButton Name="radioButtonMinute" Margin="10,0,0,0" VerticalAlignment="Center"  GroupName="averageTime" Content="min."></RadioButton>
                     </StackPanel>
                 </Border>
+             
 
-                <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Margin="10,5,5,5" VerticalAlignment="Top">
+                <StackPanel Name="stackPanelExtraTime" Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Margin="10,5,5,5" VerticalAlignment="Top">
                     <Label VerticalAlignment="Center">Extra time for human player:</Label>
                     <local:NumericUpDownUserControl x:Name="numericUpDownUserExtraTime" Height="40" MinValue="0"
                                                     MaxValue="999" Value="0" />
@@ -162,6 +180,12 @@
         <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="False" Margin="5">
             <Button Name="buttonOk" Click="ButtonOk_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32"></Image>
+            </Button>
+            <Button Name="buttonSave" Click="ButtonSave_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left" Background="Transparent" BorderBrush="Transparent" ToolTip="Save configuration as startup game">
+                <Image Source="../Assets/Icons/layer_save.png" Width="32" Height="32"></Image>
+            </Button>
+            <Button Name="buttonOpen" Click="ButtonOpen_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left" Background="Transparent" BorderBrush="Transparent" ToolTip="Load startup game configuration">
+                <Image Source="../Assets/Icons/layer_open.png" Width="32" Height="32"></Image>
             </Button>
             <Button Name="buttonCancel" Click="ButtonCancel_OnClick" Margin="5,5,20,5" DockPanel.Dock="Right"  Background="Transparent" BorderBrush="Transparent">
                 <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32"></Image>

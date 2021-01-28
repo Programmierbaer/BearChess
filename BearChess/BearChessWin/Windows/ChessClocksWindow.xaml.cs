@@ -62,6 +62,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return new ClockTime(_startTime);
         }
 
+        public ClockTime GetElapsedTime()
+        {
+            return new ClockTime(_stopwatch.Elapsed);
+        }
+
         public void SetTime(ClockTime clockTime, int extraSeconds = 0)
         {
             SetTime(clockTime.Hour,clockTime.Minute,clockTime.Second, extraSeconds);
@@ -76,6 +81,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _extraSeconds = extraSeconds;
             Title =  _extraSeconds>0 ? $"Clock {_capture} ({hh:00}:{mm:00}:{ss:00} + {extraSeconds}s)" : $"Clock {_capture} ({hh:00}:{mm:00}:{ss:00}";
             borderWarning.Visibility = Visibility.Hidden;
+        }
+
+        public void SetTooltip(string tooltip)
+        {
+            ToolTip = tooltip;
         }
 
         private void SetDigitalNumbers(string hh, string mm, string ss)

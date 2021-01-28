@@ -47,6 +47,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             OptionValues = OptionValues.Append(optionValue).ToArray();
         }
 
+        public void SetPonderValue(string trueFalse)
+        {
+           OptionValues =  OptionValues.Where(o => !o.Contains("Ponder")).Append($"setoption name Ponder value {trueFalse}").ToArray();
+        }
+
         public override string ToString()
         {
             return $"{OriginName} from {Author}";

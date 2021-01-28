@@ -1,4 +1,5 @@
 ﻿using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard;
 
 namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
@@ -30,13 +31,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         /// <inheritdoc />
         protected override IEBoard GetEBoard()
         {
-            return new EChessBoard(basePath: _basePath, logger: _fileLogger, isFirstInstance: _isFirstInstance,
+            return new MChessLinkChessBoard.EChessBoard(logger: _fileLogger, isFirstInstance: _isFirstInstance,
                                    portName: _comPortName,useBluetooth: _useBluetooth);
         }
 
         protected override IEBoard GetEBoard(bool check)
         {
-            return new EChessBoard(logger: _fileLogger);
+            return new MChessLinkChessBoard.EChessBoard(logger: _fileLogger);
         }
 
 

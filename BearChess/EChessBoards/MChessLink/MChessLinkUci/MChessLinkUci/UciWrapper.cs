@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper;
 
 namespace www.SoLaNoSoft.com.BearChess.MChessLinkUci

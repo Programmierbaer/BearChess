@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 {
@@ -21,7 +23,6 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             {
                 if (_dataFromBoard.TryDequeue(out var line))
                 {
-
                     return new DataFromBoard(line, 0);
                 }
 
@@ -50,16 +51,18 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         public override string GetCalibrateData()
         {
 
-            List<byte[]> playLeds = new List<byte[]>();
-            playLeds.Add(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 });
-            playLeds.Add(new byte[] { 255, 0, 0, 0, 0, 0, 0, 0 });
-            playLeds.Add(new byte[] { 0, 255, 0, 0, 0, 0, 0, 0 });
-            playLeds.Add(new byte[] { 0, 0, 255, 0, 0, 0, 0, 0 });
-            playLeds.Add(new byte[] { 0, 0, 0, 255, 0, 0, 0, 0 });
-            playLeds.Add(new byte[] { 0, 0, 0, 0, 255, 0, 0, 0 });
-            playLeds.Add(new byte[] { 0, 0, 0, 0, 0, 255, 0, 0 });
-            playLeds.Add(new byte[] { 0, 0, 0, 0, 0, 0, 255, 0 });
-            playLeds.Add(new byte[] { 0, 0, 0, 0, 0, 0, 0, 255 });
+            List<byte[]> playLeds = new List<byte[]>
+                                    {
+                                        new byte[] {0, 0, 0, 0, 0, 0, 0, 0},
+                                        new byte[] {255, 0, 0, 0, 0, 0, 0, 0},
+                                        new byte[] {0, 255, 0, 0, 0, 0, 0, 0},
+                                        new byte[] {0, 0, 255, 0, 0, 0, 0, 0},
+                                        new byte[] {0, 0, 0, 255, 0, 0, 0, 0},
+                                        new byte[] {0, 0, 0, 0, 255, 0, 0, 0},
+                                        new byte[] {0, 0, 0, 0, 0, 255, 0, 0},
+                                        new byte[] {0, 0, 0, 0, 0, 0, 255, 0},
+                                        new byte[] {0, 0, 0, 0, 0, 0, 0, 255}
+                                    };
             int index = 1;
             var result = string.Empty;
             var calibrationHelper = new Dictionary<string, int>();
@@ -134,7 +137,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                             {
                                 _logger?.LogDebug($"C: Send byte array: {BitConverter.ToString(data)}");
                                 _serialPort.Write(data, 0, data.Length);
-                                Thread.Sleep(10);
+                                Thread.Sleep(5);
                             }
                         }
 
@@ -154,7 +157,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                             }
                         }
                     }
-                    Thread.Sleep(10);
+                    Thread.Sleep(5);
                 }
                 catch (Exception ex)
                 {

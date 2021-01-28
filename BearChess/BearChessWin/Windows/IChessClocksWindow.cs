@@ -7,8 +7,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         event EventHandler TimeOutEvent;
         ClockTime GetClockTime();
+        ClockTime GetElapsedTime();
         void SetTime(ClockTime clockTime, int extraSeconds = 0);
         void SetTime(int hh, int mm, int ss, int extraSeconds= 0);
+        void SetTooltip(string tooltip);
         void Reset();
         void Stop();
         void Go();

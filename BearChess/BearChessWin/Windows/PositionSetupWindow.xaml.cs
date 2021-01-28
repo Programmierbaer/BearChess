@@ -66,6 +66,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 checkBoxWhiteLongCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_WHITE).Field == Fields.FE1 && _chessBoard.GetFigureOn(Fields.FA1).FigureId==FigureId.WHITE_ROOK;
                 checkBoxBlackShortCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_BLACK).Field == Fields.FE8 && _chessBoard.GetFigureOn(Fields.FH8).FigureId == FigureId.BLACK_ROOK;
                 checkBoxBlackLongCastle.IsChecked = _chessBoard.GetKingFigure(Fields.COLOR_BLACK).Field == Fields.FE8 && _chessBoard.GetFigureOn(Fields.FA8).FigureId == FigureId.BLACK_ROOK;
+                radioButtonWhiteOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_WHITE || _chessBoard.CurrentColor == Fields.COLOR_EMPTY;
+                radioButtonBlackOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_BLACK;
             }
             chessBoardUserControl.SetInPositionMode(true, fenPosition, acceptMouse);
             chessBoardUserControl.SetPiecesMaterial();
@@ -76,7 +78,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetFenPosition(string fenPosition)
         {
-            SetFenPosition(fenPosition,false);
+            SetFenPosition(fenPosition, false);
         }
 
         private void SetFenPosition(string fenPosition, bool fromTextBox)

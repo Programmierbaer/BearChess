@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Xml.Serialization;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 {
@@ -89,7 +91,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             ReadConfiguration();
             eBoardWrapper = GetEBoardWrapper();
             eBoardWrapper.SetAllLedsOff();
-            eBoardWrapper.MoveEvent += this._eBoard_MoveEvent;
+            eBoardWrapper.MoveEvent += this.EBoard_MoveEvent;
             _fileLogger?.LogDebug($"{number}. instance of {name} created");
         }
 
@@ -115,7 +117,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
                 while (true)
                 {
-                    Thread.Sleep(10);
+                    Thread.Sleep(5);
                     // No news from the GUI
                     if (!_messagesFromGui.TryDequeue(out var command))
                     {
@@ -546,7 +548,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         {
             while (true)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(5);
                 if (_messagesToGui.TryDequeue(out string command))
                 {
                     if (string.IsNullOrWhiteSpace(command))
@@ -600,7 +602,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         /// <summary>
         /// Move received from the chess board.
         /// </summary>
-        private void _eBoard_MoveEvent(object sender, string move)
+        private void EBoard_MoveEvent(object sender, string move)
         {
             // A move should only be received if it was expected: After a "go" command
             if (!_goReceived)

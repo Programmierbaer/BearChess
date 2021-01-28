@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
-using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
@@ -15,6 +14,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public event EventHandler<string> MoveEvent;
         public event EventHandler<string> FenEvent;
         public event EventHandler AwaitedPosition;
+        public event EventHandler BasePositionEvent;
 
         public bool IsInDemoMode => _eChessBoard.IsInDemoMode;
         public bool IsConnected => _eChessBoard.IsConnected;
@@ -65,9 +65,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             EChessBoardConfiguration configuration = ReadConfiguration();
             // ReSharper disable once VirtualMemberCallInConstructor
             _eChessBoard = GetEBoardImpl(basePath, configuration);
-            _eChessBoard.FenEvent += this._eChessBoard_FenEvent;
-            _eChessBoard.MoveEvent += this._eChessBoard_MoveEvent;
-            _eChessBoard.AwaitedPosition += _eChessBoard_AwaitedPosition;
+            _eChessBoard.FenEvent += EChessBoard_FenEvent;
+            _eChessBoard.MoveEvent += EChessBoard_MoveEvent;
+            _eChessBoard.AwaitedPosition += EChessBoard_AwaitedPosition;
+            _eChessBoard.BasePositionEvent += EChessBoard_BasePositionEvent;
 
         }
 
@@ -185,6 +186,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _eChessBoard.CheckCOMPort(portName);
         }
 
+        public string GetCurrentComPort()
+        {
+            return _eChessBoard.GetCurrentCOMPort();
+        }
+
         /// <inheritdoc />
         public void DimLeds(bool dimLeds)
         {
@@ -217,7 +223,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         #region private
 
-        private void _eChessBoard_MoveEvent(object sender, string move)
+        private void EChessBoard_MoveEvent(object sender, string move)
         {
             MoveEvent?.Invoke(this, move);
         }
@@ -232,15 +238,21 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             EChessBoardConfiguration.Save(configuration,_configFile);
         }
 
-        private void _eChessBoard_FenEvent(object sender, string fenPosition)
+        private void EChessBoard_FenEvent(object sender, string fenPosition)
         {
             FenEvent?.Invoke(this, fenPosition);
         }
 
-        private void _eChessBoard_AwaitedPosition(object sender, EventArgs e)
+        private void EChessBoard_AwaitedPosition(object sender, EventArgs e)
         {
             AwaitedPosition?.Invoke(sender,e);
         }
+
+        private void EChessBoard_BasePositionEvent(object sender, EventArgs e)
+        {
+            BasePositionEvent?.Invoke(sender, e);
+        }
+
 
         #endregion
     }

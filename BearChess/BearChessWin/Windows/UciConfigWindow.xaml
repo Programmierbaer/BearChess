@@ -9,12 +9,12 @@
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Name="textBlockName" Margin="5">Name:</TextBlock>
-            <TextBox Name="textBoxName" Width="330"  Margin="5"></TextBox>
+            <TextBox Name="textBoxName" Width="330" Margin="5"></TextBox>
         </StackPanel>
         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
             <StackPanel>
                <DockPanel >
-                    <CheckBox Name="checkBoxUseOpeningBook" VerticalAlignment="Center" VerticalContentAlignment="Center" DockPanel.Dock="Left" Margin="5">Use opening book:</CheckBox>
+                    <CheckBox Name="checkBoxUseOpeningBook" VerticalAlignment="Center" VerticalContentAlignment="Center" DockPanel.Dock="Left" Checked="CheckBoxUseOpeningBook_OnChecked" Unchecked="CheckBoxUseOpeningBook_OnUnchecked"  Margin="5">Use opening book:</CheckBox>
                     <ComboBox Name="comboBoxOpeningBooks" Margin="5" DockPanel.Dock="Left"></ComboBox>
                 </DockPanel>
                 <StackPanel Margin="5" Orientation="Horizontal">
@@ -43,13 +43,17 @@
             </StackPanel>
         </Border>
         <DockPanel Margin="10" LastChildFill="False">
-            <Button DockPanel.Dock="Left"  Name="buttonOk" Click="ButtonOk_OnClick" BorderBrush="Transparent" Background="Transparent">
+            <Button DockPanel.Dock="Left"  Name="buttonOk" Click="ButtonOk_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Save">
                 <Image Source="../Assets/Icons/accept_button.png"  Width="32" Height="32"></Image>
             </Button>
-         
-            <Button  DockPanel.Dock="Right"  Name="buttonCancel" Click="ButtonCancel_OnClick" BorderBrush="Transparent" Background="Transparent">
+            <Button  DockPanel.Dock="Left"  Margin="20,0,10,0" Name="buttonSaveAs" Click="ButtonSaveAs_OnClick" BorderBrush="Transparent" Background="Transparent"
+                     ToolTip="Add as new configuration">
+                <Image Source="../Assets/Icons/cog_add.png"  Width="32" Height="32"></Image>
+            </Button>
+            <Button  DockPanel.Dock="Right"  Name="buttonCancel" Click="ButtonCancel_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Cancel"> 
                 <Image Source="../Assets/Icons/cancel.png"  Width="32" Height="32"></Image>
             </Button>
+
             <Button  DockPanel.Dock="Right"  Margin="0,0,10,0" Name="buttonDefault" Click="ButtonDefault_OnClick" BorderBrush="Transparent" Background="Transparent"
                      ToolTip="Reset to default values">
                 <Image Source="../Assets/Icons/undo.png"  Width="32" Height="32"></Image>

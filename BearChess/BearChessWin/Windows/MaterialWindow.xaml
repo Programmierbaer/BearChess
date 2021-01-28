@@ -40,10 +40,10 @@
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="0"  Name="textBlockTopQueen" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="1"  Name="textBlockTopRook1" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="2"  Name="textBlockTopRook2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="3"  Name="textBlockTopKnight1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="4"  Name="textBlockTopKnight2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="5"  Name="textBlockTopBishop1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="6"  Name="textBlockTopBishop2" ></TextBlock>
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="3"  Name="textBlockTopBishop1" ></TextBlock>
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="4"  Name="textBlockTopBishop2" ></TextBlock>
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="5"  Name="textBlockTopKnight1" ></TextBlock>
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="6"  Name="textBlockTopKnight2" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="7"  Name="textBlockTopPawn1" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="8"  Name="textBlockTopPawn2" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="9"  Name="textBlockTopPawn3" ></TextBlock>
@@ -74,10 +74,10 @@
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="0"  Name="textBlockBottomQueen" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="1"  Name="textBlockBottomRook1" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="2"  Name="textBlockBottomRook2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="3"  Name="textBlockBottomKnight1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="4"  Name="textBlockBottomKnight2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="5"  Name="textBlockBottomBishop1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="6"  Name="textBlockBottomBishop2" ></TextBlock>
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="3"  Name="textBlockBottomBishop1" ></TextBlock>
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="4"  Name="textBlockBottomBishop2" ></TextBlock>
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="5"  Name="textBlockBottomKnight1" ></TextBlock>
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="6"  Name="textBlockBottomKnight2" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="7"  Name="textBlockBottomPawn1" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="8"  Name="textBlockBottomPawn2" ></TextBlock>
             <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="9"  Name="textBlockBottomPawn3" ></TextBlock>

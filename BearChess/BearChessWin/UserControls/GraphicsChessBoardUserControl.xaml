@@ -660,8 +660,8 @@
                 Background="DarkGray">
             <TextBlock Name="textBlock0" Text=" " HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Border>
-        <Button Grid.Column="0" Grid.Row="9"  Name="resetStartPosition" Background="Transparent" BorderBrush="Transparent" ToolTip="Reset to base position" Click="ResetStartPosition_OnClick" >
-            <Image VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/Array.ico" />
+        <Button Grid.Column="0" Grid.Row="9"  Name="resetStartPosition" Background="Transparent" BorderBrush="Transparent" ToolTip="Play a game" Click="ResetStartPosition_OnClick" >
+            <Image VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/bearchess_2.png" />
         </Button>
         <Button Grid.Column="1" Grid.Row="9"  Name="moveStepAllBack" Background="Transparent" BorderBrush="Transparent" ToolTip="Back to first move" Click="MoveStepAllBack_OnClick" >
             <Image VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/control_start.png" />
@@ -682,8 +682,8 @@
               <Image Margin="1" Name="imageRobotPause" Visibility="Collapsed" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/robotPause.png" />
             </StackPanel>
         </Button>
-        <TextBlock FontSize="30" Margin="10,0,0,0"  Name="textBlockBlackClock" Grid.Column="9" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Right" >C</TextBlock>
-        <TextBlock FontSize="30" Margin="10,0,0,0" Name="textBlockWhiteClock" Grid.Column="9" Grid.Row="7" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Right" >c</TextBlock>
+        <TextBlock FontSize="30" Margin="10,0,0,0"  Name="textBlockBlackClock" Grid.Column="9" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Right" ToolTip="Black's move" >C</TextBlock>
+        <TextBlock FontSize="30" Margin="10,0,0,0" Name="textBlockWhiteClock" Grid.Column="9" Grid.Row="7" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Right" ToolTip="White's move" >c</TextBlock>
     </Grid>
     
 </UserControl>

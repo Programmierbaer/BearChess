@@ -21,11 +21,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DateTime _stopTime;
 
         private TimeSpan _duration;
-        private readonly Thread _thread;
         private int _extraSeconds = 0;
         private static readonly object _locker = new object();
         private readonly Configuration _configuration;
-        private Stopwatch _stopwatch;
+        private readonly Stopwatch _stopwatch;
       
 
         public bool CountDown { get; set; }
@@ -49,8 +48,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockSec1.Foreground = new SolidColorBrush(inversColor);
             textBlock1.Foreground = new SolidColorBrush(inversColor);
             textBlock2.Foreground = new SolidColorBrush(inversColor);
-            _thread = new Thread(updateTime) { IsBackground = true };
-            _thread.Start();
+            var thread = new Thread(updateTime) { IsBackground = true };
+            thread.Start();
             Title = capture;
             ToolTip = Title;
 
@@ -63,6 +62,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return new ClockTime(_startTime);
         }
 
+        public ClockTime GetElapsedTime()
+        {
+            return new ClockTime(_stopwatch.Elapsed);
+        }
+
+
+        public void SetTooltip(string tooltip)
+        {
+            ToolTip = tooltip;
+        }
 
         public void Reset()
         {
@@ -97,31 +106,33 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void Stop()
         {
-            if (!_stop)
+            if (_stop)
             {
-                _stopwatch.Stop();
-                _stop = true;
-                if (!CountDown)
-                {
-                    var stopwatchElapsed = _stopwatch.Elapsed;
-                    SetDigitalNumbers(stopwatchElapsed.Hours.ToString(), stopwatchElapsed.Minutes.ToString(),
-                                      stopwatchElapsed.Seconds.ToString());
-                    return;
+                return;
+            }
 
-                }
+            _stopwatch.Stop();
+            _stop = true;
+            if (!CountDown)
+            {
+                var stopwatchElapsed = _stopwatch.Elapsed;
+                SetDigitalNumbers(stopwatchElapsed.Hours.ToString(), stopwatchElapsed.Minutes.ToString(),
+                                  stopwatchElapsed.Seconds.ToString());
+                return;
 
-                _startTime = _startTime.AddSeconds(_extraSeconds) - _duration;
-                SetDigitalNumbers(_startTime.Hour.ToString(),
-                                  _startTime.Minute.ToString(),
-                                  _startTime.Second.ToString());
-                if (_startTime.Hour == 0 && _startTime.Minute == 0 && _startTime.Second <= 30)
-                {
-                    borderWarning.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    borderWarning.Visibility = Visibility.Hidden;
-                }
+            }
+
+            _startTime = _startTime.AddSeconds(_extraSeconds) - _duration;
+            SetDigitalNumbers(_startTime.Hour.ToString(),
+                              _startTime.Minute.ToString(),
+                              _startTime.Second.ToString());
+            if (_startTime.Hour == 0 && _startTime.Minute == 0 && _startTime.Second <= 30)
+            {
+                borderWarning.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                borderWarning.Visibility = Visibility.Hidden;
             }
         }
 
@@ -190,12 +201,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             lock (_locker)
             {
-
-                    textBlockHour1.Text = hh.Length == 2 ? hh : 0 + hh;
-                    textBlockMin1.Text = mm.Length == 2 ? mm : 0 + mm;
-                    textBlockSec1.Text = ss.Length == 2 ? ss : 0 + ss;
-
-
+                textBlockHour1.Text = hh.Length == 2 ? hh : 0 + hh;
+                textBlockMin1.Text = mm.Length == 2 ? mm : 0 + mm;
+                textBlockSec1.Text = ss.Length == 2 ? ss : 0 + ss;
             }
         }
 

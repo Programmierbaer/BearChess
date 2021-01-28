@@ -41,15 +41,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractEBoard.cs" />
+    <Compile Include="AbstractEBoardWrapper.cs" />
     <Compile Include="AbstractLoader.cs" />
+    <Compile Include="DataFromBoard.cs" />
     <Compile Include="EChessBoardConfiguration.cs" />
     <Compile Include="IElectronicChessBoard.cs" />
+    <Compile Include="Interfaces\IEBoard.cs" />
+    <Compile Include="Interfaces\IEBoardWrapper.cs" />
+    <Compile Include="Interfaces\IInternalChessBoard.cs" />
+    <Compile Include="Interfaces\ISerialCommunication.cs" />
+    <Compile Include="InternalChessBoard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EChessBoards\CommonUciWrapper\CommonUciWrapper.csproj">
-      <Project>{66AB214E-2281-4D97-99C7-B54B0E31DF1A}</Project>
-      <Name>CommonUciWrapper</Name>
+    <ProjectReference Include="..\..\BearChessBase\BearChessBase.csproj">
+      <Project>{72bad856-2f5e-45db-9ff1-42d68a4998f5}</Project>
+      <Name>BearChessBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BearChessTools\BearChessTools.csproj">
+      <Project>{58eab818-7176-4ba9-a62a-ac2f27b089ae}</Project>
+      <Name>BearChessTools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

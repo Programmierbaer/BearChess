@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded" 
         mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke"
         Title="BearChess" Height="740" Width="650" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize"> 
     <StackPanel>
@@ -16,7 +16,7 @@
             <Menu Grid.Row="0"  Margin="5,0,5,0" Background="Transparent" >
                
                 <MenuItem Header="Actions" >
-                    <MenuItem Header="Start a new game" Name="menuItemNewGame" Click="MenuItemNewGame_OnClick"  >
+                    <MenuItem Header="Play a new game" Name="menuItemNewGame" Click="MenuItemNewGame_OnClick"  >
                         <MenuItem.Icon >
                             <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" ></Image>
                         </MenuItem.Icon>
@@ -31,6 +31,12 @@
                             <Image Source="Assets/Icons/chess_board.png" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Run startup game on start" Name="menuItemRunLastGame" Click="MenuItemRunLastGame_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageRunLastGame" Source="Assets/Icons/tick.png" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                  
                     <MenuItem Header="Close" Name="menuItemClose" Click="MenuItemClose_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/door_out.png" ></Image>
@@ -45,7 +51,7 @@
                     </MenuItem>
                     <MenuItem Name="menuItemGamesLoad" Header="Show &amp; Load" Click="MenuItemGamesLoad_OnClick" >
                         <MenuItem.Icon >
-                            <Image Source="Assets/Icons/bearchess_2.png" Stretch="UniformToFill" ></Image>
+                            <Image Source="Assets/Icons/file_manager.png" Stretch="UniformToFill" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
 
@@ -71,7 +77,7 @@
 
                     <MenuItem Header="Load &amp; manage opening books" Name="menuItemLoadBook" Click="MenuItemLoadBook_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/book_open.png" ></Image>
+                            <Image Source="Assets/Icons/books_stack.png" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -174,9 +180,19 @@
                         </MenuItem>
 
                     </MenuItem>
+                    <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup" Click="MenuItemConnectOnStartup_OnClick">
+                        <MenuItem.Icon >
+                            <Image Name="imageConnectOnStartupTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Header="Black pieces in front" Name="menuItemFlipBoard" Click="MenuItemFlipBoard_OnClick">
                         <MenuItem.Icon >
                             <Image Name="imageFlipBoardTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Start new game on base position" Name="menuItemRunGameOnBase" Click="MenuItemRunGameOnBase_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageRunGameOnBase" Source="Assets/Icons/tick.png" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
                     <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" /> -->

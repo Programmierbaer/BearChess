@@ -47,9 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractBaseLogger.cs" />
-    <Compile Include="FileLogger.cs" />
-    <Compile Include="ILogging.cs" />
     <Compile Include="PgnGame.cs" />
     <Compile Include="PgnLoader.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -60,6 +57,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BearChessBase\BearChessBase.csproj">
+      <Project>{72BAD856-2F5E-45DB-9FF1-42D68A4998F5}</Project>
+      <Name>BearChessBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

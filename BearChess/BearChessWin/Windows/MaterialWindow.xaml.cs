@@ -47,15 +47,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _allTextBlocks["r"] = new List<TextBlock>();
             _allTextBlocks["r"].Add(textBlockBottomRook1);
             _allTextBlocks["r"].Add(textBlockBottomRook2);
-            
-            _allTextBlocks["N"] = new List<TextBlock>();
-            _allTextBlocks["N"].Add(textBlockTopKnight1);
-            _allTextBlocks["N"].Add(textBlockTopKnight2);
-            
-            _allTextBlocks["n"] = new List<TextBlock>();
-            _allTextBlocks["n"].Add(textBlockBottomKnight1);
-            _allTextBlocks["n"].Add(textBlockBottomKnight2);
-            
+
+
             _allTextBlocks["B"] = new List<TextBlock>();
             _allTextBlocks["B"].Add(textBlockTopBishop1);
             _allTextBlocks["B"].Add(textBlockTopBishop2);
@@ -63,7 +56,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _allTextBlocks["b"] = new List<TextBlock>();
             _allTextBlocks["b"].Add(textBlockBottomBishop1);
             _allTextBlocks["b"].Add(textBlockBottomBishop2);
+
+            _allTextBlocks["N"] = new List<TextBlock>();
+            _allTextBlocks["N"].Add(textBlockTopKnight1);
+            _allTextBlocks["N"].Add(textBlockTopKnight2);
             
+            _allTextBlocks["n"] = new List<TextBlock>();
+            _allTextBlocks["n"].Add(textBlockBottomKnight1);
+            _allTextBlocks["n"].Add(textBlockBottomKnight2);
+          
             _allTextBlocks["P"] = new List<TextBlock>();
             _allTextBlocks["P"].Add(textBlockTopPawn1);
             _allTextBlocks["P"].Add(textBlockTopPawn2);
@@ -147,7 +148,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                           [Fields.COLOR_BLACK] = "k q r r b b n n p p p p p p p p"
                                                       };
 
-        _topLine = string.Empty;
+            _topLine = string.Empty;
             _topLineDiff = string.Empty;
             _bottomLine = string.Empty;
             _bottomLineDiff = string.Empty;
@@ -155,7 +156,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 ShowMaterial();
             }
-
 
             var countTop = topFigures.Count(f => f.GeneralFigureId == FigureId.QUEEN);
             var countBottom = bottomFigures.Count(f => f.GeneralFigureId == FigureId.QUEEN);
@@ -177,16 +177,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _topLineDiff += new string('r', countBottom - countTop);
             }
-            countTop = topFigures.Count(f => f.GeneralFigureId == FigureId.KNIGHT);
-            countBottom = bottomFigures.Count(f => f.GeneralFigureId == FigureId.KNIGHT);
-            if (countTop > countBottom)
-            {
-                _bottomLineDiff += new string('N', countTop - countBottom);
-            }
-            if (countBottom > countTop)
-            {
-                _topLineDiff += new string('n', countBottom - countTop);
-            }
             countTop = topFigures.Count(f => f.GeneralFigureId == FigureId.BISHOP);
             countBottom = bottomFigures.Count(f => f.GeneralFigureId == FigureId.BISHOP);
             if (countTop > countBottom)
@@ -197,6 +187,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _topLineDiff += new string('b', countBottom - countTop);
             }
+            countTop = topFigures.Count(f => f.GeneralFigureId == FigureId.KNIGHT);
+            countBottom = bottomFigures.Count(f => f.GeneralFigureId == FigureId.KNIGHT);
+            if (countTop > countBottom)
+            {
+                _bottomLineDiff += new string('N', countTop - countBottom);
+            }
+            if (countBottom > countTop)
+            {
+                _topLineDiff += new string('n', countBottom - countTop);
+            }
+
             countTop = topFigures.Count(f => f.GeneralFigureId == FigureId.PAWN);
             countBottom = bottomFigures.Count(f => f.GeneralFigureId == FigureId.PAWN);
             if (countTop > countBottom)
@@ -250,42 +251,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (_showDifference)
             {
-                FillTopLine(_topLineDiff);
-                FillTopLine(_bottomLineDiff);
+                FillTopLine(_topLineDiff,_bottomLineDiff);
             }
             else
             {
-                FillTopLine(_topLine);
-                FillTopLine(_bottomLine);
+                FillTopLine(_topLine, _bottomLine);
+                
             }
 
             textBlockDifference.Text = _showDifference ? "Diff." : "All";
         }
 
-        private void FillTopLine(string topLine)
+        private void FillTopLine(string topLine, string bottomLine)
         {
-            string o = string.Empty;
-            if (string.IsNullOrEmpty(topLine))
+            if (string.IsNullOrEmpty(topLine) && string.IsNullOrEmpty(bottomLine))
             {
-               
                 return;
             }
             foreach (var c in topLine.ToCharArray())
             {
-                o = c.ToString();
-                if (o.Equals(o.ToLower()))
-                {
-                    o = o.ToUpper();
-                }
-                else
-                {
-                    o = o.ToLower();
-                }
+                var o = c.ToString();
+                o = o.Equals(o.ToLower()) ? o.ToUpper() : o.ToLower();
+
                 foreach (var textBlock in _allTextBlocks[c.ToString()])
                 {
                     if (string.IsNullOrEmpty(textBlock.Text) || textBlock.Text == "-") 
                     {
                         textBlock.Text = _fontConverter.ConvertFont(c.ToString(), "Chess Merida");
+                        
                         break;
                     }
                 }
@@ -296,6 +289,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         textBlock.Text = "-";
                         break;
                     }
+                }
+            }
+            foreach (var c in bottomLine.ToCharArray())
+            {
+                var o = c.ToString();
+                o = o.Equals(o.ToLower()) ? o.ToUpper() : o.ToLower();
+
+                int i = 0;
+                foreach (var textBlock in _allTextBlocks[c.ToString()])
+                {
+                    if (string.IsNullOrEmpty(textBlock.Text) || textBlock.Text == "-")
+                    {
+                        textBlock.Text = _fontConverter.ConvertFont(c.ToString(), "Chess Merida");
+
+                        break;
+                    }
+
+                    i++;
+                }
+                if (string.IsNullOrEmpty(_allTextBlocks[o][i].Text))
+                {
+                    _allTextBlocks[o][i].Text = "-";
                 }
             }
         }

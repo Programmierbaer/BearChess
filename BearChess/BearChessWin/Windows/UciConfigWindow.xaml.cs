@@ -15,6 +15,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly UciInfo _uciInfo;
         private readonly bool _showButtons;
 
+        public bool SaveAsNew { get; private set; }
+
 
         public class ButtonConfigEventArgs : EventArgs
         {
@@ -29,12 +31,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
         public event EventHandler<ButtonConfigEventArgs> ButtonConfigEvent;
+
         public UciConfigWindow()
         {
             InitializeComponent();
         }
 
-        public UciConfigWindow(UciInfo uciInfo,  bool canChangeName, bool showButtons) : this()
+        public UciConfigWindow(UciInfo uciInfo,  bool canChangeName, bool showButtons, bool canSaveAs) : this()
         {
             Title += $" {uciInfo.OriginName}";
             _uciInfo = uciInfo;
@@ -42,9 +45,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockName.ToolTip = uciInfo.OriginName;
             textBoxName.Text = uciInfo.Name;
             textBoxName.IsEnabled = canChangeName;
+            buttonSaveAs.Visibility = canSaveAs ? Visibility.Visible : Visibility.Hidden;
             if (!canChangeName)
             {
                 textBoxName.ToolTip = uciInfo.Name;
+            }
+            else
+            {
+                textBoxName.ToolTip = "Name of the configuration";
             }
             textBlockFileName.Text = uciInfo.FileName;
             textBlockFileName.ToolTip = uciInfo.FileName;
@@ -58,7 +66,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             radioButtonBest.IsChecked = variation == OpeningBook.VariationsEnum.BestMove;
             radioButtonFlexible.IsChecked = variation == OpeningBook.VariationsEnum.Flexible;
             radioButtonWide.IsChecked = variation == OpeningBook.VariationsEnum.Wide;
-
+            checkBoxUseOpeningBook.IsEnabled = installedBooks.Length > 0;
             if (!string.IsNullOrWhiteSpace(uciInfo.OpeningBook))
             {
                 for (int i = 0; i < installedBooks.Length; i++)
@@ -137,7 +145,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             var uciInfo = new UciInfo(_uciInfo.FileName)
             {
-                Id = _uciInfo.Id,
+                Id = SaveAsNew ? "uci"+Guid.NewGuid().ToString("N") : _uciInfo.Id,
                 Author = _uciInfo.Author,
                 Name = string.IsNullOrWhiteSpace(textBoxName.Text) ? _uciInfo.OriginName : textBoxName.Text,
                 OriginName = _uciInfo.OriginName,
@@ -521,6 +529,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
+            SaveAsNew = false;
             DialogResult = true;
         }
 
@@ -541,6 +550,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-     
+
+        private void ButtonSaveAs_OnClick(object sender, RoutedEventArgs e)
+        {
+            SaveAsNew = true;
+            DialogResult = true;
+        }
+
+        private void CheckBoxUseOpeningBook_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            radioButtonBest.IsEnabled = false;
+            radioButtonFlexible.IsEnabled = false;
+            radioButtonWide.IsEnabled = false;
+        }
+
+        private void CheckBoxUseOpeningBook_OnChecked(object sender, RoutedEventArgs e)
+        {
+            radioButtonBest.IsEnabled = true;
+            radioButtonFlexible.IsEnabled = true;
+            radioButtonWide.IsEnabled = true;
+        }
     }
 }

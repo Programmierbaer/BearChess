@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using www.SoLaNoSoft.com.BearChess.CertaboChessBoard;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
 {
@@ -23,13 +24,13 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new EChessBoard(basePath: _basePath,logger: _fileLogger, isFirstInstance: _isFirstInstance,
+            return new CertaboChessBoard.EChessBoard(basePath: _basePath,logger: _fileLogger, isFirstInstance: _isFirstInstance,
                                    portName: _comPortName);
         }
 
         protected override IEBoard GetEBoard(bool check)
         {
-            return new EChessBoard( logger: _fileLogger);
+            return new CertaboChessBoard.EChessBoard( logger: _fileLogger);
         }
 
         public override void Calibrate()

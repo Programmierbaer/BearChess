@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 {
@@ -96,14 +95,14 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             return false;
         }
 
-        public string GetCurrentCOMPort()
-        {
-            return _serialCommunication.CurrentComPort;
-        }
 
         public override void SetLedForFields(string[] fieldNames)
         {
-            if (!EnsureConnection()) return;
+            if (!EnsureConnection())
+            {
+                return;
+            }
+
             lock (_locker)
             {
                 var joinedString = string.Join(" ", fieldNames);
@@ -143,7 +142,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override void SetLastLeds()
         {
-            if (!EnsureConnection()) return;
+            if (!EnsureConnection())
+            {
+                return;
+            }
+
             lock (_locker)
             {
                 _serialCommunication.Send(_lastSendBytes);
@@ -152,7 +155,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override void SetAllLedsOff()
         {
-            if (!EnsureConnection()) return;
+            if (!EnsureConnection())
+            {
+                return;
+            }
+
             lock (_locker)
             {
                 _logger?.LogDebug("B: Send all off");
@@ -163,7 +170,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override void SetAllLedsOn()
         {
-            if (!EnsureConnection()) return;
+            if (!EnsureConnection())
+            {
+                return;
+            }
+
             lock (_locker)
             {
                 _logger?.LogDebug("B: Send all on");
@@ -188,36 +199,46 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override void Calibrate()
         {
-            if (!EnsureConnection()) return;
+            if (!EnsureConnection())
+            {
+                return;
+            }
+
             _logger?.LogDebug("B: start calibrate ");
             var boardData = _serialCommunication.GetCalibrateData();
             _logger?.LogDebug($"B: calibrate data: {boardData}");
-            if (Calibrate(boardData))
+            if (!Calibrate(boardData))
             {
-                var calibrateData = new CalibrateData();
-                foreach (var key in _boardCodesToChessPiece.Keys)
-                {
-                    if (_boardCodesToChessPiece[key].Equals(BlackQueenFen))
-                    {
-                        calibrateData.BlackQueenCodes = string.IsNullOrEmpty(calibrateData.BlackQueenCodes) ? key : calibrateData.BlackQueenCodes+'#'+key;
-                        boardData =  boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
-                        continue;
-                    }
-                    if (_boardCodesToChessPiece[key].Equals(WhiteQueenFen))
-                    {
-                        calibrateData.WhiteQueenCodes = string.IsNullOrEmpty(calibrateData.WhiteQueenCodes) ? key : calibrateData.WhiteQueenCodes + '#' + key;
-                        boardData = boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
-                    }
-                }
-                calibrateData.BasePositionCodes = boardData;
-                _calibrateStorage.SaveCalibrationData(calibrateData);
-                IsCalibrated = true;
+                return;
             }
+
+            var calibrateData = new CalibrateData();
+            foreach (var key in _boardCodesToChessPiece.Keys)
+            {
+                if (_boardCodesToChessPiece[key].Equals(BlackQueenFen))
+                {
+                    calibrateData.BlackQueenCodes = string.IsNullOrEmpty(calibrateData.BlackQueenCodes) ? key : calibrateData.BlackQueenCodes+'#'+key;
+                    boardData =  boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
+                    continue;
+                }
+                if (_boardCodesToChessPiece[key].Equals(WhiteQueenFen))
+                {
+                    calibrateData.WhiteQueenCodes = string.IsNullOrEmpty(calibrateData.WhiteQueenCodes) ? key : calibrateData.WhiteQueenCodes + '#' + key;
+                    boardData = boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
+                }
+            }
+            calibrateData.BasePositionCodes = boardData;
+            _calibrateStorage.SaveCalibrationData(calibrateData);
+            IsCalibrated = true;
         }
 
         public override DataFromBoard GetPiecesFen()
         {
-            if (!EnsureConnection()) return new DataFromBoard(string.Empty);
+            if (!EnsureConnection())
+            {
+                return new DataFromBoard(string.Empty);
+            }
+
             lock (_locker)
             {
 
@@ -399,45 +420,53 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
         }
 
+        public override void NewGame()
+        {
+            _logger?.LogDebug("New game");
+            EnsureConnection();
+
+        }
+
         #region private
 
         private bool Calibrate(CalibrateData codes)
         {
-            if (Calibrate(codes.BasePositionCodes))
+            if (!Calibrate(codes.BasePositionCodes))
             {
-                if (string.IsNullOrWhiteSpace(codes.BlackQueenCodes))
-                {
-                    foreach (var key in _boardCodesToChessPiece.Keys)
-                    {
-                        if (_boardCodesToChessPiece[key].Equals(BlackQueenFen))
-                        {
-                            codes.BlackQueenCodes = key;
-                        }
-
-                        if (_boardCodesToChessPiece[key].Equals(WhiteQueenFen))
-                        {
-                            codes.WhiteQueenCodes = key;
-                        }
-                    }
-                    _calibrateStorage.SaveCalibrationData(codes);
-                }
-                else
-                {
-                    var queenCodes = codes.BlackQueenCodes.Split("#".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var queenCode in queenCodes)
-                    {
-                        _boardCodesToChessPiece[queenCode] = BlackQueenFen;
-                    }
-                    queenCodes = codes.WhiteQueenCodes.Split("#".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var queenCode in queenCodes)
-                    {
-                        _boardCodesToChessPiece[queenCode] = WhiteQueenFen;
-                    }
-                }
-                return true;
+                return false;
             }
 
-            return false;
+            if (string.IsNullOrWhiteSpace(codes.BlackQueenCodes))
+            {
+                foreach (var key in _boardCodesToChessPiece.Keys)
+                {
+                    if (_boardCodesToChessPiece[key].Equals(BlackQueenFen))
+                    {
+                        codes.BlackQueenCodes = key;
+                    }
+
+                    if (_boardCodesToChessPiece[key].Equals(WhiteQueenFen))
+                    {
+                        codes.WhiteQueenCodes = key;
+                    }
+                }
+                _calibrateStorage.SaveCalibrationData(codes);
+            }
+            else
+            {
+                var queenCodes = codes.BlackQueenCodes.Split("#".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                foreach (var queenCode in queenCodes)
+                {
+                    _boardCodesToChessPiece[queenCode] = BlackQueenFen;
+                }
+                queenCodes = codes.WhiteQueenCodes.Split("#".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                foreach (var queenCode in queenCodes)
+                {
+                    _boardCodesToChessPiece[queenCode] = WhiteQueenFen;
+                }
+            }
+            return true;
+
         }
 
         private bool Calibrate(string codes)
@@ -613,7 +642,10 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         private string GetPieceFenFromCode(string code)
         {
-            if (!EnsureConnection()) return string.Empty;
+            if (!EnsureConnection())
+            {
+                return string.Empty;
+            }
 
             if (_boardCodesToChessPiece.ContainsKey(code))
             {

@@ -2,9 +2,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 {
@@ -21,6 +24,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         protected bool _isFirstInstance;
         private string _lastLine = string.Empty;
+        private string _lastSend = string.Empty;
         private readonly object _locker = new object();
         protected bool _pauseReading;
         private ulong _repeated;
@@ -59,7 +63,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 _logger?.LogDebug("S: Create client pipe");
                 _clientPipe = new ClientPipe(".", $"{_boardName}UciPipe", p => p.StartStringReaderAsync());
-                _clientPipe.PipeClosed += _clientPipe_PipeClosed;
+                _clientPipe.PipeClosed += ClientPipe_PipeClosed;
                 _clientPipe.DataReceived += (sndr, args) => { _dataFromBoard.Enqueue(args.String); };
                 try
                 {
@@ -134,6 +138,18 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public void Send(string data)
         {
+
+            //if (_lastSend.Equals(data))
+            //{
+            //    _logger.LogDebug($"SC: Skip duplicate Send {data}");
+            //    return;
+            //}
+            //if (_stringDataToBoard.Any(s => s.Equals(data)))
+            //{
+            //    _logger.LogDebug($"SC: Ignore queue Send {data}");
+            //    return;
+            //}
+            //_lastSend = data;
             _logger.LogDebug($"SC: Send {data}");
             _stringDataToBoard.Enqueue(data);
         }
@@ -382,7 +398,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         protected abstract void Communicate();
 
 
-        private void _clientPipe_PipeClosed(object sender, EventArgs e)
+        private void ClientPipe_PipeClosed(object sender, EventArgs e)
         {
             _logger?.LogDebug("S: Connection to pipe server closed");
             _logger?.LogDebug("S: Switch to first instance");

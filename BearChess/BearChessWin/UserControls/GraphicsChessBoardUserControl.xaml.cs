@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,7 +10,6 @@ using System.Windows.Media.Imaging;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 // ReSharper disable RedundantCast
 
@@ -102,6 +100,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly ConcurrentDictionary<int,bool>  _markedGreenFields = new  ConcurrentDictionary<int, bool>();
         private readonly HashSet<int> _markedNonGreenFields = new HashSet<int>();
         private bool _acceptMouse = true;
+        private bool _isConnected;
 
 
         public GraphicsChessBoardUserControl()
@@ -303,6 +302,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _piecesBitmaps[" "] = null;
         }
 
+        public void SetEBoardMode(bool isConnected)
+        {
+            _isConnected = isConnected;
+            moveStepAllBack.Visibility = isConnected ?  Visibility.Hidden : Visibility.Visible;
+            moveStepAllForward.Visibility = isConnected ? Visibility.Hidden : Visibility.Visible;
+            moveStepBack.Visibility = isConnected ? Visibility.Hidden : Visibility.Visible;
+            moveStepForward.Visibility = isConnected ? Visibility.Hidden : Visibility.Visible;
+            buttonPauseEngine.Visibility = isConnected ? Visibility.Hidden : Visibility.Visible;
+        }
+
         public void SetInAnalyzeMode(bool inAnalyzeMode, string fenPosition)
         {
             _inAnalyzeMode = inAnalyzeMode;
@@ -317,15 +326,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 moveStepBack.Visibility = Visibility.Hidden;
                 moveStepForward.Visibility = Visibility.Hidden;
                 buttonPauseEngine.Visibility = Visibility.Hidden;
+                resetStartPosition.Visibility = Visibility.Hidden;
+
             }
             else
             {
                 _chessBoard = null;
-                moveStepAllBack.Visibility = Visibility.Visible;
-                moveStepAllForward.Visibility = Visibility.Visible;
-                moveStepBack.Visibility = Visibility.Visible;
-                moveStepForward.Visibility = Visibility.Visible;
-                buttonPauseEngine.Visibility = Visibility.Visible;
+                SetEBoardMode(_isConnected);
+                resetStartPosition.Visibility = Visibility.Visible;
             }
         }
 
@@ -530,6 +538,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             textBlockBlackClock.Text = WhiteOnTop ? "C" : "c";
             textBlockWhiteClock.Text = WhiteOnTop ? "c" : "C";
+            textBlockBlackClock.ToolTip = WhiteOnTop ? "Black's move" : "White's move";
+            textBlockWhiteClock.ToolTip = WhiteOnTop ? "White's move" : "Black's move";
             textBlock1.Text = WhiteOnTop ? "1" : "8";
             textBlock2.Text = WhiteOnTop ? "2" : "7";
             textBlock3.Text = WhiteOnTop ? "3" : "6";
@@ -1064,10 +1074,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void AllowTakeBack(bool allow)
         {
-            moveStepAllBack.Visibility = allow ? Visibility.Visible : Visibility.Hidden;
-            moveStepAllForward.Visibility = allow ? Visibility.Visible : Visibility.Hidden;
-            moveStepBack.Visibility = allow ? Visibility.Visible : Visibility.Hidden;
-            moveStepForward.Visibility = allow ? Visibility.Visible : Visibility.Hidden;
+            moveStepAllBack.Visibility = allow && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            moveStepAllForward.Visibility = allow && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            moveStepBack.Visibility = allow && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            moveStepForward.Visibility = allow && !_isConnected ? Visibility.Visible : Visibility.Hidden;
         }
 
         #region private

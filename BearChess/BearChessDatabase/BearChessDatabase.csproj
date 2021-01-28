@@ -69,6 +69,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BearChessBase\BearChessBase.csproj">
+      <Project>{72BAD856-2F5E-45DB-9FF1-42D68A4998F5}</Project>
+      <Name>BearChessBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BearChessTools\BearChessTools.csproj">
       <Project>{58eab818-7176-4ba9-a62a-ac2f27b089ae}</Project>
       <Name>BearChessTools</Name>

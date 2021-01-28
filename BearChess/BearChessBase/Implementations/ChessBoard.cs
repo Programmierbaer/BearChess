@@ -712,12 +712,17 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             var playedMoveList = GetPlayedMoveList();
             for (int i = 0; i < moveNumber; i++)
             {
-//                var move = _allPlayedMoves[i].GetMove(Fields.COLOR_WHITE);
+                //                var move = _allPlayedMoves[i].GetMove(Fields.COLOR_WHITE);
+                if (playedMoveList.Length <= i)
+                {
+                    break;
+                }
                 allMoves.Add(playedMoveList[i]);
 
                 //move = _allPlayedMoves[i].GetMove(Fields.COLOR_BLACK);
                 //allMoves.Add(move);
             }
+
             Init();
             NewGame();
             allMoves.ForEach(MakeMove);

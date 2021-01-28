@@ -55,6 +55,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\BearChessBase\BearChessBase.csproj">
+      <Project>{72bad856-2f5e-45db-9ff1-42d68a4998f5}</Project>
+      <Name>BearChessBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\BearChessEChessBoard\BearChessEChessBoard\BearChessEChessBoard.csproj">
+      <Project>{a6bcdc78-1edc-40c7-936f-880423360ba3}</Project>
+      <Name>BearChessEChessBoard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\CommonUciWrapper\CommonUciWrapper.csproj">
       <Project>{66ab214e-2281-4d97-99c7-b54b0e31df1a}</Project>
       <Name>CommonUciWrapper</Name>

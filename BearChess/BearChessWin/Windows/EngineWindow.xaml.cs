@@ -6,7 +6,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
@@ -96,7 +98,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_logWindow == null)
             {
                 _logWindow = new LogWindow(_configuration) {Owner = this};
-                _logWindow.SendEvent += _logWindow_SendEvent;
+                _logWindow.SendEvent += LogWindow_SendEvent;
                 _logWindow.Show();
             }
 
@@ -165,7 +167,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if ((_logWindow == null) && showInfo)
             {
                 _logWindow = new LogWindow(_configuration) {Owner = this};
-                _logWindow.SendEvent += _logWindow_SendEvent;
+                _logWindow.SendEvent += LogWindow_SendEvent;
                 _logWindow.Show();
             }
             _logWindow?.AddFor(uciInfo.Name);
@@ -221,7 +223,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             LoadUciEngine(uciInfo, string.Empty, playedMoves,lookForBookMoves, color);
         }
 
-        private void _logWindow_SendEvent(object sender, LogWindow.SendEventArgs e)
+        private void LogWindow_SendEvent(object sender, LogWindow.SendEventArgs e)
         {
             if (_loadedEngines.ContainsKey(e.EngineName))
             {
@@ -255,8 +257,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            var uciConfigWindow = new UciConfigWindow(_loadedUciInfos[engineName],false,true);
-            uciConfigWindow.ButtonConfigEvent += btnConfig_Click;
+            var uciConfigWindow = new UciConfigWindow(_loadedUciInfos[engineName],false,true, true) { Owner = this };
+            uciConfigWindow.ButtonConfigEvent += BtnConfig_Click;
             var showDialog = uciConfigWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -270,10 +272,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                 }
             }
-            uciConfigWindow.ButtonConfigEvent -= btnConfig_Click;
+            uciConfigWindow.ButtonConfigEvent -= BtnConfig_Click;
         }
 
-        private void btnConfig_Click(object sender, UciConfigWindow.ButtonConfigEventArgs configEventArgs)
+        private void BtnConfig_Click(object sender, UciConfigWindow.ButtonConfigEventArgs configEventArgs)
         {
             SendToEngine(configEventArgs.ConfigCmd,configEventArgs.EngineName);
         }
@@ -533,7 +535,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     continue;
                 }
-
+                _fileLogger?.LogInfo($"Send Go infinite for coach {engine.Value}");
                 engine.Value.UciEngine.GoInfinite();
 
             }
@@ -607,7 +609,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         scoreString = infoLineParts[i + 2];
                         if (decimal.TryParse(scoreString, out decimal score))
                         {
-                            score = score / 100;
+                            score /= 100;
                             scoreString = $"Score {score.ToString(CultureInfo.InvariantCulture)}";
                         }
 

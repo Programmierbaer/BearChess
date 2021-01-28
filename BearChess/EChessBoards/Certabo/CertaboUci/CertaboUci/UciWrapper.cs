@@ -2,6 +2,7 @@
 using System.IO;
 using www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboUci
 {
