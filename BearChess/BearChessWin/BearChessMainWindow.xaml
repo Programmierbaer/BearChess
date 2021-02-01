@@ -136,6 +136,11 @@
                                 <Image Name="imageShowMaterial" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
+                        <MenuItem Name="menuItemMaterialShowOnGame" Header="Show on game" Click="MenuItemMaterialShowOnGame_OnClick">
+                            <MenuItem.Icon >
+                                <Image Name="imageShowMaterialOnGame" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Electronic Boards">

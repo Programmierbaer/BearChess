@@ -37,17 +37,17 @@
 \contentsline {subsection}{\numberline {11.4}Time control}{41}%
 \contentsline {subsection}{\numberline {11.5}Configuration for startup game}{41}%
 \contentsline {subsection}{\numberline {11.6}Easy start or restart of a game}{42}%
-\contentsline {subsection}{\numberline {11.7}Influence of BearChess in engine games}{42}%
+\contentsline {subsection}{\numberline {11.7}Influence of BearChess in engine games}{43}%
 \contentsline {section}{\numberline {12}Analysis mode}{44}%
 \contentsline {subsection}{\numberline {12.1}With electronic chessboard}{44}%
 \contentsline {subsection}{\numberline {12.2}Without electronic chessboard}{45}%
-\contentsline {section}{\numberline {13}Setup position}{46}%
+\contentsline {section}{\numberline {13}Setup position}{47}%
 \contentsline {subsection}{\numberline {13.1}With support of an electronic chessboard}{47}%
-\contentsline {subsection}{\numberline {13.2}Without support of an electronic chessboard}{48}%
-\contentsline {section}{\numberline {14}Run startup game on start}{49}%
-\contentsline {section}{\numberline {15}Games}{50}%
-\contentsline {subsection}{\numberline {15.1}Save}{50}%
-\contentsline {subsection}{\numberline {15.2}Show and load}{51}%
+\contentsline {subsection}{\numberline {13.2}Without support of an electronic chessboard}{49}%
+\contentsline {section}{\numberline {14}Run startup game on start}{50}%
+\contentsline {section}{\numberline {15}Games}{51}%
+\contentsline {subsection}{\numberline {15.1}Save}{51}%
+\contentsline {subsection}{\numberline {15.2}Show and load}{52}%
 \contentsline {section}{\numberline {16}Engine window}{52}%
 \contentsline {section}{\numberline {17}Extended engine support}{55}%
 \contentsline {section}{\numberline {18}Important To Know}{57}%

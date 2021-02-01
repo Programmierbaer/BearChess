@@ -131,9 +131,9 @@ Above you have access to different functions of BearChess.
 	\label{fig:Actions}
 \end{figure}
 \begin{itemize}
-	\item \includegraphics[scale=0.2]{bearchess.png} \textbf{Play a new game} opens a new window to select opponents and time control.
-	\item \includegraphics[scale=0.5]{robot.png} \textbf{Run in analyze mode} allows you to analyze games or positions with suppport of several chess engines.
-	\item \includegraphics[scale=0.03]{Chess_Board.png} \textbf{Setup position}
+	\item \includegraphics[scale=0.2]{bearchess.png} \textbf{Play a new game} opens a new window to select opponents and time control (see chapter \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent}).
+	\item \includegraphics[scale=0.5]{robot.png} \textbf{Run in analyze mode} allows you to analyze games or positions with suppport of several chess engines (see chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode})
+	\item \includegraphics[scale=0.03]{Chess_Board.png} see chapter \textbf{\ref{SetupPosition}  \nameref{SetupPosition}} on page \pageref{SetupPosition}.
 	\item \textbf{Run startup game on start} immediately starts a new game when you start BearChess. For more information read chapter \textbf{\ref{startupgame}  \nameref{startupgame}} on page \pageref{startupgame}.
 	\item \includegraphics[scale=0.5]{door_out.png} \textbf{Close} exits BearChess.
 \end{itemize}
@@ -149,7 +149,7 @@ Above you have access to different functions of BearChess.
 	\item \includegraphics[scale=0.5]{diskette.png} \textbf{Save} your current game.
 	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Show \& Load} opens a new window in which you can see and load all your previously saved games.
 \end{itemize}
-All games are saved in a PGN file.
+All games are saved in a PGN file. Read more on chapter \textbf{\ref{games}  \nameref{games}} on page \pageref{games}.
 
 \subsection{Engines}
 \begin{figure}[H]
@@ -164,6 +164,8 @@ All games are saved in a PGN file.
 	\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
 \end{itemize}
 
+Read more on chapter \textbf{\ref{loadEngines}  \nameref{loadEngines}} on page \pageref{loadEngines}.
+
 \subsection{Books}
 \begin{figure}[H]
 	\centering
@@ -174,7 +176,7 @@ All games are saved in a PGN file.
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{books_stack.png} \textbf{Load \& manage opening books} opens a new window in which you can install or load  your opening books.
 \end{itemize}
-BearChess can handle Polyglot and Arena opening books.
+BearChess can handle Polyglot and Arena opening books. Read more on chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pageref{OpeningBooks}.
 
 \subsection{Settings}
 \begin{figure}[H]
@@ -184,7 +186,7 @@ BearChess can handle Polyglot and Arena opening books.
 	\label{fig:Settings}
 \end{figure}
 \begin{itemize}
-	\item  \includegraphics[scale=0.9]{Board2DPieces32.png} \textbf{Board \& Pieces} opens a window where you can change the appearance of the chessboard and the pieces. 
+	\item  \includegraphics[scale=0.9]{Board2DPieces32.png} \textbf{Board \& Pieces} opens a window where you can change the appearance of the chessboard and the pieces.  Read more on chapter \textbf{\ref{BoardAndPieces}  \nameref{BoardAndPieces}} on page \pageref{BoardAndPieces}.
 	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png}  \textbf{Rotate board} if you like to play with black. 
 	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation/Moves} opens a windows where you can change the appearance of the notation, e.g. figurine or letters.
 	\item  \includegraphics[scale=0.5]{digit_separator.png}  \textbf{Clocks} switches between large and small clocks.
@@ -199,8 +201,8 @@ BearChess can handle Polyglot and Arena opening books.
 	\label{fig:ElectronicBoards}
 \end{figure}
 \begin{itemize}
-	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.
-	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.
+	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
+	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
 	\item \textbf{Black pieces in front} assumes that you have placed the black chessmen in front of you.
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
@@ -219,7 +221,7 @@ BearChess can handle Polyglot and Arena opening books.
 	\item \textbf{Captured pieces} shows the captured pieces. Either all or as a difference. 
 \end{itemize}
 
-\section{Install, Configure and Load a chess engine}
+\section{Install, Configure and Load a chess engine} \label{loadEngines}
 
 \begin{figure}[H]
 	\centering
@@ -364,7 +366,7 @@ You can load more than one book. Every book has their own window and is synchron
 
 {\color{red}\textbf{*}} So far, the possibilities are still very limited with the opening books. This will improve in the next versions. 
 
-\section{Configure Board and Pieces}
+\section{Configure Board and Pieces} \label{BoardAndPieces}
 
 \begin{figure}[H]
 	\centering
@@ -574,7 +576,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 \section{Electronic chessboards} \label{ElectronicChessBoard}
 BearChess supports two electronic chessboards: Certabo boards and Millennium boards via the ChessLink module. Both boards communicates via an USB port as serial COM port. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.
 
-\subsection{Configure Certabo boards}
+\subsection{Configure Certabo boards} \label{ConfigureCertabo}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{Certabo1.png}
@@ -665,7 +667,7 @@ In the lower right corner a new button appears, which allows you to easily conne
 	\label{fig:Certabo5}
 \end{figure}
 
-\subsection{Configure Millennium ChessLink}
+\subsection{Configure Millennium ChessLink} \label{ConfigureChessLink}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{MillenniumChessLink1.png}
@@ -759,6 +761,7 @@ In the lower right corner a new button appears, which allows you to easily conne
 	\label{fig:MillenniumChessLink8}
 \end{figure}
 
+
 \section{Play a game}
 
 \begin{figure}[H]
@@ -770,7 +773,7 @@ In the lower right corner a new button appears, which allows you to easily conne
 
 If you start a new game you can select the opponents and the time control.
 
-\subsection{Select opponent}
+\subsection{Select opponent} \label{SelectOpponent}
 
 \begin{figure}[H]
 	\centering
@@ -842,9 +845,7 @@ For your convenience, you can configure and save a game definition that will be 
 
 \subsection{Easy start or restart of a game} 
 
-The button \includegraphics[scale=0.2]{bearchess_2.png} 
-
-If your not active playing a game
+The button \includegraphics[scale=0.2]{bearchess_2.png} is an easy way to play a game. If your not active playing a game, the following dialog appears:
 
 \begin{figure}[H]
 	\centering
@@ -853,6 +854,14 @@ If your not active playing a game
 	\label{fig:resetToBasePosition2}
 \end{figure}
 
+\begin{itemize}
+	\item \textbf{Yes} opens the new game dialog (see \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent})
+	\item \textbf{No} resets to base position.
+	\item \textbf{Cancel} continues.
+\end{itemize}
+
+If your playing a game, the following dialog appears:
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.9]{resetToBasePosition.png}
@@ -860,6 +869,12 @@ If your not active playing a game
 	\label{fig:resetToBasePosition}
 \end{figure}
 
+\begin{itemize}
+	\item \includegraphics[scale=0.2]{bearchess.png} opens the new game dialog (see \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent})
+	\item \includegraphics[scale=0.1]{chessboard_base.png} restarts the game with the current opponents and time control.
+    \item \includegraphics[scale=0.5]{control_stop.png} stops the current game.
+    \item \includegraphics[scale=0.5]{control_play_blue.png} continues
+\end{itemize}
 
 \subsection{Influence of BearChess in engine games}
 Chess engines generally do not have the ability to give up or to recognize a draw, e.g. by repeating moves. In a match between two engines BearChess checks the moves and the current rating. 
@@ -956,7 +971,7 @@ Click on one the figure to place in on the selected field. If the is a piece on 
 	\label{fig:AnalyzeMode3_2}
 \end{figure}
 
-\section{Setup position}
+\section{Setup position} \label{SetupPosition}
 
 \begin{figure}[H]
 	\centering
@@ -1054,7 +1069,7 @@ This is like turning on a chess computer that is immediately ready to play.
 
 
 
-\section{Games}
+\section{Games} \label{games}
 
 \begin{figure}[H]
 	\centering
