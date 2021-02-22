@@ -18,15 +18,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private static Configuration _instance;
         private static readonly object Locker = new object();
-        public const string STARTUP_WHITE_ENGINE_ID = "startupWhite.uci";
-        public const string STARTUP_BLACK_ENGINE_ID = "startupBlack.uci";
-
         private readonly ConfigurationSettings<string, string> _appSettings;
         private string ConfigFileName { get; }
         private string TimeControlFileName { get; }
         private string StartupTimeControlFileName { get; }
+
+        public const string STARTUP_WHITE_ENGINE_ID = "startupWhite.uci";
+        public const string STARTUP_BLACK_ENGINE_ID = "startupBlack.uci";
+
         public string FolderPath { get; }
-        
 
         public static Configuration Instance
         {
@@ -56,14 +56,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             TimeControlFileName = Path.Combine(FolderPath, "bearchess_tc.xml");
             StartupTimeControlFileName = Path.Combine(FolderPath, "bearchess_start_tc.xml");
             ConfigFileName = Path.Combine(FolderPath, "bearchess.xml");
-            if (File.Exists(ConfigFileName))
+            try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ConfigurationSettings<string, string>));
-                TextReader textReader = new StreamReader(ConfigFileName);
-                _appSettings = (ConfigurationSettings<string, string>) serializer.Deserialize(textReader);
-                textReader.Close();
+                if (File.Exists(ConfigFileName))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(ConfigurationSettings<string, string>));
+                    TextReader textReader = new StreamReader(ConfigFileName);
+                    _appSettings = (ConfigurationSettings<string, string>) serializer.Deserialize(textReader);
+                    textReader.Close();
+                }
+                else
+                {
+                    _appSettings = new ConfigurationSettings<string, string>();
+                }
             }
-            else
+            catch
             {
                 _appSettings = new ConfigurationSettings<string, string>();
             }
@@ -120,10 +127,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void Save()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(ConfigurationSettings<string, string>));
-            TextWriter textWriter = new StreamWriter(ConfigFileName, false);
-            serializer.Serialize(textWriter, _appSettings);
-            textWriter.Close();
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ConfigurationSettings<string, string>));
+                TextWriter textWriter = new StreamWriter(ConfigFileName, false);
+                serializer.Serialize(textWriter, _appSettings);
+                textWriter.Close();
+            }
+            catch
+            {
+                //
+            }
         }
 
         /// <summary>
@@ -133,10 +147,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
         /// <param name="asStartup"></param>
         public void Save(TimeControl timeControl, bool asStartup)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
-            TextWriter textWriter =  new StreamWriter(asStartup ? StartupTimeControlFileName : TimeControlFileName, false);
-            serializer.Serialize(textWriter, timeControl);
-            textWriter.Close();
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
+                TextWriter textWriter =
+                    new StreamWriter(asStartup ? StartupTimeControlFileName : TimeControlFileName, false);
+                serializer.Serialize(textWriter, timeControl);
+                textWriter.Close();
+            }
+            catch
+            {
+                //
+            }
         }
 
         public TimeControl LoadTimeControl(bool asStartup)
@@ -156,7 +178,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetConfigValue(string key, string value)
         {
-            SetConfigValue(_appSettings,key,value);
+            SetConfigValue(_appSettings, key, value);
         }
 
         public string GetConfigValue(string key, string defaultValue)

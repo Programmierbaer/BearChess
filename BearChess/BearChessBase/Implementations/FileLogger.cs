@@ -112,7 +112,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
 
         /// <inheritdoc />
-        public void Log(IList<IMove> logMoves, bool appendNewLine)
+        public void Log(IList<Move> logMoves, bool appendNewLine)
         {
             if (_paused || logMoves == null)
             {
@@ -120,7 +120,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
 
             string output = string.Empty;
-            foreach (IMove logMove in logMoves)
+            foreach (Move logMove in logMoves)
             {
                 output += $" {Fields.GetFieldName(logMove.FromField)}-{Fields.GetFieldName(logMove.ToField)}";
             }
@@ -130,14 +130,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         /// <inheritdoc />
-        public void Log(IMove logMove, bool appendNewLine = true)
+        public void Log(Move logMove, bool appendNewLine = true)
         {
             if (_paused || logMove == null)
             {
                 return;
             }
 
-            Log(new List<IMove>() { logMove }, appendNewLine);
+            Log(new List<Move>() { logMove }, appendNewLine);
         }
 
         /// <inheritdoc />

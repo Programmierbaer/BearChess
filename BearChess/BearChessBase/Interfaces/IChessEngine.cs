@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
 {
@@ -63,12 +64,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// <summary>
         /// Starts the calculation.
         /// </summary>
-        Task<IMove> Evaluate();
+        Task<Move> Evaluate();
 
         /// <summary>
         /// Starts the calculation to a maximal tree depth <paramref name="maxDeep"/>.
         /// </summary>
-        Task<IMove> Evaluate(int maxDeep);
+        Task<Move> Evaluate(int maxDeep);
 
         /// <summary>
         /// Stop the calculation.
@@ -78,17 +79,17 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// <summary>
         /// Returns the current best move.
         /// </summary>
-        IMove GetBestMove();
+        Move GetBestMove();
 
         /// <summary>
         /// Returns the current best moves line.
         /// </summary>
-        List<IMove> GetBestMovesLine();
+        List<Move> GetBestMovesLine();
 
         /// <summary>
         /// Returns the current move list.
         /// </summary>
-        List<IMove> GetMoves();
+        List<Move> GetMoves();
 
         /// <summary>
         /// Set the logger implementation.

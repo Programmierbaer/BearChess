@@ -122,7 +122,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Top = _configuration.GetWinDoubleValue("MaterialWindowTop", Configuration.WinScreenInfo.Top);
             Left = _configuration.GetWinDoubleValue("MaterialWindowLeft", Configuration.WinScreenInfo.Left);
             Width = _configuration.GetDoubleValue("MaterialWindowWidth", "300");
-            _showDifference = _configuration.GetConfigValue("MaterialWindowDifference", "false").Equals("true");
+            _showDifference = bool.Parse(_configuration.GetConfigValue("MaterialWindowDifference", "false"));
             textBlockDifference.Text = _showDifference ? "Diff." : "All";
         }
 

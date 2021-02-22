@@ -48,7 +48,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public string FenFigureCharacter => Definitions.FigureId.FigureIdToFenCharacter[FigureId];
 
         /// <inheritdoc />
-        public List<IMove> CurrentMoveList { get; protected set; }
+        public List<Move> CurrentMoveList { get; protected set; }
 
 
 
@@ -60,9 +60,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         /// <inheritdoc />
-        public virtual List<IMove> GetMoveList()
+        public virtual List<Move> GetMoveList()
         {
-            var moves = new List<IMove>();
+            var moves = new List<Move>();
             for (var offSet = FromOffset; offSet <= ToOffset; offSet++)
             {
                 var tmpField = Field;
@@ -76,7 +76,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     {
                         tmpFigure.IncAttack(this);
                         IncIsAttacking(tmpFigure);
-                        IMove newMove;
+                        Move newMove;
                         // Gültiger Zug. Entweder freies Feld oder gegnerische Figur
                         if (tmpFigure.Color == EnemyColor)
                         {

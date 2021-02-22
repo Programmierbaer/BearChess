@@ -4,9 +4,10 @@ using System.Text;
 
 namespace www.SoLaNoSoft.com.BearChessTools
 {
+    [Serializable]
     public class PgnGame
     {
-        public Guid Id { get; }
+        public Guid Id { get; set; }
         private readonly List<string> _moveList = new List<string>();
         private readonly Dictionary<string, string> _userDefined = new Dictionary<string, string>();
         private readonly string[] _order = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
@@ -49,6 +50,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
         }
 
         public string MoveList => GetMoveList();
+
 
         public PgnGame()
         {

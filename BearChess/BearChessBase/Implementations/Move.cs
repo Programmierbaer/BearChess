@@ -1,42 +1,63 @@
-﻿using www.SoLaNoSoft.com.BearChessBase.Definitions;
+﻿using System;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
-    public class Move : IMove
+    [Serializable]
+    public class Move 
     {
         public static readonly int[] MoveOffsets = { -9, -11, 9, 11, -10, 10, 1, -1, 19, 21, 12, -8, -19, -21, -12, 8 };
 
-        public int Figure { get; }
-        public int FigureColor { get; }
+        /// <inheritdoc />
+        public int Figure { get; set;  }
 
         /// <inheritdoc />
-        public int FromField { get; }
+        public int FigureColor { get; set; }
 
         /// <inheritdoc />
-        public string FromFieldName { get; }
+        public int FromField { get; set; }
 
         /// <inheritdoc />
-        public int ToField { get; }
+        public string FromFieldName { get; set; }
 
         /// <inheritdoc />
-        public string ToFieldName { get; }
+        public int ToField { get; set; }
 
         /// <inheritdoc />
-        public int CapturedFigure { get; }
-
+        public string ToFieldName { get; set; }
 
         /// <inheritdoc />
-        public int PromotedFigure { get; }
+        public int CapturedFigure { get; set; }
+
+        /// <inheritdoc />
+        public int PromotedFigure { get; set; }
 
         /// <inheritdoc />
         public int Value { get; set; }
 
         /// <inheritdoc />
-        public int CapturedFigureMaterial { get; }
+        public decimal Score { get; set; }
 
         /// <inheritdoc />
-        public int Identifier { get; }
+        public string BestLine { get; set; }
+
+        /// <inheritdoc />
+        public int CapturedFigureMaterial { get; set; }
+
+        /// <inheritdoc />
+        public int Identifier { get; set; }
+
+        /// <inheritdoc />
+        public bool IsEngineMove { get; set;  }
+
+        /// <inheritdoc />
+        public string CheckOrMateSign { get; set; }
+
+        public Move()
+        {
+            
+        }
 
         public Move(int fromField, int toField, int color, int figureId)
         {
@@ -50,6 +71,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             Identifier = fromField * 100 + toField;
             FromFieldName = Fields.GetFieldName(FromField);
             ToFieldName = Fields.GetFieldName(ToField);
+            Score = 0;
+            BestLine = string.Empty;
+            IsEngineMove = false;
         }
 
         public Move(int fromField, int toField,  int color, int figureId, IChessFigure capturedFigure) : this(fromField,toField, color, figureId)
@@ -70,7 +94,30 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             PromotedFigure = promotedFigure;
         }
 
-        public Move(IMove move)
+        public Move(int fromField, int toField, int color, int figureId, IChessFigure capturedFigure, int promotedFigure, decimal score, string bestLine) : this(fromField, toField, color, figureId,capturedFigure, promotedFigure)
+        {
+            Score = score;
+            BestLine = bestLine;
+            IsEngineMove = true;
+        }
+
+        public Move(int fromField, int toField, int color, int figureId, int promotedFigure, decimal score, string bestLine) : 
+            this(fromField, toField, color, figureId, promotedFigure)
+        {
+            Score = score;
+            BestLine = bestLine;
+            IsEngineMove = true;
+        }
+
+        public Move(int fromField, int toField, int color, int figureId,  decimal score, string bestLine) :
+            this(fromField, toField, color, figureId)
+        {
+            Score = score;
+            BestLine = bestLine;
+            IsEngineMove = true;
+        }
+
+        public Move(Move move)
         {
             FigureColor = move.FigureColor;
             FromField = move.FromField;
@@ -82,6 +129,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             Identifier = move.Identifier;
             FromFieldName = move.FromFieldName;
             ToFieldName = move.ToFieldName;
+            Score = move.Score;
+            BestLine = move.BestLine;
+            IsEngineMove = move.IsEngineMove;
         }
 
         public override string ToString()
@@ -92,7 +142,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
     public static class MoveExtentions
     {
-        public static bool EqualMove(this IMove move, IMove move2)
+        public static bool EqualMove(this Move move, Move move2)
         {
             return move.Identifier.Equals(move2.Identifier);
         }

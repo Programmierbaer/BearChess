@@ -37,7 +37,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private volatile bool _waitFor = false;
         private readonly List<string> _allMoves = new List<string>();
         private volatile bool _quit;
-        private object _locker = new object();
+        private readonly object _locker = new object();
         private readonly OpeningBook _openingBook;
         private BookMove _bookMove;
 
@@ -69,8 +69,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             };
             _engineProcess.Start();
-            _engineProcess.Exited += this.EngineProcess_Exited;
-            _engineProcess.Disposed += this.EngineProcess_Disposed;
+            _engineProcess.Exited += EngineProcess_Exited;
+            _engineProcess.Disposed += EngineProcess_Disposed;
             Thread thread = new Thread(InitEngine) { IsBackground = true };
             thread.Start();
             if (!thread.Join(10000))
@@ -191,7 +191,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_bookMove == null || _bookMove.EmptyMove)
             {
-                SendToEngine($"go wtime {wTime} btime {bTime} winc {wInc} binc {bInc}");
+                if (wInc == "0" && bInc == "0")
+                    SendToEngine($"go wtime {wTime} btime {bTime}");
+                else
+                    SendToEngine($"go wtime {wTime} btime {bTime} winc {wInc} binc {bInc}");
             }
             else
             {
@@ -252,7 +255,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SendToEngine(string command)
         {
-            //_logger?.LogDebug($">> {command}");
             _sendToUciEngine.Enqueue(command);
         }
 
@@ -268,8 +270,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 catch (Exception ex)
                 {
-                    _logger?.LogError("Read ",ex);
-                    
+                    _logger?.LogError("Read ", ex);
+
                 }
 
                 if (string.IsNullOrWhiteSpace(readToEnd))
@@ -296,7 +298,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 waitingFor = string.Empty;
                 _logger?.LogDebug($"<< {readToEnd}");
                 OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, readToEnd));
-                //_readFromUciEngine.Enqueue(readToEnd);
             }
         }
 

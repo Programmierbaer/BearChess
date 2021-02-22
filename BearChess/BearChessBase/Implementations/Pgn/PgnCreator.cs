@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
@@ -9,24 +10,94 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
 {
     public class PgnCreator
     {
-        private readonly IChessBoard _chessBoard;
-        private List<string> _allMoves;
+        private readonly List<Move> _allMoves;
+        private readonly List<string> _allPgnMoves;
+        private IChessBoard _chessBoard;
 
         public PgnCreator()
         {
-            _allMoves = new List<string>();
+            _allPgnMoves = new List<string>();
+            _allMoves = new List<Move>();
+        }
+
+        public string[] GetAllMoves(bool withScore, bool withBestLine, bool withBestMove)
+        {
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
+            _allPgnMoves.Clear();
+            foreach (var move in _allMoves)
+            {
+                _allPgnMoves.Add(ConvertToPgnMove(move, withScore, withBestLine, withBestMove));
+            }
+
+            return _allPgnMoves.ToArray();
         }
 
-        public string[] GetAllMoves => _allMoves.ToArray();
-
-        public void AddMove(IMove move)
+        public void AddMove(Move move)
         {
-            string pgnMove = string.Empty;
-            IChessFigure figureFromField = _chessBoard.GetFigureOn(move.FromField);
-         
+            _allMoves.Add(move);
+        }
+
+        public string GetMoveList()
+        {
+            return GetMoveList(false, false, false);
+        }
+
+        public string GetMoveList(bool withScore, bool withBestLine, bool withBestMove)
+        {
+            _chessBoard = new ChessBoard();
+            _chessBoard.Init();
+            _chessBoard.NewGame();
+            var sb = new StringBuilder();
+            var moveCnt = 0;
+            var newMove = true;
+            foreach (var move in _allMoves)
+            {
+                var m = ConvertToPgnMove(move, withScore, withBestLine, withBestMove);
+                if (newMove)
+                {
+                    moveCnt++;
+                    sb.Append($"{moveCnt}.{m}");
+                    newMove = false;
+                }
+                else
+                {
+                    sb.Append($" {m} ");
+                    newMove = true;
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        private bool GetCastle(Move move, out string castle)
+        {
+            castle = string.Empty;
+            switch (move.FromField)
+            {
+                case Fields.FE1 when move.ToField.Equals(Fields.FG1):
+                    castle = "0-0";
+                    return true;
+                case Fields.FE1 when move.ToField.Equals(Fields.FC1):
+                    castle = "0-0-0";
+                    return true;
+                case Fields.FE8 when move.ToField.Equals(Fields.FG8):
+                    castle = "0-0";
+                    return true;
+                case Fields.FE8 when move.ToField.Equals(Fields.FC8):
+                    castle = "0-0-0";
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private string ConvertToPgnMove(Move move, bool withScore, bool withBestLine, bool withBestMove)
+        {
+            var pgnMove = string.Empty;
+            var figureFromField = _chessBoard.GetFigureOn(move.FromField);
+
             if (figureFromField.GeneralFigureId == FigureId.PAWN)
             {
                 if (move.CapturedFigure != FigureId.NO_PIECE)
@@ -40,35 +111,34 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
 
                 if (move.PromotedFigure != FigureId.NO_PIECE)
                 {
-                    pgnMove += FigureId.FigureIdToFenCharacter[move.PromotedFigure].ToUpper();
+                    pgnMove += $"={FigureId.FigureIdToFenCharacter[move.PromotedFigure].ToUpper()}";
                 }
-
             }
             else
             {
                 if (figureFromField.GeneralFigureId == FigureId.KING)
                 {
-                    if (GetCastle(move, out string rochade))
+                    if (GetCastle(move, out var castle))
                     {
-                        pgnMove = rochade;
+                        pgnMove = castle;
                     }
                 }
 
                 if (string.IsNullOrWhiteSpace(pgnMove))
                 {
-                    List<IMove> moveList = _chessBoard.GenerateMoveList();
-                    IMove tmpMove = moveList.FirstOrDefault(m => m.ToField == move.ToField &&
-                                                                 m.FromField != move.FromField &&
-                                                                 _chessBoard.GetFigureOn(m.FromField).GeneralFigureId ==
-                                                                 figureFromField.GeneralFigureId);
+                    var moveList = _chessBoard.GenerateMoveList();
+                    var tmpMove = moveList.FirstOrDefault(m => m.ToField == move.ToField &&
+                                                               m.FromField != move.FromField &&
+                                                               _chessBoard.GetFigureOn(m.FromField).GeneralFigureId ==
+                                                               figureFromField.GeneralFigureId);
                     if (tmpMove != null)
                     {
-                        IChessFigure tmpFigure = _chessBoard.GetFigureOn(tmpMove.FromField);
+                        var tmpFigure = _chessBoard.GetFigureOn(tmpMove.FromField);
                         if (tmpFigure.GeneralFigureId == figureFromField.GeneralFigureId &&
                             tmpFigure.Color == figureFromField.Color)
                         {
-                            Fields.Lines fieldToLineFrom = Fields.FieldToLines[figureFromField.Field];
-                            Fields.Lines fieldToLineTmp = Fields.FieldToLines[tmpFigure.Field];
+                            var fieldToLineFrom = Fields.FieldToLines[figureFromField.Field];
+                            var fieldToLineTmp = Fields.FieldToLines[tmpFigure.Field];
                             if (fieldToLineTmp != fieldToLineFrom)
                             {
                                 pgnMove =
@@ -79,7 +149,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
                                 pgnMove =
                                     $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(1, 1).ToLower()}{move.ToFieldName.ToLower()}";
                             }
-
                         }
                     }
                     else
@@ -102,7 +171,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
             var generateMoveList = _chessBoard.GenerateMoveList();
             if (_chessBoard.IsInCheck(Fields.COLOR_WHITE) || _chessBoard.IsInCheck(Fields.COLOR_BLACK))
             {
-                bool isMate = true;
+                var isMate = true;
                 foreach (var move1 in _chessBoard.CurrentMoveList)
                 {
                     var chessBoard = new ChessBoard();
@@ -121,57 +190,39 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
                 pgnMove += isMate ? "#" : "+";
             }
 
-            _allMoves.Add(pgnMove);
-        }
-
-        public string GetMoveList()
-        {
-            StringBuilder sb = new StringBuilder();
-            int moveCnt = 0;
-            bool newMove = true;
-            foreach (var s in _allMoves)
+            if (withBestMove)
             {
-                if (newMove)
+                withBestLine = false;
+            }
+
+            if (move.IsEngineMove && (withScore || withBestLine || withBestMove))
+            {
+                pgnMove += " { ";
+
+                if (withScore)
                 {
-                    moveCnt++;
-                    sb.Append($"{moveCnt}.{s}");
-                    newMove = false;
+                    pgnMove += move.Score.ToString(CultureInfo.InvariantCulture) + " ";
                 }
-                else
+
+                if (withBestLine && !string.IsNullOrWhiteSpace(move.BestLine))
                 {
-                    sb.Append($" {s} ");
-                    newMove = true;
+                    pgnMove += " (" + move.BestLine + ") ";
                 }
+
+                if (withBestMove && !string.IsNullOrWhiteSpace(move.BestLine))
+                {
+                    var strings = move.BestLine.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    if (strings.Length > 1)
+                    {
+                        pgnMove += " (" + strings[1] + ") ";
+                    }
+                }
+
+
+                pgnMove += "}";
             }
 
-            return sb.ToString();
-        }
-
-        private bool GetCastle(IMove move, out string rochade)
-        {
-            rochade = string.Empty;
-            if (move.FromField.Equals(Fields.FE1) && move.ToField.Equals(Fields.FG1))
-            {
-                rochade = "0-0";
-                return true;
-            }
-            if (move.FromField.Equals(Fields.FE1) && move.ToField.Equals(Fields.FC1))
-            {
-                rochade = "0-0-0";
-                return true;
-            }
-            if (move.FromField.Equals(Fields.FE8) && move.ToField.Equals(Fields.FG8))
-            {
-                rochade = "0-0";
-                return true;
-            }
-            if (move.FromField.Equals(Fields.FE8) && move.ToField.Equals(Fields.FC8))
-            {
-                rochade = "0-0-0";
-                return true;
-            }
-
-            return false;
+            return pgnMove;
         }
     }
 }

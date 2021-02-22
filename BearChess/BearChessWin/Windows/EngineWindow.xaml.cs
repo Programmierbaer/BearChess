@@ -146,7 +146,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             stackPanelEngines.Children.Clear();
         }
 
-        public void LoadUciEngine(UciInfo uciInfo, string fenPosition, IMove[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY)
+        public void LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY)
         {
             if (_loadedEngines.ContainsKey(uciInfo.Name))
             {
@@ -218,7 +218,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
 
-        public void LoadUciEngine(UciInfo uciInfo, IMove[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY)
+        public void LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY)
         {
             LoadUciEngine(uciInfo, string.Empty, playedMoves,lookForBookMoves, color);
         }

@@ -255,6 +255,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ponderImage.Visibility = Visibility.Hidden;
             ponderImage2.Visibility = Visibility.Collapsed;
             bookImage.Visibility = Visibility.Hidden;
+            bookImage2.Visibility = Visibility.Hidden;
             if (playConfigValue == null)
             {
                 return;

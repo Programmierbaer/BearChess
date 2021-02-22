@@ -76,7 +76,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// <summary>
         /// Make a move <paramref name="move"/>. Sets <see cref="CurrentColor"/> and <see cref="EnemyColor"/>.
         /// </summary>        
-        void MakeMove(IMove move);
+        void MakeMove(Move move);
 
         /// <summary>
         /// Make a move <paramref name="fromField"/> to <paramref name="toField"/>. Sets <see cref="CurrentColor"/> and <see cref="EnemyColor"/>.
@@ -152,25 +152,25 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// <summary>
         /// Generates and returns a new move list.
         /// </summary>
-        List<IMove> GenerateMoveList();
+        List<Move> GenerateMoveList();
 
         /// <summary>
         /// Returns the move list for the current color.
         /// </summary>
-        List<IMove> CurrentMoveList { get; }
+        List<Move> CurrentMoveList { get; }
 
         /// <summary>
         /// Returns the move list of played moves
         /// </summary>
-        IMove[] GetPlayedMoveList();
+        Move[] GetPlayedMoveList();
 
-        IMove GetPlayedMove(int moveNumber, int color);
+        Move GetPlayedMove(int moveNumber, int color);
         string GetPlayedFenPosition(int moveNumber, int color);
 
         /// <summary>
         /// Returns the move list for the enemy color.
         /// </summary>
-        List<IMove> EnemyMoveList { get; }
+        List<Move> EnemyMoveList { get; }
 
         /// <summary>
         /// Initialized a new empty chessboard.

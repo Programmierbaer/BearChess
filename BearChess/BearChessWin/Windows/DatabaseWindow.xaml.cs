@@ -1,62 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Microsoft.Win32;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 
-namespace www.SoLaNoSoft.com.BearChessWin.Windows
+namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
-    /// Interaktionslogik für DatabaseWindow.xaml
+    ///     Interaktionslogik für DatabaseWindow.xaml
     /// </summary>
     public partial class DatabaseWindow : Window
     {
         private readonly Configuration _configuration;
-        private readonly PgnLoader _pgnLoader;
-        private BindingList<PgnGame> _pgnGames = new BindingList<PgnGame>();
 
-        public event EventHandler<PgnGame> SelectedGameChanged;
+        private readonly Database _database;
+        private string _lastSyncFen = string.Empty;
+        private bool _syncWithBoard;
 
-        public DatabaseWindow(Configuration configuration, PgnLoader pgnLoader)
+        public DatabaseWindow(Configuration configuration, Database database, string fen)
         {
             _configuration = configuration;
             InitializeComponent();
-            _pgnLoader = pgnLoader;
+            _database = database;
             Top = _configuration.GetWinDoubleValue("DatabaseWindowTop", Configuration.WinScreenInfo.Top);
             Left = _configuration.GetWinDoubleValue("DatabaseWindowLeft", Configuration.WinScreenInfo.Left);
-            var fileName = _configuration.GetConfigValue("DatabaseFile", string.Empty);
-            if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
+            _lastSyncFen = fen;
+            dataGridGames.ItemsSource = _database.GetGames();
+            Title = $"Games on: {_database.FileName}";
+        }
+
+        public event EventHandler<DatabaseGame> SelectedGameChanged;
+
+        public void FilterByFen(string fen)
+        {
+            _lastSyncFen = fen;
+            if (_syncWithBoard)
             {
-                _pgnLoader.Load(fileName);
-                _pgnGames = _pgnLoader.Games;
-                dataGridGames.ItemsSource = _pgnGames;
-                Title = $"Games on: {fileName}";
+                dataGridGames.ItemsSource = _database.FilterByFen(fen);
             }
         }
 
         private void ButtonFileManager_OnClick(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog { Filter = "Games|*.pgn;" };
+            var openFileDialog = new OpenFileDialog {Filter = "Database|*.db;"};
             var showDialog = openFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
-
-                _pgnLoader.Load(openFileDialog.FileName);
-                _pgnGames = _pgnLoader.Games;
-                dataGridGames.ItemsSource = _pgnGames;
+                _database.Load(openFileDialog.FileName);
+                dataGridGames.ItemsSource = _database.GetGames();
                 _configuration.SetConfigValue("DatabaseFile", openFileDialog.FileName);
                 Title = $"Games on: {openFileDialog.FileName}";
             }
@@ -71,7 +67,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         private void ButtonNewFolder_OnClick(object sender, RoutedEventArgs e)
         {
-            var saveFileDialog = new SaveFileDialog() { Filter = "Games|*.pgn;" };
+            var saveFileDialog = new SaveFileDialog {Filter = "Database|*.db;"};
             var showDialog = saveFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(saveFileDialog.FileName))
             {
@@ -79,10 +75,10 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                 {
                     File.Delete(saveFileDialog.FileName);
                 }
-                _pgnLoader.Load(saveFileDialog.FileName);
-                _pgnGames = _pgnLoader.Games;
-                dataGridGames.ItemsSource = _pgnGames;
-                _configuration.SetConfigValue("DatabaseFile",saveFileDialog.FileName);
+
+                _database.Load(saveFileDialog.FileName);
+                dataGridGames.ItemsSource = _database.GetGames();
+                _configuration.SetConfigValue("DatabaseFile", saveFileDialog.FileName);
                 Title = $"Games on: {saveFileDialog.FileName}";
             }
         }
@@ -94,25 +90,94 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         private void DataGridGames_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (dataGridGames.SelectedItem is PgnGame pgnGame)
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                OnSelectedGamedChanged(pgnGame);
+                OnSelectedGamedChanged(_database.Load(pgnGame.Id));
             }
         }
-        protected virtual void OnSelectedGamedChanged(PgnGame e)
+
+        protected virtual void OnSelectedGamedChanged(DatabaseGame e)
         {
             SelectedGameChanged?.Invoke(this, e);
         }
 
         private void ButtonDelete_OnClick(object sender, RoutedEventArgs e)
         {
-            if (dataGridGames.SelectedItem is PgnGame pgnGame)
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
                 if (MessageBox.Show("Delete selected game?", "Delete game", MessageBoxButton.YesNo,
-                    MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                                    MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    _pgnLoader.DeleteGame(pgnGame);
+                    _database.Delete(pgnGame.Id);
+                    dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
+                                                    ? _database.FilterByFen(_lastSyncFen)
+                                                    : _database.GetGames();
                 }
+            }
+        }
+
+        private void ButtonImport_OnClick(object sender, RoutedEventArgs e)
+        {
+            int count = 0;
+            var openFileDialog = new OpenFileDialog {Filter = "Games|*.pgn;*.db"};
+            var showDialog = openFileDialog.ShowDialog(this);
+            if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            {
+                var pgnLoader = new PgnLoader();
+                var chessBoard = new ChessBoard();
+                chessBoard.Init();
+                chessBoard.NewGame();
+
+                foreach (var pgnGame in pgnLoader.Load(openFileDialog.FileName))
+                {
+                    var moveList = pgnGame.GetMoveList();
+                    var allMoves = moveList.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var aMove in allMoves)
+                    {
+                        var pgnMove = aMove;
+                        if (pgnMove.IndexOf(".", StringComparison.Ordinal) > 0)
+                        {
+                            pgnMove = pgnMove.Substring(pgnMove.IndexOf(".", StringComparison.Ordinal) + 1);
+                        }
+
+                        chessBoard.MakeMove(pgnMove);
+                    }
+
+                    count++;
+                    if (_database.Save(new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList())))
+                    {
+                        chessBoard.Init();
+                        chessBoard.NewGame();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                dataGridGames.ItemsSource = _database.GetGames();
+            }
+        }
+
+        private void ButtonSync_OnClick(object sender, RoutedEventArgs e)
+        {
+            _syncWithBoard = !_syncWithBoard;
+            imageFilterApply.Visibility = _syncWithBoard ? Visibility.Collapsed : Visibility.Visible;
+            imageFilterClear.Visibility = _syncWithBoard ? Visibility.Visible : Visibility.Collapsed;
+            dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
+                                            ? _database.FilterByFen(_lastSyncFen)
+                                            : _database.GetGames();
+        }
+
+        private void ButtonDeleteDb_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Delete database with all games?", "Delete database", MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                dataGridGames.ItemsSource = null;
+                _database.Drop();
+                dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
+                                                ? _database.FilterByFen(_lastSyncFen)
+                                                : _database.GetGames();
             }
         }
     }

@@ -8,10 +8,10 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="columnDefinition1" Width="30"></ColumnDefinition>
-            <ColumnDefinition Name="columnDefinition2" Width="60"></ColumnDefinition>
-            <ColumnDefinition Name="columnDefinition3" Width="60"></ColumnDefinition>
+            <ColumnDefinition Name="columnDefinition2" Width="65"></ColumnDefinition>
+            <ColumnDefinition Name="columnDefinition3" Width="65"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Margin="5,1,5,5" Name="textBlockMoveNumber" VerticalAlignment="Center" TextAlignment="Right"  HorizontalAlignment="Right"  Grid.Column="0">99.</TextBlock>
+        <TextBlock Margin="5,1,5,1" Name="textBlockMoveNumber" VerticalAlignment="Center" TextAlignment="Right"  HorizontalAlignment="Right"  Grid.Column="0">99.</TextBlock>
         <Grid Grid.Column="1" Name="gridColumnWhite">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Name="columnDefinition11" Width="15"></ColumnDefinition>

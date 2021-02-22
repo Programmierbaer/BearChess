@@ -18,6 +18,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly UciInfo _uciInfo;
         private int _currentMultiPvCount = 1;
         private bool _stopVisible = true;
+        private bool _stopInfo = false;
         
         public class MultiPvEventArgs : EventArgs
         {
@@ -112,14 +113,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
+            if (_stopInfo)
+            {
+                while (_infoLine.TryDequeue(out _))
+                { };
+                _stopInfo = false;
+            }
             _infoLine.Enqueue(infoLine);
             ShowHidePlay(true);
         }
 
         public void StopInfo()
         {
-            while (_infoLine.TryDequeue(out _))
-            { };
+            //while (_infoLine.TryDequeue(out _))
+            //{ };
+            _stopInfo = true;
             ShowHidePlay(false);
         }
 
@@ -155,6 +164,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             while (true)
             {
+                //string infoLine = string.Empty;
+                //while (_infoLine.TryDequeue(out string infoLine3))
+                //{
+                //infoLine = infoLine3;
+                //}
+                //if (!string.IsNullOrWhiteSpace(infoLine))
                 if (_infoLine.TryDequeue(out string infoLine))
                 {
                     string depthString = string.Empty;

@@ -6,7 +6,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     public class AllMoveClass
     {
         public int MoveNumber { get; }
-        private readonly Dictionary<int, IMove> _moves = new Dictionary<int, IMove>();
+        private readonly Dictionary<int, Move> _moves = new Dictionary<int, Move>();
         private readonly Dictionary<int, string> _fens = new Dictionary<int, string>();
 
         public AllMoveClass(int moveNumber)
@@ -14,13 +14,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             MoveNumber = moveNumber;
         }
 
-        public void SetMove(int color, IMove move, string fenPosition)
+        public void SetMove(int color, Move move, string fenPosition)
         {
             _moves[color] = move;
             _fens[color] = fenPosition;
         }
 
-        public IMove GetMove(int color)
+        public Move GetMove(int color)
         {
             return _moves.ContainsKey(color) ? _moves[color] : null;
         }

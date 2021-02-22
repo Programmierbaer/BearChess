@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
 {
@@ -50,12 +51,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// <summary>
         /// Returns the current move list
         /// </summary>        
-        List<IMove> GetMoveList();
+        List<Move> GetMoveList();
 
         /// <summary>
         /// Returns the current move list
         /// </summary>        
-        List<IMove> CurrentMoveList { get; }
+        List<Move> CurrentMoveList { get; }
 
         /// <summary>
         /// Returns true if this figure is attacked by color <paramref name="figureColor"/> (<see cref="Fields.COLOR_WHITE"/> or <see cref="Fields.COLOR_BLACK"/>).

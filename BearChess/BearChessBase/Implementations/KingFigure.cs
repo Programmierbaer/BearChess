@@ -15,9 +15,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             ToOffset = 7;
         }
 
-        public override List<IMove> GetMoveList()
+        public override List<Move> GetMoveList()
         {
-            var moves = new List<IMove>();
+            var moves = new List<Move>();
             int tmpField;
             IChessFigure tmpFigure;
             for (var offSet = FromOffset; offSet <= ToOffset; offSet++)
@@ -33,7 +33,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     if (!tmpFigure.IsAttackedByColor(EnemyColor))
                     {
                         // Gültiger Zug
-                        IMove tmpMove = new Move(Field, tmpField, Color,FigureId, tmpFigure);
+                        Move tmpMove = new Move(Field, tmpField, Color,FigureId, tmpFigure);
                         moves.Add(tmpMove);
                     }
                 }
@@ -58,7 +58,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     if (tmpFigure.Color == Fields.COLOR_EMPTY && !tmpFigure.IsAttackedByColor(EnemyColor))
                     {
                         // Gültiger Zug
-                        IMove tmpMove = new Move(Field, tmpField,Color, FigureId);
+                        Move tmpMove = new Move(Field, tmpField,Color, FigureId);
                         moves.Add(tmpMove);
                     }
                 }
@@ -79,7 +79,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         if (tmpFigure.Color == Fields.COLOR_EMPTY)
                         {
                             // Gültiger Zug
-                            IMove tmpMove = new Move(Field, Field - 2, Color, FigureId);
+                            Move tmpMove = new Move(Field, Field - 2, Color, FigureId);
                             moves.Add(tmpMove);
                         }
                     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
 {
@@ -8,8 +9,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
     {
         void Clear();
         void Log(string logInfo, bool appendNewLine = true);
-        void Log(IList<IMove> logMoves, bool appendNewLine = true);
-        void Log(IMove logMove, bool appendNewLine = true);
+        void Log(IList<Move> logMoves, bool appendNewLine = true);
+        void Log(Move logMove, bool appendNewLine = true);
         void Pause();
         void Close();
         void Continue();

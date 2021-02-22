@@ -19,9 +19,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             GeneralFigureId = Definitions.FigureId.NO_PIECE;
         }
 
-        public override List<IMove> GetMoveList()
+        public override List<Move> GetMoveList()
         {
-            return new List<IMove>(0);
+            return new List<Move>(0);
         }
     }
 }

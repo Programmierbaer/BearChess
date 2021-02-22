@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
@@ -63,11 +60,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             radioButtonAlternate.IsChecked = !flashInSync;
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
 
-        }
-
-        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            throw new System.NotImplementedException();
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)

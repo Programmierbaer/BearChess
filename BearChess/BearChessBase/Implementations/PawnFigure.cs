@@ -17,9 +17,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             GeneralFigureId = Definitions.FigureId.PAWN;
         }
 
-        public override List<IMove> GetMoveList()
+        public override List<Move> GetMoveList()
         {
-            var moves = new List<IMove>();
+            var moves = new List<Move>();
             // Nächstes Feld in Zugrichtung gerade aus
             var tmpFigure = ChessBoard.GetFigureOn(Field + Step1);
             // Nur wenn das Feld leer ist...

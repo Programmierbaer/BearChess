@@ -72,7 +72,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_openingBook.AcceptFenPosition)
             {
                 _concurrentFenPositions.Enqueue(fenPosition);
-                //dataGridMoves.ItemsSource = _openingBook.GetMoveList(fenPosition);
             }
         }
 

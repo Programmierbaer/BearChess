@@ -32,8 +32,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             _outsideFigure = new OutsideFigure(this, Fields.OutsideFields[0]);
             CurrentFigureList = new HashSet<int>();
-            CurrentMoveList = new List<IMove>(0);
-            EnemyMoveList = new List<IMove>(0);
+            CurrentMoveList = new List<Move>(0);
+            EnemyMoveList = new List<Move>(0);
             CapturedFigure = _outsideFigure;
             _allPlayedMoves = new Dictionary<int, AllMoveClass>();
             _repetition = new Dictionary<string, int>();
@@ -59,11 +59,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public int EnemyColor { get; private set; }
         
         /// <inheritdoc />
-        public List<IMove> CurrentMoveList { get; private set; }
+        public List<Move> CurrentMoveList { get; private set; }
 
-        public IMove[] GetPlayedMoveList()
+        public Move[] GetPlayedMoveList()
         {
-            List<IMove> result = new List<IMove>();
+            List<Move> result = new List<Move>();
             foreach (var key in _allPlayedMoves.Keys.OrderBy(k => k))
             {
                 result.Add(_allPlayedMoves[key].GetMove(Fields.COLOR_WHITE));
@@ -77,7 +77,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return result.ToArray();
         }
 
-        public IMove GetPlayedMove(int moveNumber, int color)
+        public Move GetPlayedMove(int moveNumber, int color)
         {
             if (_allPlayedMoves.ContainsKey(moveNumber))
             {
@@ -98,7 +98,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         /// <inheritdoc />
-        public List<IMove> EnemyMoveList { get; private set; }
+        public List<Move> EnemyMoveList { get; private set; }
 
         /// <inheritdoc />
         public string EnPassantTargetField { get; set; }
@@ -323,9 +323,157 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         /// <inheritdoc />
-        public void MakeMove(IMove move)
+        public void MakeMove(Move move)
         {
-            MakeMove(move.FromField, move.ToField);
+            var chessFigure = _figures[move.FromField];
+
+            if (chessFigure.Color != CurrentColor)
+            {
+                return;
+            }
+
+            _lastMoveFromFigure = _figures[move.FromField];
+            _lastMoveToFigure = _figures[move.ToField];
+            _lastMoveFromField = move.FromField;
+            _lastMoveToField = move.ToField;
+            CapturedFigure = _lastMoveToFigure;
+
+            CurrentFigureList.Remove(move.FromField);
+            CurrentFigureList.Add(move.ToField);
+
+            if (_lastMoveToFigure.Color >= 0)
+            {
+                _material[_lastMoveToFigure.Color] -= _lastMoveToFigure.Material;
+            }
+
+            chessFigure.Field = move.ToField;
+            _figures[move.ToField] = chessFigure;
+            _figures[move.FromField] = new NoFigure(this, move.FromField);
+            CurrentColor = EnemyColor;
+            if (_lastMoveFromFigure.GeneralFigureId == FigureId.KING)
+            {
+                _kingPosition[_lastMoveFromFigure.Color] = move.ToField;
+            }
+            CheckPawnMove(move.PromotedFigure);
+            CheckRochade();
+            SetEnPassentTargetField();
+            if (CapturedFigure.FigureId != FigureId.NO_PIECE)
+            {
+                HalfMoveClock = 0;
+            }
+            if (CurrentColor == Fields.COLOR_WHITE)
+            {
+                FullMoveNumber++;
+            }
+            var keysCount = _allPlayedMoves.Keys.Count;
+            if (keysCount > FullMoveNumber)
+            {
+                for (int i = FullMoveNumber; i < keysCount; i++)
+                {
+                    _allPlayedMoves.Remove(i);
+                }
+            }
+            keysCount = _allPlayedMoves.Keys.Count;
+            if ((keysCount == 0) && EnemyColor == Fields.COLOR_BLACK)
+            {
+                return;
+            }
+
+            var fenPosition = GetFenPosition();
+            var substring = fenPosition.Split(" ".ToCharArray())[0];
+            if (chessFigure.GeneralFigureId == FigureId.PAWN)
+            {
+                _repetition.Clear();
+                DrawByRepetition = false;
+            }
+
+            if (CapturedFigure.Color >= 0)
+            {
+                _repetition.Clear();
+                DrawByRepetition = false;
+            }
+            if (_repetition.ContainsKey(substring))
+            {
+                _repetition[substring] = _repetition[substring] + 1;
+            }
+            else
+            {
+                _repetition[substring] = 1;
+            }
+
+            DrawByRepetition = _repetition[substring] > 2;
+            if (EnemyColor == Fields.COLOR_WHITE)
+            {
+                var allPlayedMove = new AllMoveClass(keysCount);
+                allPlayedMove.SetMove(Fields.COLOR_WHITE, move, fenPosition);
+
+                _allPlayedMoves[keysCount] = allPlayedMove;
+            }
+            else
+            {
+                _allPlayedMoves[keysCount - 1].SetMove(Fields.COLOR_BLACK, move, fenPosition);
+            }
+
+            if (!DrawByMaterial)
+            {
+                bool checkMaterial = true;
+                int whiteKnights = 0;
+                int blackKnights = 0;
+                int whiteBishops = 0;
+                int blackBishops = 0;
+                foreach (var figure in _figures)
+                {
+                    if (figure.GeneralFigureId == FigureId.KING)
+                    {
+                        continue;
+                    }
+                    if (figure.GeneralFigureId == FigureId.ROOK)
+                    {
+                        checkMaterial = false;
+                        break;
+                    }
+
+                    if (figure.GeneralFigureId == FigureId.QUEEN)
+                    {
+                        checkMaterial = false;
+                        break;
+                    }
+
+                    if (figure.GeneralFigureId == FigureId.PAWN)
+                    {
+                        checkMaterial = false;
+                        break;
+                    }
+                    if (figure.FigureId == FigureId.WHITE_BISHOP)
+                    {
+                        whiteBishops++;
+                        continue;
+                    }
+                    if (figure.FigureId == FigureId.BLACK_BISHOP)
+                    {
+                        blackBishops++;
+                        continue;
+                    }
+                    if (figure.FigureId == FigureId.WHITE_KNIGHT)
+                    {
+                        whiteKnights++;
+                        continue;
+                    }
+                    if (figure.FigureId == FigureId.BLACK_KNIGHT)
+                    {
+                        blackKnights++;
+                        continue;
+                    }
+                }
+
+                if (checkMaterial)
+                {
+                    bool whiteLessMaterial = ((whiteBishops < 2) && (whiteKnights == 0)) || ((whiteBishops == 0) && (whiteKnights < 3));
+                    bool blackLessMaterial = ((blackBishops < 2) && (blackKnights == 0)) || ((blackBishops == 0) && (blackKnights < 3));
+
+                    DrawByMaterial = whiteLessMaterial && blackLessMaterial;
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -381,16 +529,26 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
             else
             {
-                if (!"0123456789".Contains(pgnMove.Substring(pgnMove.Length - 1)))
+                if (pgnMove.Contains("="))
                 {
                     promotionFigure = pgnMove.Substring(pgnMove.Length - 1);
-                    fieldNumber = Fields.GetFieldNumber(pgnMove.Substring(0,2));
                     if (CurrentColor == Fields.COLOR_BLACK)
                     {
                         promotionFigure = promotionFigure.ToLower();
                     }
+
+                    pgnMove = pgnMove.Substring(0, pgnMove.IndexOf("=", StringComparison.OrdinalIgnoreCase));
                 }
-                else
+                if (!"0123456789".Contains(pgnMove.Substring(pgnMove.Length - 1)))
+                {
+                    promotionFigure = pgnMove.Substring(pgnMove.Length - 1);
+                    if (CurrentColor == Fields.COLOR_BLACK)
+                    {
+                        promotionFigure = promotionFigure.ToLower();
+                    }
+                    pgnMove = pgnMove.Substring(0, pgnMove.Length-1);
+                }
+                //else
                 {
                     fieldNumber = Fields.GetFieldNumber(pgnMove.Substring(pgnMove.Length - 2));
                     if (pgnMove.Length > 2)
@@ -470,6 +628,161 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public void MakeMove(string fromField, string toField, string promotionFigure)
         {
             MakeMove(Fields.GetFieldNumber(fromField), Fields.GetFieldNumber(toField), FigureId.FenCharacterToFigureId[promotionFigure]);
+        }
+
+        public void MakeMove(int fromField, int toField, int promotionFigureId)
+        {
+            var chessFigure = _figures[fromField];
+
+            if (chessFigure.Color != CurrentColor)
+            {
+                return;
+            }
+
+            _lastMoveFromFigure = _figures[fromField];
+            _lastMoveToFigure = _figures[toField];
+            _lastMoveFromField = fromField;
+            _lastMoveToField = toField;
+            CapturedFigure = _lastMoveToFigure;
+
+            CurrentFigureList.Remove(fromField);
+            CurrentFigureList.Add(toField);
+
+            if (_lastMoveToFigure.Color >= 0)
+            {
+                _material[_lastMoveToFigure.Color] -= _lastMoveToFigure.Material;
+            }
+
+            chessFigure.Field = toField;
+            _figures[toField] = chessFigure;
+            _figures[fromField] = new NoFigure(this, fromField);
+            CurrentColor = EnemyColor;
+            if (_lastMoveFromFigure.GeneralFigureId == FigureId.KING)
+            {
+                _kingPosition[_lastMoveFromFigure.Color] = toField;
+            }
+            CheckPawnMove(promotionFigureId);
+            CheckRochade();
+            SetEnPassentTargetField();
+            if (CapturedFigure.FigureId != FigureId.NO_PIECE)
+            {
+                HalfMoveClock = 0;
+            }
+            if (CurrentColor == Fields.COLOR_WHITE)
+            {
+                FullMoveNumber++;
+            }
+            var keysCount = _allPlayedMoves.Keys.Count;
+            if (keysCount > FullMoveNumber)
+            {
+                for (int i = FullMoveNumber; i < keysCount; i++)
+                {
+                    _allPlayedMoves.Remove(i);
+                }
+            }
+            keysCount = _allPlayedMoves.Keys.Count;
+            if ((keysCount == 0) && EnemyColor == Fields.COLOR_BLACK)
+            {
+                return;
+            }
+
+            var fenPosition = GetFenPosition();
+            var substring = fenPosition.Split(" ".ToCharArray())[0];
+            if (chessFigure.GeneralFigureId == FigureId.PAWN)
+            {
+                _repetition.Clear();
+                DrawByRepetition = false;
+            }
+
+            if (CapturedFigure.Color >= 0)
+            {
+                _repetition.Clear();
+                DrawByRepetition = false;
+            }
+            if (_repetition.ContainsKey(substring))
+            {
+                _repetition[substring] = _repetition[substring] + 1;
+            }
+            else
+            {
+                _repetition[substring] = 1;
+            }
+
+            DrawByRepetition = _repetition[substring] > 2;
+            if (EnemyColor == Fields.COLOR_WHITE)
+            {
+                var allPlayedMove = new AllMoveClass(keysCount);
+                allPlayedMove.SetMove(Fields.COLOR_WHITE, new Move(fromField, toField, Fields.COLOR_WHITE, chessFigure.FigureId, CapturedFigure, promotionFigureId),
+                                      fenPosition);
+
+                _allPlayedMoves[keysCount] = allPlayedMove;
+            }
+            else
+            {
+                _allPlayedMoves[keysCount - 1].SetMove(Fields.COLOR_BLACK, new Move(fromField, toField, Fields.COLOR_BLACK, chessFigure.FigureId, CapturedFigure, promotionFigureId),
+                                                   fenPosition);
+            }
+
+            if (!DrawByMaterial)
+            {
+                bool checkMaterial = true;
+                int whiteKnights = 0;
+                int blackKnights = 0;
+                int whiteBishops = 0;
+                int blackBishops = 0;
+                foreach (var figure in _figures)
+                {
+                    if (figure.GeneralFigureId == FigureId.KING)
+                    {
+                        continue;
+                    }
+                    if (figure.GeneralFigureId == FigureId.ROOK)
+                    {
+                        checkMaterial = false;
+                        break;
+                    }
+
+                    if (figure.GeneralFigureId == FigureId.QUEEN)
+                    {
+                        checkMaterial = false;
+                        break;
+                    }
+
+                    if (figure.GeneralFigureId == FigureId.PAWN)
+                    {
+                        checkMaterial = false;
+                        break;
+                    }
+                    if (figure.FigureId == FigureId.WHITE_BISHOP)
+                    {
+                        whiteBishops++;
+                        continue;
+                    }
+                    if (figure.FigureId == FigureId.BLACK_BISHOP)
+                    {
+                        blackBishops++;
+                        continue;
+                    }
+                    if (figure.FigureId == FigureId.WHITE_KNIGHT)
+                    {
+                        whiteKnights++;
+                        continue;
+                    }
+                    if (figure.FigureId == FigureId.BLACK_KNIGHT)
+                    {
+                        blackKnights++;
+                        continue;
+                    }
+                }
+
+                if (checkMaterial)
+                {
+                    bool whiteLessMaterial = ((whiteBishops < 2) && (whiteKnights == 0)) || ((whiteBishops == 0) && (whiteKnights < 3));
+                    bool blackLessMaterial = ((blackBishops < 2) && (blackKnights == 0)) || ((blackBishops == 0) && (blackKnights < 3));
+
+                    DrawByMaterial = whiteLessMaterial && blackLessMaterial;
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -708,7 +1021,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public void SetCurrentMove(int moveNumber, int color)
         {
-            List<IMove> allMoves = new List<IMove>();
+            List<Move> allMoves = new List<Move>();
             var playedMoveList = GetPlayedMoveList();
             for (int i = 0; i < moveNumber; i++)
             {
@@ -768,14 +1081,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         /// <inheritdoc />
-        public List<IMove> GenerateMoveList()
+        public List<Move> GenerateMoveList()
         {
             foreach (var chessFigure in _figures)
             {
                 chessFigure.ClearAttacks();
             }
-            CurrentMoveList = new List<IMove>();
-            EnemyMoveList = new List<IMove>();
+            CurrentMoveList = new List<Move>();
+            EnemyMoveList = new List<Move>();
             if (CapturedFigure.GeneralFigureId == FigureId.KING)
             {
                 return CurrentMoveList;
@@ -1385,160 +1698,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return null;
         }
 
-        public void MakeMove(int fromField, int toField, int promotionFigureId)
-        {
-            var chessFigure = _figures[fromField];
-           
-            if (chessFigure.Color != CurrentColor)
-            {
-                return;
-            }
-
-            _lastMoveFromFigure = _figures[fromField];
-            _lastMoveToFigure = _figures[toField];
-            _lastMoveFromField = fromField;
-            _lastMoveToField = toField;
-            CapturedFigure = _lastMoveToFigure;
-
-            CurrentFigureList.Remove(fromField);
-            CurrentFigureList.Add(toField);
-
-            if (_lastMoveToFigure.Color >= 0)
-            {
-                _material[_lastMoveToFigure.Color] -= _lastMoveToFigure.Material;
-            }
-
-            chessFigure.Field = toField;
-            _figures[toField] = chessFigure;
-            _figures[fromField] = new NoFigure(this, fromField);
-            CurrentColor = EnemyColor;
-            if (_lastMoveFromFigure.GeneralFigureId == FigureId.KING)
-            {
-                _kingPosition[_lastMoveFromFigure.Color] = toField;
-            }
-            CheckPawnMove(promotionFigureId);
-            CheckRochade();
-            SetEnPassentTargetField();
-            if (CapturedFigure.FigureId != FigureId.NO_PIECE)
-            {
-                HalfMoveClock = 0;
-            }
-            if (CurrentColor == Fields.COLOR_WHITE)
-            {
-                FullMoveNumber++;
-            }
-            var keysCount = _allPlayedMoves.Keys.Count;
-            if (keysCount > FullMoveNumber)
-            {
-                for (int i = FullMoveNumber; i < keysCount; i++)
-                {
-                    _allPlayedMoves.Remove(i);
-                }
-            }
-            keysCount = _allPlayedMoves.Keys.Count;
-            if ((keysCount == 0) && EnemyColor == Fields.COLOR_BLACK)
-            {
-                return;
-            }
-
-            var fenPosition = GetFenPosition();
-            var substring = fenPosition.Split(" ".ToCharArray())[0];
-            if (chessFigure.GeneralFigureId == FigureId.PAWN)
-            {
-                _repetition.Clear();
-                DrawByRepetition = false;
-            }
-
-            if (CapturedFigure.Color >= 0)
-            {
-                _repetition.Clear();
-                DrawByRepetition = false;
-            }
-            if (_repetition.ContainsKey(substring))
-            {
-                _repetition[substring] = _repetition[substring] + 1;
-            }
-            else
-            {
-                _repetition[substring] = 1;
-            }
-
-            DrawByRepetition = _repetition[substring] > 2;
-            if (EnemyColor == Fields.COLOR_WHITE)
-            {
-                var allPlayedMove = new AllMoveClass(keysCount);
-                allPlayedMove.SetMove(Fields.COLOR_WHITE, new Move(fromField, toField, Fields.COLOR_WHITE,chessFigure.FigureId,  CapturedFigure, promotionFigureId),
-                                      fenPosition);
-            
-                _allPlayedMoves[keysCount] = allPlayedMove;
-            }
-            else
-            {
-                _allPlayedMoves[keysCount-1].SetMove(Fields.COLOR_BLACK, new Move(fromField, toField,Fields.COLOR_BLACK, chessFigure.FigureId, CapturedFigure, promotionFigureId),
-                                                   fenPosition);
-            }
-
-            if (!DrawByMaterial)
-            {
-                bool checkMaterial = true;
-                int whiteKnights = 0;
-                int blackKnights = 0;
-                int whiteBishops = 0;
-                int blackBishops = 0;
-                foreach (var figure in _figures)
-                {
-                    if (figure.GeneralFigureId == FigureId.KING)
-                    {
-                        continue;
-                    }
-                    if (figure.GeneralFigureId == FigureId.ROOK)
-                    {
-                        checkMaterial = false;
-                        break;
-                    }
-
-                    if (figure.GeneralFigureId == FigureId.QUEEN)
-                    {
-                        checkMaterial = false;
-                        break;
-                    }
-
-                    if (figure.GeneralFigureId == FigureId.PAWN)
-                    {
-                        checkMaterial = false;
-                        break;
-                    }
-                    if (figure.FigureId == FigureId.WHITE_BISHOP)
-                    {
-                        whiteBishops++;
-                        continue;
-                    }
-                    if (figure.FigureId == FigureId.BLACK_BISHOP)
-                    {
-                        blackBishops++;
-                        continue;
-                    }
-                    if (figure.FigureId == FigureId.WHITE_KNIGHT)
-                    {
-                        whiteKnights++;
-                        continue;
-                    }
-                    if (figure.FigureId == FigureId.BLACK_KNIGHT)
-                    {
-                        blackKnights++;
-                        continue;
-                    }
-                }
-
-                if (checkMaterial)
-                {
-                    bool whiteLessMaterial = ((whiteBishops < 2) && (whiteKnights == 0)) || ((whiteBishops ==0) && (whiteKnights < 3));
-                    bool blackLessMaterial = ((blackBishops < 2) && (blackKnights == 0)) || ((blackBishops == 0) && (blackKnights < 3));
-
-                    DrawByMaterial = whiteLessMaterial && blackLessMaterial;
-                }
-            }
-        }
+    
 
         private struct Castling
         {

@@ -19,9 +19,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             EnemyColor = Fields.COLOR_OUTSIDE;
         }
 
-        public override List<IMove> GetMoveList()
+        public override List<Move> GetMoveList()
         {
-            return new List<IMove>(0);
+            return new List<Move>(0);
         }
     }
 }

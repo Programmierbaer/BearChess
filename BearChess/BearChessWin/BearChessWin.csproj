@@ -19,7 +19,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>d:\publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -29,10 +30,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -56,6 +57,24 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>BearChess.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>CA27EF3E6C99297369EEB05A7473962BC0693EB3</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>BearChessWin_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>BearChessWin_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -131,11 +150,12 @@
     <Compile Include="UciConfigControls\UciNumericUpdownUserControl.xaml.cs">
       <DependentUpon>UciNumericUpdownUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ExtendedMoveUserControl.xaml.cs">
+      <DependentUpon>ExtendedMoveUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\IMoveUserControl.cs" />
     <Compile Include="UserControls\MoveUserControl.xaml.cs">
       <DependentUpon>MoveUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\TextChessBoardUserControl.xaml.cs">
-      <DependentUpon>TextChessBoardUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UciLogInfoUserControl.xaml.cs">
       <DependentUpon>UciLogInfoUserControl.xaml</DependentUpon>
@@ -263,11 +283,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\MoveUserControl.xaml">
+    <Page Include="UserControls\ExtendedMoveUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\TextChessBoardUserControl.xaml">
+    <Page Include="UserControls\MoveUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -288,10 +308,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\EngineInfoUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\EngineUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -349,9 +365,6 @@
     </Compile>
     <Compile Include="UserControls\EngineInfoUserControl.xaml.cs">
       <DependentUpon>EngineInfoUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\EngineUserControl.xaml.cs">
-      <DependentUpon>EngineUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\GraphicsChessBoardUserControl.xaml.cs">
       <DependentUpon>GraphicsChessBoardUserControl.xaml</DependentUpon>
@@ -452,6 +465,7 @@
     <Resource Include="Assets\Fonts\MERIFONT.TTF" />
     <Resource Include="Assets\Fonts\MISCHESS.TTF" />
     <Resource Include="Assets\Fonts\MVALFONT.TTF" />
+    <None Include="BearChessWin_TemporaryKey.pfx" />
     <None Include="Connected Services\lichess\ConnectedService.json" />
     <None Include="Connected Services\lichess\OpenAPI.nswag" />
     <None Include="packages.config" />
@@ -843,6 +857,39 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\control_stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\show_detail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\hide_detail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\script_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\script_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\saved_imports.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\database.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\database_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\folder_database.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\filter_clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\filter_reapply.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\database_delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

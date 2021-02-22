@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessWin.Assets.Fonts;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -11,7 +13,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// <summary>
     ///     Interaktionslogik für MoveUserControl.xaml
     /// </summary>
-    public partial class MoveUserControl : UserControl
+    public partial class MoveUserControl : UserControl, IMoveUserControl
     {
         private readonly FontConverter _fontConverter;
         private int _blackCapturedFigureId;
@@ -77,7 +79,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             
         }
 
-        public void SetSize(int factor)
+        public void SetSize(int factor, double width)
         {
             switch (factor)
             {
@@ -86,14 +88,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockMoveNumber.FontSize = 12;
                     textBlockWhiteMove.FontSize = 12;
                     textBlockBlackMove.FontSize = 12;
-                    textBlockBlackMove.FontSize = 12;
                     textBlockWhiteFigure.FontSize = 12;
                     textBlockBlackFigure.FontSize = 12;
                     textBlockWhiteFigureSymbol.FontSize = 12;
                     textBlockBlackFigureSymbol.FontSize = 12;
                     columnDefinition1.Width = new GridLength(30);
-                    columnDefinition2.Width = new GridLength(60);
-                    columnDefinition3.Width = new GridLength(60);
+                    columnDefinition2.Width = new GridLength(70);
+                    columnDefinition3.Width = new GridLength(70);
                     columnDefinition11.Width = new GridLength(15);
                     columnDefinition21.Width = new GridLength(15);
 
@@ -104,14 +105,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockMoveNumber.FontSize = 18;
                     textBlockWhiteMove.FontSize = 18;
                     textBlockBlackMove.FontSize = 18;
-                    textBlockBlackMove.FontSize = 18;
                     textBlockWhiteFigure.FontSize = 18;
                     textBlockBlackFigure.FontSize = 18;
                     textBlockWhiteFigureSymbol.FontSize = 18;
                     textBlockBlackFigureSymbol.FontSize = 18;
                     columnDefinition1.Width = new GridLength(45);
-                    columnDefinition2.Width = new GridLength(85);
-                    columnDefinition3.Width = new GridLength(85);
+                    columnDefinition2.Width = new GridLength(100);
+                    columnDefinition3.Width = new GridLength(100);
                     columnDefinition11.Width = new GridLength(23);
                     columnDefinition21.Width = new GridLength(23);
 
@@ -121,7 +121,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     textBlockMoveNumber.FontSize = 12;
                     textBlockWhiteMove.FontSize = 12;
-                    textBlockBlackMove.FontSize = 12;
                     textBlockBlackMove.FontSize = 12;
                     textBlockWhiteFigure.FontSize = 12;
                     textBlockBlackFigure.FontSize = 12;
@@ -148,6 +147,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return _moveNumber;
         }
 
+        public void SetExtendedFull(bool extendedFull)
+        {
+            
+        }
+
+        public void SetMove(Move move)
+        {
+            SetMove(move.FigureColor,move.Figure,move.CapturedFigure,$"{move.FromFieldName}{move.ToFieldName}{move.CheckOrMateSign}",move.PromotedFigure);
+        }
+
         public void SetMove(int color, int figureId, int capturedFigureId, string move, int promotedFigureId)
         {
             move = move.ToLower();
@@ -161,7 +170,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                //_whiteMove = string.Empty;
                 _blackFigureId = figureId;
                 _blackCapturedFigureId = capturedFigureId;
                 _blackMove = move;

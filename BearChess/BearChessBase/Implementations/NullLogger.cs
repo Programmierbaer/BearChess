@@ -17,12 +17,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
 
-        public void Log(IList<IMove> logMoves, bool appendNewLine = true)
+        public void Log(IList<Move> logMoves, bool appendNewLine = true)
         {
 
         }
 
-        public void Log(IMove logMove, bool appendNewLine = true)
+        public void Log(Move logMove, bool appendNewLine = true)
         {
 
         }
