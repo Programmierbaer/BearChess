@@ -59,17 +59,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _moveType = (DisplayMoveType) Enum.Parse(typeof(DisplayMoveType),
                                                      _configuration.GetConfigValue(
                                                          "DisplayMoveType", DisplayMoveType.FromToField.ToString()));
-            //if (_fontSize == 1)
-            //{
-            //    Width = 230;
-            //    listBoxMoves.Width = 190;
-            //}
-            //else
-            //{
-            //    Width = 300;
-            //    listBoxMoves.Width = 280;
-            //}
-
             _extendMoveListControl =  bool.Parse(_configuration.GetConfigValue("extendMoveList", "false"));
             _extendFull =  bool.Parse(_configuration.GetConfigValue("extendFull", "false"));
             buttonExtend.Visibility = _extendMoveListControl ? Visibility.Collapsed : Visibility.Visible;
@@ -171,84 +160,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _allMoves.Add(move);
                 InternalAddMove(move);
             }
-
-            //AddMove(moveNumber, move.FigureColor, move.Figure, move.CapturedFigure, $"{move.FromFieldName}{move.ToFieldName}{isInCheck}", move.PromotedFigure);
         }
 
-        //public void AddMove(int color, int figureId, int capturedFigureId, string move, int promotedFigureId)
-        //{
-        //    var moveNumber = _lastMoveNumber;
-        //    if (color == Fields.COLOR_WHITE)
-        //    {
-        //        moveNumber++;
-        //    }
-
-        //    AddMove(moveNumber, color, figureId, capturedFigureId, move, promotedFigureId);
-        //}
-
-        //public void AddMove(int color, int figureId, int capturedFigureId, string move, int promotedFigureId, string moveValue, string moveList)
-        //{
-        //    var moveNumber = _lastMoveNumber;
-        //    if (color == Fields.COLOR_WHITE)
-        //    {
-        //        moveNumber++;
-        //    }
-
-        //    AddMove(moveNumber, color, figureId, capturedFigureId, move, promotedFigureId);
-        //}
-
-        //public void AddMove(int moveNumber, int color, int figureId, int capturedFigureId, string move,
-        //                    int promotedFigureId)
-        //{
-           
-        //    if (moveNumber < _lastMoveNumber)
-        //    {
-        //        if (_currentMoveUserControl == null)
-        //        {
-        //            _currentMoveUserControl = getNewMoveUserControl();
-        //            _currentMoveUserControl.SetSize(_fontSize, Width);
-        //            _currentMoveUserControl.SetDisplayTypes(_figureType, _moveType);
-        //            _currentMoveUserControl.SetMove(color, figureId, capturedFigureId, move, promotedFigureId);
-        //            _currentMoveUserControl.SetMoveNumber(moveNumber);
-        //            _currentMoveUserControl.SelectedMoveChanged += currentMoveUserControl_SelectedMoveChanged;
-        //            listBoxMoves.Items.Add(_currentMoveUserControl);
-        //            listBoxMoves.ScrollIntoView(_currentMoveUserControl);
-        //        }
-        //        for (var i = moveNumber; i < _lastMoveNumber; i++)
-        //        {
-        //            listBoxMoves.Items.RemoveAt(listBoxMoves.Items.Count - 1);
-        //        }
-
-        //        if (color == Fields.COLOR_WHITE)
-        //        {
-        //            listBoxMoves.Items.RemoveAt(listBoxMoves.Items.Count - 1);
-        //        }
-
-        //        _lastMoveNumber = color == Fields.COLOR_BLACK ? moveNumber : moveNumber - 1;
-
-        //        _currentMoveUserControl = (MoveUserControl) listBoxMoves.Items[listBoxMoves.Items.Count - 1];
-
-        //    }
-
-        //    if (moveNumber.Equals(_lastMoveNumber) && _currentMoveUserControl != null && !_extendMoveListControl)
-        //    {
-        //        _currentMoveUserControl.SetMove(color, figureId, capturedFigureId, move, promotedFigureId);
-        //        listBoxMoves.ScrollIntoView(_currentMoveUserControl);
-        //    }
-        //    else
-        //    {
-        //        _currentMoveUserControl = getNewMoveUserControl();
-        //        _currentMoveUserControl.SetSize(_fontSize, Width);
-        //        _currentMoveUserControl.SetDisplayTypes(_figureType, _moveType);
-        //        _currentMoveUserControl.SetMove(color, figureId, capturedFigureId, move, promotedFigureId);
-        //        _currentMoveUserControl.SetMoveNumber(moveNumber);
-        //        _currentMoveUserControl.SelectedMoveChanged += currentMoveUserControl_SelectedMoveChanged;
-        //        listBoxMoves.Items.Add(_currentMoveUserControl);
-        //        listBoxMoves.ScrollIntoView(_currentMoveUserControl);
-        //    }
-
-        //    _lastMoveNumber = moveNumber;
-        //}
+  
 
         public void MarkMove(int number, int color)
         {
@@ -310,8 +224,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_fontSize == 1)
             {
                 _fontSize = 2;
-                // Width = 300;
-                // listBoxMoves.Width = 280;
                 foreach (var item in listBoxMoves.Items)
                 {
                     if (item is MoveUserControl userControl)
@@ -323,8 +235,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             else
             {
                 _fontSize = 1;
-                // Width = 230;
-                // listBoxMoves.Width = 190;
                 foreach (var item in listBoxMoves.Items)
                 {
                     if (item is MoveUserControl userControl)
@@ -359,6 +269,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     InternalAddMove(move);
                 }
             }
+
         }
 
         private void MoveListWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)

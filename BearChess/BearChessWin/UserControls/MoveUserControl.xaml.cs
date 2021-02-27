@@ -140,6 +140,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _moveNumber = number;
             textBlockMoveNumber.Text = number + ".";
+            this.Background = number % 2 == 0 ? new SolidColorBrush(Colors.WhiteSmoke) : new SolidColorBrush(Colors.GhostWhite);
         }
 
         public int GetMoveNumber()

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -16,8 +19,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         private readonly FontConverter _fontConverter;
         private readonly Brush _background;
-        private int _blackCapturedFigureId;
-        private int _blackFigureId;
         private string _isInCheck;
         private int _color;
         private DisplayFigureType _figureType = DisplayFigureType.Symbol;
@@ -25,10 +26,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _moveNumber;
 
         private DisplayMoveType _moveType = DisplayMoveType.FromToField;
-        private int _promotedFigureIdWhite;
-        private int _whiteCapturedFigureId;
-        private int _whiteFigureId;
-        private string _whiteMove;
+        private int _promotedFigureId;
+        private int _capturedFigureId;
+        private int _figureId;
+        private string _move;
         private bool _extendedFull;
 
         public ExtendedMoveUserControl()
@@ -72,7 +73,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 case 1:
                 {
-                    if (width < 160)
+                    if (width < 160 || double.IsNaN(width))
                     {
                         width = 160;
                     }
@@ -93,7 +94,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 case 2:
                 {
-                    if (width < 195)
+                    if (width < 195 || double.IsNaN(width))
                     {
                         width = 195;
                     }
@@ -158,15 +159,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetMove(Move move)
         {
             _color = move.FigureColor;
-            _whiteFigureId = move.Figure;
-            _whiteCapturedFigureId = move.CapturedFigure;
+            gridColumnWhite.HorizontalAlignment = _color == Fields.COLOR_WHITE ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+            this.Background = _color == Fields.COLOR_WHITE ? new SolidColorBrush(Colors.WhiteSmoke) : new SolidColorBrush(Colors.GhostWhite);
+            _figureId = move.Figure;
+            _capturedFigureId = move.CapturedFigure;
             _isInCheck = move.CheckOrMateSign;
-            _whiteMove = $"{move.FromFieldName}{move.ToFieldName}".ToLower();
-            _promotedFigureIdWhite = move.PromotedFigure;
+            _move = $"{move.FromFieldName}{move.ToFieldName}".ToLower();
+            _promotedFigureId = move.PromotedFigure;
             ShowMove();
             if (move.IsEngineMove)
             {
-                textBlockMoveValue.Text = move.Score.ToString();
+                textBlockMoveValue.Text = move.Score.ToString(CultureInfo.InvariantCulture);
                 if (_extendedFull)
                 {
                     textBlockMoveList.Text = move.BestLine;
@@ -183,40 +186,43 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             move = move.ToLower();
 
-            _whiteFigureId = figureId;
-            _whiteCapturedFigureId = capturedFigureId;
-            _whiteMove = move;
-            _promotedFigureIdWhite = promotedFigureId;
+            _figureId = figureId;
+            _capturedFigureId = capturedFigureId;
+            _move = move;
+            _promotedFigureId = promotedFigureId;
             _color = color;
             ShowMove();
         }
 
         private void ShowMove()
         {
-            if (!string.IsNullOrWhiteSpace(_whiteMove))
+            if (string.IsNullOrWhiteSpace(_move))
             {
-                textBlockFigure.Text = string.Empty;
-                textBlockFigureSymbol.Text = string.Empty;
-                textBlockMove.Text = GetMoveDisplay(_whiteMove, _whiteFigureId, _whiteCapturedFigureId, _promotedFigureIdWhite, _isInCheck);
-                var s = FigureId.FigureIdToFenCharacter[_whiteFigureId];
-                textBlockFigureSymbol.Text = string.Empty;
-                if (!textBlockMove.Text.StartsWith("0-"))
-                {
-                    if (!s.ToUpper().Equals("P"))
-                    {
-                        textBlockFigure.Text = s.ToUpper();
-                        textBlockFigureSymbol.Text = _fontConverter.ConvertFont(s, "Chess Merida");
-                    }
+                return;
+            }
 
-                    if (_moveType == DisplayMoveType.ToField)
+
+            textBlockFigure.Text = string.Empty;
+            textBlockFigureSymbol.Text = string.Empty;
+            textBlockMove.Text = GetMoveDisplay(_move, _figureId, _capturedFigureId, _promotedFigureId, _isInCheck);
+            var s = FigureId.FigureIdToFenCharacter[_figureId];
+            textBlockFigureSymbol.Text = string.Empty;
+            if (!textBlockMove.Text.StartsWith("0-"))
+            {
+                if (!s.ToUpper().Equals("P"))
+                {
+                    textBlockFigure.Text =  s.ToUpper();
+                    textBlockFigureSymbol.Text =  _fontConverter.ConvertFont(s, "Chess Merida");
+                }
+
+                if (_moveType == DisplayMoveType.ToField)
+                {
+                    if (s.Equals("P", StringComparison.OrdinalIgnoreCase) &&
+                        textBlockMove.Text.StartsWith("x"))
                     {
-                        if (s.Equals("P", StringComparison.OrdinalIgnoreCase) &&
-                            textBlockMove.Text.StartsWith("x"))
-                        {
-                            textBlockFigure.Text = _whiteMove.Substring(0, 1);
-                            textBlockFigure.Visibility = Visibility.Visible;
-                            textBlockFigureSymbol.Visibility = Visibility.Hidden;
-                        }
+                        textBlockFigure.Text =  _move.Substring(0, 1);
+                        textBlockFigure.Visibility = Visibility.Visible;
+                        textBlockFigureSymbol.Visibility = Visibility.Hidden;
                     }
                 }
             }

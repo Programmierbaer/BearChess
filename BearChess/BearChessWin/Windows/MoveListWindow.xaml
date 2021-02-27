@@ -13,7 +13,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ListBox Grid.Column="0" Grid.Row="0" Name="listBoxMoves" SelectionMode="Single"  HorizontalAlignment="Right" />
+        <ListBox Grid.Column="0" Grid.Row="0" Name="listBoxMoves" SelectionMode="Single"  HorizontalAlignment="Left"  VerticalAlignment="Top"/>
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
             <Button Margin="5" Name="buttonInc" Click="ButtonInc_OnClick" Width="32" Height="32"
                     HorizontalAlignment="Left">
