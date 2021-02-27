@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
@@ -38,21 +39,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _extendFull = false;
         private List<Move> _allMoves;
         private static object _locker = new object();
+        private bool _ignoreResize = false;
 
         public MoveListWindow(Configuration configuration, double top, double left, double width, double height)
         {
             InitializeComponent();
             _configuration = configuration;
             _fontSize = int.Parse(_configuration.GetConfigValue("MoveListSize", "1"));
-            Top = _configuration.GetWinDoubleValue("MoveListWindowTop", Configuration.WinScreenInfo.Top,
-                                                   (top + 20).ToString(CultureInfo.InvariantCulture));
-            Left = _configuration.GetWinDoubleValue("MoveListWindowLeft", Configuration.WinScreenInfo.Left,
-                                                    (left + width + 10).ToString(CultureInfo.InvariantCulture));
-            Height = _configuration.GetWinDoubleValue("MoveListWindowHeight", Configuration.WinScreenInfo.Height,
-                                                      (height / 2).ToString(CultureInfo.InvariantCulture));
-            Width = _configuration.GetWinDoubleValue("MoveListWindowWidth", Configuration.WinScreenInfo.Width,
-                                                      (width / 2).ToString(CultureInfo.InvariantCulture));
-            // Width = _configuration.GetWinDoubleValue("MoveListWindowWidth", Configuration.WinScreenInfo.Height, (width / 2).ToString(CultureInfo.InvariantCulture));
+         
+
             _figureType = (DisplayFigureType) Enum.Parse(typeof(DisplayFigureType),
                                                          _configuration.GetConfigValue(
                                                              "DisplayFigureType", DisplayFigureType.Symbol.ToString()));
@@ -61,6 +56,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                          "DisplayMoveType", DisplayMoveType.FromToField.ToString()));
             _extendMoveListControl =  bool.Parse(_configuration.GetConfigValue("extendMoveList", "false"));
             _extendFull =  bool.Parse(_configuration.GetConfigValue("extendFull", "false"));
+            _ignoreResize = true;
+            SetSizes(top,left,width,height);
+            _ignoreResize = false;
             buttonExtend.Visibility = _extendMoveListControl ? Visibility.Collapsed : Visibility.Visible;
             buttonExtend2.Visibility = _extendMoveListControl ? Visibility.Visible : Visibility.Hidden;
             buttonExtendFull.Visibility =  _extendMoveListControl ? _extendFull ? Visibility.Visible : Visibility.Collapsed : Visibility.Collapsed;
@@ -80,7 +78,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _moveType = moveType;
             foreach (var item in listBoxMoves.Items)
             {
-                if (item is MoveUserControl userControl)
+                if (item is IMoveUserControl userControl)
                 {
                     userControl.SetDisplayTypes(figureType, moveType);
                 }
@@ -205,13 +203,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void MoveListWindow_OnClosing(object sender, CancelEventArgs e)
-        {
-            _configuration.SetDoubleValue("MoveListWindowTop", Top);
-            _configuration.SetDoubleValue("MoveListWindowLeft", Left);
-            _configuration.SetDoubleValue("MoveListWindowHeight", Height);
-            _configuration.SetDoubleValue("MoveListWindowWidth", Width);
-        }
+      
 
 
         protected virtual void OnSelectedMoveChanged(SelectedMoveOfMoveList e)
@@ -226,7 +218,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _fontSize = 2;
                 foreach (var item in listBoxMoves.Items)
                 {
-                    if (item is MoveUserControl userControl)
+                    if (item is IMoveUserControl userControl)
                     {
                         userControl.SetSize(2,Width);
                     }
@@ -237,7 +229,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _fontSize = 1;
                 foreach (var item in listBoxMoves.Items)
                 {
-                    if (item is MoveUserControl userControl)
+                    if (item is IMoveUserControl userControl)
                     {
                         userControl.SetSize(1,Width);
                     }
@@ -245,6 +237,79 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _configuration.SetConfigValue("MoveListSize", _fontSize.ToString());
+        }
+
+        private void SaveSizes()
+        {
+            if (_ignoreResize)
+            {
+                return;
+            }
+            if (_extendMoveListControl)
+            {
+                if (_extendFull)
+                {
+                    _configuration.SetDoubleValue("MoveListWindowTopExtendFull", Top);
+                    _configuration.SetDoubleValue("MoveListWindowLeftExtendFull", Left);
+                    _configuration.SetDoubleValue("MoveListWindowHeightExtendFull", Height);
+                    _configuration.SetDoubleValue("MoveListWindowWidthExtendFull", Width);
+
+                }
+                else
+                {
+                    _configuration.SetDoubleValue("MoveListWindowTopExtend", Top);
+                    _configuration.SetDoubleValue("MoveListWindowLeftExtend", Left);
+                    _configuration.SetDoubleValue("MoveListWindowHeightExtend", Height);
+                    _configuration.SetDoubleValue("MoveListWindowWidthExtend", Width);
+                }
+            }
+            else
+            {
+                _configuration.SetDoubleValue("MoveListWindowTop", Top);
+                _configuration.SetDoubleValue("MoveListWindowLeft", Left);
+                _configuration.SetDoubleValue("MoveListWindowHeight", Height);
+                _configuration.SetDoubleValue("MoveListWindowWidth", Width);
+            }
+        }
+
+        private void SetSizes(double top, double left, double width, double height)
+        {
+            if (_extendMoveListControl)
+            {
+                if (_extendFull)
+                {
+                    Top = _configuration.GetWinDoubleValue("MoveListWindowTopExtendFull", Configuration.WinScreenInfo.Top,
+                                                           (top + 20).ToString(CultureInfo.InvariantCulture));
+                    Left = _configuration.GetWinDoubleValue("MoveListWindowLeftExtendFull", Configuration.WinScreenInfo.Left,
+                                                            (left + width + 10).ToString(CultureInfo.InvariantCulture));
+                    Height = _configuration.GetWinDoubleValue("MoveListWindowHeightExtendFull", Configuration.WinScreenInfo.Height,
+                                                              (height / 2).ToString(CultureInfo.InvariantCulture));
+                    Width = _configuration.GetWinDoubleValue("MoveListWindowWidthExtendFull", Configuration.WinScreenInfo.Width,
+                                                             (width / 2).ToString(CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    Top = _configuration.GetWinDoubleValue("MoveListWindowTopExtend", Configuration.WinScreenInfo.Top,
+                                                           (top + 20).ToString(CultureInfo.InvariantCulture));
+                    Left = _configuration.GetWinDoubleValue("MoveListWindowLeftExtend", Configuration.WinScreenInfo.Left,
+                                                            (left + width + 10).ToString(CultureInfo.InvariantCulture));
+                    Height = _configuration.GetWinDoubleValue("MoveListWindowHeightExtend", Configuration.WinScreenInfo.Height,
+                                                              (height / 2).ToString(CultureInfo.InvariantCulture));
+                    Width = _configuration.GetWinDoubleValue("MoveListWindowWidthExtend", Configuration.WinScreenInfo.Width,
+                                                             (width / 2).ToString(CultureInfo.InvariantCulture));
+                }
+            }
+            else
+            {
+                Top = _configuration.GetWinDoubleValue("MoveListWindowTop", Configuration.WinScreenInfo.Top,
+                                                       (top + 20).ToString(CultureInfo.InvariantCulture));
+                Left = _configuration.GetWinDoubleValue("MoveListWindowLeft", Configuration.WinScreenInfo.Left,
+                                                        (left + width + 10).ToString(CultureInfo.InvariantCulture));
+                Height = _configuration.GetWinDoubleValue("MoveListWindowHeight", Configuration.WinScreenInfo.Height,
+                                                          (height / 2).ToString(CultureInfo.InvariantCulture));
+                Width = _configuration.GetWinDoubleValue("MoveListWindowWidth", Configuration.WinScreenInfo.Width,
+                                                         (width / 2).ToString(CultureInfo.InvariantCulture));
+            }
         }
 
         private void ButtonExtend_OnClick(object sender, RoutedEventArgs e)
@@ -259,6 +324,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonExtendShort.Visibility = _extendMoveListControl
                                                ? _extendFull ? Visibility.Collapsed : Visibility.Visible
                                                : Visibility.Collapsed;
+            _ignoreResize = true;
+            SetSizes(Top,Left,Width,Height);
+            _ignoreResize = false;
+
             _configuration.SetConfigValue("extendMoveList",_extendMoveListControl.ToString());
             lock (_locker)
             {
@@ -275,6 +344,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MoveListWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             listBoxMoves.Width = Width - 10;
+            SaveSizes();
         }
 
         private void ButtonExtendFull_OnClick(object sender, RoutedEventArgs e)
@@ -284,6 +354,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonExtendShort.Visibility = _extendMoveListControl
                                                ? _extendFull ? Visibility.Collapsed : Visibility.Visible
                                                : Visibility.Collapsed;
+            _ignoreResize = true;
+            SetSizes(Top, Left, Width, Height);
+            _ignoreResize = false;
             _configuration.SetConfigValue("extendFull", _extendFull.ToString());
             lock (_locker)
             {

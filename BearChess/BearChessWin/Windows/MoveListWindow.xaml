@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" SizeChanged="MoveListWindow_OnSizeChanged"
-        mc:Ignorable="d" SizeToContent="Width" Closing="MoveListWindow_OnClosing" Icon="../BearChess.ico"
+        mc:Ignorable="d"  Icon="../BearChess.ico"
         Title="Moves" Height="450" Width="230" WindowStyle="ToolWindow">
     <Grid>
         <Grid.ColumnDefinitions>

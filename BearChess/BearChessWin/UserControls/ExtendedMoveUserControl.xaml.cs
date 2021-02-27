@@ -87,7 +87,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     columnDefinition1.Width = new GridLength(30);
                     columnDefinition2.Width = new GridLength(60);
                     columnDefinitionExtend.Width = new GridLength(width - 130);
-                    columnDefinition11.Width = new GridLength(15);
+                    //columnDefinition11.Width = new GridLength(15);
                     columnDefinitionScore.Width = new GridLength(35);
 
                     break;
@@ -101,14 +101,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                     textBlockMoveNumber.FontSize = 18;
                     textBlockMove.FontSize = 18;
-                    textBlockMoveValue.FontSize = 12;
-                    textBlockMoveList.FontSize = 12;
+                    textBlockMoveValue.FontSize = 14;
+                    textBlockMoveList.FontSize = 14;
                     textBlockFigure.FontSize = 18;
                     textBlockFigureSymbol.FontSize = 18;
                     columnDefinition1.Width = new GridLength(45);
                     columnDefinition2.Width = new GridLength(85);
                     columnDefinitionExtend.Width = new GridLength(width - 165);
-                    columnDefinition11.Width = new GridLength(23);
+                    //columnDefinition11.Width = new GridLength(23);
                     columnDefinitionScore.Width = new GridLength(35);
 
                     break;
@@ -124,7 +124,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     columnDefinition1.Width = new GridLength(30);
                     columnDefinition2.Width = new GridLength(60);
                     columnDefinitionExtend.Width = new GridLength(60);
-                    columnDefinition11.Width = new GridLength(15);
+                   // columnDefinition11.Width = new GridLength(15);
                     columnDefinitionScore.Width = new GridLength(15);
                     break;
                 }
@@ -170,6 +170,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (move.IsEngineMove)
             {
                 textBlockMoveValue.Text = move.Score.ToString(CultureInfo.InvariantCulture);
+                textBlockMoveValue.Foreground =
+                    move.Score < 0 ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);
                 if (_extendedFull)
                 {
                     textBlockMoveList.Text = move.BestLine;
@@ -202,8 +204,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
 
-            textBlockFigure.Text = string.Empty;
-            textBlockFigureSymbol.Text = string.Empty;
+            textBlockFigure.Text = " ";
+            textBlockFigureSymbol.Text = " ";
             textBlockMove.Text = GetMoveDisplay(_move, _figureId, _capturedFigureId, _promotedFigureId, _isInCheck);
             var s = FigureId.FigureIdToFenCharacter[_figureId];
             textBlockFigureSymbol.Text = string.Empty;
