@@ -106,7 +106,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void NewGame()
         {
             _allMoves.Clear();
-            _allMoves.Add("position startpos moves ");
+            _allMoves.Add("position startpos moves");
             SendToEngine("ucinewgame");
             _bookMove = _lookForBookMoves ? _openingBook?.GetMove(new BookMove(string.Empty,string.Empty,0)) : null;
             IsReady();
@@ -122,7 +122,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (string.IsNullOrWhiteSpace(moves))
             {
-                SendToEngine($"position fen {fen} ");
+                SendToEngine($"position fen {fen}");
             }
             else
             {

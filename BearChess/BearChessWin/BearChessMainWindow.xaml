@@ -54,6 +54,12 @@
                             <Image Source="Assets/Icons/file_manager.png" Stretch="UniformToFill" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Name="menuItemGamesPaste" Header="Paste from clipboard" Click="MenuItemGamesPaste_OnClick" >
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/clipboard_sign.png" Stretch="UniformToFill" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+
 
                 </MenuItem>
                 <MenuItem Header="Engines">

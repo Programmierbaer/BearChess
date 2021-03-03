@@ -212,6 +212,9 @@
     <Compile Include="Windows\MovesConfigWindow.xaml.cs">
       <DependentUpon>MovesConfigWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\NewGameQueryWindow.xaml.cs">
+      <DependentUpon>NewGameQueryWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\NewGameWindow.xaml.cs">
       <DependentUpon>NewGameWindow.xaml</DependentUpon>
     </Compile>
@@ -386,6 +389,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MovesConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\NewGameQueryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

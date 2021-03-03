@@ -45,6 +45,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        public void Reload()
+        {
+            dataGridGames.ItemsSource = _database.GetGames();
+            Title = $"Games on: {_database.FileName}";
+        }
+
         private void ButtonFileManager_OnClick(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog {Filter = "Database|*.db;"};

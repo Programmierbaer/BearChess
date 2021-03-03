@@ -131,6 +131,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _currentBoardPiecesSetupId;
         private int _currentMoveIndex;
         private string _currentWhitePlayer;
+        private string _currentEvent;
         private DatabaseWindow _databaseWindow;
         private IElectronicChessBoard _eChessBoard;
         private EngineWindow _engineWindow;
@@ -291,6 +292,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _pausedEngine = false;
             _currentWhitePlayer = string.Empty;
             _currentBlackPlayer = string.Empty;
+            _currentEvent = "BearChess";
             _lastResult = "*";
             _playedMoveList = new Move[0];
             _currentMoveIndex = 0;
@@ -520,20 +522,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ChessBoardUcGraphics_ResetBasePositionEvent(object sender, EventArgs e)
         {
-            //if (_eChessBoard!=null && _eChessBoard.IsConnected)
-            //{
-            //    var boardFen = _eChessBoard.GetBoardFen();
-            //    if (boardFen.StartsWith(FenCodes.WhiteBoardBasePosition) || boardFen.StartsWith(FenCodes.BlackBoardBasePosition))
-            //    {
-            //        if (MessageBox.Show("Start a game?", "Reset", MessageBoxButton.YesNoCancel,
-            //                            MessageBoxImage.Question) == MessageBoxResult.Yes)
-            //        {
-            //            MenuItemNewGame_OnClick(this, null);
-            //            return;
-            //        }
-            //    }
-            //    return;
-            //}
             _engineWindow?.Stop();
             _eChessBoard?.Stop();
             _eChessBoard?.SetAllLedsOff();
@@ -569,14 +557,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            var messageBoxResult = MessageBox.Show("Start a game?", "Play", MessageBoxButton.YesNoCancel,
-                                                   MessageBoxImage.Question);
-            if (messageBoxResult== MessageBoxResult.Yes)
+
+            var newGameQueryWindow = new NewGameQueryWindow() { Owner = this };
+            var showDialog2 = newGameQueryWindow.ShowDialog();
+
+            if (showDialog2.HasValue && showDialog2.Value)
             {
-                MenuItemNewGame_OnClick(this,null);
-                return;
+                if (newGameQueryWindow.StartNewGame)
+                {
+                    MenuItemNewGame_OnClick(this, null);
+                    return;
+                }
             }
-            if (messageBoxResult == MessageBoxResult.Cancel)
+            else
             {
                 return;
             }
@@ -1057,6 +1050,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _allowTakeMoveBack = _currentGame.TimeControl.AllowTakeBack;
             _currentWhitePlayer = _currentGame.PlayerWhite;
             _currentBlackPlayer = _currentGame.PlayerBlack;
+            _currentEvent = "BearChess";
             _lastResult = "*";
             _engineMatchScore.Clear();
             _runInAnalyzeMode = false;
@@ -1163,6 +1157,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
 
             _engineWindow?.SetOptions();
+            _engineWindow?.IsReady();
             _engineWindow?.NewGame();
             if (!_currentGame.StartFromBasePosition)
             {
@@ -1700,7 +1695,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 else
                 {
-                    return;
+                    return; 
                 }
             }
 
@@ -1710,7 +1705,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 pgnCreator.AddMove(move);
             }
 
-            var saveGameWindow = new SaveGameWindow(_currentWhitePlayer, _currentBlackPlayer, _lastResult, "BearChess",
+            var saveGameWindow = new SaveGameWindow(_currentWhitePlayer, _currentBlackPlayer, _lastResult, _currentEvent,
                                                     DateTime.Now.ToString("dd.MM.yyyy"), pgnCreator.GetMoveList())
                                  {Owner = this};
             var showDialog = saveGameWindow.ShowDialog();
@@ -1730,6 +1725,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
                 _database.Save(new DatabaseGame(pgnGame, _chessBoard.GetPlayedMoveList()));
+                _databaseWindow?.Reload();
              //   _pgnLoader.AddGame(pgnGame);
             }
         }
@@ -3097,6 +3093,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _chessBoard.MakeMove(aMove);
             }
 
+            _currentWhitePlayer = e.White;
+            _currentBlackPlayer = e.Black;
+            _lastResult = e.Result;
+            _currentEvent = e.GameEvent;
+
             _moveListWindow?.Clear();
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
             var chessBoard = new ChessBoard();
@@ -3215,8 +3216,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
         }
 
-       
-
         private void BearChessMainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             var screenHeight = SystemParameters.VirtualScreenHeight;
@@ -3321,5 +3320,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
         #endregion
 
 
+        private void MenuItemGamesPaste_OnClick(object sender, RoutedEventArgs e)
+        {
+
+            var text = Clipboard.GetText();
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return;
+            }
+            var pgnLoader = new PgnLoader();
+            var pgnGame = pgnLoader.GetGame(text);
+            if (pgnGame != null)
+            {
+                var chessBoard = new ChessBoard();
+                chessBoard.Init();
+                chessBoard.NewGame();
+
+                for (int i = 0; i < pgnGame.MoveCount; i++)
+                {
+                    chessBoard.MakeMove(pgnGame.GetMove(i));
+                }
+                DatabaseWindow_SelectedGameChanged(this, new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList()));
+            }
+
+        }
     }
 }

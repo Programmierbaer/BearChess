@@ -333,6 +333,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        public void IsReady()
+        {
+            foreach (var engine in _loadedEngines)
+            {
+                engine.Value.UciEngine.IsReady();
+            }
+        }
+
         public void SetOptions(string name)
         {
             if (_loadedEngines.ContainsKey(name))

@@ -51,6 +51,12 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public string MoveList => GetMoveList();
 
+        public int MoveCount => _moveList.Count;
+
+        public string GetMove(int index)
+        {
+            return _moveList[index];
+        }
 
         public PgnGame()
         {
@@ -71,7 +77,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
         {
             _moveList.Add(move);
         }
-
+        
         public string GetMoveList()
         {
             var sb = new StringBuilder();
