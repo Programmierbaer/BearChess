@@ -21,7 +21,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
         public string Result { get; set; }
         
-        public string GameDate { get; set; }
+        public DateTime GameDate { get; set; }
         
         public string MoveList { get; set; }
 
@@ -35,8 +35,11 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
     [Serializable]
     public class DatabaseGame
     {
-        public PgnGame PgnGame;
-        
+        public CurrentGame CurrentGame { get; set; }
+        public PgnGame PgnGame { get; set; }
+        public ClockTime WhiteClockTime { get; set; }
+        public ClockTime BlackClockTime { get; set; }
+
         [XmlArrayItem("ListOfMoves")]
         public Move[] AllMoves;
 
@@ -55,9 +58,9 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         [XmlIgnore]
         public Move[] MoveList => AllMoves;
 
-
-        public DatabaseGame(PgnGame pgnGame, Move[] moveList)
+        public DatabaseGame(PgnGame pgnGame, Move[] moveList, CurrentGame currentGame)
         {
+            CurrentGame = currentGame;
             PgnGame = pgnGame;
             List<Move> myMove = new List<Move>();
             foreach (var move in moveList)

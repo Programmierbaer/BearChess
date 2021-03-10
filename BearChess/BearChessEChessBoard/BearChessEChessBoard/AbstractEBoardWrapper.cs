@@ -227,7 +227,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 return;
             }
             SetAllLedsOff();
-            _fileLogger?.LogError($"C: set fen position: {fen}");
+            _fileLogger?.LogDebug($"C: set fen position: {fen}");
             _internalChessBoard = new InternalChessBoard();
 
             _internalChessBoard.NewGame();

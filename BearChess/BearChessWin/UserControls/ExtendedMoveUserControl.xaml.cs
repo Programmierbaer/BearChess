@@ -86,9 +86,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockFigureSymbol.FontSize = 12;
                     columnDefinition1.Width = new GridLength(30);
                     columnDefinition2.Width = new GridLength(60);
-                    columnDefinitionExtend.Width = new GridLength(width - 130);
+                    //columnDefinitionExtend.Width = new GridLength(width - 130);
                     //columnDefinition11.Width = new GridLength(15);
-                    columnDefinitionScore.Width = new GridLength(35);
+                    columnDefinitionScore.Width = new GridLength(45);
 
                     break;
                 }
@@ -107,9 +107,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockFigureSymbol.FontSize = 18;
                     columnDefinition1.Width = new GridLength(45);
                     columnDefinition2.Width = new GridLength(85);
-                    columnDefinitionExtend.Width = new GridLength(width - 165);
+                    //columnDefinitionExtend.Width = new GridLength(width - 165);
                     //columnDefinition11.Width = new GridLength(23);
-                    columnDefinitionScore.Width = new GridLength(35);
+                    columnDefinitionScore.Width = new GridLength(45);
 
                     break;
                 }
@@ -123,7 +123,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockFigureSymbol.FontSize = 12;
                     columnDefinition1.Width = new GridLength(30);
                     columnDefinition2.Width = new GridLength(60);
-                    columnDefinitionExtend.Width = new GridLength(60);
+                    // columnDefinitionExtend.Width = new GridLength(60);
                    // columnDefinition11.Width = new GridLength(15);
                     columnDefinitionScore.Width = new GridLength(15);
                     break;

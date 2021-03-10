@@ -13,32 +13,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     public class FileLogger : ILogger, ILogging
     {
         private readonly string _fileName;
-        private bool _paused;
         private readonly ConcurrentQueue<string> _fileQueue = new ConcurrentQueue<string>();
-        private Thread _thread;
-        private volatile bool _stopThread;
-        private volatile bool _deleteFile;
         private readonly int _historyCount;
         private readonly long _maxFileSizeInMb;
+        private volatile bool _deleteFile;
+        private bool _paused;
+        private volatile bool _stopThread;
+        private Thread _thread;
 
-        public LogLevel LogLevel { get; set; }
-        
-        public bool Active { get; set; }
-
-        public bool ErrorOccurred { get; private set; }
-
-        public string ErrorReason { get; private set; }
-
-        public FileLogger(string fileName) 
-        {
-            _fileName = fileName;
-            Active = true;
-            LogLevel = LogLevel.Debug;
-            _thread = new Thread(DoWork) {IsBackground = true};
-            _thread.Start();
-        }
-
-        public FileLogger(string fileName, int historyCount, long maxFileSizeInMb) 
+     
+        public FileLogger(string fileName, int historyCount, long maxFileSizeInMb)
         {
             _fileName = fileName;
             _historyCount = historyCount;
@@ -46,49 +30,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             ErrorOccurred = false;
             ErrorReason = string.Empty;
             Active = true;
-            LogLevel = LogLevel.Debug;
-            _thread = new Thread(DoWork) { IsBackground = true };
+            LogLevel = LogLevel.Debug | LogLevel.Info | LogLevel.Error | LogLevel.Warning;
+            _thread = new Thread(DoWork) {IsBackground = true};
             _thread.Start();
         }
 
-        private void DoWork()
-        {
-            while (!_stopThread || !_fileQueue.IsEmpty)
-            {
-                Thread.Sleep(10);
-                if (_fileQueue.IsEmpty && _deleteFile)
-                {
-                    try
-                    {
-                        File.Delete(_fileName);
-                    }
-                    catch
-                    {
-                        //
-                    }
-                    _deleteFile = false;
-                    continue;
-                }
+        public bool ErrorOccurred { get; private set; }
 
-                var sb = new StringBuilder();
-                while (_fileQueue.TryDequeue(out var result))
-                {
-                    sb.Append(result);
-                }
-                if (CheckActiveAndLogFile())
-                {
-                    try
-                    {
-                        File.AppendAllText(_fileName, sb.ToString());
-                    }
-                    catch (Exception lex)
-                    {
-                        ErrorReason = lex.Message;
-                        ErrorOccurred = true;
-                    }
-                }
-            }
-        }
+        public string ErrorReason { get; private set; }
 
 
         /// <inheritdoc />
@@ -105,9 +54,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 return;
             }
 
-            string append = appendNewLine ? Environment.NewLine : string.Empty;
+            var append = appendNewLine ? Environment.NewLine : string.Empty;
             _fileQueue.Enqueue($"{logInfo}{append}");
-
         }
 
 
@@ -119,13 +67,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 return;
             }
 
-            string output = string.Empty;
-            foreach (Move logMove in logMoves)
+            var output = string.Empty;
+            foreach (var logMove in logMoves)
             {
                 output += $" {Fields.GetFieldName(logMove.FromField)}-{Fields.GetFieldName(logMove.ToField)}";
             }
 
-            string append = appendNewLine ? Environment.NewLine : string.Empty;
+            var append = appendNewLine ? Environment.NewLine : string.Empty;
             _fileQueue.Enqueue($"{output}{append}");
         }
 
@@ -137,7 +85,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 return;
             }
 
-            Log(new List<Move>() { logMove }, appendNewLine);
+            Log(new List<Move> {logMove}, appendNewLine);
         }
 
         /// <inheritdoc />
@@ -165,8 +113,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     _thread.Start();
                 }
             }
+
             _paused = false;
         }
+
+        public LogLevel LogLevel { get; set; }
+
+        public bool Active { get; set; }
 
 
         /// <inheritdoc />
@@ -176,11 +129,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:s} Info:    {logMessage}");
             }
-
         }
 
         /// <inheritdoc />
-        public virtual  void LogDebug(string logMessage)
+        public virtual void LogDebug(string logMessage)
         {
             if (Active && IsLogLevel(LogLevel.Debug))
             {
@@ -190,17 +142,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
 
         /// <inheritdoc />
-        public  void LogWarning(string logMessage)
+        public void LogWarning(string logMessage)
         {
             if (Active && IsLogLevel(LogLevel.Warning))
             {
                 _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:s} Warning: {logMessage}");
             }
-
         }
 
         /// <inheritdoc />
-        public  void LogWarning(string logMessage, Exception ex)
+        public void LogWarning(string logMessage, Exception ex)
         {
             if (Active && IsLogLevel(LogLevel.Warning))
             {
@@ -212,8 +163,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 }
             }
         }
+
         /// <inheritdoc />
-        public  void LogWarning(Exception ex)
+        public void LogWarning(Exception ex)
         {
             if (Active && IsLogLevel(LogLevel.Warning))
             {
@@ -235,9 +187,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 LogError($"Art der Ausnahme: {ex.GetType()}");
                 if (ex is AggregateException aggregateException)
                 {
-                    Exception baseException = aggregateException.GetBaseException();
+                    var baseException = aggregateException.GetBaseException();
                     LogError(baseException);
-                    foreach (Exception aggregateExceptionInnerException in aggregateException.InnerExceptions)
+                    foreach (var aggregateExceptionInnerException in aggregateException.InnerExceptions)
                     {
                         LogError(aggregateExceptionInnerException);
                     }
@@ -252,21 +204,19 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     LogError(ex.InnerException);
                 }
             }
-
         }
 
         /// <inheritdoc />
-        public  void LogError(string logMessage)
+        public void LogError(string logMessage)
         {
             if (Active && IsLogLevel(LogLevel.Error))
             {
                 _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:s} Error:   {logMessage}");
             }
-
         }
 
         /// <inheritdoc />
-        public  void LogError(string logMessage, Exception ex)
+        public void LogError(string logMessage, Exception ex)
         {
             if (Active && IsLogLevel(LogLevel.Error))
             {
@@ -275,6 +225,47 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 if (ex.InnerException != null)
                 {
                     LogError(ex.InnerException);
+                }
+            }
+        }
+
+        private void DoWork()
+        {
+            while (!_stopThread || !_fileQueue.IsEmpty)
+            {
+                Thread.Sleep(10);
+                if (_fileQueue.IsEmpty && _deleteFile)
+                {
+                    try
+                    {
+                        File.Delete(_fileName);
+                    }
+                    catch
+                    {
+                        //
+                    }
+
+                    _deleteFile = false;
+                    continue;
+                }
+
+                var sb = new StringBuilder();
+                while (_fileQueue.TryDequeue(out var result))
+                {
+                    sb.Append(result);
+                }
+
+                if (CheckActiveAndLogFile())
+                {
+                    try
+                    {
+                        File.AppendAllText(_fileName, sb.ToString());
+                    }
+                    catch (Exception lex)
+                    {
+                        ErrorReason = lex.Message;
+                        ErrorOccurred = true;
+                    }
                 }
             }
         }
@@ -298,27 +289,27 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     return true;
                 }
 
-                FileInfo fileInfo = new FileInfo(_fileName);
-                DateTime lastWriteTime = fileInfo.LastWriteTime;
-                long mbSize = _maxFileSizeInMb > 0 ? fileInfo.Length / 1024 / 1024 : 0;
+                var fileInfo = new FileInfo(_fileName);
+                var lastWriteTime = fileInfo.LastWriteTime;
+                var mbSize = _maxFileSizeInMb > 0 ? fileInfo.Length / 1024 / 1024 : 0;
                 if (lastWriteTime.Date < DateTime.Now.Date || mbSize > _maxFileSizeInMb)
                 {
-                    // Ggf. die ältesten Dateien löschen
-                    string directoryName = fileInfo.DirectoryName;
-                    string baseName = fileInfo.Name;
+                    // Delete old files
+                    var directoryName = fileInfo.DirectoryName;
+                    var baseName = fileInfo.Name;
                     if (directoryName != null)
                     {
-                        string[] allFiles = Directory.GetFiles(directoryName, baseName + "_*")
-                            .OrderByDescending(f => f).ToArray();
-                        for (int a = allFiles.Length - 1; a > _historyCount; a--)
+                        var allFiles = Directory.GetFiles(directoryName, baseName + "_*")
+                                                .OrderByDescending(f => f).ToArray();
+                        for (var a = allFiles.Length - 1; a > _historyCount; a--)
                         {
                             File.Delete(allFiles[a]);
                         }
                     }
 
-                    int count = 0;
-                    string nameWithDate = $"{_fileName}_{lastWriteTime.Date:yyyyMMdd}";
-                    string newName = nameWithDate;
+                    var count = 0;
+                    var nameWithDate = $"{_fileName}_{lastWriteTime.Date:yyyyMMdd}";
+                    var newName = nameWithDate;
 
                     while (File.Exists(newName) && count <= 10)
                     {

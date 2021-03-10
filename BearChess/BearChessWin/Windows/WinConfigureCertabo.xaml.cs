@@ -23,12 +23,26 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public string SelectedPortName => (string) comboBoxComPorts.SelectedItem;
 
-        public WinConfigureCertabo(Configuration configuration)
+        public WinConfigureCertabo(Configuration configuration, bool useBluetooth)
         {
             _configuration = configuration;
             InitializeComponent();
+            List<string> portNames = null;
             HashSet<string> allPortNames = new HashSet<string>() {"<auto>"};
-            var portNames = BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
+            if (useBluetooth)
+            {
+
+                var comPortSearchWindow = new COMPortSearchWindow();
+                comPortSearchWindow.Show();
+                portNames = BearChessTools.SerialCommunicationTools.GetBTComPort().ToList();
+                comPortSearchWindow.Close();
+
+            }
+            else
+            {
+                portNames = BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
+            }
+
             portNames.ForEach(f => allPortNames.Add(f));
             comboBoxComPorts.ItemsSource = allPortNames;
             comboBoxComPorts.SelectedIndex = 0;

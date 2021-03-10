@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using Microsoft.Win32;
+using www.SoLaNoSoft.com.BearChessDatabase;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {

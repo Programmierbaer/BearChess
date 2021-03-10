@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
+        xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
         mc:Ignorable="d" Closing="DatabaseWindow_OnClosing" WindowStyle="SingleBorderWindow" Icon="../Assets/Icons/database.png"
         Title="Games" Height="450" Width="800">
     <Grid>
@@ -36,7 +37,7 @@
                 <DataGridTextColumn Binding="{Binding Result}" Width="Auto">
                     <DataGridTextColumn.Header>Result</DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding GameDate}" Width="Auto">
+                <DataGridTextColumn Binding="{Binding GameDate , StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" Width="Auto">
                     <DataGridTextColumn.Header>Date</DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding MoveList}" Width="Auto">

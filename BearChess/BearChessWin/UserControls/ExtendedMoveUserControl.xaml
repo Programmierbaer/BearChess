@@ -8,7 +8,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="columnDefinition1" Width="30"></ColumnDefinition>
-            <ColumnDefinition Name="columnDefinition2" Width="70"></ColumnDefinition>
+            <ColumnDefinition Name="columnDefinition2" Width="75"></ColumnDefinition>
             <ColumnDefinition Name="columnDefinitionExtend" Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock Margin="5,1,5,1" Name="textBlockMoveNumber" VerticalAlignment="Center" TextAlignment="Right"  HorizontalAlignment="Right"  Grid.Column="0">99.</TextBlock>
@@ -23,7 +23,7 @@
         </Grid>
         <Grid Grid.Column="2" Name="gridColumnExtend">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Name="columnDefinitionScore" Width="40"></ColumnDefinition>
+                <ColumnDefinition Name="columnDefinitionScore" Width="50"></ColumnDefinition>
                 <ColumnDefinition Name="columnDefinitionMoveList" Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Margin="5,1,0,1" Name="textBlockMoveValue" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" >-99,99</TextBlock>

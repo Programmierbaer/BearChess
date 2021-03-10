@@ -4,6 +4,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -67,6 +68,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return new ClockTime(_stopwatch.Elapsed);
         }
 
+
+        public void SetContinueTime(ClockTime clockTime, int extraSeconds = 0)
+        {
+            SetTime(clockTime.Hour, clockTime.Minute, clockTime.Second, extraSeconds);
+        }
 
         public void SetTooltip(string tooltip)
         {

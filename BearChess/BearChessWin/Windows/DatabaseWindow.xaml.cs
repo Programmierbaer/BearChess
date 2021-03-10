@@ -150,7 +150,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
 
                     count++;
-                    if (_database.Save(new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList())))
+                    if (_database.Save(new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList(), null)))
                     {
                         chessBoard.Init();
                         chessBoard.NewGame();

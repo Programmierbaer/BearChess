@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -69,7 +70,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetTime(ClockTime clockTime, int extraSeconds = 0)
         {
-            SetTime(clockTime.Hour,clockTime.Minute,clockTime.Second, extraSeconds);
+            SetTime(clockTime.Hour, clockTime.Minute, clockTime.Second, extraSeconds);
         }
         public void SetTime(int hh, int mm, int ss, int extraSeconds= 0)
         {
@@ -81,6 +82,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _extraSeconds = extraSeconds;
             Title =  _extraSeconds>0 ? $"Clock {_capture} ({hh:00}:{mm:00}:{ss:00} + {extraSeconds}s)" : $"Clock {_capture} ({hh:00}:{mm:00}:{ss:00}";
             borderWarning.Visibility = Visibility.Hidden;
+        }
+
+        public void SetContinueTime(ClockTime clockTime, int extraSeconds = 0)
+        {
+            SetTime(clockTime.Hour, clockTime.Minute, clockTime.Second, extraSeconds);
         }
 
         public void SetTooltip(string tooltip)

@@ -93,10 +93,16 @@
                             <Image Source="Assets/Icons/Board2DPieces32.png" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemRotateBoard" Header="Rotate board" Click="MenuItemRotateBoard_OnClick">
+                    <MenuItem Name="menuItemRotateBoard" Header="Rotate board" >
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/arrow_rotate_anticlockwise.png" ></Image>
                         </MenuItem.Icon>
+                        <MenuItem  Name="menuItemAdjustedForPlayer" Header="Adjusted for the player" Click="MenuItemAdjustedForPlayer_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageAdjustedForPlayer" Source="Assets/Icons/tick.png" Visibility="Hidden" ></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+
                     </MenuItem>
                     <MenuItem Name="menuItemSettingsMoves" Header="Notation/Moves...">
                         <MenuItem.Icon>

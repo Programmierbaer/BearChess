@@ -68,6 +68,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler TakeFullForwardEvent;
         public event EventHandler PausePlayEvent;
         public event EventHandler ResetBasePositionEvent;
+        public event EventHandler RotateBoardEvent;
 
 
         private readonly HashSet<int> _whiteFields = new HashSet<int>(new[]
@@ -628,6 +629,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
             TagFields();
         }
 
+        public void RemarkFields()
+        {
+            foreach (var boardField in Fields.BoardFields)
+            {
+                UnMarkField(boardField);
+            }
+
+            foreach (var key in _markedGreenFields.Keys)
+            {
+                if (_markedGreenFields[key])
+                {
+                    _piecesBorderBitmaps[key].Source = FindResource("bitmapGreenFrame") as BitmapImage;
+                }
+            }
+
+            foreach (var key in _markedNonGreenFields)
+            {
+                {
+                    _piecesBorderBitmaps[key].Source = FindResource("bitmapYellowFrame") as BitmapImage;
+                }
+            }
+        }
+
         public void MarkFields(int[] fields, bool green)
         {
             if (green)
@@ -840,6 +864,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             ResetBasePositionEvent?.Invoke(this, new EventArgs());
         }
+
+        private void ButtonRotate_OnClick(object sender, RoutedEventArgs e)
+        {
+            RotateBoardEvent?.Invoke(this, new EventArgs());
+        }
+
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (!_acceptMouse)
@@ -1212,6 +1242,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         //    }
         //}
 
-      
+
     }
 }

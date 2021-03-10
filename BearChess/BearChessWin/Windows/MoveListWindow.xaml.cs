@@ -203,9 +203,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-      
-
-
+        
         protected virtual void OnSelectedMoveChanged(SelectedMoveOfMoveList e)
         {
             SelectedMoveChanged?.Invoke(this, e);
@@ -314,10 +312,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonExtend_OnClick(object sender, RoutedEventArgs e)
         {
+            SaveSizes();
             lock (_locker)
             {
                 _extendMoveListControl = !_extendMoveListControl;
             }
+
             buttonExtend.Visibility = _extendMoveListControl ? Visibility.Collapsed : Visibility.Visible;
             buttonExtend2.Visibility = _extendMoveListControl ? Visibility.Visible : Visibility.Hidden;
             buttonExtendFull.Visibility = _extendMoveListControl ? _extendFull ? Visibility.Visible : Visibility.Collapsed : Visibility.Collapsed;
@@ -349,6 +349,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonExtendFull_OnClick(object sender, RoutedEventArgs e)
         {
+            SaveSizes();
             _extendFull = !_extendFull;
             buttonExtendFull.Visibility = _extendMoveListControl ? _extendFull ? Visibility.Visible : Visibility.Collapsed : Visibility.Collapsed;
             buttonExtendShort.Visibility = _extendMoveListControl

@@ -120,7 +120,6 @@
     </ApplicationDefinition>
     <Compile Include="BoardFieldsSetup.cs" />
     <Compile Include="BoardPiecesSetup.cs" />
-    <Compile Include="ClockTime.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationSettings.cs" />
     <Compile Include="UciConfigControls\UciTextBoxUserControl.xaml.cs">
@@ -221,8 +220,6 @@
     <Compile Include="UserControls\NumericUpDownUserControl.xaml.cs">
       <DependentUpon>NumericUpDownUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TimeControl.cs" />
-    <Compile Include="TimeControlEnum.cs" />
     <Compile Include="Windows\PositionSetupWindow.xaml.cs">
       <DependentUpon>PositionSetupWindow.xaml</DependentUpon>
     </Compile>
@@ -245,7 +242,6 @@
     <Compile Include="Windows\UciConfigWindow.xaml.cs">
       <DependentUpon>UciConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UciInfo.cs" />
     <Compile Include="UciInstaller.cs" />
     <Compile Include="UciLoader.cs" />
     <Compile Include="Windows\WinConfigureCertabo.xaml.cs">

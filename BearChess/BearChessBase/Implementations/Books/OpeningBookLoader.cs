@@ -12,11 +12,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         private static Dictionary<string, BookInfo> _installedBooks;
 
 
-        public static void Init(string bookPath)
+        public static void Init(string bookPath, FileLogger fileLogger)
         {
             _bookPath = bookPath;
             _installedBooks = new Dictionary<string, BookInfo>();
-            ReadInstalledBooks();
+            fileLogger?.LogInfo("Read installed books...");
+            ReadInstalledBooks(fileLogger);
+            fileLogger?.LogInfo("---Read installed books");
         }
 
         public static OpeningBook LoadBook(string bookName, bool checkFile)
@@ -41,7 +43,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
 
-        private static void ReadInstalledBooks()
+        private static void ReadInstalledBooks(FileLogger fileLogger)
         {
             try
             {
@@ -49,17 +51,21 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 var fileNames = Directory.GetFiles(_bookPath, "*.book", SearchOption.TopDirectoryOnly);
                 foreach (var fileName in fileNames)
                 {
+                    fileLogger?.LogInfo($"Reading {fileName}");
                     var serializer = new XmlSerializer(typeof(BookInfo));
                     TextReader textReader = new StreamReader(fileName);
                     var savedBook = (BookInfo)serializer.Deserialize(textReader);
                     if (File.Exists(savedBook.FileName) && !_installedBooks.ContainsKey(savedBook.Name))
+                    {
+                        fileLogger?.LogInfo($"Add book {savedBook.Name}");
                         _installedBooks.Add(savedBook.Name, savedBook);
+                    }
                 }
 
             }
             catch (Exception ex)
             {
-                // _fileLogger?.LogError("Read installed books", ex);
+                fileLogger?.LogError("Read installed books", ex);
             }
         }
     }

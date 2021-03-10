@@ -40,6 +40,11 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         public void Load(string fileName)
         {
             FileName = fileName;
+            if (string.IsNullOrWhiteSpace(FileName))
+            {
+                _logging?.LogError("Load with empty file name");
+                _inError = true;
+            }
             _dbExists = File.Exists(FileName);
             try
             {
@@ -63,6 +68,14 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         {
             try
             {
+                if (_connection == null)
+                {
+                    Load();
+                    if (_inError)
+                    {
+                        return false;
+                    }
+                }
                 _connection.Open();
                 _inError = false;
                 return true;
@@ -466,7 +479,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                                              GameEvent = rdr.GetString(3),
                                              GameSite = rdr.GetString(4),
                                              Result = rdr.GetString(5),
-                                             GameDate = DateTime.FromFileTime(rdr.GetInt64(6)).ToString("d"),
+                                             GameDate = DateTime.FromFileTime(rdr.GetInt64(6)),
                                              MoveList = rdr.GetString(7)
                                          };
                 allGames.Add(databaseGameSimple);
