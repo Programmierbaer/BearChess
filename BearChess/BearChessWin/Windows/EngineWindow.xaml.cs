@@ -72,6 +72,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private LogWindow _logWindow;
         private string _firstEngineName;
         private string _lastCommand;
+        private bool _showNodes;
+        private bool _showNodesPerSec;
+        private bool _showHash;
 
         public event EventHandler<EngineEventArgs> EngineEvent;
 
@@ -86,6 +89,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Left = _configuration.GetWinDoubleValue("EngineWindowLeft",Configuration.WinScreenInfo.Left);
             _firstEngineName = string.Empty;
             _lastCommand = string.Empty;
+            _showNodes = bool.Parse(_configuration.GetConfigValue("shownodes", "true"));
+            _showNodesPerSec = bool.Parse(_configuration.GetConfigValue("shownodespersec", "true"));
+            _showHash = bool.Parse(_configuration.GetConfigValue("showhash", "true"));
         }
 
         public void CloseLogWindow()
@@ -106,6 +112,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             foreach (var loadedEnginesKey in _loadedEngines.Keys)
             {
                 _logWindow?.AddFor(loadedEnginesKey);
+            }
+        }
+
+        public void ShowInformation()
+        {
+            _showNodes = bool.Parse(_configuration.GetConfigValue("shownodes", "true"));
+            _showNodesPerSec = bool.Parse(_configuration.GetConfigValue("shownodespersec", "true"));
+            _showHash = bool.Parse(_configuration.GetConfigValue("showhash", "true"));
+            List<EngineInfoUserControl>  engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().ToList();
+            foreach (var engineInfoUserControl in engineInfoUserControls)
+            {
+               engineInfoUserControl.ShowInfo(_showNodes,_showNodesPerSec,_showHash);
             }
         }
 
@@ -149,6 +167,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY)
         {
+            
             if (_loadedEngines.ContainsKey(uciInfo.Name))
             {
                 return;
@@ -216,6 +235,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _loadedEngines[uciInfo.Name].UciEngine.SendToEngine(_lastCommand);
                 }
             }
+            ShowInformation();
         }
 
 
@@ -289,6 +309,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             loadedUciEngine.UciEngine.Stop();
             loadedUciEngine.UciEngine.IsReady();
             loadedUciEngine.UciEngine.Quit();
+            loadedUciEngine.UciEngine.StopProcess();
             _loadedUciInfos.Remove(engineName);
             _loadedEngines.Remove(engineName);
             _logWindow?.RemoveFor(engineName);

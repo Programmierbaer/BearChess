@@ -52,6 +52,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private readonly ConcurrentQueue<string> _infoLine = new ConcurrentQueue<string>();
         private readonly List<EngineInfoLineUserControl> _engineInfoLineUserControls = new List<EngineInfoLineUserControl>();
+        private bool _showNodes;
+        private bool _showNodesPerSec;
+        private bool _showHash;
 
         public int Color { get; }
 
@@ -106,6 +109,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             get => textBlockName.Text;
             set => textBlockName.Text = value;
+        }
+
+        public void ShowInfo(bool showNodes, bool showNodesPerSec, bool showHash)
+        {
+            _showNodes = showNodes;
+            _showNodesPerSec = showNodesPerSec;
+            _showHash = showHash;
         }
 
         public void ShowInfo(string infoLine)
@@ -165,12 +175,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             while (true)
             {
-                //string infoLine = string.Empty;
-                //while (_infoLine.TryDequeue(out string infoLine3))
-                //{
-                //infoLine = infoLine3;
-                //}
-                //if (!string.IsNullOrWhiteSpace(infoLine))
+                
                 if (_infoLine.TryDequeue(out string infoLine))
                 {
                     string depthString = string.Empty;
@@ -179,6 +184,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     string moveLine = string.Empty;
                     bool readingMoveLine = false;
                     string currentMove = string.Empty;
+                    string currentNodes = string.Empty;
+                    string currentNodesPerSec = string.Empty;
+                    string currentHash = string.Empty;
                     int currentMultiPv = 1;
                     var infoLineParts = infoLine.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     for (int i=0; i<infoLineParts.Length; i++)
@@ -242,6 +250,30 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                             continue;
                         }
+                        if (_showNodes && infoLineParts[i].Equals("nodes", StringComparison.OrdinalIgnoreCase))
+                        {
+                            currentNodes = $" N: {infoLineParts[i + 1]} ";
+
+                            continue;
+                        }
+
+                        if (_showNodesPerSec && infoLineParts[i].Equals("nps", StringComparison.OrdinalIgnoreCase))
+                        {
+                            currentNodesPerSec = $" Nps: {infoLineParts[i + 1]} ";
+
+                            continue;
+                        }
+
+                        if (_showHash && infoLineParts[i].Equals("hashfull", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (int.TryParse(infoLineParts[i + 1], out int hashValue))
+                            {
+                                currentHash = $" Hash: {hashValue/10}%";
+                            }
+                            
+
+                            continue;
+                        }
 
                         if (readingMoveLine)
                         {
@@ -275,6 +307,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             {
                                 textBlockCurrentMove.Text = currentMove;
                             }
+
+                            textBlockCurrentNodes.Visibility = _showNodes ? Visibility.Visible : Visibility.Collapsed;
+                            textBlockCurrentNodesPerSec.Visibility = _showNodesPerSec ? Visibility.Visible : Visibility.Collapsed;
+                            textBlockCurrentHash.Visibility = _showHash ? Visibility.Visible : Visibility.Collapsed;
+                            if (!string.IsNullOrWhiteSpace(currentNodes))
+                            {
+                                textBlockCurrentNodes.Text = currentNodes;
+                            }
+                            if (!string.IsNullOrWhiteSpace(currentNodesPerSec))
+                            {
+                                textBlockCurrentNodesPerSec.Text = currentNodesPerSec;
+                            }
+                            if (!string.IsNullOrWhiteSpace(currentHash))
+                            {
+                                textBlockCurrentHash.Text = currentHash;
+                            }
+
                         });
                     }
                     catch

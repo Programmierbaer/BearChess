@@ -68,8 +68,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             _playWithWhite = false;
         }
-        
-        public abstract void NewGame();
+
+        public void NewGame()
+        {
+            _logger?.LogDebug("New game");
+            EnsureConnection();
+        }
 
         public void SetComPort(string portName)
         {

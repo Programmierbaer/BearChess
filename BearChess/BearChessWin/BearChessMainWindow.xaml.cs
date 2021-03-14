@@ -154,6 +154,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private ClockTime _whiteClockTime;
         private ClockTime _blackClockTime;
         private bool _waitForPosition;
+        private bool _showNodes;
+        private bool _showNodesPerSec;
+        private bool _showHash;
+
 
         public BearChessMainWindow()
         {
@@ -331,11 +335,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _adjustedForThePlayer = bool.Parse(_configuration.GetConfigValue("adjustedfortheplayer", "false"));
             imageAdjustedForPlayer.Visibility = _adjustedForThePlayer ? Visibility.Visible : Visibility.Hidden;
 
+            _showNodes = bool.Parse(_configuration.GetConfigValue("shownodes", "true"));
+            imageEngineShowNodes.Visibility = _showNodes ? Visibility.Visible : Visibility.Hidden;
+
+            _showNodesPerSec = bool.Parse(_configuration.GetConfigValue("shownodespersec", "true"));
+            imageEngineShowNodesPerSec.Visibility = _showNodesPerSec ? Visibility.Visible : Visibility.Hidden;
+
+            _showHash = bool.Parse(_configuration.GetConfigValue("showhash", "true"));
+            imageEngineShowHash.Visibility = _showHash ? Visibility.Visible : Visibility.Hidden;
+
             if (_loadLastEngine && !_runLastGame)
             {
                 LoadLastEngine();
             }
-
+            
             _runInEasyPlayingMode = !_runLastGame;
             _currentGame = null;
             string dbFileName = _configuration.GetConfigValue("DatabaseFile", Path.Combine(_dbPath, "bearchess.db"));
@@ -344,6 +357,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 dbFileName =  Path.Combine(_dbPath, "bearchess.db");
             }
             _database = new Database(_fileLogger, dbFileName);
+            chessBoardUcGraphics.ShowControlButtons(!_runInEasyPlayingMode);
             //_database.Load(dbFileName);
         }
 
@@ -579,11 +593,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     return;
                 }
             }
-            else
-            {
-                return;
-            }
-
             _chessBoard.Init();
             _chessBoard.NewGame();
             _engineWindow?.SendToEngine("position startpos");
@@ -1067,16 +1076,38 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var isConnected = _eChessBoard?.IsConnected;
             if (isConnected.HasValue && isConnected.Value)
             {
+
                 _waitForPosition = true;
                 var fenPosition = _chessBoard.GetFenPosition();
                 _fileLogger?.LogDebug($"Send to eBoard and wait for: {fenPosition}");
                 _eChessBoard?.SetFen(fenPosition,string.Empty);
-                while (!fenPosition.StartsWith(_eChessBoard?.GetBoardFen()))
+                var splashProgressControlContents = ProgressWorker.GetInitialContent(1, true, "Wait for board position on your electronic chessboard");
+                ProgressWorker progressWorker = new ProgressWorker("Place your chessmen", splashProgressControlContents, false);
+                progressWorker.DoWorkWithModal(progress =>
                 {
-                    Thread.Sleep(100);
+                    while (!splashProgressControlContents[0].Cancel && !fenPosition.StartsWith(_eChessBoard?.GetBoardFen()))
+                    {
+
+                        Thread.Sleep(100);
+
+                    }
+
+                
+                }, this);
+                //while ( !fenPosition.StartsWith(_eChessBoard?.GetBoardFen()))
+                //{
+                //    Thread.Sleep(100);
+                //}
+                //_fileLogger?.LogDebug($"eBoard reached {_eChessBoard?.GetBoardFen()}");
+                _waitForPosition = false;
+                if (progressWorker.CancelIndicated)
+                {
+                    _fileLogger?.LogDebug("User canceled");
+                    return;
                 }
                 _fileLogger?.LogDebug($"eBoard reached {_eChessBoard?.GetBoardFen()}");
-                _waitForPosition = false;
+
+                
             }
             _allowTakeMoveBack = _currentGame.TimeControl.AllowTakeBack;
             _currentWhitePlayer = _currentGame.PlayerWhite;
@@ -1420,6 +1451,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard?.NewGame();
             _eChessBoard?.SetDemoMode(false);
             _eChessBoard?.SetAllLedsOff();
+            chessBoardUcGraphics.ShowControlButtons(true);
             _currentMoveIndex = 0;
             if (_moveListWindow == null)
             {
@@ -1762,6 +1794,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 menuItemAnalyzeMode.IsEnabled = true;
                 chessBoardUcGraphics.AllowTakeBack(true);
                 _runInEasyPlayingMode = true;
+                chessBoardUcGraphics.ShowControlButtons(false);
                 return;
             }
 
@@ -1867,7 +1900,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _chessClocksWindowWhite?.Stop();
                 _chessClocksWindowBlack?.Stop();
             }
-
+            chessBoardUcGraphics.ShowControlButtons(false);
             _engineWindow?.Stop();
             _engineWindow?.NewGame();
             _runInAnalyzeMode = !_runInAnalyzeMode;
@@ -2809,6 +2842,30 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageRunGameOnBase.Visibility = _runGameOnBasePosition ? Visibility.Visible : Visibility.Hidden;
         }
 
+        private void MenuItemEngineShowNodes_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showNodes = !_showNodes;
+            _configuration.SetConfigValue("shownodes", _showNodes.ToString());
+            imageEngineShowNodes.Visibility = _showNodes ? Visibility.Visible : Visibility.Hidden;
+            _engineWindow?.ShowInformation();
+        }
+
+        private void MenuItemEngineShowNodesPerSec_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showNodesPerSec = !_showNodesPerSec;
+            _configuration.SetConfigValue("shownodespersec", _showNodesPerSec.ToString());
+            imageEngineShowNodesPerSec.Visibility = _showNodesPerSec ? Visibility.Visible : Visibility.Hidden;
+            _engineWindow?.ShowInformation();
+        }
+
+        private void MenuItemEngineShowHash_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showHash = !_showHash;
+            _configuration.SetConfigValue("showhash", _showHash.ToString());
+            imageEngineShowHash.Visibility = _showHash ? Visibility.Visible : Visibility.Hidden;
+            _engineWindow?.ShowInformation();
+        }
+
         #endregion
 
         #region Books
@@ -3231,7 +3288,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 reConnect = true;
             }
 
-            var winConfigureCertabo = new WinConfigureCertabo(_configuration, _useBluetoothChesssLink) {Owner = this};
+            var winConfigureCertabo = new WinConfigureCertabo(_configuration, false) {Owner = this};
             winConfigureCertabo.ShowDialog();
             if (reConnect) ConnectToCertabo();
         }
@@ -3729,6 +3786,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         }
 
-      
+
     }
 }

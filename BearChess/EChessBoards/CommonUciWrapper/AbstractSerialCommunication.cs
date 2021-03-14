@@ -344,13 +344,15 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             return true;
         }
 
-        public static string[] GetBTComPort()
+        public string[] GetBTComPort()
         {
+            _logger?.LogDebug("S: Reading BT devices");
             var cli = new BluetoothClient();
             IReadOnlyCollection<BluetoothDeviceInfo> bluetoothDeviceInfos = cli.DiscoverDevices();
             foreach (var bluetoothDeviceInfo in bluetoothDeviceInfos)
             {
                 var deviceName = bluetoothDeviceInfo.DeviceName;
+                _logger?.LogDebug($"S: BT device: {deviceName}");
                 // MILLENNIUM CHESS
                 // if (deviceName.Equals("raspberrypi", StringComparison.OrdinalIgnoreCase))
                 if (deviceName.Equals("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
@@ -360,21 +362,28 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 }
 
             }
-            return GetPortNames();
+            return GetPortNames(_logger);
         }
 
-        public static string[] GetPortNames()
+        public static string[] GetPortNames(ILogging logger)
         {
+            logger?.LogDebug("S: Reading port names");
             var result = new List<string>();
             var portNames = SerialPort.GetPortNames();
             foreach (var portName in portNames)
             {
+                logger?.LogDebug($"S: Port: {portName}");
                 if (portName.StartsWith("COM", StringComparison.OrdinalIgnoreCase))
                 {
                     var serialPort = new SerialPort(portName);
                     if (!serialPort.IsOpen)
                     {
+                        logger?.LogDebug($"S: {portName} is not open");
                         result.Add(portName.ToUpper());
+                    }
+                    else
+                    {
+                        logger?.LogDebug($"S: {portName} is already open");
                     }
                 }
             }
@@ -384,11 +393,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         private string[] GetComPortNames()
         {
+            _logger?.LogDebug($"S: Get COM port names. Configured port: {_setPortName}");
             if (string.IsNullOrWhiteSpace(_setPortName)
                 || _setPortName.Equals("<auto>", StringComparison.OrdinalIgnoreCase))
             {
-                var comPortNames = UseBluetooth ? GetBTComPort() : GetPortNames();
-                _logger?.LogDebug($"S: Portnames: {string.Join(",", comPortNames)}");
+                var comPortNames = UseBluetooth ? GetBTComPort() : GetPortNames(_logger);
+                _logger?.LogDebug($"S: All port names: {string.Join(",", comPortNames)}");
                 return comPortNames;
             }
 
@@ -396,7 +406,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         }
 
         protected abstract void Communicate();
-
 
         private void ClientPipe_PipeClosed(object sender, EventArgs e)
         {

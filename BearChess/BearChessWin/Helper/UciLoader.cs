@@ -41,6 +41,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly object _locker = new object();
         private readonly OpeningBook _openingBook;
         private BookMove _bookMove;
+        private bool _processClosed;
 
         public event EventHandler<EngineEventArgs> EngineReadingEvent;
 
@@ -96,12 +97,26 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void EngineProcess_Disposed(object sender, EventArgs e)
         {
+            _processClosed = true;
             _logger?.LogWarning("process disposed");
         }
 
         private void EngineProcess_Exited(object sender, EventArgs e)
         {
+            _processClosed = true;
             _logger?.LogWarning("process exited");
+        }
+
+        public void StopProcess()
+        {
+            try
+            {
+                _engineProcess.Kill();
+            }
+            catch
+            {
+                //
+            }
         }
 
         public void NewGame()

@@ -223,12 +223,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         }
 
-        public override void NewGame()
-        {
-            _logger.LogDebug("New game");
-            EnsureConnection();
-        }
-
         private string GetFenLine(string substring)
         {
             var result = string.Empty;

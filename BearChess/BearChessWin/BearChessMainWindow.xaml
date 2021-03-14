@@ -78,6 +78,26 @@
                             <Image Source="Assets/Icons/tick.png" Name="imageUciLog"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Settings">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/cog.png"></Image>
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemEngineShowNodes" Header="Show nodes (N)" Click="MenuItemEngineShowNodes_OnClick">
+                            <MenuItem.Icon >
+                                <Image Name="imageEngineShowNodes" Source="Assets/Icons/tick.png" Visibility="Visible" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemEngineShowNodesPerSec" Header="Show nodes per seconds (Nps)" Click="MenuItemEngineShowNodesPerSec_OnClick">
+                            <MenuItem.Icon >
+                                <Image Name="imageEngineShowNodesPerSec" Source="Assets/Icons/tick.png" Visibility="Visible" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemEngineShowHash" Header="Show hash" Click="MenuItemEngineShowHash_OnClick">
+                            <MenuItem.Icon >
+                                <Image Name="imageEngineShowHash" Source="Assets/Icons/tick.png" Visibility="Visible" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Books">
 
@@ -154,6 +174,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                   
                 </MenuItem>
                 <MenuItem Header="Electronic Boards">
                     <MenuItem Name="menuItemCertabo"  Header="Certabo" >

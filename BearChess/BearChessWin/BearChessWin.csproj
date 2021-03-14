@@ -118,10 +118,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BoardFieldsSetup.cs" />
-    <Compile Include="BoardPiecesSetup.cs" />
-    <Compile Include="Configuration.cs" />
-    <Compile Include="ConfigurationSettings.cs" />
+    <Compile Include="Helper\BoardFieldsSetup.cs" />
+    <Compile Include="Helper\BoardPiecesSetup.cs" />
+    <Compile Include="Helper\Configuration.cs" />
+    <Compile Include="Helper\ConfigurationSettings.cs" />
+    <Compile Include="Helper\ProgressWorker.cs" />
+    <Compile Include="Helper\SplashProgressControlContent.cs" />
     <Compile Include="UciConfigControls\UciTextBoxUserControl.xaml.cs">
       <DependentUpon>UciTextBoxUserControl.xaml</DependentUpon>
     </Compile>
@@ -155,6 +157,10 @@
     <Compile Include="UserControls\IMoveUserControl.cs" />
     <Compile Include="UserControls\MoveUserControl.xaml.cs">
       <DependentUpon>MoveUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SplashProgressControlEventArgs.cs" />
+    <Compile Include="UserControls\SplashProgressControl.xaml.cs">
+      <DependentUpon>SplashProgressControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UciLogInfoUserControl.xaml.cs">
       <DependentUpon>UciLogInfoUserControl.xaml</DependentUpon>
@@ -238,12 +244,15 @@
     <Compile Include="Windows\SelectInstalledEngineWindow.xaml.cs">
       <DependentUpon>SelectInstalledEngineWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\SplashWindow.xaml.cs">
+      <DependentUpon>SplashWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\UciConfigValue.cs" />
     <Compile Include="Windows\UciConfigWindow.xaml.cs">
       <DependentUpon>UciConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UciInstaller.cs" />
-    <Compile Include="UciLoader.cs" />
+    <Compile Include="Helper\UciInstaller.cs" />
+    <Compile Include="Helper\UciLoader.cs" />
     <Compile Include="Windows\WinConfigureCertabo.xaml.cs">
       <DependentUpon>WinConfigureCertabo.xaml</DependentUpon>
     </Compile>
@@ -287,6 +296,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\MoveUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SplashProgressControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -421,6 +434,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SelectInstalledEngineWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SplashWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -894,6 +911,7 @@
   <ItemGroup>
     <Resource Include="Assets\Icons\database_delete.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

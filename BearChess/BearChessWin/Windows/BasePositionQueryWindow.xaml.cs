@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace www.SoLaNoSoft.com.BearChessWin.Windows
+namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
     /// Interaktionslogik für BasePositionQueryWindow.xaml

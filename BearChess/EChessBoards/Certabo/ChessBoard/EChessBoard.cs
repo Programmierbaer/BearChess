@@ -420,13 +420,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
         }
 
-        public override void NewGame()
-        {
-            _logger?.LogDebug("New game");
-            EnsureConnection();
-
-        }
-
+       
         #region private
 
         private bool Calibrate(CalibrateData codes)

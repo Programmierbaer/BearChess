@@ -14,10 +14,10 @@
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.4.0.0}
+\fancyhead[R]{Version 0.4.1.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{27.01.2021} 
+\date{13.03.2021} 
 
 \begin{document}
 \maketitle
@@ -121,7 +121,14 @@ The first start of BearChess shows the following main window:
 	\label{fig:MainWindow}
 \end{figure}
 
-Above you have access to different functions of BearChess.
+Two buttons are active:
+\begin{itemize}
+  \item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png} rotates the board.
+  \item \includegraphics[scale=0.2]{bearchess_2.png} is an easy way to play a game.
+Read more in chapter \textbf{\ref{easyStart}  \nameref{easyStart}} on page \pageref{easyStart}.
+\end{itemize}
+
+
 
 \subsection{Actions}
 \begin{figure}[H]
@@ -148,8 +155,9 @@ Above you have access to different functions of BearChess.
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{diskette.png} \textbf{Save} your current game.
 	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Show \& Load} opens a new window in which you can see and load all your previously saved games.
+	\item \includegraphics[scale=0.5]{clipboard_sign.png}  \textbf{Paste from clipboard} loads a game (PGN) from your clipboard.
 \end{itemize}
-All games are saved in a PGN file. Read more on chapter \textbf{\ref{games}  \nameref{games}} on page \pageref{games}.
+All games are saved in a database file. Read more on chapter \textbf{\ref{games}  \nameref{games}} on page \pageref{games}.
 
 \subsection{Engines}
 \begin{figure}[H]
@@ -162,6 +170,7 @@ All games are saved in a PGN file. Read more on chapter \textbf{\ref{games}  \na
 	\item  \includegraphics[scale=0.5]{robot.png} \textbf{Load \& manage engines} opens a new window in which you can install, load or configure your chess engines.
 	\item \textbf{Load last engine on start} if you always want to load immediately an engine when you start BearChess. It has no effect if you have activated the option "Run startup game on start".
 	\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
+	\item \textbf{Settings} to configure if you want to see more information from the engine, e.g. nodes per second.	
 \end{itemize}
 
 Read more on chapter \textbf{\ref{loadEngines}  \nameref{loadEngines}} on page \pageref{loadEngines}.
@@ -187,7 +196,7 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 \end{figure}
 \begin{itemize}
 	\item  \includegraphics[scale=0.9]{Board2DPieces32.png} \textbf{Board \& Pieces} opens a window where you can change the appearance of the chessboard and the pieces.  Read more on chapter \textbf{\ref{BoardAndPieces}  \nameref{BoardAndPieces}} on page \pageref{BoardAndPieces}.
-	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png}  \textbf{Rotate board} if you like to play with black. 
+	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png}  \textbf{Rotate board} if the board on the screen should automatically rotate for your color.
 	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation/Moves} opens a windows where you can change the appearance of the notation, e.g. figurine or letters.
 	\item  \includegraphics[scale=0.5]{digit_separator.png}  \textbf{Clocks} switches between large and small clocks.
 	\item  \includegraphics[scale=0.5]{balance_unbalance.png}  \textbf{Captured pieces} shows the captured pieces window at startup or on demand.
@@ -843,7 +852,34 @@ For your convenience, you can configure and save a game definition that will be 
   	  \item \includegraphics[scale=0.5]{layer_open.png} Loads the definition.
 \end{itemize}
 
-\subsection{Easy start or restart of a game} 
+\section{Move list}
+The move list shows all moves of your game.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{movelist1.png}
+	\caption{Simple move list}
+	\label{fig:moveList1}
+\end{figure}
+
+When you play against an engine BearChess collects more information.
+\includegraphics[scale=0.5]{show_detail.png} expands the move list and shows the value and best move calculated by the engine.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{movelist2.png}
+	\caption{Move list}
+	\label{fig:moveList2}
+\end{figure}
+
+\includegraphics[scale=0.5]{script_add.png} expands the move list and shows the value and the full best move list calculated by the engine.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{movelist3.png}
+	\caption{Full move list}
+	\label{fig:moveList3}
+\end{figure}
+
+\section{Easy start or restart of a game} \label{easyStart}
 
 The button \includegraphics[scale=0.2]{bearchess_2.png} is an easy way to play a game. If your not active playing a game, the following dialog appears:
 
@@ -855,9 +891,9 @@ The button \includegraphics[scale=0.2]{bearchess_2.png} is an easy way to play a
 \end{figure}
 
 \begin{itemize}
-	\item \textbf{Yes} opens the new game dialog (see \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent})
-	\item \textbf{No} resets to base position.
-	\item \textbf{Cancel} continues.
+	\item \textbf{Start a new game} opens the new game dialog (see \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent})
+	\item \textbf{Continue} enables the continuation of a game, e.g. just loaded from the database (see \textbf{\ref{ContinueAGame}  \nameref{ContinueAGame}} on page \pageref{ContinueAGame}.)
+	\item \textbf{Cancel} the dialog.
 \end{itemize}
 
 If your playing a game, the following dialog appears:
@@ -875,6 +911,26 @@ If your playing a game, the following dialog appears:
     \item \includegraphics[scale=0.5]{control_stop.png} stops the current game.
     \item \includegraphics[scale=0.5]{control_play_blue.png} continues
 \end{itemize}
+
+\subsubsection{Continue a game} \label{ContinueAGame}
+If you want to play a game and continue on another day, you can do the following:
+\begin{itemize}
+    \item Save the game into the database and close BearChess.
+    \item Open BearChess and load the game from the database on another day.
+    \item Press the button \includegraphics[scale=0.2]{bearchess_2.png} and choose "Continue" \includegraphics[scale=0.5]{control_play_blue.png}.
+\end{itemize}
+The game will continue with the same settings of opponent and timing control, setting the clock to the same time as you saved the game.
+
+\subsubsection*{Electronic chessboard}
+If you use an electronic chessboard, connect to the board \textbf{before} you load the game from the database. When you click on \includegraphics[scale=0.5]{control_play_blue.png}  "Continue"
+the following window appears.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{waitPosition.png}
+	\caption{Waiting}
+	\label{fig:waitPosition}
+\end{figure}
+Now, place all chessmen to the right position. BearChess will recognize it and continues automatically.
 
 \subsection{Influence of BearChess in engine games}
 Chess engines generally do not have the ability to give up or to recognize a draw, e.g. by repeating moves. In a match between two engines BearChess checks the moves and the current rating. 
@@ -1080,7 +1136,7 @@ This is like turning on a chess computer that is immediately ready to play.
 
 \subsection{Save}
 
-BearChess stores all games in one PGN file. When you save a game for the first time, you must first select a PGN file.\\
+BearChess stores all games in a database file. When you save a game for the first time, you must first select a database file.\\
 The save dialog is prefilled with the known data. But you can correct them before saving.
 
 \begin{figure}[H]
@@ -1106,13 +1162,16 @@ BearChess stores all games in one PGN file. The current name is shown in the tit
 If you double click on a row, the game is displayed on the board.
 
 \begin{itemize}
-	\item \includegraphics[scale=0.5]{folder_add.png} Create a new games file.
-	\item \includegraphics[scale=0.5]{file_manager.png} Open an existing games file.
+	\item \includegraphics[scale=0.5]{database_add.png} Create a new games database.
+	\item \includegraphics[scale=0.5]{file_manager.png} Open an existing games database.
 	\item \includegraphics[scale=0.5]{bin.png} Delete selected game.
+	\item \includegraphics[scale=0.5]{saved_imports.png} Import games from a PGN file.	
+	\item \includegraphics[scale=0.5]{database_delete.png} Delete all games from the database.
+	\item \includegraphics[scale=0.5]{filter_reapply.png} Show only games that correspond to the current board position.	
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
 
-{\color{red}*} Currently BearChess does not support a search or filter function.
+{\color{red}*} Currently BearChess does not support a search function.
 
 \section{Engine window}
 
@@ -1201,6 +1260,15 @@ If you have performed the calibration without extra queens and are performing a 
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.4.0.0 =\textgreater 0.4.1.0}
+\begin{itemize}
+	\item Using a database file instead PGN.
+	\item Allows you to continue a previously saved game.
+	\item Extended information in the move list window.
+    \item Extended information in the engines window.
+	\item Minor fixes.	
+\end{itemize}
+
 \subsection{Version 0.3.3.0 =\textgreater 0.4.0.0}
 \begin{itemize}
 	\item New time configuration "Adapted time".

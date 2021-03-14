@@ -305,11 +305,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetEBoardMode(bool isConnected)
         {
             _isConnected = isConnected;
-            moveStepAllBack.Visibility = isConnected ?  Visibility.Hidden : Visibility.Visible;
-            moveStepAllForward.Visibility = isConnected ? Visibility.Hidden : Visibility.Visible;
-            moveStepBack.Visibility = isConnected ? Visibility.Hidden : Visibility.Visible;
-            moveStepForward.Visibility = isConnected ? Visibility.Hidden : Visibility.Visible;
-            buttonPauseEngine.Visibility = isConnected ? Visibility.Hidden : Visibility.Visible;
+            ShowControlButtons(true);
         }
 
         public void SetInAnalyzeMode(bool inAnalyzeMode, string fenPosition)
@@ -321,20 +317,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _chessBoard.Init();
                 _chessBoard.NewGame();
                 _chessBoard.SetPosition(fenPosition);
-                moveStepAllBack.Visibility = Visibility.Hidden;
-                moveStepAllForward.Visibility = Visibility.Hidden;
-                moveStepBack.Visibility = Visibility.Hidden;
-                moveStepForward.Visibility = Visibility.Hidden;
-                buttonPauseEngine.Visibility = Visibility.Hidden;
-                resetStartPosition.Visibility = Visibility.Hidden;
-
             }
             else
             {
                 _chessBoard = null;
-                SetEBoardMode(_isConnected);
                 resetStartPosition.Visibility = Visibility.Visible;
             }
+        }
+
+        public void ShowControlButtons(bool showButtons)
+        {
+            moveStepAllBack.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            moveStepAllForward.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            moveStepBack.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            moveStepForward.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            buttonPauseEngine.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            //resetStartPosition.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
         }
 
         public void SetInPositionMode(bool inPositionMode, string fenPosition, bool acceptMouse)
@@ -347,22 +345,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _chessBoard.Init();
                 _chessBoard.NewGame();
                 _chessBoard.SetPosition(fenPosition);
-                moveStepAllBack.Visibility = Visibility.Hidden;
-                moveStepAllForward.Visibility = Visibility.Hidden;
-                moveStepBack.Visibility = Visibility.Hidden;
-                moveStepForward.Visibility = Visibility.Hidden;
-                buttonPauseEngine.Visibility = Visibility.Hidden;
-                resetStartPosition.Visibility = Visibility.Hidden;
             }
             else
             {
                 _chessBoard = null;
-                moveStepAllBack.Visibility = Visibility.Visible;
-                moveStepAllForward.Visibility = Visibility.Visible;
-                moveStepBack.Visibility = Visibility.Visible;
-                moveStepForward.Visibility = Visibility.Visible;
-                buttonPauseEngine.Visibility = Visibility.Visible;
-                resetStartPosition.Visibility = Visibility.Visible;
             }
         }
 

@@ -55,8 +55,19 @@
             <DockPanel LastChildFill="False">
                 <TextBlock DockPanel.Dock="Left" Name="textBlockDepth" HorizontalAlignment="Left" Width="90" Margin="5" Text="Depth:"/>
                 <TextBlock DockPanel.Dock="Left" Name="textBlockCurrentMove" HorizontalAlignment="Left" Width="110" Margin="5" Text="Current:"/>
+                <Grid  DockPanel.Dock="Left">
+                   <Grid.ColumnDefinitions>
+                       <ColumnDefinition Width="110"></ColumnDefinition>
+                       <ColumnDefinition Width="90"></ColumnDefinition>
+                       <ColumnDefinition Width="Auto"></ColumnDefinition>
+                   </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Name="textBlockCurrentNodes" HorizontalAlignment="Left"  Margin="5"  />
+                    <TextBlock Grid.Column="1" Name="textBlockCurrentNodesPerSec" HorizontalAlignment="Left"  Margin="5"/>
+                    <TextBlock Grid.Column="2" Name="textBlockCurrentHash" HorizontalAlignment="Left"  Margin="5" />
+                </Grid>
+
             </DockPanel>
-            <local:EngineInfoLineUserControl x:Name="engineInfoLineUserControl1" />
+            <local:EngineInfoLineUserControl x:Name="engineInfoLineUserControl1" HorizontalAlignment="Left"/>
         </StackPanel>
     </Border>
 </UserControl>
