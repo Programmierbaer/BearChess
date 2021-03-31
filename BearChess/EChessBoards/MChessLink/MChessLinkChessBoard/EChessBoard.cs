@@ -88,13 +88,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private bool _lowerLeft = true;
         private bool _lowerRight = true;
 
-        public EChessBoard(ILogging logger, bool isFirstInstance, string portName, bool useBluetooth)
+        public EChessBoard(ILogging logger, bool isFirstInstance, string portName)
         {
             _logger = logger;
-            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName)
-            {
-                UseBluetooth = useBluetooth
-            };
+            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName);
             _isFirstInstance = isFirstInstance;
             IsConnected = EnsureConnection();
         }
@@ -102,11 +99,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         public EChessBoard(ILogging logger)
         {
             _isFirstInstance = true;
-
             _logger = logger;
-
         }
-
 
         public override bool CheckComPort(string portName)
         {

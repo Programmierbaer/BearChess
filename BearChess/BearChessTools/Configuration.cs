@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Xml.Serialization;
+using InTheHand.Net;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
-namespace www.SoLaNoSoft.com.BearChessWin
+namespace www.SoLaNoSoft.com.BearChessTools
 {
     public class Configuration
     {
@@ -21,6 +22,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private static readonly object Locker = new object();
         private readonly ConfigurationSettings<string, string> _appSettings;
         private string ConfigFileName { get; }
+        private string BtConfigFileName { get; }
         private string TimeControlFileName { get; }
         private string StartupTimeControlFileName { get; }
 
@@ -57,6 +59,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             TimeControlFileName = Path.Combine(FolderPath, "bearchess_tc.xml");
             StartupTimeControlFileName = Path.Combine(FolderPath, "bearchess_start_tc.xml");
             ConfigFileName = Path.Combine(FolderPath, "bearchess.xml");
+            BtConfigFileName = Path.Combine(FolderPath, "bearchess_bt.xml");
             try
             {
                 if (File.Exists(ConfigFileName))
@@ -77,34 +80,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        public double GetWinDoubleValue(string winName, WinScreenInfo screenInfo, string defaultValue="0")
+        public double GetWinDoubleValue(string winName, WinScreenInfo screenInfo, double vScreenHeight, double vScreenWidth,  string defaultValue="0")
         {
             var winDoubleValue = double.Parse(GetConfigValue(_appSettings, winName, defaultValue), CultureInfo.InvariantCulture);
             double winValue;
             switch (screenInfo)
             {
-                case WinScreenInfo.Top: winValue = System.Windows.SystemParameters.VirtualScreenHeight;
+                case WinScreenInfo.Top: winValue = vScreenHeight;
                     if (winDoubleValue > winValue - 50)
                     {
                         winDoubleValue = 0;
                     }
                     break;
                 case WinScreenInfo.Height:
-                    winValue = System.Windows.SystemParameters.VirtualScreenHeight;
+                    winValue = vScreenHeight;
                     if (winDoubleValue > winValue - 50)
                     {
                         winDoubleValue = winValue - 50;
                     }
                     break;
                 case WinScreenInfo.Left:
-                    winValue = System.Windows.SystemParameters.VirtualScreenWidth;
+                    winValue = vScreenWidth;
                     if (winDoubleValue > winValue - 50)
                     {
                         winDoubleValue = 0;
                     }
                     break; 
                 case WinScreenInfo.Width:
-                    winValue = System.Windows.SystemParameters.VirtualScreenWidth;
+                    winValue = vScreenWidth;
                     if (winDoubleValue > winValue - 50)
                     {
                         winDoubleValue = winValue - 50;
@@ -124,6 +127,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetDoubleValue(string winName, double position)
         {
             SetConfigValue(_appSettings, winName, position.ToString(CultureInfo.InvariantCulture));
+        }
+
+        public void Save(BluetoothAddress btAddress)
+        {
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(BluetoothAddress));
+                TextWriter textWriter = new StreamWriter(BtConfigFileName, false);
+                serializer.Serialize(textWriter, btAddress);
+                textWriter.Close();
+            }
+            catch
+            {
+                //
+            }
+        }
+
+        public BluetoothAddress LoadBtAddress()
+        {
+            if (!File.Exists(BtConfigFileName))
+            {
+                return null;
+            }
+            XmlSerializer serializer = new XmlSerializer(typeof(BluetoothAddress));
+            TextReader textReader = new StreamReader(BtConfigFileName);
+            BluetoothAddress btAddress = (BluetoothAddress)serializer.Deserialize(textReader);
+            textReader.Close();
+            return btAddress;
         }
 
         public void Save()

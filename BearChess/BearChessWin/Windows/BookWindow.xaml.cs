@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -30,8 +31,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration = configuration;
             _bookInfo = bookInfo;
             Title += $" {_bookInfo.Name}";
-            Top = _configuration.GetWinDoubleValue("BookWindowTop", Configuration.WinScreenInfo.Top);
-            Left = _configuration.GetWinDoubleValue("BookWindowLeft", Configuration.WinScreenInfo.Left);
+            Top = _configuration.GetWinDoubleValue("BookWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight,SystemParameters.VirtualScreenWidth);
+            Left = _configuration.GetWinDoubleValue("BookWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             _openingBook = new OpeningBook();
             _openingBook.LoadBook(_bookInfo.FileName, false);
             SetMoves(_openingBook.GetMoveList());

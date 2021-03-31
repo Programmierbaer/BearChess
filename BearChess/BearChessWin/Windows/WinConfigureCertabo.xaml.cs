@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 using www.SoLaNoSoft.com.BearChess.CertaboLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 
@@ -17,36 +18,38 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class WinConfigureCertabo : Window
     {
         private readonly Configuration _configuration;
+        private readonly bool _useBluetooth;
         private readonly string _fileName;
         private readonly string _calibrateFileName;
         private readonly EChessBoardConfiguration _eChessBoardConfiguration;
+        private List<string> _portNames ;
 
         public string SelectedPortName => (string) comboBoxComPorts.SelectedItem;
 
         public WinConfigureCertabo(Configuration configuration, bool useBluetooth)
         {
             _configuration = configuration;
+            _useBluetooth = useBluetooth;
             InitializeComponent();
-            List<string> portNames = null;
+            
             HashSet<string> allPortNames = new HashSet<string>() {"<auto>"};
-            if (useBluetooth)
+            if (_useBluetooth)
             {
-
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
-                portNames = BearChessTools.SerialCommunicationTools.GetBTComPort().ToList();
+                _portNames = SerialCommunicationTools.GetBTComPort(CertaboLoader.EBoardName,configuration).ToList();
                 comPortSearchWindow.Close();
 
             }
             else
             {
-                portNames = BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
+                _portNames = SerialCommunicationTools.GetPortNames().ToList();
             }
 
-            portNames.ForEach(f => allPortNames.Add(f));
+            _portNames.ForEach(f => allPortNames.Add(f));
             comboBoxComPorts.ItemsSource = allPortNames;
             comboBoxComPorts.SelectedIndex = 0;
-            if (portNames.Count == 0)
+            if (_portNames.Count == 0)
             {
                 textBlockInformation.Visibility = Visibility.Visible;
             }
@@ -59,6 +62,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _fileName = Path.Combine(_configuration.FolderPath, CertaboLoader.EBoardName,
                                      $"{CertaboLoader.EBoardName}Cfg.xml");
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
+            _eChessBoardConfiguration.UseBluetooth = useBluetooth;
             textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
         }
@@ -77,20 +81,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCalibrate_OnClick(object sender, RoutedEventArgs e)
         {
-            var calibrateBaseWindow = new CalibrateBaseWindow();
-            calibrateBaseWindow.Owner = this;
+            var calibrateBaseWindow = new CalibrateBaseWindow {Owner = this};
             var showDialog = calibrateBaseWindow.ShowDialog();
             if (!showDialog.HasValue || !showDialog.Value)
             {
                 return;
             }
-            //if (MessageBox.Show(this,
-            //                    $"Place all chessmen on the chess base position.{Environment.NewLine}Press 'Ok' when you are ready.",
-            //                    "Calibrate",
-            //                    MessageBoxButton.OKCancel, MessageBoxImage.Information) != MessageBoxResult.OK)
-            //{
-            //    return;
-            //}
+         
 
             var infoWindow = new InfoWindow();
             infoWindow.Owner = this;
@@ -120,8 +117,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var portName = comboBoxComPorts.SelectionBoxItem.ToString();
             if (portName.Contains("auto"))
             {
-                var portNames = BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
-                foreach (var name in portNames)
+                foreach (var name in _portNames)
                 {
                     if (certaboLoader.CheckComPort(name))
                     {

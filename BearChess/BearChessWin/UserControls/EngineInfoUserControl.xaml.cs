@@ -55,6 +55,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showNodes;
         private bool _showNodesPerSec;
         private bool _showHash;
+        private bool _tournamentMode;
 
         public int Color { get; }
 
@@ -118,7 +119,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showHash = showHash;
         }
 
-        public void ShowInfo(string infoLine)
+        public void ShowInfo(string infoLine, bool tournamentMode)
         {
             if (!_stopVisible)
             {
@@ -131,6 +132,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 { };
                 _stopInfo = false;
             }
+
+            _tournamentMode = tournamentMode;
             _infoLine.Enqueue(infoLine);
             ShowHidePlay(true);
         }
@@ -175,7 +178,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             while (true)
             {
-                
                 if (_infoLine.TryDequeue(out string infoLine))
                 {
                     string depthString = string.Empty;
@@ -193,6 +195,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         if (infoLineParts[i].Equals("depth", StringComparison.OrdinalIgnoreCase))
                         {
+                            if (_tournamentMode)
+                            {
+                                continue;
+                            }
                             depthString = infoLineParts[i + 1];
                             selDepthString = depthString;
                             continue;
@@ -204,11 +210,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         }
                         if (infoLineParts[i].Equals("seldepth", StringComparison.OrdinalIgnoreCase))
                         {
+                            if (_tournamentMode)
+                            {
+                                continue;
+                            }
                             selDepthString = infoLineParts[i + 1];
                             continue;
                         }
                         if (infoLineParts[i].Equals("score", StringComparison.OrdinalIgnoreCase))
                         {
+                            if (_tournamentMode)
+                            {
+                                continue;
+                            }
                             string scoreType = infoLineParts[i + 1];
                             if (scoreType.Equals("cp", StringComparison.OrdinalIgnoreCase))
                             {
@@ -271,13 +285,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 currentHash = $" Hash: {hashValue/10}%";
                             }
                             
-
                             continue;
                         }
 
                         if (readingMoveLine)
                         {
+                            if (_tournamentMode)
+                            {
+                               moveLine = " ~~~~~~~ ";
+                               continue;
+                            }
+
                             moveLine += infoLineParts[i] + " ";
+                        }
+                        else
+                        {
+                            if (_tournamentMode &&  infoLineParts[i].Equals("bestmove"))
+                            {
+                                moveLine = infoLineParts[i + 1].ToLower();
+                            }
                         }
                     }
 

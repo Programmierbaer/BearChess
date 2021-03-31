@@ -12,8 +12,9 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         private const string _allEmpty = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
         private const string _withQueensEmpty = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
 
-        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName) : base(isFirstInstance, logger, portName, "Certabo")
+        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, bool useBluetooth) : base(isFirstInstance, logger, portName, "Certabo")
         {
+            _useBluetooth = useBluetooth;
         }
 
         public DataFromBoard GetFromCertaboBoard()
@@ -40,7 +41,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         {
             try
             {
-                return _serialPort.ReadLine();
+                return _comPort.ReadLine();
             }
             catch
             {
@@ -87,6 +88,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     continue;
                 }
 
+                
                 if (!ValidCalibrateCodes(fromBoard.FromBoard))
                 {
                     continue;
@@ -103,7 +105,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 // More than 10 times same result => should be the right codes
                 if (calibrationHelper[fromBoard.FromBoard] > 10)
                 {
-                    result = fromBoard.FromBoard;
+                    result = fromBoard.FromBoard.Replace('\0', ' ').Trim(); 
                     break;
                 }
             }
@@ -136,14 +138,14 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                             if (_isFirstInstance)
                             {
                                 _logger?.LogDebug($"C: Send byte array: {BitConverter.ToString(data)}");
-                                _serialPort.Write(data, 0, data.Length);
+                                _comPort.Write(data, 0, data.Length);
                                 Thread.Sleep(5);
                             }
                         }
 
                         if (_isFirstInstance)
                         {
-                            var readLine = _serialPort.ReadLine();
+                            var readLine = _comPort.ReadLine();
 
                             if (_dataFromBoard.Count > 20)
                             {
@@ -178,7 +180,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 return false;
             }
 
-            var dataArray = codes.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var dataArray = codes.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             if (dataArray.Length < 320)
             {
                 return false;

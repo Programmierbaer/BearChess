@@ -15,5 +15,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public bool AllowTakeBack { get; set; }
         public bool PonderWhite { get; set; }
         public bool PonderBlack { get; set; }
+        public bool TournamentMode { get; set; }
     }
 }

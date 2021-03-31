@@ -485,7 +485,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         /// <inheritdoc />
         public void MakeMove(string pgnMove)
         {
-            if (pgnMove.Equals("1-0") || pgnMove.Equals("0-1") || pgnMove.Equals("1/2-1/2"))
+            if (string.IsNullOrWhiteSpace(pgnMove) || pgnMove.Equals("*") || pgnMove.Equals("1-0") || pgnMove.Equals("0-1") || pgnMove.Equals("1/2-1/2"))
             {
                 return;
             }

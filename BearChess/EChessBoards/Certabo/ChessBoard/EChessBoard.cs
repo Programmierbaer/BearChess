@@ -9,6 +9,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 {
     public class EChessBoard : AbstractEBoard
     {
+        private readonly bool _useBluetooth;
 
 
         private readonly ICalibrateStorage _calibrateStorage;
@@ -59,10 +60,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         private bool _flashLeds;
 
 
-        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName)
+        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth)
         {
+            _useBluetooth = useBluetooth;
             _isFirstInstance = isFirstInstance;
-            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName);
+            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName,useBluetooth);
             _calibrateStorage = new CalibrateStorage(basePath);
             _logger = logger;
             var calibrationData = _calibrateStorage.GetCalibrationData();
@@ -74,7 +76,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             IsConnected = EnsureConnection();
         }
 
-        public EChessBoard( ILogging logger)
+        public EChessBoard(ILogging logger)
         {
             _isFirstInstance = true;
             _logger = logger;
@@ -84,12 +86,12 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override bool CheckComPort(string portName)
         {
-            _serialCommunication = new SerialCommunication(true, _logger, portName);
+            _serialCommunication = new SerialCommunication(true, _logger, portName, _useBluetooth);
             if (_serialCommunication.CheckConnect(portName))
             {
                 var readLine = _serialCommunication.GetRawFromBoard();
                 _serialCommunication.DisConnectFromCheck();
-                return readLine.Length>0;
+                return readLine.Length > 0;
             }
 
             return false;
@@ -119,7 +121,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 }
 
                 _logger?.LogDebug($"B: set leds for {joinedString}");
-                _prevJoinedString = joinedString; 
+                _prevJoinedString = joinedString;
 
                 byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
                 Array.Copy(AllOff, result, AllOff.Length);
@@ -217,8 +219,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             {
                 if (_boardCodesToChessPiece[key].Equals(BlackQueenFen))
                 {
-                    calibrateData.BlackQueenCodes = string.IsNullOrEmpty(calibrateData.BlackQueenCodes) ? key : calibrateData.BlackQueenCodes+'#'+key;
-                    boardData =  boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
+                    calibrateData.BlackQueenCodes = string.IsNullOrEmpty(calibrateData.BlackQueenCodes) ? key : calibrateData.BlackQueenCodes + '#' + key;
+                    boardData = boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
                     continue;
                 }
                 if (_boardCodesToChessPiece[key].Equals(WhiteQueenFen))
@@ -249,19 +251,20 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     if (boardData.FromBoard.Trim().Length > 1)
                     {
                         break;
-                        
+
                     }
                     Thread.Sleep(5);
                 }
 
-                var dataArray = boardData.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                //var dataArray = boardData.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                var dataArray = boardData.FromBoard.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 var retries = 0;
                 while (retries < 10)
                 {
                     if (dataArray.Length < 320)
                     {
                         boardData = _serialCommunication.GetFromBoard();
-                        dataArray = boardData.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                        dataArray = boardData.FromBoard.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         retries++;
                         continue;
                     }
@@ -420,7 +423,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
         }
 
-       
+
         #region private
 
         private bool Calibrate(CalibrateData codes)
@@ -465,7 +468,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         private bool Calibrate(string codes)
         {
-            var dataArray = codes.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var dataArray = codes.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             if (dataArray.Length < 320)
             {
                 _logger?.LogWarning($"B: Calibrate failed: at least 320 codes expected: {dataArray.Length}");

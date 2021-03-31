@@ -16,30 +16,30 @@
             <ColumnDefinition Width="130" />
             <ColumnDefinition Width="130" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+        <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Image Source="../Assets/Icons/emotion_question.png" HorizontalAlignment="Left" Margin="5" Height="32"
                    Width="32" />
             <TextBlock FontWeight="Bold" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">Action...</TextBlock>
         </StackPanel>
-        <Button Grid.Row="1" Name="buttonStart" Margin="5,20,10,20" Grid.Column="0" Click="ButtonStart_OnClick" Background="Transparent">
+        <Button Grid.Row="1" Name="buttonStart" Margin="5,20,10,10" Grid.Column="0" Click="ButtonStart_OnClick" Background="Transparent" BorderBrush="Transparent">
             <StackPanel >
                 <Image Margin="0,5,0,0" Source="../Assets/Icons/bearchess.png" Width="32" Height="32"></Image>
                 <TextBlock Margin="5">Start a new game</TextBlock>
             </StackPanel>
         </Button>
-        <Button Grid.Row="1" Name="buttonReStart" Margin="5,20,10,20" Grid.Column="1" Click="ButtonReStart_OnClick" Background="Transparent">
+        <Button Grid.Row="1" Name="buttonReStart" Margin="5,20,10,10" Grid.Column="1" Click="ButtonReStart_OnClick" Background="Transparent"  BorderBrush="Transparent">
             <StackPanel >
                 <Image Margin="0,5,0,0" Source="../Assets/Icons/chessboard_base.png" Width="32" Height="32"></Image>
                 <TextBlock Margin="5">Restart the game</TextBlock>
             </StackPanel>
         </Button>
-        <Button Grid.Row="1" Name="buttonStop" Margin="5,20,10,20" Grid.Column="2" Click="ButtonStop_OnClick" Background="Transparent">
+        <Button Grid.Row="1" Name="buttonStop" Margin="5,20,10,10" Grid.Column="2" Click="ButtonStop_OnClick" Background="Transparent"  BorderBrush="Transparent">
             <StackPanel >
                 <Image Margin="0,5,0,0"  Source="../Assets/Icons/control_stop.png" Width="32" Height="32"></Image>
                 <TextBlock Margin="5">Stop current game</TextBlock>
             </StackPanel>
         </Button>
-        <Button Grid.Row="1" Name="buttonCancel" Margin="5,20,10,20" Grid.Column="3" Click="ButtonCancel_OnClick" Background="Transparent">
+        <Button Grid.Row="1" Name="buttonCancel" Margin="5,20,10,10" Grid.Column="3" Click="ButtonCancel_OnClick" Background="Transparent"  BorderBrush="Transparent">
             <StackPanel >
                 <Image  Margin="0,5,0,0"  Source="../Assets/Icons/control_play_blue.png" Width="32" Height="32"></Image>
                 <TextBlock Margin="5">Continue</TextBlock>

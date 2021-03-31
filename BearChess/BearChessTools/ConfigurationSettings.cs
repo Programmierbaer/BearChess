@@ -3,7 +3,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace www.SoLaNoSoft.com.BearChessWin
+namespace www.SoLaNoSoft.com.BearChessTools
 {
     [XmlRoot("BearChess")]
     public class ConfigurationSettings<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable

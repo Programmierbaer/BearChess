@@ -26,9 +26,9 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboLoader
         {
             if (Check)
             {
-                return new CertaboImpl(name: Name, basePath: basePath);
+                return new CertaboImpl(Name, basePath);
             }
-            return new CertaboImpl(name: Name, basePath: basePath, isFirstInstance: true, comPortName: configuration.PortName);
+            return new CertaboImpl(Name, basePath, true, configuration.PortName,configuration.UseBluetooth);
         }
     }
 }

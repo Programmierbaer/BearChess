@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
@@ -13,6 +14,7 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
+using Configuration = www.SoLaNoSoft.com.BearChessTools.Configuration;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -75,6 +77,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showNodes;
         private bool _showNodesPerSec;
         private bool _showHash;
+        private TimeControl _timeControl;
 
         public event EventHandler<EngineEventArgs> EngineEvent;
 
@@ -85,8 +88,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _uciPath = uciPath;
             _fileLogger = new FileLogger(Path.Combine(_uciPath, "bearchess_uci.log"), 10, 10);
             _whiteOnTop = true;
-            Top = _configuration.GetWinDoubleValue("EngineWindowTop",Configuration.WinScreenInfo.Top);
-            Left = _configuration.GetWinDoubleValue("EngineWindowLeft",Configuration.WinScreenInfo.Left);
+            Top = _configuration.GetWinDoubleValue("EngineWindowTop",Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
+            Left = _configuration.GetWinDoubleValue("EngineWindowLeft",Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             _firstEngineName = string.Empty;
             _lastCommand = string.Empty;
             _showNodes = bool.Parse(_configuration.GetConfigValue("shownodes", "true"));
@@ -124,6 +127,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             foreach (var engineInfoUserControl in engineInfoUserControls)
             {
                engineInfoUserControl.ShowInfo(_showNodes,_showNodesPerSec,_showHash);
+            }
+        }
+
+        public void ShowBestMove(string fromEngine, bool tournamentMode)
+        {
+            List<EngineInfoUserControl> engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().ToList();
+            foreach (var engineInfoUserControl in engineInfoUserControls)
+            {
+                engineInfoUserControl.ShowInfo(fromEngine, tournamentMode);
             }
         }
 
@@ -382,16 +394,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        public void NewGame(string engineName = "")
+        public void NewGame(TimeControl timeControl = null)
         {
+            _timeControl = timeControl;
             _fileLogger?.LogInfo("New game");
-            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            foreach (var engine in _loadedEngines)
             {
                 engine.Value.UciEngine.NewGame();
             }
 
             _lastCommand = string.Empty;
         }
+
 
         public void AddMove(string fromField, string toField, string promote, string engineName = "")
         {
@@ -423,6 +437,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastCommand = string.Empty;
         }
 
+        public void ClearTimeControl()
+        {
+            _timeControl = null;
+        }
 
         public void Stop(string engineName = "")
         {
@@ -611,7 +629,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
             _fileLogger?.LogInfo($"Read from engine {e.Name}: {e.FromEngine}");
-            _loadedEnginesControls[e.Name].ShowInfo(e.FromEngine);
+
+            _loadedEnginesControls[e.Name].ShowInfo(e.FromEngine, _timeControl != null && _timeControl.TournamentMode);
+            
+
             if (e.FromEngine.StartsWith("bestmove"))
             {
                 EngineEvent?.Invoke(this, new EngineEventArgs(e.Name, e.FromEngine, _loadedEngines[e.Name].Color, e.Name.Equals(_firstEngineName)));
@@ -678,6 +699,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetDoubleValue("EngineWindowLeft", Left);
         }
 
-      
+
+
     }
 }

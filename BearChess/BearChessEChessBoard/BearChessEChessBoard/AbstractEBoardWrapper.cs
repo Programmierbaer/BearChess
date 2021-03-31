@@ -58,10 +58,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         }
 
-        protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName, bool useBluetooth)
+        protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName,
+                                        bool useBluetooth)
         {
             Name = name;
-
             _basePath = basePath;
             _isFirstInstance = isFirstInstance;
             _comPortName = comPortName;

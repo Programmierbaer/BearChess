@@ -18,6 +18,20 @@
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="CornflowerBlue"/>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
             </DataGrid.Resources>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete" Name="menuItemDelete" Click="MenuItemDelete_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/Icons/bin.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Copy to clipboard" Name="menuItemCopy" Click="MenuItemCopy_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/Icons/clipboard_sign_out.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding White}" Width="Auto">
                     <DataGridTextColumn.Header>White</DataGridTextColumn.Header>
@@ -44,6 +58,7 @@
                     <DataGridTextColumn.Header>Moves</DataGridTextColumn.Header>
                 </DataGridTextColumn>
             </DataGrid.Columns>
+        
         </DataGrid>
         <DockPanel Margin="5" Grid.Row="1" LastChildFill="False">
             <Button Margin="5" DockPanel.Dock="Left" Name="buttonNewFolder" Click="ButtonNewFolder_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="New games database">
@@ -62,21 +77,27 @@
                 <Image Source="../Assets/Icons/saved_imports.png" Width="32" Height="32"></Image>
             </Button>
 
-            <Button Margin="25,5,5,5" DockPanel.Dock="Left" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete database">
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonCopy" Click="ButtonCopy_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Copy to clipboard">
+                <Image Source="../Assets/Icons/clipboard_sign_out.png" Width="32" Height="32"></Image>
+            </Button>
+
+            <Button Margin="35,5,5,5" DockPanel.Dock="Left" Name="buttonSync" Click="ButtonSync_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Synchronize with chessboard">
+                <StackPanel Orientation="Horizontal">
+                    <Image Name="imageFilterClear" Source="../Assets/Icons/filter_clear.png" Width="32" Height="32" Visibility="Collapsed"></Image>
+                    <Image Name="imageFilterApply" Source="../Assets/Icons/filter_reapply.png" Width="32" Height="32"></Image>
+                </StackPanel>
+            </Button>
+
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
+                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
+            </Button>
+
+            <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete database">
                 <Image Source="../Assets/Icons/database_delete.png" Width="32" Height="32"></Image>
             </Button>
 
 
-<Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
-                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
-            </Button>
 
-            <Button Margin="5,5,15,5" DockPanel.Dock="Right" Name="buttonSync" Click="ButtonSync_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Synchronize with chessboard">
-                <StackPanel Orientation="Horizontal">
-                <Image Name="imageFilterClear" Source="../Assets/Icons/filter_clear.png" Width="32" Height="32" Visibility="Collapsed"></Image>
-                <Image Name="imageFilterApply" Source="../Assets/Icons/filter_reapply.png" Width="32" Height="32"></Image>
-                </StackPanel>
-            </Button>
 
 
         </DockPanel>

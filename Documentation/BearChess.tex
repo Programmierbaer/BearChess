@@ -14,10 +14,10 @@
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.4.1.0}
+\fancyhead[R]{Version 0.4.2.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{13.03.2021} 
+\date{31.03.2021} 
 
 \begin{document}
 \maketitle
@@ -59,6 +59,7 @@ Send errors, comments, suggestions for improvement or requests to lars@solanosof
 	\item Load a chess engine (\textbf{\ref{InstallEngine}  \nameref{InstallEngine}} on page \pageref{InstallEngine})
 	\item Start a game and make your first move on the eletronic chessboard.
 \end{itemize}
+
 
 \section{Introduction}
 BearChess offers among others the following functions:
@@ -155,6 +156,7 @@ Read more in chapter \textbf{\ref{easyStart}  \nameref{easyStart}} on page \page
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{diskette.png} \textbf{Save} your current game.
 	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Show \& Load} opens a new window in which you can see and load all your previously saved games.
+	\item \includegraphics[scale=0.5]{clipboard_sign_out.png}  \textbf{Copy to clipboard} copy the current game (PGN) to your clipboard.	
 	\item \includegraphics[scale=0.5]{clipboard_sign.png}  \textbf{Paste from clipboard} loads a game (PGN) from your clipboard.
 \end{itemize}
 All games are saved in a database file. Read more on chapter \textbf{\ref{games}  \nameref{games}} on page \pageref{games}.
@@ -583,7 +585,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports two electronic chessboards: Certabo boards and Millennium boards via the ChessLink module. Both boards communicates via an USB port as serial COM port. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.
+BearChess supports two electronic chessboards: Certabo boards and Millennium boards via the ChessLink module. Both boards communicates via an USB port as Serial COM port or via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.
 
 \subsection{Configure Certabo boards} \label{ConfigureCertabo}
 \begin{figure}[H]
@@ -593,7 +595,16 @@ BearChess supports two electronic chessboards: Certabo boards and Millennium boa
 	\label{fig:Certabo1}
 \end{figure}
 
-Certabo requires two configuration steps. The used COM-port and a calibration to detect the chess pieces.
+Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports Bluetooth and you own the bluetooth module from Certabo, you can also connect to the Certabo board via Bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Certabo6.png}
+	\caption{Search for Bluetooth }
+	\label{fig:Certabo6}
+\end{figure}
+
+Read chapter \textbf{\ref{CertaboBluetooth}  \nameref{CertaboBluetooth}} on page \pageref{CertaboBluetooth} for more information.
 
 \begin{figure}[H]
 	\centering
@@ -602,7 +613,7 @@ Certabo requires two configuration steps. The used COM-port and a calibration to
 	\label{fig:Certabo2}
 \end{figure}
 
-Select the COM port if you know them or let the <auto> selection.
+Select the COM port (BT for Bluetooth) if you know them or let the <auto> selection. 
 Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
 
 \begin{figure}[H]
@@ -631,6 +642,19 @@ If you select <auto> and no board is found, you will receive the following error
 \end{figure}
 
 \textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can always take some seconds until the right one is recognized.
+
+\subsubsection{Configure Bluetooth} \label{CertaboBluetooth}
+
+If the "Bluetooth" option is set, the following window will be displayed for a short time if you open the configuration dialog.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{MillenniumChessLink10.png}
+	\caption{Search for Bluetooth}
+	\label{fig:CertaboBT10}
+\end{figure}
+
+During this time or if you connect to the first time, Windows may ask you to connect to the module. In this case, confirm this. 
 
 \subsubsection{Calibration}
 At the first start, BearChess needs a calibration to identify your chessmen. A new calibration is only required if you use another set of chessmen.\\
@@ -744,7 +768,7 @@ If the "Bluetooth" option is set, the following window will be displayed for a s
 	\label{fig:MillenniumChessLink10}
 \end{figure}
 
-During this time or if you connect to the first time, Windows may ask you to connect to the Millennium ChessLink module. In this case, confirm this. Once you have successfully connected to the ChessLink module via Bluetooth, you should deactivate the "Bluetooth" option.
+During this time or if you connect to the first time, Windows may ask you to connect to the Millennium ChessLink module. In this case, confirm this.
 
 \subsubsection{Connect}
 \begin{figure}[H]
@@ -810,17 +834,6 @@ Below the engine selection, there are up to three information which gives you a 
 \subsection{Start from}
 Select your start position. The default is the base position, but you can start from any position on the board.
 
-\subsection{Allow to take a move back}
-It is worth activating this option for a training session or when playing against a strong engine. If you are using an electronic chessboard, just take back the last move. The LEDs show you the next previous move. Follow them until you make the right move.\\
-If you are not using an electronic chessboard, you can use the move controls below the board.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{MoveControl.png}
-	\caption{Move controls}
-	\label{fig:MoveControl}
-\end{figure}
-
 
 \subsection{Time control}
 
@@ -839,9 +852,27 @@ If you are not using an electronic chessboard, you can use the move controls bel
 	\item \textbf{Adapted time} gives the program the same average time in which the player makes his moves.	
 \end{itemize}
 
-\textbf{"Extra time for human player"} add extra minutes for human opponents.\\
 
-\textbf{"Start the clock after the move is executed on the electronic board"} avoids a time gap to execute the moves of the engines on the board.
+\subsection{Tournament mode}
+If you play in tournament mode, no auxiliary information (score, best line) is displayed by the engine.
+
+\subsection{Allow to take a move back}
+It is worth activating this option for a training session or when playing against a strong engine. If you are using an electronic chessboard, just take back the last move. The LEDs show you the next previous move. Follow them until you make the right move.\\
+If you are not using an electronic chessboard, you can use the move controls below the board.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MoveControl.png}
+	\caption{Move controls}
+	\label{fig:MoveControl}
+\end{figure}
+
+
+\subsection{Extra time for human player}
+Add extra minutes for human opponents.
+
+\subsection{Start the clock after the move is executed on the electronic board}
+Avoids a time gap to execute the moves of the engines on the board.
 
 \subsection{Configuration for startup game} \label{startupgame}
 
@@ -1163,15 +1194,18 @@ If you double click on a row, the game is displayed on the board.
 
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{database_add.png} Create a new games database.
-	\item \includegraphics[scale=0.5]{file_manager.png} Open an existing games database.
+	\item \includegraphics[scale=0.5]{folder_database.png} Open an existing games database.
 	\item \includegraphics[scale=0.5]{bin.png} Delete selected game.
-	\item \includegraphics[scale=0.5]{saved_imports.png} Import games from a PGN file.	
-	\item \includegraphics[scale=0.5]{database_delete.png} Delete all games from the database.
-	\item \includegraphics[scale=0.5]{filter_reapply.png} Show only games that correspond to the current board position.	
+	\item \includegraphics[scale=0.5]{saved_imports.png} Import games from a PGN file {\color{red}*}.	
+	\item \includegraphics[scale=0.5]{clipboard_sign_out.png} Copy selected game into clipboard.		
+	\item \includegraphics[scale=0.5]{filter_reapply.png} Filter games that correspond to the current board position {\color{red}**}.	
+	\item \includegraphics[scale=0.5]{database_delete.png} Delete all games from the database.	
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
 
-{\color{red}*} Currently BearChess does not support a search function.
+{\color{red}*} The import is very slow. It will be improved in the next version.
+
+{\color{red}**} Currently BearChess does not support a search function.
 
 \section{Engine window}
 
@@ -1226,7 +1260,6 @@ Even if you are not playing a game and are on mode "Easy playing", just load som
 \subsection{Certabo: Calibration}
 For the first time, the engine assumes that all chessmen are on their initial position and the extra queens on d3 (white queen) and d6 (black queen). You can also perform the calibration without extra queens. But this has an effect on the transformation of a pawn into a queen.
 
-
 \subsection{Certabo: Pawn conversion to a queen}
 If you have performed the calibration without extra queens and are performing a pawn conversion with a extra queen on your board for the first time, the program needs a few seconds to identify the new piece. Please wait until the LEDs are off. The new piece code is stored. There is no delay next time.
 
@@ -1246,20 +1279,22 @@ If you have performed the calibration without extra queens and are performing a 
 	\item Some windows may overlap for the first time, e.g. the clocks for white and black.
 	\item If you want to play an engine match with the same engine for black and white you have to install the engine twice with a different name.
 	\item \textbf{Show captured pieces} cannot handle if one color has more than one queen.
+	\item The reaction to changes on the chessboard is sometimes slow.
 \end{itemize}
 
 \section{Next Steps}
-\begin{itemize}
-	\item Error correction.
-	\item Develop missing functionality {\color{red}\textbf{*}}
-	\item Bluetooth support for Certabo chessboards.
-	\item Improvements on handling saved games and extend PGN support.
-	\item Faster reaction to changes on the chessboard.
-\end{itemize}
+The next release will be more of a bug fix and revision of existing features before any major feature additions. 
 
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.4.1.0 =\textgreater 0.4.2.0}
+\begin{itemize}
+	\item Bluetooth support for Certabo chessboards.
+	\item Playing games in tournament mode.
+	\item Minor fixes.	
+\end{itemize}
+
 \subsection{Version 0.4.0.0 =\textgreater 0.4.1.0}
 \begin{itemize}
 	\item Using a database file instead PGN.

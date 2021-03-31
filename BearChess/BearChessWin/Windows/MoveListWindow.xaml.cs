@@ -8,6 +8,7 @@ using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -40,6 +41,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private List<Move> _allMoves;
         private static object _locker = new object();
         private bool _ignoreResize = false;
+        private bool _tournamentMode;
 
         public MoveListWindow(Configuration configuration, double top, double left, double width, double height)
         {
@@ -68,7 +70,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _allMoves = new List<Move>();
         }
 
-
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
 
 
@@ -92,9 +93,52 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _allMoves.Clear();
         }
 
+        public void AddMove(Move move, bool tournamentMode)
+        {
+            lock (_locker)
+            {
+                _tournamentMode = tournamentMode;
+                _allMoves.Add(move);
+                if (_tournamentMode && _extendMoveListControl)
+                {
+                    _extendMoveListControl = false;
+                    listBoxMoves.Items.Clear();
+                    _lastMoveNumber = 0;
+                    foreach (var aMove in _allMoves)
+                    {
+                        InternalAddMove(aMove);
+                    }
+                    return;
+                }
+                InternalAddMove(move);
+            }
+        }
+
+        public void MarkMove(int number, int color)
+        {
+            if (number < 0)
+            {
+                return;
+            }
+            if (listBoxMoves.Items.Count > number)
+            {
+                ((IMoveUserControl) listBoxMoves.Items[number]).Mark(color);
+            }
+        }
+
+        public void ClearMark()
+        {
+            foreach (var item in listBoxMoves.Items)
+            {
+                if (item is IMoveUserControl userControl)
+                {
+                    userControl.UnMark();
+                }
+            }
+        }
+
         private void InternalAddMove(Move move)
         {
-
             var moveNumber = _lastMoveNumber;
             if (move.FigureColor == Fields.COLOR_WHITE)
             {
@@ -151,40 +195,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastMoveNumber = moveNumber;
         }
 
-        public void AddMove(Move move)
-        {
-            lock (_locker)
-            {
-                _allMoves.Add(move);
-                InternalAddMove(move);
-            }
-        }
-
-  
-
-        public void MarkMove(int number, int color)
-        {
-            if (number < 0)
-            {
-                return;
-            }
-            if (listBoxMoves.Items.Count > number)
-            {
-                ((IMoveUserControl) listBoxMoves.Items[number]).Mark(color);
-            }
-        }
-
-        public void ClearMark()
-        {
-            foreach (var item in listBoxMoves.Items)
-            {
-                if (item is IMoveUserControl userControl)
-                {
-                    userControl.UnMark();
-                }
-            }
-        }
-
         private IMoveUserControl getNewMoveUserControl()
         {
             if (_extendMoveListControl)
@@ -203,7 +213,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        
         protected virtual void OnSelectedMoveChanged(SelectedMoveOfMoveList e)
         {
             SelectedMoveChanged?.Invoke(this, e);
@@ -276,42 +285,46 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (_extendFull)
                 {
-                    Top = _configuration.GetWinDoubleValue("MoveListWindowTopExtendFull", Configuration.WinScreenInfo.Top,
+                    Top = _configuration.GetWinDoubleValue("MoveListWindowTopExtendFull", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                            (top + 20).ToString(CultureInfo.InvariantCulture));
-                    Left = _configuration.GetWinDoubleValue("MoveListWindowLeftExtendFull", Configuration.WinScreenInfo.Left,
+                    Left = _configuration.GetWinDoubleValue("MoveListWindowLeftExtendFull", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                             (left + width + 10).ToString(CultureInfo.InvariantCulture));
-                    Height = _configuration.GetWinDoubleValue("MoveListWindowHeightExtendFull", Configuration.WinScreenInfo.Height,
+                    Height = _configuration.GetWinDoubleValue("MoveListWindowHeightExtendFull", Configuration.WinScreenInfo.Height, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                               (height / 2).ToString(CultureInfo.InvariantCulture));
-                    Width = _configuration.GetWinDoubleValue("MoveListWindowWidthExtendFull", Configuration.WinScreenInfo.Width,
+                    Width = _configuration.GetWinDoubleValue("MoveListWindowWidthExtendFull", Configuration.WinScreenInfo.Width, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                              (width / 2).ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    Top = _configuration.GetWinDoubleValue("MoveListWindowTopExtend", Configuration.WinScreenInfo.Top,
+                    Top = _configuration.GetWinDoubleValue("MoveListWindowTopExtend", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                            (top + 20).ToString(CultureInfo.InvariantCulture));
-                    Left = _configuration.GetWinDoubleValue("MoveListWindowLeftExtend", Configuration.WinScreenInfo.Left,
+                    Left = _configuration.GetWinDoubleValue("MoveListWindowLeftExtend", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                             (left + width + 10).ToString(CultureInfo.InvariantCulture));
-                    Height = _configuration.GetWinDoubleValue("MoveListWindowHeightExtend", Configuration.WinScreenInfo.Height,
+                    Height = _configuration.GetWinDoubleValue("MoveListWindowHeightExtend", Configuration.WinScreenInfo.Height, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                               (height / 2).ToString(CultureInfo.InvariantCulture));
-                    Width = _configuration.GetWinDoubleValue("MoveListWindowWidthExtend", Configuration.WinScreenInfo.Width,
+                    Width = _configuration.GetWinDoubleValue("MoveListWindowWidthExtend", Configuration.WinScreenInfo.Width, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                              (width / 2).ToString(CultureInfo.InvariantCulture));
                 }
             }
             else
             {
-                Top = _configuration.GetWinDoubleValue("MoveListWindowTop", Configuration.WinScreenInfo.Top,
+                Top = _configuration.GetWinDoubleValue("MoveListWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                        (top + 20).ToString(CultureInfo.InvariantCulture));
-                Left = _configuration.GetWinDoubleValue("MoveListWindowLeft", Configuration.WinScreenInfo.Left,
+                Left = _configuration.GetWinDoubleValue("MoveListWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                         (left + width + 10).ToString(CultureInfo.InvariantCulture));
-                Height = _configuration.GetWinDoubleValue("MoveListWindowHeight", Configuration.WinScreenInfo.Height,
+                Height = _configuration.GetWinDoubleValue("MoveListWindowHeight", Configuration.WinScreenInfo.Height, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                           (height / 2).ToString(CultureInfo.InvariantCulture));
-                Width = _configuration.GetWinDoubleValue("MoveListWindowWidth", Configuration.WinScreenInfo.Width,
+                Width = _configuration.GetWinDoubleValue("MoveListWindowWidth", Configuration.WinScreenInfo.Width, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                          (width / 2).ToString(CultureInfo.InvariantCulture));
             }
         }
 
         private void ButtonExtend_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_tournamentMode)
+            {
+                return;
+            }
             SaveSizes();
             lock (_locker)
             {
@@ -349,6 +362,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonExtendFull_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_tournamentMode)
+            {
+                return;
+            }
             SaveSizes();
             _extendFull = !_extendFull;
             buttonExtendFull.Visibility = _extendMoveListControl ? _extendFull ? Visibility.Visible : Visibility.Collapsed : Visibility.Collapsed;

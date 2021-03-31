@@ -119,8 +119,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockTopPawn8.FontFamily = fontFamily;
 
             _fontConverter = new FontConverter();
-            Top = _configuration.GetWinDoubleValue("MaterialWindowTop", Configuration.WinScreenInfo.Top);
-            Left = _configuration.GetWinDoubleValue("MaterialWindowLeft", Configuration.WinScreenInfo.Left);
+            Top = _configuration.GetWinDoubleValue("MaterialWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
+            Left = _configuration.GetWinDoubleValue("MaterialWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Width = _configuration.GetDoubleValue("MaterialWindowWidth", "300");
             _showDifference = bool.Parse(_configuration.GetConfigValue("MaterialWindowDifference", "false"));
             textBlockDifference.Text = _showDifference ? "Diff." : "All";

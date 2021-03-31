@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.UserControls;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -50,9 +51,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _configuration = configuration;
             InitializeComponent();
-            Top = _configuration.GetWinDoubleValue("LogWindowTop", Configuration.WinScreenInfo.Top);
-            Left = _configuration.GetWinDoubleValue("LogWindowLeft", Configuration.WinScreenInfo.Left);
-            Height = _configuration.GetWinDoubleValue("LogWindowHeight", Configuration.WinScreenInfo.Height, "325");
+            Top = _configuration.GetWinDoubleValue("LogWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
+            Left = _configuration.GetWinDoubleValue("LogWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
+            Height = _configuration.GetWinDoubleValue("LogWindowHeight", Configuration.WinScreenInfo.Height, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, "325");
             var thread = new Thread(showInfo) {IsBackground = true};
             thread.Start();
         }

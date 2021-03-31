@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -39,8 +40,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             CountDown = true;
             _capture = capture;
             _configuration = configuration;
-            Top = _configuration.GetWinDoubleValue($"ChessClockSimpleWindow{capture}Top", Configuration.WinScreenInfo.Top, top > 150 ? (top - 150).ToString() : "0");
-            Left = _configuration.GetWinDoubleValue($"ChessClockSimpleWindow{capture}Left", Configuration.WinScreenInfo.Left, left.ToString());
+            Top = _configuration.GetWinDoubleValue($"ChessClockSimpleWindow{capture}Top", Configuration.WinScreenInfo.Top,  SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, top > 150 ? (top - 150).ToString() : "0");
+            Left = _configuration.GetWinDoubleValue($"ChessClockSimpleWindow{capture}Left", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, left.ToString());
             Color color = capture.Equals("White", StringComparison.OrdinalIgnoreCase) ? Colors.White : Colors.Black;
             Color inversColor = color == Colors.White ? Colors.Black : Colors.White;
             Background = new SolidColorBrush(color);
@@ -93,6 +94,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetTime(ClockTime clockTime, int extraSeconds = 0)
         {
+            if (clockTime == null)
+            {
+                return;
+            }
             SetTime(clockTime.Hour, clockTime.Minute, clockTime.Second, extraSeconds);
         }
 

@@ -1,6 +1,4 @@
-﻿using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
-using www.SoLaNoSoft.com.BearChess.EChessBoard;
-using www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard;
+﻿using www.SoLaNoSoft.com.BearChess.EChessBoard;
 
 namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
 {
@@ -16,10 +14,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         {
         }
 
-        public MChessLinkImpl(string name, string basePath, bool isFirstInstance, string comPortName, bool useBluetooth) : base(
-            name, basePath, isFirstInstance, comPortName, useBluetooth)
-        {
-        }
 
         /// <inheritdoc />
         public override void FlashInSync(bool flashSync)
@@ -32,7 +26,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         protected override IEBoard GetEBoard()
         {
             return new MChessLinkChessBoard.EChessBoard(logger: _fileLogger, isFirstInstance: _isFirstInstance,
-                                   portName: _comPortName,useBluetooth: _useBluetooth);
+                                                        portName: _comPortName);
         }
 
         protected override IEBoard GetEBoard(bool check)

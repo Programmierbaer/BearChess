@@ -27,8 +27,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration = configuration;
             InitializeComponent();
             _database = database;
-            Top = _configuration.GetWinDoubleValue("DatabaseWindowTop", Configuration.WinScreenInfo.Top);
-            Left = _configuration.GetWinDoubleValue("DatabaseWindowLeft", Configuration.WinScreenInfo.Left);
+            Top = _configuration.GetWinDoubleValue("DatabaseWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
+            Left = _configuration.GetWinDoubleValue("DatabaseWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             _lastSyncFen = fen;
             dataGridGames.ItemsSource = _database.GetGames();
             Title = $"Games on: {_database.FileName}";
@@ -184,6 +184,37 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
                                                 ? _database.FilterByFen(_lastSyncFen)
                                                 : _database.GetGames();
+            }
+        }
+
+        private void ButtonCopy_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+            {
+                Clipboard.SetText(_database.Load(pgnGame.Id).PgnGame.GetGame());
+            }
+        }
+
+        private void MenuItemDelete_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+            {
+                if (MessageBox.Show("Delete selected game?", "Delete game", MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    _database.Delete(pgnGame.Id);
+                    dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
+                                                    ? _database.FilterByFen(_lastSyncFen)
+                                                    : _database.GetGames();
+                }
+            }
+        }
+
+        private void MenuItemCopy_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+            {
+                Clipboard.SetText(_database.Load(pgnGame.Id).PgnGame.GetGame());
             }
         }
     }

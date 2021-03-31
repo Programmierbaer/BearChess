@@ -24,10 +24,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             try
             {
                 var convertToSend = ConvertToSend("S");
-                _serialPort.Write(convertToSend, 0, convertToSend.Length);
+                _comPort.Write(convertToSend, 0, convertToSend.Length);
                 while (readByte > 0)
                 {
-                    readByte = _serialPort.ReadByte();
+                    readByte = _comPort.ReadByte();
                     var convertFromRead = ConvertFromRead(readByte);
                     readLine += convertFromRead;
                 }
@@ -73,7 +73,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                 _logger?.LogDebug($"S: Send {data}");
                                 lastReadToSend = data;
                                 var convertToSend = ConvertToSend(data);
-                                _serialPort.Write(convertToSend, 0, convertToSend.Length);
+                                _comPort.Write(convertToSend, 0, convertToSend.Length);
                                 continue;
                             }
                         }
@@ -86,7 +86,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                             {
                                 while (readByte > 0)
                                 {
-                                    readByte = _serialPort.ReadByte();
+                                    readByte = _comPort.ReadByte();
                                     var convertFromRead = ConvertFromRead(readByte);
                                     // _logger?.LogDebug($"S: Read:  {convertFromRead}");
                                     readLine += convertFromRead;

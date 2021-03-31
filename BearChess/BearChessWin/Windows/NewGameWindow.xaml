@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="New Game" Height="390" Width="660">
+        Title="New Game" Height="440" Width="660">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -18,6 +18,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -102,7 +103,7 @@
                         </StackPanel>
                     </Grid>
                 </Grid>
-                <CheckBox Name="checkBoxAllowTakeMoveBack" Margin="5" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1">Allow to take a move back</CheckBox>
+
                 <Grid Grid.Column="0" Grid.Row="2" Margin="5">
 
                     <StackPanel Orientation="Horizontal" Margin="5">
@@ -164,15 +165,19 @@
                         <RadioButton Name="radioButtonMinute" Margin="10,0,0,0" VerticalAlignment="Center"  GroupName="averageTime" Content="min."></RadioButton>
                     </StackPanel>
                 </Border>
-             
-
-                <StackPanel Name="stackPanelExtraTime" Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Margin="10,5,5,5" VerticalAlignment="Top">
+                <StackPanel Grid.Row="3" Grid.Column="1">
+                    <CheckBox Name="checkBoxTournamentMode" Margin="5,5,5,5" VerticalAlignment="Center" Unchecked="CheckBoxAllowTournament_OnUnchecked" Checked="CheckBoxAllowTournament_OnChecked">Tournament mode</CheckBox>
+                    <CheckBox Name="checkBoxAllowTakeMoveBack" Margin="5,5,5,5" VerticalAlignment="Center">
+                        <TextBlock Name="textBlockAllowTakeBackMove">Allow to take a move back</TextBlock>
+                    </CheckBox>
+                </StackPanel>
+                <StackPanel Name="stackPanelExtraTime" Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Margin="10,5,5,5" VerticalAlignment="Top">
                     <Label VerticalAlignment="Center">Extra time for human player:</Label>
                     <local:NumericUpDownUserControl x:Name="numericUpDownUserExtraTime" Height="40" MinValue="0"
                                                     MaxValue="999" Value="0" />
                     <Label VerticalAlignment="Center">min.</Label>
                 </StackPanel>
-                <CheckBox Name="checkBoxStartAfterMoveOnBoard" VerticalAlignment="Center" Margin="5" Grid.Column="1" Grid.Row="3">
+                <CheckBox Name="checkBoxStartAfterMoveOnBoard" VerticalAlignment="Center" Margin="5" Grid.Column="1" Grid.Row="4">
                     <TextBlock TextWrapping="Wrap">Start the clock after the move is executed on the electronic board.</TextBlock>
                 </CheckBox>
             </Grid>

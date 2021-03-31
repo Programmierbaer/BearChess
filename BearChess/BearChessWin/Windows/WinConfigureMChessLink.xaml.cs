@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
+using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -28,7 +29,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
-                portNames = BearChessTools.SerialCommunicationTools.GetBTComPort().ToList();
+                portNames = BearChessTools.SerialCommunicationTools.GetBTComPort(MChessLinkLoader.EBoardName,configuration).ToList();
                 comPortSearchWindow.Close();
 
             }

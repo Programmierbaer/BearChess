@@ -54,6 +54,11 @@
                             <Image Source="Assets/Icons/file_manager.png" Stretch="UniformToFill" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Name="menuItemGamesCopy" Header="Copy to clipboard" Click="MenuItemGamesCopy_OnClick" >
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/clipboard_sign_out.png" Stretch="UniformToFill" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Name="menuItemGamesPaste" Header="Paste from clipboard" Click="MenuItemGamesPaste_OnClick" >
                         <MenuItem.Icon >
                             <Image Source="Assets/Icons/clipboard_sign.png" Stretch="UniformToFill" ></Image>
@@ -192,7 +197,13 @@
                                 <Image Source="Assets/Icons/cog.png"></Image>
                             </MenuItem.Icon>
                         </MenuItem>
-                     
+                        <MenuItem Name="menuItemBluetoothCertabo" Header="Bluetooth"
+                                  Click="MenuItemBluetoothCertabo_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+
                     </MenuItem>
                     <MenuItem Header="Millennium ChessLink" Name="menuItemMChessLink">
                         <MenuItem.Icon>
@@ -233,7 +244,7 @@
                             <Image Name="imageRunGameOnBase" Source="Assets/Icons/tick.png" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" /> -->
+               <!--     <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  -->
                 </MenuItem>
                 <MenuItem Header="Windows">
                     <MenuItem Header="Show">
@@ -268,6 +279,9 @@
             <Separator></Separator>
             <StatusBarItem>
                 <TextBlock Name="textBlockEBoard">Electronic board: Disconnected</TextBlock>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Image Name="imageBT" Width="16" Height="16"  Source="Assets/Icons/bluetooth.png" Visibility="Hidden"></Image>
             </StatusBarItem>
         </StatusBar>
     </StackPanel>

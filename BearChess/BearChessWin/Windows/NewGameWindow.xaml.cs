@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Xml.Serialization;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessDatabase;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -23,6 +25,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public bool SaveAsStartup { get; private set; }
         public UciInfo PlayerBlackConfigValues;
         public UciInfo PlayerWhiteConfigValues;
+        private bool? _isCheckedAllowTakeBack;
+        private Brush _foreground;
 
         public NewGameWindow(Configuration configuration)
         {
@@ -42,6 +46,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public bool StartAfterMoveOnBoard => checkBoxStartAfterMoveOnBoard.IsChecked.HasValue &&
                                              checkBoxStartAfterMoveOnBoard.IsChecked.Value;
+
+        public bool TournamentMode =>
+            checkBoxTournamentMode.IsChecked.HasValue && checkBoxTournamentMode.IsChecked.Value;
 
         public bool StartFromBasePosition =>
             radioButtonStartPosition.IsChecked.HasValue && radioButtonStartPosition.IsChecked.Value;
@@ -83,8 +90,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             timeControl.HumanValue = numericUpDownUserExtraTime.Value;
-            timeControl.AllowTakeBack = checkBoxAllowTakeMoveBack.IsChecked.HasValue &&
-                                        checkBoxAllowTakeMoveBack.IsChecked.Value;
+            timeControl.AllowTakeBack = AllowTakeMoveBack;
             if (timeControl.TimeControlType == TimeControlEnum.Adapted)
             {
                 timeControl.AverageTimInSec = true;
@@ -94,10 +100,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 timeControl.AverageTimInSec = radioButtonSecond.IsChecked.HasValue && radioButtonSecond.IsChecked.Value;
             }
 
-            timeControl.WaitForMoveOnBoard = checkBoxStartAfterMoveOnBoard.IsChecked.HasValue &&
-                                             checkBoxStartAfterMoveOnBoard.IsChecked.Value;
+            timeControl.WaitForMoveOnBoard = StartAfterMoveOnBoard;
             timeControl.PonderWhite = imagePonderWhite.Visibility == Visibility.Visible;
             timeControl.PonderBlack = imagePonderBlack.Visibility == Visibility.Visible;
+            timeControl.TournamentMode = TournamentMode;
             return timeControl;
         }
 
@@ -182,6 +188,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             radioButtonMinute.IsChecked = !timeControl.AverageTimInSec;
             checkBoxAllowTakeMoveBack.IsChecked = timeControl.AllowTakeBack;
             checkBoxStartAfterMoveOnBoard.IsChecked = timeControl.WaitForMoveOnBoard;
+            checkBoxTournamentMode.IsChecked = timeControl.TournamentMode;
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -471,6 +478,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             MessageBox.Show("Startup game definition not found or configured engines not installed", "Error on load",
                             MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void CheckBoxAllowTournament_OnChecked(object sender, RoutedEventArgs e)
+        {
+            _isCheckedAllowTakeBack = checkBoxAllowTakeMoveBack.IsChecked;
+            _foreground = checkBoxAllowTakeMoveBack.Foreground;
+            checkBoxAllowTakeMoveBack.IsChecked = false;
+            checkBoxAllowTakeMoveBack.IsEnabled = false;
+            checkBoxAllowTakeMoveBack.Foreground = new SolidColorBrush(Colors.DarkGray);
+        }
+
+        private void CheckBoxAllowTournament_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            checkBoxAllowTakeMoveBack.IsEnabled = true;
+            textBlockAllowTakeBackMove.IsEnabled = true;
+            checkBoxAllowTakeMoveBack.FontWeight = FontWeights.Normal;
+            checkBoxAllowTakeMoveBack.IsChecked = _isCheckedAllowTakeBack;
+            checkBoxAllowTakeMoveBack.Foreground = _foreground;
         }
     }
 }

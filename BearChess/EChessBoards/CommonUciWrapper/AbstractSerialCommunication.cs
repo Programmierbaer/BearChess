@@ -21,6 +21,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         protected readonly ILogging _logger;
         protected readonly ConcurrentQueue<string> _stringDataToBoard = new ConcurrentQueue<string>();
         protected bool _clientConnected;
+        protected bool _useBluetooth;
 
         protected bool _isFirstInstance;
         private string _lastLine = string.Empty;
@@ -29,16 +30,19 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         protected bool _pauseReading;
         private ulong _repeated;
 
-        protected SerialPort _serialPort;
+        protected IComPort _comPort;
         protected ServerPipe _serverPipe;
         private string _setPortName = "<auto>";
         protected bool _stopReading;
         private Thread _thread;
 
+        public string CurrentComPort { get; private set; }
+        public bool IsCommunicating { get; protected set; }
+        
+
         protected AbstractSerialCommunication(bool isFirstInstance, ILogging logger, string portName, string boardName)
         {
-
-            
+        
             if (!string.IsNullOrWhiteSpace(portName))
             {
                 _setPortName = portName;
@@ -76,10 +80,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 }
             }
         }
-
-        public string CurrentComPort { get; private set; }
-        public bool IsCommunicating { get; protected set; }
-        public bool UseBluetooth { get;  set; }
 
         public DataFromBoard GetFromBoard()
         {
@@ -166,7 +166,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 if (_isFirstInstance)
                 {
-                    _serialPort?.Close();
+                    _comPort?.Close();
                 }
 
                 _clientPipe?.Close();
@@ -182,7 +182,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         {
             try
             {
-                _serialPort?.Close();
+                _comPort?.Close();
             }
             catch
             {
@@ -217,11 +217,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         {
             try
             {
-                if (_serialPort != null && _serialPort.IsOpen)
+                if (_comPort != null && _comPort.IsOpen)
                 {
-                    _logger?.LogDebug($"S: Try to close port {_serialPort.PortName}");
-                    _serialPort.Close();
+                    _logger?.LogDebug($"S: Try to close port {_comPort.PortName}");
+                    _comPort.Close();
                 }
+              
             }
             catch (Exception ex)
             {
@@ -235,21 +236,28 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (_boardName.Equals("MChessLink"))
                     {
-                        _serialPort = new SerialPort(comPort, 38400, Parity.Odd, 7, StopBits.One) {ReadTimeout = 1000};
+                        _comPort = new SerialComPort(comPort, 38400, Parity.Odd, 7, StopBits.One) {ReadTimeout = 1000};
                     }
                     else
                     {
-                        _serialPort = new SerialPort(comPort, 38400, Parity.None) {ReadTimeout = 1000};
+                        if (comPort.Equals("BT"))
+                        {
+                            _comPort = new BTComPort(null);
+                        }
+                        else
+                        {
+                            _comPort = new SerialComPort(comPort, 38400, Parity.None) {ReadTimeout = 1000};
+                        }
                     }
 
-                    if (_serialPort.IsOpen)
+                    if (_comPort.IsOpen)
                     {
                         return false;
                     }
 
 
-                    _serialPort.Open();
-                    if (_serialPort.IsOpen)
+                    _comPort.Open();
+                    if (_comPort.IsOpen)
                     {
                         _logger?.LogInfo($"S: Open COM-Port {comPort}");
 
@@ -283,10 +291,10 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
             try
             {
-                if (_serialPort != null && _serialPort.IsOpen)
+                if (_comPort != null && _comPort.IsOpen)
                 {
-                    _logger?.LogDebug($"S: Try to close port {_serialPort.PortName}");
-                    _serialPort.Close();
+                    _logger?.LogDebug($"S: Try to close port {_comPort.PortName}");
+                    _comPort.Close();
                 }
             }
             catch (Exception ex)
@@ -308,8 +316,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         {
 
                             Clear();
-                            _serialPort.Open();
-                            if (_serialPort.IsOpen)
+                            _comPort.Open();
+                            if (_comPort.IsOpen)
                             {
                                 _logger?.LogInfo($"S: Open COM-Port {portName}");
                                 CurrentComPort = portName;
@@ -332,7 +340,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public abstract string GetCalibrateData();
 
-
         public bool SetComPort(string portName)
         {
             if (portName.Equals(_setPortName, StringComparison.OrdinalIgnoreCase))
@@ -344,25 +351,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             return true;
         }
 
-        public string[] GetBTComPort()
+        public string[] GetBTComPort(ILogging logger)
         {
             _logger?.LogDebug("S: Reading BT devices");
-            var cli = new BluetoothClient();
-            IReadOnlyCollection<BluetoothDeviceInfo> bluetoothDeviceInfos = cli.DiscoverDevices();
-            foreach (var bluetoothDeviceInfo in bluetoothDeviceInfos)
-            {
-                var deviceName = bluetoothDeviceInfo.DeviceName;
-                _logger?.LogDebug($"S: BT device: {deviceName}");
-                // MILLENNIUM CHESS
-                // if (deviceName.Equals("raspberrypi", StringComparison.OrdinalIgnoreCase))
-                if (deviceName.Equals("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
-                {
-                    bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
-
-                }
-
-            }
-            return GetPortNames(_logger);
+            List<string>  portNames = new List<string>(GetPortNames(logger));
+            portNames.Add("BT");
+            return portNames.ToArray();
         }
 
         public static string[] GetPortNames(ILogging logger)
@@ -397,7 +391,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             if (string.IsNullOrWhiteSpace(_setPortName)
                 || _setPortName.Equals("<auto>", StringComparison.OrdinalIgnoreCase))
             {
-                var comPortNames = UseBluetooth ? GetBTComPort() : GetPortNames(_logger);
+                var comPortNames = _useBluetooth ? GetBTComPort(_logger) :   GetPortNames(_logger);
                 _logger?.LogDebug($"S: All port names: {string.Join(",", comPortNames)}");
                 return comPortNames;
             }
