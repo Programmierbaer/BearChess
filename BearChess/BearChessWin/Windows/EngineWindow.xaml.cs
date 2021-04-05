@@ -189,7 +189,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var showInfo = bool.Parse(_configuration.GetConfigValue("showucilog", "false"));
             if (string.IsNullOrWhiteSpace(fenPosition))
             {
-                _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {fenPosition} and {playedMoves.Length} played moves");
+                _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {playedMoves.Length} played moves");
             }
             else
             {
@@ -551,14 +551,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     continue;
                 }
-                if (anyWithColor && engine.Value.Color == Fields.COLOR_EMPTY)
-                {
-                    engine.Value.UciEngine.GoInfinite();
-                }
-                else
+
+                if (!anyWithColor || engine.Value.Color != Fields.COLOR_EMPTY)
                 {
                     engine.Value.UciEngine.Go(command);
                 }
+
             }
             _lastCommand = string.Empty;
         }
@@ -583,9 +581,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     continue;
                 }
-                _fileLogger?.LogInfo($"Send Go infinite for coach {engine.Value}");
+                _fileLogger?.LogInfo($"Send Go infinite for coach {engine.Key}");
                 engine.Value.UciEngine.GoInfinite();
-
             }
         }
 
@@ -658,7 +655,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (scoreType.Equals("cp", StringComparison.OrdinalIgnoreCase))
                     {
                         scoreString = infoLineParts[i + 2];
-                        if (decimal.TryParse(scoreString, out decimal score))
+                        if (decimal.TryParse(scoreString, NumberStyles.Any, CultureInfo.CurrentCulture, out decimal score))
                         {
                             score /= 100;
                             scoreString = $"Score {score.ToString(CultureInfo.InvariantCulture)}";

@@ -7,7 +7,6 @@ using System.Threading;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessDatabase;
-using www.SoLaNoSoft.com.BearChessTools;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -41,7 +40,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly object _locker = new object();
         private readonly OpeningBook _openingBook;
         private BookMove _bookMove;
-        private bool _processClosed;
 
         public event EventHandler<EngineEventArgs> EngineReadingEvent;
 
@@ -97,13 +95,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void EngineProcess_Disposed(object sender, EventArgs e)
         {
-            _processClosed = true;
             _logger?.LogWarning("process disposed");
         }
 
         private void EngineProcess_Exited(object sender, EventArgs e)
         {
-            _processClosed = true;
             _logger?.LogWarning("process exited");
         }
 
@@ -271,92 +267,111 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SendToEngine(string command)
         {
+            // _logger?.LogDebug($"SendToEngine: {command}");
             _sendToUciEngine.Enqueue(command);
         }
 
         private void ReadFromEngine()
         {
             string waitingFor = string.Empty;
-            while (!_quit)
+            try
             {
-                string readToEnd = string.Empty;
-                try
+                while (!_quit)
                 {
-                    readToEnd = _engineProcess.StandardOutput.ReadLine();
-                }
-                catch (Exception ex)
-                {
-                    _logger?.LogError("Read ", ex);
+                    string readToEnd = string.Empty;
+                    try
+                    {
+                        readToEnd = _engineProcess.StandardOutput.ReadLine();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger?.LogError("Read ", ex);
 
-                }
+                    }
 
-                if (string.IsNullOrWhiteSpace(readToEnd))
-                { 
-                    Thread.Sleep(10);
-                    continue;
-                }
-                if (!_waitForFromEngine.IsEmpty)
-                {
-                    _waitForFromEngine.TryDequeue(out waitingFor);
-                }
+                    if (string.IsNullOrWhiteSpace(readToEnd))
+                    {
+                        Thread.Sleep(10);
+                        continue;
+                    }
 
-                if (!string.IsNullOrWhiteSpace(waitingFor) && !readToEnd.StartsWith(waitingFor))
-                {
-                    _logger?.LogDebug($"<< Ignore: {readToEnd}");
-                    continue;
-                }
+                    if (!_waitForFromEngine.IsEmpty)
+                    {
+                        _waitForFromEngine.TryDequeue(out waitingFor);
+                    }
 
-                lock (_locker)
-                {
-                    _waitFor = false;
+                    if (!string.IsNullOrWhiteSpace(waitingFor) && !readToEnd.StartsWith(waitingFor))
+                    {
+                        _logger?.LogDebug($"<< Ignore: {readToEnd}");
+                        continue;
+                    }
 
+                    lock (_locker)
+                    {
+                        _waitFor = false;
+
+                    }
+
+                    waitingFor = string.Empty;
+                    _logger?.LogDebug($"<< {readToEnd}");
+                    OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, readToEnd));
                 }
-                waitingFor = string.Empty;
-                _logger?.LogDebug($"<< {readToEnd}");
-                OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, readToEnd));
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex);
             }
         }
 
         private void SendToEngine()
         {
-            while (true)
+            try
             {
-                Thread.Sleep(10);
-                lock (_locker)
+                while (true)
                 {
-                    if (_waitFor)
+                    Thread.Sleep(10);
+                    lock (_locker)
                     {
-                        continue;
-                    }
-                }
-
-                if (_sendToUciEngine.TryDequeue(out string commandToEngine))
-                {
-                    if (commandToEngine.Equals("isready"))
-                    {
-                        _logger?.LogDebug("wait for ready ok");
-                        lock (_locker)
+                        if (_waitFor)
                         {
-                            _waitFor = true;
+                            continue;
                         }
-                        _waitForFromEngine.Enqueue("readyok");
-                    }
-                    _logger?.LogDebug($">> {commandToEngine}");
-                    try
-                    {
-                        _engineProcess.StandardInput.WriteLine(commandToEngine);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger?.LogError("Send ",ex);
                     }
 
-                    if (commandToEngine.Equals("quit"))
+                    if (_sendToUciEngine.TryDequeue(out string commandToEngine))
                     {
-                        _quit = true;
-                        break;
+                        if (commandToEngine.Equals("isready"))
+                        {
+                            _logger?.LogDebug("wait for ready ok");
+                            lock (_locker)
+                            {
+                                _waitFor = true;
+                            }
+
+                            _waitForFromEngine.Enqueue("readyok");
+                        }
+
+                        _logger?.LogDebug($">> {commandToEngine}");
+                        try
+                        {
+                            _engineProcess.StandardInput.WriteLine(commandToEngine);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger?.LogError("Send ", ex);
+                        }
+
+                        if (commandToEngine.Equals("quit"))
+                        {
+                            _quit = true;
+                            break;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex);
             }
         }
 

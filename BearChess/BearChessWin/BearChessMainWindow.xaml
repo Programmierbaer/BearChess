@@ -244,7 +244,7 @@
                             <Image Name="imageRunGameOnBase" Source="Assets/Icons/tick.png" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-               <!--     <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  -->
+                    <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  -->
                 </MenuItem>
                 <MenuItem Header="Windows">
                     <MenuItem Header="Show">

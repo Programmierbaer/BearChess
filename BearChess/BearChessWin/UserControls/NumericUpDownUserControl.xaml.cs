@@ -34,8 +34,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 scrollBarNumber.Maximum = value + 1;
                 if (scrollBarNumber.Maximum < int.MaxValue && scrollBarNumber.Minimum > int.MinValue)
                 {
-                    scrollBarNumber.ToolTip = $"{_minValue} bis {_maxValue}";
-                    textBlockNumber.ToolTip = $"{_minValue} bis {_maxValue}";
+                    scrollBarNumber.ToolTip = $"{_minValue} to {_maxValue}";
+                    textBlockNumber.ToolTip = $"{_minValue} to {_maxValue}";
                 }
                 else
                 {
@@ -54,8 +54,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 scrollBarNumber.Minimum = value - 1;
                 if (scrollBarNumber.Maximum < int.MaxValue && scrollBarNumber.Minimum > int.MinValue)
                 {
-                    scrollBarNumber.ToolTip = $"{_minValue} bis {_maxValue}";
-                    textBlockNumber.ToolTip = $"{_minValue} bis {_maxValue}";
+                    scrollBarNumber.ToolTip = $"{_minValue} to {_maxValue}";
+                    textBlockNumber.ToolTip = $"{_minValue} to {_maxValue}";
                 }
                 else
                 {

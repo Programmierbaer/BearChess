@@ -227,7 +227,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             if (scoreType.Equals("cp", StringComparison.OrdinalIgnoreCase))
                             {
                                 scoreString = infoLineParts[i + 2];
-                                if (decimal.TryParse(scoreString, out decimal score))
+                                if (decimal.TryParse(scoreString, NumberStyles.Any, CultureInfo.CurrentCulture, out decimal score))
                                 {
                                     score = score / 100;
                                     scoreString = score.ToString(CultureInfo.InvariantCulture);

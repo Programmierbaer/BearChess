@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -362,6 +363,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _database = new Database(_fileLogger, dbFileName);
             chessBoardUcGraphics.ShowControlButtons(!_runInEasyPlayingMode);
             //_database.Load(dbFileName);
+            //culture = CultureInfo.CurrentCulture;
         }
 
         private void ChessBoardUcGraphics_RotateBoardEvent(object sender, EventArgs e)
@@ -875,6 +877,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                  MessageBoxImage.Stop);
                 return;
             }
+            _engineWindow?.Stop();
             _engineWindow?.MakeMove(fromFieldFieldName, toFieldFieldName, promoteFigure);
 
             if (!_pureEngineMatch)
@@ -1044,6 +1047,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (_runningGame)
                 {
                     _chessClocksWindowBlack?.Go();
+                    _engineWindow?.GoInfiniteForCoach(_runningGame);
                 }
             }
 
@@ -2450,8 +2454,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-
-            _engineWindow?.Stop();
+         
             var fromFieldFigureId = _chessBoard.GetFigureOn(fromField).FigureId;
             var fromFieldFieldName = Fields.GetFieldName(fromField);
             var toFieldFieldName = Fields.GetFieldName(toField);
@@ -2556,7 +2559,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     var ecoCode = _ecoCodes[fenPosition];
                     textBlockEcoCode.Text = $"{ecoCode.Code} {ecoCode.Name}";
                 }
-
+                _engineWindow?.Stop();
                 _engineWindow?.MakeMove(fromFieldFieldName, toFieldFieldName, promote);
                 if (engineMove == null)
                 {
@@ -2824,14 +2827,36 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (strings[0].StartsWith("Score", StringComparison.OrdinalIgnoreCase) && strings[1].Length >= 1)
                 {
-                    if (!_engineMatchScore.ContainsKey(e.Name)) _engineMatchScore[e.Name] = new EngineScore();
+                    if (!_engineMatchScore.ContainsKey(e.Name))
+                    {
+                        _engineMatchScore[e.Name] = new EngineScore();
+                    }
 
-                    _engineMatchScore[e.Name].NewScore(decimal.Parse(strings[1]) / 100);
+                    if (decimal.TryParse(strings[1], NumberStyles.Any, CultureInfo.CurrentCulture,
+                                         out decimal cpResult))
+                    {
+                        _engineMatchScore[e.Name].NewScore(cpResult / 100);
+                    }
+                    else
+                    if (decimal.TryParse(strings[1].Replace(".",","), NumberStyles.Any, CultureInfo.CurrentCulture,
+                                         out decimal cpResult2))
+                    {
+                        _engineMatchScore[e.Name].NewScore(cpResult2 / 100);
+                    }
+                    else
+                    {
+                        _fileLogger?.LogError($"Unable parsing cp value {strings[1]} ");
+                        _engineMatchScore[e.Name].NewScore(0);
+                    }
+                        
                 }
 
                 if (strings[0].StartsWith("Mate", StringComparison.OrdinalIgnoreCase) && strings[1].Length >= 1)
                 {
-                    if (!_engineMatchScore.ContainsKey(e.Name)) _engineMatchScore[e.Name] = new EngineScore();
+                    if (!_engineMatchScore.ContainsKey(e.Name))
+                    {
+                        _engineMatchScore[e.Name] = new EngineScore();
+                    }
 
                     _engineMatchScore[e.Name].NewMate(int.Parse(strings[1]));
                 }
@@ -3609,6 +3634,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
 
                     _chessClocksWindowBlack?.Go();
+                    if (_runningGame)
+                    {
+                        _engineWindow?.GoInfiniteForCoach(_runningGame);
+                    }
 
                 }
             });
