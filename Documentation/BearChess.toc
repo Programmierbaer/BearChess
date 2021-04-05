@@ -64,12 +64,13 @@
 \contentsline {section}{\numberline {22}Known Issues}{64}%
 \contentsline {section}{\numberline {23}Next Steps}{65}%
 \contentsline {section}{\numberline {24}Changelog}{66}%
-\contentsline {subsection}{\numberline {24.1}Version 0.4.2.1 =\textgreater 0.4.2.2}{66}%
-\contentsline {subsection}{\numberline {24.2}Version 0.4.2.0 =\textgreater 0.4.2.1}{66}%
-\contentsline {subsection}{\numberline {24.3}Version 0.4.1.0 =\textgreater 0.4.2.0}{66}%
-\contentsline {subsection}{\numberline {24.4}Version 0.4.0.0 =\textgreater 0.4.1.0}{66}%
-\contentsline {subsection}{\numberline {24.5}Version 0.3.3.0 =\textgreater 0.4.0.0}{66}%
-\contentsline {subsection}{\numberline {24.6}Version 0.3.2.0 =\textgreater 0.3.3.0}{67}%
-\contentsline {subsection}{\numberline {24.7}Version 0.3.1.1 =\textgreater 0.3.2.0}{67}%
-\contentsline {subsection}{\numberline {24.8}Version 0.3.1.0 =\textgreater 0.3.1.1}{67}%
-\contentsline {subsection}{\numberline {24.9}Version 0.3.0.0 =\textgreater 0.3.1.0}{67}%
+\contentsline {subsection}{\numberline {24.1}Version 0.4.2.2 =\textgreater 0.4.2.3}{66}%
+\contentsline {subsection}{\numberline {24.2}Version 0.4.2.1 =\textgreater 0.4.2.2}{66}%
+\contentsline {subsection}{\numberline {24.3}Version 0.4.2.0 =\textgreater 0.4.2.1}{66}%
+\contentsline {subsection}{\numberline {24.4}Version 0.4.1.0 =\textgreater 0.4.2.0}{66}%
+\contentsline {subsection}{\numberline {24.5}Version 0.4.0.0 =\textgreater 0.4.1.0}{66}%
+\contentsline {subsection}{\numberline {24.6}Version 0.3.3.0 =\textgreater 0.4.0.0}{66}%
+\contentsline {subsection}{\numberline {24.7}Version 0.3.2.0 =\textgreater 0.3.3.0}{67}%
+\contentsline {subsection}{\numberline {24.8}Version 0.3.1.1 =\textgreater 0.3.2.0}{67}%
+\contentsline {subsection}{\numberline {24.9}Version 0.3.1.0 =\textgreater 0.3.1.1}{67}%
+\contentsline {subsection}{\numberline {24.10}Version 0.3.0.0 =\textgreater 0.3.1.0}{67}%

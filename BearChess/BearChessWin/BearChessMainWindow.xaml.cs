@@ -3274,7 +3274,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                     Dispatcher?.Invoke(() =>
                     {
-                        // chessBoardUcGraphics.RepaintBoard(chessBoard);
+                        chessBoardUcGraphics.RepaintBoard(chessBoard);
                         _moveListWindow?.ClearMark();
                         _moveListWindow?.MarkMove(currentMoveIndex, chessBoardCurrentColor);
                         
