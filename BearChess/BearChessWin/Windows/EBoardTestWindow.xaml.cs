@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.CertaboLoader;
+using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
 
@@ -11,10 +12,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class EBoardTestWindow : Window
     {
+        private readonly BearChessTools.Configuration _configuration;
         private IElectronicChessBoard _eChessBoard = null;
 
-        public EBoardTestWindow()
+        public EBoardTestWindow(BearChessTools.Configuration configuration)
         {
+            _configuration = configuration;
             InitializeComponent();
             boardUserControl.SetInPositionMode(true, string.Empty,true);
             boardUserControl.ClearPosition();
@@ -31,7 +34,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _eChessBoard = null;
                 return;
             }
-            _eChessBoard = new CertaboLoader();
+            _eChessBoard = new CertaboLoader(_configuration.FolderPath);
             _eChessBoard.FenEvent += this._eChessBoard_FenEvent;
             _eChessBoard.MoveEvent += this._eChessBoard_MoveEvent;
             _eChessBoard.SetDemoMode(true);

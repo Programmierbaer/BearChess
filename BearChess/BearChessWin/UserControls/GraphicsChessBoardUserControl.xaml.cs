@@ -331,7 +331,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             moveStepAllForward.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
             moveStepBack.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
             moveStepForward.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
-            buttonPauseEngine.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            //buttonPauseEngine.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
             //resetStartPosition.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
         }
 
@@ -740,7 +740,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             imageRobot.Visibility = Visibility.Collapsed;
             imageRobotPause.Visibility = Visibility.Collapsed;
-            buttonPauseEngine.Visibility = Visibility.Hidden;
+            buttonPauseEngine.Visibility = Visibility.Collapsed;
         }
 
         public void AllowTakeBack(bool allow)

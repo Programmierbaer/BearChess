@@ -2,7 +2,7 @@
 \contentsline {subsection}{\numberline {1.1}Unterschiede in den ZIP-Dateien}{4}%
 \contentsline {subsection}{\numberline {1.2}Einschränkungen}{4}%
 \contentsline {section}{\numberline {2}Kurzanleitng}{5}%
-\contentsline {section}{\numberline {3}Verzeichnisse}{6}%
+\contentsline {section}{\numberline {3}Verzeichnisse}{5}%
 \contentsline {section}{\numberline {4}Konfiguration}{6}%
 \contentsline {subsection}{\numberline {4.1}Die Intention hinter 'Analyze mode', 'UCI engine' und 'Opening book'}{7}%
 \contentsline {section}{\numberline {5}Anwendungsbeispiele}{8}%
@@ -30,9 +30,10 @@
 \contentsline {section}{\numberline {8}Bekannte Probleme}{17}%
 \contentsline {section}{\numberline {9}Next Steps}{18}%
 \contentsline {section}{\numberline {10}Changelog}{19}%
-\contentsline {subsection}{\numberline {10.1}26.07.2020 =\textgreater Dokumentation überarbeitet}{19}%
-\contentsline {subsection}{\numberline {10.2}Version 1.1.2 =\textgreater 1.2.0}{19}%
-\contentsline {subsection}{\numberline {10.3}Version 1.1.1 =\textgreater 1.1.2}{19}%
-\contentsline {subsection}{\numberline {10.4}Version 1.1.0 =\textgreater 1.1.1}{19}%
-\contentsline {subsection}{\numberline {10.5}Version 1.0.1 =\textgreater 1.1.0}{19}%
-\contentsline {subsection}{\numberline {10.6}Version 1.0.0 =\textgreater 1.0.1}{19}%
+\contentsline {subsection}{\numberline {10.1}Version 1.2.0 =\textgreater 1.3.0}{19}%
+\contentsline {subsection}{\numberline {10.2}26.07.2020 =\textgreater Dokumentation überarbeitet}{19}%
+\contentsline {subsection}{\numberline {10.3}Version 1.1.2 =\textgreater 1.2.0}{19}%
+\contentsline {subsection}{\numberline {10.4}Version 1.1.1 =\textgreater 1.1.2}{19}%
+\contentsline {subsection}{\numberline {10.5}Version 1.1.0 =\textgreater 1.1.1}{19}%
+\contentsline {subsection}{\numberline {10.6}Version 1.0.1 =\textgreater 1.1.0}{19}%
+\contentsline {subsection}{\numberline {10.7}Version 1.0.0 =\textgreater 1.0.1}{19}%

@@ -81,14 +81,14 @@
         </Border>
 
         <DockPanel>
-            <Button Margin="10,5,5,5" HorizontalAlignment="Left" Name="buttonOk"
+            <Button Margin="10,5,5,5" HorizontalAlignment="Left" Name="buttonOk" Width="32" Height="32" 
                     Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">
-                <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32" />
+                <Image Source="../Assets/Icons/accept_button.png"  />
             </Button>
-            <Button Margin="5,5,10,5" HorizontalAlignment="Right" Name="buttonCancel"
+            <Button Margin="5,5,10,5" HorizontalAlignment="Right" Name="buttonCancel" Width="32" Height="32" 
                     Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent"
                     ToolTip="Cancel">
-                <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32" />
+                <Image Source="../Assets/Icons/cancel.png" />
             </Button>
         </DockPanel>
 

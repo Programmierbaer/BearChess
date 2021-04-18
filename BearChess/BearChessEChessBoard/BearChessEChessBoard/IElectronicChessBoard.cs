@@ -82,6 +82,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void Stop();
 
         /// <summary>
+        /// Continue reading from board
+        /// </summary>
+        void Continue();
+
+        /// <summary>
         /// Calibrate board
         /// </summary>
         void Calibrate();

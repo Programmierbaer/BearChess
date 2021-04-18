@@ -20,7 +20,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
             _allMoves = new List<Move>();
         }
 
-        public string[] GetAllMoves(bool withScore, bool withBestLine, bool withBestMove)
+        public string[] GetAllMoves()
         {
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
@@ -28,7 +28,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
             _allPgnMoves.Clear();
             foreach (var move in _allMoves)
             {
-                _allPgnMoves.Add(ConvertToPgnMove(move, withScore, withBestLine, withBestMove));
+                _allPgnMoves.Add(ConvertToPgnMove(move));
             }
 
             return _allPgnMoves.ToArray();
@@ -41,11 +41,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
 
         public string GetMoveList()
         {
-            return GetMoveList(false, false, false);
-        }
-
-        public string GetMoveList(bool withScore, bool withBestLine, bool withBestMove)
-        {
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
@@ -54,7 +49,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
             var newMove = true;
             foreach (var move in _allMoves)
             {
-                var m = ConvertToPgnMove(move, withScore, withBestLine, withBestMove);
+                var m = ConvertToPgnMove(move);
                 if (newMove)
                 {
                     moveCnt++;
@@ -93,7 +88,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
             }
         }
 
-        private string ConvertToPgnMove(Move move, bool withScore, bool withBestLine, bool withBestMove)
+        private string ConvertToPgnMove(Move move)
         {
             var pgnMove = string.Empty;
             var figureFromField = _chessBoard.GetFigureOn(move.FromField);
@@ -190,37 +185,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
                 pgnMove += isMate ? "#" : "+";
             }
 
-            if (withBestMove)
-            {
-                withBestLine = false;
-            }
-
-            if (move.IsEngineMove && (withScore || withBestLine || withBestMove))
-            {
-                pgnMove += " { ";
-
-                if (withScore)
-                {
-                    pgnMove += move.Score.ToString(CultureInfo.InvariantCulture) + " ";
-                }
-
-                if (withBestLine && !string.IsNullOrWhiteSpace(move.BestLine))
-                {
-                    pgnMove += " (" + move.BestLine + ") ";
-                }
-
-                if (withBestMove && !string.IsNullOrWhiteSpace(move.BestLine))
-                {
-                    var strings = move.BestLine.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    if (strings.Length > 1)
-                    {
-                        pgnMove += " (" + strings[1] + ") ";
-                    }
-                }
-
-
-                pgnMove += "}";
-            }
 
             return pgnMove;
         }

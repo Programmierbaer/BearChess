@@ -38,8 +38,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DisplayMoveType _moveType;
         private bool _extendMoveListControl;
         private bool _extendFull = false;
-        private List<Move> _allMoves;
-        private static object _locker = new object();
+        private readonly List<Move> _allMoves;
+        private static readonly object _locker = new object();
         private bool _ignoreResize = false;
         private bool _tournamentMode;
 
@@ -120,9 +120,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            if (listBoxMoves.Items.Count > number)
+
+            if (_extendMoveListControl)
             {
-                ((IMoveUserControl) listBoxMoves.Items[number]).Mark(color);
+                number *= 2;
+                if (color == Fields.COLOR_BLACK)
+                {
+                    number++;
+                }
+                if (listBoxMoves.Items.Count > number)
+                { 
+                    ((IMoveUserControl)listBoxMoves.Items[number]).Mark(color);
+                }
+            }
+            else
+            {
+                if (listBoxMoves.Items.Count > number)
+                {
+                    ((IMoveUserControl) listBoxMoves.Items[number]).Mark(color);
+                }
             }
         }
 

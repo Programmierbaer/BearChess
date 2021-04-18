@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Linq;
+using System.Windows.Controls;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -31,6 +32,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (!string.IsNullOrWhiteSpace(moveLine))
             {
+                var strings = moveLine.Split(" ".ToCharArray());
+                if (strings.Length > 20)
+                {
+                   moveLine=  string.Join(" ", strings.Take(20));
+                }
                 textBlockMvLine.Text = moveLine;
             }
         }

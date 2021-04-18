@@ -10,7 +10,7 @@
     <StackPanel  Margin="0,0,0,5" Orientation="Horizontal">
         <TextBlock DockPanel.Dock="Left" Name="textBlockMV" Width="20" Margin="5" HorizontalAlignment="Right" TextAlignment="Right" >1.</TextBlock>
         <TextBlock DockPanel.Dock="Left" Name="textBlockMVValue"  Margin="5" MinWidth="40" HorizontalAlignment="Right" TextAlignment="Right" FontWeight="DemiBold"/>
-        <TextBlock DockPanel.Dock="Left" Name="textBlockMvLine" Margin="5" TextWrapping="Wrap" Width="600" />
+        <TextBlock DockPanel.Dock="Left" Name="textBlockMvLine" Margin="5" TextWrapping="Wrap" Width="500" />
         <!--<ScrollViewer Name="scrollViewer" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
             <TextBlock DockPanel.Dock="Left" Name="textBlockMvLine" Margin="5" />
         </ScrollViewer>-->

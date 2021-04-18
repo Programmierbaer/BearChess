@@ -7,16 +7,18 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         private readonly string _comport;
         private readonly SerialPort _serialPort;
 
-        public SerialComPort(string comport, int baud, System.IO.Ports.Parity parity)
+        public SerialComPort(string comport, int baud, Parity parity)
         {
             _comport = comport;
             _serialPort = new SerialPort(comport, baud, parity);
+            _serialPort.ReadTimeout = 500;
         }
 
-        public SerialComPort(string comport, int baud, System.IO.Ports.Parity parity, int dataBits, StopBits stopBits)
+        public SerialComPort(string comport, int baud, Parity parity, int dataBits, StopBits stopBits)
         {
             _comport = comport;
             _serialPort = new SerialPort(comport, baud, parity, dataBits, stopBits);
+            _serialPort.ReadTimeout = 500;
         }
 
         public string PortName => _comport;
@@ -40,7 +42,14 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public int ReadByte()
         {
-            return _serialPort.ReadByte();
+            try
+            {
+                return _serialPort.ReadByte();
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         public void Write(byte[] buffer, int offset, int count)

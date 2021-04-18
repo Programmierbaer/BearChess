@@ -29,7 +29,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkUci
             _messagesToGui.Enqueue("option name Play with white pieces type check default true");
             _messagesToGui.Enqueue("option name Dim LEDs type check default false");
             _messagesToGui.Enqueue("option name Flash in sync type check default false");
-            _messagesToGui.Enqueue("option name Bluetooth type check default false");
             _messagesToGui.Enqueue($"option name COM-Port type combo default <auto> {portNames}");
         }
 

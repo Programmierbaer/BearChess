@@ -389,7 +389,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                                     pgnCreator.AddMove(databaseGameAllMove);
                                 }
 
-                                foreach (var move in pgnCreator.GetAllMoves(false, false, false))
+                                foreach (var move in pgnCreator.GetAllMoves())
                                 {
                                     databaseGame.PgnGame.AddMove(move);
                                 }

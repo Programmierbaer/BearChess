@@ -224,6 +224,9 @@
     <Compile Include="UserControls\NumericUpDownUserControl.xaml.cs">
       <DependentUpon>NumericUpDownUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\PlayerWindow.xaml.cs">
+      <DependentUpon>PlayerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\PositionSetupWindow.xaml.cs">
       <DependentUpon>PositionSetupWindow.xaml</DependentUpon>
     </Compile>
@@ -244,6 +247,9 @@
     </Compile>
     <Compile Include="Windows\SplashWindow.xaml.cs">
       <DependentUpon>SplashWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\StopContinueQueryWindow.xaml.cs">
+      <DependentUpon>StopContinueQueryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UciConfigValue.cs" />
     <Compile Include="Windows\UciConfigWindow.xaml.cs">
@@ -411,6 +417,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\PlayerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\PositionSetupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -436,6 +446,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SplashWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\StopContinueQueryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -914,6 +928,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\bluetooth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\switch_windows.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\new_window.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

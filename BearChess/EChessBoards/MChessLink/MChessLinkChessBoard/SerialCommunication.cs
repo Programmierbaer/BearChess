@@ -19,13 +19,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override string GetRawFromBoard()
         {
+            _logger?.LogDebug($"S: GetRawFromBoard");
             int readByte = int.MaxValue;
             string readLine = string.Empty;
             try
             {
-                var convertToSend = ConvertToSend("S");
+                var convertToSend = ConvertToSend("V");
                 _comPort.Write(convertToSend, 0, convertToSend.Length);
-                while (readByte > 0)
+                while (readByte > 0 && readLine.Length<10)
                 {
                     readByte = _comPort.ReadByte();
                     var convertFromRead = ConvertFromRead(readByte);
@@ -36,7 +37,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 _logger?.LogDebug($"S: Catch {ex.Message}");
             }
-
+            _logger?.LogDebug($"S: {readLine}");
             return readLine;
         }
 
@@ -90,6 +91,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                     var convertFromRead = ConvertFromRead(readByte);
                                     // _logger?.LogDebug($"S: Read:  {convertFromRead}");
                                     readLine += convertFromRead;
+                                    //if (convertFromRead.Equals("3"))
+                                    //{
+                                    //    if (readLine.Length > 1)
+                                    //    {
+                                    //        break;
+                                    //    }
+                                    //}
                                 }
                             }
                             catch
@@ -112,7 +120,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                                     while (true)
                                     {
-                                        string currentPosition = tmpLine.Substring(tmpLine.IndexOf("s", StringComparison.Ordinal), 67);
+                                        var startIndex = tmpLine.IndexOf("s", StringComparison.Ordinal);
+                                        if (tmpLine.Length < startIndex + 67)
+                                        {
+                                            break;
+                                        }
+                                        string currentPosition = tmpLine.Substring(startIndex, 67);
                                         if (!_currentPosition.Equals(currentPosition))
                                         {
                                             _logger?.LogDebug($"S: Current position: {_currentPosition}");

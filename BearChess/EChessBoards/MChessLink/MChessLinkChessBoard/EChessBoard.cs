@@ -111,7 +111,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 {
                     var readLine = _serialCommunication.GetRawFromBoard();
                     _serialCommunication.DisConnectFromCheck();
-                    return readLine.Length > 0;
+                    return readLine.Length > 0 && readLine.StartsWith("v");
                 }
 
                 return false;

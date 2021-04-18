@@ -10,6 +10,7 @@
     <UserControl.Resources>
         <BitmapImage x:Key="bitmapGreenFrame" UriSource="../Assets/Icons/GreenBorder.png" />
         <BitmapImage x:Key="bitmapYellowFrame" UriSource="../Assets/Icons/YellowBorder.png" />
+        <BitmapImage x:Key="bitmapRedFrame" UriSource="../Assets/Icons/RedBorder.png" />
         <BitmapImage x:Key="bitmapEmpty" UriSource="../Assets/Icons/Empty.png" />
 
         <BitmapImage x:Key="bitmapStoneSymbolKingB" UriSource="../Assets/Stone/Symbol/KingB.png" />
@@ -684,8 +685,8 @@
         </Button>
         <TextBlock FontSize="30" Margin="10,0,0,0"  Name="textBlockBlackClock" Grid.Column="9" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Right" ToolTip="Black's move" >C</TextBlock>
         <TextBlock FontSize="30" Margin="10,0,0,0" Name="textBlockWhiteClock" Grid.Column="9" Grid.Row="7" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Right" ToolTip="White's move" >c</TextBlock>
-        <Button Name="buttonRotate" Click="ButtonRotate_OnClick" Grid.Row="8" Grid.Column="9"  Background="Transparent" BorderBrush="Transparent" ToolTip="Rotate board" >
-            <Image Source="../Assets/Icons/arrow_rotate_anticlockwise.png" Width="30" Height="30" Style="{StaticResource controlButtons}"></Image>
+        <Button Name="buttonRotate" Click="ButtonRotate_OnClick" Grid.Row="8" Grid.Column="9"  Background="Transparent" BorderBrush="Transparent" ToolTip="Rotate board" Width="30" Height="30">
+            <Image Source="../Assets/Icons/arrow_rotate_anticlockwise.png" Width="28" Height="28" Style="{StaticResource controlButtons}"></Image>
         </Button>
     </Grid>
     

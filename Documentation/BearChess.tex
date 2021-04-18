@@ -14,10 +14,10 @@
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.4.2.3}
+\fancyhead[R]{Version 0.4.3.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{05.04.2021} 
+\date{185.04.2021} 
 
 \begin{document}
 \maketitle
@@ -202,6 +202,13 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation/Moves} opens a windows where you can change the appearance of the notation, e.g. figurine or letters.
 	\item  \includegraphics[scale=0.5]{digit_separator.png}  \textbf{Clocks} switches between large and small clocks.
 	\item  \includegraphics[scale=0.5]{balance_unbalance.png}  \textbf{Captured pieces} shows the captured pieces window at startup or on demand.
+	\item  \includegraphics[scale=0.5]{user_silhouette.png}  \textbf{Player} opens a dialog where you can give it a first and last name.	
+    \begin{figure}[H]
+	   \centering
+    	\includegraphics[scale=1.0]{Player.png}
+	    \caption{Player}
+ 	   \label{fig:Player}
+	\end{figure}	
 \end{itemize}
 
 \subsection{Electronic Boards}
@@ -217,6 +224,7 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
 	\item \textbf{Black pieces in front} assumes that you have placed the black chessmen in front of you.
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
+	\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
 \end{itemize}
 
 \subsection{Windows}
@@ -1288,6 +1296,14 @@ The next release will be more of a bug fix and revision of existing features bef
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.4.2.3 =\textgreater 0.4.3.0}
+\begin{itemize}
+	\item Give "Player" a first and last name
+    \item Show best moves on electronic chessboards in analyse mode.
+	\item Improvement of the COM port detection.
+    \item Improvement in automatic window arrangement.
+\end{itemize}
+
 \subsection{Version 0.4.2.2 =\textgreater 0.4.2.3}
 \begin{itemize}
 	\item Fixed a bug with the display of the taken back move on the chessboard.

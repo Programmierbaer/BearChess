@@ -9,23 +9,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         public bool StartNewGame { get; private set; }
         public bool ReStartGame { get; private set; }
+        public bool SaveGame { get; private set; }
 
-        public BasePositionQueryWindow()
+        public BasePositionQueryWindow(bool showSaveGame)
         {
             InitializeComponent();
+            buttonSave.Visibility = showSaveGame ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void ButtonStart_OnClick(object sender, RoutedEventArgs e)
         {
             StartNewGame = true;
             ReStartGame = false;
+            SaveGame = false;
             DialogResult = true;
         }
 
         private void ButtonStop_OnClick(object sender, RoutedEventArgs e)
         {
             StartNewGame = false;
-            ReStartGame = false; 
+            ReStartGame = false;
+            SaveGame = false;
             DialogResult = true;
         }
 
@@ -38,6 +42,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             StartNewGame = false;
             ReStartGame = true;
+            SaveGame = false;
+            DialogResult = true;
+        }
+
+        private void ButtonSave_OnClick(object sender, RoutedEventArgs e)
+        {
+            StartNewGame = false;
+            ReStartGame = false;
+            SaveGame = true;
             DialogResult = true;
         }
     }

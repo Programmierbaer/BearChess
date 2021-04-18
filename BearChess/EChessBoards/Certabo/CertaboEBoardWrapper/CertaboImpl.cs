@@ -1,6 +1,4 @@
 ﻿using System.Threading;
-using www.SoLaNoSoft.com.BearChess.CertaboChessBoard;
-using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper

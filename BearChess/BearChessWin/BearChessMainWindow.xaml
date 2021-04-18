@@ -129,7 +129,7 @@
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Name="menuItemSettingsMoves" Header="Notation/Moves...">
+                    <MenuItem Name="menuItemSettingsMoves" Header="Notation/Moves">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/text_list_numbers.png" ></Image>
                         </MenuItem.Icon>
@@ -179,7 +179,11 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                   
+                   <MenuItem Name="menuItemPlayer" Header="Player..."  Click="MenuItemPlayer_OnClick">
+                       <MenuItem.Icon>
+                           <Image Source="Assets/Icons/user_silhouette.png"></Image>
+                       </MenuItem.Icon>
+                   </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Electronic Boards">
                     <MenuItem Name="menuItemCertabo"  Header="Certabo" >
@@ -203,7 +207,6 @@
                                 <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden"></Image>
                             </MenuItem.Icon>
                         </MenuItem>
-
                     </MenuItem>
                     <MenuItem Header="Millennium ChessLink" Name="menuItemMChessLink">
                         <MenuItem.Icon>
@@ -244,15 +247,39 @@
                             <Image Name="imageRunGameOnBase" Source="Assets/Icons/tick.png" ></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Show best move in analysis mode" Name="menuItemShowBestMoveInAnalyse" Click="MenuItemShowBestMoveInAnalyse_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageShowBestMoveOnAnalysisMode" Source="Assets/Icons/tick.png" ></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  -->
                 </MenuItem>
                 <MenuItem Header="Windows">
                     <MenuItem Header="Show">
-                        <MenuItem Name="menuItemWindowClocks" Click="MenuItemWindowClocks_OnClick" Header="Clocks"></MenuItem>
-                        <MenuItem Name="menuItemWindowMoves" Click="MenuItemWindowMoves_OnClick"  Header="Moves"></MenuItem>
-                        <MenuItem Name="menuItemWindowMaterial" Click="MenuItemWindowMaterial_OnClick"  Header="Captured pieces"></MenuItem>
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/new_window.png"  />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemWindowClocks" Click="MenuItemWindowClocks_OnClick" Header="Clocks">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/digit_separator.png"></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemWindowMoves" Click="MenuItemWindowMoves_OnClick"  Header="Moves">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/text_list_numbers.png" ></Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemWindowMaterial" Click="MenuItemWindowMaterial_OnClick"  Header="Captured pieces">
+                            <MenuItem.Icon >
+                                <Image Source="Assets/Icons/balance_unbalance.png"  />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
-                    <MenuItem Name="menuItemWindowsArrange" Header="Arrange" Click="MenuItemWindowsArrange_OnClick"></MenuItem>
+                    <MenuItem Name="menuItemWindowsArrange" Header="Arrange" Click="MenuItemWindowsArrange_OnClick">
+                        <MenuItem.Icon >
+                            <Image Source="Assets/Icons/switch_windows.png"  />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
             <local:GraphicsChessBoardUserControl Margin="5,5,5,0" Grid.Column="0" Grid.Row="1"

@@ -160,7 +160,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public void SetLedsFor(string[] fields)
         {
-            _allLedOff = false;
+            _allLedOff =  _inDemoMode;
             _board?.SetLedForFields(fields);
         }
 
@@ -361,7 +361,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 var piecesFen = GetPiecesFenAndSetLedsForInvalidField() ?? _board?.GetPiecesFen();
                 if (piecesFen == null)
                 {
-                    
                     continue;
                 }
 
@@ -496,9 +495,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         private DataFromBoard GetPiecesFenAndSetLedsForInvalidField()
         {
             // Every position is possible
-            if (_inDemoMode || _stop)
+            if (_inDemoMode || _stop )
             {
-                _board?.SetAllLedsOff();
+                if (!_allLedOff)
+                {
+                    _board?.SetAllLedsOff();
+                    _allLedOff = true;
+                }
+
                 return null;
             }
             //_board?.SetAllLedsOff();

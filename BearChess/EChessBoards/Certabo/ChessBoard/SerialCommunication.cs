@@ -133,13 +133,16 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         {
                             _byteDataToBoard.TryDequeue(out _);
                         }
+                        
                         if (_byteDataToBoard.TryDequeue(out byte[] data))
                         {
+                            
                             if (_isFirstInstance)
                             {
-                                _logger?.LogDebug($"C: Send byte array: {BitConverter.ToString(data)}");
+                                var s = BitConverter.ToString(data);
+                                _logger?.LogDebug($"C: Send byte array: {s}");
                                 _comPort.Write(data, 0, data.Length);
-                                Thread.Sleep(5);
+                              //  Thread.Sleep(15);
                             }
                         }
 
@@ -159,7 +162,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                             }
                         }
                     }
-                    Thread.Sleep(5);
+                    Thread.Sleep(15);
                 }
                 catch (Exception ex)
                 {

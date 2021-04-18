@@ -152,6 +152,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.Stop();
         }
 
+        public void Continue()
+        {
+            _eChessBoard.Continue();
+        }
+
         /// <inheritdoc />
         public void Calibrate()
         {
