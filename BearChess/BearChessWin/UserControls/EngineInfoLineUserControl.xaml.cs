@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -28,6 +29,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (!string.IsNullOrWhiteSpace(scoreString))
             {
                 textBlockMVValue.Text = scoreString;
+                textBlockMVValue.Foreground =
+                    scoreString.StartsWith("-") ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);
             }
 
             if (!string.IsNullOrWhiteSpace(moveLine))

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessDatabase

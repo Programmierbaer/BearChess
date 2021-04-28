@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows" ResizeMode="NoResize"
         mc:Ignorable="d" WindowStyle="ToolWindow" Closing="MaterialWindow_OnClosing"
-        Title="Captured Pieces" Height="100" MinHeight="100" Width="300">
+        Title="Captured Pieces" Height="120" MinHeight="100" Width="520">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -20,76 +20,15 @@
         </Button>
         <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="textBlockDifference" Grid.Row="1" Grid.Column="0" >Diff.</TextBlock>
         <Grid Grid.Column="1" Grid.Row="0" Name="gridTop" >
-           <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-               <ColumnDefinition Width="Auto" ></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="0"  Name="textBlockTopQueen" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="1"  Name="textBlockTopRook1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="2"  Name="textBlockTopRook2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="3"  Name="textBlockTopBishop1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="4"  Name="textBlockTopBishop2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="5"  Name="textBlockTopKnight1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="6"  Name="textBlockTopKnight2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="7"  Name="textBlockTopPawn1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="8"  Name="textBlockTopPawn2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="9"  Name="textBlockTopPawn3" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="10"  Name="textBlockTopPawn4" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="11"  Name="textBlockTopPawn5" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="12"  Name="textBlockTopPawn6" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="13"  Name="textBlockTopPawn7" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="14"  Name="textBlockTopPawn8" ></TextBlock>
+        
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="0"  Name="textBlockTopLine" ></TextBlock>
+        
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1" Name="gridBottom" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-                <ColumnDefinition Width="Auto" ></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="0"  Name="textBlockBottomQueen" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="1"  Name="textBlockBottomRook1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="2"  Name="textBlockBottomRook2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="3"  Name="textBlockBottomBishop1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="4"  Name="textBlockBottomBishop2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="5"  Name="textBlockBottomKnight1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="6"  Name="textBlockBottomKnight2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="7"  Name="textBlockBottomPawn1" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="8"  Name="textBlockBottomPawn2" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="9"  Name="textBlockBottomPawn3" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="10"  Name="textBlockBottomPawn4" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="11"  Name="textBlockBottomPawn5" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="12"  Name="textBlockBottomPawn6" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="13"  Name="textBlockBottomPawn7" ></TextBlock>
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="14"  Name="textBlockBottomPawn8" ></TextBlock>
+      
+            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="0"  Name="textBlockBottomLine" ></TextBlock>
+      
         </Grid>
-        <!--
-        <TextBlock Margin="5,5,0,5" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="1" Grid.Row="0" Name="textBlockTop" ></TextBlock>
-        <TextBlock Margin="5,0,0,5" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Grid.Row="1" Grid.Column="1" Name="textBlockBottom"></TextBlock>
-        -->
+    
     </Grid>
 </Window>

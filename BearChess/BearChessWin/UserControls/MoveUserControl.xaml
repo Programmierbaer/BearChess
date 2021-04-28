@@ -10,24 +10,24 @@
             <ColumnDefinition Name="columnDefinition2" Width="65"></ColumnDefinition>
             <ColumnDefinition Name="columnDefinition3" Width="65"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Margin="5,1,5,1" Name="textBlockMoveNumber" VerticalAlignment="Center" TextAlignment="Right"  HorizontalAlignment="Right"  Grid.Column="0">99.</TextBlock>
+        <TextBlock Margin="5,1,5,1"  FontFamily="Consolas" FontStretch="Normal" Name="textBlockMoveNumber" VerticalAlignment="Center" TextAlignment="Left"  HorizontalAlignment="Left"  Grid.Column="0">99.</TextBlock>
         <Grid Grid.Column="1" Name="gridColumnWhite">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Name="columnDefinition11" Width="15"></ColumnDefinition>
-                <ColumnDefinition Name="columnDefinition12" Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Name="columnDefinition12" Width="40"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="1,1,0,1" Name="textBlockWhiteFigure" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" MouseDown="TextBlockWhiteFigure_OnMouseDown">K</TextBlock>
-            <TextBlock Margin="1,1,0,1" Name="textBlockWhiteFigureSymbol" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" MouseDown="TextBlockWhiteFigure_OnMouseDown"></TextBlock>
-            <TextBlock Margin="0,1,1,1"  Name="textBlockWhiteMove" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1" MouseDown="TextBlockWhiteFigure_OnMouseDown">e2-e4Q</TextBlock>
+            <TextBlock Margin="1,1,0,1"  FontFamily="Consolas"  FontStretch="Normal" Name="textBlockWhiteFigure" TextAlignment="Right"  VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" MouseDown="TextBlockWhiteFigure_OnMouseDown">K</TextBlock>
+            <TextBlock Margin="1,1,0,1" Name="textBlockWhiteFigureSymbol" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" MouseDown="TextBlockWhiteFigure_OnMouseDown"></TextBlock>
+            <TextBlock Margin="0,1,1,1"   FontFamily="Consolas"  FontStretch="Normal" Name="textBlockWhiteMove" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1" MouseDown="TextBlockWhiteFigure_OnMouseDown">e2-e4Q</TextBlock>
         </Grid>
         <Grid Grid.Column="2" Name="gridColumnBlack">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Name="columnDefinition21" Width="15"></ColumnDefinition>
                 <ColumnDefinition Name="columnDefinition22" Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="5,1,0,1" Name="textBlockBlackFigure" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" MouseDown="TextBlockBlackFigure_OnMouseDown">Q</TextBlock>
-            <TextBlock Margin="5,1,0,1" Name="textBlockBlackFigureSymbol" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" MouseDown="TextBlockBlackFigure_OnMouseDown"></TextBlock>
-            <TextBlock Margin="0,1,1,1" Name="textBlockBlackMove" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1" MouseDown="TextBlockBlackFigure_OnMouseDown">h1-h8</TextBlock>
+            <TextBlock Margin="5,1,0,1"  FontFamily="Consolas"  FontStretch="Normal" Name="textBlockBlackFigure" TextAlignment="Right" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" MouseDown="TextBlockBlackFigure_OnMouseDown">Q</TextBlock>
+            <TextBlock Margin="5,1,0,1" Name="textBlockBlackFigureSymbol" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" MouseDown="TextBlockBlackFigure_OnMouseDown"></TextBlock>
+            <TextBlock Margin="0,1,1,1"  FontFamily="Consolas"  FontStretch="Normal" Name="textBlockBlackMove" VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left" Grid.Column="1" MouseDown="TextBlockBlackFigure_OnMouseDown">h1-h8</TextBlock>
         </Grid>
     </Grid>
 </UserControl>

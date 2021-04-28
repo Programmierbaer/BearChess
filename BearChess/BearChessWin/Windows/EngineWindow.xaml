@@ -7,8 +7,6 @@
         ResizeMode="NoResize" Closing="EngineWindow_OnClosing"
         Title="Engines" Height="200" Width="650" Icon="../Assets/Icons/robot.png">
     <Grid>
-
-            <StackPanel  Name="stackPanelEngines" Orientation="Vertical" Margin="5"/>
-
+        <StackPanel  Name="stackPanelEngines" Orientation="Vertical" Margin="5"/>
     </Grid>
 </Window>

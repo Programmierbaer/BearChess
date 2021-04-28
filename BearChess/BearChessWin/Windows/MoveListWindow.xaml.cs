@@ -9,19 +9,22 @@ using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessWin.UserControls;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
     public class SelectedMoveOfMoveList
     {
+
+        public int MoveNumber { get; }
+        public int Color { get; }
+
         public SelectedMoveOfMoveList(int moveNumber, int color)
         {
             MoveNumber = moveNumber;
             Color = color;
         }
 
-        public int MoveNumber { get; }
-        public int Color { get; }
     }
 
     /// <summary>
@@ -33,6 +36,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private IMoveUserControl _currentMoveUserControl;
         private DisplayFigureType _figureType;
         private int _fontSize = 1;
+
 
         private int _lastMoveNumber;
         private DisplayMoveType _moveType;
@@ -215,7 +219,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_extendMoveListControl)
             {
-                return new ExtendedMoveUserControl();
+                return  new ExtendedMoveUserControl();
             }
 
             return new MoveUserControl();
@@ -236,26 +240,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonInc_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_fontSize == 1)
-            {
-                _fontSize = 2;
-                foreach (var item in listBoxMoves.Items)
-                {
-                    if (item is IMoveUserControl userControl)
-                    {
-                        userControl.SetSize(2,Width);
-                    }
-                }
-            }
-            else
+            _fontSize++;
+            if (_fontSize > 3 || (_fontSize>2 && !_extendMoveListControl))
             {
                 _fontSize = 1;
-                foreach (var item in listBoxMoves.Items)
+            }
+
+            foreach (var item in listBoxMoves.Items)
+            {
+                if (item is IMoveUserControl userControl)
                 {
-                    if (item is IMoveUserControl userControl)
-                    {
-                        userControl.SetSize(1,Width);
-                    }
+                    userControl.SetSize(_fontSize, Width);
                 }
             }
 

@@ -5,7 +5,7 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
     [Serializable]
-    public class Move 
+    public class Move : ICloneable
     {
         public static readonly int[] MoveOffsets = { -9, -11, 9, 11, -10, 10, 1, -1, 19, 21, 12, -8, -19, -21, -12, 8 };
 
@@ -137,6 +137,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public override string ToString()
         {
             return $"{FromFieldName}-{ToFieldName} ({Value})";
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 

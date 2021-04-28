@@ -6,10 +6,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Assets.Fonts;
+using Configuration = www.SoLaNoSoft.com.BearChessTools.Configuration;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -18,119 +21,41 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class MaterialWindow : Window
     {
-        private FontConverter _fontConverter;
+        private readonly FontConverter _fontConverter;
 
         private bool _showDifference;
-        private bool _switchSide;
+        private bool _small;
         private readonly Configuration _configuration;
         private string _topLine = string.Empty;
         private string _topLineDiff = string.Empty;
         private string _bottomLine = string.Empty;
         private string _bottomLineDiff = string.Empty;
-        private Dictionary<string, List<TextBlock>> _allTextBlocks = new Dictionary<string, List<TextBlock>>();
+       
     
         public MaterialWindow(Configuration configuration)
         {
             InitializeComponent();
             _configuration = configuration;
             var fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
-            _allTextBlocks["Q"] = new List<TextBlock>();
-            _allTextBlocks["Q"].Add(textBlockTopQueen);
-            
-            _allTextBlocks["q"] = new List<TextBlock>();
-            _allTextBlocks["q"].Add(textBlockBottomQueen);
-            
-            _allTextBlocks["R"] = new List<TextBlock>();
-            _allTextBlocks["R"].Add(textBlockTopRook1);
-            _allTextBlocks["R"].Add(textBlockTopRook2);
-            
-            _allTextBlocks["r"] = new List<TextBlock>();
-            _allTextBlocks["r"].Add(textBlockBottomRook1);
-            _allTextBlocks["r"].Add(textBlockBottomRook2);
+           
 
-
-            _allTextBlocks["B"] = new List<TextBlock>();
-            _allTextBlocks["B"].Add(textBlockTopBishop1);
-            _allTextBlocks["B"].Add(textBlockTopBishop2);
-
-            _allTextBlocks["b"] = new List<TextBlock>();
-            _allTextBlocks["b"].Add(textBlockBottomBishop1);
-            _allTextBlocks["b"].Add(textBlockBottomBishop2);
-
-            _allTextBlocks["N"] = new List<TextBlock>();
-            _allTextBlocks["N"].Add(textBlockTopKnight1);
-            _allTextBlocks["N"].Add(textBlockTopKnight2);
-            
-            _allTextBlocks["n"] = new List<TextBlock>();
-            _allTextBlocks["n"].Add(textBlockBottomKnight1);
-            _allTextBlocks["n"].Add(textBlockBottomKnight2);
-          
-            _allTextBlocks["P"] = new List<TextBlock>();
-            _allTextBlocks["P"].Add(textBlockTopPawn1);
-            _allTextBlocks["P"].Add(textBlockTopPawn2);
-            _allTextBlocks["P"].Add(textBlockTopPawn3);
-            _allTextBlocks["P"].Add(textBlockTopPawn4);
-            _allTextBlocks["P"].Add(textBlockTopPawn5);
-            _allTextBlocks["P"].Add(textBlockTopPawn6);
-            _allTextBlocks["P"].Add(textBlockTopPawn7);
-            _allTextBlocks["P"].Add(textBlockTopPawn8);
-            
-            _allTextBlocks["p"] = new List<TextBlock>();
-            _allTextBlocks["p"].Add(textBlockBottomPawn1);
-            _allTextBlocks["p"].Add(textBlockBottomPawn2);
-            _allTextBlocks["p"].Add(textBlockBottomPawn3);
-            _allTextBlocks["p"].Add(textBlockBottomPawn4);
-            _allTextBlocks["p"].Add(textBlockBottomPawn5);
-            _allTextBlocks["p"].Add(textBlockBottomPawn6);
-            _allTextBlocks["p"].Add(textBlockBottomPawn7);
-            _allTextBlocks["p"].Add(textBlockBottomPawn8);
-
-            textBlockTopQueen.FontFamily = fontFamily;
-            textBlockBottomQueen.FontFamily = fontFamily;
-            textBlockBottomRook1.FontFamily = fontFamily;
-            textBlockBottomRook2.FontFamily = fontFamily;
-            textBlockTopRook1.FontFamily = fontFamily;
-            textBlockTopRook2.FontFamily = fontFamily;
-            textBlockBottomKnight1.FontFamily = fontFamily;
-            textBlockBottomKnight2.FontFamily = fontFamily;
-            textBlockTopKnight1.FontFamily = fontFamily;
-            textBlockTopKnight2.FontFamily = fontFamily;
-            textBlockBottomBishop1.FontFamily = fontFamily;
-            textBlockBottomBishop2.FontFamily = fontFamily;
-            textBlockTopBishop1.FontFamily = fontFamily;
-            textBlockTopBishop2.FontFamily = fontFamily;
-
-            textBlockBottomPawn1.FontFamily = fontFamily;
-            textBlockBottomPawn2.FontFamily = fontFamily;
-            textBlockBottomPawn3.FontFamily = fontFamily;
-            textBlockBottomPawn4.FontFamily = fontFamily;
-            textBlockBottomPawn5.FontFamily = fontFamily;
-            textBlockBottomPawn6.FontFamily = fontFamily;
-            textBlockBottomPawn7.FontFamily = fontFamily;
-            textBlockBottomPawn8.FontFamily = fontFamily;
-            
-            textBlockTopPawn1.FontFamily = fontFamily;
-            textBlockTopPawn2.FontFamily = fontFamily;
-            textBlockTopPawn3.FontFamily = fontFamily;
-            textBlockTopPawn4.FontFamily = fontFamily;
-            textBlockTopPawn5.FontFamily = fontFamily;
-            textBlockTopPawn6.FontFamily = fontFamily;
-            textBlockTopPawn7.FontFamily = fontFamily;
-            textBlockTopPawn8.FontFamily = fontFamily;
+            textBlockTopLine.FontFamily = fontFamily; 
+            textBlockBottomLine.FontFamily = fontFamily;
 
             _fontConverter = new FontConverter();
             Top = _configuration.GetWinDoubleValue("MaterialWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("MaterialWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
-            Width = _configuration.GetDoubleValue("MaterialWindowWidth", "300");
+            //Width = _configuration.GetDoubleValue("MaterialWindowWidth", "300");
             _showDifference = bool.Parse(_configuration.GetConfigValue("MaterialWindowDifference", "false"));
+            _small = bool.Parse(_configuration.GetConfigValue("MaterialWindowSmall", "true"));
+            textBlockTopLine.FontSize = _small ? 20.0 : 28.0;
+            textBlockBottomLine.FontSize = _small ? 20.0 : 28.0;
+            textBlockDifference.FontSize = _small ? 14.0 : 18.0;
             textBlockDifference.Text = _showDifference ? "Diff." : "All";
+            Width = _small ? 380 : 520;
         }
 
-        public void SwitchSide(bool switchSide)
-        {
-            _switchSide = switchSide;
-        }
-
+   
         public void Clear()
         {
             _topLine = string.Empty;
@@ -140,19 +65,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ShowMaterial();
         }
 
-        public void ShowMaterial(IChessFigure[] topFigures, IChessFigure[] bottomFigures)
+        public void ChangeSize(bool small)
         {
-         Dictionary<int, string> fullFigures = new Dictionary<int, string>
-                                                      {
-                                                          [Fields.COLOR_WHITE] = "K Q R R B B N N P P P P P P P P",
-                                                          [Fields.COLOR_BLACK] = "k q r r b b n n p p p p p p p p"
-                                                      };
+            _small = small;
+            textBlockTopLine.FontSize = _small ? 20.0 : 28.0;
+            textBlockBottomLine.FontSize = _small ? 20.0 : 28.0;
+            textBlockDifference.FontSize = _small ? 14.0 : 18.0;
+            Width = _small ? 380 : 520;
+        }
+
+        public void ShowMaterial(IChessFigure[] topFigures, IChessFigure[] bottomFigures, Move[] playedMoveList)
+        {
+            Dictionary<int, string> fullFigures = new Dictionary<int, string>
+                                                  {
+                                                      [Fields.COLOR_WHITE] = "K Q R R B B N N P P P P P P P P",
+                                                      [Fields.COLOR_BLACK] = "k q r r b b n n p p p p p p p p"
+                                                  };
+
+
+            Dictionary<int, Dictionary<string, int>> capturedFigures = new Dictionary<int, Dictionary<string,int>>
+                                                                       {
+                                                                           [Fields.COLOR_WHITE] = new Dictionary<string, int>
+                                                                               {
+                                                                                   ["q"] =0,
+                                                                                   ["r"] =0,
+                                                                                   ["b"] =0,
+                                                                                   ["n"] =0,
+                                                                                   ["p"] =0
+                                                                               },
+                                                                           [Fields.COLOR_BLACK] = new Dictionary<string, int>
+                                                                               {
+                                                                                   ["Q"] = 0,
+                                                                                   ["R"] = 0,
+                                                                                   ["B"] = 0,
+                                                                                   ["N"] = 0,
+                                                                                   ["P"] = 0
+                                                                           }
+                                                                       };
 
             _topLine = string.Empty;
             _topLineDiff = string.Empty;
             _bottomLine = string.Empty;
             _bottomLineDiff = string.Empty;
-            if (topFigures.Length == 0 && bottomFigures.Length == 0)
+            if (topFigures.Length == 0 && bottomFigures.Length == 0 && playedMoveList.Length==0)
             {
                 ShowMaterial();
             }
@@ -162,40 +117,55 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (countTop > countBottom)
             {
                 _bottomLineDiff += new string('Q', countTop - countBottom);
+                _topLineDiff += new string('-', countTop - countBottom);
             }
+
             if (countBottom > countTop)
             {
                 _topLineDiff += new string('q', countBottom - countTop);
+                _bottomLineDiff += new string('-', countBottom - countTop);
             }
+
             countTop = topFigures.Count(f => f.GeneralFigureId == FigureId.ROOK);
             countBottom = bottomFigures.Count(f => f.GeneralFigureId == FigureId.ROOK);
             if (countTop > countBottom)
             {
                 _bottomLineDiff += new string('R', countTop - countBottom);
+                _topLineDiff += new string('-', countTop - countBottom);
             }
+
             if (countBottom > countTop)
             {
                 _topLineDiff += new string('r', countBottom - countTop);
+                _bottomLineDiff += new string('-', countBottom - countTop);
             }
+
             countTop = topFigures.Count(f => f.GeneralFigureId == FigureId.BISHOP);
             countBottom = bottomFigures.Count(f => f.GeneralFigureId == FigureId.BISHOP);
             if (countTop > countBottom)
             {
                 _bottomLineDiff += new string('B', countTop - countBottom);
+                _topLineDiff += new string('-', countTop - countBottom);
             }
+
             if (countBottom > countTop)
             {
                 _topLineDiff += new string('b', countBottom - countTop);
+                _bottomLineDiff += new string('-', countBottom - countTop);
             }
+
             countTop = topFigures.Count(f => f.GeneralFigureId == FigureId.KNIGHT);
             countBottom = bottomFigures.Count(f => f.GeneralFigureId == FigureId.KNIGHT);
             if (countTop > countBottom)
             {
                 _bottomLineDiff += new string('N', countTop - countBottom);
+                _topLineDiff += new string('-', countTop - countBottom);
             }
+
             if (countBottom > countTop)
             {
                 _topLineDiff += new string('n', countBottom - countTop);
+                _bottomLineDiff += new string('-', countBottom - countTop);
             }
 
             countTop = topFigures.Count(f => f.GeneralFigureId == FigureId.PAWN);
@@ -203,34 +173,80 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (countTop > countBottom)
             {
                 _bottomLineDiff += new string('P', countTop - countBottom);
+                _topLineDiff += new string('-', countTop - countBottom);
             }
+
             if (countBottom > countTop)
             {
                 _topLineDiff += new string('p', countBottom - countTop);
+                _bottomLineDiff += new string('-', countBottom - countTop);
+            }
+
+            if (playedMoveList.Length > 0)
+            {
+                foreach (var move in playedMoveList)
+                {
+                    if (move.CapturedFigure != FigureId.NO_PIECE)
+                    {
+                        string key = FigureId.FigureIdToFenCharacter[move.CapturedFigure];
+                        capturedFigures[move.FigureColor][key]++;
+                    }
+                }
+
+                foreach (var c in "qrbnp".ToCharArray())
+                {
+                    string f = c.ToString();
+                    string fu = f.ToUpper();
+                    for (int i = 0; i < capturedFigures[Fields.COLOR_WHITE][f]; i++)
+                    {
+                        _topLine += f;
+                        if (capturedFigures[Fields.COLOR_BLACK][fu] < i)
+                        {
+                            _bottomLine += "-";
+                        }
+                        else
+                        {
+                            _bottomLine += fu;
+                        }
+                    }
+                    for (int i = capturedFigures[Fields.COLOR_WHITE][f]; i < capturedFigures[Fields.COLOR_BLACK][fu]; i++)
+                    {
+                        _topLine += "-";
+                        _bottomLine += fu;
+
+                    }
+
+                }
+
+                ShowMaterial();
+                return;
             }
             foreach (var chessFigure in topFigures)
             {
                 fullFigures[chessFigure.Color] =
-                    fullFigures[chessFigure.Color].ReplaceFirst(chessFigure.FenFigureCharacter, string.Empty);
+                    fullFigures[chessFigure.Color].ReplaceFirst(chessFigure.FenFigureCharacter, "-");
             }
 
             foreach (var chessFigure in bottomFigures)
             {
                 fullFigures[chessFigure.Color] =
-                    fullFigures[chessFigure.Color].ReplaceFirst(chessFigure.FenFigureCharacter, string.Empty);
+                    fullFigures[chessFigure.Color].ReplaceFirst(chessFigure.FenFigureCharacter, "-");
             }
 
-            var fullFigure = fullFigures[Fields.COLOR_WHITE].Split(" ".ToCharArray(),StringSplitOptions.RemoveEmptyEntries);
-            foreach (var s in fullFigure)
+            var fullFigureW = fullFigures[Fields.COLOR_WHITE]
+                .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var fullFigureB = fullFigures[Fields.COLOR_BLACK]
+                .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < fullFigureW.Length; i++)
             {
-                _topLine += s;
+                if (fullFigureW[i] == "-" && fullFigureB[i] == "-")
+                {
+                    continue;
+                }
+                _topLine += fullFigureW[i];
+                _bottomLine += fullFigureB[i];
+            }
 
-            }
-            fullFigure = fullFigures[Fields.COLOR_BLACK].Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            foreach (var s in fullFigure)
-            {
-                _bottomLine += s;
-            }
             ShowMaterial();
         }
 
@@ -242,13 +258,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ShowMaterial()
         {
-            foreach (var allTextBlock in _allTextBlocks)
-            {
-                foreach (var textBlock in allTextBlock.Value)
-                {
-                    textBlock.Text = string.Empty;
-                }
-            }
+            textBlockTopLine.Text = string.Empty;
+            textBlockBottomLine.Text = string.Empty;
             if (_showDifference)
             {
                 FillTopLine(_topLineDiff,_bottomLineDiff);
@@ -268,51 +279,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            foreach (var c in topLine.ToCharArray())
-            {
-                var o = c.ToString();
-                o = o.Equals(o.ToLower()) ? o.ToUpper() : o.ToLower();
 
-                foreach (var textBlock in _allTextBlocks[c.ToString()])
-                {
-                    if (string.IsNullOrEmpty(textBlock.Text) || textBlock.Text == "-") 
-                    {
-                        textBlock.Text = _fontConverter.ConvertFont(c.ToString(), "Chess Merida");
-                        
-                        break;
-                    }
-                }
-                foreach (var textBlock in _allTextBlocks[o])
-                {
-                    if (string.IsNullOrEmpty(textBlock.Text))
-                    {
-                        textBlock.Text = "-";
-                        break;
-                    }
-                }
-            }
-            foreach (var c in bottomLine.ToCharArray())
-            {
-                var o = c.ToString();
-                o = o.Equals(o.ToLower()) ? o.ToUpper() : o.ToLower();
+            textBlockTopLine.Text = _fontConverter.ConvertFont(topLine, "Chess Merida");
+            textBlockBottomLine.Text = _fontConverter.ConvertFont(bottomLine, "Chess Merida");
 
-                int i = 0;
-                foreach (var textBlock in _allTextBlocks[c.ToString()])
-                {
-                    if (string.IsNullOrEmpty(textBlock.Text) || textBlock.Text == "-")
-                    {
-                        textBlock.Text = _fontConverter.ConvertFont(c.ToString(), "Chess Merida");
-
-                        break;
-                    }
-
-                    i++;
-                }
-                if (string.IsNullOrEmpty(_allTextBlocks[o][i].Text))
-                {
-                    _allTextBlocks[o][i].Text = "-";
-                }
-            }
         }
 
       
@@ -321,7 +291,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _configuration.SetDoubleValue("MaterialWindowTop", Top);
             _configuration.SetDoubleValue("MaterialWindowLeft", Left);
-            _configuration.SetDoubleValue("MaterialWindowWidth", Width);
+            _configuration.SetConfigValue("MaterialWindowSmall", _small.ToString().ToLower());
             _configuration.SetConfigValue("MaterialWindowDifference", _showDifference.ToString().ToLower());
         }
     }

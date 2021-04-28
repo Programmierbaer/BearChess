@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessWin.Assets.Fonts;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -35,12 +32,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public ExtendedMoveUserControl()
         {
             InitializeComponent();
+            var fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
             textBlockMove.Text = string.Empty;
             textBlockMoveValue.Text = string.Empty;
             textBlockFigure.Text = string.Empty;
             textBlockMoveList.Text = string.Empty;
-            var fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
             textBlockFigureSymbol.FontFamily = fontFamily;
+            textBlockFigureSymbolBlack.FontFamily = fontFamily;
             _fontConverter = new FontConverter();
             SetDisplayTypes();
             _background = Background;
@@ -73,59 +71,66 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 case 1:
                 {
-                    if (width < 160 || double.IsNaN(width))
-                    {
-                        width = 160;
-                    }
-
-                    textBlockMoveNumber.FontSize = 12;
-                    textBlockMove.FontSize = 12;
-                    textBlockMoveValue.FontSize = 12;
-                    textBlockMoveList.FontSize = 12;
-                    textBlockFigure.FontSize = 12;
-                    textBlockFigureSymbol.FontSize = 12;
+                    textBlockMoveNumber.FontSize = 14;
+                    textBlockMove.FontSize = 14;
+                    textBlockMoveBlack.FontSize = 14;
+                    textBlockMoveValue.FontSize = 14;
+                    textBlockMoveList.FontSize = 14;
+                    textBlockFigure.FontSize = 14;
+                    textBlockFigureBlack.FontSize = 14;
+                    textBlockFigureSymbol.FontSize = 14;
+                    textBlockFigureSymbolBlack.FontSize = 14;
                     columnDefinition1.Width = new GridLength(30);
                     columnDefinition2.Width = new GridLength(60);
-                    //columnDefinitionExtend.Width = new GridLength(width - 130);
-                    //columnDefinition11.Width = new GridLength(15);
                     columnDefinitionScore.Width = new GridLength(45);
-
                     break;
                 }
                 case 2:
                 {
-                    if (width < 195 || double.IsNaN(width))
-                    {
-                        width = 195;
-                    }
-
                     textBlockMoveNumber.FontSize = 18;
                     textBlockMove.FontSize = 18;
+                    textBlockMoveBlack.FontSize = 18;
                     textBlockMoveValue.FontSize = 14;
-                    textBlockMoveList.FontSize = 14;
                     textBlockFigure.FontSize = 18;
+                    textBlockFigureBlack.FontSize = 18;
                     textBlockFigureSymbol.FontSize = 18;
+                    textBlockFigureSymbolBlack.FontSize = 18;
+                    textBlockMoveList.FontSize = 14;
                     columnDefinition1.Width = new GridLength(45);
                     columnDefinition2.Width = new GridLength(85);
-                    //columnDefinitionExtend.Width = new GridLength(width - 165);
-                    //columnDefinition11.Width = new GridLength(23);
                     columnDefinitionScore.Width = new GridLength(45);
-
+                    break;
+                }
+                case 3:
+                {
+                    textBlockMoveNumber.FontSize = 18;
+                    textBlockMove.FontSize = 18;
+                    textBlockMoveBlack.FontSize = 18;
+                    textBlockMoveValue.FontSize = 18;
+                    textBlockFigure.FontSize = 18;
+                    textBlockFigureBlack.FontSize = 18;
+                    textBlockFigureSymbol.FontSize = 18;
+                    textBlockFigureSymbolBlack.FontSize = 18;
+                    textBlockMoveList.FontSize = 18;
+                    columnDefinition1.Width = new GridLength(45);
+                    columnDefinition2.Width = new GridLength(85);
+                    columnDefinitionScore.Width = new GridLength(55);
                     break;
                 }
                 default:
                 {
-                    textBlockMoveNumber.FontSize = 12;
-                    textBlockMove.FontSize = 12;
-                    textBlockMoveValue.FontSize = 12;
-                    textBlockMoveList.FontSize = 12;
-                    textBlockFigure.FontSize = 12;
-                    textBlockFigureSymbol.FontSize = 12;
+                    textBlockMoveNumber.FontSize = 14;
+                    textBlockMove.FontSize = 14;
+                    textBlockMoveBlack.FontSize = 14;
+                    textBlockMoveValue.FontSize = 14;
+                    textBlockMoveList.FontSize = 14;
+                    textBlockFigure.FontSize = 14;
+                    textBlockFigureBlack.FontSize = 14;
+                    textBlockFigureSymbol.FontSize = 14;
+                    textBlockFigureSymbolBlack.FontSize = 14;
                     columnDefinition1.Width = new GridLength(30);
                     columnDefinition2.Width = new GridLength(60);
-                    // columnDefinitionExtend.Width = new GridLength(60);
-                   // columnDefinition11.Width = new GridLength(15);
-                    columnDefinitionScore.Width = new GridLength(15);
+                    columnDefinitionScore.Width = new GridLength(45);
                     break;
                 }
             }
@@ -159,8 +164,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetMove(Move move)
         {
             _color = move.FigureColor;
-            gridColumnWhite.HorizontalAlignment = _color == Fields.COLOR_WHITE ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-            this.Background = _color == Fields.COLOR_WHITE ? new SolidColorBrush(Colors.WhiteSmoke) : new SolidColorBrush(Colors.GhostWhite);
+            Background = _color == Fields.COLOR_WHITE ? new SolidColorBrush(Colors.WhiteSmoke) : new SolidColorBrush(Colors.GhostWhite);
             _figureId = move.Figure;
             _capturedFigureId = move.CapturedFigure;
             _isInCheck = move.CheckOrMateSign;
@@ -170,8 +174,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (move.IsEngineMove)
             {
                 textBlockMoveValue.Text = move.Score.ToString(CultureInfo.InvariantCulture);
-                textBlockMoveValue.Foreground =
-                    move.Score < 0 ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);
+                textBlockMoveValue.Foreground = move.Score < 0 ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);
                 if (_extendedFull)
                 {
                     textBlockMoveList.Text = move.BestLine;
@@ -186,13 +189,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetMove(int color, int figureId, int capturedFigureId, string move, int promotedFigureId)
         {
-            move = move.ToLower();
-
+            _color = color;
+            Background = _color == Fields.COLOR_WHITE ? new SolidColorBrush(Colors.WhiteSmoke) : new SolidColorBrush(Colors.GhostWhite);
             _figureId = figureId;
             _capturedFigureId = capturedFigureId;
-            _move = move;
+            _move = move.ToLower();
             _promotedFigureId = promotedFigureId;
-            _color = color;
             ShowMove();
         }
 
@@ -202,29 +204,56 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-
-
+            textBlockFigureBlack.Text = " ";
+            textBlockFigureSymbolBlack.Text = "-";
+            textBlockMoveBlack.Text = " ";
             textBlockFigure.Text = " ";
-            textBlockFigureSymbol.Text = " ";
-            textBlockMove.Text = GetMoveDisplay(_move, _figureId, _capturedFigureId, _promotedFigureId, _isInCheck);
-            var s = FigureId.FigureIdToFenCharacter[_figureId];
-            textBlockFigureSymbol.Text = string.Empty;
-            if (!textBlockMove.Text.StartsWith("0-"))
+            textBlockFigureSymbol.Text = "-";
+            if (_color == Fields.COLOR_WHITE)
             {
-                if (!s.ToUpper().Equals("P"))
+                textBlockMove.Text = GetMoveDisplay(_move, _figureId, _capturedFigureId, _promotedFigureId, _isInCheck);
+                var s = FigureId.FigureIdToFenCharacter[_figureId];
+                if (!textBlockMove.Text.StartsWith("0-"))
                 {
-                    textBlockFigure.Text =  s.ToUpper();
-                    textBlockFigureSymbol.Text =  _fontConverter.ConvertFont(s, "Chess Merida");
-                }
-
-                if (_moveType == DisplayMoveType.ToField)
-                {
-                    if (s.Equals("P", StringComparison.OrdinalIgnoreCase) &&
-                        textBlockMove.Text.StartsWith("x"))
+                    if (!s.ToUpper().Equals("P"))
                     {
-                        textBlockFigure.Text =  _move.Substring(0, 1);
-                        textBlockFigure.Visibility = Visibility.Visible;
-                        textBlockFigureSymbol.Visibility = Visibility.Hidden;
+                        textBlockFigure.Text = s.ToUpper();
+                        textBlockFigureSymbol.Text = _fontConverter.ConvertFont(s, "Chess Merida");
+                    }
+
+                    if (_moveType == DisplayMoveType.ToField)
+                    {
+                        if (s.Equals("P", StringComparison.OrdinalIgnoreCase) &&
+                            textBlockMove.Text.StartsWith("x"))
+                        {
+                            textBlockFigure.Text = _move.Substring(0, 1);
+                            textBlockFigure.Visibility = Visibility.Visible;
+                            textBlockFigureSymbol.Visibility = Visibility.Hidden;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                textBlockMoveBlack.Text = GetMoveDisplay(_move, _figureId, _capturedFigureId, _promotedFigureId, _isInCheck);
+                var s = FigureId.FigureIdToFenCharacter[_figureId];
+                if (!textBlockMoveBlack.Text.StartsWith("0-"))
+                {
+                    if (!s.ToUpper().Equals("P"))
+                    {
+                        textBlockFigureBlack.Text = s.ToUpper();
+                        textBlockFigureSymbolBlack.Text = _fontConverter.ConvertFont(s, "Chess Merida");
+                    }
+
+                    if (_moveType == DisplayMoveType.ToField)
+                    {
+                        if (s.Equals("P", StringComparison.OrdinalIgnoreCase) &&
+                            textBlockMoveBlack.Text.StartsWith("x"))
+                        {
+                            textBlockFigureBlack.Text = _move.Substring(0, 1);
+                            textBlockFigureBlack.Visibility = Visibility.Visible;
+                            textBlockFigureSymbolBlack.Visibility = Visibility.Hidden;
+                        }
                     }
                 }
             }
@@ -236,11 +265,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 textBlockFigure.Visibility = Visibility.Hidden;
                 textBlockFigureSymbol.Visibility = Visibility.Visible;
+                textBlockFigureBlack.Visibility = Visibility.Hidden;
+                textBlockFigureSymbolBlack.Visibility = Visibility.Visible;
             }
             else
             {
                 textBlockFigureSymbol.Visibility = Visibility.Hidden;
                 textBlockFigure.Visibility = Visibility.Visible;
+                textBlockFigureSymbolBlack.Visibility = Visibility.Hidden;
+                textBlockFigureBlack.Visibility = Visibility.Visible;
             }
         }
 

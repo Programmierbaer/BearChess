@@ -178,6 +178,17 @@
                                 <Image Name="imageShowMaterialOnGame" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
+                        <MenuItem Name="menuItemMaterialSmall" Header="Small" Click="MenuItemMaterialSmall_OnClick">
+                            <MenuItem.Icon >
+                                <Image Name="imageShowMaterialSmall" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemMaterialBig" Header="Big" Click="MenuItemMaterialBig_OnClick">
+                            <MenuItem.Icon >
+                                <Image Name="imageShowMaterialBig" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
                     </MenuItem>
                    <MenuItem Name="menuItemPlayer" Header="Player..."  Click="MenuItemPlayer_OnClick">
                        <MenuItem.Icon>

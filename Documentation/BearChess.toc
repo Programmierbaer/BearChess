@@ -47,14 +47,14 @@
 \contentsline {section}{\numberline {14}Analysis mode}{51}%
 \contentsline {subsection}{\numberline {14.1}With electronic chessboard}{51}%
 \contentsline {subsection}{\numberline {14.2}Without electronic chessboard}{52}%
-\contentsline {section}{\numberline {15}Setup position}{53}%
+\contentsline {section}{\numberline {15}Setup position}{54}%
 \contentsline {subsection}{\numberline {15.1}With support of an electronic chessboard}{54}%
-\contentsline {subsection}{\numberline {15.2}Without support of an electronic chessboard}{55}%
-\contentsline {section}{\numberline {16}Run startup game on start}{56}%
-\contentsline {section}{\numberline {17}Games}{57}%
-\contentsline {subsection}{\numberline {17.1}Save}{57}%
-\contentsline {subsection}{\numberline {17.2}Show and load}{58}%
-\contentsline {section}{\numberline {18}Engine window}{59}%
+\contentsline {subsection}{\numberline {15.2}Without support of an electronic chessboard}{56}%
+\contentsline {section}{\numberline {16}Run startup game on start}{57}%
+\contentsline {section}{\numberline {17}Games}{58}%
+\contentsline {subsection}{\numberline {17.1}Save}{58}%
+\contentsline {subsection}{\numberline {17.2}Show and load}{59}%
+\contentsline {section}{\numberline {18}Engine window}{60}%
 \contentsline {section}{\numberline {19}Extended engine support}{62}%
 \contentsline {section}{\numberline {20}Important To Know}{64}%
 \contentsline {subsection}{\numberline {20.1}Certabo: Calibration}{64}%
@@ -62,16 +62,18 @@
 \contentsline {section}{\numberline {21}Trouble shooting}{64}%
 \contentsline {subsection}{\numberline {21.1}The chess moves are not or not correctly displayed}{64}%
 \contentsline {section}{\numberline {22}Known Issues}{64}%
-\contentsline {section}{\numberline {23}Next Steps}{65}%
-\contentsline {section}{\numberline {24}Changelog}{66}%
-\contentsline {subsection}{\numberline {24.1}Version 0.4.2.3 =\textgreater 0.4.3.0}{66}%
-\contentsline {subsection}{\numberline {24.2}Version 0.4.2.2 =\textgreater 0.4.2.3}{66}%
-\contentsline {subsection}{\numberline {24.3}Version 0.4.2.1 =\textgreater 0.4.2.2}{66}%
-\contentsline {subsection}{\numberline {24.4}Version 0.4.2.0 =\textgreater 0.4.2.1}{66}%
-\contentsline {subsection}{\numberline {24.5}Version 0.4.1.0 =\textgreater 0.4.2.0}{66}%
-\contentsline {subsection}{\numberline {24.6}Version 0.4.0.0 =\textgreater 0.4.1.0}{66}%
-\contentsline {subsection}{\numberline {24.7}Version 0.3.3.0 =\textgreater 0.4.0.0}{67}%
-\contentsline {subsection}{\numberline {24.8}Version 0.3.2.0 =\textgreater 0.3.3.0}{67}%
-\contentsline {subsection}{\numberline {24.9}Version 0.3.1.1 =\textgreater 0.3.2.0}{67}%
-\contentsline {subsection}{\numberline {24.10}Version 0.3.1.0 =\textgreater 0.3.1.1}{67}%
-\contentsline {subsection}{\numberline {24.11}Version 0.3.0.0 =\textgreater 0.3.1.0}{68}%
+\contentsline {section}{\numberline {23}Next Steps}{64}%
+\contentsline {section}{\numberline {24}Changelog}{65}%
+\contentsline {subsection}{\numberline {24.1}Version 0.4.3.1 =\textgreater 0.4.4.0}{65}%
+\contentsline {subsection}{\numberline {24.2}Version 0.4.3.0 =\textgreater 0.4.3.1}{65}%
+\contentsline {subsection}{\numberline {24.3}Version 0.4.2.3 =\textgreater 0.4.3.0}{65}%
+\contentsline {subsection}{\numberline {24.4}Version 0.4.2.2 =\textgreater 0.4.2.3}{65}%
+\contentsline {subsection}{\numberline {24.5}Version 0.4.2.1 =\textgreater 0.4.2.2}{65}%
+\contentsline {subsection}{\numberline {24.6}Version 0.4.2.0 =\textgreater 0.4.2.1}{65}%
+\contentsline {subsection}{\numberline {24.7}Version 0.4.1.0 =\textgreater 0.4.2.0}{65}%
+\contentsline {subsection}{\numberline {24.8}Version 0.4.0.0 =\textgreater 0.4.1.0}{66}%
+\contentsline {subsection}{\numberline {24.9}Version 0.3.3.0 =\textgreater 0.4.0.0}{66}%
+\contentsline {subsection}{\numberline {24.10}Version 0.3.2.0 =\textgreater 0.3.3.0}{66}%
+\contentsline {subsection}{\numberline {24.11}Version 0.3.1.1 =\textgreater 0.3.2.0}{67}%
+\contentsline {subsection}{\numberline {24.12}Version 0.3.1.0 =\textgreater 0.3.1.1}{67}%
+\contentsline {subsection}{\numberline {24.13}Version 0.3.0.0 =\textgreater 0.3.1.0}{67}%

@@ -337,6 +337,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _lastMoveFromField = move.FromField;
             _lastMoveToField = move.ToField;
             CapturedFigure = _lastMoveToFigure;
+            move.CapturedFigure = CapturedFigure.FigureId;
 
             CurrentFigureList.Remove(move.FromField);
             CurrentFigureList.Add(move.ToField);

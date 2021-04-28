@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -6,7 +7,9 @@ using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessWin.Assets.Fonts;
+using Brush = System.Windows.Media.Brush;
+using FontConverter = www.SoLaNoSoft.com.BearChessWin.Assets.Fonts.FontConverter;
+using FontFamily = System.Windows.Media.FontFamily;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -42,6 +45,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
             textBlockWhiteFigureSymbol.FontFamily = fontFamily;
             textBlockBlackFigureSymbol.FontFamily = fontFamily;
+         
             _fontConverter = new FontConverter();
             SetDisplayTypes();
             _background = Background;
@@ -96,7 +100,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     columnDefinition2.Width = new GridLength(70);
                     columnDefinition3.Width = new GridLength(70);
                     columnDefinition11.Width = new GridLength(15);
+                    columnDefinition12.Width = new GridLength(40);
                     columnDefinition21.Width = new GridLength(15);
+                    columnDefinition22.Width = new GridLength(40);
 
                     break;
                 }
@@ -113,7 +119,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     columnDefinition2.Width = new GridLength(100);
                     columnDefinition3.Width = new GridLength(100);
                     columnDefinition11.Width = new GridLength(23);
+                    columnDefinition12.Width = new GridLength(61);
                     columnDefinition21.Width = new GridLength(23);
+                    columnDefinition22.Width = new GridLength(61);
+
+                    break;
+                }
+                case 3:
+                {
+                    textBlockMoveNumber.FontSize = 18;
+                    textBlockWhiteMove.FontSize = 18;
+                    textBlockBlackMove.FontSize = 18;
+                    textBlockWhiteFigure.FontSize = 18;
+                    textBlockBlackFigure.FontSize = 18;
+                    textBlockWhiteFigureSymbol.FontSize = 18;
+                    textBlockBlackFigureSymbol.FontSize = 18;
+                    columnDefinition1.Width = new GridLength(45);
+                    columnDefinition2.Width = new GridLength(100);
+                    columnDefinition3.Width = new GridLength(100);
+                    columnDefinition11.Width = new GridLength(23);
+                    columnDefinition12.Width = new GridLength(61);
+                    columnDefinition21.Width = new GridLength(23);
+                    columnDefinition22.Width = new GridLength(61);
 
                     break;
                 }
@@ -127,8 +154,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockWhiteFigureSymbol.FontSize = 12;
                     textBlockBlackFigureSymbol.FontSize = 12;
                     columnDefinition1.Width = new GridLength(30);
-                    columnDefinition2.Width = new GridLength(60);
-                    columnDefinition3.Width = new GridLength(60);
+                    columnDefinition2.Width = new GridLength(70);
+                    columnDefinition3.Width = new GridLength(70);
                     columnDefinition11.Width = new GridLength(15);
                     columnDefinition21.Width = new GridLength(15);
                     break;
@@ -177,7 +204,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _promotedFigureIdBlack = promotedFigureId;
             }
 
-      
             ShowMove();
         }
 

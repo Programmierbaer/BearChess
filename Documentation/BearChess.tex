@@ -14,10 +14,10 @@
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.4.3.0}
+\fancyhead[R]{Version 0.4.4.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{185.04.2021} 
+\date{28.04.2021} 
 
 \begin{document}
 \maketitle
@@ -201,7 +201,7 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png}  \textbf{Rotate board} if the board on the screen should automatically rotate for your color.
 	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation/Moves} opens a windows where you can change the appearance of the notation, e.g. figurine or letters.
 	\item  \includegraphics[scale=0.5]{digit_separator.png}  \textbf{Clocks} switches between large and small clocks.
-	\item  \includegraphics[scale=0.5]{balance_unbalance.png}  \textbf{Captured pieces} shows the captured pieces window at startup or on demand.
+	\item  \includegraphics[scale=0.5]{balance_unbalance.png}  \textbf{Captured pieces} shows the captured pieces window at startup or on demand and you can change the font size to small or big.
 	\item  \includegraphics[scale=0.5]{user_silhouette.png}  \textbf{Player} opens a dialog where you can give it a first and last name.	
     \begin{figure}[H]
 	   \centering
@@ -900,7 +900,10 @@ The move list shows all moves of your game.
 	\label{fig:moveList1}
 \end{figure}
 
-When you play against an engine BearChess collects more information.
+\includegraphics[scale=0.5]{text_smallcaps.png} changes the font size in three different levels. Small font for all, larger font only for the played moves, larger font for all.\\
+
+When you play against an engine BearChess collects more information.\\
+
 \includegraphics[scale=0.5]{show_detail.png} expands the move list and shows the value and best move calculated by the engine.
 \begin{figure}[H]
 	\centering
@@ -1011,7 +1014,9 @@ If both programs give at least a -4 or +4 in their scores over several moves, th
 One outstanding feature compared to other GUIs is the analysis mode. The idea behind it is how a player analyses his games or interesting positions. The figures are quickly rearranged or moves are made that do not always conform to the rules.\\
 For example, the player does not want to go back the last three or four moves to try out a new variant. He sets up the new position directly on the board.\\
 Or you are more of a beginner and want to practice a typical endgame, e.g. king and pawn against king. You then want to know quickly if this move leads to a win or if the opponent can draw.\\
-You can achieve all this with the analysis mode. 
+You can achieve all this with the analysis mode.\\
+
+{\color{red}*} It may happen that not all engines are suitable for analysis. Problems have occurred so far with Arasan 20.3 (not with Arasan 22.2) or with Komodo (the reason with Komodo is still under investigation).
 
 \subsection{With electronic chessboard}
 
@@ -1286,16 +1291,29 @@ If you have performed the calibration without extra queens and are performing a 
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time, e.g. the clocks for white and black.
 	\item If you want to play an engine match with the same engine for black and white you have to install the engine twice with a different name.
-	\item \textbf{Show captured pieces} cannot handle if one color has more than one queen.
 	\item The reaction to changes on the chessboard is sometimes slow.
 \end{itemize}
 
 \section{Next Steps}
-The next release will be more of a bug fix and revision of existing features before any major feature additions. 
+The next release will include many new features, such as analytics, tournament and adjusted playing strength. It will also improve the functions of "Easy playing" and "Analysis mode".
 
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.4.3.1 =\textgreater 0.4.4.0}
+\begin{itemize}
+	\item Changes and fixes in the move list.
+    \item Now, "Captured pieces" counts if you capture a promoted figure.
+	\item Changed the font for moves to a monospaced font.
+	\item Fixed a bug where you could remove a king in analysis mode without an electronic chessboard.
+	\item Minor fixes.	
+\end{itemize}
+
+\subsection{Version 0.4.3.0 =\textgreater 0.4.3.1}
+\begin{itemize}
+	\item Fixed a bug that occurred in the analysis mode without an electronic chessboard.
+\end{itemize}
+
 \subsection{Version 0.4.2.3 =\textgreater 0.4.3.0}
 \begin{itemize}
 	\item Give "Player" a first and last name

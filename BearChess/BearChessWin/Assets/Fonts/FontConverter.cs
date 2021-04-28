@@ -38,7 +38,8 @@ namespace www.SoLaNoSoft.com.BearChessWin.Assets.Fonts
             {"K", "k"},
             {"k", "l"},
             {" ", " "},
-            {"", " "}
+            {"", " "},
+            {"-", "-"}
         };
         private readonly Dictionary<string, string> _standardMappingBlack = new Dictionary<string, string>
         {
@@ -55,7 +56,8 @@ namespace www.SoLaNoSoft.com.BearChessWin.Assets.Fonts
             {"K", "K"},
             {"k", "L"},
             {" ", " "},
-            {"", " "}
+            {"", " "},
+            {"-", "-"}
         };
 
         private readonly Dictionary<string, string> _alphaMapping = new Dictionary<string, string>
@@ -73,7 +75,8 @@ namespace www.SoLaNoSoft.com.BearChessWin.Assets.Fonts
             {"K", "k"},
             {"k", "l"},
             {" ", " "},
-            {"", " "}
+            {"", " "},
+            {"-", "-"}
         };
 
         private readonly Dictionary<string, string> _alphaMapping2 = new Dictionary<string, string>
@@ -91,7 +94,8 @@ namespace www.SoLaNoSoft.com.BearChessWin.Assets.Fonts
             {"K", "n"},
             {"k", "N"},
             {" ", " "},
-            {"", " "}
+            {"", " "},
+            {"-", "-"}
         };
 
 

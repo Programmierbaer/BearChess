@@ -9,25 +9,37 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Name="columnDefinition1" Width="30"></ColumnDefinition>
             <ColumnDefinition Name="columnDefinition2" Width="75"></ColumnDefinition>
+            <ColumnDefinition Name="columnDefinition3" Width="80"></ColumnDefinition>
             <ColumnDefinition Name="columnDefinitionExtend" Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Margin="5,1,5,1" Name="textBlockMoveNumber" VerticalAlignment="Center" TextAlignment="Right"  HorizontalAlignment="Right"  Grid.Column="0">99.</TextBlock>
+        <TextBlock Margin="5,1,5,1"  FontFamily="Consolas" Name="textBlockMoveNumber" VerticalAlignment="Center" TextAlignment="Right"  HorizontalAlignment="Right"  Grid.Column="0">99.</TextBlock>
         <Grid Grid.Column="1" Name="gridColumnWhite" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Name="columnDefinition11" Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Name="columnDefinition12" Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="1,1,0,1" Name="textBlockFigure" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" >K</TextBlock>
-            <TextBlock Margin="1,1,0,1" Name="textBlockFigureSymbol" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" ></TextBlock>
-            <TextBlock Margin="0,1,1,1"  Name="textBlockMove" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1">e2-e4Q</TextBlock>
+            <TextBlock Margin="1,1,0,1"  FontFamily="Consolas" Name="textBlockFigure" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" >K</TextBlock>
+            <TextBlock Margin="1,1,0,1"   Name="textBlockFigureSymbol" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" ></TextBlock>
+            <TextBlock Margin="0,1,1,1"  FontFamily="Consolas" Name="textBlockMove" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1">e2-e4Q</TextBlock>
         </Grid>
-        <Grid Grid.Column="2" Name="gridColumnExtend">
+        <Grid Grid.Column="2" Name="gridColumnBlack" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Name="columnDefinition21" Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Name="columnDefinition22" Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Margin="1,1,0,1"  FontFamily="Consolas" Name="textBlockFigureBlack" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" >K</TextBlock>
+            <TextBlock Margin="1,1,0,1"   Name="textBlockFigureSymbolBlack" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" ></TextBlock>
+            <TextBlock Margin="0,1,1,1"  FontFamily="Consolas" Name="textBlockMoveBlack" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1">e2-e4Q</TextBlock>
+        </Grid>
+        <Grid Grid.Column="3" Name="gridColumnExtend">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15"></ColumnDefinition>
                 <ColumnDefinition Name="columnDefinitionScore" Width="50"></ColumnDefinition>
                 <ColumnDefinition Name="columnDefinitionMoveList" Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="5,1,0,1" Name="textBlockMoveValue" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" >-99,99</TextBlock>
-            <TextBlock Margin="5,1,0,1" TextWrapping="Wrap" Name="textBlockMoveList" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="1" Visibility="Visible">e2-e4 e7-e5</TextBlock>
+            <TextBlock Margin="5,1,0,1"  FontFamily="Consolas" Name="textBlockMoveValue" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1" >-99,99</TextBlock>
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="|"></TextBlock>
+            <TextBlock Margin="5,1,0,1" FontFamily="Consolas" TextWrapping="Wrap" Name="textBlockMoveList" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="2" Visibility="Visible">e2-e4 e7-e5</TextBlock>
         </Grid>
     </Grid>
 </UserControl>
