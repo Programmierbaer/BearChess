@@ -292,6 +292,8 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
+                <MenuItem Header="Info"  Click="MenuIteminfo_OnClick">
+                </MenuItem>
             </Menu>
             <local:GraphicsChessBoardUserControl Margin="5,5,5,0" Grid.Column="0" Grid.Row="1"
                                              x:Name="chessBoardUcGraphics" Visibility="Visible" />

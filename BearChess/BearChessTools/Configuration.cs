@@ -53,7 +53,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 }
                 catch
                 {
-                    //
+                    FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BearChess");
                 }
             }
             TimeControlFileName = Path.Combine(FolderPath, "bearchess_tc.xml");

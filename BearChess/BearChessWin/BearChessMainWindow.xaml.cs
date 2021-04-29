@@ -3973,5 +3973,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageShowMaterialBig.Visibility = Visibility.Visible;
             _materialWindow?.ChangeSize(false);
         }
+
+        private void MenuIteminfo_OnClick(object sender, RoutedEventArgs e)
+        {
+            var messageBoxResult = MessageBox.Show(this, $"Path: {_configuration.FolderPath}", "Information");
+        }
     }
 }
