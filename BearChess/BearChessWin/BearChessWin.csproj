@@ -122,6 +122,16 @@
     <Compile Include="Helper\BoardPiecesSetup.cs" />
     <Compile Include="Helper\ProgressWorker.cs" />
     <Compile Include="Helper\SplashProgressControlContent.cs" />
+    <Compile Include="Windows\DatabaseFilterWindow.xaml.cs">
+      <DependentUpon>DatabaseFilterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DuelWindow.xaml.cs">
+      <DependentUpon>DuelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ITournamentInfoWindow.cs" />
+    <Compile Include="Windows\NewTournamentWindow.xaml.cs">
+      <DependentUpon>NewTournamentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UciConfigControls\UciTextBoxUserControl.xaml.cs">
       <DependentUpon>UciTextBoxUserControl.xaml</DependentUpon>
     </Compile>
@@ -193,6 +203,9 @@
     <Compile Include="Windows\DatabaseWindow.xaml.cs">
       <DependentUpon>DatabaseWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\DuelInfoWindow.xaml.cs">
+      <DependentUpon>DuelInfoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EBoardTestWindow.xaml.cs">
       <DependentUpon>EBoardTestWindow.xaml</DependentUpon>
     </Compile>
@@ -214,6 +227,9 @@
     </Compile>
     <Compile Include="Windows\MovesConfigWindow.xaml.cs">
       <DependentUpon>MovesConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\NewEngineDuelWindow.xaml.cs">
+      <DependentUpon>NewEngineDuelWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\NewGameQueryWindow.xaml.cs">
       <DependentUpon>NewGameQueryWindow.xaml</DependentUpon>
@@ -251,6 +267,16 @@
     <Compile Include="Windows\StopContinueQueryWindow.xaml.cs">
       <DependentUpon>StopContinueQueryWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\TournamentInfoGauntletWindow.xaml.cs">
+      <DependentUpon>TournamentInfoGauntletWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TournamentInfoRoundRobinWindow.xaml.cs">
+      <DependentUpon>TournamentInfoRoundRobinWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TournamentInfoWindowFactory.cs" />
+    <Compile Include="Windows\TournamentWindow.xaml.cs">
+      <DependentUpon>TournamentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\UciConfigValue.cs" />
     <Compile Include="Windows\UciConfigWindow.xaml.cs">
       <DependentUpon>UciConfigWindow.xaml</DependentUpon>
@@ -264,6 +290,18 @@
       <DependentUpon>WinConfigureMChessLink.xaml</DependentUpon>
     </Compile>
     <Page Include="BearChessMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DatabaseFilterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\DuelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\NewTournamentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -359,6 +397,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\DuelInfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\EBoardTestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -402,6 +444,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MovesConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\NewEngineDuelWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -450,6 +496,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\StopContinueQueryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TournamentInfoGauntletWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TournamentInfoRoundRobinWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TournamentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -611,6 +669,10 @@
       <Project>{58eab818-7176-4ba9-a62a-ac2f27b089ae}</Project>
       <Name>BearChessTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BearChessTournament\BearChessTournament.csproj">
+      <Project>{36a83fb3-f131-426b-ae74-cd36ef110658}</Project>
+      <Name>BearChessTournament</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CertaboLoader\CertaboLoader\CertaboLoader.csproj">
       <Project>{40462629-633b-4944-873d-5beed2a60d88}</Project>
       <Name>CertaboLoader</Name>
@@ -622,6 +684,10 @@
     <ProjectReference Include="..\MChessLinkLoader\MChessLinkLoader\MChessLinkLoader.csproj">
       <Project>{FEE3096B-8A9C-496B-B7F5-03E733614DD2}</Project>
       <Name>MChessLinkLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Teddy\Teddy.csproj">
+      <Project>{a05313c6-91fe-4b82-8fad-6f6f66cf812a}</Project>
+      <Name>Teddy</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -937,6 +1003,39 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\6-2-chess-png.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\cup_gold.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\control_repeat_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\filter_advanced.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\table_filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\table_link.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\link_break.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\link.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\lightbulb.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\lightbulb_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\filter.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

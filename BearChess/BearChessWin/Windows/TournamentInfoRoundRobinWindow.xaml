@@ -1,0 +1,57 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.TournamentInfoRoundRobinWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows" 
+        mc:Ignorable="d" SizeToContent="Height" Icon="../Assets/Icons/cup_gold.png" Closing="TournamentInfoRoundRobinWindow_OnClosing"
+        Title="Engine Tournament Information" Height="170" Width="350" MinHeight="170" MinWidth="300">
+    <StackPanel>
+
+        <DockPanel  LastChildFill="False" >
+            <TextBlock Name="textBlockStatus" DockPanel.Dock="Left" Margin="5" >Current game 1 of 2</TextBlock>
+            <CheckBox Name="checkBoxSwitchColor" VerticalAlignment="Center"  DockPanel.Dock="Right" IsEnabled="False" Margin="0,0,50,0" ></CheckBox>
+            <Label Width="80" VerticalAlignment="Center" DockPanel.Dock="Right" >Switch color:</Label>
+        </DockPanel>
+        <Separator></Separator>
+        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
+            <Grid Name="gridDuel" Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="5" Grid.Row="0" TextWrapping="Wrap" Width="30" TextAlignment="Center" Grid.Column="2" FontWeight="SemiBold" Text="∑"></TextBlock>
+
+            </Grid>
+        </ScrollViewer>
+        <Separator></Separator>
+        <DockPanel Margin="5">
+
+            <Button Name="buttonPause" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="ButtonCancel_OnClick">
+                <Image Source="../Assets/Icons/control_stop_blue.png" Width="32" Height="32" />
+            </Button>
+            <Button Name="buttonContinue" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right"  Visibility="Collapsed"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="ButtonCancel_OnClick">
+                <Image Source="../Assets/Icons/control_play_blue.png" Width="32" Height="32" />
+            </Button>
+            <Button Name="buttonClose" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right" Visibility="Collapsed"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="ButtonCancel_OnClick">
+                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32" />
+            </Button>
+        </DockPanel>
+    </StackPanel>
+</Window>

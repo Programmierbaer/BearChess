@@ -120,7 +120,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void SetLedForFields(string[] fieldNames)
         {
-            if (!EnsureConnection()) return;
+            if (!EnsureConnection())
+            {
+                return;
+            }
+
             var ledForFields = GetLedForFields(fieldNames);
             _lastSendLeds = $"L22{ledForFields}";
             lock (_locker)
@@ -131,7 +135,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void SetLastLeds()
         {
-            if (!EnsureConnection()) return;
+            if (!EnsureConnection())
+            {
+                return;
+            }
+
             lock (_locker)
             {
                 _serialCommunication.Send(_lastSendLeds);
@@ -140,7 +148,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void SetAllLedsOff()
         {
-            if (!EnsureConnection()) return;
+            if (!EnsureConnection())
+            {
+                return;
+            }
+
             lock (_locker)
             {
                 _serialCommunication.Send("X");
@@ -149,7 +161,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void SetAllLedsOn()
         {
-            if (!EnsureConnection()) return;
+            if (!EnsureConnection())
+            {
+                return;
+            }
+
             lock (_locker)
             {
                 var ledForFields = GetLedForAllFieldsOn();
@@ -195,7 +211,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
 
             var result = string.Empty;
-            //lock (_locker)
 
             var dataFromBoard = _serialCommunication.GetFromBoard();
             if (dataFromBoard.FromBoard.StartsWith("s") && dataFromBoard.FromBoard.Length == 67)

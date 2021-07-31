@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessDatabase;
 
@@ -17,7 +18,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly bool _showButtons;
 
         public bool SaveAsNew { get; private set; }
-
+        public bool AdjustStrength { get; private set; }
 
         public class ButtonConfigEventArgs : EventArgs
         {
@@ -80,6 +81,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                 }
             }
+
+            checkBoxAdaptStrength.IsChecked = uciInfo.AdjustStrength;
+
             int optionsLength = uciInfo.Options.Length / 2;
             int count = 0;
             int rowIndex = 0;
@@ -152,7 +156,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 OriginName = _uciInfo.OriginName,
                 Valid = _uciInfo.Valid,
                 OpeningBook = checkBoxUseOpeningBook.IsChecked.HasValue && checkBoxUseOpeningBook.IsChecked.Value ? comboBoxOpeningBooks.SelectedItem.ToString() : string.Empty,
-                OpeningBookVariation = GetVariation()
+                OpeningBookVariation = GetVariation(),
+                AdjustStrength = checkBoxAdaptStrength.IsChecked.HasValue && checkBoxAdaptStrength.IsChecked.Value
             };
             foreach (var uciInfoOption in _uciInfo.Options)
             {
@@ -570,6 +575,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             radioButtonBest.IsEnabled = true;
             radioButtonFlexible.IsEnabled = true;
             radioButtonWide.IsEnabled = true;
+        }
+
+        private void CheckBoxAdaptStrength_OnChecked(object sender, RoutedEventArgs e)
+        {
+            AdjustStrength = true;
+        }
+
+        private void CheckBoxAdaptStrength_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            AdjustStrength = true;
         }
     }
 }

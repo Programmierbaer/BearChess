@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Icon="../Assets/Icons/robot.png"
         mc:Ignorable="d"  ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
-        Title="Load and Manage UCI Engines" Height="290" Width="450"  MinWidth="450" >
+        Title="Load and Manage UCI Engines" Height="390" Width="450"  MinWidth="450" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="290"></RowDefinition>

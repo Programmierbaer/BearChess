@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Xml.Serialization;
 using InTheHand.Net;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessTools
@@ -25,6 +26,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
         private string BtConfigFileName { get; }
         private string TimeControlFileName { get; }
         private string StartupTimeControlFileName { get; }
+        private string DatabaseFilterFileName { get; }
 
         public const string STARTUP_WHITE_ENGINE_ID = "startupWhite.uci";
         public const string STARTUP_BLACK_ENGINE_ID = "startupBlack.uci";
@@ -60,6 +62,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
             StartupTimeControlFileName = Path.Combine(FolderPath, "bearchess_start_tc.xml");
             ConfigFileName = Path.Combine(FolderPath, "bearchess.xml");
             BtConfigFileName = Path.Combine(FolderPath, "bearchess_bt.xml");
+            DatabaseFilterFileName = Path.Combine(FolderPath, "bearchess_dbfilter.xml");
             try
             {
                 if (File.Exists(ConfigFileName))
@@ -127,6 +130,34 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public void SetDoubleValue(string winName, double position)
         {
             SetConfigValue(_appSettings, winName, position.ToString(CultureInfo.InvariantCulture));
+        }
+
+        public void SaveGamesFilter(GamesFilter gamesFilter)
+        {
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(GamesFilter));
+                TextWriter textWriter = new StreamWriter(DatabaseFilterFileName, false);
+                serializer.Serialize(textWriter, gamesFilter);
+                textWriter.Close();
+            }
+            catch
+            {
+                //
+            }
+        }
+
+        public GamesFilter LoadGamesFilter()
+        {
+            if (!File.Exists(DatabaseFilterFileName))
+            {
+                return new GamesFilter() {FilterIsActive = false};
+            }
+            XmlSerializer serializer = new XmlSerializer(typeof(GamesFilter));
+            TextReader textReader = new StreamReader(DatabaseFilterFileName);
+            GamesFilter gamesFilter = (GamesFilter)serializer.Deserialize(textReader);
+            textReader.Close();
+            return gamesFilter;
         }
 
         public void Save(BluetoothAddress btAddress)

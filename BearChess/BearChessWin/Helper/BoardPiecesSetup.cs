@@ -19,6 +19,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public string BlackBishopFileName { get; set; }
         public string BlackKnightFileName { get; set; }
         public string BlackPawnFileName { get; set; }
+        public bool OneLine { get; set; }
 
         public override string ToString()
         {

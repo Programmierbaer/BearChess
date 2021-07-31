@@ -8,6 +8,7 @@ using System.Linq;
 using System.Resources;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
@@ -179,75 +180,89 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY)
         {
-            
-            if (_loadedEngines.ContainsKey(uciInfo.Name))
+            try
             {
-                return;
-            }
-
-            _loadedUciInfos[uciInfo.Name] = uciInfo;
-            var showInfo = bool.Parse(_configuration.GetConfigValue("showucilog", "false"));
-            if (string.IsNullOrWhiteSpace(fenPosition))
-            {
-                _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {playedMoves.Length} played moves");
-            }
-            else
-            {
-                _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {fenPosition} and {playedMoves.Length} played moves");
-            }
-            _fileLogger?.LogInfo($"  Engine id: {uciInfo.Id}");
-            if ((_logWindow == null) && showInfo)
-            {
-                _logWindow = new LogWindow(_configuration) {Owner = this};
-                _logWindow.SendEvent += LogWindow_SendEvent;
-                _logWindow.Show();
-            }
-            _logWindow?.AddFor(uciInfo.Name);
-            if (string.IsNullOrWhiteSpace(_firstEngineName) || _loadedEngines.Count==0)
-            {
-                _firstEngineName = uciInfo.Name;
-                _fileLogger?.LogDebug($@"Set to first engine: {_firstEngineName}");
-            }
-            UciLogger fileLogger = new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
-            fileLogger.UciCommunicationEvent += FileLogger_UciCommunicationEvent;
-
-            EngineInfoUserControl engineInfoUserControl = new EngineInfoUserControl(uciInfo, color);
-            engineInfoUserControl.MultiPvEvent += EngineInfoUserControl_MultiPvEvent;
-            engineInfoUserControl.CloseEvent += EngineInfoUserControl_CloseEvent;
-            engineInfoUserControl.StartStopEvent += EngineInfoUserControl_StartStopEvent;
-            engineInfoUserControl.ConfigEvent += EngineInfoUserControl_ConfigEvent;
-
-            UciLoader uciLoader = new UciLoader(uciInfo, fileLogger, lookForBookMoves);
-            uciLoader.EngineReadingEvent += UciLoader_EngineReadingEvent;
-            
-            _loadedEnginesControls[uciInfo.Name] = engineInfoUserControl;
-            _loadedEngines[uciInfo.Name] = new LoadedUciEngine(uciLoader,  color);
-            _loadedEngines[uciInfo.Name].SetConfigValues();
-            if (!string.IsNullOrWhiteSpace(fenPosition))
-            {
-                _loadedEngines[uciInfo.Name].UciEngine.SetFen(fenPosition, string.Empty);
-            }
-
-            foreach (var playedMove in playedMoves)
-            {
-                _loadedEngines[uciInfo.Name].UciEngine.MakeMove(playedMove.FromFieldName.ToLower(), 
-                                                                playedMove.ToFieldName.ToLower(),
-                                                                FigureId.FigureIdToFenCharacter[playedMove.PromotedFigure]);
-            }
-
-            stackPanelEngines.Children.Add(engineInfoUserControl);
-            if (!string.IsNullOrWhiteSpace(_lastCommand))
-            {
-                if (_lastCommand.Equals("infinite"))
+                if (_loadedEngines.ContainsKey(uciInfo.Name))
                 {
-                    _loadedEngines[uciInfo.Name].UciEngine.GoInfinite();
+                    return;
+                }
+
+                UciLogger fileLogger =
+                    new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
+                fileLogger.UciCommunicationEvent += FileLogger_UciCommunicationEvent;
+                UciLoader uciLoader = new UciLoader(uciInfo, fileLogger, lookForBookMoves);
+                _loadedUciInfos[uciInfo.Name] = uciInfo;
+                var showInfo = bool.Parse(_configuration.GetConfigValue("showucilog", "false"));
+                if (string.IsNullOrWhiteSpace(fenPosition))
+                {
+                    _fileLogger?.LogInfo($"Load engine {uciInfo.Name} with {playedMoves.Length} played moves");
                 }
                 else
                 {
-                    _loadedEngines[uciInfo.Name].UciEngine.SendToEngine(_lastCommand);
+                    _fileLogger?.LogInfo(
+                        $"Load engine {uciInfo.Name} with {fenPosition} and {playedMoves.Length} played moves");
                 }
+
+                _fileLogger?.LogInfo($"  Engine id: {uciInfo.Id}");
+                if ((_logWindow == null) && showInfo)
+                {
+                    _logWindow = new LogWindow(_configuration) {Owner = this};
+                    _logWindow.SendEvent += LogWindow_SendEvent;
+                    _logWindow.Show();
+                }
+
+                _logWindow?.AddFor(uciInfo.Name);
+                if (string.IsNullOrWhiteSpace(_firstEngineName) || _loadedEngines.Count == 0)
+                {
+                    _firstEngineName = uciInfo.Name;
+                    _fileLogger?.LogDebug($@"Set to first engine: {_firstEngineName}");
+                }
+
+
+                EngineInfoUserControl engineInfoUserControl = new EngineInfoUserControl(uciInfo, color);
+                engineInfoUserControl.MultiPvEvent += EngineInfoUserControl_MultiPvEvent;
+                engineInfoUserControl.CloseEvent += EngineInfoUserControl_CloseEvent;
+                engineInfoUserControl.StartStopEvent += EngineInfoUserControl_StartStopEvent;
+                engineInfoUserControl.ConfigEvent += EngineInfoUserControl_ConfigEvent;
+
+
+                uciLoader.EngineReadingEvent += UciLoader_EngineReadingEvent;
+
+                _loadedEnginesControls[uciInfo.Name] = engineInfoUserControl;
+                _loadedEngines[uciInfo.Name] = new LoadedUciEngine(uciLoader, color);
+                _loadedEngines[uciInfo.Name].SetConfigValues();
+                if (!string.IsNullOrWhiteSpace(fenPosition))
+                {
+                    _loadedEngines[uciInfo.Name].UciEngine.SetFen(fenPosition, string.Empty);
+                }
+
+                foreach (var playedMove in playedMoves)
+                {
+                    _loadedEngines[uciInfo.Name].UciEngine.MakeMove(playedMove.FromFieldName.ToLower(),
+                                                                    playedMove.ToFieldName.ToLower(),
+                                                                    FigureId.FigureIdToFenCharacter[
+                                                                        playedMove.PromotedFigure]);
+                }
+
+                stackPanelEngines.Children.Add(engineInfoUserControl);
+                if (!string.IsNullOrWhiteSpace(_lastCommand))
+                {
+                    if (_lastCommand.Equals("infinite"))
+                    {
+                        _loadedEngines[uciInfo.Name].UciEngine.GoInfinite();
+                    }
+                    else
+                    {
+                        _loadedEngines[uciInfo.Name].UciEngine.SendToEngine(_lastCommand);
+                    }
+                }
+
+                ShowInformation();
             }
-            ShowInformation();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error on load engine", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 

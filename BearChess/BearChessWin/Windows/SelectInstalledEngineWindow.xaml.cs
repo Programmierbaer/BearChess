@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using Microsoft.Win32;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessDatabase;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -100,6 +101,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     SelectedEngine.ClearOptionValues();
                     SelectedEngine.OpeningBook = uciInfo.OpeningBook;
                     SelectedEngine.OpeningBookVariation = uciInfo.OpeningBookVariation;
+                    SelectedEngine.AdjustStrength = uciInfo.AdjustStrength;
                     foreach (var uciInfoOptionValue in uciInfo.OptionValues)
                     {
                         SelectedEngine.AddOptionValue(uciInfoOptionValue);

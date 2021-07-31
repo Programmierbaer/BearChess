@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessDatabase;
@@ -45,15 +46,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public UciLoader(UciInfo uciInfo, ILogging logger,  bool lookForBookMoves)
         {
+            
             _uciInfo = uciInfo;
             _logger = logger;
             _lookForBookMoves = lookForBookMoves;
             _logger?.LogInfo($"Load engine {uciInfo.Name} with id {uciInfo.Id}");
             _openingBook = null;
             _bookMove = null;
+            string fileName = _uciInfo.FileName;
             if (!string.IsNullOrWhiteSpace(_uciInfo.OpeningBook))
             {
                 _openingBook = OpeningBookLoader.LoadBook(uciInfo.OpeningBook, false);
+            }
+
+            if (_uciInfo.AdjustStrength)
+            {
+                string exeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                string workPath = Path.GetDirectoryName(exeFilePath);
+                fileName = Path.Combine(workPath ?? string.Empty, "Teddy.exe");
+                if (!File.Exists(fileName))
+                {
+                    throw new FileNotFoundException(fileName);
+                }
             }
             _engineProcess = new Process
             {
@@ -62,9 +76,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardInput = true,
-                    FileName = uciInfo.FileName,
+                    FileName = fileName,
                     CreateNoWindow = true,
-                    WorkingDirectory = Path.GetDirectoryName(uciInfo.FileName)
+                    WorkingDirectory = Path.GetDirectoryName(fileName),
+                    Arguments = _uciInfo.AdjustStrength ? _uciInfo.FileName : string.Empty
                 }
 
             };
@@ -361,7 +376,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             _logger?.LogError("Send ", ex);
                         }
 
-                        if (commandToEngine.Equals("quit"))
+                        if (commandToEngine.Equals("quit",StringComparison.OrdinalIgnoreCase))
                         {
                             _quit = true;
                             break;

@@ -1,37 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessDatabase
 {
-    [Serializable]
-    public class DatabaseGameSimple
-    {
-        public int Id { get; set; }
-
-        public string White { get; set; }
-        
-        public string Black { get; set; }
-        
-        public string GameEvent { get; set; }
-
-        public string GameSite { get; set; }
-
-        public string Result { get; set; }
-        
-        public DateTime GameDate { get; set; }
-        
-        public string MoveList { get; set; }
-
-        public DatabaseGameSimple()
-        {
-            
-        }
-
-    }
-
     [Serializable]
     public class DatabaseGame
     {
@@ -39,6 +14,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         public PgnGame PgnGame { get; set; }
         public ClockTime WhiteClockTime { get; set; }
         public ClockTime BlackClockTime { get; set; }
+        public int Round  { get; set; }
 
         [XmlArrayItem("ListOfMoves")]
         public Move[] AllMoves;
@@ -53,6 +29,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         public string Pgn => PgnGame.GetGame();
         [XmlIgnore]
         public string Result => PgnGame.Result;
+        
         [XmlIgnore]
         public DateTime GameDate => DateTime.Parse(PgnGame.GameDate);
         [XmlIgnore]
@@ -69,6 +46,8 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             }
 
             AllMoves = myMove.ToArray();
+            if (currentGame!=null)
+              Round = currentGame.Round;
         }
 
         public DatabaseGame()

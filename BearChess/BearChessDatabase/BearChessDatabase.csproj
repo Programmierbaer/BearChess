@@ -60,11 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CurrentGame.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="DatabaseDuel.cs" />
     <Compile Include="DatabaseGame.cs" />
+    <Compile Include="DatabaseGameSimple.cs" />
+    <Compile Include="DatabaseTournament.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UciInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

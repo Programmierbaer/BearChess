@@ -1,0 +1,69 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.DuelInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" WindowStyle="ToolWindow"
+        mc:Ignorable="d" Closing="DuelInfoWindow_OnClosing" Background="AliceBlue" Icon="../Assets/Icons/6-2-chess-png.png"
+        Title="Engine Duel Information" Height="220" Width="350" MinHeight="220" MinWidth="300">
+    <StackPanel>
+        
+        <DockPanel  LastChildFill="False" >
+            <TextBlock Name="textBlockStatus" DockPanel.Dock="Left" Margin="5" >Current game 1 of 2</TextBlock>
+            <CheckBox Name="checkBoxSwitchColor" VerticalAlignment="Center"  DockPanel.Dock="Right" IsEnabled="False" Margin="0,0,50,0" ></CheckBox>
+            <Label Width="80" VerticalAlignment="Center" DockPanel.Dock="Right" >Switch color:</Label>
+        </DockPanel>
+        <Separator></Separator>
+        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
+            <Grid Name="gridDuel">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                </Grid>
+
+                <TextBlock Margin="5" Grid.Row="0" TextWrapping="Wrap" Grid.Column="0" FontWeight="DemiBold">Engine / Game</TextBlock>
+                <TextBlock Margin="5" Grid.Row="0" TextWrapping="Wrap" Grid.Column="1" FontWeight="SemiBold" Text="∑"></TextBlock>
+                <TextBlock Name="textBlockEngine1" Margin="5" Grid.Row="1" Grid.Column="0">Engine 1</TextBlock>
+                <TextBlock Name="textBlockEngine2" Margin="5" Grid.Row="2" Grid.Column="0">Engine 2</TextBlock>
+                <TextBlock Name="textBlockResult1" Margin="5" Grid.Row="1" Grid.Column="1" FontWeight="SemiBold">0</TextBlock>
+                <TextBlock Name="textBlockResult2" Margin="5" Grid.Row="2" Grid.Column="1" FontWeight="SemiBold">0</TextBlock>
+            </Grid>
+        </ScrollViewer>
+        <Separator></Separator>
+        <DockPanel Margin="5">
+            
+            <Button Name="buttonPause" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="ButtonCancel_OnClick">
+                <Image Source="../Assets/Icons/control_stop_blue.png" Width="32" Height="32" />
+            </Button>
+            <Button Name="buttonContinue" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right"  Visibility="Collapsed"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="ButtonCancel_OnClick">
+                <Image Source="../Assets/Icons/control_play_blue.png" Width="32" Height="32" />
+            </Button>
+            <Button Name="buttonClose" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right" Visibility="Collapsed"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="ButtonCancel_OnClick">
+                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32" />
+            </Button>
+        </DockPanel>
+    </StackPanel>
+</Window>

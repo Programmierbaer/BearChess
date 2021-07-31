@@ -12,15 +12,15 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Name="dataGridGames" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False"  
-                  SelectionMode="Single"  MouseDoubleClick="DataGridGames_OnMouseDoubleClick" IsReadOnly="True">
+        <DataGrid Name="dataGridGames" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False" 
+                  SelectionMode="Extended"  MouseDoubleClick="DataGridGames_OnMouseDoubleClick" IsReadOnly="True">
             <DataGrid.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="CornflowerBlue"/>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
             </DataGrid.Resources>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Delete" Name="menuItemDelete" Click="MenuItemDelete_OnClick">
+                    <MenuItem Header="Delete" Name="menuItemDelete" Click="ButtonDelete_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/bin.png"></Image>
                         </MenuItem.Icon>
@@ -33,28 +33,28 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding White}" Width="Auto">
+                <DataGridTextColumn Binding="{Binding White}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>White</DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Black}" Width="Auto">
+                <DataGridTextColumn Binding="{Binding Black}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Black</DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding GameEvent}" Width="Auto">
+                <DataGridTextColumn Binding="{Binding GameEvent}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Event</DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding GameSite}" Width="Auto">
+                <DataGridTextColumn Binding="{Binding GameSite}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Site</DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Round}" Width="Auto">
+                <DataGridTextColumn Binding="{Binding Round}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Round</DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Result}" Width="Auto">
+                <DataGridTextColumn Binding="{Binding Result}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Result</DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding GameDate , StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" Width="Auto">
+                <DataGridTextColumn Binding="{Binding GameDate , StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Date</DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding MoveList}" Width="Auto">
+                <DataGridTextColumn Binding="{Binding MoveList}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Moves</DataGridTextColumn.Header>
                 </DataGridTextColumn>
             </DataGrid.Columns>
@@ -83,11 +83,16 @@
 
             <Button Margin="35,5,5,5" DockPanel.Dock="Left" Name="buttonSync" Click="ButtonSync_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Synchronize with chessboard">
                 <StackPanel Orientation="Horizontal">
-                    <Image Name="imageFilterClear" Source="../Assets/Icons/filter_clear.png" Width="32" Height="32" Visibility="Collapsed"></Image>
-                    <Image Name="imageFilterApply" Source="../Assets/Icons/filter_reapply.png" Width="32" Height="32"></Image>
+                    <Image Name="imageLinkClear" Source="../Assets/Icons/link_break.png" Width="32" Height="32" Visibility="Collapsed"></Image>
+                    <Image Name="imageLinkApply" Source="../Assets/Icons/link.png" Width="32" Height="32"></Image>
                 </StackPanel>
             </Button>
-
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonFilter" Click="ButtonFilter_OnClick"  Background="Transparent" BorderBrush="Transparent"  ToolTip="Filter games">
+                <StackPanel Orientation="Horizontal">
+                    <Image Name="imageTableFilter" Source="../Assets/Icons/table_filter.png" Width="32" Height="32"></Image>
+                </StackPanel>
+            </Button>
+            <Image Name="imageTableFilterActive" Source="../Assets/Icons/filter.png" Width="16" Height="16" Visibility="Collapsed"></Image>
             <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
                 <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
             </Button>
@@ -95,11 +100,6 @@
             <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete database">
                 <Image Source="../Assets/Icons/database_delete.png" Width="32" Height="32"></Image>
             </Button>
-
-
-
-
-
         </DockPanel>
     </Grid>
 </Window>

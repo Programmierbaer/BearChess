@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Xml.Serialization;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessDatabase;
@@ -23,8 +24,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly bool _isInitialized;
 
         public bool SaveAsStartup { get; private set; }
-        public UciInfo PlayerBlackConfigValues;
-        public UciInfo PlayerWhiteConfigValues;
+        public UciInfo PlayerBlackConfigValues { get; private set; }
+        public UciInfo PlayerWhiteConfigValues { get; private set; }
         private bool? _isCheckedAllowTakeBack;
         private Brush _foreground;
 
@@ -101,8 +102,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             timeControl.WaitForMoveOnBoard = StartAfterMoveOnBoard;
-            timeControl.PonderWhite = imagePonderWhite.Visibility == Visibility.Visible;
-            timeControl.PonderBlack = imagePonderBlack.Visibility == Visibility.Visible;
             timeControl.TournamentMode = TournamentMode;
             return timeControl;
         }

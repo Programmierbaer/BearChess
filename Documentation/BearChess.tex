@@ -1,6 +1,7 @@
 
 \documentclass[11pt,a4paper]{article}
 \usepackage{graphicx}
+\usepackage[export]{adjustbox}
 \usepackage{float}
 \usepackage{titlesec}
 \usepackage{fancyhdr}
@@ -14,10 +15,10 @@
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.4.4.0}
+\fancyhead[R]{Version 0.5.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{28.04.2021} 
+\date{01.08.2021} 
 
 \begin{document}
 \maketitle
@@ -34,8 +35,6 @@ So the focus of BearChess is more on exploiting the possibilities of the chessbo
 The first version of BearChess supports the chessboards from Certabo and the boards connected via Millennium ChessLink.\\
 
 As you can see from the version number, this software is still under development. There are still some functions that are not fully implemented and there are certainly still many bugs. But BearChess has now reached a level where it can be used and feedback from other users is welcome.\\
-
-Some functions are marked with a {\color{red}\textbf{*}}. These functions are still under development.\\
 
 I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo) or Millennium 2000 GmbH. If something does not work, Certabo or Millennium is not responsible for it.\\
 
@@ -69,6 +68,7 @@ BearChess offers among others the following functions:
   	  \item Play against human beings or UCI engines.
   	  \item Analyze your games or trainings with the help of electronic chessboards.
   	  \item Use multiple chess engines at the same time for playing and analyzing.
+  	  \item Engine duels and tournaments.
   	  \item Support for Polyglot and Arena opening books.
   	  \item Save and load your games
   	  \item Individual chessmen and board fields.
@@ -140,9 +140,17 @@ Read more in chapter \textbf{\ref{easyStart}  \nameref{easyStart}} on page \page
 \end{figure}
 \begin{itemize}
 	\item \includegraphics[scale=0.2]{bearchess.png} \textbf{Play a new game} opens a new window to select opponents and time control (see chapter \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent}).
+	
 	\item \includegraphics[scale=0.5]{robot.png} \textbf{Run in analyze mode} allows you to analyze games or positions with suppport of several chess engines (see chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode})
+	
+	\item \includegraphics[scale=0.5]{6-2-chess-png.png} \textbf{Engine duel} starts and manage engine duels (see chapter )
+	
+	\item \includegraphics[scale=0.5]{cup_gold.png} \textbf{Engine tournament} starts and manage engine tournaments (see chapter )
+	
 	\item \includegraphics[scale=0.03]{Chess_Board.png} see chapter \textbf{\ref{SetupPosition}  \nameref{SetupPosition}} on page \pageref{SetupPosition}.
+	
 	\item \textbf{Run startup game on start} immediately starts a new game when you start BearChess. For more information read chapter \textbf{\ref{startupgame}  \nameref{startupgame}} on page \pageref{startupgame}.
+	
 	\item \includegraphics[scale=0.5]{door_out.png} \textbf{Close} exits BearChess.
 \end{itemize}
 
@@ -155,7 +163,7 @@ Read more in chapter \textbf{\ref{easyStart}  \nameref{easyStart}} on page \page
 \end{figure}
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{diskette.png} \textbf{Save} your current game.
-	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Show \& Load} opens a new window in which you can see and load all your previously saved games.
+	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Games manager} opens a new window in which you can see and load all your previously saved games.
 	\item \includegraphics[scale=0.5]{clipboard_sign_out.png}  \textbf{Copy to clipboard} copy the current game (PGN) to your clipboard.	
 	\item \includegraphics[scale=0.5]{clipboard_sign.png}  \textbf{Paste from clipboard} loads a game (PGN) from your clipboard.
 \end{itemize}
@@ -489,7 +497,7 @@ If BearChess find only one png file inside the directory it assumes that this fi
 \end{figure}
 
 The png must have the pieces in the order and colors shown above.\\
-If you have one png file for all pieces, you can just drgp \& drop the png file onto the
+If you have one png file for all pieces, you can just drag \& drop the png file onto the
 open file dialog icon. It avoids the effort of having to have a separate directory for each file.
 \begin{figure}[H]
 	\centering
@@ -1071,6 +1079,189 @@ Click on one the figure to place in on the selected field. If the is a piece on 
 	\label{fig:AnalyzeMode3_2}
 \end{figure}
 
+\section{Engine duel} \label{EngineDuel}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{EngineDuel1.png}
+	\caption{Engine duel}
+	\label{fig:EngineDuel}
+\end{figure}
+
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Start a new engine duel.
+	\item \includegraphics[scale=0.5]{file_manager.png} Manage or continue an engine duel. 
+\end{itemize}
+
+\subsection{Start a new engine duel}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{EngineDuel2.png}
+	\caption{New engine duel}
+	\label{fig:EngineDuel2}
+\end{figure}
+
+In a duel, two engines play one or more games against each other. You can define the number of games and whether to change colors after each game. First, give the event an useful name and select the engines. 
+With \includegraphics[scale=0.5]{file_manager.png} you can change the database where the games are stored.
+
+\subsubsection{Engine duel information}
+When you have started the duel, the following information window appears:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{EngineDuel3.png}
+	\caption{Engine duel information}
+	\label{fig:EngineDuel3}
+\end{figure}
+
+\includegraphics[scale=0.5]{control_stop_blue.png} ask you if you want to stop the current duel.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{EngineDuel4.png}
+	\caption{Stop engine duel}
+	\label{fig:EngineDuel4}
+\end{figure}
+
+If you confirm, the current duel and game is stored and you can continue the duel at the same position.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{EngineDuel5.png}
+	\caption{Engine duel finished}
+	\label{fig:EngineDuel5}
+\end{figure}
+
+The final result is shown after the duel is finished.
+
+\subsection{Manage engine duels}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{EngineDuel6.png}
+	\caption{Manage engine duels}
+	\label{fig:EngineDuel6}
+\end{figure}
+
+Shows an overview of all duels. The top list shows duel information and below it all played games of the duel. The example shows one finished duel and one running duel where the first game is not finished.
+
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{control_play_blue.png} Continue a running duel with the last unfinished game at the same position.
+	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Load the selected duel configuration as template for a new duel.
+	\item \includegraphics[scale=0.5]{control_repeat_blue.png} Deletes all games of the selected duel and runs the duel again.
+    \item \includegraphics[scale=0.5]{bin.png} Deletes the selected duel and all associated games.
+        \item \includegraphics[scale=0.5]{database_delete.png} Deletes all duels and all associated games.
+\end{itemize}
+
+\section{Engine tournament} \label{EngineTournamentl}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{EngineTournament.png}
+	\caption{Engine tournament}
+	\label{fig:EngineTournament}
+\end{figure}
+
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{cup_gold.png} Start a new engine tournament.
+	\item \includegraphics[scale=0.5]{file_manager.png} Manage or continue an engine tournament. 
+\end{itemize}
+
+\subsection{Start a new engine tournament}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{EngineTournament1.png}
+	\caption{New engine tournament}
+	\label{fig:EngineTournament1}
+\end{figure}
+
+The left side configures the tournament where on the right side you can select the participants.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{EngineTournament2.png}
+	\caption{Participants}
+	\label{fig:EngineTournament2}
+\end{figure}
+The number of participants influences the number of games. The example shows four participants.
+
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{control_back.png} Add a new participant
+	\item \includegraphics[scale=0.5]{control_play.png} Remove a participant. 
+	\item \includegraphics[scale=0.5]{control_rewind.png} Add all engines as participant. 
+	\item \includegraphics[scale=0.5]{control_fastforward.png} Remove all participants. 
+    \item \includegraphics[scale=0.5]{cog.png} Configure selected participant. 
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\fbox{\includegraphics[scale=0.9]{EngineTournament3.png}}
+	\caption{Configuration}
+	\label{fig:EngineTournament3}
+\end{figure}
+
+Currently, two types of tournaments are supported.
+\begin{itemize}
+	\item \textbf{RoundRobin} Everyone plays against everyone
+	\item \textbf{Gauntlet} One (deliquent) plays against everyone
+\end{itemize}
+
+\textbf{Cycles} determines the number of passes. The example shows four participants for a roundrobin tournament. Six games are played if everyone plays against everyone. With two cycles there are twelve games.\\
+
+Select the deliquent for a gauntlet tournament.  The example shows four participants for a gauntlet tournament. Three games are played if the deliquent plays against everyone. With two cycles there are six games
+
+
+\begin{figure}[H]
+	\centering 
+	\fbox{\includegraphics[scale=0.8]{EngineTournament4.png}}
+	\caption{Gauntlet}
+	\label{fig:EngineTournament4}
+\end{figure}
+
+
+With \includegraphics[scale=0.5]{file_manager.png} you can change the database where the games are stored.
+
+\subsubsection{Engine tournament information}
+
+When you have started the tournament, the following information window appears:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{EngineTournament5.png}
+	\caption{Engine tournament information roundrobin}
+	\label{fig:EngineTournameent5}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{EngineTournament6.png}
+	\caption{Engine tournament information gauntlet}
+	\label{fig:EngineTournameent6}
+\end{figure}
+
+\includegraphics[scale=0.5]{control_stop_blue.png} ask you if you want to stop the current tournament.
+
+\subsection{Manage engine tournaments}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{EngineTournament7.png}
+	\caption{Manage engine tournaments}
+	\label{fig:EngineTournament7}
+\end{figure}
+
+Shows an overview of all tournaments. The top list shows tournament information and below it all played games of the tournament. The example shows one finished tournament and one running tournament where the second game is not finished.
+
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{control_play_blue.png} Continue a running tournament with the last unfinished game at the same position.
+	\item \includegraphics[scale=0.5]{cup_gold.png} Load the selected tournament configuration as template for a new tournament.
+	\item \includegraphics[scale=0.5]{control_repeat_blue.png} Deletes all games of the selected tournament and runs the tournament again.
+	\item \includegraphics[scale=0.5]{bin.png} Deletes the selected tournament and all associated games.
+	\item \includegraphics[scale=0.5]{database_delete.png} Deletes all tournaments and all associated games.
+\end{itemize}
+
 \section{Setup position} \label{SetupPosition}
 
 \begin{figure}[H]
@@ -1198,7 +1389,7 @@ BearChess stores all games in one PGN file. The current name is shown in the tit
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{Games6.png}
+	\includegraphics[scale=0.6]{Games6.png}
 	\caption{Games window}
 	\label{fig:Games6}
 \end{figure}
@@ -1208,17 +1399,18 @@ If you double click on a row, the game is displayed on the board.
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{database_add.png} Create a new games database.
 	\item \includegraphics[scale=0.5]{folder_database.png} Open an existing games database.
-	\item \includegraphics[scale=0.5]{bin.png} Delete selected game.
+	\item \includegraphics[scale=0.5]{bin.png} Delete selected game. You cannot delete a game witch is a participant of a duel or tournament. Use the duel or tournament manager instead.
 	\item \includegraphics[scale=0.5]{saved_imports.png} Import games from a PGN file {\color{red}*}.	
 	\item \includegraphics[scale=0.5]{clipboard_sign_out.png} Copy selected game into clipboard.		
-	\item \includegraphics[scale=0.5]{filter_reapply.png} Filter games that correspond to the current board position {\color{red}**}.	
-	\item \includegraphics[scale=0.5]{database_delete.png} Delete all games from the database.	
+	\item \includegraphics[scale=0.5]{link.png} Filter games that correspond to the current board position.	
+	\item \includegraphics[scale=0.5]{table_filter.png} Opens a window for further filter options.		
+	\item \includegraphics[scale=0.5]{database_delete.png} Delete all games from the database, including duel and tournament information.
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
 
 {\color{red}*} The import is very slow. It will be improved in the next version.
 
-{\color{red}**} Currently BearChess does not support a search function.
+{\color{red}**} Currently BearChess does not support a search function, only filter.
 
 \section{Engine window}
 
@@ -1288,6 +1480,8 @@ If you have performed the calibration without extra queens and are performing a 
 
 \section{Known Issues}
 \begin{itemize}
+    \item Duels and tournaments are new features. There are certainly still some errors in it.
+    \item Synchronization between move list and chessboard works only in the simple move list.
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time, e.g. the clocks for white and black.
 	\item If you want to play an engine match with the same engine for black and white you have to install the engine twice with a different name.
@@ -1295,11 +1489,18 @@ If you have performed the calibration without extra queens and are performing a 
 \end{itemize}
 
 \section{Next Steps}
-The next release will include many new features, such as analytics, tournament and adjusted playing strength. It will also improve the functions of "Easy playing" and "Analysis mode".
+The next releases will include many new features, such as analytics and adjusted playing strength. It will also improve the functions of "Easy playing" and "Analysis mode".
 
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.4.4.0 =\textgreater 0.5.0.0}
+\begin{itemize}
+	\item Engine duels and tournaments.
+	\item Filter games.
+	\item Minor fixes.	
+\end{itemize}
+
 \subsection{Version 0.4.3.1 =\textgreater 0.4.4.0}
 \begin{itemize}
 	\item Changes and fixes in the move list.

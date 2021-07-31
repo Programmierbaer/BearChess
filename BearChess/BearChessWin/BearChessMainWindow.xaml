@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded" 
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded"
         mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke"
-        Title="BearChess" Height="740" Width="650" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize"> 
+        Title="BearChess" Height="740" Width="650" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
     <StackPanel>
         <Grid>
             <Grid.RowDefinitions>
@@ -13,92 +13,137 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Menu Grid.Row="0"  Margin="5,0,5,0" Background="Transparent" >
-               
-                <MenuItem Header="Actions" >
-                    <MenuItem Header="Play a new game" Name="menuItemNewGame" Click="MenuItemNewGame_OnClick"  >
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" ></Image>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Run in analysis mode" Name="menuItemAnalyzeMode" Click="MenuItemAnalyzeMode_OnClick">
+            <Menu Grid.Row="0" Margin="5,0,5,0" Background="Transparent">
+
+                <MenuItem Header="Actions">
+                    <MenuItem Header="Start a new game" Name="menuItemNewGame" Click="MenuItemNewGame_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/robot.png"  ></Image>
+                            <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Setup position" Name="menuItemSetupPosition" Click="MenuItemSetupPosition_OnClick">
+                    <MenuItem Header="Run in analysis mode" Name="menuItemAnalyzeMode"
+                              Click="MenuItemAnalyzeMode_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/chess_board.png" ></Image>
+                            <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Run startup game on start" Name="menuItemRunLastGame" Click="MenuItemRunLastGame_OnClick">
+                    <MenuItem Header="Engine duel">
                         <MenuItem.Icon>
-                            <Image Name="imageRunLastGame" Source="Assets/Icons/tick.png" ></Image>
+                            <Image Source="Assets/Icons/6-2-chess-png.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Header="Start a new engine duel" Name="menuItemEngineMatch"
+                                  Click="MenuItemEngineMatch_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/6-2-chess-png.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Duel manager" Name="menuItemLoadEngineDuel"
+                                  Click="MenuItemLoadDuel_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/file_manager.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Engine tournament">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/cup_gold.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Header="Start a new tournament" Name="menuItemEngineTour"
+                                  Click="MenuItemEngineTour_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/cup_gold.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Tournament manager" Name="menuItemLoadEngineTour"
+                                  Click="MenuItemLoadEngineTour_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/file_manager.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Setup position" Name="menuItemSetupPosition"
+                              Click="MenuItemSetupPosition_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/chess_board.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                  
+                    <MenuItem Header="Run startup game on start" Name="menuItemRunLastGame"
+                              Click="MenuItemRunLastGame_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageRunLastGame" Source="Assets/Icons/tick.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
                     <MenuItem Header="Close" Name="menuItemClose" Click="MenuItemClose_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/door_out.png" ></Image>
+                            <Image Source="Assets/Icons/door_out.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Games" >
-                    <MenuItem Name="menuItemGamesSave" Header="Save" Click="MenuItemGamesSave_OnClick" >
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/diskette.png" Stretch="UniformToFill" ></Image>
+                <MenuItem Header="Games">
+                    <MenuItem Name="menuItemGamesSave" Header="Save" Click="MenuItemGamesSave_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/diskette.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemGamesLoad" Header="Show &amp; Load" Click="MenuItemGamesLoad_OnClick" >
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/file_manager.png" Stretch="UniformToFill" ></Image>
+                    <MenuItem Name="menuItemGamesLoad" Header="Games manager" Click="MenuItemGamesLoad_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/file_manager.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemGamesCopy" Header="Copy to clipboard" Click="MenuItemGamesCopy_OnClick" >
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/clipboard_sign_out.png" Stretch="UniformToFill" ></Image>
+                    <MenuItem Name="menuItemGamesCopy" Header="Copy to clipboard" Click="MenuItemGamesCopy_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/clipboard_sign_out.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemGamesPaste" Header="Paste from clipboard" Click="MenuItemGamesPaste_OnClick" >
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/clipboard_sign.png" Stretch="UniformToFill" ></Image>
+                    <MenuItem Name="menuItemGamesPaste" Header="Paste from clipboard"
+                              Click="MenuItemGamesPaste_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/clipboard_sign.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
 
 
                 </MenuItem>
                 <MenuItem Header="Engines">
-                    <MenuItem Header="Load &amp; manage engines" Name="menuItemEngineLoad" Click="MenuItemEngineLoad_OnClick">
+                    <MenuItem Header="Load &amp; manage engines" Name="menuItemEngineLoad"
+                              Click="MenuItemEngineLoad_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/robot.png"></Image>
+                            <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemLoadLastEngine" Header="Load last engine on start" Click="MenuItemLoadLastEngine_OnClick">
-                        <MenuItem.Icon >
+                    <MenuItem Name="menuItemLoadLastEngine" Header="Load last engine on start"
+                              Click="MenuItemLoadLastEngine_OnClick">
+                        <MenuItem.Icon>
                             <Image Name="imageLoadLastEngine" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Show communication window" Name="menuItemShowUciLog" Click="MenuItemShowUciLog_OnClick">
+                    <MenuItem Header="Show communication window" Name="menuItemShowUciLog"
+                              Click="MenuItemShowUciLog_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/tick.png" Name="imageUciLog"></Image>
+                            <Image Source="Assets/Icons/tick.png" Name="imageUciLog" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Settings">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/cog.png"></Image>
+                            <Image Source="Assets/Icons/cog.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemEngineShowNodes" Header="Show nodes (N)" Click="MenuItemEngineShowNodes_OnClick">
-                            <MenuItem.Icon >
+                        <MenuItem Name="menuItemEngineShowNodes" Header="Show nodes (N)"
+                                  Click="MenuItemEngineShowNodes_OnClick">
+                            <MenuItem.Icon>
                                 <Image Name="imageEngineShowNodes" Source="Assets/Icons/tick.png" Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemEngineShowNodesPerSec" Header="Show nodes per seconds (Nps)" Click="MenuItemEngineShowNodesPerSec_OnClick">
-                            <MenuItem.Icon >
-                                <Image Name="imageEngineShowNodesPerSec" Source="Assets/Icons/tick.png" Visibility="Visible" />
+                        <MenuItem Name="menuItemEngineShowNodesPerSec" Header="Show nodes per seconds (Nps)"
+                                  Click="MenuItemEngineShowNodesPerSec_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageEngineShowNodesPerSec" Source="Assets/Icons/tick.png"
+                                       Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemEngineShowHash" Header="Show hash" Click="MenuItemEngineShowHash_OnClick">
-                            <MenuItem.Icon >
+                        <MenuItem Name="menuItemEngineShowHash" Header="Show hash"
+                                  Click="MenuItemEngineShowHash_OnClick">
+                            <MenuItem.Icon>
                                 <Image Name="imageEngineShowHash" Source="Assets/Icons/tick.png" Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
@@ -106,222 +151,238 @@
                 </MenuItem>
                 <MenuItem Header="Books">
 
-                    <MenuItem Header="Load &amp; manage opening books" Name="menuItemLoadBook" Click="MenuItemLoadBook_OnClick">
+                    <MenuItem Header="Load &amp; manage opening books" Name="menuItemLoadBook"
+                              Click="MenuItemLoadBook_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/books_stack.png" ></Image>
+                            <Image Source="Assets/Icons/books_stack.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Settings">
-                    <MenuItem Name="menuItemSettingsBoard" Header="Board &amp; Pieces..." Click="MenuItemSettingsBoard_OnClick">
+                    <MenuItem Name="menuItemSettingsBoard" Header="Board &amp; Pieces..."
+                              Click="MenuItemSettingsBoard_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/Board2DPieces32.png" ></Image>
+                            <Image Source="Assets/Icons/Board2DPieces32.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemRotateBoard" Header="Rotate board" >
+                    <MenuItem Name="menuItemRotateBoard" Header="Rotate board">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/arrow_rotate_anticlockwise.png" ></Image>
+                            <Image Source="Assets/Icons/arrow_rotate_anticlockwise.png" />
                         </MenuItem.Icon>
-                        <MenuItem  Name="menuItemAdjustedForPlayer" Header="Adjusted for the player" Click="MenuItemAdjustedForPlayer_OnClick">
+                        <MenuItem Name="menuItemAdjustedForPlayer" Header="Adjusted for the player"
+                                  Click="MenuItemAdjustedForPlayer_OnClick">
                             <MenuItem.Icon>
-                                <Image Name="imageAdjustedForPlayer" Source="Assets/Icons/tick.png" Visibility="Hidden" ></Image>
+                                <Image Name="imageAdjustedForPlayer" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
 
                     </MenuItem>
                     <MenuItem Name="menuItemSettingsMoves" Header="Notation/Moves">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/text_list_numbers.png" ></Image>
+                            <Image Source="Assets/Icons/text_list_numbers.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemConfigureNotation" Header="Configure..." Click="MenuItemSettingsMoves_OnClick">
+                        <MenuItem Name="menuItemConfigureNotation" Header="Configure..."
+                                  Click="MenuItemSettingsMoves_OnClick">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/text_list_numbers.png" ></Image>
+                                <Image Source="Assets/Icons/text_list_numbers.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemMovesShowOnStart" Header="Show on start" Click="MenuItemMovesShowOnStart_OnClick">
-                            <MenuItem.Icon >
+                        <MenuItem Name="menuItemMovesShowOnStart" Header="Show on start"
+                                  Click="MenuItemMovesShowOnStart_OnClick">
+                            <MenuItem.Icon>
                                 <Image Name="imageShowMoves" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Name="menuItemSettingsClock" Header="Clocks">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/digit_separator.png" ></Image>
+                            <Image Source="Assets/Icons/digit_separator.png" />
                         </MenuItem.Icon>
                         <MenuItem Name="menuItemSimpleClock" Header="Small" Click="MenuItemSimpleClock_OnClick">
-                            <MenuItem.Icon >
+                            <MenuItem.Icon>
                                 <Image Name="imageSmallTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemBigClock" Header="Big" Click="MenuItemBigClock_OnClick">
                             <MenuItem.Icon>
-                                <Image Name="imageBigTick" Source="Assets/Icons/tick.png" Visibility="Hidden"/>
+                                <Image Name="imageBigTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemClockShowOnStart" Header="Show on start" Click="MenuItemClockShowOnStart_OnClick">
-                            <MenuItem.Icon >
+                        <MenuItem Name="menuItemClockShowOnStart" Header="Show on start"
+                                  Click="MenuItemClockShowOnStart_OnClick">
+                            <MenuItem.Icon>
                                 <Image Name="imageShowClocks" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Captured pieces">
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/balance_unbalance.png"  />
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/balance_unbalance.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemMaterialShowOnStart" Header="Show on start" Click="MenuItemMaterialShowOnStart_OnClick">
-                            <MenuItem.Icon >
+                        <MenuItem Name="menuItemMaterialShowOnStart" Header="Show on start"
+                                  Click="MenuItemMaterialShowOnStart_OnClick">
+                            <MenuItem.Icon>
                                 <Image Name="imageShowMaterial" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemMaterialShowOnGame" Header="Show on game" Click="MenuItemMaterialShowOnGame_OnClick">
-                            <MenuItem.Icon >
-                                <Image Name="imageShowMaterialOnGame" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                        <MenuItem Name="menuItemMaterialShowOnGame" Header="Show on game"
+                                  Click="MenuItemMaterialShowOnGame_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageShowMaterialOnGame" Source="Assets/Icons/tick.png"
+                                       Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemMaterialSmall" Header="Small" Click="MenuItemMaterialSmall_OnClick">
-                            <MenuItem.Icon >
+                            <MenuItem.Icon>
                                 <Image Name="imageShowMaterialSmall" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemMaterialBig" Header="Big" Click="MenuItemMaterialBig_OnClick">
-                            <MenuItem.Icon >
+                            <MenuItem.Icon>
                                 <Image Name="imageShowMaterialBig" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
 
                     </MenuItem>
-                   <MenuItem Name="menuItemPlayer" Header="Player..."  Click="MenuItemPlayer_OnClick">
-                       <MenuItem.Icon>
-                           <Image Source="Assets/Icons/user_silhouette.png"></Image>
-                       </MenuItem.Icon>
-                   </MenuItem>
+                    <MenuItem Name="menuItemPlayer" Header="Player..." Click="MenuItemPlayer_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/user_silhouette.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Electronic Boards">
-                    <MenuItem Name="menuItemCertabo"  Header="Certabo" >
+                    <MenuItem Name="menuItemCertabo" Header="Certabo">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/Certabo_icon.ico" ></Image>
+                            <Image Source="Assets/Icons/Certabo_icon.ico" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemConnectToCertabo" Header="Connect" Click="MenuItemConnectCertabo_OnClick">
+                        <MenuItem Name="menuItemConnectToCertabo" Header="Connect"
+                                  Click="MenuItemConnectCertabo_OnClick">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/connect.png"></Image>
+                                <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemConfigureCertabo" Header="Configure"
-                              Click="MenuItemConfigureCertabo_OnClick" >
+                                  Click="MenuItemConfigureCertabo_OnClick">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/cog.png"></Image>
+                                <Image Source="Assets/Icons/cog.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemBluetoothCertabo" Header="Bluetooth"
                                   Click="MenuItemBluetoothCertabo_OnClick">
                             <MenuItem.Icon>
-                                <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden"></Image>
+                                <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="Millennium ChessLink" Name="menuItemMChessLink">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/Millennium ChessLink.png" ></Image>
+                            <Image Source="Assets/Icons/Millennium ChessLink.png" />
                         </MenuItem.Icon>
                         <MenuItem Name="menuItemConnectToMChessLink" Header="Connect"
-                              Click="MenuItemConnectMChessLink_OnClick">
+                                  Click="MenuItemConnectMChessLink_OnClick">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/connect.png"></Image>
+                                <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemConfigureMChessLink" Header="Configure"
-                              Click="MenuItemConfigureChessLink_OnClick">
+                                  Click="MenuItemConfigureChessLink_OnClick">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/cog.png"></Image>
+                                <Image Source="Assets/Icons/cog.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemBluetoothMChessLink" Header="Bluetooth"
                                   Click="MenuItemBluetoothChessLink_OnClick">
                             <MenuItem.Icon>
-                                <Image Name="imageChessLinkBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden"></Image>
+                                <Image Name="imageChessLinkBluetooth" Source="Assets/Icons/tick.png"
+                                       Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup" Click="MenuItemConnectOnStartup_OnClick">
-                        <MenuItem.Icon >
+                    <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup"
+                              Click="MenuItemConnectOnStartup_OnClick">
+                        <MenuItem.Icon>
                             <Image Name="imageConnectOnStartupTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Black pieces in front" Name="menuItemFlipBoard" Click="MenuItemFlipBoard_OnClick">
-                        <MenuItem.Icon >
+                        <MenuItem.Icon>
                             <Image Name="imageFlipBoardTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Start new game on base position" Name="menuItemRunGameOnBase" Click="MenuItemRunGameOnBase_OnClick">
+                    <MenuItem Header="Start new game on base position" Name="menuItemRunGameOnBase"
+                              Click="MenuItemRunGameOnBase_OnClick">
                         <MenuItem.Icon>
-                            <Image Name="imageRunGameOnBase" Source="Assets/Icons/tick.png" ></Image>
+                            <Image Name="imageRunGameOnBase" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Show best move in analysis mode" Name="menuItemShowBestMoveInAnalyse" Click="MenuItemShowBestMoveInAnalyse_OnClick">
+                    <MenuItem Header="Show best move in analysis mode" Name="menuItemShowBestMoveInAnalyse"
+                              Click="MenuItemShowBestMoveInAnalyse_OnClick">
                         <MenuItem.Icon>
-                            <Image Name="imageShowBestMoveOnAnalysisMode" Source="Assets/Icons/tick.png" ></Image>
+                            <Image Name="imageShowBestMoveOnAnalysisMode" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  -->
                 </MenuItem>
                 <MenuItem Header="Windows">
                     <MenuItem Header="Show">
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/new_window.png"  />
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/new_window.png" />
                         </MenuItem.Icon>
                         <MenuItem Name="menuItemWindowClocks" Click="MenuItemWindowClocks_OnClick" Header="Clocks">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/digit_separator.png"></Image>
+                                <Image Source="Assets/Icons/digit_separator.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemWindowMoves" Click="MenuItemWindowMoves_OnClick"  Header="Moves">
+                        <MenuItem Name="menuItemWindowMoves" Click="MenuItemWindowMoves_OnClick" Header="Moves">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/text_list_numbers.png" ></Image>
+                                <Image Source="Assets/Icons/text_list_numbers.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemWindowMaterial" Click="MenuItemWindowMaterial_OnClick"  Header="Captured pieces">
-                            <MenuItem.Icon >
-                                <Image Source="Assets/Icons/balance_unbalance.png"  />
+                        <MenuItem Name="menuItemWindowMaterial" Click="MenuItemWindowMaterial_OnClick"
+                                  Header="Captured pieces">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/balance_unbalance.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Name="menuItemWindowsArrange" Header="Arrange" Click="MenuItemWindowsArrange_OnClick">
-                        <MenuItem.Icon >
-                            <Image Source="Assets/Icons/switch_windows.png"  />
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/switch_windows.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Info"  Click="MenuIteminfo_OnClick">
-                </MenuItem>
+                <MenuItem Header="Info" Click="MenuItemInfo_OnClick" />
             </Menu>
             <local:GraphicsChessBoardUserControl Margin="5,5,5,0" Grid.Column="0" Grid.Row="1"
-                                             x:Name="chessBoardUcGraphics" Visibility="Visible" />
+                                                 x:Name="chessBoardUcGraphics" Visibility="Visible" />
 
         </Grid>
-        <DockPanel  Margin="5">
-            <Button  VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect" Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonConnect_OnClick">
+        <DockPanel Margin="5">
+            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect"
+                    Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonConnect_OnClick">
                 <StackPanel Orientation="Horizontal">
-                    <Image Name="imageConnect" Source="Assets/Icons/disconnect.png" Width="16"></Image>
-                    <Image Name="imageDisconnect" Visibility="Collapsed" Source="Assets/Icons/connect.png" Width="16"></Image>
+                    <Image Name="imageConnect" Source="Assets/Icons/disconnect.png" Width="16" />
+                    <Image Name="imageDisconnect" Visibility="Collapsed" Source="Assets/Icons/connect.png" Width="16" />
                     <TextBlock Name="textBlockButtonConnect" Margin="5,0,0,0">Connect</TextBlock>
                 </StackPanel>
             </Button>
-            <Image DockPanel.Dock="Left" VerticalAlignment="Center" Margin="5,0" Source="Assets/Icons/book_open.png" Width="16"/>
-            <TextBlock  VerticalAlignment="Center" DockPanel.Dock="Left" Margin="5" Name="textBlockEcoCode" Text="---"/>
+            <Image DockPanel.Dock="Left" VerticalAlignment="Center" Margin="5,0" Source="Assets/Icons/book_open.png"
+                   Width="16" />
+            <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="5" Name="textBlockEcoCode" Text="---" />
         </DockPanel>
 
-        <Separator></Separator>
-        <StatusBar VerticalAlignment="Bottom"  >
+        <Separator />
+        <StatusBar VerticalAlignment="Bottom">
             <StatusBarItem>
                 <TextBlock Name="textBlockRunningMode">Mode: Easy playing</TextBlock>
             </StatusBarItem>
-            <Separator></Separator>
+            <Separator />
             <StatusBarItem>
                 <TextBlock Name="textBlockEBoard">Electronic board: Disconnected</TextBlock>
             </StatusBarItem>
             <StatusBarItem>
-                <Image Name="imageBT" Width="16" Height="16"  Source="Assets/Icons/bluetooth.png" Visibility="Hidden"></Image>
+                <Image Name="imageBT" Width="16" Height="16" Source="Assets/Icons/bluetooth.png" Visibility="Hidden" />
             </StatusBarItem>
         </StatusBar>
     </StackPanel>

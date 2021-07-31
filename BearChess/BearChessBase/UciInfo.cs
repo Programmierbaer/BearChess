@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace www.SoLaNoSoft.com.BearChessDatabase
+namespace www.SoLaNoSoft.com.BearChessBase
 {
     [Serializable]
     public class UciInfo
@@ -22,12 +19,14 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         public string OpeningBookVariation { get; set; }
         [XmlArray("OptionValues")]
         public string[] OptionValues { get; set; }
+        public bool AdjustStrength { get; set; }
 
         public UciInfo()
         {
             Options = new string[0];
             OptionValues = new string[0];
             OpeningBookVariation = "1";
+            AdjustStrength = false;
         }
 
         public UciInfo(string fileName) : this()

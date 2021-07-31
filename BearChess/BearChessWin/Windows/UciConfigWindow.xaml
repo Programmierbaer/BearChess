@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="UCI Engine Configuration" Height="650" Width="400" SizeToContent="Width">
+        Title="UCI Engine Configuration" Height="680" Width="400" SizeToContent="Width">
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Name="textBlockName" Margin="5">Name:</TextBlock>
@@ -24,8 +24,11 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+        <Border  BorderBrush="Gray" BorderThickness="1" Margin="5">
+            <CheckBox Visibility="Hidden" Name="checkBoxAdaptStrength" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5" Checked="CheckBoxAdaptStrength_OnChecked" Unchecked="CheckBoxAdaptStrength_OnUnchecked">Adapt playing strength to the player through BearChess</CheckBox>
+        </Border>
         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-        <ScrollViewer Height="400" VerticalScrollBarVisibility="Visible">
+          <ScrollViewer Height="400" VerticalScrollBarVisibility="Visible">
             <Grid Name="gridMain">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -34,7 +37,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
             </Grid>
-        </ScrollViewer>
+         </ScrollViewer>
         </Border>
         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
             <StackPanel Orientation="Horizontal">

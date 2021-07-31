@@ -14,12 +14,14 @@ using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChess.CertaboLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessTournament;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -157,6 +159,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showNodesPerSec;
         private bool _showHash;
         private string _playerName;
+        private DuelInfoWindow _duelInfoWindow;
+        private int _currentDuelId;
+        private DuelManager _duelManager;
+        private int _currentTournamentId;
+        private TournamentManager _tournamentManager;
+        private CurrentTournament _currentTournament;
+        private ITournamentInfoWindow _tournamentInfoWindow;
+        private TournamentWindow _tournamentWindow;
+        private CurrentDuel _currentDuel;
+        private DuelWindow _duelWindow;
 
 
         public BearChessMainWindow()
@@ -903,8 +915,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _chessClocksWindowBlack?.Stop();
                 _chessClocksWindowWhite?.Stop();
                 _lastResult =  _chessBoard.CurrentColor == Fields.COLOR_BLACK ? "1-0" : "0-1";
-                MessageBox.Show( $"Mate {_lastResult}", "Game finished", MessageBoxButton.OK,
-                                 MessageBoxImage.Stop);
+                
+                MessageBox.Show( $"Mate {_lastResult}", "Game finished", MessageBoxButton.OK, MessageBoxImage.Stop);
+                
                 return;
             }
             _engineWindow?.Stop();
@@ -925,8 +938,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName);
                 chessBoardUcGraphics.RepaintBoard(_chessBoard);
                 _lastResult = "1/2";
-                MessageBox.Show("Draw by position repetition", "Game finished", MessageBoxButton.OK,
-                    MessageBoxImage.Stop);
+               MessageBox.Show("Draw by position repetition", "Game finished", MessageBoxButton.OK,
+                                    MessageBoxImage.Stop);
+                
                 return;
             }
 
@@ -940,7 +954,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _eChessBoard?.SetAllLedsOff();
                 _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName);
                 MessageBox.Show("Draw by insufficient material", "Game finished", MessageBoxButton.OK,
-                    MessageBoxImage.Stop);
+                                    MessageBoxImage.Stop);
+                
                 return;
             }
 
@@ -1274,7 +1289,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var isConnected = _eChessBoard?.IsConnected;
             if (isConnected.HasValue && isConnected.Value)
             {
-
                 _waitForPosition = true;
                 var fenPosition = _chessBoard.GetFenPosition();
                 _fileLogger?.LogDebug($"Send to eBoard and wait for: {fenPosition}");
@@ -1315,6 +1329,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _engineMatchScore.Clear();
             menuItemSetupPosition.IsEnabled = false;
             menuItemAnalyzeMode.IsEnabled = false;
+            menuItemEngineMatch.IsEnabled = false;
+            menuItemEngineTour.IsEnabled = false;
             textBlockRunningMode.Text = "Mode: Playing a game";
             menuItemNewGame.Header = "Stop game";
 
@@ -1641,6 +1657,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _runInEasyPlayingMode = false;
             menuItemSetupPosition.IsEnabled = false;
             menuItemAnalyzeMode.IsEnabled = false;
+            menuItemEngineMatch.IsEnabled = false;
+            menuItemEngineTour.IsEnabled = false;
             textBlockRunningMode.Text = "Mode: Playing a game";
             menuItemNewGame.Header = "Stop game";
             _eChessBoard?.NewGame();
@@ -1682,7 +1700,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _gameAgainstEngine = true;
             _playersColor[Fields.COLOR_WHITE] = false;
             _playersColor[Fields.COLOR_BLACK] = false;
-            if (!_currentWhitePlayer.Equals("Player") && !_currentBlackPlayer.Equals("Player"))
+            if (_currentGame.DuelEngine || (!_currentWhitePlayer.Equals("Player") && !_currentBlackPlayer.Equals("Player")))
             {
                 _pureEngineMatch = true;
                 _gameAgainstEngine = true;
@@ -1714,29 +1732,38 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _engineWindow?.LoadUciEngine(_currentGame.BlackConfig, _chessBoard.GetPlayedMoveList(), true,
                                              Fields.COLOR_BLACK);
-                _configuration.SetConfigValue("LastBlackEngine", _installedEngines[_currentBlackPlayer].Id);
-                
+                if (!_currentGame.DuelEngine)
+                {
+                    _configuration.SetConfigValue("LastBlackEngine", _installedEngines[_currentBlackPlayer].Id);
+                }
+
             }
             else
             {
                 _playersColor[Fields.COLOR_BLACK] = true;
-                _configuration.SetConfigValue("LastBlackEngine", string.Empty);
-              
-
+                if (!_currentGame.DuelEngine)
+                {
+                    _configuration.SetConfigValue("LastBlackEngine", string.Empty);
+                }
             }
 
             if (!_currentWhitePlayer.Equals("Player"))
             {
                 _engineWindow?.LoadUciEngine(_currentGame.WhiteConfig, _chessBoard.GetPlayedMoveList(), true,
                                              Fields.COLOR_WHITE);
-                _configuration.SetConfigValue("LastWhiteEngine", _installedEngines[_currentWhitePlayer].Id);
+                if (!_currentGame.DuelEngine)
+                {
+                    _configuration.SetConfigValue("LastWhiteEngine", _installedEngines[_currentWhitePlayer].Id);
+                }
             }
             else
             {
                 _playersColor[Fields.COLOR_WHITE] = true;
-                _configuration.SetConfigValue("LastWhiteEngine", string.Empty);
+                if (!_currentGame.DuelEngine)
+                {
+                    _configuration.SetConfigValue("LastWhiteEngine", string.Empty);
+                }
             }
-
 
             _engineWindow?.SetOptions();
             _engineWindow?.IsReady();
@@ -1834,6 +1861,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             chessBoardUcGraphics.UnMarkAllFields();
             if (_runningGame)
             {
+                _currentTournamentId = 0;
+                _currentDuelId = 0;
                 _runningGame = false;
                 _gameAgainstEngine = false;
                 _engineWindow?.Stop();
@@ -1846,6 +1875,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockRunningMode.Text = "Mode: Easy playing";
                 menuItemSetupPosition.IsEnabled = true;
                 menuItemAnalyzeMode.IsEnabled = true;
+                menuItemEngineMatch.IsEnabled = true;
+                menuItemEngineTour.IsEnabled = true;
                 chessBoardUcGraphics.AllowTakeBack(true);
                 _runInEasyPlayingMode = true;
                 chessBoardUcGraphics.ShowControlButtons(false);
@@ -1866,7 +1897,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            _currentGame = new CurrentGame(newGameWindow.PlayerWhiteConfigValues, newGameWindow.PlayerBlackConfigValues,
+            _currentGame = new CurrentGame(newGameWindow.PlayerWhiteConfigValues, newGameWindow.PlayerBlackConfigValues, string.Empty,
                                            newGameWindow.GetTimeControl(), newGameWindow.PlayerWhite,
                                            newGameWindow.PlayerBlack,
                                            newGameWindow.StartFromBasePosition);
@@ -1975,6 +2006,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _runningGame = false;
             menuItemSetupPosition.IsEnabled = !_runInAnalyzeMode;
             menuItemNewGame.IsEnabled = !_runInAnalyzeMode;
+            menuItemEngineMatch.IsEnabled = !_runInAnalyzeMode;
+            menuItemEngineTour.IsEnabled = !_runInAnalyzeMode;
             if (_runInAnalyzeMode)
             {
                 _moveListWindow?.Clear();
@@ -2161,6 +2194,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+
         private void MenuItemGamesSave_OnClick(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_configuration.GetConfigValue("DatabaseFile", string.Empty)))
@@ -2195,19 +2229,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     PlayerWhite = saveGameWindow.White,
                     PlayerBlack = saveGameWindow.Black,
                     Result = saveGameWindow.Result,
-                    GameDate = saveGameWindow.GameDate
+                    GameDate = saveGameWindow.GameDate,
+                    Round = "1"
                 };
                 foreach (var move in pgnCreator.GetAllMoves())
                 {
                     pgnGame.AddMove(move);
                 }
 
-                _chessClocksWindowWhite.GetClockTime();
-                _database.Save(new DatabaseGame(pgnGame, _chessBoard.GetPlayedMoveList(), _currentGame)
-                               {
-                                   WhiteClockTime = _chessClocksWindowWhite.GetClockTime(),
-                                   BlackClockTime = _chessClocksWindowBlack.GetClockTime()
-                               });
+
+                var gameId = _database.Save(new DatabaseGame(pgnGame, _chessBoard.GetPlayedMoveList(), _currentGame)
+                                          {
+                                              WhiteClockTime = _chessClocksWindowWhite?.GetClockTime(),
+                                              BlackClockTime = _chessClocksWindowBlack?.GetClockTime()
+                                          });
+                if (_currentTournamentId > 0)
+                {
+                    _database.SaveTournamentGamePair(_currentTournamentId, gameId);
+                }
                 _databaseWindow?.Reload();
             }
         }
@@ -2478,6 +2517,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             else
                 _lastResult = "0-1";
 
+            if (_currentGame.DuelEngine)
+            {
+                return;
+            }
             if (byMate)
             {
                 MessageBox.Show($"{engineName} wins by mate ", "Game finished", MessageBoxButton.OK,
@@ -2569,8 +2612,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 });
                 _lastResult = _chessBoard.CurrentColor == Fields.COLOR_WHITE ? "0-1" : "1-0";
-                MessageBox.Show($"Mate {_lastResult} ", "Game finished", MessageBoxButton.OK,
-                                MessageBoxImage.Stop);
+                if (!_currentGame.DuelEngine)
+                    MessageBox.Show($"Mate {_lastResult} ", "Game finished", MessageBoxButton.OK,
+                                    MessageBoxImage.Stop);
+                else
+                {
+                    if (_currentTournamentId > 0)
+                    {
+                        HandleEngineTournament();
+                    }
+                    else
+                    {
+                        HandleEngineDuel();
+                    }
+                }
+
                 return;
             }
             if (_chessBoard.DrawByRepetition || _chessBoard.DrawByMaterial)
@@ -2588,7 +2644,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 });
                 string draw = _chessBoard.DrawByRepetition ? "position repetition" : "insufficient material";
-                MessageBox.Show($"Draw by {draw} ", "Game finished", MessageBoxButton.OK, MessageBoxImage.Stop);
+                if (!_currentGame.DuelEngine)
+                    MessageBox.Show($"Draw by {draw} ", "Game finished", MessageBoxButton.OK, MessageBoxImage.Stop);
+                else
+                {
+                    if (_currentTournamentId > 0)
+                    {
+                        HandleEngineTournament();
+                    }
+                    else
+                    {
+                        HandleEngineDuel();
+                    }
+
+                }
+
+
                 return;
             }
 
@@ -2748,6 +2819,58 @@ namespace www.SoLaNoSoft.com.BearChessWin
             });
         }
 
+        private void HandleEngineDuel()
+        {
+
+            var pgnCreator = new PgnCreator();
+            foreach (var move in _chessBoard.GetPlayedMoveList())
+            {
+                pgnCreator.AddMove(move);
+            }
+
+            var pgnGame = new PgnGame
+            {
+                GameEvent = _currentGame.GameEvent,
+                PlayerWhite = _currentGame.PlayerWhite,
+                PlayerBlack = _currentGame.PlayerBlack,
+                Result = _lastResult,
+                GameDate = DateTime.Now.ToString("dd.MM.yyyy"),
+                Round = _currentGame.CurrentDuelGame.ToString()
+            };
+            foreach (var move in pgnCreator.GetAllMoves())
+            {
+                pgnGame.AddMove(move);
+            }
+
+            _duelManager.SaveGame(new DatabaseGame(pgnGame, _chessBoard.GetPlayedMoveList(), _currentGame)
+            {
+                WhiteClockTime = _chessClocksWindowWhite.GetClockTime(),
+                BlackClockTime = _chessClocksWindowBlack.GetClockTime()
+            });
+
+            Dispatcher?.Invoke(() =>
+            {
+                _duelInfoWindow?.AddResult(_currentGame.CurrentDuelGame+1, _lastResult,
+                    _currentGame.SwitchedColor);
+            });
+
+            _currentGame = _duelManager.GetNextGame();
+            if (_currentGame != null)
+            {
+
+                Dispatcher?.Invoke(() =>
+                {
+                    _engineWindow?.Close();
+
+                    StartANewGame();
+                });
+            }
+            else
+            {
+                Dispatcher?.Invoke(() => { MenuItemNewGame_OnClick(this, null); });
+            }
+        }
+
         private void EngineWindow_EngineEvent(object sender, EngineWindow.EngineEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(e.FromEngine))
@@ -2857,18 +2980,44 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         _pureEngineMatchStoppedByBearChess = true;
                         EngineWinsByBearChess(keyCollection[1], _engineMatchScore[keyCollection[0]].LoseByScore,
                             _engineMatchScore[keyCollection[0]].LoseByMate);
+                        if (_currentGame.DuelEngine)
+                        {
+                            if (_currentTournamentId > 0)
+                            {
+                                HandleEngineTournament();
+                            }
+                            else
+                            {
+                                HandleEngineDuel();
+                            }
+                        }
                     }
 
                     return;
                 }
 
                 if (_engineMatchScore[keyCollection[1]].LoseByMate || _engineMatchScore[keyCollection[1]].LoseByScore)
+                {
                     if (_engineMatchScore[keyCollection[0]].WinByMate || _engineMatchScore[keyCollection[0]].WinByScore)
                     {
                         _pureEngineMatchStoppedByBearChess = true;
                         EngineWinsByBearChess(keyCollection[0], _engineMatchScore[keyCollection[1]].LoseByScore,
-                            _engineMatchScore[keyCollection[1]].LoseByMate);
+                                              _engineMatchScore[keyCollection[1]].LoseByMate);
+                        if (_currentGame.DuelEngine)
+                        {
+                            if (_currentTournamentId > 0)
+                            {
+                                HandleEngineTournament();
+                            }
+                            else
+                            {
+                                HandleEngineDuel();
+                            }
+                        }
                     }
+
+                    return;
+                }
             }
 
             if (_pureEngineMatch || e.FirstEngine)
@@ -3218,6 +3367,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         textBlockRunningMode.Text = "Mode: Easy playing";
                         menuItemSetupPosition.IsEnabled = true;
                         menuItemAnalyzeMode.IsEnabled = true;
+                        menuItemEngineMatch.IsEnabled = true;
+                        menuItemEngineTour.IsEnabled = true;
                         chessBoardUcGraphics.AllowTakeBack(true);
                         _runInEasyPlayingMode = true;
                     }
@@ -3696,25 +3847,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         #region Events
 
-        private void DatabaseWindow_SelectedGameChanged(object sender, DatabaseGame e)
+        private void LoadAGame(DatabaseGame databaseGame)
         {
             _playedMoveList = new Move[0];
             _currentMoveIndex = 0;
             _chessBoard.NewGame();
-            foreach (var aMove in e.MoveList)
+            foreach (var aMove in databaseGame.MoveList)
             {
                 //_chessBoard.MakeMove(aMove.FromField,aMove.ToField,aMove.PromotedFigure);
                 _chessBoard.MakeMove(aMove);
             }
 
-            _currentWhitePlayer = e.White;
-            _currentBlackPlayer = e.Black;
-            _lastResult = e.Result;
-            _currentEvent = e.GameEvent;
-            _timeControl = e.CurrentGame?.TimeControl;
-            _whiteClockTime = e.WhiteClockTime;
-            _blackClockTime = e.BlackClockTime;
-            _currentGame = e.CurrentGame;
+            _currentWhitePlayer = databaseGame.White;
+            _currentWhitePlayer = databaseGame.White;
+            _currentBlackPlayer = databaseGame.Black;
+            _lastResult = databaseGame.Result;
+            _currentEvent = databaseGame.GameEvent;
+            _timeControl = databaseGame.CurrentGame?.TimeControl;
+            if (_timeControl == null)
+            {
+                _timeControl = new TimeControl()
+                               {
+                                   TimeControlType = TimeControlEnum.AverageTimePerMove, AverageTimInSec = true,
+                                   Value1 = 10
+                               };
+            }
+            _whiteClockTime = databaseGame.WhiteClockTime;
+            _blackClockTime = databaseGame.BlackClockTime;
+            _currentGame = databaseGame.CurrentGame;
             _moveListWindow?.Clear();
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
             var chessBoard = new ChessBoard();
@@ -3753,6 +3913,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                           _chessBoard.GetFigures(Fields.COLOR_BLACK), _chessBoard.GetPlayedMoveList());
         }
 
+        private void DatabaseWindow_SelectedGameChanged(object sender, DatabaseGame e)
+        {
+            LoadAGame(e);
+        }
+
         private void MoveListWindow_SelectedMoveChanged(object sender, SelectedMoveOfMoveList e)
         {
             if (_runningGame)
@@ -3788,6 +3953,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _moveListWindow?.MarkMove(e.MoveNumber-1,e.Color);
             _materialWindow?.ShowMaterial(chessBoard.GetFigures(Fields.COLOR_WHITE),
                                           chessBoard.GetFigures(Fields.COLOR_BLACK), chessBoard.GetPlayedMoveList());
+            if (!_pausedEngine)
+                Dispatcher?.Invoke(() =>
+                {
+                    _engineWindow?.Stop();
+                    _engineWindow?.SetFen(chessBoard.GetFenPosition(), string.Empty);
+                    _engineWindow?.GoInfinite();
+                });
         }
 
         private void ChessClocksWindowBlack_Closed(object sender, EventArgs e)
@@ -3820,14 +3992,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _engineWindow?.Stop();
             _lastResult = "1-0";
-            MessageBox.Show("Black loses because of timeout", "Timeout", MessageBoxButton.OK, MessageBoxImage.Stop);
+            if (!_currentGame.DuelEngine)
+                MessageBox.Show("Black loses because of timeout", "Timeout", MessageBoxButton.OK, MessageBoxImage.Stop);
         }
 
         private void ChessClocksWindowWhite_TimeOutEvent(object sender, EventArgs e)
         {
             _engineWindow?.Stop();
             _lastResult = "0-1";
-            MessageBox.Show("White loses because of timeout", "Timeout", MessageBoxButton.OK, MessageBoxImage.Stop);
+            if (!_currentGame.DuelEngine)
+                MessageBox.Show("White loses because of timeout", "Timeout", MessageBoxButton.OK, MessageBoxImage.Stop);
         }
 
         private void ChessBoardBoardSetupChangedEvent(object sender, EventArgs e)
@@ -3900,7 +4074,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 playerBlack = blackConfig.Name;
             }
 
-            _currentGame = new CurrentGame(whiteConfig, blackConfig, loadTimeControl, playerWhite, playerBlack, true);
+            _currentGame = new CurrentGame(whiteConfig, blackConfig, string.Empty, loadTimeControl, playerWhite, playerBlack, true);
             StartANewGame();
         }
 
@@ -3940,6 +4114,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _bookWindows?.ForEach(b => b.Close());
             _moveListWindow?.Close();
             _materialWindow?.Close();
+            _duelInfoWindow?.CloseInfoWindow();
+            _duelWindow?.Close();
+            _tournamentInfoWindow?.Close();
+            _tournamentWindow?.Close();
             _configuration.Save();
         }
 
@@ -3974,9 +4152,506 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _materialWindow?.ChangeSize(false);
         }
 
-        private void MenuIteminfo_OnClick(object sender, RoutedEventArgs e)
+        private void MenuItemInfo_OnClick(object sender, RoutedEventArgs e)
         {
             var messageBoxResult = MessageBox.Show(this, $"Path: {_configuration.FolderPath}", "Information");
         }
+
+        #region Duel
+
+        private void MenuItemEngineMatch_OnClick(object sender, RoutedEventArgs e)
+        {
+            _pureEngineMatch = false;
+            chessBoardUcGraphics.UnMarkAllFields();
+            if (_runningGame)
+            {
+                _runningGame = false;
+                _gameAgainstEngine = false;
+                _engineWindow?.Stop();
+                _engineWindow?.ClearTimeControl();
+                _eChessBoard?.Stop();
+                _eChessBoard?.SetAllLedsOff();
+                _chessClocksWindowWhite?.Stop();
+                _chessClocksWindowBlack?.Stop();
+                menuItemEngineMatch.Header = "Start a new engine match";
+                textBlockRunningMode.Text = "Mode: Easy playing";
+                menuItemSetupPosition.IsEnabled = true;
+                menuItemAnalyzeMode.IsEnabled = true;
+                menuItemEngineMatch.IsEnabled = true;
+                menuItemEngineTour.IsEnabled = true;
+                chessBoardUcGraphics.AllowTakeBack(true);
+                _runInEasyPlayingMode = true;
+                chessBoardUcGraphics.ShowControlButtons(false);
+                return;
+            }
+
+            _runningGame = false;
+            _timeControl = _configuration.LoadTimeControl(false);
+            var newGameWindow = new NewEngineDuelWindow(_configuration, _database) {Owner = this};
+
+            newGameWindow.SetNames(_installedEngines.Values.ToArray(),
+                _configuration.GetConfigValue("LastWhiteEngineDuel", string.Empty),
+                _configuration.GetConfigValue("LastBlackEngineDuel", string.Empty));
+            newGameWindow.SetTimeControl(_timeControl);
+            newGameWindow.SetDuelValues(int.Parse(_configuration.GetConfigValue("NumberOfGamesDuel","1")),bool.Parse(_configuration.GetConfigValue("SwitchColorDuel","true")));
+            var showDialog = newGameWindow.ShowDialog();
+            if (!showDialog.HasValue || !showDialog.Value)
+            {
+                return;
+            }
+            _configuration.SetConfigValue("LastWhiteEngineDuel", _installedEngines[newGameWindow.PlayerWhite].Id);
+            _configuration.SetConfigValue("LastBlackEngineDuel", _installedEngines[newGameWindow.PlayerBlack].Id);
+            _configuration.SetConfigValue("NumberOfGamesDuel", newGameWindow.NumberOfGames.ToString());
+            _configuration.SetConfigValue("SwitchColorDuel", newGameWindow.SwitchColors.ToString());
+        
+            if (_duelManager == null)
+            {
+                _duelManager = new DuelManager(_configuration, _database);
+            }
+
+            _currentDuel = new CurrentDuel(
+                new List<UciInfo>() {newGameWindow.PlayerWhiteConfigValues, newGameWindow.PlayerBlackConfigValues},
+                newGameWindow.GetTimeControl(), newGameWindow.NumberOfGames, newGameWindow.SwitchColors,
+                newGameWindow.DuelEvent, newGameWindow.StartFromBasePosition);
+            _currentDuelId = _duelManager.Init(_currentDuel);
+
+            _currentGame = _duelManager.GetNextGame();
+
+            if (_duelInfoWindow != null)
+            {
+                _duelInfoWindow.CloseInfoWindow();
+                _duelInfoWindow = null;
+            }
+            _duelInfoWindow = new DuelInfoWindow(newGameWindow.PlayerWhite, newGameWindow.PlayerBlack, newGameWindow.NumberOfGames,newGameWindow.SwitchColors, _configuration);
+            _duelInfoWindow.StopDuel += DuelInfoWindow_StopDuel;
+            _duelInfoWindow.Show();
+            StartANewGame();
+        }
+
+     
+        private void DuelWindowCloneDuelSelected(object sender, int duelId)
+        {
+            if (_duelManager == null)
+            {
+                _duelManager = new DuelManager(_configuration, _database);
+            }
+
+            if (_duelInfoWindow != null)
+            {
+                _duelInfoWindow.StopDuel -= DuelInfoWindow_StopDuel;
+                _duelInfoWindow.CloseInfoWindow();
+                _duelInfoWindow = null;
+            }
+            _currentDuelId = duelId;
+            _currentDuel = _duelManager.Load(_currentDuelId);
+            if (_currentDuel != null)
+            {
+                _duelWindow?.Close();
+                var engineMatchWindow = new NewEngineDuelWindow(_configuration, _database) { Owner = this };
+                engineMatchWindow.SetNames(_installedEngines.Values.ToArray(),
+                                           _currentDuel.Players[0].Id,
+                                           _currentDuel.Players[1].Id);
+                engineMatchWindow.SetTimeControl(_currentDuel.TimeControl);
+                engineMatchWindow.SetDuelValues(_currentDuel.Cycles,_currentDuel.DuelSwitchColor);
+                var showDialog = engineMatchWindow.ShowDialog();
+                if (showDialog.HasValue && showDialog.Value)
+                {
+                    if (_tournamentManager == null)
+                    {
+                        _tournamentManager = new TournamentManager(_configuration, _database);
+                    }
+
+                    _currentDuel = new CurrentDuel(
+                        new List<UciInfo>() { engineMatchWindow.PlayerWhiteConfigValues, engineMatchWindow.PlayerBlackConfigValues },
+                        engineMatchWindow.GetTimeControl(), engineMatchWindow.NumberOfGames, engineMatchWindow.SwitchColors,
+                        engineMatchWindow.DuelEvent, engineMatchWindow.StartFromBasePosition);
+                    _currentDuelId = _duelManager.Init(_currentDuel);
+                    _currentGame = _duelManager.GetNextGame();
+                    _duelInfoWindow = new DuelInfoWindow(_currentDuel.Players[0].Name, _currentDuel.Players[1].Name,
+                        _currentDuel.Cycles, _currentDuel.DuelSwitchColor, _configuration);
+                    _duelInfoWindow.StopDuel += DuelInfoWindow_StopDuel;
+                    _duelInfoWindow.Show();
+                    StartANewGame();
+                }
+            }
+        }
+
+        private void DuelWindowContinueDuelSelected(object sender, int duelId)
+        {
+            {
+                _duelManager = new DuelManager(_configuration, _database);
+            }
+
+            if (_duelInfoWindow != null)
+            {
+                _duelInfoWindow.StopDuel -= DuelInfoWindow_StopDuel;
+                _duelInfoWindow.CloseInfoWindow();
+
+                _duelInfoWindow = null;
+            }
+            _currentDuelId = duelId;
+            _currentDuel = _duelManager.Load(_currentDuelId);
+            if (_currentDuel != null)
+            {
+                _duelWindow?.Close();
+                _duelInfoWindow = new DuelInfoWindow(_currentDuel.Players[0].Name, _currentDuel.Players[1].Name,
+                                                     _currentDuel.Cycles, _currentDuel.DuelSwitchColor, _configuration);
+                _duelInfoWindow.StopDuel += DuelInfoWindow_StopDuel;
+                _duelInfoWindow.Show();
+
+                int gamesCount = 0;
+                _currentGame = null;
+                foreach (var databaseGameSimple in _database.GetDuelGames(_currentDuelId))
+                {
+                    if (databaseGameSimple.Result.Contains("*"))
+                    {
+                        LoadAGame(_database.LoadGame(databaseGameSimple.Id));
+                        _database.DeleteGame(databaseGameSimple.Id);
+                        break;
+                    }
+                    bool gamesCountIsEven = (gamesCount % 2) == 0;
+                    _duelInfoWindow.AddResult(gamesCount,databaseGameSimple.Result, _currentDuel.DuelSwitchColor && !gamesCountIsEven);
+                    gamesCount++;
+                }
+
+                if (_currentGame == null)
+                {
+                    _currentGame = _duelManager.GetNextGame();
+                    if (_currentGame != null)
+                    {
+                        Dispatcher?.Invoke(() =>
+                        {
+                            _engineWindow?.Close();
+
+                            StartANewGame();
+                        });
+                    }
+                }
+                else
+                {
+                    Dispatcher?.Invoke(() =>
+                    {
+                        _engineWindow?.Close();
+                        ContinueAGame();
+                    });
+
+                }
+            }
+        }
+
+        private void DuelInfoWindow_StopDuel(object sender, EventArgs e)
+        {
+            _engineWindow?.Close();
+            _duelInfoWindow?.CloseInfoWindow();
+            var pgnCreator = new PgnCreator();
+            foreach (var move in _chessBoard.GetPlayedMoveList())
+            {
+                pgnCreator.AddMove(move);
+            }
+
+            var pgnGame = new PgnGame
+                          {
+                              GameEvent = _currentGame.GameEvent,
+                              PlayerWhite = _currentGame.PlayerWhite,
+                              PlayerBlack = _currentGame.PlayerBlack,
+                              Result = _lastResult,
+                              GameDate = DateTime.Now.ToString("dd.MM.yyyy"),
+                              Round = _currentGame.Round.ToString()
+                          };
+            foreach (var move in pgnCreator.GetAllMoves())
+            {
+                pgnGame.AddMove(move);
+            }
+
+            _duelManager?.SaveGame(new DatabaseGame(pgnGame, _chessBoard.GetPlayedMoveList(), _currentGame)
+                                         {
+                                             WhiteClockTime = _chessClocksWindowWhite.GetClockTime(),
+                                             BlackClockTime = _chessClocksWindowBlack.GetClockTime()
+                                         });
+            Dispatcher?.Invoke(() => { MenuItemNewGame_OnClick(this, null); });
+        }
+
+        private void MenuItemLoadDuel_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_duelWindow == null)
+            {
+                _duelWindow = new DuelWindow(_configuration, _database);
+                _duelWindow.Closed += DuelWindow_Closed;
+                _duelWindow.ContinueDuelSelected += DuelWindowContinueDuelSelected;
+                _duelWindow.CloneDuelSelected += DuelWindowCloneDuelSelected;
+                _duelWindow.SelectedGameChanged += DatabaseWindow_SelectedGameChanged;
+                _duelWindow.Show();
+            }
+        }
+
+        private void DuelWindow_Closed(object sender, EventArgs e)
+        {
+            _duelWindow.ContinueDuelSelected -= DuelWindowContinueDuelSelected;
+            _duelWindow.CloneDuelSelected -= DuelWindowCloneDuelSelected;
+            _duelWindow.SelectedGameChanged -= DatabaseWindow_SelectedGameChanged;
+            _duelWindow = null;
+        }
+
+        #endregion
+
+        #region Tournament
+
+        private void MenuItemEngineTour_OnClick(object sender, RoutedEventArgs e)
+        {
+            _pureEngineMatch = false;
+            chessBoardUcGraphics.UnMarkAllFields();
+            if (_runningGame)
+            {
+                _runningGame = false;
+                _gameAgainstEngine = false;
+                _engineWindow?.Stop();
+                _engineWindow?.ClearTimeControl();
+                _eChessBoard?.Stop();
+                _eChessBoard?.SetAllLedsOff();
+                _chessClocksWindowWhite?.Stop();
+                _chessClocksWindowBlack?.Stop();
+                menuItemEngineMatch.Header = "Start a new engine match";
+                textBlockRunningMode.Text = "Mode: Easy playing";
+                menuItemSetupPosition.IsEnabled = true;
+                menuItemAnalyzeMode.IsEnabled = true;
+                menuItemEngineMatch.IsEnabled = true;
+                menuItemEngineTour.IsEnabled = true;
+                chessBoardUcGraphics.AllowTakeBack(true);
+                _runInEasyPlayingMode = true;
+                chessBoardUcGraphics.ShowControlButtons(false);
+                return;
+            }
+
+            _runningGame = false;
+            _timeControl = _configuration.LoadTimeControl(false);
+            var tournamentWindow = new NewTournamentWindow(_installedEngines.Values.ToArray(), _configuration, _database);
+            
+            var showDialog = tournamentWindow.ShowDialog();
+            if (showDialog.HasValue  && showDialog.Value)
+            {
+                if (_tournamentManager == null)
+                {
+                    _tournamentManager = new TournamentManager(_configuration, _database);
+                }
+
+                _currentTournament = tournamentWindow.GetCurrentTournament();
+                _currentTournamentId = _tournamentManager.Init(_currentTournament);
+                _currentGame = _tournamentManager.GetNextGame();
+                _tournamentInfoWindow =  TournamentInfoWindowFactory.GetTournamentInfoWindow(_currentTournament, _configuration);
+                _tournamentInfoWindow.StopTournament += TournamentInfoWindow_StopTournament;
+                _tournamentInfoWindow.Show();
+                StartANewGame();
+            }
+        }
+
+        private void TournamentInfoWindow_StopTournament(object sender, EventArgs e)
+        {
+           _engineWindow?.Close();
+           _tournamentInfoWindow?.Close();
+           var pgnCreator = new PgnCreator();
+            foreach (var move in _chessBoard.GetPlayedMoveList())
+           {
+               pgnCreator.AddMove(move);
+           }
+
+           var pgnGame = new PgnGame
+                         {
+                             GameEvent = _currentGame.GameEvent,
+                             PlayerWhite = _currentGame.PlayerWhite,
+                             PlayerBlack = _currentGame.PlayerBlack,
+                             Result = _lastResult,
+                             GameDate = DateTime.Now.ToString("dd.MM.yyyy"),
+                             Round = _currentGame.Round.ToString()
+                         };
+           foreach (var move in pgnCreator.GetAllMoves())
+           {
+               pgnGame.AddMove(move);
+           }
+
+           _tournamentManager?.SaveGame(new DatabaseGame(pgnGame, _chessBoard.GetPlayedMoveList(), _currentGame)
+                                       {
+                                           WhiteClockTime = _chessClocksWindowWhite.GetClockTime(),
+                                           BlackClockTime = _chessClocksWindowBlack.GetClockTime()
+                                       });
+           Dispatcher?.Invoke(() => { MenuItemNewGame_OnClick(this, null); });
+        }
+
+        private void HandleEngineTournament()
+        {
+            var pgnCreator = new PgnCreator();
+            foreach (var move in _chessBoard.GetPlayedMoveList())
+            {
+                pgnCreator.AddMove(move);
+            }
+
+            var pgnGame = new PgnGame
+                          {
+                              GameEvent = _currentGame.GameEvent,
+                              PlayerWhite = _currentGame.PlayerWhite,
+                              PlayerBlack = _currentGame.PlayerBlack,
+                              Result = _lastResult,
+                              GameDate = DateTime.Now.ToString("dd.MM.yyyy"),
+                              Round = _currentGame.Round.ToString()
+                          };
+            foreach (var move in pgnCreator.GetAllMoves())
+            {
+                pgnGame.AddMove(move);
+            }
+            Dispatcher?.Invoke(() =>
+            {
+                _tournamentInfoWindow?.AddResult(_lastResult, _tournamentManager.GetPairing());
+            });
+
+            _tournamentManager.SaveGame(new DatabaseGame(pgnGame, _chessBoard.GetPlayedMoveList(), _currentGame)
+                                        {
+                                            WhiteClockTime = _chessClocksWindowWhite.GetClockTime(),
+                                            BlackClockTime = _chessClocksWindowBlack.GetClockTime()
+                                        });
+        
+            _currentGame = _tournamentManager.GetNextGame();
+            if (_currentGame != null)
+            {
+                Dispatcher?.Invoke(() =>
+                {
+                    _engineWindow?.Close();
+
+                    StartANewGame();
+                });
+            }
+            else
+            {
+                Dispatcher?.Invoke(() =>
+                {
+                    MenuItemNewGame_OnClick(this, null);
+                });
+
+            }
+        }
+
+        private void MenuItemLoadEngineTour_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_tournamentWindow == null)
+            {
+                _tournamentWindow = new TournamentWindow(_configuration, _database);
+                _tournamentWindow.Closed += TournamentWindow_Closed;
+                _tournamentWindow.ContinueTournamentSelected += TournamentWindowContinueTournamentSelected;
+                _tournamentWindow.CloneTournamentSelected += TournamentWindowCloneTournamentSelected;
+                _tournamentWindow.SelectedGameChanged += DatabaseWindow_SelectedGameChanged;
+                _tournamentWindow.Show();
+            }
+        }
+
+        private void TournamentWindowContinueTournamentSelected(object sender, int tournamentId)
+        {
+            if (_tournamentManager == null)
+            {
+                _tournamentManager = new TournamentManager(_configuration, _database);
+            }
+
+            if (_tournamentInfoWindow != null)
+            {
+                _tournamentInfoWindow.Close();
+                _tournamentInfoWindow = null;
+            }
+            _currentTournamentId = tournamentId;
+            _currentTournament = _tournamentManager.Load(_currentTournamentId);
+            if (_currentTournament!=null)
+            {
+                _tournamentWindow?.Close();
+                _tournamentInfoWindow = TournamentInfoWindowFactory.GetTournamentInfoWindow(_currentTournament, _configuration);
+                _tournamentInfoWindow.StopTournament += TournamentInfoWindow_StopTournament;
+                _tournamentInfoWindow.Show();
+          
+                int gamesCount = 0;
+                _currentGame = null;
+                foreach (var databaseGameSimple in _database.GetTournamentGames(_currentTournamentId))
+                {
+                    if (databaseGameSimple.Result.Contains("*"))
+                    {
+                        LoadAGame(_database.LoadGame(databaseGameSimple.Id));
+                        _database.DeleteGame(databaseGameSimple.Id);
+                        break;
+                    }
+                    var pairing = _tournamentManager.GetPairing(gamesCount);
+                    _tournamentInfoWindow?.AddResult(databaseGameSimple.Result, pairing);
+                    gamesCount++;
+                }
+
+                if (_currentGame == null)
+                {
+                    _currentGame = _tournamentManager.GetNextGame();
+                    if (_currentGame != null)
+                    {
+                        Dispatcher?.Invoke(() =>
+                        {
+                            _engineWindow?.Close();
+
+                            StartANewGame();
+                        });
+                    }
+                }
+                else
+                {
+                    Dispatcher?.Invoke(() =>
+                    {
+                        _engineWindow?.Close();
+                        ContinueAGame();
+                    });
+                    
+                }
+            }
+        }
+
+        private void TournamentWindowCloneTournamentSelected(object sender, int tournamentId)
+        {
+            if (_tournamentManager == null)
+            {
+                _tournamentManager = new TournamentManager(_configuration, _database);
+            }
+
+            if (_tournamentInfoWindow != null)
+            {
+                _tournamentInfoWindow.Close();
+                _tournamentInfoWindow = null;
+            }
+            _currentTournamentId = tournamentId;
+            _currentTournament = _tournamentManager.Load(_currentTournamentId);
+            if (_currentTournament != null)
+            {
+                _tournamentWindow?.Close();
+                var tournamentWindow = new NewTournamentWindow(_installedEngines.Values.ToArray(), _configuration, _database,_currentTournament);
+
+                var showDialog = tournamentWindow.ShowDialog();
+                if (showDialog.HasValue && showDialog.Value)
+                {
+                    if (_tournamentManager == null)
+                    {
+                        _tournamentManager = new TournamentManager(_configuration, _database);
+                    }
+
+                    _currentTournament = tournamentWindow.GetCurrentTournament();
+                    _currentTournamentId = _tournamentManager.Init(_currentTournament);
+                    _currentGame = _tournamentManager.GetNextGame();
+                    _tournamentInfoWindow = TournamentInfoWindowFactory.GetTournamentInfoWindow(_currentTournament, _configuration);
+                    _tournamentInfoWindow.StopTournament += TournamentInfoWindow_StopTournament;
+                    _tournamentInfoWindow.Show();
+                    StartANewGame();
+                }
+            }
+        }
+
+        private void TournamentWindow_Closed(object sender, EventArgs e)
+        {
+            _tournamentWindow.ContinueTournamentSelected -= TournamentWindowContinueTournamentSelected;
+            _tournamentWindow.CloneTournamentSelected -= TournamentWindowCloneTournamentSelected;
+            _tournamentWindow.SelectedGameChanged -= DatabaseWindow_SelectedGameChanged;
+            _tournamentWindow = null;
+        }
+
+
+
+        #endregion
+
+    
     }
 }

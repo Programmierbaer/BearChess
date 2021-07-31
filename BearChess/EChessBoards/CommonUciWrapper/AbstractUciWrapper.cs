@@ -91,8 +91,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
             ReadConfiguration();
             eBoardWrapper = GetEBoardWrapper();
-            eBoardWrapper.SetAllLedsOff();
-            eBoardWrapper.MoveEvent += this.EBoard_MoveEvent;
+            eBoardWrapper?.SetAllLedsOff();
+            if (eBoardWrapper != null)
+            {
+                eBoardWrapper.MoveEvent += this.EBoard_MoveEvent;
+            }
+
             _fileLogger?.LogDebug($"{number}. instance of {name} created");
         }
 

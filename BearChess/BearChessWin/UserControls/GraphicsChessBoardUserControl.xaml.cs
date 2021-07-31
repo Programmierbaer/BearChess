@@ -254,15 +254,114 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _piecesBitmaps[" "] = null;
         }
 
+        private void LoadBigBmpImage(string fileName)
+        {
+            var bitmapImage = new BitmapImage(new Uri(fileName));
+
+            var bitmapImageWidth = bitmapImage.PixelWidth / 12;
+            var bitmapImageHeight = bitmapImage.PixelHeight;
+
+
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect(0, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["P"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["N"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 2, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["B"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 3, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["R"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 4, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["Q"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 5, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["K"] = image;
+
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 6, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["p"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int) bitmapImageHeight * 7, 0, (int) bitmapImageWidth,(int) bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["n"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 8, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["b"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 9, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["r"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 10, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["q"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 11, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["k"] = image;
+
+            _piecesBitmaps[""] = null;
+            _piecesBitmaps[" "] = null;
+        }
+
         public void SetPiecesMaterial(BoardPiecesSetup piecesSetup)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(piecesSetup.WhiteQueenFileName))
                 {
+
                     LoadBigImage(piecesSetup.WhiteKingFileName);
                     return;
                 }
+
                 _piecesBitmaps["K"] = new BitmapImage(new Uri(piecesSetup.WhiteKingFileName));
                 _piecesBitmaps["Q"] = new BitmapImage(new Uri(piecesSetup.WhiteQueenFileName));
                 _piecesBitmaps["R"] = new BitmapImage(new Uri(piecesSetup.WhiteRookFileName));

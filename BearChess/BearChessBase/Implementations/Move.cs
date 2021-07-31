@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
@@ -53,6 +54,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         /// <inheritdoc />
         public string CheckOrMateSign { get; set; }
+
+        [XmlIgnore]
+        public BoardEvaluation[] BoardEvaluations { get; set; }
 
         public Move()
         {

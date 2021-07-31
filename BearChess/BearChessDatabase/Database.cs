@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
@@ -32,12 +34,12 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             _connection?.Dispose();
         }
 
-        private void Load()
+        private void LoadDb()
         {
-            Load(FileName);
+            LoadDb(FileName);
         }
 
-        public void Load(string fileName)
+        public void LoadDb(string fileName)
         {
             FileName = fileName;
             if (string.IsNullOrWhiteSpace(FileName))
@@ -45,6 +47,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 _logging?.LogError("Load with empty file name");
                 _inError = true;
             }
+
             _dbExists = File.Exists(FileName);
             try
             {
@@ -70,12 +73,13 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             {
                 if (_connection == null)
                 {
-                    Load();
+                    LoadDb();
                     if (_inError)
                     {
                         return false;
                     }
                 }
+
                 _connection.Open();
                 _inError = false;
                 return true;
@@ -123,6 +127,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
             try
             {
+                int storageVersion = 1;
                 if (!TableExists("storageVersion"))
                 {
                     var sql = "CREATE TABLE storageVersion " +
@@ -133,6 +138,10 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                         command.CommandText = "INSERT INTO storageVersion (version) VALUES (1);";
                         command.ExecuteNonQuery();
                     }
+                }
+                else
+                {
+                    storageVersion = GetStorageVersion();
                 }
 
                 if (!TableExists("games"))
@@ -200,6 +209,86 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     }
                 }
 
+                if (!TableExists("tournament"))
+                {
+                    var sql = "CREATE TABLE tournament " +
+                              "(id INTEGER PRIMARY KEY," +
+                              " event TEXT NOT NULL," +
+                              " eventDate INTEGER NOT NULL, " +
+                              " gamesToPlay INTEGER NOT NULL," +
+                              " configXML TEXT NOT NULL );";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                if (!TableExists("tournamentGames"))
+                {
+                    var sql = "CREATE TABLE tournamentGames " +
+                              "(id INTEGER PRIMARY KEY," +
+                              " tournament_id INTEGER NOT NULL, " +
+                              " game_id INTEGER NOT NULL);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+                        sql = "CREATE INDEX idx_tournamentGames_tournId ON tournamentGames(tournament_id);";
+                        command.CommandText = sql;
+                        command.ExecuteNonQuery();
+                        sql = "CREATE INDEX idx_tournamentGames_gameId ON tournamentGames(game_id);";
+                        command.CommandText = sql;
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                if (!TableExists("duel"))
+                {
+                    var sql = "CREATE TABLE duel " +
+                              "(id INTEGER PRIMARY KEY," +
+                              " event TEXT NOT NULL," +
+                              " eventDate INTEGER NOT NULL, " +
+                              " gamesToPlay INTEGER NOT NULL," +
+                              " configXML TEXT NOT NULL );";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                if (!TableExists("duelGames"))
+                {
+                    var sql = "CREATE TABLE duelGames " +
+                              "(id INTEGER PRIMARY KEY," +
+                              " duel_id INTEGER NOT NULL, " +
+                              " game_id INTEGER NOT NULL);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+                        sql = "CREATE INDEX duelGames_duelId ON duelGames(duel_id);";
+                        command.CommandText = sql;
+                        command.ExecuteNonQuery();
+                        sql = "CREATE INDEX duelGames_gamesId ON duelGames(game_id);";
+                        command.CommandText = sql;
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                if (storageVersion == 1)
+                {
+                    var sql = "ALTER TABLE games ADD COLUMN round INTEGER DEFAULT 1; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "UPDATE storageVersion SET version=2; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                }
+
                 _dbExists = true;
                 Close();
                 return true;
@@ -213,21 +302,44 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             return false;
         }
 
-        public bool Save(DatabaseGame game)
+        private bool TableExists(string tableName)
+        {
+            var sql = $"SELECT name FROM sqlite_master WHERE type = 'table' AND name = '{tableName}' COLLATE NOCASE";
+            using (var command = new SQLiteCommand(sql, _connection))
+            {
+                var executeScalar = command.ExecuteScalar();
+                return executeScalar != null;
+            }
+        }
+
+        private int GetStorageVersion()
+        {
+            var sql = "SELECT version FROM storageVersion;";
+            using (var command = new SQLiteCommand(sql, _connection))
+            {
+                var executeScalar = Convert.ToInt32(command.ExecuteScalar());
+                return executeScalar;
+            }
+        }
+
+        #region Games
+
+        public int Save(DatabaseGame game)
         {
             if (_inError)
             {
-                return false;
+                return -1;
             }
 
             if (!_dbExists)
             {
                 if (!CreateTables())
                 {
-                    return false;
+                    return -1;
                 }
             }
 
+            var gameId = 0;
             _connection.Open();
             var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
             try
@@ -238,8 +350,8 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 var sw = new StringWriter(sb);
                 aSerializer.Serialize(sw, game);
                 var xmlResult = sw.GetStringBuilder().ToString();
-                var sql = @"INSERT INTO games (white, black, event,site, result, gameDate, pgn, pgnXml, pgnHash)
-                           VALUES (@white, @black, @event, @site,  @result, @gameDate, @pgn, @pgnXml, @pgnHash); ";
+                var sql = @"INSERT INTO games (white, black, event,site, result, gameDate, pgn, pgnXml, pgnHash, round)
+                           VALUES (@white, @black, @event, @site,  @result, @gameDate, @pgn, @pgnXml, @pgnHash, @round); ";
                 using (var command2 = new SQLiteCommand(sql, _connection))
                 {
                     command2.Parameters.Add("@white", DbType.String).Value = game.White;
@@ -251,10 +363,11 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     command2.Parameters.Add("@pgn", DbType.String).Value = game.PgnGame.MoveList;
                     command2.Parameters.Add("@pgnXml", DbType.String).Value = xmlResult;
                     command2.Parameters.Add("@pgnHash", DbType.Int32).Value = deterministicHashCode;
+                    command2.Parameters.Add("@round", DbType.Int32).Value = game.Round;
                     command2.ExecuteNonQuery();
                 }
 
-                var gameId = 0;
+
                 using (var command2 = new SQLiteCommand("SELECT LAST_INSERT_ROWID();", _connection))
                 {
                     var executeScalar = command2.ExecuteScalar();
@@ -317,37 +430,56 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             {
                 sqLiteTransaction.Rollback();
                 _logging?.LogError(ex);
-                return false;
+                return -1;
             }
             finally
             {
                 _connection.Close();
             }
 
-            return true;
+            return gameId;
         }
 
-        public void Delete(int id)
+        public void DeleteGame(int id)
         {
+
+            _connection.Open();
+            var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
             try
             {
-                _connection.Open();
-                var sql = @"DELETE FROM fenToGames  WHERE game_id=@game_id; ";
+                var sql = @"DELETE FROM fenToGames WHERE game_id=@game_id; ";
                 using (var command = new SQLiteCommand(sql, _connection))
                 {
                     command.Parameters.Add("@game_id", DbType.Int32).Value = id;
                     command.ExecuteNonQuery();
                 }
 
-                sql = @"DELETE FROM games  WHERE id=@id; ";
+                sql = @"DELETE FROM games WHERE id=@id; ";
                 using (var command = new SQLiteCommand(sql, _connection))
                 {
                     command.Parameters.Add("@id", DbType.Int32).Value = id;
                     command.ExecuteNonQuery();
                 }
+
+                sql = @"DELETE FROM tournamentGames WHERE game_id=@id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM duelGames WHERE game_id=@id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sqLiteTransaction.Commit();
             }
             catch (Exception ex)
             {
+                sqLiteTransaction.Rollback();
                 _logging?.LogError(ex);
             }
             finally
@@ -356,7 +488,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             }
         }
 
-        public DatabaseGame Load(int id)
+        public DatabaseGame LoadGame(int id)
         {
             if (!_dbExists)
             {
@@ -372,7 +504,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             {
                 _connection.Open();
                 var sql =
-                    "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash FROM games WHERE id=@ID;";
+                    "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round FROM games WHERE id=@ID;";
                 var xmlSerializer = new XmlSerializer(typeof(DatabaseGame));
                 using (var cmd = new SQLiteCommand(sql, _connection))
                 {
@@ -383,7 +515,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                         {
                             using (TextReader reader = new StringReader(rdr.GetString(8)))
                             {
-                                databaseGame = (DatabaseGame) xmlSerializer.Deserialize(reader);
+                                databaseGame = (DatabaseGame)xmlSerializer.Deserialize(reader);
                                 foreach (var databaseGameAllMove in databaseGame.AllMoves)
                                 {
                                     pgnCreator.AddMove(databaseGameAllMove);
@@ -409,37 +541,13 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             return databaseGame;
         }
 
-        public DatabaseGameSimple[] GetGames()
+        public DatabaseGameSimple[] GetGames(GamesFilter gamesFilter)
         {
-            if (_inError)
-            {
-                return new DatabaseGameSimple[0];
-            }
-
-            try
-            {
-                if (!_dbExists)
-                {
-                    Load();
-                    if (!CreateTables())
-                    {
-                        return new DatabaseGameSimple[0];
-                    }
-                }
-
-                return GetBySql(
-                    "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash FROM games ORDER BY ID;");
-            }
-            catch (Exception ex)
-            {
-                _inError = true;
-                _logging?.LogError(ex);
-            }
-
-            return new DatabaseGameSimple[0];
+            return GetGames(gamesFilter, string.Empty);
+            
         }
 
-        public DatabaseGameSimple[] FilterByFen(string fen)
+        private DatabaseGameSimple[] FilterByFen(string fen)
         {
             if (_inError)
             {
@@ -449,7 +557,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             DatabaseGameSimple[] allGames = null;
             _connection.Open();
             using (var cmd = new SQLiteCommand(
-                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash" +
+                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round" +
                 " FROM games as g JOIN fenToGames as fg ON (g.ID=fg.game_id) " +
                 " JOIN fens as f ON (fg.fen_id = f.id)" +
                 "WHERE f.shortFen=@shortFen;", _connection))
@@ -466,22 +574,127 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             return allGames;
         }
 
+
+        public DatabaseGameSimple[] GetGames(GamesFilter gamesFilter, string fen)
+        {
+            if (_inError)
+            {
+                return new DatabaseGameSimple[0];
+            }
+
+            try
+            {
+                if (!_dbExists)
+                {
+                    LoadDb();
+                    if (!CreateTables())
+                    {
+                        return new DatabaseGameSimple[0];
+                    }
+                }
+
+                if (!gamesFilter.FilterIsActive)
+                {
+                    if (string.IsNullOrWhiteSpace(fen))
+                    {
+                        return GetBySql(
+                            "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round FROM games ORDER BY ID;");
+                    }
+
+                    return FilterByFen(fen);
+                }
+
+                string filterSQl = string.Empty;
+                if (gamesFilter.NoDuelGames)
+                {
+                    filterSQl += " AND g.Id NOT IN (SELECT game_id FROM  duelGames) ";
+                }
+                if (gamesFilter.NoTournamentGames)
+                {
+                    filterSQl += " AND g.Id NOT IN (SELECT game_id FROM  tournamentGames) ";
+                }
+                if (gamesFilter.WhitePlayerWhatever)
+                {
+                    filterSQl += " AND (g.white LIKE @white OR g.black LIKE @white) ";
+                }
+                else
+                {
+                    filterSQl += " AND (g.white LIKE @white )";
+                }
+                if (gamesFilter.BlackPlayerWhatever)
+                {
+                    filterSQl += " AND (g.black LIKE @black OR g.white LIKE @black) ";
+                }
+                else
+                {
+                    filterSQl += " AND (g.black LIKE @black )";
+                }
+
+                string fenSQl = string.Empty;
+                if (!string.IsNullOrWhiteSpace(fen))
+                {
+                    fenSQl = " JOIN fenToGames as fg ON (g.ID=fg.game_id) " +
+                             " JOIN fens as f ON (fg.fen_id = f.id)";
+                    filterSQl += " AND (f.shortFen=@shortFen) ";
+                }
+                DatabaseGameSimple[] allGames = null;
+                _connection.Open();
+                using (var cmd = new SQLiteCommand(
+                    "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round" +
+                    " FROM games g  " +
+                    fenSQl+
+                    " WHERE g.Event LIKE @gameEvent" +
+                    " AND (gameDate BETWEEN @fromDate AND @toDate) " +
+                    filterSQl +
+                    " ORDER BY g.ID;", _connection))
+                {
+                    cmd.Parameters.Add("@gameEvent", DbType.String).Value = string.IsNullOrWhiteSpace(gamesFilter.GameEvent) ? "%" : gamesFilter.GameEvent;
+                    cmd.Parameters.Add("@fromDate", DbType.Int64).Value = gamesFilter.FromDate?.ToFileTime() ?? 0;
+                    cmd.Parameters.Add("@toDate", DbType.Int64).Value = gamesFilter.ToDate?.ToFileTime() ?? long.MaxValue;
+
+                    cmd.Parameters.Add("@black", DbType.String).Value = string.IsNullOrWhiteSpace(gamesFilter.BlackPlayer) ? "%" : gamesFilter.BlackPlayer;
+                    cmd.Parameters.Add("@white", DbType.String).Value = string.IsNullOrWhiteSpace(gamesFilter.WhitePlayer) ? "%" : gamesFilter.WhitePlayer;
+                    if (!string.IsNullOrWhiteSpace(fen))
+                    {
+                        cmd.Parameters.Add("@shortFen", DbType.String).Value = fen.Split(" ".ToCharArray())[0];
+                    }
+
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        allGames = GetByReader(rdr);
+                        rdr.Close();
+                    }
+                }
+
+                _connection.Close();
+                return allGames;
+            }
+            catch (Exception ex)
+            {
+                _inError = true;
+                _logging?.LogError(ex);
+            }
+
+            return new DatabaseGameSimple[0];
+        }
+
         private DatabaseGameSimple[] GetByReader(SQLiteDataReader rdr)
         {
             var allGames = new List<DatabaseGameSimple>();
             while (rdr.Read())
             {
                 var databaseGameSimple = new DatabaseGameSimple
-                                         {
-                                             Id = rdr.GetInt32(0),
-                                             White = rdr.GetString(1),
-                                             Black = rdr.GetString(2),
-                                             GameEvent = rdr.GetString(3),
-                                             GameSite = rdr.GetString(4),
-                                             Result = rdr.GetString(5),
-                                             GameDate = DateTime.FromFileTime(rdr.GetInt64(6)),
-                                             MoveList = rdr.GetString(7)
-                                         };
+                {
+                    Id = rdr.GetInt32(0),
+                    White = rdr.GetString(1),
+                    Black = rdr.GetString(2),
+                    GameEvent = rdr.GetString(3),
+                    GameSite = rdr.GetString(4),
+                    Result = rdr.GetString(5),
+                    GameDate = DateTime.FromFileTime(rdr.GetInt64(6)),
+                    MoveList = rdr.GetString(7),
+                    Round = rdr.GetInt32(10).ToString()
+                };
                 allGames.Add(databaseGameSimple);
             }
 
@@ -505,14 +718,916 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             return allGames;
         }
 
-        private bool TableExists(string tableName)
+
+
+        #endregion
+
+        #region Duel
+        public int SaveDuel(CurrentDuel engineDuel)
         {
-            var sql = $"SELECT name FROM sqlite_master WHERE type = 'table' AND name = '{tableName}' COLLATE NOCASE";
-            using (var command = new SQLiteCommand(sql, _connection))
+            if (_inError)
             {
-                var executeScalar = command.ExecuteScalar();
-                return executeScalar != null;
+                return -1;
+            }
+
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return -1;
+                }
+            }
+
+            var tournamentId = 0;
+            _connection.Open();
+
+            try
+            {
+
+                var aSerializer = new XmlSerializer(typeof(CurrentDuel));
+                var sb = new StringBuilder();
+                var sw = new StringWriter(sb);
+                aSerializer.Serialize(sw, engineDuel);
+                var xmlResult = sw.GetStringBuilder().ToString();
+                var sql = @"INSERT INTO duel (event, eventDate, gamesToPlay, configXML)
+                           VALUES (@event, @eventDate, @gamesToPlay, @configXML); ";
+                using (var command2 = new SQLiteCommand(sql, _connection))
+                {
+                    command2.Parameters.Add("@event", DbType.String).Value = engineDuel.GameEvent;
+                    command2.Parameters.Add("@eventDate", DbType.Int64).Value = DateTime.UtcNow.ToFileTime();
+                    command2.Parameters.Add("@gamesToPlay", DbType.Int32).Value = engineDuel.Cycles;
+                    command2.Parameters.Add("@configXML", DbType.String).Value = xmlResult;
+                    command2.ExecuteNonQuery();
+                }
+
+                using (var command2 = new SQLiteCommand("SELECT LAST_INSERT_ROWID();", _connection))
+                {
+                    var executeScalar = command2.ExecuteScalar();
+                    tournamentId = int.Parse(executeScalar.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+
+                _logging?.LogError(ex);
+                return -1;
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return tournamentId;
+        }
+
+        public void SaveDuelGamePair(int duelId, int gameId)
+        {
+            if (_inError)
+            {
+                return;
+            }
+
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return;
+                }
+            }
+
+            _connection.Open();
+            try
+            {
+                var sql = @"INSERT INTO duelGames (duel_id, game_id) VALUES (@duel_id, @game_id); ";
+                using (var command2 = new SQLiteCommand(sql, _connection))
+                {
+                    command2.Parameters.Add("@duel_id", DbType.Int32).Value = duelId;
+                    command2.Parameters.Add("@game_id", DbType.Int32).Value = gameId;
+                    command2.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+            finally
+            {
+                _connection.Close();
             }
         }
+        
+        public void DeleteAllDuel()
+        {
+
+            _connection.Open();
+            var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                string sql;
+                sql = @"DELETE FROM fenToGames WHERE game_id IN (select game_id FROM duelGames); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM games WHERE id IN (select game_id FROM duelGames); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM duelGames; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM duel; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+                sqLiteTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                sqLiteTransaction.Rollback();
+                _logging?.LogError(ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public void DeleteDuelGames(int id)
+        {
+            try
+            {
+                _connection.Open();
+                string sql;
+
+                sql = @"DELETE FROM fenToGames WHERE game_id IN (select game_id FROM duelGames  WHERE duel_id=@id); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM games WHERE id IN (select game_id FROM duelGames  WHERE duel_id=@id); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM duelGames  WHERE duel_id=@id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public void DeleteDuel(int id)
+        {
+            try
+            {
+                _connection.Open();
+                string sql;
+
+                sql = @"DELETE FROM fenToGames WHERE game_id IN (select game_id FROM duelGames  WHERE duel_id=@id); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM games WHERE id IN (select game_id FROM duelGames  WHERE duel_id=@id); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM duelGames  WHERE duel_id=@id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM duel  WHERE id=@id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public DatabaseDuel[] LoadDuel()
+        {
+            List<DatabaseDuel> allDuels = new List<DatabaseDuel>();
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return allDuels.ToArray();
+                }
+            }
+
+            try
+            {
+                _connection.Open();
+                var sql = "SELECT t.id, t.configXML, t.gamesToPlay, t.eventDate, count(g.id) as playedGames " +
+                          "FROM duel as T left join duelGames as g on (t.id=g.duel_id) " +
+                          "group by t.configXML,t.gamesToPlay,t.eventDate " +
+                          "ORDER BY t.id;";
+                var xmlSerializer = new XmlSerializer(typeof(CurrentDuel));
+                using (var cmd = new SQLiteCommand(sql, _connection))
+                {
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            CurrentDuel currentDuel;
+                            using (TextReader reader = new StringReader(rdr.GetString(1)))
+                            {
+                                currentDuel = (CurrentDuel)xmlSerializer.Deserialize(reader);
+                            }
+
+                            allDuels.Add(new DatabaseDuel()
+                                         {
+                                             DuelId = rdr.GetInt32(0),
+                                             CurrentDuel = currentDuel,
+                                             GamesToPlay = rdr.GetInt32(2),
+                                             PlayedGames = rdr.GetInt32(4),
+                                             State = rdr.GetInt32(2) == rdr.GetInt32(4) ? "Finished" : "Running",
+                                             EventDate = DateTime.FromFileTime(rdr.GetInt64(3)),
+                                             Participants = string.Join(", ", currentDuel.Players.Select(c => c.Name))
+                                         });
+                        }
+
+                        rdr.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+
+            _connection.Close();
+            return allDuels.ToArray();
+        }
+
+        public DatabaseDuel LoadDuel(int id)
+        {
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return null;
+                }
+            }
+
+            DatabaseDuel dbDuel = null;
+            try
+            {
+                _connection.Open();
+                var sql = "SELECT t.Id, t.configXML, t.gamesToPlay, t.eventDate, count(g.id) as playedGames " +
+                          "FROM duel as T left join duelGames as g on (t.id=g.duel_id) " +
+                          "WHERE t.id=@ID " +
+                          "group by t.configXML,t.gamesToPlay,t.eventDate " +
+                          "ORDER BY t.id;";
+                var xmlSerializer = new XmlSerializer(typeof(CurrentDuel));
+                using (var cmd = new SQLiteCommand(sql, _connection))
+                {
+                    cmd.Parameters.Add("@ID", DbType.Int32).Value = id;
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            CurrentDuel currentDuel = null;
+                            using (TextReader reader = new StringReader(rdr.GetString(1)))
+                            {
+                                currentDuel = (CurrentDuel) xmlSerializer.Deserialize(reader);
+                            }
+
+                            dbDuel = new DatabaseDuel()
+                                     {
+                                         DuelId = rdr.GetInt32(0),
+                                         CurrentDuel = currentDuel,
+                                         GamesToPlay = rdr.GetInt32(2),
+                                         PlayedGames = rdr.GetInt32(4),
+                                         State = rdr.GetInt32(2) == rdr.GetInt32(4) ? "Finished" : "Running",
+                                         EventDate = DateTime.FromFileTime(rdr.GetInt64(3)),
+                                         Participants = string.Join(", ", currentDuel.Players.Select(c => c.Name))
+                                     };
+                        }
+
+                        rdr.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+
+            _connection.Close();
+            return dbDuel;
+        }
+
+        public int GetDuelGamesCount(int duelId)
+        {
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return 0;
+                }
+            }
+
+            int gamesCount = 0;
+            try
+            {
+                _connection.Open();
+                var sql = "SELECT COUNT(*) FROM duelGames WHERE duel_id=@duel_id;";
+
+                using (var cmd = new SQLiteCommand(sql, _connection))
+                {
+                    cmd.Parameters.Add("@duel_id", DbType.Int32).Value = duelId;
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            gamesCount = rdr.GetInt32(0);
+                        }
+
+                        rdr.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+
+            _connection.Close();
+            return gamesCount;
+        }
+
+        public DatabaseGameSimple[] GetDuelGames(int duelId)
+        {
+
+            if (_inError)
+            {
+                return new DatabaseGameSimple[0];
+            }
+
+            DatabaseGameSimple[] allGames = null;
+            _connection.Open();
+            using (var cmd = new SQLiteCommand(
+                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round" +
+                " FROM games as g  " +
+                " JOIN duelGames t ON (t.game_id=g.id)" +
+                "WHERE t.duel_id=@duelId;", _connection))
+            {
+                cmd.Parameters.Add("@duelId", DbType.Int32).Value = duelId;
+                using (var rdr = cmd.ExecuteReader())
+                {
+                    allGames = GetByReader(rdr);
+                    rdr.Close();
+                }
+            }
+
+            _connection.Close();
+            return allGames;
+        }
+
+      
+
+
+        public bool IsDuelGame(int gameId)
+        {
+            if (_inError)
+            {
+                return true;
+            }
+
+            bool isDuelGame = false;
+            _connection.Open();
+            var sql = "SELECT duel_id FROM duelGames WHERE game_id = @game_Id";
+            using (var command = new SQLiteCommand(sql, _connection))
+            {
+                command.Parameters.Add("@game_id", DbType.Int32).Value = gameId;
+                var executeScalar = command.ExecuteScalar();
+                isDuelGame = executeScalar != null;
+            }
+            _connection.Close();
+            return isDuelGame;
+        }
+        
+        #endregion
+
+        #region Tournament
+        public void SaveTournamentGamePair(int tournamentId, int gameId)
+        {
+            if (_inError)
+            {
+                return;
+            }
+
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return;
+                }
+            }
+
+            _connection.Open();
+            try
+            {
+                var sql = @"INSERT INTO tournamentGames (tournament_id, game_id) VALUES (@tournament_id, @game_id); ";
+                using (var command2 = new SQLiteCommand(sql, _connection))
+                {
+                    command2.Parameters.Add("@tournament_id", DbType.Int32).Value = tournamentId;
+                    command2.Parameters.Add("@game_id", DbType.Int32).Value = gameId;
+                    command2.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public int SaveTournament(CurrentTournament tournament, int gamesToPlay)
+        {
+            if (_inError)
+            {
+                return -1;
+            }
+
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return -1;
+                }
+            }
+
+            var tournamentId = 0;
+            _connection.Open();
+
+            try
+            {
+
+                var aSerializer = new XmlSerializer(typeof(CurrentTournament));
+                var sb = new StringBuilder();
+                var sw = new StringWriter(sb);
+                aSerializer.Serialize(sw, tournament);
+                var xmlResult = sw.GetStringBuilder().ToString();
+                var sql = @"INSERT INTO tournament (event, eventDate, gamesToPlay, configXML)
+                           VALUES (@event, @eventDate, @gamesToPlay, @configXML); ";
+                using (var command2 = new SQLiteCommand(sql, _connection))
+                {
+                    command2.Parameters.Add("@event", DbType.String).Value = tournament.GameEvent;
+                    command2.Parameters.Add("@eventDate", DbType.Int64).Value = DateTime.UtcNow.ToFileTime();
+                    command2.Parameters.Add("@gamesToPlay", DbType.Int32).Value = gamesToPlay;
+                    command2.Parameters.Add("@configXML", DbType.String).Value = xmlResult;
+                    command2.ExecuteNonQuery();
+                }
+
+                using (var command2 = new SQLiteCommand("SELECT LAST_INSERT_ROWID();", _connection))
+                {
+                    var executeScalar = command2.ExecuteScalar();
+                    tournamentId = int.Parse(executeScalar.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+
+                _logging?.LogError(ex);
+                return -1;
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return tournamentId;
+        }
+
+        public void DeleteAllTournament()
+        {
+
+            _connection.Open();
+            var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                string sql;
+                sql = @"DELETE FROM fenToGames WHERE game_id IN (select game_id FROM tournamentGames); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM games WHERE id IN (select game_id FROM tournamentGames); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM tournamentGames; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM tournament; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+                sqLiteTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                sqLiteTransaction.Rollback();
+                _logging?.LogError(ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public void DeleteTournamentGames(int id)
+        {
+            try
+            {
+                _connection.Open();
+                string sql;
+
+                sql = @"DELETE FROM fenToGames WHERE game_id IN (select game_id FROM tournamentGames  WHERE tournament_id=@id); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM games WHERE id IN (select game_id FROM tournamentGames  WHERE tournament_id=@id); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM tournamentGames  WHERE tournament_id=@id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+        
+
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public void DeleteTournament(int id)
+        {
+            try
+            {
+                _connection.Open();
+                string sql;
+                
+                    sql = @"DELETE FROM fenToGames WHERE game_id IN (select game_id FROM tournamentGames  WHERE tournament_id=@id); "; 
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.Parameters.Add("@id", DbType.Int32).Value = id;
+                        command.ExecuteNonQuery();
+                    }
+
+                    sql = @"DELETE FROM games WHERE id IN (select game_id FROM tournamentGames  WHERE tournament_id=@id); ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.Parameters.Add("@id", DbType.Int32).Value = id;
+                        command.ExecuteNonQuery();
+                    }
+                
+                sql = @"DELETE FROM tournamentGames  WHERE tournament_id=@id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM tournament  WHERE id=@id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command.ExecuteNonQuery();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        public DatabaseTournament[] LoadTournament()
+        {
+            List<DatabaseTournament> allTournaments = new List<DatabaseTournament>();
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return allTournaments.ToArray();
+                }
+            }
+
+            try
+            {
+                _connection.Open();
+                var sql = "SELECT t.id, t.configXML, t.gamesToPlay, t.eventDate, count(g.id) as playedGames " +
+                          "FROM tournament as T left join tournamentGames as g on (t.id=g.tournament_id) " +
+                          "group by t.configXML,t.gamesToPlay,t.eventDate " +
+                          "ORDER BY t.id;";
+                var xmlSerializer = new XmlSerializer(typeof(CurrentTournament));
+                using (var cmd = new SQLiteCommand(sql, _connection))
+                {
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            CurrentTournament currentTournament;
+                            using (TextReader reader = new StringReader(rdr.GetString(1)))
+                            {
+                                currentTournament = (CurrentTournament)xmlSerializer.Deserialize(reader);
+                            }
+
+                            allTournaments.Add(new DatabaseTournament()
+                                               {
+                                                   TournamentId = rdr.GetInt32(0),
+                                                   CurrentTournament = currentTournament,
+                                                   GamesToPlay = rdr.GetInt32(2),
+                                                   PlayedGames = rdr.GetInt32(4),
+                                                   State = rdr.GetInt32(2) == rdr.GetInt32(4) ? "Finished" : "Running",
+                                                   EventDate = DateTime.FromFileTime(rdr.GetInt64(3)),
+                                                   Participants = string.Join(", ", currentTournament.Players.Select(c => c.Name))
+                                               });
+                        }
+
+                        rdr.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+
+            _connection.Close();
+            return allTournaments.ToArray();
+        }
+
+        public DatabaseTournament LoadTournament(int id)
+        {
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return null;
+                }
+            }
+
+            DatabaseTournament dbTournament = null;
+            try
+            {
+                _connection.Open();
+                var sql = "SELECT t.Id, t.configXML, t.gamesToPlay, t.eventDate, count(g.id) as playedGames " +
+                          "FROM tournament as T left join tournamentGames as g on (t.id=g.tournament_id) " +
+                          "WHERE t.id=@ID "+
+                          "group by t.configXML,t.gamesToPlay,t.eventDate " +
+                          "ORDER BY t.id;";
+                var xmlSerializer = new XmlSerializer(typeof(CurrentTournament));
+                using (var cmd = new SQLiteCommand(sql, _connection))
+                {
+                    cmd.Parameters.Add("@ID", DbType.Int32).Value = id;
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            CurrentTournament currentTournament = null;
+                            using (TextReader reader = new StringReader(rdr.GetString(1)))
+                            {
+                                currentTournament = (CurrentTournament) xmlSerializer.Deserialize(reader);
+                            }
+                            dbTournament = new DatabaseTournament()
+                                         {
+                                TournamentId = rdr.GetInt32(0),
+                                CurrentTournament = currentTournament,
+                                GamesToPlay = rdr.GetInt32(2),
+                                PlayedGames = rdr.GetInt32(4),
+                                State = rdr.GetInt32(2) == rdr.GetInt32(4) ? "Finished" : "Running",
+                                EventDate = DateTime.FromFileTime(rdr.GetInt64(3)),
+                                Participants = string.Join(", ", currentTournament.Players.Select(c => c.Name))
+                            };
+                        }
+
+                        rdr.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+
+            _connection.Close();
+            return dbTournament;
+        }
+
+        public int GetTournamentGamesCount(int tournamentId)
+        {
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return 0;
+                }
+            }
+
+            int gamesCount = 0;
+            try
+            {
+                _connection.Open();
+                var sql = "SELECT COUNT(*) FROM tournamentGames WHERE tournament_id=@tournament_id;";
+                
+                using (var cmd = new SQLiteCommand(sql, _connection))
+                {
+                    cmd.Parameters.Add("@tournament_id", DbType.Int32).Value = tournamentId;
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            gamesCount = rdr.GetInt32(0);
+                        }
+
+                        rdr.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+
+            _connection.Close();
+            return gamesCount;
+        }
+
+        public bool IsTournamentGame(int gameId)
+        {
+            if (_inError)
+            {
+                return true;
+            }
+
+            bool isTournamentGame = false;
+            _connection.Open();
+            var sql = "SELECT tournament_id FROM tournamentGames WHERE game_id = @game_Id";
+            using (var command = new SQLiteCommand(sql, _connection))
+            {
+                command.Parameters.Add("@game_id", DbType.Int32).Value = gameId;
+                var executeScalar = command.ExecuteScalar();
+                isTournamentGame = executeScalar != null;
+            }
+            _connection.Close();
+            return isTournamentGame;
+        }
+
+        public int GetLatestTournamentGameId(int tournamentId)
+        {
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return 0;
+                }
+            }
+
+            int gamesId = 0;
+            try
+            {
+                _connection.Open();
+                var sql = "SELECT games_id FROM tournamentGames WHERE id = (select max(id) FROM tournamentGames WHERE tournament_id=@tournament_id);";
+
+                using (var cmd = new SQLiteCommand(sql, _connection))
+                {
+                    cmd.Parameters.Add("@tournament_id", DbType.Int32).Value = tournamentId;
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            gamesId = rdr.GetInt32(0);
+                        }
+
+                        rdr.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+
+            _connection.Close();
+            return gamesId;
+        }
+
+        public DatabaseGameSimple[] GetTournamentGames(int tournamentId)
+        {
+
+
+            if (_inError)
+            {
+                return new DatabaseGameSimple[0];
+            }
+
+            DatabaseGameSimple[] allGames = null;
+            _connection.Open();
+            using (var cmd = new SQLiteCommand(
+                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round" +
+                " FROM games as g  " +
+                " JOIN tournamentGames t ON (t.game_id=g.id)" +
+                "WHERE t.tournament_id=@tournamentId;", _connection))
+            {
+                cmd.Parameters.Add("@tournamentId", DbType.Int32).Value = tournamentId;
+                using (var rdr = cmd.ExecuteReader())
+                {
+                    allGames = GetByReader(rdr);
+                    rdr.Close();
+                }
+            }
+
+            _connection.Close();
+            return allGames;
+        }
+
+        #endregion
+
+   
     }
 }
