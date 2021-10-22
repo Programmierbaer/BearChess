@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
              mc:Ignorable="d" Background="AliceBlue"
-             d:DesignHeight="150" d:DesignWidth="520">
+             d:DesignHeight="150" d:DesignWidth="660">
     <Border BorderThickness="1" BorderBrush="Gray">
         <StackPanel Name="stackPanelMain">
             <DockPanel LastChildFill="False">
@@ -41,10 +41,17 @@
                 <Button DockPanel.Dock="Left" Name="buttonConfig" Width="32" Margin="5" Click="ButtonConfig_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Configure engine">
                     <Image Source="../Assets/Icons/cog.png"></Image>
                 </Button>
+
+                <Image Margin="5" Name="imageEngine" DockPanel.Dock="Right" Width="64"
+                       Height="32" Source="../Assets/Icons/bearchess.png" Visibility="Hidden" />
+                <Image Margin="5" Name="imageTeddy" DockPanel.Dock="Right" Width="32"
+                       Height="32" Source="../Assets/Icons/BearChess.ico" Visibility="Hidden" />
                 <Image Margin="5" Name="imageColorWhite" DockPanel.Dock="Right" Width="32"
                        Height="32" Source="../Assets/Stone/Symbol/KingW.png" Visibility="Collapsed" />
                 <Image  Margin="5" Name="imageColorBlack" DockPanel.Dock="Right" Width="32"
-                       Height="32" Source="../Assets/Stone/Symbol/KingB.png" Visibility="Visible" />
+                        Height="32" Source="../Assets/Stone/Symbol/KingB.png" Visibility="Visible" />
+
+
             </DockPanel>
 
             <DockPanel LastChildFill="False" Visibility="Collapsed">
@@ -55,7 +62,7 @@
             <DockPanel LastChildFill="False">
                 <TextBlock DockPanel.Dock="Left" Name="textBlockDepth" HorizontalAlignment="Left" Width="90" Margin="5" Text="Depth:"/>
                 <TextBlock DockPanel.Dock="Left" Name="textBlockCurrentMove" HorizontalAlignment="Left" Width="110" Margin="5" Text="Current:"/>
-                <Grid  DockPanel.Dock="Left">
+                <Grid DockPanel.Dock="Left">
                    <Grid.ColumnDefinitions>
                        <ColumnDefinition Width="110"></ColumnDefinition>
                        <ColumnDefinition Width="90"></ColumnDefinition>
@@ -65,7 +72,15 @@
                     <TextBlock Grid.Column="1" Name="textBlockCurrentNodesPerSec" HorizontalAlignment="Left"  Margin="5"/>
                     <TextBlock Grid.Column="2" Name="textBlockCurrentHash" HorizontalAlignment="Left"  Margin="5" />
                 </Grid>
-
+                <Button DockPanel.Dock="Right" Name="buttonHide" Width="32" Margin="5" Click="ButtonHide_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Hide best line">
+                    <Image Source="../Assets/Icons/eye.png"></Image>
+                </Button>
+                <Button DockPanel.Dock="Right" Name="buttonHide1" Width="32" Margin="5" Click="ButtonHide_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Hide all" Visibility="Collapsed">
+                    <Image Source="../Assets/Icons/eye_half.png"></Image>
+                </Button>
+                <Button DockPanel.Dock="Right" Name="buttonHide2" Width="32" Margin="5" Click="ButtonHide_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Show all" Visibility="Collapsed">
+                    <Image Source="../Assets/Icons/eye_close.png"></Image>
+                </Button>
             </DockPanel>
             <local:EngineInfoLineUserControl x:Name="engineInfoLineUserControl1" HorizontalAlignment="Left" Height="60" Margin="0,0,0,-1"/>
         </StackPanel>

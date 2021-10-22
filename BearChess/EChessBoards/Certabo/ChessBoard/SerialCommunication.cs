@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -9,22 +8,25 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 {
     public class SerialCommunication : AbstractSerialCommunication
     {
-        private const string _allEmpty = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-        private const string _withQueensEmpty = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
+        private const string _allEmpty =
+            "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
 
-        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, bool useBluetooth) : base(isFirstInstance, logger, portName, "Certabo")
+        private const string _withQueensEmpty =
+            "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
+
+        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, bool useBluetooth) : base(
+            isFirstInstance, logger, portName, "Certabo")
         {
             _useBluetooth = useBluetooth;
         }
 
-        public DataFromBoard GetFromCertaboBoard()
+        private DataFromBoard GetFromCertaboBoard()
         {
-
-            while(true)
+            while (true)
             {
                 if (_dataFromBoard.TryDequeue(out var line))
                 {
-                    return new DataFromBoard(line, 0);
+                    return new DataFromBoard(line);
                 }
 
                 if (!IsCommunicating)
@@ -34,7 +36,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
                 Thread.Sleep(5);
             }
-            return new DataFromBoard(string.Empty);
+
+            return new DataFromBoard(string.Empty, 999);
         }
 
         public override string GetRawFromBoard()
@@ -43,82 +46,52 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             {
                 return _comPort.ReadLine();
             }
-            catch
+            catch (Exception ex)
             {
+                _logger?.LogError(ex.Message);
                 return string.Empty;
             }
         }
 
         public override string GetCalibrateData()
         {
-
-            List<byte[]> playLeds = new List<byte[]>
-                                    {
-                                        new byte[] {0, 0, 0, 0, 0, 0, 0, 0},
-                                        new byte[] {255, 0, 0, 0, 0, 0, 0, 0},
-                                        new byte[] {0, 255, 0, 0, 0, 0, 0, 0},
-                                        new byte[] {0, 0, 255, 0, 0, 0, 0, 0},
-                                        new byte[] {0, 0, 0, 255, 0, 0, 0, 0},
-                                        new byte[] {0, 0, 0, 0, 255, 0, 0, 0},
-                                        new byte[] {0, 0, 0, 0, 0, 255, 0, 0},
-                                        new byte[] {0, 0, 0, 0, 0, 0, 255, 0},
-                                        new byte[] {0, 0, 0, 0, 0, 0, 0, 255}
-                                    };
-            int index = 1;
+            var calibrateDataCreator = new CalibrateDataCreator();
             var result = string.Empty;
-            var calibrationHelper = new Dictionary<string, int>();
-            int count = 0;
+
+            var count = 0;
             while (true)
             {
-                Send(playLeds[0]);
-                Send(playLeds[index]);
-                index++;
-                if (index >= playLeds.Count)
-                {
-                    index = 1;
-                }
-                count++;
-                if (count > 200)
-                {
-                    break;
-                }
                 var fromBoard = GetFromCertaboBoard();
+                count++;
+                // _logger.LogDebug($"{count}.{fromBoard.Repeated} from board: {fromBoard.FromBoard}");
                 if (string.IsNullOrWhiteSpace(fromBoard.FromBoard))
                 {
+                    Thread.Sleep(100);
                     continue;
                 }
 
-                
                 if (!ValidCalibrateCodes(fromBoard.FromBoard))
                 {
+                    Thread.Sleep(100);
                     continue;
                 }
 
-                if (!calibrationHelper.ContainsKey(fromBoard.FromBoard))
+                if (calibrateDataCreator.NewDataFromBoard(fromBoard.FromBoard) || calibrateDataCreator.LimitExceeds)
                 {
-                    calibrationHelper[fromBoard.FromBoard] = 1;
-                }
-                else
-                {
-                    calibrationHelper[fromBoard.FromBoard] = calibrationHelper[fromBoard.FromBoard] + 1;
-                }
-                // More than 10 times same result => should be the right codes
-                if (calibrationHelper[fromBoard.FromBoard] > 10)
-                {
-                    result = fromBoard.FromBoard.Replace('\0', ' ').Trim(); 
+                    result = calibrateDataCreator.CalibrateCodes;
                     break;
                 }
             }
+
             Clear();
-            Send(playLeds[0]);
             return result;
         }
 
         protected override void Communicate()
         {
-            _logger?.LogDebug("C: Communicate");
+            _logger?.LogDebug("SC: Communicate");
             IsCommunicating = true;
-            bool withConnection = true;
+            var withConnection = true;
             while (!_stopReading || _byteDataToBoard.Count > 0)
             {
                 try
@@ -127,53 +100,63 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     {
                         withConnection = Connect();
                     }
+
                     if (withConnection && !_pauseReading)
                     {
                         while (_byteDataToBoard.Count > 1)
                         {
                             _byteDataToBoard.TryDequeue(out _);
                         }
-                        
-                        if (_byteDataToBoard.TryDequeue(out byte[] data))
+
+                        if (_byteDataToBoard.TryDequeue(out var data))
                         {
-                            
                             if (_isFirstInstance)
                             {
                                 var s = BitConverter.ToString(data);
-                                _logger?.LogDebug($"C: Send byte array: {s}");
+                                _logger?.LogDebug($"SC: Send byte array: {s}");
                                 _comPort.Write(data, 0, data.Length);
-                              //  Thread.Sleep(15);
+                                //  Thread.Sleep(15);
                             }
                         }
 
                         if (_isFirstInstance)
                         {
-                            var readLine = _comPort.ReadLine();
-
-                            if (_dataFromBoard.Count > 20)
+                            try
                             {
-                                _dataFromBoard.TryDequeue(out _);
+                                var readLine = _comPort.ReadLine();
+
+
+                                if (_dataFromBoard.Count > 20)
+                                {
+                                    _dataFromBoard.TryDequeue(out _);
+                                }
+
+                                _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
+                                if (_clientConnected)
+                                {
+                                    _serverPipe.WriteString(readLine.Replace(":", string.Empty));
+                                }
                             }
-
-                            _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
-                            if (_clientConnected)
+                            catch (TimeoutException tx)
                             {
-                                _serverPipe.WriteString(readLine.Replace(":", string.Empty));
+                                continue;
                             }
                         }
                     }
-                    Thread.Sleep(15);
+
+                    Thread.Sleep(10);
                 }
                 catch (Exception ex)
                 {
                     Thread.Sleep(10);
                     withConnection = false;
-                    _logger?.LogError($"C: Error with serial port: {ex.Message} ");
+                    _logger?.LogError($"SC: Error with serial port: {ex.Message} ");
                     //break;
                 }
             }
+
             IsCommunicating = false;
-            _logger?.LogDebug("C: Exit Communicate");
+            _logger?.LogDebug("SC: Exit Communicate");
         }
 
         private bool ValidCalibrateCodes(string codes)
@@ -183,17 +166,20 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 return false;
             }
 
-            var dataArray = codes.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var dataArray = codes.Replace('\0', ' ').Trim()
+                                 .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             if (dataArray.Length < 320)
             {
                 return false;
             }
-            string[] code = new string[80];
+
+            var code = new string[80];
             Array.Copy(dataArray, 0, code, 0, 80);
             if (string.Join(" ", code).Contains("0 0 0 0 0"))
             {
                 return false;
             }
+
             Array.Copy(dataArray, 240, code, 0, 80);
             if (string.Join(" ", code).Contains("0 0 0 0 0"))
             {

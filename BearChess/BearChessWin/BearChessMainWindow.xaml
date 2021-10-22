@@ -67,6 +67,7 @@
                             <Image Source="Assets/Icons/chess_board.png" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <Separator />
                     <MenuItem Header="Run startup game on start" Name="menuItemRunLastGame"
                               Click="MenuItemRunLastGame_OnClick">
                         <MenuItem.Icon>

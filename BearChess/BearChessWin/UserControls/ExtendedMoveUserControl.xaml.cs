@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -332,6 +333,37 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             return "x" + move.Substring(2) + p + isInCheck;
+        }
+
+        private void WhiteFigure_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (textBlockMove.Text.Trim().Length>0)
+              OnSelectedMoveChanged(Fields.COLOR_WHITE);
+        }
+
+        protected virtual void OnSelectedMoveChanged(int e)
+        {
+            SelectedMoveChanged?.Invoke(this, e);
+        }
+
+        private void BlackFigure_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (textBlockMoveBlack.Text.Trim().Length > 0)
+                OnSelectedMoveChanged(Fields.COLOR_BLACK);
+        }
+
+        private void WhiteFigure_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key==Key.Enter && textBlockMove.Text.Trim().Length > 0)
+                OnSelectedMoveChanged(Fields.COLOR_WHITE);
+            if (e.Key == Key.Enter && textBlockMoveBlack.Text.Trim().Length > 0)
+                OnSelectedMoveChanged(Fields.COLOR_BLACK);
+        }
+
+        private void BlackFigure_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && textBlockMoveBlack.Text.Trim().Length > 0)
+                OnSelectedMoveChanged(Fields.COLOR_BLACK);
         }
     }
 }

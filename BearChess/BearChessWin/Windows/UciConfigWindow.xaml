@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="UCI Engine Configuration" Height="680" Width="400" SizeToContent="Width">
+        Title="UCI Engine Configuration" Height="720" Width="400" SizeToContent="Width">
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Name="textBlockName" Margin="5">Name:</TextBlock>
@@ -24,9 +24,7 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Border  BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <CheckBox Visibility="Hidden" Name="checkBoxAdaptStrength" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5" Checked="CheckBoxAdaptStrength_OnChecked" Unchecked="CheckBoxAdaptStrength_OnUnchecked">Adapt playing strength to the player through BearChess</CheckBox>
-        </Border>
+       
         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
           <ScrollViewer Height="400" VerticalScrollBarVisibility="Visible">
             <Grid Name="gridMain">
@@ -45,6 +43,29 @@
                 <TextBlock Name="textBlockFileName" Margin="0,5,5,5"></TextBlock>
             </StackPanel>
         </Border>
+        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+            <DockPanel LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Margin="5" Text="Logo:" FontWeight="DemiBold"></TextBlock>
+                <TextBlock  DockPanel.Dock="Left"  Name="textBlockLogoFileName" Margin="0,5,5,5"></TextBlock>
+                <Button  DockPanel.Dock="Right" Name="buttonLogoClear" Click="ButtonLogoClear_OnClick" BorderBrush="Transparent" Background="Transparent" >
+                    <Image Source="../Assets/Icons/cancel.png" Width="16" Height="16"></Image>
+                </Button>
+                <Button  DockPanel.Dock="Right" Name="buttonLogoFile" Click="ButtonLogoFile_OnClick" BorderBrush="Transparent" Background="Transparent" >
+                    <Image Source="../Assets/Icons/folder.png" Width="16" Height="16"></Image>
+                </Button>
+            </DockPanel>
+
+        </Border>
+        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+            <DockPanel >
+                <TextBlock DockPanel.Dock="Left" Margin="5" Text="Parameter:" FontWeight="DemiBold"></TextBlock>
+                <Button  DockPanel.Dock="Right" Name="buttonParameterFile" Click="ButtonParameter_OnClick" BorderBrush="Transparent" Background="Transparent" >
+                    <Image Source="../Assets/Icons/folder.png" Width="16" Height="16"></Image>
+                </Button>
+                <TextBox  DockPanel.Dock="Right" Name="textBlockFileParameter" MinWidth="270" Margin="0,5,5,5"></TextBox>
+
+            </DockPanel>
+        </Border>
         <DockPanel Margin="10" LastChildFill="False">
             <Button DockPanel.Dock="Left"  Name="buttonOk" Click="ButtonOk_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Save">
                 <Image Source="../Assets/Icons/accept_button.png"  Width="32" Height="32"></Image>
@@ -53,6 +74,7 @@
                      ToolTip="Add as new configuration">
                 <Image Source="../Assets/Icons/cog_add.png"  Width="32" Height="32"></Image>
             </Button>
+
             <Button  DockPanel.Dock="Right"  Name="buttonCancel" Click="ButtonCancel_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Cancel"> 
                 <Image Source="../Assets/Icons/cancel.png"  Width="32" Height="32"></Image>
             </Button>
@@ -61,6 +83,10 @@
                      ToolTip="Reset to default values">
                 <Image Source="../Assets/Icons/undo.png"  Width="32" Height="32"></Image>
             </Button>
+            <Button  DockPanel.Dock="Right"  Name="buttonLog" Click="ButtonLog_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Show log files">
+                <Image Source="../Assets/Icons/file_extension_log.png"  Width="32" Height="32"></Image>
+            </Button>
+
         </DockPanel>
     </StackPanel>
 </Window>

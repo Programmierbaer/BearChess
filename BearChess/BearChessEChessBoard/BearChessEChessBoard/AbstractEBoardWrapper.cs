@@ -24,10 +24,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected readonly ConcurrentQueue<string> _waitForFen = new ConcurrentQueue<string>();
         protected Thread _handleBoardThread;
         private bool _inDemoMode = false;
+        private bool _inReplayMode = false;
         protected string _basePath;
         protected string _comPortName;
         protected bool _useBluetooth;
         private bool _piecesFenBasePosition;
+        private string _lastChangedFigure = string.Empty;
+        private string _lastFenColor = string.Empty;
 
         public event EventHandler<string> MoveEvent;
         public event EventHandler<string> FenEvent;
@@ -99,17 +102,38 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _board?.SetLedCorner(upperLeft,upperRight,lowerLeft,lowerRight);
         }
 
+        public void SendCommand(string anyCommand)
+        {
+            _board?.SendCommand(anyCommand);
+        }
+
         protected abstract IEBoard GetEBoard();
         protected abstract IEBoard GetEBoard(bool check);
 
+        /// <inheritdoc />
         public void SetDemoMode(bool inDemoMode)
         {
             _fileLogger?.LogDebug($"C: Switch into demo mode: {inDemoMode}");
             _inDemoMode = inDemoMode;
+            if (!_inDemoMode)
+            {
+                _inReplayMode = false;
+            }
+        }
+
+        /// <inheritdoc />
+        public void SetReplayMode(bool inReplayMode)
+        {
+            _fileLogger?.LogDebug($"C: Switch into replay mode: {inReplayMode}");
+            _inReplayMode = inReplayMode;
+            _inDemoMode = inReplayMode;
         }
 
         /// <inheritdoc />
         public bool IsInDemoMode => _inDemoMode;
+
+        /// <inheritdoc />
+        public bool IsInReplayMode => _inReplayMode;
 
         /// <inheritdoc />
         public bool IsConnected => _board?.IsConnected ?? false;
@@ -160,7 +184,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public void SetLedsFor(string[] fields)
         {
-            _allLedOff =  _inDemoMode;
+            //_allLedOff =  _inDemoMode;
             _board?.SetLedForFields(fields);
         }
 
@@ -168,7 +192,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             if (!_allLedOff)
             {
-                _fileLogger.LogDebug("Set all LEDs off");
+                _fileLogger?.LogDebug("Set all LEDs off");
                 while (_waitForFen.Count > 0)
                 {
                     _waitForFen.TryDequeue(out _);
@@ -335,6 +359,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _internalChessBoard = new InternalChessBoard();
             _internalChessBoard.NewGame();
             _inDemoMode = false;
+            _inReplayMode = false;
            
         }
 
@@ -488,6 +513,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         private void OnFenEvent(string fenPosition, string changedFigure)
         {
             string c = changedFigure.ToLower().Equals(changedFigure) ? "w" : "b";
+            if (_lastChangedFigure == changedFigure)
+            {
+                c = c == "w" ? "b" : "w";
+            }
+            _lastChangedFigure = changedFigure;
+            _lastFenColor = c;
             _fileLogger?.LogDebug($"C: FenEvent from board: {fenPosition} {changedFigure}");
             FenEvent?.Invoke(this, fenPosition+" "+c);
         }
@@ -531,17 +562,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
             if (invalidFields.Count > 0)
             {
-                //if (_internalChessBoard.IsBasePosition(fenPosition))
-                //{
-                //    _fileLogger?.LogDebug($"C: Base position detected. Reset to new game");
-                //    NewGame();
-                //    return;
-                //}
-
+             
                 fenPosition.Invalid = true;
-                _fileLogger?.LogDebug($"C: {fenPosition.Repeated} times Invalid fields for fen: {fenPosition.FromBoard}");
-                _fileLogger?.LogDebug($"C: Invalid fields: {string.Join(" ", invalidFields)}");
-                _fileLogger?.LogDebug($"C: Internal board: {_internalChessBoard.GetPosition()} vs. {fenPosition.FromBoard}");
+            
                 _board?.SetLedForFields(invalidFields.ToArray());
                 _allLedOff = false;
             }

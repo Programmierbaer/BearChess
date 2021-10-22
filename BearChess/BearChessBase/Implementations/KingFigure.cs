@@ -17,7 +17,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public override List<Move> GetMoveList()
         {
-            var moves = new List<Move>();
+            var moves = new List<Move>(10);
             int tmpField;
             IChessFigure tmpFigure;
             for (var offSet = FromOffset; offSet <= ToOffset; offSet++)

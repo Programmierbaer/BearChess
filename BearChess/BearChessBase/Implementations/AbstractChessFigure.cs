@@ -62,7 +62,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         /// <inheritdoc />
         public virtual List<Move> GetMoveList()
         {
-            var moves = new List<Move>();
+            var moves = new List<Move>(50);
             for (var offSet = FromOffset; offSet <= ToOffset; offSet++)
             {
                 var tmpField = Field;

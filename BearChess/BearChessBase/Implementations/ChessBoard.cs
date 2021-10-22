@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
@@ -24,8 +25,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         private readonly Dictionary<int, AllMoveClass> _allPlayedMoves;
         private readonly Dictionary<string, int> _repetition;
         private string _initialFenPosition;
+        private bool _analyzeMode;
         public bool DrawByRepetition { get; private set; }
         public bool DrawByMaterial { get; private set; }
+        private FileLogger _fileLogger;
 
 
         public ChessBoard()
@@ -99,6 +102,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         /// <inheritdoc />
         public List<Move> EnemyMoveList { get; private set; }
+
+        public void SetGameAnalyzeMode(bool analyzeMode)
+        {
+            _analyzeMode = analyzeMode;
+//            _fileLogger = new FileLogger(Path.Combine(@"d:\", "chessboard.log"), 10, 10);
+        }
 
         /// <inheritdoc />
         public string EnPassantTargetField { get; set; }
@@ -325,6 +334,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         /// <inheritdoc />
         public void MakeMove(Move move)
         {
+            //if (_analyzeMode)
+            //{
+            //    _fileLogger?.LogDebug($"Make move {move.FromFieldName}{move.ToFieldName}");
+            //}
             var chessFigure = _figures[move.FromField];
 
             if (chessFigure.Color != CurrentColor)
@@ -1013,6 +1026,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
         }
 
+        /// <inheritdoc />
         public void SetPosition(int moveNumber, int color)
         {
             FullMoveNumber = moveNumber;
@@ -1020,21 +1034,30 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
 
+        private bool OneMoveBack()
+        {
+            //_fileLogger?.LogDebug($"Go one move back {_allPlayedMoves.Keys.Count}");
+            if (_allPlayedMoves.Keys.Count > 1)
+            {
+                SetCurrentMove(_allPlayedMoves.Keys.Count, 0);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <inheritdoc />
         public void SetCurrentMove(int moveNumber, int color)
         {
             List<Move> allMoves = new List<Move>();
             var playedMoveList = GetPlayedMoveList();
             for (int i = 0; i < moveNumber; i++)
             {
-                //                var move = _allPlayedMoves[i].GetMove(Fields.COLOR_WHITE);
                 if (playedMoveList.Length <= i)
                 {
                     break;
                 }
                 allMoves.Add(playedMoveList[i]);
-
-                //move = _allPlayedMoves[i].GetMove(Fields.COLOR_BLACK);
-                //allMoves.Add(move);
             }
 
             Init();
@@ -1088,8 +1111,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 chessFigure.ClearAttacks();
             }
-            CurrentMoveList = new List<Move>();
-            EnemyMoveList = new List<Move>();
+            CurrentMoveList = new List<Move>(50);
+            EnemyMoveList = new List<Move>(50);
             if (CapturedFigure.GeneralFigureId == FigureId.KING)
             {
                 return CurrentMoveList;
@@ -1291,8 +1314,33 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     }
                 }
 
+                if (_analyzeMode)
+                {
+
+                }
+
+                //if (_analyzeMode && !string.IsNullOrWhiteSpace(fromField) && !string.IsNullOrWhiteSpace(toField))
+                //{
+                //    _fileLogger?.LogDebug($"Check {newFenPosition}");
+                //    _fileLogger?.LogDebug($"      {fromField}{toField}");
+                //    string jj = GetPlayedMoveList().Aggregate(string.Empty, (current, move) => current + $" {move.FromFieldName}{move.ToFieldName}");
+                //    _fileLogger?.LogDebug($"Movelist: {jj}");
+                //}
+
                 if (!ignoreRule && !MoveIsValid(Fields.GetFieldNumber(fromField), Fields.GetFieldNumber(toField)))
                 {
+                    
+                    if (_analyzeMode && !string.IsNullOrWhiteSpace(fromField) && !string.IsNullOrWhiteSpace(toField))
+                    {
+                        //_fileLogger?.LogDebug($"Invalid move: {fromField}{toField}");
+                        //_fileLogger?.LogDebug($"last move toField: {Fields.GetFieldName(_lastMoveToField)}");
+                        if (_lastMoveToField == Fields.GetFieldNumber(fromField))
+                        {
+                            //_fileLogger?.LogDebug($"{fromField} is equal last toMoveField");
+                            if (OneMoveBack())
+                              return GetMove(newFenPosition, false);
+                        }
+                    }
                     return string.Empty;
                 }
 
@@ -1357,7 +1405,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 return false;
             }
-            return  FenCodes.BasePosition.StartsWith(fenPosition);
+            return  FenCodes.BasePosition.StartsWith(fenPosition.Split(" ".ToCharArray())[0]);
         }
 
         #region private

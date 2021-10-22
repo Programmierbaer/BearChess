@@ -58,45 +58,58 @@ namespace www.SoLaNoSoft.com.BearChessTools
             string boardDevice = boardName.Equals("Certabo", StringComparison.OrdinalIgnoreCase)
                                      ? "raspberrypi"
                                      : "MILLENNIUM CHESS";
-            var cli = new BluetoothClient();
-            IReadOnlyCollection<BluetoothDeviceInfo> bluetoothDeviceInfos = cli.DiscoverDevices();
-            foreach (var bluetoothDeviceInfo in bluetoothDeviceInfos)
+            try
             {
-                var deviceName = bluetoothDeviceInfo.DeviceName;
-                if (boardName.Equals("Certabo",StringComparison.OrdinalIgnoreCase) && deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
+                var cli = new BluetoothClient();
+                IReadOnlyCollection<BluetoothDeviceInfo> bluetoothDeviceInfos = cli.DiscoverDevices();
+                foreach (var bluetoothDeviceInfo in bluetoothDeviceInfos)
                 {
-                    // Certabo
-                    try
+                    var deviceName = bluetoothDeviceInfo.DeviceName;
+                    if (boardName.Equals("Certabo", StringComparison.OrdinalIgnoreCase) &&
+                        deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
                     {
-                        var bluetoothEndPoint = new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress, BluetoothService.SerialPort, 10);
-                        if (!cli.Connected)
+                        // Certabo
+                        try
                         {
-                            cli.Connect(bluetoothEndPoint);
-                            if (cli.Connected)
+                            var bluetoothEndPoint =
+                                new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress, BluetoothService.SerialPort,
+                                                      10);
+                            if (!cli.Connected)
                             {
-                                cli.Close();
-                                configuration.Save(bluetoothDeviceInfo.DeviceAddress);
-                                var list = new List<string>(GetPortNames());
-                                list.Add("BT");
-                                return list.ToArray();
+                                cli.Connect(bluetoothEndPoint);
+                                if (cli.Connected)
+                                {
+                                    cli.Close();
+                                    configuration.Save(bluetoothDeviceInfo.DeviceAddress);
+                                    var list = new List<string>(GetPortNames());
+                                    list.Add("BT");
+                                    return list.ToArray();
+                                }
                             }
                         }
-                    }
-                    catch 
-                    {
-                       //
-                    }
-                    break;
-                    
-                }
-                if (deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
-                {
-                    // Millennium
-                    bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
-                    break;
-                }
+                        catch
+                        {
+                            //
+                        }
 
+                        break;
+
+                    }
+
+                    if (deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Millennium
+                        bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
+                        break;
+                    }
+
+                }
             }
+            catch
+            {
+                //
+            }
+
             return GetPortNames(); 
         }
     }

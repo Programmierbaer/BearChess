@@ -10,9 +10,19 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetDemoMode(bool inDemoMode);
 
         /// <summary>
+        /// If replay mode is true, only valid moves (force and back) are allowed
+        /// </summary>
+        void SetReplayMode(bool inReplayMode);
+
+        /// <summary>
         /// Indicates if in demo mode
         /// </summary>
         bool IsInDemoMode { get; }
+
+        /// <summary>
+        /// Indicates if in replay mode
+        /// </summary>
+        bool IsInReplayMode { get; }
 
         /// <summary>
         /// Indicates if there a connection to the chess board
@@ -128,5 +138,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void FlashInSync(bool flashSync);
 
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
+
+        void SendCommand(string anyCommand);
     }
 }

@@ -18,18 +18,18 @@
                 <ColumnDefinition Name="columnDefinition11" Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Name="columnDefinition12" Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="1,1,0,1"  FontFamily="Consolas" Name="textBlockFigure" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" >K</TextBlock>
-            <TextBlock Margin="1,1,0,1"   Name="textBlockFigureSymbol" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" ></TextBlock>
-            <TextBlock Margin="0,1,1,1"  FontFamily="Consolas" Name="textBlockMove" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1">e2-e4Q</TextBlock>
+            <TextBlock Margin="1,1,0,1"  FontFamily="Consolas" Name="textBlockFigure" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" KeyDown="WhiteFigure_OnKeyDown" MouseDown="WhiteFigure_OnMouseDown">K</TextBlock>
+            <TextBlock Margin="1,1,0,1"   Name="textBlockFigureSymbol" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" KeyDown="WhiteFigure_OnKeyDown" MouseDown="WhiteFigure_OnMouseDown" ></TextBlock>
+            <TextBlock Margin="0,1,1,1"  FontFamily="Consolas" Name="textBlockMove" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1" KeyDown="WhiteFigure_OnKeyDown" MouseDown="WhiteFigure_OnMouseDown">e2-e4Q</TextBlock>
         </Grid>
         <Grid Grid.Column="2" Name="gridColumnBlack" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Name="columnDefinition21" Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Name="columnDefinition22" Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="1,1,0,1"  FontFamily="Consolas" Name="textBlockFigureBlack" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" >K</TextBlock>
-            <TextBlock Margin="1,1,0,1"   Name="textBlockFigureSymbolBlack" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" ></TextBlock>
-            <TextBlock Margin="0,1,1,1"  FontFamily="Consolas" Name="textBlockMoveBlack" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1">e2-e4Q</TextBlock>
+            <TextBlock Margin="1,1,0,1"  FontFamily="Consolas" Name="textBlockFigureBlack" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" KeyDown="BlackFigure_OnKeyDown" MouseDown="BlackFigure_OnMouseDown" >K</TextBlock>
+            <TextBlock Margin="1,1,0,1"   Name="textBlockFigureSymbolBlack" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="0" Visibility="Collapsed" KeyDown="BlackFigure_OnKeyDown" MouseDown="BlackFigure_OnMouseDown" ></TextBlock>
+            <TextBlock Margin="0,1,1,1"  FontFamily="Consolas" Name="textBlockMoveBlack" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="1" KeyDown="BlackFigure_OnKeyDown" MouseDown="BlackFigure_OnMouseDown">e2-e4Q</TextBlock>
         </Grid>
         <Grid Grid.Column="3" Name="gridColumnExtend">
             <Grid.ColumnDefinitions>

@@ -39,7 +39,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _gamesFilter = _configuration.LoadGamesFilter();
             dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
             imageTableFilterActive.Visibility = _gamesFilter.FilterIsActive ? Visibility.Visible : Visibility.Hidden;
-            Title = $"Games on: {_database.FileName}";
+            UpdateTitle();
         }
 
 
@@ -56,7 +56,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void Reload()
         {
             dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
-            Title = $"Games on: {_database.FileName}";
+            UpdateTitle();
         }
 
         private void ButtonFileManager_OnClick(object sender, RoutedEventArgs e)
@@ -68,7 +68,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _database.LoadDb(openFileDialog.FileName);
                 dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
                 _configuration.SetConfigValue("DatabaseFile", openFileDialog.FileName);
-                Title = $"Games on: {openFileDialog.FileName}";
+                UpdateTitle();
             }
         }
 
@@ -94,7 +94,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _database.LoadDb(saveFileDialog.FileName);
                 dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
                 _configuration.SetConfigValue("DatabaseFile", saveFileDialog.FileName);
-                Title = $"Games on: {saveFileDialog.FileName}";
+                UpdateTitle();
             }
         }
 
@@ -170,6 +170,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
                                             ? _database.GetGames(_gamesFilter,_lastSyncFen)
                                             : _database.GetGames(_gamesFilter);
+            UpdateTitle();
         }
 
         private void ButtonImport_OnClick(object sender, RoutedEventArgs e)
@@ -211,6 +212,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                 }
                 dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
+                UpdateTitle();
             }
         }
 
@@ -222,6 +224,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
                                             ? _database.GetGames(_gamesFilter, _lastSyncFen)
                                             : _database.GetGames(_gamesFilter);
+            UpdateTitle();
         }
 
         private void ButtonDeleteDb_OnClick(object sender, RoutedEventArgs e)
@@ -234,6 +237,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
                                                 ? _database.GetGames(_gamesFilter, _lastSyncFen)
                                                 : _database.GetGames(_gamesFilter);
+                UpdateTitle();
             }
         }
 
@@ -310,6 +314,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageTableFilterActive.Visibility = e.FilterIsActive ? Visibility.Visible : Visibility.Hidden;
             Reload();
             SelectedFilterChanged?.Invoke(this, e);
+        }
+
+        private void UpdateTitle()
+        {
+            Title = $"{dataGridGames.Items.Count} of {_database.GetTotalGamesCount()} games on: {_database.FileName}";
         }
     }
 }

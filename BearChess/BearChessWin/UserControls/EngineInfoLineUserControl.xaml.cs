@@ -24,6 +24,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             // scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
         }
 
+        public void ClearLine()
+        {
+            textBlockMVValue.Text = string.Empty;
+            textBlockMVValue.Foreground = new SolidColorBrush(Colors.Black);
+            textBlockMvLine.Text = string.Empty;
+        }
+
         public void FillLine(string scoreString, string moveLine)
         {
             if (!string.IsNullOrWhiteSpace(scoreString))

@@ -33,7 +33,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler TimeOutEvent;
 
 
-        public ChessClocksWindow(string capture, Configuration configuration, double top, double left, double width, double height)
+        public ChessClocksWindow(string capture, Configuration configuration, double top, double left)
         {
             InitializeComponent();
             _stopwatch = new Stopwatch();

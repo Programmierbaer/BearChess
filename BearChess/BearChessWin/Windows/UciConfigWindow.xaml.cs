@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessDatabase;
+using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -16,6 +21,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         private readonly UciInfo _uciInfo;
         private readonly bool _showButtons;
+        private readonly Configuration _configuration;
 
         public bool SaveAsNew { get; private set; }
         public bool AdjustStrength { get; private set; }
@@ -37,6 +43,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public UciConfigWindow()
         {
             InitializeComponent();
+            _configuration = Configuration.Instance;
         }
 
         public UciConfigWindow(UciInfo uciInfo,  bool canChangeName, bool showButtons, bool canSaveAs) : this()
@@ -44,6 +51,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Title += $" {uciInfo.OriginName}";
             _uciInfo = uciInfo;
             _showButtons = showButtons;
+            buttonParameterFile.Visibility =  Visibility.Collapsed;
+            if (uciInfo.FileName.EndsWith("avatar.exe",StringComparison.OrdinalIgnoreCase))
+            {
+                buttonParameterFile.Visibility = Visibility.Visible;
+            }
+            if (uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase))
+            {
+                buttonParameterFile.Visibility = Visibility.Visible;
+            }
             textBlockName.ToolTip = uciInfo.OriginName;
             textBoxName.Text = uciInfo.Name;
             textBoxName.IsEnabled = canChangeName;
@@ -58,6 +74,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             textBlockFileName.Text = uciInfo.FileName;
             textBlockFileName.ToolTip = uciInfo.FileName;
+            textBlockFileParameter.Text = uciInfo.CommandParameter;
+            textBlockLogoFileName.Text = uciInfo.LogoFileName;
+            textBlockLogoFileName.ToolTip = uciInfo.LogoFileName;
             var installedBooks = OpeningBookLoader.GetInstalledBooks();
             comboBoxOpeningBooks.ItemsSource = installedBooks;
             comboBoxOpeningBooks.SelectedIndex = 0;
@@ -82,7 +101,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
-            checkBoxAdaptStrength.IsChecked = uciInfo.AdjustStrength;
 
             int optionsLength = uciInfo.Options.Length / 2;
             int count = 0;
@@ -157,7 +175,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 Valid = _uciInfo.Valid,
                 OpeningBook = checkBoxUseOpeningBook.IsChecked.HasValue && checkBoxUseOpeningBook.IsChecked.Value ? comboBoxOpeningBooks.SelectedItem.ToString() : string.Empty,
                 OpeningBookVariation = GetVariation(),
-                AdjustStrength = checkBoxAdaptStrength.IsChecked.HasValue && checkBoxAdaptStrength.IsChecked.Value
+                AdjustStrength = false,
+                CommandParameter = textBlockFileParameter.Text,
+                LogoFileName = textBlockLogoFileName.Text
             };
             foreach (var uciInfoOption in _uciInfo.Options)
             {
@@ -515,13 +535,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                              VerticalAlignment = VerticalAlignment.Center,
                              Tag = uciConfigValue.OptionName
                          };
-            button.Click += btnConfig_Click;
+            button.Click += ButtonConfig_Click;
             Grid.SetRow(button, rowIndex);
             Grid.SetColumn(button, colIndex);
             gridMain.Children.Add(button);
         }
 
-        private void btnConfig_Click(object sender, RoutedEventArgs e)
+        private void ButtonConfig_Click(object sender, RoutedEventArgs e)
         {
             if (!_showButtons)
             {
@@ -552,7 +572,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (!(gridMainChild is IUciConfigUserControl)) continue;
                 var uciConfigUserControl = gridMainChild as IUciConfigUserControl;
                 uciConfigUserControl.ResetToDefault();
-
             }
         }
 
@@ -585,6 +604,105 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void CheckBoxAdaptStrength_OnUnchecked(object sender, RoutedEventArgs e)
         {
             AdjustStrength = true;
+        }
+
+        private void ButtonLog_OnClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start(Path.Combine(_configuration.FolderPath,"uci",_uciInfo.Id));
+        }
+
+        private void ButtonLogoFile_OnClick(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog { Filter = "Logo|*.bmp;*.jpg;*.png|All Files|*.*" };
+            
+            if (File.Exists(textBlockFileName.Text))
+            {
+                var fileInfo = new FileInfo(textBlockFileName.Text);
+                openFileDialog.InitialDirectory = fileInfo.DirectoryName;
+            }
+
+            var showDialog = openFileDialog.ShowDialog(this);
+            if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            {
+                textBlockLogoFileName.Text = openFileDialog.FileName;
+                textBlockLogoFileName.ToolTip = openFileDialog.FileName;
+            }
+        }
+
+        private void ButtonLogoClear_OnClick(object sender, RoutedEventArgs e)
+        {
+            textBlockLogoFileName.Text = string.Empty;
+            textBlockLogoFileName.ToolTip = null;
+        }
+
+        private void ButtonParameter_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (textBlockFileName.Text.EndsWith("MessChess.exe",StringComparison.OrdinalIgnoreCase))
+            {
+                var fileInfo = new FileInfo(textBlockFileName.Text);
+                string enginesList = Path.Combine(fileInfo.DirectoryName, "Engines.lst");
+                var parameterSelectionWindow = new ParameterSelectionWindow() { Owner = this };
+                if (File.Exists(enginesList))
+                {
+                    var readAllLines = File.ReadAllLines(enginesList);
+                    parameterSelectionWindow.ShowList(readAllLines);
+                }
+
+                parameterSelectionWindow.SetLabel("Engine:");
+                var showDialog = parameterSelectionWindow.ShowDialog();
+                if (showDialog.HasValue && showDialog.Value)
+                {
+                    textBlockFileParameter.Text = parameterSelectionWindow.SelectedEngine;
+                }
+            }
+            if (textBlockFileName.Text.EndsWith("avatar.exe",StringComparison.OrdinalIgnoreCase))
+            {
+                
+                var fileInfo = new FileInfo(textBlockFileName.Text);
+                string avatars = Path.Combine(fileInfo.DirectoryName, "avatar_weights");
+                var parameterSelectionWindow = new ParameterSelectionWindow() { Owner = this };
+                if (Directory.Exists(avatars))
+                {
+                    var avatarList = Directory.GetFiles(avatars, "*.zip", SearchOption.TopDirectoryOnly);
+                    List<string> avList = new List<string>();
+                    foreach (var s in avatarList)
+                    {
+                        if (s.Contains(@"\"))
+                        {
+                            avList.Add(s.Substring(s.LastIndexOf(@"\") + 1));
+                        }
+                    }
+
+                    parameterSelectionWindow.ShowList(avList.ToArray());
+                    parameterSelectionWindow.SetLabel("Avatar:");
+                    parameterSelectionWindow.ShowParameterButton(true);
+                    var showDialog = parameterSelectionWindow.ShowDialog();
+                    if (showDialog.HasValue && showDialog.Value)
+                    {
+                        
+                        if (string.IsNullOrWhiteSpace(parameterSelectionWindow.SelectedFile))
+                        {
+                            string avatarName = parameterSelectionWindow.SelectedEngine;
+                            textBlockFileParameter.Text = $"--weights \"{Path.Combine(avatars, avatarName)}\"";
+                        }
+                        else
+                        {
+                            textBlockFileParameter.Text = $"--weights \"{parameterSelectionWindow.SelectedFile}\"";
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    var openFileDialog = new OpenFileDialog { Filter = "Avatar Engine|*.zip|All Files|*.*" };
+                    var showDialogAvatar = openFileDialog.ShowDialog(this);
+                    if (showDialogAvatar.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+                    {
+                        var info = new FileInfo(openFileDialog.FileName);
+                        textBlockFileParameter.Text =  $"--weights \"{info.FullName}\"";
+                    }
+                }
+            }
         }
     }
 }

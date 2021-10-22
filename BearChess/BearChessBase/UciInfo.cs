@@ -14,19 +14,22 @@ namespace www.SoLaNoSoft.com.BearChessBase
         [XmlArray("Options")]
         public string[] Options { get; set; }
         public string FileName { get; set; }
+        public string LogoFileName { get; set; }
         public bool Valid { get; set; }
         public string OpeningBook { get; set; }
         public string OpeningBookVariation { get; set; }
         [XmlArray("OptionValues")]
         public string[] OptionValues { get; set; }
         public bool AdjustStrength { get; set; }
+        public string CommandParameter { get; set; }
 
         public UciInfo()
         {
-            Options = new string[0];
-            OptionValues = new string[0];
+            Options = Array.Empty<string>();
+            OptionValues = Array.Empty<string>();
             OpeningBookVariation = "1";
             AdjustStrength = false;
+            LogoFileName = string.Empty;
         }
 
         public UciInfo(string fileName) : this()
@@ -41,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
 
         public void ClearOptionValues()
         {
-            OptionValues = new string[0];
+            OptionValues = Array.Empty<string>();
         }
 
         public void AddOptionValue(string optionValue)

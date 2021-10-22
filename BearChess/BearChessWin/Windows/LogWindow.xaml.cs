@@ -130,13 +130,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (_allInfos.TryDequeue(out var infoLine))
                 {
-                    if (_allLogInfoUserControls.ContainsKey(infoLine.Name))
+                    try
                     {
-                        Dispatcher?.Invoke(() =>
+                        if (_allLogInfoUserControls.ContainsKey(infoLine.Name))
                         {
-                            _allLogInfoUserControls[infoLine.Name]
-                                .ShowInfo(infoLine.Info, infoLine.Direction);
-                        });
+                            Dispatcher?.Invoke(() =>
+                            {
+                                _allLogInfoUserControls[infoLine.Name]
+                                    .ShowInfo(infoLine.Info, infoLine.Direction);
+                            });
+                        }
+                    }
+                    catch
+                    {
+                        //
                     }
 
                 }

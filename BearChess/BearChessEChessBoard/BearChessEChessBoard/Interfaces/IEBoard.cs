@@ -91,5 +91,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void DimLeds(bool dimLeds);
         void FlashSync(bool flashSync);
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
+        void SendCommand(string anyCommand);
     }
 }

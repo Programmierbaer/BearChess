@@ -23,9 +23,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Dictionary<string, UciInfo> _allUciInfos = new Dictionary<string, UciInfo>();
         private readonly bool _isInitialized;
 
-        public bool SaveAsStartup { get; private set; }
-        public UciInfo PlayerBlackConfigValues { get; private set; }
-        public UciInfo PlayerWhiteConfigValues { get; private set; }
+        private UciInfo PlayerBlackConfigValues { get;  set; }
+        private UciInfo PlayerWhiteConfigValues { get;  set; }
         private bool? _isCheckedAllowTakeBack;
         private Brush _foreground;
 
@@ -36,19 +35,42 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _isInitialized = true;
             comboBoxPlayerWhite.Items.Add("Player");
             comboBoxPlayerBlack.Items.Add("Player");
-            SaveAsStartup = false;
+            comboBoxPlayerBlack.SelectedIndex = 0;
+            comboBoxPlayerWhite.SelectedIndex = 0;
         }
 
         public string PlayerWhite => comboBoxPlayerWhite.SelectedItem as string;
         public string PlayerBlack => comboBoxPlayerBlack.SelectedItem as string;
 
-        public bool AllowTakeMoveBack =>
+        public UciInfo GetPlayerBlackConfigValues()
+        {
+            if (PlayerBlackConfigValues != null)
+            {
+                PlayerBlackConfigValues.AdjustStrength = RelaxedMode;
+            }
+
+            return PlayerBlackConfigValues;
+        }
+
+        public UciInfo GetPlayerWhiteConfigValues()
+        {
+            if (PlayerWhiteConfigValues != null)
+            {
+                PlayerWhiteConfigValues.AdjustStrength = RelaxedMode;
+            }
+
+            return PlayerWhiteConfigValues;
+        }
+
+        public bool RelaxedMode => checkBoxRelaxed.Visibility==Visibility.Visible && checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value;
+
+        private bool AllowTakeMoveBack =>
             checkBoxAllowTakeMoveBack.IsChecked.HasValue && checkBoxAllowTakeMoveBack.IsChecked.Value;
 
-        public bool StartAfterMoveOnBoard => checkBoxStartAfterMoveOnBoard.IsChecked.HasValue &&
-                                             checkBoxStartAfterMoveOnBoard.IsChecked.Value;
+        private bool StartAfterMoveOnBoard => checkBoxStartAfterMoveOnBoard.IsChecked.HasValue &&
+                                              checkBoxStartAfterMoveOnBoard.IsChecked.Value;
 
-        public bool TournamentMode =>
+        private bool TournamentMode =>
             checkBoxTournamentMode.IsChecked.HasValue && checkBoxTournamentMode.IsChecked.Value;
 
         public bool StartFromBasePosition =>
@@ -190,6 +212,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxTournamentMode.IsChecked = timeControl.TournamentMode;
         }
 
+        public void SetStartFromBasePosition(bool startFromBasePosition)
+        {
+            if (startFromBasePosition)
+            {
+                radioButtonStartPosition.IsChecked = true;
+            }
+            else
+            {
+                radioButtonCurrentPosition.IsChecked = true;
+            }
+        }
+
+        public void SetRelaxedMode(bool relaxed)
+        {
+            
+                checkBoxRelaxed.IsChecked = relaxed;
+            
+        }
+
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
@@ -253,7 +294,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
                              textBlockEloWhite, imageBookWhite, imageBookWhite2);
 
-
+            SetRelaxedVisibility();
         }
 
         private void SetPonderControl(UciInfo playConfigValue, TextBlock textBlockPonder, Image ponderImage, Image ponderImage2, TextBlock textBlockElo, Image bookImage, Image bookImage2)
@@ -264,7 +305,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ponderImage.Visibility = Visibility.Hidden;
             ponderImage2.Visibility = Visibility.Collapsed;
             bookImage.Visibility = Visibility.Hidden;
-            bookImage2.Visibility = Visibility.Hidden;
+            bookImage2.Visibility = Visibility.Collapsed;
             if (playConfigValue == null)
             {
                 return;
@@ -327,8 +368,33 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                           : null;
             buttonConfigureBlack.Visibility =
                 comboBoxPlayerBlack.SelectedIndex == 0 ? Visibility.Hidden : Visibility.Visible;
+        
             SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
+            SetRelaxedVisibility();
+        }
 
+        private void SetRelaxedVisibility()
+        {
+            if ((buttonConfigureBlack.Visibility == Visibility.Visible &&
+                 buttonConfigureWhite.Visibility == Visibility.Hidden)
+                || (buttonConfigureBlack.Visibility == Visibility.Hidden &&
+                    buttonConfigureWhite.Visibility == Visibility.Visible))
+            {
+                stackPanelRelaxed.Visibility = Visibility.Visible;
+                if (checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value)
+                {
+                    CheckBoxRelaxed_OnChecked(this, null);
+                }
+                else
+                {
+                    CheckBoxRelaxed_OnUnchecked(this, null);
+                }
+            }
+            else
+            {
+                stackPanelRelaxed.Visibility = Visibility.Hidden;
+                CheckBoxRelaxed_OnUnchecked(this,null);
+            }
         }
 
         private void ButtonConfigureWhite_OnClick(object sender, RoutedEventArgs e)
@@ -491,10 +557,37 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void CheckBoxAllowTournament_OnUnchecked(object sender, RoutedEventArgs e)
         {
             checkBoxAllowTakeMoveBack.IsEnabled = true;
-            textBlockAllowTakeBackMove.IsEnabled = true;
             checkBoxAllowTakeMoveBack.FontWeight = FontWeights.Normal;
             checkBoxAllowTakeMoveBack.IsChecked = _isCheckedAllowTakeBack;
             checkBoxAllowTakeMoveBack.Foreground = _foreground;
+        }
+
+        private void CheckBoxRelaxed_OnChecked(object sender, RoutedEventArgs e)
+        {
+            comboBoxTimeControl.SelectedIndex = 3;
+            numericUpDownUserControlAverageTime.Value = 10;
+            radioButtonSecond.IsChecked = true;
+            checkBoxTournamentMode.IsChecked = false;
+            checkBoxAllowTakeMoveBack.IsChecked = true;
+            checkBoxStartAfterMoveOnBoard.IsChecked = true;
+            comboBoxTimeControl.IsEnabled = false;
+            numericUpDownUserControlAverageTime.IsEnabled = false;
+            radioButtonSecond.IsEnabled = false;
+            checkBoxTournamentMode.IsEnabled = false;
+            checkBoxAllowTakeMoveBack.IsEnabled = false;
+            checkBoxStartAfterMoveOnBoard.IsEnabled = false;
+          
+        }
+
+        private void CheckBoxRelaxed_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            comboBoxTimeControl.IsEnabled = true;
+            numericUpDownUserControlAverageTime.IsEnabled = true;
+            radioButtonSecond.IsEnabled = true;
+            checkBoxTournamentMode.IsEnabled = true;
+            checkBoxAllowTakeMoveBack.IsEnabled = true;
+            checkBoxStartAfterMoveOnBoard.IsEnabled = true;
+         
         }
     }
 }

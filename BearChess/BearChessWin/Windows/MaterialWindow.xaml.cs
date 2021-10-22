@@ -200,7 +200,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     for (int i = 0; i < capturedFigures[Fields.COLOR_WHITE][f]; i++)
                     {
                         _topLine += f;
-                        if (capturedFigures[Fields.COLOR_BLACK][fu] < i)
+                        if (capturedFigures[Fields.COLOR_BLACK][fu]==0 || capturedFigures[Fields.COLOR_BLACK][fu] < i)
                         {
                             _bottomLine += "-";
                         }

@@ -307,7 +307,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
                 if (_keyToBookMoves.Count > 0)
                 {
-                    return new BookMove[0];
+                    return Array.Empty<BookMove>();
                 }
 
                 const string rank = "12345678";
@@ -368,13 +368,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
                     if (!_keyToBookMoves.ContainsKey(bookKey))
                     {
-                        _keyToBookMoves[bookKey] = new List<BookMove>();
+                        _keyToBookMoves[bookKey] = new List<BookMove>(100);
                     }
 
                     _keyToBookMoves[bookKey].Add(new BookMove($"{file[fromFile]}{rank[fromRank]}", $"{file[toFile]}{rank[toRank]}", weight));
                 }
-                _book = new byte[0];
-                return _keyToBookMoves.ContainsKey(key) ? _keyToBookMoves[key].OrderByDescending(r => r.Weight).ToArray() : new BookMove[0];
+                _book = Array.Empty<byte>();
+                return _keyToBookMoves.ContainsKey(key) ? _keyToBookMoves[key].OrderByDescending(r => r.Weight).ToArray() : Array.Empty<BookMove>();
             }
             catch
             {

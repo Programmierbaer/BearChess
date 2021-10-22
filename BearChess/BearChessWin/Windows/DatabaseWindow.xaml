@@ -12,7 +12,9 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Name="dataGridGames" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False" 
+        <DataGrid Name="dataGridGames" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False"  
+                  VirtualizingStackPanel.IsVirtualizing="True" 
+                  VirtualizingStackPanel.VirtualizationMode="Recycling"
                   SelectionMode="Extended"  MouseDoubleClick="DataGridGames_OnMouseDoubleClick" IsReadOnly="True">
             <DataGrid.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="CornflowerBlue"/>

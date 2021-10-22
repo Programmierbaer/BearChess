@@ -5,16 +5,11 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Resources;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessDatabase;
-using www.SoLaNoSoft.com.BearChessTools;
-using www.SoLaNoSoft.com.BearChessWin.Windows;
 using Configuration = www.SoLaNoSoft.com.BearChessTools.Configuration;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -79,6 +74,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showNodesPerSec;
         private bool _showHash;
         private TimeControl _timeControl;
+        private string _hideInfo;
 
         public event EventHandler<EngineEventArgs> EngineEvent;
 
@@ -89,13 +85,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _uciPath = uciPath;
             _fileLogger = new FileLogger(Path.Combine(_uciPath, "bearchess_uci.log"), 10, 10);
             _whiteOnTop = true;
-            Top = _configuration.GetWinDoubleValue("EngineWindowTop",Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
-            Left = _configuration.GetWinDoubleValue("EngineWindowLeft",Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
+            Top = _configuration.GetWinDoubleValue("EngineWindowTop", Configuration.WinScreenInfo.Top,
+                                                   SystemParameters.VirtualScreenHeight,
+                                                   SystemParameters.VirtualScreenWidth);
+            Left = _configuration.GetWinDoubleValue("EngineWindowLeft", Configuration.WinScreenInfo.Left,
+                                                    SystemParameters.VirtualScreenHeight,
+                                                    SystemParameters.VirtualScreenWidth);
             _firstEngineName = string.Empty;
             _lastCommand = string.Empty;
             _showNodes = bool.Parse(_configuration.GetConfigValue("shownodes", "true"));
             _showNodesPerSec = bool.Parse(_configuration.GetConfigValue("shownodespersec", "true"));
             _showHash = bool.Parse(_configuration.GetConfigValue("showhash", "true"));
+            _hideInfo = _configuration.GetConfigValue("EngineWindowHideInfo", "0");
         }
 
         public void CloseLogWindow()
@@ -219,7 +220,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
 
-                EngineInfoUserControl engineInfoUserControl = new EngineInfoUserControl(uciInfo, color);
+                EngineInfoUserControl engineInfoUserControl = new EngineInfoUserControl(uciInfo, color,_hideInfo);
                 engineInfoUserControl.MultiPvEvent += EngineInfoUserControl_MultiPvEvent;
                 engineInfoUserControl.CloseEvent += EngineInfoUserControl_CloseEvent;
                 engineInfoUserControl.StartStopEvent += EngineInfoUserControl_StartStopEvent;
@@ -269,6 +270,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY)
         {
             LoadUciEngine(uciInfo, string.Empty, playedMoves,lookForBookMoves, color);
+        }
+
+        public void ShowTeddy(bool showTeddy)
+        {
+            List<EngineInfoUserControl> engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().ToList();
+            foreach (var engineInfoUserControl in engineInfoUserControls)
+            {
+                if (_loadedEngines[engineInfoUserControl.EngineName].UciEngine.IsTeddy)
+                {
+                    engineInfoUserControl.ShowTeddy(showTeddy);
+                }
+            }
         }
 
         private void LogWindow_SendEvent(object sender, LogWindow.SendEventArgs e)
@@ -641,7 +654,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
             _fileLogger?.LogInfo($"Read from engine {e.Name}: {e.FromEngine}");
+            if (e.FromEngine.StartsWith("Teddy", StringComparison.OrdinalIgnoreCase))
+            {
+                EngineEvent?.Invoke(this, new EngineEventArgs(e.Name, e.FromEngine, _loadedEngines[e.Name].Color, e.Name.Equals(_firstEngineName)));
+                return;
+            }
 
+            
             _loadedEnginesControls[e.Name].ShowInfo(e.FromEngine, _timeControl != null && _timeControl.TournamentMode);
             
 
@@ -702,13 +721,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void EngineWindow_OnClosing(object sender, CancelEventArgs e)
         {
+            List<EngineInfoUserControl> engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().ToList();
+            foreach (var engineInfoUserControl in engineInfoUserControls)
+            {
+
+                _hideInfo = engineInfoUserControl.HideInfo;
+                break;
+
+            }
             foreach (var engine in _loadedEngines)
             {
                 engine.Value.UciEngine.Stop();
                 engine.Value.UciEngine.Quit();
+                engine.Value.UciEngine.StopProcess();
             }
             _configuration.SetDoubleValue("EngineWindowTop", Top);
             _configuration.SetDoubleValue("EngineWindowLeft", Left);
+            _configuration.SetConfigValue("EngineWindowHideInfo", _hideInfo);
         }
 
 

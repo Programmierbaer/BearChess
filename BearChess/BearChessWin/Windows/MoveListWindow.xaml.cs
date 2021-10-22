@@ -32,6 +32,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class MoveListWindow : Window
     {
+
+        public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
+
         private readonly Configuration _configuration;
         private IMoveUserControl _currentMoveUserControl;
         private DisplayFigureType _figureType;
@@ -73,8 +76,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                : Visibility.Collapsed;
             _allMoves = new List<Move>();
         }
-
-        public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
 
 
         public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType)
@@ -144,6 +145,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     ((IMoveUserControl) listBoxMoves.Items[number]).Mark(color);
                 }
             }
+            listBoxMoves.ScrollIntoView(listBoxMoves.Items[number]);
         }
 
         public void ClearMark()
@@ -396,6 +398,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     InternalAddMove(move);
                 }
             }
+        }
+
+        private void MoveListWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            SaveSizes();
         }
     }
 }

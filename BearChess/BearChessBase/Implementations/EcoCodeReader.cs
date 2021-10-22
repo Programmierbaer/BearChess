@@ -38,9 +38,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _fileName = string.Empty;
             foreach (var pathName in pathNames)
             {
-                _fileName = Path.Combine(pathName, "bearchess.eco");
-                if (File.Exists(_fileName))
+                var combine = Path.Combine(pathName, "bearchess.eco");
+                if (File.Exists(combine))
                 {
+                    _fileName = combine;
                     return;
                 }
             }
@@ -50,21 +51,22 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public EcoCode[] Load()
         {
             if (File.Exists(_fileName))
+            {
                 try
                 {
                     var serializer = new XmlSerializer(typeof(EcoCode[]));
                     TextReader textReader = new StreamReader(_fileName);
-                    var result = (EcoCode[]) serializer.Deserialize(textReader);
+                    var result = (EcoCode[])serializer.Deserialize(textReader);
                     textReader.Close();
-
                     return result;
                 }
                 catch
                 {
                     //
                 }
+            }
 
-            return new EcoCode[0];
+            return Array.Empty<EcoCode>();
         }
 
         public void Save(EcoCode[] ecoCodes)

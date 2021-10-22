@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Timers;
-using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using Timer = System.Timers.Timer;
@@ -25,9 +24,10 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
             public string FromEngine { get; set; }
             public Move TeddyMove { get; set; }
             public bool EngineMove { get; set; }
+            public string InfoLine { get; set; }
         }
 
-        private bool _goReceived = false;
+        private bool _quitReceived = false;
         private Process _engineProcess = null;
         private Thread _engineThread = null;
         private string _lastMoves = string.Empty;
@@ -44,11 +44,14 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
         private  Timer _timer;
         private bool _timerIsStopped;
         private decimal _score;
+        private string _lastBestLine;
+        private bool _searchAlternateMove;
+        private bool _goForAlternateMove;
 
 
         public UciWrapper(string fileName)
         {
-            _engineOpponent = fileName;
+            _engineOpponent = fileName.Replace("$"," ");
             _chessBoard = new ChessBoard();
             _timer = new Timer {Interval = 10000};
             _timer.Elapsed += _timer_Elapsed;
@@ -59,6 +62,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             _timerIsStopped = true;
+            _timer.Stop();
         }
 
         private void SendUciIdentification()
@@ -109,6 +113,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
 
             _chessBoard.Init();
             _fileLogger?.LogDebug($"{name} loaded");
+            _searchAlternateMove = false;
         }
 
         /// <summary>
@@ -133,7 +138,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                 // Currently reading options
                 var receivingOptions = false;
             
-                while (true)
+                while (!_quitReceived)
                 {
                     Thread.Sleep(5);
                     // No news from the GUI
@@ -149,16 +154,12 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
 
                     if (command.Equals("uci"))
                     {
-                        if (receivingOptions)
-                        {
-                            receivingOptions = false;
-
-                        }
+                        receivingOptions = false;
 
                         // Individual information for the chessboard
-                        SendUciIdentification();
-
-                        _messagesToGui.Enqueue("uciok");
+                        //SendUciIdentification();
+                        SendToEngine(command);
+                        //_messagesToGui.Enqueue("uciok");
                         continue;
                     }
 
@@ -173,28 +174,15 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
 
                     if (command.Equals("isready"))
                     {
-                        if (receivingOptions)
-                        {
-                            receivingOptions = false;
-                        
-                        }
-                        // Route command to an UCI engine
+                        receivingOptions = false;
                         SendToEngine(command);
-
                         continue;
                     }
 
                     if (command.Equals("ucinewgame"))
                     {
                         _lastMoves = string.Empty;
-
-                        if (receivingOptions)
-                        {
-                            receivingOptions = false;
-
-                        }
-
-                        // Route command to an UCI engine
+                        receivingOptions = false;
                         SendToEngine(command);
                         _chessBoard.NewGame();
                         continue;
@@ -205,17 +193,12 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                     {
                         _lastMoves = string.Empty;
 
-                        if (receivingOptions)
-                        {
-                            receivingOptions = false;
-
-                        }
+                         receivingOptions = false;
 
                         _lastPositionCommand = command;
 
                         SendToEngine(command);
 
-                        _goReceived = false;
                         continue;
                     }
 
@@ -223,11 +206,8 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                     if (command.StartsWith("position fen"))
                     {
                         _lastMoves = string.Empty;
-                        if (receivingOptions)
-                        {
-                            receivingOptions = false;
-
-                        }
+                        
+                        receivingOptions = false;
 
                         _lastPositionCommand = command;
 
@@ -261,34 +241,25 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                             _chessBoard.SetPosition(command.Substring(startIndex).Trim());
                          
                         }
-                        
-                        _goReceived = false;
+                        SendToEngine(command);
                         continue;
                     }
 
                     if (command.StartsWith("go"))
                     {
-                        if (receivingOptions)
-                        {
-                            receivingOptions = false;
-
-                        }
+                        receivingOptions = false;
 
                         //SendToEngine(_lastPositionCommand);
-                        //SendToEngine(command);
+                        SendToEngine(command);
                        // SendToEngine("go infinite");
 
-                        _goReceived = true;
+                        //_goReceived = true;
                         continue;
                     }
 
                     if (command.StartsWith("position startpos moves"))
                     {
-                        if (receivingOptions)
-                        {
-                            receivingOptions = false;
-
-                        }
+                        receivingOptions = false;
                         _chessBoard.NewGame();
                         _lastPositionCommand = command;
                         _lastMoves = command.Substring("position startpos moves".Length).Trim();
@@ -306,16 +277,13 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                             var promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
                             _chessBoard.MakeMove(move.Substring(0, 2), move.Substring(2, 2), promote);
                         }
+                        SendToEngine(command);
                         continue;
                     }
 
                     if (command.Equals("stop"))
                     {
-                        if (receivingOptions)
-                        {
-                            receivingOptions = false;
-                        }
-
+                        receivingOptions = false;
                         SendToEngine(command);
                         continue;
                     }
@@ -323,11 +291,10 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                     if (command.Equals("quit"))
                     {
                         SendToEngine(command);
+                        _quitReceived = true;
                         Thread.Sleep(500);
-                        break;
                     }
                 }
-
 
             }
             catch (Exception ex)
@@ -338,14 +305,15 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
 
         private void RunTeddyEngine()
         {
-            Move[] moveList = new Move[0];
+            Move[] moveList = Array.Empty<Move>();
             int m = -1;
             int maxM = 0;
             int mBorder = 2;
             IChessBoard localBoard = null;
             List<ForTeddyEngine> listForEngine = new List<ForTeddyEngine>();
             Move bestMove = null;
-            while (true)
+            string skipMove = string.Empty;
+            while (!_quitReceived)
             {
                 Thread.Sleep(5);
                 if (_messagesToTeddyEngine.TryDequeue(out ForTeddyEngine forTeddyEngine))
@@ -354,14 +322,21 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                     {
                         continue;
                     }
+                    if (bestMove != null)
+                    {
+                        forTeddyEngine.Score = -forTeddyEngine.Score;
+                    }
                     _fileLogger?.LogDebug($"Move: {forTeddyEngine.FromEngine}  Score diff: {forTeddyEngine.Score} {_score} ");
                     if (forTeddyEngine.Score - _score > 0.4m || bestMove != null)
                     {
+                        
                         if (m < 0)
                         {
+                            skipMove = forTeddyEngine.Move;
                             forTeddyEngine.EngineMove = true;
-                            mBorder = 2;
+                            mBorder = 3;
                             _fileLogger?.LogDebug($"Start Teddy: {forTeddyEngine.FromEngine} {forTeddyEngine.Score}");
+                            _messagesToGui.Enqueue("Teddy on");
                             var engine = new Engine(null);
                             // var engine = new Engine(_fileLogger);
                             engine.Init(_chessBoard);
@@ -375,8 +350,8 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                                                                               .Equals(forTeddyEngine.Move));
                             if (engineMove != null)
                             {
+                               
                                 forTeddyEngine.TeddyMove = engineMove;
-                                //forTeddyEngine.Score = forTeddyEngine.Score;
                                 listForEngine.Add(forTeddyEngine);
                                 if (engineMove.CapturedFigureMaterial > 0)
                                 {
@@ -388,6 +363,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                             else
                             {
                                 bestMove = null;
+                           
                             }
                         }
 
@@ -396,15 +372,14 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                             _fileLogger?.LogDebug($"M: {m}");
                             if (bestMove != null)
                             {
-                                _fileLogger?.LogDebug($"bestMove is != null {bestMove.FromFieldName}{bestMove.ToFieldName}");
+                                _fileLogger?.LogDebug($"bestMove is != null  {bestMove.FromFieldName}{bestMove.ToFieldName}");
                                 forTeddyEngine.TeddyMove = bestMove;
-                                forTeddyEngine.Score = -forTeddyEngine.Score;
                                 listForEngine.Add(forTeddyEngine);
                             }
 
                             m++;
                             bestMove = moveList[m];
-                            if ($"{bestMove.FromFieldName}{bestMove.ToFieldName}".ToLower().Equals(forTeddyEngine.Move))
+                            if ($"{bestMove.FromFieldName}{bestMove.ToFieldName}".ToLower().Equals(skipMove))
                             {
                                 m++;
                                 mBorder++;
@@ -412,33 +387,95 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                             bestMove = moveList[m];
                             _chessBoard.Init(localBoard);
                             _fileLogger?.LogDebug($"Check next move: {bestMove.FromFieldName}{bestMove.ToFieldName}");
+                            _messagesToGui.Enqueue($"Teddy check {bestMove.FromFieldName}{bestMove.ToFieldName}");
                             _chessBoard.MakeMove(bestMove);
-                            _goReceived = true;
-                          
+                            _timer.Stop();
+                            _searchAlternateMove = true;
+                            _goForAlternateMove = false;
                             continue;
                         }
                     }
-
+                   
                     if (bestMove != null)
                     {
+                        _messagesToGui.Enqueue("Teddy off");
                         _fileLogger?.LogDebug("bestMove is != null ");
                         m = -1;
                         forTeddyEngine = listForEngine[0];
-                        for (int i = 1; i < listForEngine.Count; i++)
+                        var forTeddyEngines = listForEngine.OrderByDescending(l => l.Score).ToArray();
+                        foreach (var teddyEngine in forTeddyEngines)
                         {
-                            var teddyEngine = listForEngine[i];
-                            if (Math.Abs(teddyEngine.Score - _score) <= 0.4m)
+                            _fileLogger?.LogDebug($"check for score  {teddyEngine.TeddyMove.FromFieldName}{teddyEngine.TeddyMove.ToFieldName} {teddyEngine.Score} ");
+                        }
+                        bool moveChanged = false;
+                        decimal prevAbs = decimal.MinValue;
+                        bool moveRealistic = true;
+                        ForTeddyEngine tmpForTeddyEngine = null;
+                        for (int i = 0; i < forTeddyEngines.Length; i++)
+                        {
+                            var teddyEngine = forTeddyEngines[i];
+                 
+                            var abs = teddyEngine.Score - _score;
+                            _fileLogger?.LogDebug($"check score: {teddyEngine.TeddyMove.FromFieldName}{teddyEngine.TeddyMove.ToFieldName} {teddyEngine.Score} Abs: {abs}  PrevAbs: {prevAbs}");
+                            if (prevAbs > decimal.MinValue && (prevAbs - abs) > 1.7m)
                             {
-                                _fileLogger?.LogDebug($"instead  {forTeddyEngine.TeddyMove.FromFieldName}{forTeddyEngine.TeddyMove.ToFieldName} {forTeddyEngine.Score} ");
-                                _fileLogger?.LogDebug($"take     {teddyEngine.TeddyMove.FromFieldName}{teddyEngine.TeddyMove.ToFieldName} {teddyEngine.Score} ");
-                                forTeddyEngine = teddyEngine;
+                                _fileLogger?.LogDebug("Unrealistic move. Take origin");
+                                moveRealistic = false;
                                 break;
+                            }
+                            if (abs <= 0.4m)
+                            {
+                                _fileLogger?.LogDebug($"instead: {forTeddyEngine.TeddyMove.FromFieldName}{forTeddyEngine.TeddyMove.ToFieldName} {forTeddyEngine.Score} ");
+                                _fileLogger?.LogDebug($"take:    {teddyEngine.TeddyMove.FromFieldName}{teddyEngine.TeddyMove.ToFieldName} {teddyEngine.Score} ");
+                                forTeddyEngine = teddyEngine;
+                                moveChanged = true;
+                                break;
+                            }
+                            else
+                            {
+                                tmpForTeddyEngine = teddyEngine;
+                            }
+
+                            if (prevAbs == decimal.MinValue)
+                            {
+                                prevAbs = abs;
                             }
 
                         }
+
+                        if (!moveChanged && moveRealistic)
+                        {
+                            _fileLogger?.LogDebug("move not changed but all realistic... ");
+                            _fileLogger?.LogDebug("take lowest... ");
+                            var teddyEngine = forTeddyEngines[forTeddyEngines.Length - 1];
+                            _fileLogger?.LogDebug(
+                                $"instead  {forTeddyEngine.TeddyMove.FromFieldName}{forTeddyEngine.TeddyMove.ToFieldName} {forTeddyEngine.Score} ");
+                            _fileLogger?.LogDebug(
+                                $"take     {teddyEngine.TeddyMove.FromFieldName}{teddyEngine.TeddyMove.ToFieldName} {teddyEngine.Score} ");
+                            forTeddyEngine = teddyEngine;
+                            forTeddyEngine.InfoLine = $"{teddyEngine.Score * 100}";
+                        }
+
+                        if (!moveChanged && !moveRealistic)
+                        {
+                            _fileLogger?.LogDebug("move not changed and all are not realistic... ");
+                            if (tmpForTeddyEngine != null)
+                            {
+                                _fileLogger?.LogDebug("take nearest... ");
+                                _fileLogger?.LogDebug(
+                                    $"instead  {forTeddyEngine.TeddyMove.FromFieldName}{forTeddyEngine.TeddyMove.ToFieldName} {forTeddyEngine.Score} ");
+                                _fileLogger?.LogDebug(
+                                    $"take     {tmpForTeddyEngine.TeddyMove.FromFieldName}{tmpForTeddyEngine.TeddyMove.ToFieldName} {tmpForTeddyEngine.Score} ");
+                                forTeddyEngine = tmpForTeddyEngine;
+                            }
+                        }
+
+                        _messagesToGui.Enqueue($"teddy info {forTeddyEngine.TeddyMove.FromFieldName}{forTeddyEngine.TeddyMove.ToFieldName} {forTeddyEngine.InfoLine}"
+                                                   .ToLower());
                         _fileLogger?.LogDebug($"send bestmove {forTeddyEngine.TeddyMove.FromFieldName}{forTeddyEngine.TeddyMove.ToFieldName} to GUI");
                         _messagesToGui.Enqueue($"bestmove {forTeddyEngine.TeddyMove.FromFieldName}{forTeddyEngine.TeddyMove.ToFieldName}"
                                                    .ToLower());
+                       
                     }
                     else
                     {
@@ -448,6 +485,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                     _score = forTeddyEngine.Score;
                     bestMove = null;
                     listForEngine.Clear();
+                    _searchAlternateMove = false;
 
                 }
             }
@@ -498,7 +536,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
 
         private void RunSendToGui()
         {
-            while (true)
+            while (!_quitReceived)
             {
                 Thread.Sleep(5);
                 if (_messagesToGui.TryDequeue(out string command))
@@ -508,10 +546,10 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                         continue;
                     }
 
-                    if (!command.StartsWith("info depth") && !command.StartsWith("info currmove"))
-                    {
+                    //if (!command.StartsWith("info depth") && !command.StartsWith("info currmove"))
+                   // {
                         _fileLogger?.LogDebug($"Teddy << {command}");
-                    }
+                    //}
 
                     Console.WriteLine(command);
                 }
@@ -521,29 +559,32 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
         private void RunTeddy()
         {
             string scoreString = string.Empty;
-            string bestLine = string.Empty;
             bool stopSend = false;
             decimal score = 0.0m;
-            while (true)
+            while (!_quitReceived)
             {
                 Thread.Sleep(5);
-                if (_goReceived)
+
+                if (_searchAlternateMove && !_goForAlternateMove)
                 {
                     SendToEngine($"position fen {_chessBoard.GetFenPosition()}");
-                    SendToEngine("go infinitive");
-                    _goReceived = false;
+                    //SendToEngine("go infinitive");
+                    SendToEngine("go wtime 80000 btime 80000 movestogo 9");
+
                     _timerIsStopped = false;
                     stopSend = false;
+                    _goForAlternateMove = true;
                     _timer.Start();
-                    continue;
                 }
 
-                if (_timerIsStopped)
+
+                if (_timerIsStopped && _searchAlternateMove)
                 {
                     if (!stopSend)
                     {
                         stopSend = true;
-                        SendToEngine("stop");
+                       _fileLogger?.LogDebug("Timer elapsed: Send stop");
+                      //  SendToEngine("stop");
                     }
                 }
                 if (_messagesToTeddy.TryDequeue(out string fromEngine))
@@ -565,7 +606,8 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                                 if (decimal.TryParse(scoreString, NumberStyles.Any, CultureInfo.CurrentCulture, out score))
                                 {
                                     score /= 100;
-                                    scoreString = $"Score {score.ToString(CultureInfo.InvariantCulture)}";
+                                    if (int.TryParse(scoreString, out int aScore))
+                                      scoreString = $"{(-aScore).ToString(CultureInfo.InvariantCulture)}";
                                 }
 
                             }
@@ -582,33 +624,21 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
 
                         if (infoLineParts[i].Equals("pv", StringComparison.OrdinalIgnoreCase))
                         {
-                            bestLine = fromEngine.Substring(fromEngine.IndexOf(" pv ", StringComparison.OrdinalIgnoreCase) + 4);
+                            _lastBestLine = fromEngine.Substring(fromEngine.IndexOf(" pv ", StringComparison.OrdinalIgnoreCase) + 4);
                         }
 
                         if (infoLineParts[i].Equals("bestmove", StringComparison.OrdinalIgnoreCase))
                         {
 
-
                             var forTeddyEngine = new ForTeddyEngine()
                                                  {
                                                      Score = score,
                                                      Move = infoLineParts[i + 1],
-                                                     FromEngine = fromEngine
+                                                     FromEngine = fromEngine,
+                                                     InfoLine = scoreString
                             };
                             _messagesToTeddyEngine.Enqueue(forTeddyEngine);
-                            //if (score-_score > 0.4m)
-                            //{
-                            //    var engine = new Engine();
-                            //    engine.Init(_chessBoard);
-                            //    engine.Evaluate();
-                            //    var moveList = engine.GetMoveList();
-                            //}
-
-                            //_score = score;
-                            //Fields.GetFieldNumber(infoLineParts[i + 1].Substring(0, 2));
-                            //Fields.GetFieldNumber(infoLineParts[i + 1].Substring(2, 2));
-                            //_chessBoard.MakeMove(infoLineParts[i + 1]);
-                            //_messagesToGui.Enqueue(fromEngine);
+                           
                             break;
 
                         }
@@ -637,7 +667,6 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
 
             _fileLogger?.LogDebug($"Try to start opponent {_engineOpponent}");
 
-
             if (!File.Exists(_engineOpponent))
             {
                 _fileLogger?.LogError($"Engine file not found: {_engineOpponent}");
@@ -663,7 +692,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
                 _fileLogger?.LogDebug("Start ReadFromEngine-Thread");
                 _engineThread = new Thread(ReadFromEngine) { IsBackground = true };
                 _engineThread.Start();
-                SendToEngine("uci");
+                //SendToEngine("uci");
             }
             catch (Exception ex)
             {
@@ -681,14 +710,14 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
         {
             try
             {
-                while (true)
+                while (!_quitReceived)
                 {
                     var fromEngine = _engineProcess.StandardOutput.ReadLine();
                     if (string.IsNullOrWhiteSpace(fromEngine))
                     {
                         continue;
                     }
-
+                    // _fileLogger?.LogDebug($"Read from engine : {fromEngine}");
                     if (fromEngine.Equals("readyok", StringComparison.OrdinalIgnoreCase) || fromEngine.Equals("uciok", StringComparison.OrdinalIgnoreCase))
                     {
                         _fileLogger?.LogDebug($"Read from engine and send to GUI: {fromEngine}");

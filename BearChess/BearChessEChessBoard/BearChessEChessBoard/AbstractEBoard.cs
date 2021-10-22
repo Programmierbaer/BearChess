@@ -89,6 +89,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _serialCommunication.CurrentComPort;
         }
 
+        public void SendCommand(string anyCommand)
+        {
+            lock (_locker)
+            {
+                _serialCommunication?.Send(anyCommand);
+            }
+        }
+
         protected bool EnsureConnection()
         {
             if (IsConnected)

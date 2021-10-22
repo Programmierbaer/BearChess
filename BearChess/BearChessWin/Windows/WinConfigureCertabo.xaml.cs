@@ -89,8 +89,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
          
 
-            var infoWindow = new InfoWindow();
-            infoWindow.Owner = this;
+            var infoWindow = new InfoWindow
+                             {
+                                 Owner = this
+                             };
             infoWindow.Show();
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
@@ -100,6 +102,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 certaboLoader.Calibrate();
                 certaboLoader.SetAllLedsOff();
                 infoWindow.Close();
+                certaboLoader.Stop();
+                certaboLoader.SetAllLedsOff();
                 MessageBox.Show(this,"Calibration finished", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Information);
                 certaboLoader.Close();
             }

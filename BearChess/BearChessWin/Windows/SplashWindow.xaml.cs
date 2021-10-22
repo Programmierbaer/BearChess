@@ -1,23 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace www.SoLaNoSoft.com.BearChessWin.Windows
+namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
     /// Interaktionslogik für SplashWindow.xaml
@@ -91,13 +79,13 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         public void SetStartupLocation(WindowStartupLocation startupLocation)
         {
-            this.WindowStartupLocation = startupLocation;
+            WindowStartupLocation = startupLocation;
         }
         public void SetStartupLocation(double left, double top)
         {
-            this.WindowStartupLocation = WindowStartupLocation.Manual;
-            this.Left = left;
-            this.Top = top;
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            Left = left;
+            Top = top;
         }
 
 

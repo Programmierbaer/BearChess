@@ -124,9 +124,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 return;
             }
-
             var ledForFields = GetLedForFields(fieldNames);
+            if (!string.IsNullOrWhiteSpace(_lastSendLeds) && _lastSendLeds.Equals($"L22{ledForFields}"))
+            {
+                return;
+            }
             _lastSendLeds = $"L22{ledForFields}";
+            _logger?.LogDebug($"SendFields : {string.Join(" ",fieldNames)}");
             lock (_locker)
             {
                 _serialCommunication.Send(_lastSendLeds);

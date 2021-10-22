@@ -16,7 +16,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public event EventHandler AwaitedPosition;
         public event EventHandler BasePositionEvent;
 
+        public void SetReplayMode(bool inReplayMode)
+        {
+            _eChessBoard.SetReplayMode(inReplayMode);
+        }
+
         public bool IsInDemoMode => _eChessBoard.IsInDemoMode;
+        public bool IsInReplayMode => _eChessBoard.IsInReplayMode;
         public bool IsConnected => _eChessBoard.IsConnected;
 
 
@@ -224,6 +230,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
             _eChessBoard.SetLedCorner(upperLeft,upperRight,lowerLeft,lowerRight);
+        }
+
+        public bool IsOnBasePosition()
+        {
+            return _eChessBoard.IsOnBasePosition();
         }
 
         #region private

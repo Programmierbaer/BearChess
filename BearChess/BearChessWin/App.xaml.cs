@@ -54,6 +54,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 MessageBox.Show(message);
                 MessageBox.Show(exception.Message);
+                MessageBox.Show(exception.StackTrace);
             }
         }
     }

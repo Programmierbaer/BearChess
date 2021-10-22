@@ -19,7 +19,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public override List<Move> GetMoveList()
         {
-            var moves = new List<Move>();
+            var moves = new List<Move>(10);
             // Nächstes Feld in Zugrichtung gerade aus
             var tmpFigure = ChessBoard.GetFigureOn(Field + Step1);
             // Nur wenn das Feld leer ist...

@@ -11,9 +11,19 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetDemoMode(bool inDemoMode);
 
         /// <summary>
+        /// If replay mode is true, only valid moves (force and back) are allowed
+        /// </summary>
+        void SetReplayMode(bool inReplayMode);
+
+        /// <summary>
         /// Indicates if in demo mode
         /// </summary>
         bool IsInDemoMode { get; }
+
+        /// <summary>
+        /// Indicates if in replay mode
+        /// </summary>
+        bool IsInReplayMode { get; }
 
         /// <summary>
         /// Indicates if there a connection to the chess board.
@@ -106,8 +116,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         event EventHandler<string> FenEvent;
 
+        /// <summary>
+        /// The awaited position is on the board
+        /// </summary>
         event EventHandler AwaitedPosition;
-
+        
+        /// <summary>
+        /// The pieces are replaced on the base position
+        /// </summary>
         event EventHandler BasePositionEvent;
 
         /// <summary>
@@ -151,7 +167,16 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         void SaveEChessBoardConfiguration(EChessBoardConfiguration configuration);
 
+        /// <summary>
+        /// Set which leds around the field should mark 
+        /// </summary>
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
+
+        /// <summary>
+        /// Returns true if the board is current on the base position
+        /// </summary>
+        /// <returns></returns>
+        bool IsOnBasePosition();
 
     }
 }

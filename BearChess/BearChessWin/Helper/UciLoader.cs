@@ -41,6 +41,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly object _locker = new object();
         private readonly OpeningBook _openingBook;
         private BookMove _bookMove;
+        public bool IsTeddy => _uciInfo.AdjustStrength;
 
         public event EventHandler<EngineEventArgs> EngineReadingEvent;
 
@@ -79,7 +80,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     FileName = fileName,
                     CreateNoWindow = true,
                     WorkingDirectory = Path.GetDirectoryName(fileName),
-                    Arguments = _uciInfo.AdjustStrength ? _uciInfo.FileName : string.Empty
+                    Arguments = _uciInfo.AdjustStrength ? _uciInfo.FileName.Replace(" ","$") : uciInfo.CommandParameter
                 }
 
             };
@@ -198,7 +199,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _allMoves.Add("position startpos moves");
                 SendToEngine("ucinewgame");
             }
-            _logger?.LogDebug($"Make move: {fromField}{toField}{promote}");
+            _logger?.LogDebug($"Make move with time: {fromField}{toField}{promote}");
             _allMoves.Add($"{fromField}{toField}{promote}".Trim().ToLower());
             _bookMove = _lookForBookMoves ? _openingBook?.GetMove(_allMoves.ToArray()): null;
             if (_bookMove == null || _bookMove.EmptyMove)

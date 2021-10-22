@@ -45,6 +45,10 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool SwitchedColor { get; set; }
         public string GameEvent { get; set; }
 
+        public bool PlayerWhiteIsMessChess => WhiteConfig.FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase);
+        public bool PlayerBlackIsMessChess => BlackConfig.FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase);
+
+
         public CurrentGame(UciInfo whiteConfig, UciInfo blackConfig, string gameEvent, TimeControl timeControl,
                            string playerWhite, string playerBlack, bool startFromBasePosition)
         : this (whiteConfig, blackConfig,gameEvent, timeControl,playerWhite,playerBlack,startFromBasePosition,false,1)

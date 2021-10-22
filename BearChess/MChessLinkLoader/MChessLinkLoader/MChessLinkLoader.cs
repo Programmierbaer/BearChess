@@ -32,6 +32,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkLoader
             var mChessLinkImpl = new MChessLinkImpl(name: Name, basePath: basePath, isFirstInstance: true, comPortName: configuration.PortName);
             mChessLinkImpl.FlashInSync(configuration.FlashInSync);
             mChessLinkImpl.DimLeds(configuration.DimLeds);
+//            mChessLinkImpl.SendCommand("W0203");
+//            mChessLinkImpl.SendCommand("W0400");
             return mChessLinkImpl;
         }
 

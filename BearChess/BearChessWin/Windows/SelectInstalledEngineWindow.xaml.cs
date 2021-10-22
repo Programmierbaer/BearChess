@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessDatabase;
+using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -43,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 dataGridEngine.SelectedIndex = _uciInfos.IndexOf(firstOrDefault);
             }
-
+            dataGridEngine.ScrollIntoView(dataGridEngine.SelectedItem);
             _installedEngines = new HashSet<string>(_uciInfos.Select(u => u.Name));
         }
 
@@ -102,6 +103,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     SelectedEngine.OpeningBook = uciInfo.OpeningBook;
                     SelectedEngine.OpeningBookVariation = uciInfo.OpeningBookVariation;
                     SelectedEngine.AdjustStrength = uciInfo.AdjustStrength;
+                    SelectedEngine.CommandParameter = uciInfo.CommandParameter;
+                    SelectedEngine.LogoFileName = uciInfo.LogoFileName;
                     foreach (var uciInfoOptionValue in uciInfo.OptionValues)
                     {
                         SelectedEngine.AddOptionValue(uciInfoOptionValue);
@@ -186,13 +189,83 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             try
             {
+                string parameters = string.Empty;
+                string avatarName = string.Empty;
+                if (fileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var fileInfo = new FileInfo(fileName);
+                    string enginesList = Path.Combine(fileInfo.DirectoryName, "Engines.lst");
+                    var parameterSelectionWindow = new ParameterSelectionWindow() { Owner = this };
+                    if (File.Exists(enginesList))
+                    {
+                        var readAllLines = File.ReadAllLines(enginesList);
+                        parameterSelectionWindow.ShowList(readAllLines);
+                    }
+                    parameterSelectionWindow.SetLabel("Engine:");
+                    var showDialog = parameterSelectionWindow.ShowDialog();
+                    if (showDialog.HasValue && showDialog.Value)
+                    {
+                        parameters = parameterSelectionWindow.SelectedEngine;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                if (fileName.EndsWith("avatar.exe", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var fileInfo = new FileInfo(fileName);
+                    string avatars = Path.Combine(fileInfo.DirectoryName, "avatar_weights");
+                    var parameterSelectionWindow = new ParameterSelectionWindow() { Owner = this };
+                    if (Directory.Exists(avatars))
+                    {
+                        var avatarList = Directory.GetFiles(avatars,"*.zip",SearchOption.TopDirectoryOnly);
+                        List<string> avList = new List<string>();
+                        foreach (var s in avatarList)
+                        {
+                            if (s.Contains(@"\"))
+                            {
+                                avList.Add(s.Substring(s.LastIndexOf(@"\")+1));
+                            }
+                        }
+
+                        parameterSelectionWindow.ShowList(avList.ToArray());
+                        parameterSelectionWindow.SetLabel("Avatar:");
+                        parameterSelectionWindow.ShowParameterButton(true);
+                        var showDialog = parameterSelectionWindow.ShowDialog();
+                        if (showDialog.HasValue && showDialog.Value)
+                        {
+                            avatarName = parameterSelectionWindow.SelectedEngine;
+                            parameters = $"--weights \"{Path.Combine(avatars, avatarName)}\"";
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        var openFileDialog = new OpenFileDialog { Filter = "Avatar Engine|*.zip|All Files|*.*" };
+                        var showDialogAvatar = openFileDialog.ShowDialog(this);
+                        if (showDialogAvatar.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+                        {
+                            var info = new FileInfo(openFileDialog.FileName);
+                            avatarName = info.Name;
+                            parameters = $"--weights \"{info.FullName}\"";
+                        }
+                    }
+                }
                 UciInstaller uciInstaller = new UciInstaller();
-                UciInfo uciInfo = uciInstaller.Install(fileName);
+                UciInfo uciInfo = uciInstaller.Install(fileName, parameters);
                 if (!uciInfo.Valid)
                 {
                     throw new Exception($"{uciInfo.FileName} is not a valid UCI engine");
                 }
 
+                if (uciInfo.Name.Equals("Avatar", StringComparison.OrdinalIgnoreCase))
+                {
+                    uciInfo.Name = "Avatar " + avatarName.Replace("_"," ").Replace(".zip",string.Empty);
+                }
                 if (_installedEngines.Contains(uciInfo.Name))
                 {
                     MessageBox.Show(
@@ -203,7 +276,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 bool isAdded = false;
                 uciInfo.Id = "uci" + Guid.NewGuid().ToString("N");
-                if (MessageBox.Show(this, $"Install UCI engine{Environment.NewLine}{uciInfo.OriginName}{Environment.NewLine}Author: {uciInfo.Author}",
+                if (MessageBox.Show(this, $"Install UCI engine{Environment.NewLine}{uciInfo.Name}{Environment.NewLine}Author: {uciInfo.Author}",
                         "UCI Engine", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     _installedEngines.Add(uciInfo.Name);

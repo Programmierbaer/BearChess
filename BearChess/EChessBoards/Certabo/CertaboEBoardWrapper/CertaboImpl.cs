@@ -6,6 +6,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
     public class CertaboImpl : AbstractEBoardWrapper
     {
 
+
         public CertaboImpl(string name, string basePath) : base(name, basePath)
         {
         }
@@ -13,6 +14,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
         public CertaboImpl(string name, string basePath, bool isFirstInstance, string comPortName, bool useBluetooth) : base(
             name, basePath, isFirstInstance, comPortName, useBluetooth)
         {
+
         }
 
         public override void FlashInSync(bool flashInSync)

@@ -551,7 +551,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         {
             if (_inError)
             {
-                return new DatabaseGameSimple[0];
+                return Array.Empty<DatabaseGameSimple>();
             }
 
             DatabaseGameSimple[] allGames = null;
@@ -574,12 +574,11 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             return allGames;
         }
 
-
         public DatabaseGameSimple[] GetGames(GamesFilter gamesFilter, string fen)
         {
             if (_inError)
             {
-                return new DatabaseGameSimple[0];
+                return Array.Empty<DatabaseGameSimple>();
             }
 
             try
@@ -589,7 +588,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     LoadDb();
                     if (!CreateTables())
                     {
-                        return new DatabaseGameSimple[0];
+                        return Array.Empty<DatabaseGameSimple>();
                     }
                 }
 
@@ -675,12 +674,43 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 _logging?.LogError(ex);
             }
 
-            return new DatabaseGameSimple[0];
+            return Array.Empty<DatabaseGameSimple>();
+        }
+
+        public int GetTotalGamesCount()
+        {
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return 0;
+                }
+            }
+
+            try
+            {
+                _connection.Open();
+                var sql = "SELECT COUNT(*) FROM games;";
+                using (var cmd = new SQLiteCommand(sql, _connection))
+                {
+                    var executeScalar = cmd.ExecuteScalar();
+                    return int.Parse(executeScalar.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+                return 0;
+            }
+            finally
+            {
+                _connection.Close();
+            }
         }
 
         private DatabaseGameSimple[] GetByReader(SQLiteDataReader rdr)
         {
-            var allGames = new List<DatabaseGameSimple>();
+            var allGames = new List<DatabaseGameSimple>(10000);
             while (rdr.Read())
             {
                 var databaseGameSimple = new DatabaseGameSimple
@@ -717,7 +747,6 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             _connection.Close();
             return allGames;
         }
-
 
 
         #endregion
@@ -1109,7 +1138,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
             if (_inError)
             {
-                return new DatabaseGameSimple[0];
+                return Array.Empty<DatabaseGameSimple>();
             }
 
             DatabaseGameSimple[] allGames = null;
@@ -1603,7 +1632,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
             if (_inError)
             {
-                return new DatabaseGameSimple[0];
+                return Array.Empty<DatabaseGameSimple>();
             }
 
             DatabaseGameSimple[] allGames = null;

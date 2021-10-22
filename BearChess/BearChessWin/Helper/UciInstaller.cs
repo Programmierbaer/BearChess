@@ -15,9 +15,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private Process _engineProcess;
         private UciInfo _uciInfo;
 
-        public UciInfo Install(string fileName)
+        public UciInfo Install(string fileName, string parameters)
         {
             _uciInfo = new UciInfo(fileName);
+            _uciInfo.CommandParameter = parameters;
             _engineProcess = new Process
             {
                 StartInfo =
@@ -27,7 +28,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     RedirectStandardInput = true,
                     FileName = fileName,
                     CreateNoWindow = true,
-                    WorkingDirectory = Path.GetDirectoryName(fileName)
+                    WorkingDirectory = Path.GetDirectoryName(fileName),
+                    Arguments = parameters
                 }
 
             };

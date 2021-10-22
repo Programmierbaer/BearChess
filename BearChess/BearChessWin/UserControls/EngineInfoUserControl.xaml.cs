@@ -2,10 +2,13 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessDatabase;
@@ -57,17 +60,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showNodesPerSec;
         private bool _showHash;
         private bool _tournamentMode;
+        private bool _showTeddy;
+        private int _hideInfo;
 
         public int Color { get; }
+        public string HideInfo => _hideInfo.ToString();
 
         public EngineInfoUserControl()
         {
             InitializeComponent();
+            _showTeddy = false;
+            _hideInfo = 0;
         }
 
-        public EngineInfoUserControl(UciInfo uciInfo, int color) : this()
+        public EngineInfoUserControl(UciInfo uciInfo, int color, string hideInfo) : this()
         {
             _uciInfo = uciInfo;
+            _hideInfo = int.Parse(hideInfo);
             Color = color;
             EngineName = uciInfo.Name;
             textBlockName.ToolTip = uciInfo.OriginName;
@@ -82,6 +91,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         var strings = uciElo.Split(" ".ToCharArray());
                         textBlockEloValue.Text = strings[strings.Length - 1];
                     }
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(uciInfo.LogoFileName))
+            {
+                if (File.Exists(uciInfo.LogoFileName))
+                {
+                    imageEngine.Visibility = Visibility.Visible;
+                    imageEngine.Source = new BitmapImage(new Uri(uciInfo.LogoFileName));
                 }
             }
             if (color == Fields.COLOR_WHITE)
@@ -115,6 +133,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void ShowInfo(bool showNodes, bool showNodesPerSec, bool showHash)
         {
+            if (_showTeddy)
+            {
+                return;
+            }
             _showNodes = showNodes;
             _showNodesPerSec = showNodesPerSec;
             _showHash = showHash;
@@ -122,6 +144,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void ShowInfo(string infoLine, bool tournamentMode)
         {
+           
             if (!_stopVisible)
             {
                 return;
@@ -145,6 +168,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             //{ };
             _stopInfo = true;
             ShowHidePlay(false);
+        }
+
+        public void ShowTeddy(bool showTeddy)
+        {
+            _showTeddy = showTeddy;
+            imageTeddy.Visibility = showTeddy ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void ShowHidePlay(bool showStop)
@@ -177,10 +206,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ShowInfoLine()
         {
+
             while (true)
             {
                 if (_infoLine.TryDequeue(out string infoLine))
                 {
+
                     string depthString = string.Empty;
                     string selDepthString = string.Empty;
                     string scoreString = string.Empty;
@@ -192,7 +223,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     string currentHash = string.Empty;
                     int currentMultiPv = 1;
                     var infoLineParts = infoLine.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    for (int i=0; i<infoLineParts.Length; i++)
+
+                    for (int i = 0; i < infoLineParts.Length; i++)
                     {
                         if (infoLineParts[i].Equals("depth", StringComparison.OrdinalIgnoreCase))
                         {
@@ -200,41 +232,54 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             {
                                 continue;
                             }
+
                             depthString = infoLineParts[i + 1];
                             selDepthString = depthString;
                             continue;
                         }
+
                         if (infoLineParts[i].Equals("multipv", StringComparison.OrdinalIgnoreCase))
                         {
-                            int.TryParse(infoLineParts[i + 1], out currentMultiPv);
+                            if (infoLineParts.Length > (i + 1))
+                            {
+                                int.TryParse(infoLineParts[i + 1], out currentMultiPv);
+                            }
+
                             continue;
                         }
+
                         if (infoLineParts[i].Equals("seldepth", StringComparison.OrdinalIgnoreCase))
                         {
                             if (_tournamentMode)
                             {
                                 continue;
                             }
+
                             selDepthString = infoLineParts[i + 1];
                             continue;
                         }
+
                         if (infoLineParts[i].Equals("score", StringComparison.OrdinalIgnoreCase))
                         {
                             if (_tournamentMode)
                             {
                                 continue;
                             }
+
                             string scoreType = infoLineParts[i + 1];
                             if (scoreType.Equals("cp", StringComparison.OrdinalIgnoreCase))
                             {
                                 scoreString = infoLineParts[i + 2];
-                                if (decimal.TryParse(scoreString, NumberStyles.Any, CultureInfo.CurrentCulture, out decimal score))
+                                if (decimal.TryParse(scoreString, NumberStyles.Any, CultureInfo.CurrentCulture,
+                                    out decimal score))
                                 {
                                     score = score / 100;
                                     scoreString = score.ToString(CultureInfo.InvariantCulture);
                                 }
+
                                 continue;
                             }
+
                             if (scoreType.Equals("mate", StringComparison.OrdinalIgnoreCase))
                             {
                                 string infoLinePart = infoLineParts[i + 2];
@@ -244,6 +289,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     continue;
                                 }
                             }
+
                             continue;
                         }
 
@@ -259,12 +305,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                             continue;
                         }
+
                         if (infoLineParts[i].Equals("currmovenumber", StringComparison.OrdinalIgnoreCase))
                         {
                             currentMove += $" ({infoLineParts[i + 1]})";
 
                             continue;
                         }
+
                         if (_showNodes && infoLineParts[i].Equals("nodes", StringComparison.OrdinalIgnoreCase))
                         {
                             currentNodes = $" N: {infoLineParts[i + 1]} ";
@@ -283,74 +331,103 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             if (int.TryParse(infoLineParts[i + 1], out int hashValue))
                             {
-                                currentHash = $" Hash: {hashValue/10}%";
+                                currentHash = $" Hash: {hashValue / 10}%";
                             }
-                            
+
                             continue;
                         }
 
                         if (readingMoveLine)
                         {
-                            if (_tournamentMode)
+                            if (_tournamentMode || _showTeddy)
                             {
-                               moveLine = " ~~~~~~~ ";
-                               continue;
+                                moveLine = " ~~~~~~~ ";
+                                continue;
                             }
 
                             moveLine += infoLineParts[i] + " ";
                         }
                         else
                         {
-                            if (_tournamentMode &&  infoLineParts[i].Equals("bestmove"))
+                            if ((_tournamentMode || _showTeddy) && infoLineParts[i].Equals("bestmove"))
                             {
                                 moveLine = infoLineParts[i + 1].ToLower();
                             }
                         }
                     }
 
+
                     try
                     {
                         Dispatcher?.Invoke(() =>
                         {
-                            if (!string.IsNullOrWhiteSpace(depthString))
-                            {
-                                textBlockDepth.Text = $"Depth: {depthString}/{selDepthString}";
-                            }
 
-                            if (currentMultiPv == 1)
+
+                            if (_hideInfo > 0)
                             {
-                                engineInfoLineUserControl1.FillLine(scoreString, moveLine);
+                                engineInfoLineUserControl1.ClearLine();
+                                foreach (var engineInfoLineUserControl in _engineInfoLineUserControls)
+                                {
+                                    engineInfoLineUserControl.ClearLine();
+                                }
                             }
                             else
                             {
-                                var multiPv = currentMultiPv - 2;
-                                if (_engineInfoLineUserControls.Count>0 && _engineInfoLineUserControls.Count >= multiPv && multiPv>=0)
+                                if (currentMultiPv == 1)
                                 {
-                                    _engineInfoLineUserControls[multiPv].FillLine(scoreString, moveLine);
+                                    engineInfoLineUserControl1.FillLine(scoreString, moveLine);
+                                }
+                                else
+                                {
+                                    var multiPv = currentMultiPv - 2;
+                                    if (_engineInfoLineUserControls.Count > 0 &&
+                                        _engineInfoLineUserControls.Count >= multiPv && multiPv >= 0)
+                                    {
+                                        _engineInfoLineUserControls[multiPv].FillLine(scoreString, moveLine);
+                                    }
                                 }
                             }
 
-                            if (!string.IsNullOrWhiteSpace(currentMove))
+                            if (_hideInfo == 2)
                             {
-                                textBlockCurrentMove.Text = currentMove;
+                                textBlockDepth.Text = "Depth:";
+                                textBlockCurrentMove.Text = string.Empty;
+                                textBlockCurrentNodes.Text = string.Empty;
+                                textBlockCurrentNodesPerSec.Text = string.Empty;
+                                textBlockCurrentHash.Text = string.Empty;
                             }
+                            if (_hideInfo < 2)
+                            {
+                                if (!string.IsNullOrWhiteSpace(depthString))
+                                {
+                                    textBlockDepth.Text = $"Depth: {depthString}/{selDepthString}";
+                                }
 
-                            textBlockCurrentNodes.Visibility = _showNodes ? Visibility.Visible : Visibility.Collapsed;
-                            textBlockCurrentNodesPerSec.Visibility = _showNodesPerSec ? Visibility.Visible : Visibility.Collapsed;
-                            textBlockCurrentHash.Visibility = _showHash ? Visibility.Visible : Visibility.Collapsed;
-                            if (!string.IsNullOrWhiteSpace(currentNodes))
-                            {
-                                textBlockCurrentNodes.Text = currentNodes;
-                            }
-                            if (!string.IsNullOrWhiteSpace(currentNodesPerSec))
-                            {
-                                textBlockCurrentNodesPerSec.Text = currentNodesPerSec;
-                            }
-                            if (!string.IsNullOrWhiteSpace(currentHash))
-                            {
-                                textBlockCurrentHash.Text = currentHash;
-                            }
+                                if (!string.IsNullOrWhiteSpace(currentMove))
+                                {
+                                    textBlockCurrentMove.Text = currentMove;
+                                }
 
+                                textBlockCurrentNodes.Visibility =
+                                    _showNodes ? Visibility.Visible : Visibility.Collapsed;
+                                textBlockCurrentNodesPerSec.Visibility =
+                                    _showNodesPerSec ? Visibility.Visible : Visibility.Collapsed;
+                                textBlockCurrentHash.Visibility = _showHash ? Visibility.Visible : Visibility.Collapsed;
+                                if (!string.IsNullOrWhiteSpace(currentNodes))
+                                {
+                                    textBlockCurrentNodes.Text = currentNodes;
+                                }
+
+                                if (!string.IsNullOrWhiteSpace(currentNodesPerSec))
+                                {
+                                    textBlockCurrentNodesPerSec.Text = currentNodesPerSec;
+                                }
+
+                                if (!string.IsNullOrWhiteSpace(currentHash))
+                                {
+                                    textBlockCurrentHash.Text = currentHash;
+                                }
+                            }
                         });
                     }
                     catch
@@ -413,6 +490,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonConfig_OnClick(object sender, RoutedEventArgs e)
         {
             ConfigEvent?.Invoke(this,_uciInfo.Name);
+        }
+
+        private void ButtonHide_OnClick(object sender, RoutedEventArgs e)
+        {
+            _hideInfo++;
+            if (_hideInfo > 2)
+            {
+                _hideInfo = 0;
+            }
+            buttonHide.Visibility = Visibility.Collapsed;
+            buttonHide1.Visibility = Visibility.Collapsed;
+            buttonHide2.Visibility = Visibility.Collapsed;
+            if (_hideInfo==0)
+                buttonHide.Visibility = Visibility.Visible;
+            if (_hideInfo == 1)
+                buttonHide1.Visibility = Visibility.Visible;
+            if (_hideInfo == 2)
+                buttonHide2.Visibility = Visibility.Visible;
+
         }
     }
 }

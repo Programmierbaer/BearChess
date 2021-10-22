@@ -19,6 +19,8 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         [XmlArrayItem("ListOfMoves")]
         public Move[] AllMoves;
 
+        private DateTime _gameDate;
+
         [XmlIgnore]
         public string White => PgnGame.PlayerWhite;
         [XmlIgnore]
@@ -29,9 +31,13 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         public string Pgn => PgnGame.GetGame();
         [XmlIgnore]
         public string Result => PgnGame.Result;
-        
+
         [XmlIgnore]
-        public DateTime GameDate => DateTime.Parse(PgnGame.GameDate);
+        public DateTime GameDate
+        {
+            get => _gameDate;
+        }
+
         [XmlIgnore]
         public Move[] MoveList => AllMoves;
 
@@ -39,6 +45,10 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         {
             CurrentGame = currentGame;
             PgnGame = pgnGame;
+            if (!DateTime.TryParse(pgnGame.GameDate.Replace("??", "01"), out _gameDate))
+            {
+                _gameDate = DateTime.MinValue;
+            }
             List<Move> myMove = new List<Move>();
             foreach (var move in moveList)
             {

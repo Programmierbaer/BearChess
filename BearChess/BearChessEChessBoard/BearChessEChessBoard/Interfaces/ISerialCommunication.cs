@@ -54,6 +54,8 @@
         /// </summary>
         void Clear();
 
+        void ClearToBoard();
+
         /// <summary>
         /// Open the connection
         /// </summary>

@@ -71,7 +71,6 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
 
         public Move Evaluate()
         {
-            List<EvaluateResult> allResult = new List<EvaluateResult>();
             var currentMoveList = _chessBoard.GenerateMoveList();
             _boardEvaluations = new BoardEvaluation[2];
             _boardEvaluations = EvaluateBoard(_chessBoard);
@@ -119,7 +118,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
             var compareBoard = material + posValues;
             if (compareBoard == 80)
             {
-                _logger?.LogDebug($"Wait");
+             //   _logger?.LogDebug($"Wait");
             }
             return compareBoard;
         }

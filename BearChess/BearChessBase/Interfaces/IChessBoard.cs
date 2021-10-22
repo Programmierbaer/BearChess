@@ -125,8 +125,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// </summary>        
         void SetPosition(string fenPosition);
 
+        /// <summary>
+        /// Set the board positions based on <paramref name="moveNumber"/> and <paramref name="color"/>.
+        /// </summary>        
         void SetPosition(int moveNumber, int color);
 
+        /// <summary>
+        /// Set the board current move based on <paramref name="moveNumber"/> and <paramref name="color"/>.
+        /// </summary>
         void SetCurrentMove(int moveNumber, int color);
 
         /// <summary>
@@ -164,7 +170,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// </summary>
         Move[] GetPlayedMoveList();
 
+        /// <summary>
+        /// Returns the move based on <paramref name="moveNumber"/> and <paramref name="color"/>.
+        /// </summary>
         Move GetPlayedMove(int moveNumber, int color);
+
+        /// <summary>
+        /// Returns the fen position based on <paramref name="moveNumber"/> and <paramref name="color"/>.
+        /// </summary>
         string GetPlayedFenPosition(int moveNumber, int color);
 
         /// <summary>
@@ -182,21 +195,18 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// </summary>
         void Init(IChessBoard chessBoard);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        string EnPassantTargetField { get; set; }
+        void SetGameAnalyzeMode(bool analyzeMode);
 
+        string EnPassantTargetField { get; set; }
         int EnPassantTargetFieldNumber { get; set; }
         int HalfMoveClock { get; set; }
         int FullMoveNumber { get; set; }
+        int GetBoardHash();
 
         /// <summary>
         /// Last captured figure.
         /// </summary>
         IChessFigure CapturedFigure { get; }
-
-        int GetBoardHash();
 
         /// <summary>
         /// Returns true if the <see cref="color"/> is in check.
