@@ -380,6 +380,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 || (buttonConfigureBlack.Visibility == Visibility.Hidden &&
                     buttonConfigureWhite.Visibility == Visibility.Visible))
             {
+                if (PlayerBlackConfigValues != null &&
+                    PlayerBlackConfigValues.FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase)
+                    || PlayerWhiteConfigValues != null &&
+                    PlayerWhiteConfigValues.FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase))
+                {
+                    stackPanelRelaxed.Visibility = Visibility.Hidden;
+                    CheckBoxRelaxed_OnUnchecked(this, null);
+                    return;
+                }
+
                 stackPanelRelaxed.Visibility = Visibility.Visible;
                 if (checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value)
                 {
@@ -389,12 +399,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     CheckBoxRelaxed_OnUnchecked(this, null);
                 }
+
+                return;
             }
-            else
-            {
-                stackPanelRelaxed.Visibility = Visibility.Hidden;
-                CheckBoxRelaxed_OnUnchecked(this,null);
-            }
+
+            stackPanelRelaxed.Visibility = Visibility.Hidden;
+            CheckBoxRelaxed_OnUnchecked(this, null);
+
         }
 
         private void ButtonConfigureWhite_OnClick(object sender, RoutedEventArgs e)

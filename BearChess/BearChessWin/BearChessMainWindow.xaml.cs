@@ -359,7 +359,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _runGameOnBasePosition = bool.Parse(_configuration.GetConfigValue("rungameonbaseposition", "false"));
             imageRunGameOnBase.Visibility = _runGameOnBasePosition ? Visibility.Visible : Visibility.Hidden;
 
-            _showBestMoveOnAnalysisMode = bool.Parse(_configuration.GetConfigValue("_showbestmoveonanalysismode", "true"));
+            _showBestMoveOnAnalysisMode = bool.Parse(_configuration.GetConfigValue("showbestmoveonanalysismode", "true"));
             imageShowBestMoveOnAnalysisMode.Visibility = _showBestMoveOnAnalysisMode ? Visibility.Visible : Visibility.Hidden;
 
             _loadLastEngine = bool.Parse(_configuration.GetConfigValue("loadlastengine", "false"));
@@ -3072,7 +3072,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
            
-            if ((e.FirstEngine || _pureEngineMatch) && bool.Parse(_configuration.GetConfigValue("ShowBestMove", "false")) && e.FromEngine.Contains(" pv "))
+            if ((e.FirstEngine || _pureEngineMatch) && _showBestMoveOnAnalysisMode && e.FromEngine.Contains(" pv "))
             {
                 if (!e.FromEngine.Contains(" multipv ") || e.FromEngine.Contains(" multipv 1 "))
                 {
@@ -3334,7 +3334,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MenuItemShowBestMoveInAnalyse_OnClick(object sender, RoutedEventArgs e)
         {
             _showBestMoveOnAnalysisMode = !_showBestMoveOnAnalysisMode;
-            _configuration.SetConfigValue("_showbestmoveonanalysismode", _showBestMoveOnAnalysisMode.ToString());
+            _configuration.SetConfigValue("showbestmoveonanalysismode", _showBestMoveOnAnalysisMode.ToString());
             imageShowBestMoveOnAnalysisMode.Visibility = _showBestMoveOnAnalysisMode ? Visibility.Visible : Visibility.Hidden;
         }
 

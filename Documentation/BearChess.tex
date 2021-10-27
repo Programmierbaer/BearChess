@@ -8,6 +8,11 @@
 \usepackage{xcolor}
 \usepackage[T1]{fontenc} 
 \usepackage{nameref}
+\usepackage[
+colorlinks=true,
+urlcolor=blue,
+linkcolor=black
+]{hyperref}
 \pagestyle{fancy}
 \setcounter{secnumdepth}{4}
 \setcounter{tocdepth}{4}
@@ -32,7 +37,7 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you not need an electronic chessboard to use BearChess.
 
-The first version of BearChess supports the chessboards from Certabo and the boards connected via Millennium ChessLink.\\
+BearChess supports the chessboards from Certabo and the boards connected via Millennium ChessLink.\\
 
 As you can see from the version number, this software is still under development. There are still some functions that are not fully implemented and there are certainly still many bugs. But BearChess has now reached a level where it can be used and feedback from other users is welcome.\\
 
@@ -344,6 +349,69 @@ Some engines comes with there own opening book and you have an option to use the
 \end{itemize}
 Look at chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pageref{OpeningBooks} how to install an opening book.
 
+\subsubsection{Install Certabo Avatar UCI Chess engine}
+Certabo provides a special engine, called Avatar UCI Chess engine (look at \url{https://www.avataruci.org/}).\\
+This engine is not intended for super strong player but tries to replicate your style. It learn from your games (you do no need many many thousand), it can start with some tens or hundreds. Certabo have an learning alghrithm which create some weights and opening books emulating personality. Certabo created avatar of some player from the past and you can find in the latest Certabo software already just select Avatar as main engine and you will be prompted to choose the Avatar you want to play.\\
+You can use this engine in BearChess, too. 
+If you have installed the latest Certabo software, select the avatar.exe file from the engines subfolder as the new engine. BearChess looks at the 'avatar\_weights' subfolder and ask you to select an avatar.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{avatar1.png}
+	\caption{Select an avatar}
+	\label{fig:Avatar1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{avatar2.png}
+	\caption{Confirm}
+	\label{fig:Avatar2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{avatar3.png}
+	\caption{Configure}
+	\label{fig:Avatar3}
+\end{figure}
+
+There are no other configuration options. In the bottom line you can see the required parameters for the avatar engine.\\
+If you don't find the right avatar, click on the small folder icon and you can select another avatar file, e.g. your personally created file from Certabo.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{avatar4.png}
+	\caption{Select your avatar}
+	\label{fig:Avatar4}
+\end{figure}
+
+\subsubsection{Install MessChess engine}
+Franz Huber provides emulator software to play against old chess computers as UCI engine (look at \url{https://fhub.jimdofree.com/}).\\
+If you have downloaded und unzipped the latest version of CB-Emu, select the MessChess.exe file from the MessChess subfolder as the new engine. BearChess reads the Engines.lst file and ask you to select a chess computer emulation.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{MessChess1.png}
+	\caption{Select an emulation}
+	\label{fig:MessChess1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{MessChess2.png}
+	\caption{Confirm}
+	\label{fig:MessChess2}
+\end{figure}
+
+There are only some configuration options. In the bottom line you can see the required parameters for the engine.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{MessChess3.png}
+	\caption{Configure}
+	\label{fig:MessChess3}
+\end{figure}
 
 \subsection{Configure an engine}
 
@@ -373,6 +441,17 @@ To load an installed engine, select an engine and click on \includegraphics[scal
 	\caption{Some installed engines}
 	\label{fig:LoadEngine2}
 \end{figure}
+
+\subsubsection{Load a MessChess engine}
+
+When you load a MessChess engine the emulation window will appears, too.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{MessChess4.png}
+	\caption{Academy}
+	\label{fig:MessChess4}
+\end{figure}
+Use only BearChess or your electronic chessboard to make any moves. You can use the emulaton window to set options, e.g. levels or time control. When you play a game against a MessChess engines, the selected time control for the game cannot transferred to the emulation. 
 
 \section{Load and Manage Opening Books} \label{OpeningBooks}
 
@@ -1154,7 +1233,7 @@ Click on one the figure to place in on the selected field. If the is a piece on 
 
 \subsection{Analyse a game} \label{AnalyzeMode2}
 
-This is available only if you are connected to an electronic chessboard and a game has been loaded from the game manager. In this case BearChess will ask you if you want to analyze a game.\\
+This mode is available only if you are connected to an electronic chessboard and a game has been loaded from the games manager. In this case BearChess will ask you if you want to analyze a game.\\
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{AnalyzeGame1.png}
@@ -1178,15 +1257,25 @@ As next, you will be asked to select a supporting analysis engine.
 	\label{fig:AnalyzeMode2_3}
 \end{figure}
 
-The engine immediately starts to analyze the current position. If you want, you can add more engines.\\
-Now you can remove or add figures or make moves on your chessboard as you like. The engine window shows immediately the current analysis. The current color results from which figure was moved last. To change the color, simply lift a figure of the current color and put it back in its place. The analysis will then start for the other color. Especially in endgames it can be important to know which color is on the move. Think of the king and pawn versus king endgame.
+Make your moves as indicated to the move list. The engine immediately starts to analyze the current position. The current move on the move list is highlighted  and the board shows the position. In this example ,the engine prefers the move bishop c1 d2 instead pawn g2 g3.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{AnalyzeMode3.png}
-	\caption{Stop analysis mode}
-	\label{fig:AnalyzeMode3_3}
+	\includegraphics[scale=0.7]{AnalyzeMode5.png}
+	\caption{Analyze after the 4th move}
+	\label{fig:AnalyzeMode5}
 \end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{AnalyzeMode6.png}
+	\caption{Board after the 4th move}
+	\label{fig:AnalyzeMode6}
+\end{figure}
+
+The electronic chessboard indicates the move proposal from the engine.\\
+If you make a valid move outside the move list on your electronic chessboard, e.g. if you follow the suggestions of the engine, the engine continues the analysis but you will not see the move on the chessboard on the screen. You can make all valid moves back and forth on your electronic chessboard but the chessboard on the screen and the move list show you the last position in the game. If you go back to a valid position from the game the chessboard and move list will continue.
+
 
 \section{Engine duel} \label{EngineDuel}
 
@@ -1605,6 +1694,7 @@ The next releases will extend the game analysis.
 \section{Changelog}
 \subsection{Version 0.5.0.0 =\textgreater 0.5.5.0}
 \begin{itemize}
+	\item New analyze mode for played games.
 	\item Relaxed mode against any UCI engine.
 	\item Support of Certabo Avatar UCI engines.
 	\item Support of MessChess chess computer emulation by Franz Huber.	
