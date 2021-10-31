@@ -44,7 +44,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 dataGridEngine.SelectedIndex = _uciInfos.IndexOf(firstOrDefault);
             }
-            dataGridEngine.ScrollIntoView(dataGridEngine.SelectedItem);
+
+            if (dataGridEngine.SelectedItem != null)
+            {
+                dataGridEngine.ScrollIntoView(dataGridEngine.SelectedItem);
+            }
+
             _installedEngines = new HashSet<string>(_uciInfos.Select(u => u.Name));
         }
 

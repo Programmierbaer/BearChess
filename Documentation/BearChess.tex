@@ -7,6 +7,7 @@
 \usepackage{fancyhdr}
 \usepackage{xcolor}
 \usepackage[T1]{fontenc} 
+\usepackage{mathptmx}
 \usepackage{nameref}
 \usepackage[
 colorlinks=true,
@@ -24,6 +25,7 @@ linkcolor=black
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
 \date{01.11.2021} 
+
 
 \begin{document}
 \maketitle
@@ -43,7 +45,7 @@ As you can see from the version number, this software is still under development
 
 I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo) or Millennium 2000 GmbH. If something does not work, Certabo or Millennium is not responsible for it.\\
 
-Send errors, comments, suggestions for improvement or requests to lars@solanosoft.com.
+Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 
 \end{abstract}
 
@@ -71,7 +73,7 @@ BearChess offers among others the following functions:
 	  \item Play with Certabo chessboards.
 	  \item Play with Millennium chessboards via ChessLink modul.
   	  \item Play against human beings or UCI engines.
-  	  \item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs.  Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
+  	  \item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs. Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
   	  \item Use Certabo Avatar UCI engines.  	  
   	  \item Use MessChess chess computer emulation by Franz Huber.  	    	  
   	  \item Analyze your games or trainings with the help of electronic chessboards.
@@ -353,7 +355,7 @@ Look at chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pag
 Certabo provides a special engine, called Avatar UCI Chess engine (look at \url{https://www.avataruci.org/}).\\
 This engine is not intended for super strong player but tries to replicate your style. It learn from your games (you do no need many many thousand), it can start with some tens or hundreds. Certabo have an learning alghrithm which create some weights and opening books emulating personality. Certabo created avatar of some player from the past and you can find in the latest Certabo software already just select Avatar as main engine and you will be prompted to choose the Avatar you want to play.\\
 You can use this engine in BearChess, too. 
-If you have installed the latest Certabo software, select the avatar.exe file from the engines subfolder as the new engine. BearChess looks at the 'avatar\_weights' subfolder and ask you to select an avatar.
+If you have installed the latest Certabo software (Version 4.5 or above), select the avatar.exe file from the engines subfolder as the new engine. BearChess looks at the 'avatar\_weights' subfolder and ask you to select an avatar.
 
 \begin{figure}[H]
 	\centering
@@ -1151,8 +1153,10 @@ Now, when you starts the game and the next engine move will bring you in a bad p
 	\label{fig:Relaxed2}
 \end{figure}
  It takes some seconds more to evaluate an alternate move for the engine. BearChess will not make any other move if the current move captures one of your pieces or all alternative moves 
- are not realistic.\\ 
-Some technical things: The control of the opponent's engine and the evaluation of alternative moves is performed by the engine "Teddy". You will see a Teddy.exe on the Windows Task Manager.\\\\
+ are not realistic.\\ \\
+Some technical things: The control of the opponent's engine and the evaluation of alternative moves is performed by the engine "Teddy". You will see a Teddy.exe on the Windows Task Manager.
+"Teddy" is not a clone of any other chess engines and does not simply call the multivaration modus 
+of the opponent engine. That's why you can use almost any engine without multivariation support.\\\\
 {\color{red}*} The algorithm for finding alternative moves is not perfect and will be continuously improved in the next versions.
 
 \section{Analysis mode} \label{AnalyzeMode}
@@ -1166,7 +1170,6 @@ Some technical things: The control of the opponent's engine and the evaluation o
 \end{figure}
 
 
-
 One outstanding feature compared to other GUIs is the analysis mode. The idea behind it is how a player analyses his games or interesting positions. The figures are quickly rearranged or moves are made that do not always conform to the rules.\\
 For example, the player does not want to go back the last three or four moves to try out a new variant. He sets up the new position directly on the board.\\
 Or you want to analyze a played game, but according to the chess rules. You can simply try some variations and BearChess will take you back to the last played position from the game.\\
@@ -1174,7 +1177,7 @@ Or you are more of a beginner and want to practice a typical endgame, e.g. king 
 You can achieve all this with the analysis mode.\\
 
 
-{\color{red}*} It may happen that not all engines are suitable for analysis. Problems have occurred so far with Arasan 20.3 (not with Arasan 22.2) or with Komodo (the reason with Komodo is still under investigation).
+{\color{red}*} It may happen that not all engines are suitable for analysis. Problems have occurred so far with Arasan 20.3 (not with Arasan 22.2) or with Komodo (the reason with Komodo is still under investigation). You cannot use MessChess computer emulation engines.
 
 \subsection{Free analyse} \label{AnalyzeMode1}
 
@@ -1702,7 +1705,7 @@ The next releases will extend the game analysis.
 	\item Improvement of figure recognition at Certabo.			
 	\item Optional parameter and logo for UCI engines.	
 	\item Hide engine output.		
-	\item Minor fixes.	
+	\item Minor fixes.
 \end{itemize}
 
 \subsection{Version 0.4.4.0 =\textgreater 0.5.0.0}
