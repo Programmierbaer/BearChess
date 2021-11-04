@@ -269,10 +269,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                                 i++;
                             }
+                            else if (uciConfigValue.OptionType.Equals("string", StringComparison.OrdinalIgnoreCase))
+                            {
+                                continue;
+                            }
                             else
                             {
                                 break;
                             }
+                        
                         }
                         else
                         {
@@ -344,22 +349,31 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
                 uciConfigValue.OptionName = uciConfigValue.OptionName + optionSplit[i] + " ";
-                string firstOrDefault = _uciInfo.OptionValues.FirstOrDefault(o => o.Contains(uciConfigValue.OptionName));
-                if (string.IsNullOrWhiteSpace(currentValue))
+               
+
+                i++;
+            } while (i < optionSplit.Length);
+            string firstOrDefault = _uciInfo.OptionValues.FirstOrDefault(o => o.Contains(uciConfigValue.OptionName));
+            if (string.IsNullOrWhiteSpace(currentValue))
+            {
+                if (!string.IsNullOrWhiteSpace(firstOrDefault))
                 {
-                    if (!string.IsNullOrWhiteSpace(firstOrDefault))
+                    if (uciConfigValue.OptionType.Equals("string", StringComparison.OrdinalIgnoreCase))
+                    {
+                        uciConfigValue.CurrentValue =
+                            firstOrDefault.Substring(firstOrDefault.IndexOf(" value ") + 7);
+                    }
+                    else
                     {
                         var strings = firstOrDefault.Split(" ".ToCharArray());
                         uciConfigValue.CurrentValue = strings[strings.Length - 1];
                     }
-                    else
-                    {
-                        uciConfigValue.CurrentValue = string.Empty;
-                    }
                 }
-
-                i++;
-            } while (i < optionSplit.Length);
+                else
+                {
+                    uciConfigValue.CurrentValue = string.Empty;
+                }
+            }
 
             switch (uciConfigValue.OptionType)
             {
@@ -395,6 +409,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 });
             }
 
+            if (string.IsNullOrWhiteSpace(uciConfigValue.CurrentValue))
+            {
+                uciConfigValue.CurrentValue = uciConfigValue.DefaultValue;
+            }
             var uciTextBoxUserControl = new UciTextBoxUserControl(uciConfigValue);
             var textBlock = new TextBlock()
             {
