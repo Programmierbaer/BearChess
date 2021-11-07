@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.5.5.1}
+\fancyhead[R]{Version 0.5.5.2}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{04.11.2021} 
+\date{07.11.2021} 
 
 
 \begin{document}
@@ -80,12 +80,14 @@ BearChess offers among others the following functions:
   	  \item Use multiple chess engines at the same time for playing and analyzing.
   	  \item Engine duels and tournaments.
   	  \item Support for Polyglot and Arena opening books.
-  	  \item Save and load your games
+  	  \item Save and load your games.
   	  \item Individual chessmen and board fields.
 \end{enumerate}
 
-BearChess follows the design of Single Document Interface (SDI). You can place different windows, e.g. chess engine output or chess move list, anywhere on your Windows desktop. If you close them or exit BearChess, the position is saved and set to the same position when reopening.
-
+BearChess follows the design of Single Document Interface (SDI). You can place different windows, e.g. chess engine output or chess move list, anywhere on your Windows desktop. If you close them or exit BearChess, the position is saved and set to the same position when reopening.\\\\
+The version numbering follows the following scheme:\\ 
+"\textit{major release}"\textbf{.}""\textit{minor release}"\textbf{.}""\textit{sub release}"\textbf{.}""\textit{bug fix}"\\
+Currently the \textit{major release} is still 0 and will only become a 1 when all planned functions are implemented. The \textit{minor release} is increased when new features are added. The \textit{sub release} is increased when minor features are added or improved. The last number is incremented if only errors were corrected.
 
 \subsection{Modes}
 BearChess is running in different modes. The current mode is displayed in the lower left corner.
@@ -453,7 +455,8 @@ When you load a MessChess engine the emulation window will appears, too.
 	\caption{Academy}
 	\label{fig:MessChess4}
 \end{figure}
-Use only BearChess or your electronic chessboard to make any moves. You can use the emulaton window to set options, e.g. levels or time control. When you play a game against a MessChess engines, the selected time control for the game cannot transferred to the emulation. 
+Use only BearChess or your electronic chessboard to make any moves. You can use the emulaton window to set options, e.g. levels or time control.\\
+{\color{red}\textbf{*}} When you play a game against a MessChess engines, the selected time control for the game cannot transferred to the emulation. To avoid that BearChess ends the game too early by timeout, you should select here only an average time per move.
 
 \section{Load and Manage Opening Books} \label{OpeningBooks}
 
@@ -1664,6 +1667,9 @@ Even if you are not playing a game and are on mode "Easy playing", just load som
 
 \section{Important To Know}
 
+\subsection{MessChess engines}
+These engines simluate a chess computer the configuration is limited to the capabilities of them. Not everything that is possible with normal engines can be done here. 
+
 \subsection{Certabo: Calibration}
 For the first time, the engine assumes that all chessmen are on their initial position and the extra queens on d3 (white queen) and d6 (black queen).
 
@@ -1690,11 +1696,23 @@ If you have performed the calibration without extra queens and are performing a 
 \end{itemize}
 
 \section{Next Steps}
-The next releases will extend the game analysis.
+
+\begin{itemize}
+		\item Extend the game analysis.
+		\item Improve the COM port handling.
+  	    \item Improve the performance of the opening book.
+	\end{itemize} 
 
 \pagebreak
 
 \section{Changelog}
+
+\subsection{Version 0.5.5.1 =\textgreater 0.5.5.2}
+\begin{itemize}
+	\item Fix closing loaded engines.
+    \item Fix handling coach engines.
+\end{itemize}
+
 \subsection{Version 0.5.5.0 =\textgreater 0.5.5.1}
 \begin{itemize}
 	\item Fix level configuration for MessChess chess computer emulation by Franz Huber.	

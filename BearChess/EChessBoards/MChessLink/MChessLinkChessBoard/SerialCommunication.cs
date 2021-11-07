@@ -100,7 +100,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                             {
                                 continue;
                             }
-                            // _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
+                            _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
                             if (readLine.Contains("s"))
                             {
 

@@ -173,6 +173,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _logWindow?.RemoveFor(loadedEnginesKey);
                 _loadedEngines[loadedEnginesKey].UciEngine.EngineReadingEvent -= UciLoader_EngineReadingEvent;
+                _loadedEngines[loadedEnginesKey].UciEngine.Quit();
             }
             _loadedEngines.Clear();
             _loadedUciInfos.Clear();
@@ -455,6 +456,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 engine.Value.UciEngine.AddMove(fromField, toField, promote);
             }
             _lastCommand = string.Empty;
+        }
+
+        public void AddMoveForCoaches(string fromField, string toField, string promote)
+        {
+            _fileLogger?.LogInfo($"Send AddMove for coaches {fromField}-{toField}{promote}");
+            foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
+            {
+                engine.Value.UciEngine.AddMove(fromField, toField, promote);
+            }
+            // _lastCommand = string.Empty;
         }
 
         public void MakeMove(string fromField, string toField, string promote, string engineName="")

@@ -2797,6 +2797,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 
                 if (_pureEngineMatch)
                 {
+                    _engineWindow?.AddMoveForCoaches(fromFieldFieldName, toFieldFieldName, promote);
                     if (engineName.Equals(_currentGame.PlayerBlack))
                     {
                         _engineWindow?.MakeMove(fromFieldFieldName, toFieldFieldName, promote, _currentGame.PlayerWhite);
@@ -2812,16 +2813,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     _engineWindow?.AddMove(fromFieldFieldName, toFieldFieldName, promote);
                 }
-       //         _engineWindow?.MakeMoveForCoaches(fromFieldFieldName, toFieldFieldName, promote);
+               // _engineWindow?.MakeMoveForCoaches(fromFieldFieldName, toFieldFieldName, promote);
 
-                if (engineMove == null)
-                {
-                    //_moveListWindow?.AddMove(_chessBoard.EnemyColor, fromFieldFigureId,
-                    //                         _chessBoard.CapturedFigure.FigureId,
-                    //                         $"{fromFieldFieldName}{toFieldFieldName}{isInCheck}",
-                    //                         FigureId.FenCharacterToFigureId[promote]);
-                }
-                else
+                if (engineMove != null)
                 {
                     _moveListWindow?.AddMove(engineMove, _gameAgainstEngine && _timeControl.TournamentMode);
                 }
@@ -3013,6 +3007,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void EngineWindow_EngineEvent(object sender, EngineWindow.EngineEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(e.FromEngine))
+            {
+                return;
+            }
+
+            if (e.Color == Fields.COLOR_EMPTY)
             {
                 return;
             }
@@ -3575,6 +3574,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                     else
                     {
+                        
                         StartANewGame(false);
                     }
 
