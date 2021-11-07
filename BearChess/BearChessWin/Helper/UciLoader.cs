@@ -179,8 +179,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _allMoves.Add("position startpos moves");
                 SendToEngine("ucinewgame");
             }
+            
             _logger?.LogDebug($"Make move: {fromField}{toField}{promote}");
             _allMoves.Add($"{fromField}{toField}{promote}".Trim().ToLower());
+            _bookMove = _lookForBookMoves ? _openingBook?.GetMove(_allMoves.ToArray()) : null;
+            if (_bookMove == null || _bookMove.EmptyMove)
+            {
+                SendToEngine(string.Join(" ", _allMoves));
+            }
+            else
+            {
+                _logger?.LogDebug($"Book move: {_bookMove.FromField}{_bookMove.ToField}");
+            }
+        }
+
+        public void MakeMove()
+        {
+            if (_allMoves.Count == 0)
+            {
+                _allMoves.Add("position startpos moves");
+                SendToEngine("ucinewgame");
+            }
+
             _bookMove = _lookForBookMoves ? _openingBook?.GetMove(_allMoves.ToArray()) : null;
             if (_bookMove == null || _bookMove.EmptyMove)
             {
@@ -318,7 +338,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                     if (!string.IsNullOrWhiteSpace(waitingFor) && !readToEnd.StartsWith(waitingFor))
                     {
-                        _logger?.LogDebug($"<< Ignore: {readToEnd}");
+                        //_logger?.LogDebug($"<< Ignore: {readToEnd}");
                         continue;
                     }
 

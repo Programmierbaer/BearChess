@@ -4,24 +4,25 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 {
     public class SerialComPort : IComPort
     {
-        private readonly string _comport;
+        public string PortName { get; }
+
         private readonly SerialPort _serialPort;
 
         public SerialComPort(string comport, int baud, Parity parity)
         {
-            _comport = comport;
+            PortName = comport;
             _serialPort = new SerialPort(comport, baud, parity);
             _serialPort.ReadTimeout = 500;
         }
 
         public SerialComPort(string comport, int baud, Parity parity, int dataBits, StopBits stopBits)
         {
-            _comport = comport;
+            PortName = comport;
             _serialPort = new SerialPort(comport, baud, parity, dataBits, stopBits);
             _serialPort.ReadTimeout = 500;
         }
 
-        public string PortName => _comport;
+        
 
         public void Open()
         {

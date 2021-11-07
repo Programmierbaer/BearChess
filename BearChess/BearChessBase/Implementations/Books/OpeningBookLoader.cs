@@ -61,6 +61,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         _installedBooks.Add(savedBook.Name, savedBook);
                     }
                 }
+                fileLogger?.LogInfo($" {_installedBooks.Count} books read");
 
             }
             catch (Exception ex)

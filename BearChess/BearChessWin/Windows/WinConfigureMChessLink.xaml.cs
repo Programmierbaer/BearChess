@@ -23,19 +23,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             InitializeComponent();
             List<string> allPortNames = new List<string> { "<auto>" };
-            List<string> portNames = null;
+            List<string> portNames;
 
             if (useBluetooth) { 
 
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
-                portNames = BearChessTools.SerialCommunicationTools.GetBTComPort(MChessLinkLoader.EBoardName,configuration).ToList();
+                portNames = SerialCommunicationTools.GetBTComPort(MChessLinkLoader.EBoardName,configuration).ToList();
                 comPortSearchWindow.Close();
 
             }
             else
             {
-                portNames =  BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
+                portNames =  SerialCommunicationTools.GetPortNames().ToList();
             }
 
             allPortNames.AddRange(portNames);
@@ -84,12 +84,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var portName = comboBoxComPorts.SelectionBoxItem.ToString();
             if (portName.Contains("auto"))
             {
-                var portNames = BearChessTools.SerialCommunicationTools.GetPortNames().ToList();
+                var portNames = SerialCommunicationTools.GetPortNames().ToList();
                 foreach (var name in portNames)
                 {
                     if (chessLinkLoader.CheckComPort(name))
                     {
-                        MessageBox.Show($@"Check successful for {name}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
                         return;
                     }
                 }

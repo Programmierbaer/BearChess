@@ -374,9 +374,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             stackPanelEngines.Children.Clear();
             foreach (var engineInfoUserControl in engineInfoUserControls)
             {
+                if (engineInfoUserControl.Color == Fields.COLOR_EMPTY)
+                {
+                    continue;
+                }
                 if (string.IsNullOrWhiteSpace(_firstEngineName))
                 {
                     _firstEngineName = engineInfoUserControl.EngineName;
+                }
+                stackPanelEngines.Children.Add(engineInfoUserControl);
+            }
+            foreach (var engineInfoUserControl in engineInfoUserControls)
+            {
+                if (engineInfoUserControl.Color != Fields.COLOR_EMPTY)
+                {
+                    continue;
                 }
                 stackPanelEngines.Children.Add(engineInfoUserControl);
             }
@@ -455,6 +467,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastCommand = string.Empty;
         }
 
+        private void MakeMoveForCoaches()
+        {
+            _fileLogger?.LogInfo($"Send make move coaches");
+            foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
+            {
+                engine.Value.UciEngine.MakeMove();
+            }
+            
+        }
+
         public void SetFen(string fen, string moves, string engineName = "")
         {
             _fileLogger?.LogInfo($"Send fen: {fen} moves: {moves} ");
@@ -470,17 +492,45 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _timeControl = null;
         }
 
+        public void StopForCoaches(bool runningGame)
+        {
+
+            _fileLogger?.LogInfo("Send Stop for coaches");
+
+            foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
+            {
+
+                engine.Value.UciEngine.Stop();
+                _loadedEnginesControls[engine.Key].StopInfo();
+            }
+            _fileLogger?.LogInfo("Send IsReady");
+            foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
+            {
+                engine.Value.UciEngine.IsReady();
+            }
+
+        }
+
+
         public void Stop(string engineName = "")
         {
             _fileLogger?.LogInfo("Send Stop");
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
+                if (engine.Value.Color == Fields.COLOR_EMPTY)
+                {
+                    continue;
+                }
                 engine.Value.UciEngine.Stop();
                 _loadedEnginesControls[engine.Key].StopInfo();
             }
             _fileLogger?.LogInfo("Send IsReady");
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
+                if (engine.Value.Color == Fields.COLOR_EMPTY)
+                {
+                    continue;
+                }
                 engine.Value.UciEngine.IsReady();
             }
             _lastCommand = string.Empty;
@@ -509,7 +559,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 if (anyWithColor && engine.Value.Color == Fields.COLOR_EMPTY)
                 {
-                    engine.Value.UciEngine.GoInfinite();
+//                    engine.Value.UciEngine.GoInfinite();
                 }
                 else
                 {
@@ -531,7 +581,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 if (anyWithColor && engine.Value.Color == Fields.COLOR_EMPTY)
                 {
-                    engine.Value.UciEngine.GoInfinite();
+//                    engine.Value.UciEngine.GoInfinite();
                 }
                 else
                 {
@@ -556,7 +606,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 if (anyWithColor && engine.Value.Color == Fields.COLOR_EMPTY)
                 {
-                    engine.Value.UciEngine.GoInfinite();
+//                    engine.Value.UciEngine.GoInfinite();
                 }
                 else
                 {
@@ -596,12 +646,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
-            if (!anyWithColor)
-            {
-                return;
-            }
-
+            StopForCoaches(runningGame);
+            MakeMoveForCoaches();
             _fileLogger?.LogInfo($"Send Go infinite for coaches");
             foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {
@@ -609,7 +655,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     continue;
                 }
-                _fileLogger?.LogInfo($"Send Go infinite for coach {engine.Key}");
                 engine.Value.UciEngine.GoInfinite();
             }
         }

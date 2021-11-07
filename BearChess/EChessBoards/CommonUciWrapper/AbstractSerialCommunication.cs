@@ -87,7 +87,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 if (_dataFromBoard.TryDequeue(out var line))
                 {
-                    // _logger?.LogDebug($"SC: Read from board {line}");
+                    _logger?.LogDebug($"SC: Read from board {line}");
                     if (line.Trim().Length > 1)
                     {
                         if (_lastLine.Equals(line))

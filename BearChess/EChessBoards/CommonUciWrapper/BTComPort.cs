@@ -13,6 +13,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public string PortName => "BT";
 
+        public int ReadTimeout { get; set; }
+
         public BTComPort(BluetoothAddress btAddress)
         {
             if (btAddress == null)
@@ -56,6 +58,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             _client.Client.Send(buffer, offset,count,SocketFlags.None);
         }
 
-        public int ReadTimeout { get; set; }
+        
     }
 }
