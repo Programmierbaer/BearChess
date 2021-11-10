@@ -89,7 +89,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _serialCommunication = new SerialCommunication(true, _logger, portName, _useBluetooth);
             if (_serialCommunication.CheckConnect(portName))
             {
-                var readLine = _serialCommunication.GetRawFromBoard();
+                var readLine = _serialCommunication.GetRawFromBoard(string.Empty);
                 _serialCommunication.DisConnectFromCheck();
                 return readLine.Length > 0;
             }

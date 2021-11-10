@@ -40,7 +40,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             return new DataFromBoard(string.Empty, 999);
         }
 
-        public override string GetRawFromBoard()
+        public override string GetRawFromBoard(string param)
         {
             try
             {
@@ -50,6 +50,23 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             {
                 _logger?.LogError(ex.Message);
                 return string.Empty;
+            }
+        }
+
+        public override void SendRawToBoard(string param)
+        {
+             //  Ignored for Certabo
+        }
+
+        public override void SendRawToBoard(byte[] param)
+        {
+            try
+            {
+                _comPort.Write(param, 0, param.Length);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogDebug($"SC: Send raw failed: {ex.Message}");
             }
         }
 

@@ -118,7 +118,13 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             }
         }
 
-        public abstract string GetRawFromBoard();
+        public abstract string GetRawFromBoard(string param);
+        
+        public abstract void SendRawToBoard(string param);
+
+        public abstract void SendRawToBoard(byte[] param);
+
+        public abstract string GetCalibrateData();
 
         public void StartCommunication()
         {
@@ -251,7 +257,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 //
             }
 
-
             {
                 try
                 {
@@ -330,8 +335,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (CheckConnect(portName))
                     {
-
-                        var readLine = GetRawFromBoard();
+                        // For MChessLink
+                        SendRawToBoard("W0000");
+                        SendRawToBoard("W011E");
+                        SendRawToBoard("W0203");
+                        SendRawToBoard("W030A");
+                        var readLine = GetRawFromBoard(string.Empty);
                         DisConnectFromCheck();
                         if (readLine.Length > 0)
                         {
@@ -359,7 +368,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             return false;
         }
 
-        public abstract string GetCalibrateData();
+        
 
         public bool SetComPort(string portName)
         {

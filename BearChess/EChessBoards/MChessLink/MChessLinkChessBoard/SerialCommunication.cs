@@ -19,28 +19,61 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         {
         }
 
-        public override string GetRawFromBoard()
+        public override string GetRawFromBoard(string param)
         {
-            _logger?.LogDebug($"SC: GetRawFromBoard");
+            _logger?.LogDebug($"SC: GetRawFromBoard: {param}");
+            string result = string.Empty;
+            if (string.IsNullOrWhiteSpace(param))
+            {
+                param = "V";
+            }
             int readByte = int.MaxValue;
             string readLine = string.Empty;
             try
             {
-                var convertToSend = ConvertToSend("V");
+                var convertToSend = ConvertToSend(param);
                 _comPort.Write(convertToSend, 0, convertToSend.Length);
-                while (readByte > 0 && readLine.Length<10)
+                while (readByte > 0 )
                 {
                     readByte = _comPort.ReadByte();
                     var convertFromRead = ConvertFromRead(readByte);
                     readLine += convertFromRead;
+                    if (readLine.Contains(param.ToLower()))
+                    {
+                        var startIndex = readLine.IndexOf(param.ToLower());
+                        if (readLine.Length - startIndex >= 5)
+                        {
+                            _logger?.LogDebug($"SC: readline {readLine}");
+                            result = readLine.Substring(startIndex, 5);
+                            readLine = string.Empty;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 _logger?.LogDebug($"SC: Catch {ex.Message}");
             }
-            _logger?.LogDebug($"SC: {readLine}");
-            return readLine;
+            _logger?.LogDebug($"SC: {result}");
+            return result;
+        }
+
+        public override void SendRawToBoard(string param)
+        {
+            try
+            {
+                var convertToSend = ConvertToSend(param);
+                _comPort.Write(convertToSend, 0, convertToSend.Length);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogDebug($"SC: Send raw failed: {ex.Message}");
+            }
+        }
+
+        public override void SendRawToBoard(byte[] param)
+        {
+          // Ignored for MChessLink
         }
 
         public override string GetCalibrateData()

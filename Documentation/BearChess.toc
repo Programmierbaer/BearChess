@@ -74,28 +74,30 @@
 \contentsline {section}{\numberline {21}Engine window}{80}{section.21}%
 \contentsline {section}{\numberline {22}Extended engine support}{82}{section.22}%
 \contentsline {section}{\numberline {23}Important To Know}{84}{section.23}%
-\contentsline {subsection}{\numberline {23.1}MessChess engines}{84}{subsection.23.1}%
-\contentsline {subsection}{\numberline {23.2}Certabo: Calibration}{84}{subsection.23.2}%
-\contentsline {subsection}{\numberline {23.3}Certabo: Pawn conversion to a queen}{84}{subsection.23.3}%
+\contentsline {subsection}{\numberline {23.1}Install a new version}{84}{subsection.23.1}%
+\contentsline {subsection}{\numberline {23.2}MessChess engines}{84}{subsection.23.2}%
+\contentsline {subsection}{\numberline {23.3}Certabo: Calibration}{84}{subsection.23.3}%
+\contentsline {subsection}{\numberline {23.4}Certabo: Pawn conversion to a queen}{84}{subsection.23.4}%
 \contentsline {section}{\numberline {24}Trouble shooting}{84}{section.24}%
 \contentsline {subsection}{\numberline {24.1}The chess moves are not or not correctly displayed}{84}{subsection.24.1}%
 \contentsline {section}{\numberline {25}Known Issues}{84}{section.25}%
 \contentsline {section}{\numberline {26}Next Steps}{85}{section.26}%
 \contentsline {section}{\numberline {27}Changelog}{86}{section.27}%
-\contentsline {subsection}{\numberline {27.1}Version 0.5.5.1 =\textgreater 0.5.5.2}{86}{subsection.27.1}%
-\contentsline {subsection}{\numberline {27.2}Version 0.5.5.0 =\textgreater 0.5.5.1}{86}{subsection.27.2}%
-\contentsline {subsection}{\numberline {27.3}Version 0.5.0.0 =\textgreater 0.5.5.0}{86}{subsection.27.3}%
-\contentsline {subsection}{\numberline {27.4}Version 0.4.4.0 =\textgreater 0.5.0.0}{86}{subsection.27.4}%
-\contentsline {subsection}{\numberline {27.5}Version 0.4.3.1 =\textgreater 0.4.4.0}{86}{subsection.27.5}%
-\contentsline {subsection}{\numberline {27.6}Version 0.4.3.0 =\textgreater 0.4.3.1}{87}{subsection.27.6}%
-\contentsline {subsection}{\numberline {27.7}Version 0.4.2.3 =\textgreater 0.4.3.0}{87}{subsection.27.7}%
-\contentsline {subsection}{\numberline {27.8}Version 0.4.2.2 =\textgreater 0.4.2.3}{87}{subsection.27.8}%
-\contentsline {subsection}{\numberline {27.9}Version 0.4.2.1 =\textgreater 0.4.2.2}{87}{subsection.27.9}%
-\contentsline {subsection}{\numberline {27.10}Version 0.4.2.0 =\textgreater 0.4.2.1}{87}{subsection.27.10}%
-\contentsline {subsection}{\numberline {27.11}Version 0.4.1.0 =\textgreater 0.4.2.0}{87}{subsection.27.11}%
-\contentsline {subsection}{\numberline {27.12}Version 0.4.0.0 =\textgreater 0.4.1.0}{87}{subsection.27.12}%
-\contentsline {subsection}{\numberline {27.13}Version 0.3.3.0 =\textgreater 0.4.0.0}{88}{subsection.27.13}%
-\contentsline {subsection}{\numberline {27.14}Version 0.3.2.0 =\textgreater 0.3.3.0}{88}{subsection.27.14}%
-\contentsline {subsection}{\numberline {27.15}Version 0.3.1.1 =\textgreater 0.3.2.0}{88}{subsection.27.15}%
-\contentsline {subsection}{\numberline {27.16}Version 0.3.1.0 =\textgreater 0.3.1.1}{88}{subsection.27.16}%
-\contentsline {subsection}{\numberline {27.17}Version 0.3.0.0 =\textgreater 0.3.1.0}{89}{subsection.27.17}%
+\contentsline {subsection}{\numberline {27.1}Version 0.5.5.2 =\textgreater 0.5.5.3}{86}{subsection.27.1}%
+\contentsline {subsection}{\numberline {27.2}Version 0.5.5.1 =\textgreater 0.5.5.2}{86}{subsection.27.2}%
+\contentsline {subsection}{\numberline {27.3}Version 0.5.5.0 =\textgreater 0.5.5.1}{86}{subsection.27.3}%
+\contentsline {subsection}{\numberline {27.4}Version 0.5.0.0 =\textgreater 0.5.5.0}{86}{subsection.27.4}%
+\contentsline {subsection}{\numberline {27.5}Version 0.4.4.0 =\textgreater 0.5.0.0}{86}{subsection.27.5}%
+\contentsline {subsection}{\numberline {27.6}Version 0.4.3.1 =\textgreater 0.4.4.0}{87}{subsection.27.6}%
+\contentsline {subsection}{\numberline {27.7}Version 0.4.3.0 =\textgreater 0.4.3.1}{87}{subsection.27.7}%
+\contentsline {subsection}{\numberline {27.8}Version 0.4.2.3 =\textgreater 0.4.3.0}{87}{subsection.27.8}%
+\contentsline {subsection}{\numberline {27.9}Version 0.4.2.2 =\textgreater 0.4.2.3}{87}{subsection.27.9}%
+\contentsline {subsection}{\numberline {27.10}Version 0.4.2.1 =\textgreater 0.4.2.2}{87}{subsection.27.10}%
+\contentsline {subsection}{\numberline {27.11}Version 0.4.2.0 =\textgreater 0.4.2.1}{87}{subsection.27.11}%
+\contentsline {subsection}{\numberline {27.12}Version 0.4.1.0 =\textgreater 0.4.2.0}{87}{subsection.27.12}%
+\contentsline {subsection}{\numberline {27.13}Version 0.4.0.0 =\textgreater 0.4.1.0}{88}{subsection.27.13}%
+\contentsline {subsection}{\numberline {27.14}Version 0.3.3.0 =\textgreater 0.4.0.0}{88}{subsection.27.14}%
+\contentsline {subsection}{\numberline {27.15}Version 0.3.2.0 =\textgreater 0.3.3.0}{88}{subsection.27.15}%
+\contentsline {subsection}{\numberline {27.16}Version 0.3.1.1 =\textgreater 0.3.2.0}{89}{subsection.27.16}%
+\contentsline {subsection}{\numberline {27.17}Version 0.3.1.0 =\textgreater 0.3.1.1}{89}{subsection.27.17}%
+\contentsline {subsection}{\numberline {27.18}Version 0.3.0.0 =\textgreater 0.3.1.0}{89}{subsection.27.18}%

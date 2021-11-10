@@ -9,7 +9,6 @@
         /// </summary>
         bool IsCommunicating { get; }
 
-    
         /// <summary>
         /// Returns read data from board
         /// </summary>
@@ -18,7 +17,11 @@
         /// <summary>
         /// Returns read data from board
         /// </summary>
-        string GetRawFromBoard();
+        string GetRawFromBoard(string param);
+
+        void SendRawToBoard(string param);
+
+        void SendRawToBoard(byte[] param);
 
         /// <summary>
         /// Starts communication with the board for reading and sending
