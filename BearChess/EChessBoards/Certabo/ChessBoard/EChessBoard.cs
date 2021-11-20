@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
@@ -190,6 +191,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             // ignore
         }
 
+        public override void DimLeds(int level)
+        {
+            // ignore
+        }
+
         public override void FlashSync(bool flashSync)
         {
             _flashLeds = flashSync;
@@ -235,6 +241,153 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _calibrateStorage.SaveCalibrationData(calibrateData);
             IsCalibrated = true;
         }
+
+        private string GetPiecesFen(string[] dataArray)
+        {
+            var codes = new string[40];
+            var fenLine = string.Empty;
+            string[] unknownCodes;
+            if (_playWithWhite)
+            {
+                Array.Copy(dataArray, 0, codes, 0, 40);
+                fenLine = GetFenLine(codes, out unknownCodes);
+                if (unknownCodes.Length == 1)
+                {
+                    if (unKnowCodeCounter.ContainsKey(unknownCodes[0]))
+                    {
+                        unKnowCodeCounter[unknownCodes[0]]++;
+                    }
+                    else
+                    {
+                        unKnowCodeCounter[unknownCodes[0]] = 1;
+                    }
+                    var calibrationData = _calibrateStorage.GetCalibrationData();
+                    if (!calibrationData.WhiteQueenCodes.Contains("#"))
+                    {
+                        if (unKnowCodeCounter[unknownCodes[0]] > 10)
+                        {
+                            _boardCodesToChessPiece[unknownCodes[0]] = WhiteQueenFen;
+                            calibrationData.WhiteQueenCodes += "#" + unknownCodes[0];
+                            _calibrateStorage.SaveCalibrationData(calibrationData);
+                            unKnowCodeCounter.Clear();
+                            _logger?.LogDebug($"Add new white queen code: {unknownCodes[0]}");
+                        }
+                    }
+                }
+                Array.Copy(dataArray, 40, codes, 0, 40);
+                fenLine += GetFenLine(codes, out _);
+                Array.Copy(dataArray, 80, codes, 0, 40);
+                fenLine += GetFenLine(codes, out _);
+                Array.Copy(dataArray, 120, codes, 0, 40);
+                fenLine += GetFenLine(codes, out _);
+                Array.Copy(dataArray, 160, codes, 0, 40);
+                fenLine += GetFenLine(codes, out _);
+                Array.Copy(dataArray, 200, codes, 0, 40);
+                fenLine += GetFenLine(codes, out _);
+                Array.Copy(dataArray, 240, codes, 0, 40);
+                fenLine += GetFenLine(codes, out _);
+                Array.Copy(dataArray, 280, codes, 0, 40);
+                fenLine += GetFenLine(codes, out unknownCodes).Replace("/", string.Empty);
+                if (unknownCodes.Length == 1)
+                {
+                    if (unKnowCodeCounter.ContainsKey(unknownCodes[0]))
+                    {
+                        unKnowCodeCounter[unknownCodes[0]]++;
+                    }
+                    else
+                    {
+                        unKnowCodeCounter[unknownCodes[0]] = 1;
+                    }
+                    var calibrationData = _calibrateStorage.GetCalibrationData();
+                    if (!calibrationData.BlackQueenCodes.Contains("#"))
+                    {
+                        if (unKnowCodeCounter[unknownCodes[0]] > 10)
+                        {
+                            _boardCodesToChessPiece[unknownCodes[0]] = BlackQueenFen;
+                            calibrationData.BlackQueenCodes += "#" + unknownCodes[0];
+                            _calibrateStorage.SaveCalibrationData(calibrationData);
+                            unKnowCodeCounter.Clear();
+                            _logger?.LogDebug($"Add new black queen code: {unknownCodes[0]}");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                try
+                {
+                    Array.Copy(dataArray, 280, codes, 0, 40);
+                    fenLine = GetFenLine(codes, out unknownCodes);
+                    if (unknownCodes.Length == 1)
+                    {
+                        if (unKnowCodeCounter.ContainsKey(unknownCodes[0]))
+                        {
+                            unKnowCodeCounter[unknownCodes[0]]++;
+                        }
+                        else
+                        {
+                            unKnowCodeCounter[unknownCodes[0]] = 1;
+                        }
+                        var calibrationData = _calibrateStorage.GetCalibrationData();
+                        if (!calibrationData.WhiteQueenCodes.Contains("#"))
+                        {
+                            if (unKnowCodeCounter[unknownCodes[0]] > 10)
+                            {
+                                _boardCodesToChessPiece[unknownCodes[0]] = WhiteQueenFen;
+                                calibrationData.WhiteQueenCodes += "#" + unknownCodes[0];
+                                _calibrateStorage.SaveCalibrationData(calibrationData);
+                                unKnowCodeCounter.Clear();
+                                _logger?.LogDebug($"Add new white queen code: {unknownCodes[0]}");
+                            }
+                        }
+                    }
+                    Array.Copy(dataArray, 240, codes, 0, 40);
+                    fenLine += GetFenLine(codes, out _);
+                    Array.Copy(dataArray, 200, codes, 0, 40);
+                    fenLine += GetFenLine(codes, out _);
+                    Array.Copy(dataArray, 160, codes, 0, 40);
+                    fenLine += GetFenLine(codes, out _);
+                    Array.Copy(dataArray, 120, codes, 0, 40);
+                    fenLine += GetFenLine(codes, out _);
+                    Array.Copy(dataArray, 80, codes, 0, 40);
+                    fenLine += GetFenLine(codes, out _);
+                    Array.Copy(dataArray, 40, codes, 0, 40);
+                    fenLine += GetFenLine(codes, out _);
+                    Array.Copy(dataArray, 0, codes, 0, 40);
+                    fenLine += GetFenLine(codes, out unknownCodes).Replace("/", string.Empty);
+                    if (unknownCodes.Length == 1)
+                    {
+                        if (unKnowCodeCounter.ContainsKey(unknownCodes[0]))
+                        {
+                            unKnowCodeCounter[unknownCodes[0]]++;
+                        }
+                        else
+                        {
+                            unKnowCodeCounter[unknownCodes[0]] = 1;
+                        }
+                        var calibrationData = _calibrateStorage.GetCalibrationData();
+                        if (!calibrationData.BlackQueenCodes.Contains("#"))
+                        {
+                            if (unKnowCodeCounter[unknownCodes[0]] > 10)
+                            {
+                                _boardCodesToChessPiece[unknownCodes[0]] = BlackQueenFen;
+                                calibrationData.BlackQueenCodes += "#" + unknownCodes[0];
+                                _calibrateStorage.SaveCalibrationData(calibrationData);
+                                unKnowCodeCounter.Clear();
+                                _logger?.LogDebug($"Add new black queen code: {unknownCodes[0]}");
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogError($"B: GetPiecesFen: {ex.Message} ");
+                }
+            }
+
+            return fenLine.Contains(UnknownPieceCode) ? UnknownPieceCode : fenLine;
+        }
+
 
         public override DataFromBoard GetPiecesFen()
         {
@@ -282,6 +435,28 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 var codes = new string[40];
                 var fenLine = string.Empty;
                 string[] unknownCodes;
+                if (string.Join(" ", dataArray).Contains("0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"))
+                {
+                    bool playWithWhite = _playWithWhite;
+                    _playWithWhite = true;
+                    var piecesFen = GetPiecesFen(dataArray);
+                    if (FenCodes.BasePosition.StartsWith(piecesFen))
+                    {
+                     
+                        return new DataFromBoard(piecesFen.Contains(UnknownPieceCode) ? UnknownPieceCode : piecesFen,
+                                                 boardData.Repeated);
+                    }
+                    _playWithWhite = false;
+                    piecesFen = GetPiecesFen(dataArray);
+                    if (FenCodes.BasePosition.StartsWith(piecesFen))
+                    {
+                     
+                        return new DataFromBoard(piecesFen.Contains(UnknownPieceCode) ? UnknownPieceCode : piecesFen,
+                                                 boardData.Repeated);
+                    }
+
+                    _playWithWhite = playWithWhite;
+                }
                 if (_playWithWhite)
                 {
                     Array.Copy(dataArray, 0, codes, 0, 40);

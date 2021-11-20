@@ -176,7 +176,14 @@
                                 <Image Name="imageAdjustedForPlayer" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-
+                        <!--
+                        <MenuItem Name="menuItemAdjustedForEBoard" Header="Adjusted for the electronic board"
+                                  Click="MenuItemAdjustedForEBoard_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageAdjustedForEBoard" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        -->
                     </MenuItem>
                     <MenuItem Name="menuItemSettingsMoves" Header="Notation/Moves">
                         <MenuItem.Icon>
@@ -250,6 +257,11 @@
                             <Image Source="Assets/Icons/user_silhouette.png" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Name="menuItemSounds" Header="Sounds..." Click="MenuItemSounds_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/sound.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Electronic Boards">
                     <MenuItem Name="menuItemCertabo" Header="Certabo">
@@ -304,11 +316,6 @@
                               Click="MenuItemConnectOnStartup_OnClick">
                         <MenuItem.Icon>
                             <Image Name="imageConnectOnStartupTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="Black pieces in front" Name="menuItemFlipBoard" Click="MenuItemFlipBoard_OnClick">
-                        <MenuItem.Icon>
-                            <Image Name="imageFlipBoardTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Start new game on base position" Name="menuItemRunGameOnBase"

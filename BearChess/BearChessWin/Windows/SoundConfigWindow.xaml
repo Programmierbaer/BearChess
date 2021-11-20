@@ -1,0 +1,125 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.Windows.SoundConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" SizeToContent="Height" WindowStartupLocation="CenterOwner"
+        Title="Sound Configuration" Height="360" Width="450">
+    <Grid>
+        <StackPanel>
+            <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <CheckBox Grid.Column="0" Grid.Row="0" Margin="5" Name="checkBoxSoundMove">Engine move</CheckBox>
+                    <Button  Grid.Column="2" Grid.Row="0" Name="buttonMovePlay" Margin="5" 
+                             Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                             Click="ButtonMovePlay_OnClick" ToolTip="Play">
+                        <Image Source="../Assets/Icons/sound.png" />
+                    </Button>
+                    <Label Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Right">Sound file:</Label>
+                    <Label Name="labelSoundMove" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" />
+                    <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+                    <Button  Name="buttonMoveFile" Margin="5,5,5,5" DockPanel.Dock="Left"
+                            Width="32" Height="32" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                            Click="ButtonMoveFile_OnClick" ToolTip="Select a sound file">
+                        <Image Source="../Assets/Icons/file_extension_wav.png" />
+                    </Button>
+                    <Button Name="buttonClearMoveFile" Margin="5" DockPanel.Dock="Left"
+                            Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                            Click="ButtonClearMoveFile_OnClick" ToolTip="Clear sound file">
+                        <Image Source="../Assets/Icons/delete.png" />
+                    </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <CheckBox Grid.Column="0" Grid.Row="0" Margin="5" Name="checkBoxSoundCheck">Engine check</CheckBox>
+                    <Button  Grid.Column="2" Grid.Row="0" Name="buttonCheckPlay" Margin="5" 
+                             Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                             Click="ButtonCheckPlay_OnClick" ToolTip="Play">
+                        <Image Source="../Assets/Icons/sound.png" />
+                    </Button>
+                    <Label Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Right">Sound file:</Label>
+                    <Label Name="labelSoundCheck" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" />
+                    <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+                        <Button  Name="buttonCheckFile" Margin="5,5,5,5" DockPanel.Dock="Left"
+                                 Width="32" Height="32" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                                 Click="ButtonCheckFile_OnClick" ToolTip="Select a sound file">
+                            <Image Source="../Assets/Icons/file_extension_wav.png" />
+                        </Button>
+                        <Button Name="buttonClearCheckFile" Margin="5" DockPanel.Dock="Left"
+                                Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                                Click="ButtonClearCheckFile_OnClick" ToolTip="Clear sound file">
+                            <Image Source="../Assets/Icons/delete.png" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <CheckBox Grid.Column="0" Grid.Row="0" Margin="5" Name="checkBoxSoundCheckMate">Engine mate</CheckBox>
+                    <Button  Grid.Column="2" Grid.Row="0" Name="buttonCheckMatePlay" Margin="5" 
+                             Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                             Click="ButtonCheckMatePlay_OnClick" ToolTip="Play">
+                        <Image Source="../Assets/Icons/sound.png" />
+                    </Button>
+                    <Label Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Right">Sound file:</Label>
+                    <Label Name="labelSoundCheckMate" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" />
+                    <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
+                        <Button  Name="buttonCheckMateFile" Margin="5" DockPanel.Dock="Left"
+                                 Width="32" Height="32" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                                 Click="ButtonCheckMateFile_OnClick" ToolTip="Select a sound file">
+                            <Image Source="../Assets/Icons/file_extension_wav.png" />
+                        </Button>
+
+                        <Button Name="buttonClearCheckMateFile" Margin="5" DockPanel.Dock="Left"
+                                Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                                Click="ButtonClearCheckMateFile_OnClick" ToolTip="Clear sound file">
+                            <Image Source="../Assets/Icons/delete.png" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <DockPanel Margin="5" DockPanel.Dock="Bottom" LastChildFill="False">
+                <Button Name="buttonOk" Margin="5" DockPanel.Dock="Left" Width="30" Height="30"
+                        Background="Transparent" BorderBrush="Transparent" IsDefault="True" Click="ButtonOk_OnClick">
+                    <Image Source="../Assets/Icons/accept_button.png" />
+                </Button>
+                <Button Name="buttonCancel" Margin="5" DockPanel.Dock="Right" Width="30" Height="30"
+                        Background="Transparent" BorderBrush="Transparent" IsCancel="True">
+                    <Image Source="../Assets/Icons/cancel.png" />
+                </Button>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</Window>

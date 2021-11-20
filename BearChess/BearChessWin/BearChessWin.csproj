@@ -264,6 +264,9 @@
     <Compile Include="Windows\SelectInstalledEngineWindow.xaml.cs">
       <DependentUpon>SelectInstalledEngineWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\SoundConfigWindow.xaml.cs">
+      <DependentUpon>SoundConfigWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SplashWindow.xaml.cs">
       <DependentUpon>SplashWindow.xaml</DependentUpon>
     </Compile>
@@ -498,6 +501,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\SelectInstalledEngineWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SoundConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1065,6 +1072,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\eye_close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\file_extension_wav.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\sound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\sound_mute.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

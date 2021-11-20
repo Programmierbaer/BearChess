@@ -236,6 +236,7 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	    \caption{Player}
  	   \label{fig:Player}
 	\end{figure}	
+	\item  \includegraphics[scale=0.5]{sound.png}  \textbf{Sounds} opens a dialog where you can configure some tones that sound when the engine makes a move.
 \end{itemize}
 
 \subsection{Electronic Boards}
@@ -249,7 +250,6 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
-	\item \textbf{Black pieces in front} assumes that you have placed the black chessmen in front of you.
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
 	\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
 \end{itemize}
@@ -683,6 +683,32 @@ BearChess offers two different clocks: small and big
 	\label{fig:BigClocks}
 \end{figure}
 
+\section{Configure sounds}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Sounds2.png}
+	\caption{Sounds }
+	\label{fig:Sounds2}
+\end{figure}
+Opens a window where you can configure some sounds.
+
+  \begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Sounds1.png}
+	\caption{Sound configuration}
+	\label{fig:Sounds1}
+\end{figure}	
+
+You can configure here if BearChess should play a sound when the engine makes a move, gives check or mates. Optionally you can configure an individual sound file. Only wave files are supported.
+
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{sound.png} Play the sound
+	\item \includegraphics[scale=0.5]{file_extension_wav.png} Opens a files selection dialog for an individuel sound file.
+	\item \includegraphics[scale=0.5]{delete.png} Removes the sound file selection.
+\end{itemize}
+
+
 \section{Show captured pieces}
 \begin{figure}[H]
 	\centering
@@ -721,7 +747,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports two electronic chessboards: Certabo boards and Millennium boards via the ChessLink module. Both boards communicates via an USB port as Serial COM port or via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.
+BearChess supports two electronic chessboards: Certabo boards and Millennium boards via the ChessLink module. Both boards communicates via an USB port as serial COM port or via bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.
 
 \subsection{Configure Certabo boards} \label{ConfigureCertabo}
 \begin{figure}[H]
@@ -731,7 +757,8 @@ BearChess supports two electronic chessboards: Certabo boards and Millennium boa
 	\label{fig:Certabo1}
 \end{figure}
 
-Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports Bluetooth and you own the bluetooth module from Certabo, you can also connect to the Certabo board via Bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows. 
+Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the bluetooth module from Certabo, you can also connect to the Certabo board via bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows.\\
+The figure recognition assumes that the board is aligned so that the USB port is on the bottom right.
 
 \begin{figure}[H]
 	\centering
@@ -845,7 +872,9 @@ In the lower right corner a new button appears, which allows you to easily conne
 \end{figure}
 
 For your Millennium ChessLink you may need to configure the COM port used. You can also change how the LEDs should light up.\\
-If your PC supports Bluetooth, you can also connect to the ChessLink module via Bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows. 
+If your PC supports Bluetooth, you can also connect to the ChessLink module via Bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows. \\
+The figure recognition assumes that the board is aligned so that the USB port is on the bottom right.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{MillenniumChessLink9.png}
@@ -930,6 +959,8 @@ In the lower right corner a new button appears, which allows you to easily conne
 	\label{fig:MillenniumChessLink8}
 \end{figure}
 
+\subsection{Switch side}
+BearChess automatically recognizes whether you are playing with the White or Black pieces, depending on how you set up the pieces in the base position.
 
 \section{Play a game}
 
@@ -1673,11 +1704,20 @@ All your configration settings for BearChess is not stored in the directory from
 \subsection{MessChess engines}
 These engines simluate a chess computer the configuration is limited to the capabilities of them. Not everything that is possible with normal engines can be done here. 
 
+\subsection{Certabo: board orientation}
+The figure recognition assumes that the board is aligned so that the USB port is on the bottom right.
+
 \subsection{Certabo: Calibration}
 For the first time, the engine assumes that all chessmen are on their initial position and the extra queens on d3 (white queen) and d6 (black queen).
 
 \subsection{Certabo: Pawn conversion to a queen}
 If you have performed the calibration without extra queens and are performing a pawn conversion with a extra queen on your board for the first time, the program needs a few seconds to identify the new piece. Please wait until the LEDs are off. The new piece code is stored. There is no delay next time.
+
+\subsection{Millennium ChessLink: board orientation}
+Figure recognition assumes that the board is oriented so that the company sign faces the front.
+
+\subsection{Electronic chessboard and engine duels}
+When two engines play against each other, all moves are ignored by the electronic chess board.
 
 \section{Trouble shooting}
 
@@ -1696,6 +1736,7 @@ If you have performed the calibration without extra queens and are performing a 
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time.
 	\item If you want to play an engine match with the same engine for black and white you have to install the engine twice with a different name.
+	\item Sometimes showing incorrect material balance for "All".
 \end{itemize}
 
 \section{Next Steps}
@@ -1709,6 +1750,13 @@ If you have performed the calibration without extra queens and are performing a 
 \pagebreak
 
 \section{Changelog}
+
+\subsection{Version 0.5.5.3 =\textgreater 0.5.6.0}
+\begin{itemize}
+	\item Automatic detection of whether the game is played with white or black pieces.
+	Therefore removed the unnecessary option "Black pieces in front".
+	\item Sounds
+\end{itemize}
 
 \subsection{Version 0.5.5.2 =\textgreater 0.5.5.3}
 \begin{itemize}

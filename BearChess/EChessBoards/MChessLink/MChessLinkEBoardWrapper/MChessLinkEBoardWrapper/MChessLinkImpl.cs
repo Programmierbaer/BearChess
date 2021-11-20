@@ -46,5 +46,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         {
             _board?.DimLeds(dimLeds);
         }
+
+        public override void DimLeds(int level)
+        {
+            _board?.DimLeds(level);
+        }
     }
 }

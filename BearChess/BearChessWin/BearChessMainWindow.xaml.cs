@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -164,6 +165,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _bestLine = string.Empty;
         private readonly Database _database;
         private bool _adjustedForThePlayer;
+        private bool _adjustedForTheEBoard;
         private ClockTime _whiteClockTime;
         private ClockTime _blackClockTime;
         private bool _waitForPosition;
@@ -184,6 +186,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DatabaseGame _databaseGame;
         private List<string> _analyseGameFenList = new List<string>();
         private static object _lockObject = new object();
+        private  bool _soundOnCheck;
+        private  bool _soundOnMove;
+        private bool _soundOnCheckMate;
+        private  string _soundOnCheckFile;
+        private  string _soundOnMoveFile;
+        private  string _soundOnCheckMateFile;
+
 
         public BearChessMainWindow()
         {
@@ -351,7 +360,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageUciLog.Visibility = _showUciLog ? Visibility.Visible : Visibility.Hidden;
 
             _flipBoard = bool.Parse(_configuration.GetConfigValue("flipboard", "false"));
-            imageFlipBoardTick.Visibility = _flipBoard ? Visibility.Visible : Visibility.Hidden;
 
             _runLastGame = bool.Parse(_configuration.GetConfigValue("runlastgame", "false"));
             imageRunLastGame.Visibility = _runLastGame ? Visibility.Visible : Visibility.Hidden;
@@ -370,6 +378,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             _adjustedForThePlayer = bool.Parse(_configuration.GetConfigValue("adjustedfortheplayer", "false"));
             imageAdjustedForPlayer.Visibility = _adjustedForThePlayer ? Visibility.Visible : Visibility.Hidden;
+
+            _adjustedForTheEBoard = bool.Parse(_configuration.GetConfigValue("adjustedfortheeboard", "false"));
+            //imageAdjustedForEBoard.Visibility = _adjustedForTheEBoard ? Visibility.Visible : Visibility.Hidden;
 
             _showNodes = bool.Parse(_configuration.GetConfigValue("shownodes", "true"));
             imageEngineShowNodes.Visibility = _showNodes ? Visibility.Visible : Visibility.Hidden;
@@ -404,7 +415,26 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             chessBoardUcGraphics.ShowControlButtons(false);
             _playerName = _configuration.GetConfigValue("player", Environment.UserName);
-         
+
+            _soundOnCheck = bool.Parse(_configuration.GetConfigValue("soundOnCheck", "false"));
+            _soundOnCheckMate = bool.Parse(_configuration.GetConfigValue("soundOnCheckMate", "false"));
+            _soundOnMove = bool.Parse(_configuration.GetConfigValue("soundOnMove", "false"));
+            _soundOnCheckFile = _configuration.GetConfigValue("soundOnCheckFile", string.Empty);
+            _soundOnCheckMateFile = _configuration.GetConfigValue("soundOnCheckMateFile", string.Empty);
+            _soundOnMoveFile = _configuration.GetConfigValue("soundOnMoveFile", string.Empty);
+            if (!File.Exists(_soundOnMoveFile))
+            {
+                _soundOnMoveFile = string.Empty;
+            }
+            if (!File.Exists(_soundOnCheckFile))
+            {
+                _soundOnCheckFile = string.Empty;
+            }
+            if (!File.Exists(_soundOnCheckMateFile))
+            {
+                _soundOnCheckMateFile = string.Empty;
+            }
+
         }
 
         private void ChessBoardUcGraphics_RotateBoardEvent(object sender, EventArgs e)
@@ -1690,6 +1720,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void StartANewGame(bool runEngine = true)
         {
+            _currentAction = CurrentAction.InRunningGame;
             _allowTakeMoveBack = _currentGame.TimeControl.AllowTakeBack;
             _currentWhitePlayer = _currentGame.PlayerWhite;
             _currentBlackPlayer = _currentGame.PlayerBlack;
@@ -1718,7 +1749,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _moveListWindow.Show();
             }
             _moveListWindow?.Clear();
-            _currentAction = CurrentAction.InRunningGame;
             if (_currentGame.StartFromBasePosition)
             {
                 _gameStartFenPosition = string.Empty;
@@ -2225,6 +2255,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetConfigValue("adjustedfortheplayer", _adjustedForThePlayer.ToString());
         }
 
+        private void MenuItemAdjustedForEBoard_OnClick(object sender, RoutedEventArgs e)
+        {
+            _adjustedForTheEBoard = !_adjustedForTheEBoard;
+            //imageAdjustedForEBoard.Visibility = _adjustedForTheEBoard ? Visibility.Visible : Visibility.Hidden;
+            _configuration.SetConfigValue("adjustedfortheeboard", _adjustedForTheEBoard.ToString());
+        }
+
         private void ButtonConnect_OnClick(object sender, RoutedEventArgs e)
         {
             if (_lastEBoard.Equals("Certabo", StringComparison.OrdinalIgnoreCase))
@@ -2663,6 +2700,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             string isInCheck = string.Empty;
             if (_chessBoard.MoveIsValid(fromField, toField))
             {
+              
+                //                           SystemSounds.Beep.Play();
                 if (_timeControl.TournamentMode)
                 {
                     Dispatcher?.Invoke(() =>
@@ -2696,6 +2735,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 isInCheck = _chessBoard.IsInCheck(_chessBoard.CurrentColor) ? "#" : string.Empty;
                 if (isInCheck.Equals("#"))
                 {
+                  
                     var chessBoardEnemyMoveList = _chessBoard.CurrentMoveList;
                     foreach (var move in chessBoardEnemyMoveList)
                     {
@@ -2706,11 +2746,53 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (!chessBoard.IsInCheck(_chessBoard.CurrentColor))
                         {
                             isInCheck = "+";
+                            if (_soundOnCheck)
+                            {
+                                try
+                                {
+                                    if (string.IsNullOrWhiteSpace(_soundOnCheckFile))
+                                    {
+                                        SystemSounds.Asterisk.Play();
+                                    }
+                                    else
+                                    {
+                                        var play = new SoundPlayer(_soundOnCheckFile);
+                                        play.Play();
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                 //
+                                }
+
+                            }
                             break;
                         }
                     }
                 }
+                else
+                {
+                    if (_soundOnMove)
+                    {
+                        try
+                        {
+                            if (string.IsNullOrWhiteSpace(_soundOnMoveFile))
+                            {
+                                SystemSounds.Beep.Play();
+                            }
+                            else
+                            {
+                                var play = new SoundPlayer(_soundOnMoveFile);
+                                play.Play();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _fileLogger?.LogError("Read installed engines", ex);
+                        }
+                    }
 
+                }
                 engineMove.CheckOrMateSign = isInCheck;
             }
             else
@@ -2720,6 +2802,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (isInCheck.Equals("#"))
             {
+                if (_soundOnCheckMate)
+                {
+                    try
+                    {
+                        if (string.IsNullOrWhiteSpace(_soundOnCheckMateFile))
+                        {
+                            SystemSounds.Hand.Play();
+                        }
+                        else
+                        {
+                            var play = new SoundPlayer(_soundOnCheckMateFile);
+                            play.Play();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _fileLogger?.LogError("Read installed engines", ex);
+                    }
+                }
                 Dispatcher?.Invoke(() =>
                 {
                     _engineWindow?.Stop();
@@ -3287,7 +3388,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _flipBoard = !_flipBoard;
             _eChessBoard?.PlayWithWhite(!_flipBoard);
-            imageFlipBoardTick.Visibility = _flipBoard ? Visibility.Visible : Visibility.Hidden;
             _configuration.SetConfigValue("flipboard", _flipBoard.ToString());
         }
 
@@ -3534,10 +3634,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             var allowTakeMoveBack = _allowTakeMoveBack;
             _allowTakeMoveBack = false;
+         
             if (_chessBoard.FullMoveNumber>1)
             {
                 Dispatcher?.Invoke(() =>
                 {
+                   
+
                     _engineWindow?.Stop();
                     _eChessBoard?.Stop();
                     _eChessBoard?.SetAllLedsOff();
@@ -3706,6 +3809,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void EChessBoardMoveEvent(object sender, string move)
         {
+            if (_pureEngineMatch)
+            {
+                return;
+            }
             _fileLogger?.LogDebug($"Move from e-chessboard: {move}");
             if (_currentAction != CurrentAction.InSetupMode && !_pureEngineMatch && _currentAction != CurrentAction.InGameAnalyzeMode)
             {
@@ -3792,6 +3899,26 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             chessBoardUcGraphics.SetEBoardMode(true);
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
+            if (_adjustedForTheEBoard)
+            {
+                Dispatcher?.Invoke(() =>
+                {
+                    if (_eChessBoard.PlayingWithWhite)
+                    {
+                        if (chessBoardUcGraphics.WhiteOnTop)
+                        {
+                            ChessBoardUcGraphics_RotateBoardEvent(this, null);
+                        }
+                    }
+                    else
+                    {
+                        if (!chessBoardUcGraphics.WhiteOnTop)
+                        {
+                            ChessBoardUcGraphics_RotateBoardEvent(this, null);
+                        }
+                    }
+                });
+            }
         }
 
         private void MenuItemConnectMChessLink_OnClick(object sender, RoutedEventArgs e)
@@ -3862,6 +3989,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void EChessBoardFenEvent(string fenPosition)
         {
+            if (_pureEngineMatch)
+            {
+                return;
+            }
             _fileLogger?.LogDebug($"Handle fen position from e-chessboard: {fenPosition}");
             if (_positionSetupWindow != null)
             {
@@ -3977,6 +4108,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void EChessBoardMoveEvent(string move)
         {
+            if (_pureEngineMatch)
+            {
+                return;
+            }
             string isInCheck = string.Empty;
 
             _fileLogger?.LogDebug($"Handle move from e-chessboard: {move}");
@@ -5103,5 +5238,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         #endregion
 
+
+        private void MenuItemSounds_OnClick(object sender, RoutedEventArgs e)
+        {
+
+            var soundWindow = new SoundConfigWindow(_configuration) { Owner = this };
+            var showDialog = soundWindow.ShowDialog();
+            if (showDialog.HasValue && showDialog.Value)
+            {
+                _soundOnCheck = bool.Parse(_configuration.GetConfigValue("soundOnCheck", "false"));
+                _soundOnCheckMate = bool.Parse(_configuration.GetConfigValue("soundOnCheckMate", "false"));
+                _soundOnMove = bool.Parse(_configuration.GetConfigValue("soundOnMove", "false"));
+                _soundOnCheckFile = _configuration.GetConfigValue("soundOnCheckFile", string.Empty);
+                _soundOnCheckMateFile = _configuration.GetConfigValue("soundOnCheckMateFile", string.Empty);
+                _soundOnMoveFile = _configuration.GetConfigValue("soundOnMoveFile", string.Empty);
+                if (!File.Exists(_soundOnMoveFile))
+                {
+                    _soundOnMoveFile = string.Empty;
+                }
+                if (!File.Exists(_soundOnCheckFile))
+                {
+                    _soundOnCheckFile = string.Empty;
+                }
+                if (!File.Exists(_soundOnCheckMateFile))
+                {
+                    _soundOnCheckMateFile = string.Empty;
+                }
+
+            }
+        }
     }
 }

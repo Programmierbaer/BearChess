@@ -177,6 +177,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.PlayWithWhite(withWhite);
         }
 
+        public bool PlayingWithWhite => _eChessBoard.PlayingWithWhite;
+
         /// <inheritdoc />
         public string GetBestMove()
         {
@@ -206,6 +208,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void DimLeds(bool dimLeds)
         {
             _eChessBoard.DimLeds(dimLeds);
+        }
+
+
+        public void DimLeds(int level)
+        {
+            _eChessBoard.DimLeds(level);
         }
 
         /// <inheritdoc />

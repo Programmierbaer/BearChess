@@ -39,6 +39,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         void PlayWithBlack();
 
+        bool PlayingWithWhite { get; }
+
         /// <summary>
         /// Performs a new calibration of the board. All pieces must be in their place.
         /// </summary>
@@ -89,6 +91,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         string UnknownPieceCode { get; }
 
         void DimLeds(bool dimLeds);
+        void DimLeds(int  level);
         void FlashSync(bool flashSync);
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
         void SendCommand(string anyCommand);

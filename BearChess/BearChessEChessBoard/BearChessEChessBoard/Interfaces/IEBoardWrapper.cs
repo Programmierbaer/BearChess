@@ -95,6 +95,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         void PlayWithWhite(bool withWhite);
 
+        bool PlayingWithWhite { get; }
+
         /// <summary>
         /// Move made on board by user
         /// </summary>
@@ -134,6 +136,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         bool IsOnBasePosition();
 
         void DimLeds(bool dimLeds);
+
+        void DimLeds(int level);
 
         void FlashInSync(bool flashSync);
 

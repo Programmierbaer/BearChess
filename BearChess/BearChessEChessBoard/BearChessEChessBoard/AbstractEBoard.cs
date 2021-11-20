@@ -51,6 +51,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract void DimLeds(bool dimLeds);
 
+        public abstract void DimLeds(int level);
+
         public abstract void FlashSync(bool flashSync);
 
         public abstract void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
@@ -68,6 +70,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             _playWithWhite = false;
         }
+
+        public bool PlayingWithWhite => _playWithWhite;
 
         public void NewGame()
         {

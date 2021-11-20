@@ -1,4 +1,6 @@
-﻿using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Linq;
+using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
@@ -40,6 +42,20 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             "", "a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8"
         };
 
+        private readonly string[] _ledUpperLeftToFieldInvert =
+        {
+
+            "", "a8", "a7", "a6", "a5", "a4", "a3", "a2", "a1",
+            "", "b8", "b7", "b6", "b5", "b4", "b3", "b2", "b1",
+            "", "c8", "c7", "c6", "c5", "c4", "c3", "c2", "c1",
+            "", "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1",
+            "", "e8", "e7", "e6", "e5", "e4", "e3", "e2", "e1",
+            "", "f8", "f7", "f6", "f5", "f4", "f3", "f2", "f1",
+            "", "g8", "g7", "g6", "g5", "g4", "g3", "g2", "g1",
+            "", "h8", "h7", "h6", "h5", "h4", "h3", "h2", "h1",
+            "", "", "", "", "", "", "", "", ""
+        };
+
         private readonly string[] _ledUpperRightToField =
         {
             "", "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8",
@@ -51,6 +67,19 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             "", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8",
             "", "a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
             "", "", "", "", "", "", "", "", ""
+        };
+
+        private readonly string[] _ledUpperRightToFieldInvert =
+        {
+            "", "", "", "", "", "", "", "", "",
+            "", "a8", "a7", "a6", "a5", "a4", "a3", "a2", "a1",
+            "", "b8", "b7", "b6", "b5", "b4", "b3", "b2", "b1",
+            "", "c8", "c7", "c6", "c5", "c4", "c3", "c2", "c1",
+            "", "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1",
+            "", "e8", "e7", "e6", "e5", "e4", "e3", "e2", "e1",
+            "", "f8", "f7", "f6", "f5", "f4", "f3", "f2", "f1",
+            "", "g8", "g7", "g6", "g5", "g4", "g3", "g2", "g1",
+            "", "h8", "h7", "h6", "h5", "h4", "h3", "h2", "h1",
         };
 
         private readonly string[] _ledLowerRightToField =
@@ -66,6 +95,19 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             "", "", "", "", "", "", "", "", ""
         };
 
+        private readonly string[] _ledLowerRightToFieldInvert =
+        {
+            "", "", "", "", "", "", "", "", "",
+            "a8", "a7", "a6", "a5", "a4", "a3", "a2", "a1", "",
+            "b8", "b7", "b6", "b5", "b4", "b3", "b2", "b1", "",
+            "c8", "c7", "c6", "c5", "c4", "c3", "c2", "c1", "",
+            "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1", "",
+            "e8", "e7", "e6", "e5", "e4", "e3", "e2", "e1", "",
+            "f8", "f7", "f6", "f5", "f4", "f3", "f2", "f1", "",
+            "g8", "g7", "g6", "g5", "g4", "g3", "g2", "g1", "",
+            "h8", "h7", "h6", "h5", "h4", "h3", "h2", "h1", ""
+        };
+
         private readonly string[] _ledLowerLeftToField =
         {
             "", "", "", "", "", "", "", "", "",
@@ -78,6 +120,19 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "",
             "a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", "",
             "a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8", ""
+        };
+
+        private readonly string[] _ledLowerLeftToFieldInvert =
+        {
+            "a8", "a7", "a6", "a5", "a4", "a3", "a2", "a1", "",
+            "b8", "b7", "b6", "b5", "b4", "b3", "b2", "b1", "",
+            "c8", "c7", "c6", "c5", "c4", "c3", "c2", "c1", "",
+            "d8", "d7", "d6", "d5", "d4", "d3", "d2", "d1", "",
+            "e8", "e7", "e6", "e5", "e4", "e3", "e2", "e1", "",
+            "f8", "f7", "f6", "f5", "f4", "f3", "f2", "f1", "",
+            "g8", "g7", "g6", "g5", "g4", "g3", "g2", "g1", "",
+            "h8", "h7", "h6", "h5", "h4", "h3", "h2", "h1", "",
+            "", "", "", "", "", "", "", "", ""
         };
 
 
@@ -248,6 +303,15 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
         }
 
+        public override void DimLeds(int level)
+        {
+            lock (_locker)
+            {
+                string levelCode = level>14  ? "14" : level.ToString("00");
+                _serialCommunication?.Send($"W04{levelCode}");
+            }
+        }
+
         public override void FlashSync(bool flashSync)
         {
             _flashSync = flashSync;
@@ -282,10 +346,32 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             var dataFromBoard = _serialCommunication.GetFromBoard();
             if (dataFromBoard.FromBoard.StartsWith("s") && dataFromBoard.FromBoard.Length == 67)
             {
-                for (int i = 57; i > 0; i -= 8)
+                if (dataFromBoard.FromBoard.StartsWith(
+                    "srnbqkbnrpppppppp................................PPPPPPPPRNBQKBNR"))
                 {
-                    var substring = dataFromBoard.FromBoard.Substring(i, 8);
-                    result += GetFenLine(substring);
+                    _playWithWhite = false;
+                }
+
+                if (dataFromBoard.FromBoard.StartsWith(
+                    "sRNBKQBNRPPPPPPPP................................pppppppprnbkqbnr"))
+                {
+                    _playWithWhite = true;
+                }
+                if (_playWithWhite)
+                {
+                    for (int i = 57; i > 0; i -= 8)
+                    {
+                        var substring = dataFromBoard.FromBoard.Substring(i, 8);
+                        result += GetFenLine(substring);
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i < 58; i += 8)
+                    {
+                        var substring = dataFromBoard.FromBoard.Substring(i, 8);
+                        result += GetFenLine(string.Concat(substring.Reverse()));
+                    }
                 }
             }
 
@@ -344,33 +430,70 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 var code = "00";
                 for (var j = 0; j < fieldNames.Length; j++)
                 {
-                    if ( _upperRight && _ledUpperRightToField[i].Contains(fieldNames[j].ToLower()))
+                    if (_playWithWhite)
                     {
-                        code = j == 0 ? "CC" : toCode;
+                        if (_upperRight && _ledUpperRightToField[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = j == 0 ? "CC" : toCode;
 
-                        break;
+                            break;
+                        }
+
+
+                        if (_upperLeft && _ledUpperLeftToField[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = j == 0 ? "CC" : toCode;
+
+                            break;
+                        }
+
+                        if (_lowerRight && _ledLowerRightToField[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = j == 0 ? "CC" : toCode;
+
+                            break;
+                        }
+
+                        if (_lowerLeft && _ledLowerLeftToField[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = j == 0 ? "CC" : toCode;
+
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (_upperRight && _ledUpperRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = j == 0 ? "CC" : toCode;
+
+                            break;
+                        }
+
+
+                        if (_upperLeft && _ledUpperLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = j == 0 ? "CC" : toCode;
+
+                            break;
+                        }
+
+                        if (_lowerRight && _ledLowerRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = j == 0 ? "CC" : toCode;
+
+                            break;
+                        }
+
+                        if (_lowerLeft && _ledLowerLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = j == 0 ? "CC" : toCode;
+
+                            break;
+                        }
                     }
 
-                    if (_upperLeft && _ledUpperLeftToField[i].Contains(fieldNames[j].ToLower()))
-                    {
-                        code = j == 0 ? "CC" : toCode;
 
-                        break;
-                    }
-
-                    if (_lowerRight && _ledLowerRightToField[i].Contains(fieldNames[j].ToLower()))
-                    {
-                        code = j == 0 ? "CC" : toCode;
-
-                        break;
-                    }
-
-                    if (_lowerLeft &&  _ledLowerLeftToField[i].Contains(fieldNames[j].ToLower()))
-                    {
-                        code = j == 0 ? "CC" : toCode;
-
-                        break;
-                    }
                 }
 
                 codes += code;

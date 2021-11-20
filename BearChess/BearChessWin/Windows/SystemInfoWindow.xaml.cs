@@ -25,6 +25,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonPath_OnClick(object sender, RoutedEventArgs e)
         {
             Process.Start(_configuration.FolderPath);
+            DialogResult = true;
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)

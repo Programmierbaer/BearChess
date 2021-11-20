@@ -12,8 +12,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     {
         public string PortName { get; set; }
         public bool DimLeds { get; set; }
+
+        public int DimLevel { get; set; }
         public bool FlashInSync { get; set; }
         public bool UseBluetooth { get; set; }
+
+        public EChessBoardConfiguration()
+        {
+            DimLevel = -1;
+        }
 
         public static EChessBoardConfiguration Load(string fileName)
         {
@@ -28,8 +35,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     textReader.Close();
                     configuration.PortName = savedConfig.PortName;
                     configuration.DimLeds = savedConfig.DimLeds;
+                    configuration.DimLevel = savedConfig.DimLevel;
                     configuration.FlashInSync = savedConfig.FlashInSync;
                     configuration.UseBluetooth = savedConfig.UseBluetooth;
+                    if (configuration.DimLevel < 0)
+                    {
+                        configuration.DimLevel = configuration.DimLeds ? 0 : 14;
+                    }
                 }
                 else
                 {

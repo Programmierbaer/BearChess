@@ -47,5 +47,10 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
         {
             // Ignore
         }
+
+        public override void DimLeds(int _)
+        {
+            // Ignore
+        }
     }
 }
