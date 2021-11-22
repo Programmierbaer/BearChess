@@ -518,10 +518,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         private void OnFenEvent(string fenPosition, string changedFigure)
         {
             string c = changedFigure.ToLower().Equals(changedFigure) ? "w" : "b";
-            if (_lastChangedFigure == changedFigure)
+            if (_inReplayMode)
             {
-                c = c == "w" ? "b" : "w";
+                if (_lastChangedFigure == changedFigure)
+                {
+                    c = c == "w" ? "b" : "w";
+                }
             }
+
             _lastChangedFigure = changedFigure;
             _lastFenColor = c;
             _fileLogger?.LogDebug($"C: FenEvent from board: {fenPosition} {changedFigure}");

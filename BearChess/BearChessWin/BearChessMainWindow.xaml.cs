@@ -2295,7 +2295,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MenuItemWindowsArrange_OnClick(object sender, RoutedEventArgs e)
         {
             Top = SystemParameters.FullPrimaryScreenHeight / 2 - Height / 2 + 20;
-            Left = (SystemParameters.FullPrimaryScreenWidth / 2 - Width / 2) + 2;
+            if (Top < 150)
+            {
+                Top = 150;
+            }
+            Left = SystemParameters.FullPrimaryScreenWidth / 2 - Width / 2 + 2;
             if (_chessClocksWindowWhite != null)
             {
                 _chessClocksWindowWhite.Top = Top - _chessClocksWindowWhite.Height;

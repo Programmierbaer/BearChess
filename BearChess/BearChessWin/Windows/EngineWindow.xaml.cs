@@ -528,20 +528,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _fileLogger?.LogInfo("Send Stop");
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
-                if (engine.Value.Color == Fields.COLOR_EMPTY)
-                {
-                    continue;
-                }
                 engine.Value.UciEngine.Stop();
                 _loadedEnginesControls[engine.Key].StopInfo();
             }
             _fileLogger?.LogInfo("Send IsReady");
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
-                if (engine.Value.Color == Fields.COLOR_EMPTY)
-                {
-                    continue;
-                }
+               
                 engine.Value.UciEngine.IsReady();
             }
             _lastCommand = string.Empty;
