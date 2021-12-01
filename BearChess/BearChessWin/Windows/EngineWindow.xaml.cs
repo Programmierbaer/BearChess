@@ -478,12 +478,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastCommand = string.Empty;
         }
 
-        private void MakeMoveForCoaches()
+        private void MakeMoveForCoaches(string fenPosition)
         {
-            _fileLogger?.LogInfo($"Send make move coaches");
+            _fileLogger?.LogInfo($"Send fen position for coaches");
             foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {
-                engine.Value.UciEngine.MakeMove();
+                engine.Value.UciEngine.SetFen(fenPosition,string.Empty);
+                //engine.Value.UciEngine.MakeMove();
             }
             
         }
@@ -503,7 +504,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _timeControl = null;
         }
 
-        public void StopForCoaches(bool runningGame)
+        public void StopForCoaches()
         {
 
             _fileLogger?.LogInfo("Send Stop for coaches");
@@ -643,15 +644,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastCommand = string.Empty;
         }
 
-        public void GoInfiniteForCoach(bool runningGame)
+        public void GoInfiniteForCoach(string fenPosition)
         {
-            if (!runningGame)
-            {
-                return;
-            }
 
-            StopForCoaches(runningGame);
-            MakeMoveForCoaches();
+            StopForCoaches();
+            MakeMoveForCoaches(fenPosition);
             _fileLogger?.LogInfo($"Send Go infinite for coaches");
             foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {

@@ -32,7 +32,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Process _engineProcess;
         private readonly UciInfo _uciInfo;
         private readonly ILogging _logger;
-        private readonly bool _lookForBookMoves;
+        private  bool _lookForBookMoves;
         private readonly ConcurrentQueue<string> _waitForFromEngine = new ConcurrentQueue<string>();
         private readonly ConcurrentQueue<string> _sendToUciEngine = new ConcurrentQueue<string>();
         private volatile bool _waitFor = false;
@@ -158,6 +158,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             _allMoves.Clear();
             _allMoves.Add($"position fen {fen} moves");
+            _bookMove = null;
+            _lookForBookMoves = false;
 
         }
 
@@ -304,6 +306,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SendToEngine(string command)
         {
             // _logger?.LogDebug($"SendToEngine: {command}");
+            if (command.Equals("clear"))
+            {
+                while (!_waitForFromEngine.IsEmpty)
+                {
+                    _waitForFromEngine.TryDequeue(out string _);
+                }
+
+                _waitFor = false;
+            }
             _sendToUciEngine.Enqueue(command);
         }
 

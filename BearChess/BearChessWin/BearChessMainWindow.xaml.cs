@@ -9,6 +9,7 @@ using System.Media;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Documents.DocumentStructures;
 using System.Xml.Serialization;
 using Microsoft.Win32;
@@ -863,7 +864,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             Dispatcher?.Invoke(() =>
             {
-                _engineWindow?.StopForCoaches(_currentAction == CurrentAction.InRunningGame);
+                _engineWindow?.StopForCoaches();
             });
 
             if (_currentMoveIndex < _playedMoveList.Length)
@@ -893,22 +894,31 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     chessBoardUcGraphics.RepaintBoard(_chessBoard);
                     return;
                 }
+                var position = _chessBoard.GetFenPosition();
+                bool sendToEngine = false;
                 chessFigure = _chessBoard.GetFigureOn(fromField);
                 _chessBoard.RemoveFigureFromField(fromField);
                 _chessBoard.SetFigureOnPosition(chessFigure.FigureId, toField);
                 _chessBoard.CurrentColor = chessFigure.EnemyColor;
+                _chessBoard.GenerateMoveList();
+                if (!_chessBoard.IsInCheck(_chessBoard.EnemyColor))
+                {
+                    position = _chessBoard.GetFenPosition();
+                    sendToEngine = true;
+                }
                 chessBoardUcGraphics.RepaintBoard(_chessBoard);
-                var position = _chessBoard.GetFenPosition();
-
                 if (!_pausedEngine)
                     Dispatcher?.Invoke(() =>
                     {
                         _engineWindow?.Stop();
-                        _engineWindow?.SetFen(position, string.Empty);
-                        _engineWindow?.GoInfinite();
+                        if (sendToEngine)
+                        {
+                            _engineWindow?.SetFen(position, string.Empty);
+                            _engineWindow?.GoInfinite();
+                        }
                     });
                 _materialWindow?.ShowMaterial(_chessBoard.GetFigures(Fields.COLOR_WHITE), _chessBoard.GetFigures(Fields.COLOR_BLACK),_chessBoard.GetPlayedMoveList());
-                _databaseWindow?.FilterByFen(_chessBoard.GetFenPosition());
+                _databaseWindow?.FilterByFen(position);
                 return;
             }
 
@@ -1169,7 +1179,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (_currentAction == CurrentAction.InRunningGame)
                 {
                     _chessClocksWindowBlack?.Go();
-                    _engineWindow?.GoInfiniteForCoach(_currentAction == CurrentAction.InRunningGame);
+                    _engineWindow?.GoInfiniteForCoach(_chessBoard.GetFenPosition());
                 }
             }
 
@@ -2589,6 +2599,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _engineWindow?.SetFen(fenPosition, string.Empty, uciInfo.Name);
                 _engineWindow?.GoInfinite(Fields.COLOR_EMPTY, uciInfo.Name);
             }
+            else
+            {
+                _engineWindow?.GoInfiniteForCoach(_chessBoard.GetFenPosition());
+            }
         }
 
         private void LoadLastEngine()
@@ -2716,7 +2730,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 Dispatcher?.Invoke(() =>
                 {
-                    _engineWindow?.StopForCoaches(_currentAction == CurrentAction.InRunningGame);
+                    _engineWindow?.StopForCoaches();
                 });
 
                 _fileLogger?.LogDebug($"Valid move from engine: {fromFieldFieldName}{toFieldFieldName}");
@@ -2734,7 +2748,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _chessBoard.MakeMove(engineMove);
                 }
 
-                engineMove.CapturedFigure = _chessBoard.GetPrevMove().GetMove(_chessBoard.EnemyColor).CapturedFigure;
+                var allMoveClass = _chessBoard.GetPrevMove();
+                if (allMoveClass!=null) {
+                    engineMove.CapturedFigure = allMoveClass.GetMove(_chessBoard.EnemyColor).CapturedFigure;
+                }
+                else
+                {
+                    engineMove.CapturedFigure = FigureId.NO_PIECE;
+                }
                 var generateMoveList = _chessBoard.GenerateMoveList();
                 isInCheck = _chessBoard.IsInCheck(_chessBoard.CurrentColor) ? "#" : string.Empty;
                 if (isInCheck.Equals("#"))
@@ -2936,7 +2957,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     return;
                 }
 
-                _engineWindow?.GoInfiniteForCoach(_currentAction == CurrentAction.InRunningGame);
+                _engineWindow?.GoInfiniteForCoach(_chessBoard.GetFenPosition());
                 if (_chessBoard.CurrentColor == Fields.COLOR_WHITE)
                 {
                     _chessClocksWindowBlack?.Stop();
@@ -4085,8 +4106,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 });
                 return;
             }
+
+            var position = _chessBoard.GetFenPosition();
             _chessBoard.SetPosition(fenPosition);
-            
+            _chessBoard.GenerateMoveList();
+            if (_chessBoard.IsInCheck(_chessBoard.EnemyColor))
+            {
+                _chessBoard.SetPosition(position);
+            }
+            fenPosition = _chessBoard.GetFenPosition();
             Dispatcher?.Invoke(() =>
             {
                 chessBoardUcGraphics.RepaintBoard(_chessBoard);
@@ -4153,7 +4181,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             Dispatcher?.Invoke(() =>
             {
-                _engineWindow?.StopForCoaches(_currentAction == CurrentAction.InRunningGame);
+                _engineWindow?.StopForCoaches();
             });
             _prevFenPosition = _chessBoard.GetFenPosition();
             if (move.Length > 4)
@@ -4383,7 +4411,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (_currentAction == CurrentAction.InRunningGame)
                     {
 
-                        _engineWindow?.GoInfiniteForCoach(_currentAction == CurrentAction.InRunningGame);
+                        _engineWindow?.GoInfiniteForCoach(_chessBoard.GetFenPosition());
                     }
 
                 }

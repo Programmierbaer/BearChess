@@ -982,7 +982,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     return;
                 }
                 CurrentColor = epdArray[1] == "w" ? Fields.COLOR_WHITE : Fields.COLOR_BLACK;
-
+                if (IsInCheck(EnemyColor))
+                {
+                    throw new Exception("Invalid fen position");
+                }
                 if (epdArray.Length <= 2)
                 {
                     return;
@@ -1022,7 +1025,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             catch
             {
                 SetPosition(currentPosition);
-                throw new Exception("Invalid FEN line");
+                // throw new Exception("Invalid FEN line");
             }
         }
 

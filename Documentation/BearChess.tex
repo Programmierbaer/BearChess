@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.5.6.1}
+\fancyhead[R]{Version 0.5.6.2}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{22.11.2021} 
+\date{02.12.2021} 
 
 
 \begin{document}
@@ -920,7 +920,10 @@ If you select <auto> and no board is found, you will receive the following error
 
 \textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can always take some seconds until the right one is recognized.\\
 
-You can change how the LEDs should light up. The brightness and whether the LEDs should flash alternately or synchronously when indicating moves.
+\subsubsection{LEDs}
+You can change how the LEDs should light up. The brightness and whether the LEDs should flash alternately or synchronously when indicating moves.\\
+Use the slider to change the brightness from dim to light.\\
+A click on \includegraphics[scale=0.4]{eye.png} connects to the board and you can see the changes live.
 
 \subsubsection{Configure Bluetooth} \label{Bluetooth}
 
@@ -1737,6 +1740,7 @@ When two engines play against each other, all moves are ignored by the electroni
 	\item Some windows may overlap for the first time.
 	\item If you want to play an engine match with the same engine for black and white you have to install the engine twice with a different name.
 	\item Sometimes showing incorrect material balance for "All".
+	\item Opening books may not work if the game is not started from the base position.	
 \end{itemize}
 
 \section{Next Steps}
@@ -1750,6 +1754,12 @@ When two engines play against each other, all moves are ignored by the electroni
 \pagebreak
 
 \section{Changelog}
+
+\subsection{Version 0.5.6.1 =\textgreater 0.5.6.2}
+\begin{itemize}
+	\item Fix send invalid fen position to engines.
+	\item Fix running coach engine from current position.
+\end{itemize}
 
 \subsection{Version 0.5.6.0 =\textgreater 0.5.6.1}
 \begin{itemize}
