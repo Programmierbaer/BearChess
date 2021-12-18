@@ -262,7 +262,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (_boardName.Equals("MChessLink"))
                     {
-                        _comPort = new SerialComPort(comPort, 38400, Parity.Odd, 7, StopBits.One) {ReadTimeout = 1000};
+                        _comPort = new SerialComPort(comPort, 38400, Parity.Odd, 7, StopBits.One) {ReadTimeout = 1000, WriteTimeout = 1000};
                     }
                     else
                     {

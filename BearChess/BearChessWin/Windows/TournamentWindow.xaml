@@ -132,8 +132,12 @@
             <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonDelete" Click="ButtonDelete_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete tournament">
                 <Image Source="../Assets/Icons/bin.png" Width="32" Height="32"></Image>
             </Button>
-
-
+            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonExport" Click="ButtonExport_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Export tournament games">
+                <Image Source="../Assets/Icons/text_exports.png" Width="32" Height="32"></Image>
+            </Button>
+            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonInfo" Click="ButtonInfo_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Duel information">
+                <Image Source="../Assets/Icons/information.png" Width="32" Height="32"></Image>
+            </Button>
             <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
                 <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
             </Button>

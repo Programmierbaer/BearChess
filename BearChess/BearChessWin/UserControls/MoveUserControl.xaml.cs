@@ -207,6 +207,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ShowMove();
         }
 
+        public string GetWhiteMove
+        {
+            get => _whiteMove;
+        }
+
+        public string GetBlackMove
+        {
+            get => _blackMove;
+        }
+
         private void SetDisplayTypes()
         {
             if (_figureType == DisplayFigureType.Symbol)
@@ -357,5 +367,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             SelectedMoveChanged?.Invoke(this, e);
         }
+
+      
     }
 }

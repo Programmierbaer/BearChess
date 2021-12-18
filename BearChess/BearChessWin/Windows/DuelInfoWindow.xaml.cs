@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
@@ -18,20 +17,26 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly int _duelGames;
 
 
-        private decimal[] _results = new decimal[] {0, 0};
+        private readonly decimal[] _results = {0, 0};
         private bool _isFinished;
         private bool _canClose = false;
+        private bool _pauseAfterGame = true;
 
         public event EventHandler StopDuel;
+        public event EventHandler ContinueDuel;
+
+        public bool PausedAfterGame => _pauseAfterGame;
 
         public DuelInfoWindow(Configuration configuration)
         {
-            _configuration = configuration;
             InitializeComponent();
+            _configuration = configuration;
             Top = _configuration.GetWinDoubleValue("EngineDuelWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("EngineDuelWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Width = _configuration.GetWinDoubleValue("EngineDuelWindowWidth", Configuration.WinScreenInfo.Width, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                                                      (Width / 2).ToString(CultureInfo.InvariantCulture));
+            _pauseAfterGame = bool.Parse(_configuration.GetConfigValue("_pauseDuelGame", "false"));
+            checkBoxPauseAfterGame.IsChecked = _pauseAfterGame;
         }
 
        
@@ -121,19 +126,51 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (gameNumber <= _duelGames)
             {
                 textBlockStatus.Text = $"Game {gameNumber} of {_duelGames}";
+                if (PausedAfterGame)
+                {
+                    buttonContinue.Visibility = Visibility.Visible;
+                    buttonStop.Visibility = Visibility.Collapsed;
+                    buttonClose.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    buttonStop.Visibility = Visibility.Visible;
+                    buttonContinue.Visibility = Visibility.Collapsed;
+                    buttonClose.Visibility = Visibility.Collapsed;
+                }
             }
             else
             {
                 _isFinished = true;
                 _canClose = true;
                 textBlockStatus.Text = "Duel finished";
-                buttonPause.Visibility = Visibility.Collapsed;
                 buttonClose.Visibility = Visibility.Visible;
+                buttonStop.Visibility = Visibility.Collapsed;
+                buttonContinue.Visibility = Visibility.Collapsed;
             }
             textBlockResult1.Text = $"{_results[0]}";
             textBlockResult2.Text = $"{_results[1]}";
-            
         }
+
+
+        public void SetReadOnly()
+        {
+            _canClose = true;
+            _isFinished = true;
+            buttonStop.Visibility = Visibility.Collapsed;
+            buttonContinue.Visibility = Visibility.Collapsed;
+            buttonClose.Visibility = Visibility.Visible;
+        }
+
+        public void SetForRunning()
+        {
+
+            buttonStop.Visibility = Visibility.Visible;
+            buttonContinue.Visibility = Visibility.Collapsed;
+            buttonClose.Visibility = Visibility.Collapsed;
+        }
+
+
 
 
         private void ButtonCancel_OnClick(object sender, RoutedEventArgs e)
@@ -149,7 +186,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     _canClose = true;
-                    StopDuel?.Invoke(this, new EventArgs());
+                    StopDuel?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -160,6 +197,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetDoubleValue("EngineDuelWindowTop", Top);
             _configuration.SetDoubleValue("EngineDuelWindowLeft", Left);
             _configuration.SetDoubleValue("EngineDuelWindowWidth", Width);
+        }
+
+        private void ButtonContinue_OnClick(object sender, RoutedEventArgs e)
+        {
+            buttonStop.Visibility = Visibility.Visible;
+            buttonContinue.Visibility = Visibility.Collapsed;
+            buttonClose.Visibility = Visibility.Collapsed;
+           ContinueDuel?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void CheckBoxPauseAfterGame_OnChecked(object sender, RoutedEventArgs e)
+        {
+            _pauseAfterGame = true;
+        }
+
+        private void CheckBoxPauseAfterGame_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            _pauseAfterGame = false;
         }
     }
 }

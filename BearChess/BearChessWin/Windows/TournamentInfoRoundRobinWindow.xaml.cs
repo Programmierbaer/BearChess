@@ -128,6 +128,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Close();
         }
 
+        public void SetReadOnly()
+        {
+            buttonPause.Visibility = Visibility.Collapsed;
+            buttonClose.Visibility = Visibility.Visible;
+            _isFinished = true;
+            _canClose = true;
+        }
+
         public void AddResult(string result, int[] pairing)
         {
             TextBlock textBlock1 = (TextBlock) gridDuel.Children.Cast<UIElement>()

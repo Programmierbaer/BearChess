@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
@@ -249,38 +251,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void MenuItemDelete_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (dataGridGames.SelectedItems.Count > 1)
-            {
-                if (MessageBox.Show($"Delete all {dataGridGames.SelectedItems.Count} selected games?", "Delete games", MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                {
-                    foreach (var selectedItem in dataGridGames.SelectedItems)
-                    {
-                        if (selectedItem is DatabaseGameSimple pgnGame1)
-                        {
-                            _database.DeleteGame(pgnGame1.Id);
-                        }
-                    }
-                    dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
-                                                    ? _database.GetGames(_gamesFilter, _lastSyncFen)
-                                                    : _database.GetGames(_gamesFilter);
-                }
-                return;
-            }
-            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame2)
-            {
-                if (MessageBox.Show("Delete selected game?", "Delete game", MessageBoxButton.YesNo,
-                                    MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                {
-                    _database.DeleteGame(pgnGame2.Id);
-                    dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
-                                                    ? _database.GetGames(_gamesFilter, _lastSyncFen)
-                                                    : _database.GetGames(_gamesFilter);
-                }
-            }
-        }
+     
 
         private void MenuItemCopy_OnClick(object sender, RoutedEventArgs e)
         {
@@ -320,5 +291,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             Title = $"{dataGridGames.Items.Count} of {_database.GetTotalGamesCount()} games on: {_database.FileName}";
         }
+
+        private void ButtonExport_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.Items.Count == 0)
+            {
+                return;
+            }
+            IList selectedItems = dataGridGames.SelectedItems;
+            if (selectedItems.Count == 0)
+            {
+                selectedItems = dataGridGames.Items;
+            }
+            ExportGames.Export(selectedItems,_database, this);
+        }
+
     }
 }

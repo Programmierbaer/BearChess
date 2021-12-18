@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessTournament;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -19,6 +25,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Configuration _configuration;
         private readonly Database _database;
         private bool _tournamentFinished;
+        private TournamentManager _tournamentManager;
+        private ITournamentInfoWindow _tournamentInfoWindow;
 
         public event EventHandler<DatabaseGame> SelectedGameChanged;
         public event EventHandler<int> ContinueTournamentSelected;
@@ -202,6 +210,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var databaseGameSimples = _database.GetTournamentGames(eAddedItem.TournamentId);
                 _tournamentFinished = !databaseGameSimples.Any(g => g.Result.Contains("*"));
                 dataGridGames.ItemsSource = databaseGameSimples;
+                if (_tournamentInfoWindow != null)
+                {
+                    ShowInfoWindow();
+                }
             }
         }
 
@@ -234,6 +246,74 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
 
+        }
+
+        private void ButtonExport_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.Items.Count == 0)
+            {
+                MessageBox.Show("Select a tournament for export", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            IList selectedItems = dataGridGames.SelectedItems;
+            if (selectedItems.Count == 0)
+            {
+                selectedItems = dataGridGames.Items;
+            }
+
+            ExportGames.Export(selectedItems, _database, this);
+        
+        }
+
+        private void ButtonInfo_OnClick(object sender, RoutedEventArgs e)
+        {
+            ShowInfoWindow();
+        }
+
+        private void ShowInfoWindow()
+        {
+            if (dataGridGames.Items.Count == 0)
+            {
+                return;
+            }
+            var selectedItem = dataGridTournament.SelectedItems[0];
+            if (selectedItem is DatabaseTournament tournament)
+            {
+                if (_tournamentManager == null)
+                {
+                    _tournamentManager = new TournamentManager(_configuration, _database);
+                }
+
+                _tournamentManager.Load(tournament.TournamentId);
+                if (_tournamentInfoWindow != null)
+                {
+                    _tournamentInfoWindow.CloseInfoWindow();
+                    _tournamentInfoWindow = null;
+                }
+                _tournamentInfoWindow = TournamentInfoWindowFactory.GetTournamentInfoWindow(_tournamentManager.Load(tournament.TournamentId), _configuration);
+                _tournamentInfoWindow.Closed += _tournamentInfoWindow_Closed;
+                _tournamentInfoWindow.Show();
+                int gamesCount = 0;
+              
+                foreach (var databaseGameSimple in _database.GetTournamentGames(tournament.TournamentId))
+                {
+                    if (databaseGameSimple.Result.Contains("*"))
+                    {
+                       continue;
+                    }
+                    var pairing = _tournamentManager.GetPairing(gamesCount);
+                    _tournamentInfoWindow.AddResult(databaseGameSimple.Result, pairing);
+                    gamesCount++;
+                }
+
+                _tournamentInfoWindow.SetReadOnly();
+
+            }
+        }
+
+        private void _tournamentInfoWindow_Closed(object sender, EventArgs e)
+        {
+            _tournamentInfoWindow = null;
         }
     }
 }

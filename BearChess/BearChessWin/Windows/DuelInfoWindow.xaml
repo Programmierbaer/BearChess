@@ -45,8 +45,10 @@
         </ScrollViewer>
         <Separator></Separator>
         <DockPanel Margin="5">
-            
-            <Button Name="buttonPause" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right"
+            <CheckBox Name="checkBoxPauseAfterGame" Margin="5"  DockPanel.Dock="Left" Checked="CheckBoxPauseAfterGame_OnChecked" Unchecked="CheckBoxPauseAfterGame_OnUnchecked">
+                <TextBlock Text="Pause after game"></TextBlock>
+            </CheckBox>
+            <Button Name="buttonStop" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Click="ButtonCancel_OnClick">
@@ -55,7 +57,7 @@
             <Button Name="buttonContinue" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right"  Visibility="Collapsed"
                     Background="Transparent"
                     BorderBrush="Transparent"
-                    Click="ButtonCancel_OnClick">
+                    Click="ButtonContinue_OnClick">
                 <Image Source="../Assets/Icons/control_play_blue.png" Width="32" Height="32" />
             </Button>
             <Button Name="buttonClose" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right" Visibility="Collapsed"

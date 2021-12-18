@@ -26,7 +26,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         private readonly Dictionary<string, int> _repetition;
         private string _initialFenPosition;
         private bool _analyzeMode;
+        private int _drawBy50MoveCounter = 0;
         public bool DrawByRepetition { get; private set; }
+        public bool DrawBy50Moves
+        {
+            get => _drawBy50MoveCounter > 49;
+        }
         public bool DrawByMaterial { get; private set; }
         private FileLogger _fileLogger;
 
@@ -207,6 +212,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _repetition.Clear();
             DrawByRepetition = false;
             DrawByMaterial = false;
+            _drawBy50MoveCounter = 0;
+
             _initialFenPosition = string.Empty;
 
             CurrentColor = Fields.COLOR_WHITE;
@@ -349,8 +356,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _lastMoveToFigure = _figures[move.ToField];
             _lastMoveFromField = move.FromField;
             _lastMoveToField = move.ToField;
+
             CapturedFigure = _lastMoveToFigure;
-            move.CapturedFigure = CapturedFigure.FigureId;
+            if (move.CapturedFigure == FigureId.NO_PIECE)
+            {
+                move.CapturedFigure = CapturedFigure.FigureId;
+            }
+            
 
             CurrentFigureList.Remove(move.FromField);
             CurrentFigureList.Add(move.ToField);
@@ -371,13 +383,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             CheckPawnMove(move.PromotedFigure);
             CheckRochade();
             SetEnPassentTargetField();
-            if (CapturedFigure.FigureId != FigureId.NO_PIECE)
-            {
-                HalfMoveClock = 0;
-            }
             if (CurrentColor == Fields.COLOR_WHITE)
             {
                 FullMoveNumber++;
+                _drawBy50MoveCounter++;
+            }
+            if (CapturedFigure.FigureId != FigureId.NO_PIECE)
+            {
+                HalfMoveClock = 0;
             }
             var keysCount = _allPlayedMoves.Keys.Count;
             if (keysCount > FullMoveNumber)
@@ -399,12 +412,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 _repetition.Clear();
                 DrawByRepetition = false;
+                _drawBy50MoveCounter = 0;
             }
 
             if (CapturedFigure.Color >= 0)
             {
                 _repetition.Clear();
                 DrawByRepetition = false;
+                _drawBy50MoveCounter = 0;
             }
             if (_repetition.ContainsKey(substring))
             {
@@ -578,7 +593,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                             fromField = pgnMove.Substring(1, 1).ToUpper();
                             if (fromField.Equals("X"))
                             {
-                                fromField = string.Empty;
+                                if (figurCharacter == "P")
+                                {
+                                    fromField = pgnMove.Substring(0, 1).ToUpper();
+                                }
+                                else
+                                {
+                                    fromField = string.Empty;
+                                }
                             }
                         }
                     }
@@ -590,17 +612,28 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 MakeMove(moves[0].FromField, moves[0].ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
             }
-            foreach (var move in moves)
+            else
             {
-                var chessFigure = GetFigureOn(move.FromField);
-                var fieldName = Fields.GetFieldName(move.FromField);
-                var fenFigure = chessFigure.FenFigureCharacter.ToUpper();
-                if (fenFigure.Equals(figurCharacter))
+                foreach (var move in moves)
                 {
-                    if (string.IsNullOrWhiteSpace(fromField) || fieldName.Contains(fromField))
+                    var chessFigure = GetFigureOn(move.FromField);
+                    var fieldName = Fields.GetFieldName(move.FromField);
+                    var fenFigure = chessFigure.FenFigureCharacter.ToUpper();
+                    if (fenFigure.Equals(figurCharacter))
                     {
-                        MakeMove(move.FromField,move.ToField,FigureId.FenCharacterToFigureId[promotionFigure]);
-                        return;
+                        if (fromField.Length == 1 && figurCharacter=="P")
+                        {
+                            if (fieldName.StartsWith(fromField))
+                            {
+                                MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
+                                return;
+                            }
+                        }
+                        if (string.IsNullOrWhiteSpace(fromField) || fieldName.Contains(fromField))
+                        {
+                            MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
+                            return;
+                        }
                     }
                 }
             }
@@ -685,6 +718,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             if (CurrentColor == Fields.COLOR_WHITE)
             {
                 FullMoveNumber++;
+                _drawBy50MoveCounter++;
             }
             var keysCount = _allPlayedMoves.Keys.Count;
             if (keysCount > FullMoveNumber)
@@ -706,12 +740,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 _repetition.Clear();
                 DrawByRepetition = false;
+                _drawBy50MoveCounter = 0;
             }
 
             if (CapturedFigure.Color >= 0)
             {
                 _repetition.Clear();
                 DrawByRepetition = false;
+                _drawBy50MoveCounter = 0;
             }
             if (_repetition.ContainsKey(substring))
             {
@@ -1623,8 +1659,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                             _material[_figures[_lastMoveToField - 10].Color] -=
                                 _figures[_lastMoveToField - 10].Material;
                         }
+                        CapturedFigure = _figures[_lastMoveToField - 10];
                         CurrentFigureList.Remove(_lastMoveToField - 10);
                         _figures[_lastMoveToField - 10] = new NoFigure(this, _lastMoveToField - 10);
+
                     }
                 }
                 else
@@ -1650,6 +1688,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                             _material[_figures[_lastMoveToField + 10].Color] -=
                                 _figures[_lastMoveToField + 10].Material;
                         }
+                        CapturedFigure = _figures[_lastMoveToField + 10];
                         CurrentFigureList.Remove(_lastMoveToField + 10);
                         _figures[_lastMoveToField + 10] = new NoFigure(this, _lastMoveToField + 10);
                     }

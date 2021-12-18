@@ -130,6 +130,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void SetExtendedFull(bool extendedFull);
         void SetMove(Move move);
         void SetMove(int color, int figureId, int capturedFigureId, string move, int promotedFigureId);
+
+        string GetWhiteMove { get; }
+
+        string GetBlackMove { get; }
         bool ShouldSerializeContent();
         string ToString();
         event MouseButtonEventHandler PreviewMouseDoubleClick;

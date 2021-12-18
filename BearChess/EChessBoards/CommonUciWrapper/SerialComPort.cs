@@ -63,5 +63,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             get => _serialPort.ReadTimeout;
             set => _serialPort.ReadTimeout = value;
         }
+
+        public int WriteTimeout
+        {
+            get => _serialPort.WriteTimeout;
+            set => _serialPort.WriteTimeout = value;
+        }
     }
 }

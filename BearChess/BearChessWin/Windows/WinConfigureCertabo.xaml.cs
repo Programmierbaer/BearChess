@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Documents;
 using www.SoLaNoSoft.com.BearChess.CertaboLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 
@@ -22,7 +24,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly string _fileName;
         private readonly string _calibrateFileName;
         private readonly EChessBoardConfiguration _eChessBoardConfiguration;
-        private List<string> _portNames ;
+        private List<string> _portNames;
+        private readonly ILogging _fileLogger;
 
         public string SelectedPortName => (string) comboBoxComPorts.SelectedItem;
 
@@ -31,13 +34,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration = configuration;
             _useBluetooth = useBluetooth;
             InitializeComponent();
-            
+            _fileName = Path.Combine(_configuration.FolderPath, CertaboLoader.EBoardName,
+                                     $"{CertaboLoader.EBoardName}Cfg.xml");
+            var fileInfo = new FileInfo(_fileName);
+            if (!Directory.Exists(fileInfo.DirectoryName))
+            {
+                Directory.CreateDirectory(fileInfo.DirectoryName);
+                Directory.CreateDirectory(Path.Combine(fileInfo.DirectoryName, "log"));
+            }
+            try
+            {
+                _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "CertaboCfg.log"), 10, 10);
+            }
+            catch
+            {
+                _fileLogger = null;
+            }
             HashSet<string> allPortNames = new HashSet<string>() {"<auto>"};
             if (_useBluetooth)
             {
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
-                _portNames = SerialCommunicationTools.GetBTComPort(CertaboLoader.EBoardName,configuration).ToList();
+                _portNames = SerialCommunicationTools.GetBTComPort(CertaboLoader.EBoardName,configuration, _fileLogger).ToList();
                 comPortSearchWindow.Close();
 
             }
@@ -59,8 +77,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _calibrateFileName = Path.Combine(_configuration.FolderPath, CertaboLoader.EBoardName, "calibrate.xml");
-            _fileName = Path.Combine(_configuration.FolderPath, CertaboLoader.EBoardName,
-                                     $"{CertaboLoader.EBoardName}Cfg.xml");
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseBluetooth = useBluetooth;
             textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";

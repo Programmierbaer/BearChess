@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
@@ -195,7 +196,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public bool CheckComPort(string portName)
         {
-
+            
             return _eChessBoard.CheckCOMPort(portName);
         }
 

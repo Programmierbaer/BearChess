@@ -94,7 +94,11 @@
                     <Image Name="imageTableFilter" Source="../Assets/Icons/table_filter.png" Width="32" Height="32"></Image>
                 </StackPanel>
             </Button>
-            <Image Name="imageTableFilterActive" Source="../Assets/Icons/filter.png" Width="16" Height="16" Visibility="Collapsed"></Image>
+            <Image Name="imageTableFilterActive" Source="../Assets/Icons/filter.png" Width="16" Height="16" Visibility="Hidden" ToolTip="Filter is active"></Image>
+            
+            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonExport" Click="ButtonExport_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Export selected games">
+                <Image Source="../Assets/Icons/text_exports.png" Width="32" Height="32"></Image>
+            </Button>
             <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
                 <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
             </Button>
@@ -102,6 +106,7 @@
             <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete database">
                 <Image Source="../Assets/Icons/database_delete.png" Width="32" Height="32"></Image>
             </Button>
+        
         </DockPanel>
     </Grid>
 </Window>

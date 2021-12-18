@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -49,6 +53,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private static readonly object _locker = new object();
         private bool _ignoreResize = false;
         private bool _tournamentMode;
+        private int _currentMoveNumber;
+        private int _currentColor;
 
         public MoveListWindow(Configuration configuration, double top, double left, double width, double height)
         {
@@ -121,7 +127,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void MarkMove(int number, int color)
         {
-            if (number < 0)
+            if (number < 0 || listBoxMoves.Items.Count<1)
             {
                 return;
             }
@@ -146,6 +152,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
             listBoxMoves.ScrollIntoView(listBoxMoves.Items[number]);
+            _currentMoveNumber = ((IMoveUserControl)listBoxMoves.Items[number]).GetMoveNumber();
+            _currentColor = color;
         }
 
         public void ClearMark()
@@ -193,6 +201,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _lastMoveNumber = move.FigureColor == Fields.COLOR_BLACK ? moveNumber : moveNumber - 1;
 
                 _currentMoveUserControl = (MoveUserControl)listBoxMoves.Items[listBoxMoves.Items.Count - 1];
+                _currentMoveNumber = _lastMoveNumber;
+                _currentColor = move.FigureColor;
 
             }
 
@@ -231,7 +241,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (sender is IMoveUserControl moveUserControl)
             {
-                OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveUserControl.GetMoveNumber(), e));
+                _currentMoveNumber = moveUserControl.GetMoveNumber();
+                OnSelectedMoveChanged(new SelectedMoveOfMoveList(_currentMoveNumber, e));
             }
         }
 
@@ -403,6 +414,318 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MoveListWindow_OnClosing(object sender, CancelEventArgs e)
         {
             SaveSizes();
+        }
+
+      
+
+        private void ListBoxMoves_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                
+                _currentColor = Fields.COLOR_WHITE;
+                IMoveUserControl mc = (IMoveUserControl)e.AddedItems[0];
+                OnSelectedMoveChanged(new SelectedMoveOfMoveList(mc.GetMoveNumber(),Fields.COLOR_WHITE));
+            }
+        }
+
+        private void ListBoxMoves_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            var itemsCount = listBoxMoves.Items.Count;
+            IMoveUserControl mc = listBoxMoves.SelectedItem as IMoveUserControl;
+            int newIndex = 0;
+            if (mc == null)
+            {
+                return;
+            }
+            var moveNumber = mc.GetMoveNumber();
+
+            if (!_extendMoveListControl)
+            {
+                if (e.Key == Key.Right)
+                {
+                    if (_currentColor == Fields.COLOR_WHITE && !string.IsNullOrWhiteSpace(mc.GetBlackMove))
+                    {
+                        _currentColor = Fields.COLOR_BLACK;
+                        OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber, _currentColor));
+                    }
+                    else
+                    {
+                        if (listBoxMoves.SelectedIndex < itemsCount - 1)
+                        {
+                            _currentColor = Fields.COLOR_WHITE;
+                            listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex + 1];
+                            OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber + 1, _currentColor));
+                        }
+                    }
+                    return;
+                }
+
+                if (e.Key == Key.Left)
+                {
+
+                   
+                    if (_currentColor == Fields.COLOR_WHITE)
+                    {
+                        if (listBoxMoves.SelectedIndex > 0)
+                        {
+                            _currentColor = Fields.COLOR_BLACK;
+                            listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex - 1];
+                            OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber - 1, _currentColor));
+                        }
+                    }
+                    else
+                    {
+                        _currentColor = Fields.COLOR_WHITE;
+                        OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber, _currentColor));
+                    }
+                    return;
+
+                }
+
+                if (e.Key == Key.Down)
+                {
+                    e.Handled = true;
+
+                    if (listBoxMoves.SelectedIndex < itemsCount - 1)
+                    {
+                        _currentColor = Fields.COLOR_WHITE;
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex + 1];
+                        OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber + 1, _currentColor));
+                    }
+                    return;
+                }
+
+                if (e.Key == Key.PageDown)
+                {
+                    e.Handled = true;
+                    _currentColor = Fields.COLOR_WHITE;
+                    if (listBoxMoves.SelectedIndex < itemsCount - 10)
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex + 10];
+                        OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber + 10, _currentColor));
+                    }
+                    else
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[itemsCount-1];
+                        OnSelectedMoveChanged(new SelectedMoveOfMoveList(itemsCount, _currentColor));
+                    }
+                    return;
+                }
+
+                if (e.Key == Key.Up)
+                {
+                    e.Handled = true;
+                  
+                    if (listBoxMoves.SelectedIndex > 0)
+                    {
+                        _currentColor = Fields.COLOR_WHITE;
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex - 1];
+                        OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber - 1, _currentColor));
+                    }
+                    return;
+                }
+
+                if (e.Key == Key.PageUp)
+                {
+                    e.Handled = true;
+                    _currentColor = Fields.COLOR_WHITE;
+                    if (listBoxMoves.SelectedIndex > 10)
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex - 10];
+                        OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber - 10, _currentColor));
+                    }
+                    else
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[0];
+                        OnSelectedMoveChanged(new SelectedMoveOfMoveList(1, _currentColor));
+                    }
+                    return;
+                }
+                return;
+            }
+            if (e.Key == Key.Right)
+            {
+                if (_currentColor == Fields.COLOR_WHITE)
+                {
+                     newIndex = (moveNumber * 2) - 1;
+                    _currentColor = Fields.COLOR_BLACK;
+
+                }
+                else
+                {
+                    if ((moveNumber * 2) < itemsCount)
+                    {
+                        moveNumber++;
+
+
+                        newIndex = (moveNumber * 2) - 2;
+                        _currentColor = Fields.COLOR_WHITE;
+                    }
+                    else
+                    {
+                        newIndex = (moveNumber * 2) - 1;
+
+                    }
+                }
+                if (newIndex >= itemsCount)
+                {
+                    newIndex = itemsCount - 1;
+                    moveNumber = mc.GetMoveNumber();
+                    _currentColor = Fields.COLOR_WHITE;
+                }
+                listBoxMoves.SelectedItem = listBoxMoves.Items[newIndex];
+                OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber, _currentColor));
+
+                return;
+            }
+
+            if (e.Key == Key.Left)
+            {
+
+                if (_currentColor == Fields.COLOR_WHITE)
+                {
+                    if (moveNumber > 1)
+                    {
+                        moveNumber--;
+
+
+                        newIndex = (moveNumber * 2) - 1;
+
+                        _currentColor = Fields.COLOR_BLACK;
+                    }
+
+
+                }
+                else
+                {
+                
+                    newIndex = (moveNumber * 2) - 2;
+
+                        _currentColor = Fields.COLOR_WHITE;
+
+                    
+                }
+
+                if (newIndex < 0)
+                {
+                    newIndex = 0;
+                }
+                listBoxMoves.SelectedItem = listBoxMoves.Items[newIndex];
+                OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber, _currentColor));
+                return;
+
+            }
+
+            if (e.Key == Key.Down)
+            {
+                e.Handled = true;
+
+                if (listBoxMoves.SelectedIndex < itemsCount - 2)
+                {
+
+                    if (_currentColor == Fields.COLOR_BLACK)
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex + 1];
+                    }
+                    else
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex + 2];
+
+                    }
+
+                    _currentColor = Fields.COLOR_WHITE;
+                    OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber + 1, _currentColor));
+
+                }
+
+                return;
+            }
+
+            if (e.Key == Key.PageDown)
+            {
+                e.Handled = true;
+
+                if (listBoxMoves.SelectedIndex < itemsCount - 21)
+                {
+
+                    if (_currentColor == Fields.COLOR_BLACK)
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex + 20];
+                    }
+                    else
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex + 21];
+
+                    }
+                    _currentColor = Fields.COLOR_WHITE;
+                    OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber + 10, _currentColor));
+
+                }
+                else
+                {
+                    bool isEven = itemsCount % 2 == 0;
+                   listBoxMoves.SelectedItem = listBoxMoves.Items[itemsCount-1];
+                    _currentColor = isEven ? Fields.COLOR_BLACK : Fields.COLOR_WHITE;
+                    moveNumber =  isEven ? itemsCount / 2 : itemsCount / 2 +1;
+                    OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber, _currentColor));
+                }
+                return;
+            }
+
+            if (e.Key == Key.Up)
+            {
+                e.Handled = true;
+                
+                if (listBoxMoves.SelectedIndex > 1)
+                {
+                
+                    
+                    if (_currentColor == Fields.COLOR_BLACK)
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex - 1];
+                        
+                    }
+                    else
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex - 2];
+                    }
+                    _currentColor = Fields.COLOR_WHITE;
+                    OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber - 1, _currentColor));
+                }
+                return;
+            }
+
+            if (e.Key == Key.PageUp)
+            {
+                e.Handled = true;
+
+                if (listBoxMoves.SelectedIndex > 21)
+                {
+
+                    if (_currentColor == Fields.COLOR_BLACK)
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex - 20];
+                    }
+                    else
+                    {
+                        listBoxMoves.SelectedItem = listBoxMoves.Items[listBoxMoves.SelectedIndex - 21];
+
+                    }
+                    _currentColor = Fields.COLOR_WHITE;
+                    OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber - 10, _currentColor));
+
+                }
+                else
+                {
+                    
+                    listBoxMoves.SelectedItem = listBoxMoves.Items[0];
+                    _currentColor = Fields.COLOR_WHITE;
+                    moveNumber = 1;
+                    OnSelectedMoveChanged(new SelectedMoveOfMoveList(moveNumber, _currentColor));
+                }
+                return;
+            }
         }
     }
 }

@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.5.6.2}
+\fancyhead[R]{Version 0.5.7.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{02.12.2021} 
+\date{19.12.2021} 
 
 
 \begin{document}
@@ -199,7 +199,22 @@ All games are saved in a database file. Read more on chapter \textbf{\ref{games}
 	\item  \includegraphics[scale=0.5]{robot.png} \textbf{Load \& manage engines} opens a new window in which you can install, load or configure your chess engines.
 	\item \textbf{Load last engine on start} if you always want to load immediately an engine when you start BearChess. It has no effect if you have activated the option "Run startup game on start".
 	\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
-	\item \textbf{Settings} to configure if you want to see more information from the engine, e.g. nodes per second.	
+	\item \textbf{Settings} configure what information you want to see from the engine, e.g. nodes per second.	
+\end{itemize}
+
+\subsubsection{Settings}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{engineSettings.png}
+	\caption{Engine Settings}
+	\label{fig:EngineSettings}
+\end{figure}
+
+\begin{itemize}
+	\item  \textbf{Show nodes (N)} How many nodes in the search tree were calculated
+	\item \textbf{Show nodes per seconds (Nps)} How many nodes are calculated per second
+	\item \textbf{Show hash} Utilization of the hash memory in percent
+	\item \textbf{From the point of view of White} Always shows the evaluation value from white's point of view..
 \end{itemize}
 
 Read more on chapter \textbf{\ref{loadEngines}  \nameref{loadEngines}} on page \pageref{loadEngines}.
@@ -1087,6 +1102,8 @@ When you play against an engine BearChess collects more information.\\
 	\label{fig:moveList3}
 \end{figure}
 
+Use the cursor keys and the scroll up and down keys to maneuver through the list.
+
 \section{Easy start or restart of a game} \label{easyStart}
 
 The button \includegraphics[scale=0.2]{bearchess_2.png} is an easy way to play a game. If your not active playing a game, the following dialog appears:
@@ -1389,7 +1406,9 @@ Shows an overview of all duels. The top list shows duel information and below it
 	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Load the selected duel configuration as template for a new duel.
 	\item \includegraphics[scale=0.5]{control_repeat_blue.png} Deletes all games of the selected duel and runs the duel again.
     \item \includegraphics[scale=0.5]{bin.png} Deletes the selected duel and all associated games.
-        \item \includegraphics[scale=0.5]{database_delete.png} Deletes all duels and all associated games.
+	\item \includegraphics[scale=0.5]{text_exports.png} Exports all or the selected games into a PGN file.    
+	\item \includegraphics[scale=0.5]{information.png} Display information window for the selected duel.    	
+    \item \includegraphics[scale=0.5]{database_delete.png} Deletes all duels and all associated games.
 \end{itemize}
 
 \section{Engine tournament} \label{EngineTournamentl}
@@ -1497,6 +1516,8 @@ Shows an overview of all tournaments. The top list shows tournament information 
 	\item \includegraphics[scale=0.5]{cup_gold.png} Load the selected tournament configuration as template for a new tournament.
 	\item \includegraphics[scale=0.5]{control_repeat_blue.png} Deletes all games of the selected tournament and runs the tournament again.
 	\item \includegraphics[scale=0.5]{bin.png} Deletes the selected tournament and all associated games.
+	\item \includegraphics[scale=0.5]{text_exports.png} Exports all or the selected games into a PGN file. 	
+	\item \includegraphics[scale=0.5]{information.png} Display information window for the selected tournament.    		
 	\item \includegraphics[scale=0.5]{database_delete.png} Deletes all tournaments and all associated games.
 \end{itemize}
 
@@ -1642,6 +1663,7 @@ If you double click on a row, the game is displayed on the board.
 	\item \includegraphics[scale=0.5]{clipboard_sign_out.png} Copy selected game into clipboard.		
 	\item \includegraphics[scale=0.5]{link.png} Filter games that correspond to the current board position.	
 	\item \includegraphics[scale=0.5]{table_filter.png} Opens a window for further filter options.		
+	\item \includegraphics[scale=0.5]{text_exports.png} Exports all or the selected games into a PGN file.
 	\item \includegraphics[scale=0.5]{database_delete.png} Delete all games from the database, including duel and tournament information.
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
@@ -1745,15 +1767,36 @@ When two engines play against each other, all moves are ignored by the electroni
 
 \section{Next Steps}
 
+These are some ideas what will come in one of the next versions.
+
 \begin{itemize}
+	    \item Improve MessChess chess computer emulation by Franz Huber.	 
 		\item Extend the game analysis.
-		\item Improve the COM port handling.
+		\item Improve eletronic chess board handling
   	    \item Improve the performance of the opening book.
 	\end{itemize} 
 
 \pagebreak
 
 \section{Changelog}
+
+\subsection{Version 0.5.6.2 =\textgreater 0.5.7.0}
+\begin{itemize}
+	\item New: Export games into a PGN file.
+	\item New: Option to always display the evaluation value from the point of view of white.
+	\item New: Duel manager can show duel information.
+	\item New: Tournament manager can show tournament information.	
+	\item New: Click on main window brings other windows into front.
+	\item New: Optional pause after each engine duel game
+	\item New: Use cursor and pageUp/down keys in movelist window
+	\item Fix: Running coach engine from current position.
+	\item Fix: Unhandled exception on switch from engine duel into analyse mode.	
+	\item Fix: Showing duel information after continue a paused duel.
+	\item Fix: Frozen BearChess on COM-port check.	
+	\item Fix: Show captured pieces in "Analyze mode".
+	\item Fix: Interpreting PGN moves.
+	\item Fix: Handling 50 moves draw rule.
+\end{itemize}
 
 \subsection{Version 0.5.6.1 =\textgreater 0.5.6.2}
 \begin{itemize}

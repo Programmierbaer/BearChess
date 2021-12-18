@@ -62,6 +62,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _tournamentMode;
         private bool _showTeddy;
         private int _hideInfo;
+        private bool _showForWhite;
+        private int _currentColor;
 
         public int Color { get; }
         public string HideInfo => _hideInfo.ToString();
@@ -71,6 +73,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             InitializeComponent();
             _showTeddy = false;
             _hideInfo = 0;
+            _currentColor = Fields.COLOR_WHITE;
         }
 
         public EngineInfoUserControl(UciInfo uciInfo, int color, string hideInfo) : this()
@@ -107,12 +110,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 imageColorWhite.Visibility = Visibility.Visible;
                 imageColorBlack.Visibility = Visibility.Collapsed;
                 buttonClose.Visibility = Visibility.Hidden;
+                buttonPlayStop.Visibility = Visibility.Hidden;
             }
             if (color == Fields.COLOR_BLACK)
             {
                 imageColorWhite.Visibility = Visibility.Collapsed;
                 imageColorBlack.Visibility = Visibility.Visible;
                 buttonClose.Visibility = Visibility.Hidden;
+                buttonPlayStop.Visibility = Visibility.Hidden;
             }
 
             if (color == Fields.COLOR_EMPTY)
@@ -131,7 +136,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             set => textBlockName.Text = value;
         }
 
-        public void ShowInfo(bool showNodes, bool showNodesPerSec, bool showHash)
+        public void ShowInfo(bool showNodes, bool showNodesPerSec, bool showHash, bool showForWhite)
         {
             if (_showTeddy)
             {
@@ -140,6 +145,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showNodes = showNodes;
             _showNodesPerSec = showNodesPerSec;
             _showHash = showHash;
+            _showForWhite =  showForWhite;
+        }
+
+        public void CurrentColor(int currentColor)
+        {
+            _currentColor = currentColor;
         }
 
         public void ShowInfo(string infoLine, bool tournamentMode)
@@ -274,6 +285,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     out decimal score))
                                 {
                                     score = score / 100;
+                                    if (_showForWhite && Color==Fields.COLOR_BLACK)
+                                    {
+                                        score = score * -1;
+                                    }
+                                    if (_showForWhite && Color == Fields.COLOR_EMPTY && _currentColor == Fields.COLOR_BLACK)
+                                    {
+                                        score = score * -1;
+                                    }
                                     scoreString = score.ToString(CultureInfo.InvariantCulture);
                                 }
 

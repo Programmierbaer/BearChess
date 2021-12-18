@@ -19,13 +19,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class EngineWindow : Window
     {
-
         private class LoadedUciEngine
         {
            
             public UciLoader UciEngine { get; }
             public int Color { get; }
-            
 
             public LoadedUciEngine(UciLoader uciEngine,  int color)
             {
@@ -73,8 +71,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showNodes;
         private bool _showNodesPerSec;
         private bool _showHash;
+        private bool _showForWhite;
         private TimeControl _timeControl;
         private string _hideInfo;
+        private int _currentColor;
+
 
         public event EventHandler<EngineEventArgs> EngineEvent;
 
@@ -96,7 +97,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showNodes = bool.Parse(_configuration.GetConfigValue("shownodes", "true"));
             _showNodesPerSec = bool.Parse(_configuration.GetConfigValue("shownodespersec", "true"));
             _showHash = bool.Parse(_configuration.GetConfigValue("showhash", "true"));
+            _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
             _hideInfo = _configuration.GetConfigValue("EngineWindowHideInfo", "0");
+            _currentColor = Fields.COLOR_WHITE;
         }
 
         public void CloseLogWindow()
@@ -125,10 +128,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showNodes = bool.Parse(_configuration.GetConfigValue("shownodes", "true"));
             _showNodesPerSec = bool.Parse(_configuration.GetConfigValue("shownodespersec", "true"));
             _showHash = bool.Parse(_configuration.GetConfigValue("showhash", "true"));
+            _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
             List<EngineInfoUserControl>  engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().ToList();
             foreach (var engineInfoUserControl in engineInfoUserControls)
             {
-               engineInfoUserControl.ShowInfo(_showNodes,_showNodesPerSec,_showHash);
+               engineInfoUserControl.ShowInfo(_showNodes,_showNodesPerSec,_showHash, _showForWhite);
             }
         }
 
@@ -267,7 +271,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-
         public void LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY)
         {
             LoadUciEngine(uciInfo, string.Empty, playedMoves,lookForBookMoves, color);
@@ -285,121 +288,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void LogWindow_SendEvent(object sender, LogWindow.SendEventArgs e)
-        {
-            if (_loadedEngines.ContainsKey(e.EngineName))
-            {
-                _loadedEngines[e.EngineName].UciEngine.SendToEngine(e.Command);
-            }
-        }
-
-        private void FileLogger_UciCommunicationEvent(object sender, UciEventArgs e)
-        {
-            _logWindow?.ShowLog(e.Name, e.Command.Replace("<<",string.Empty).Replace(">>",string.Empty), e.Direction);
-        }
-
-        private void EngineInfoUserControl_StartStopEvent(object sender, EngineInfoUserControl.StartStopEventArgs startStop)
-        {
-            if (startStop.Stop)
-            {
-                _pausedEngines[startStop.Name] = true;
-                Stop(startStop.Name);
-            }
-            else
-            {
-                _pausedEngines.TryRemove(startStop.Name, out bool _);
-                GoInfinite(-1, startStop.Name);
-            }
-        }
-
-        private void EngineInfoUserControl_ConfigEvent(object sender, string engineName)
-        {
-            _fileLogger?.LogInfo($"Config for {engineName}");
-            if (!_loadedUciInfos.ContainsKey(engineName))
-            {
-                return;
-            }
-            var uciConfigWindow = new UciConfigWindow(_loadedUciInfos[engineName],false,true, true) { Owner = this };
-            uciConfigWindow.ButtonConfigEvent += BtnConfig_Click;
-            var showDialog = uciConfigWindow.ShowDialog();
-            if (showDialog.HasValue && showDialog.Value)
-            {
-                var uciInfo = uciConfigWindow.GetUciInfo();
-
-                if (uciInfo.OptionValues != null)
-                {
-                    foreach (var uciInfoOptionValue in uciInfo.OptionValues)
-                    {
-                        SendToEngine(uciInfoOptionValue, uciInfo.Name);
-                    }
-                }
-            }
-            uciConfigWindow.ButtonConfigEvent -= BtnConfig_Click;
-        }
-
-        private void BtnConfig_Click(object sender, UciConfigWindow.ButtonConfigEventArgs configEventArgs)
-        {
-            SendToEngine(configEventArgs.ConfigCmd,configEventArgs.EngineName);
-        }
-
-
-        private void EngineInfoUserControl_CloseEvent(object sender, string engineName)
-        {
-            _fileLogger?.LogInfo($"EngineControl for {engineName} closed");
-            var loadedUciEngine = _loadedEngines[engineName];
-            loadedUciEngine.UciEngine.Stop();
-            loadedUciEngine.UciEngine.IsReady();
-            loadedUciEngine.UciEngine.Quit();
-            loadedUciEngine.UciEngine.StopProcess();
-            _loadedUciInfos.Remove(engineName);
-            _loadedEngines.Remove(engineName);
-            _logWindow?.RemoveFor(engineName);
-            var infoUserControl = stackPanelEngines.Children.Cast<EngineInfoUserControl>()
-                .FirstOrDefault(f => f.EngineName.Equals(engineName));
-            if (infoUserControl != null)
-            {
-                infoUserControl.CloseEvent -= EngineInfoUserControl_CloseEvent;
-                infoUserControl.MultiPvEvent -= EngineInfoUserControl_MultiPvEvent;
-            }
-
-            _firstEngineName = string.Empty;
-            List<EngineInfoUserControl> engineInfoUserControls;
-            if (_whiteOnTop)
-            {
-                engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().Where(c => !c.EngineName.Equals(engineName)).OrderBy(c => c.Color).ToList();
-            }
-            else
-            {
-                engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().Where(c => !c.EngineName.Equals(engineName)).OrderByDescending(c => c.Color).ToList();
-            }
-            stackPanelEngines.Children.Clear();
-            foreach (var engineInfoUserControl in engineInfoUserControls)
-            {
-                if (engineInfoUserControl.Color == Fields.COLOR_EMPTY)
-                {
-                    continue;
-                }
-                if (string.IsNullOrWhiteSpace(_firstEngineName))
-                {
-                    _firstEngineName = engineInfoUserControl.EngineName;
-                }
-                stackPanelEngines.Children.Add(engineInfoUserControl);
-            }
-            foreach (var engineInfoUserControl in engineInfoUserControls)
-            {
-                if (engineInfoUserControl.Color != Fields.COLOR_EMPTY)
-                {
-                    continue;
-                }
-                stackPanelEngines.Children.Add(engineInfoUserControl);
-            }
-            _fileLogger?.LogDebug(@"Set to first engine: {_firstEngineName}");
-            if (stackPanelEngines.Children.Count == 0)
-            {
-                Close();
-            }
-        }
-
         public void SetOptions()
         {
             foreach (var engine in _loadedEngines)
@@ -413,14 +301,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             foreach (var engine in _loadedEngines)
             {
                 engine.Value.UciEngine.IsReady();
-            }
-        }
-
-        public void SetOptions(string name)
-        {
-            if (_loadedEngines.ContainsKey(name))
-            {
-                _loadedEngines[name].SetConfigValues();
             }
         }
 
@@ -445,8 +325,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _lastCommand = string.Empty;
+            CurrentColor(Fields.COLOR_WHITE);
         }
-
 
         public void AddMove(string fromField, string toField, string promote, string engineName = "")
         {
@@ -522,7 +402,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
         }
-
 
         public void Stop(string engineName = "")
         {
@@ -678,14 +557,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastCommand = "infinite";
         }
 
-        public void MakeMove(string fromField, string toField, string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "")
+        public void CurrentColor(int color)
         {
-            _fileLogger?.LogInfo($"Send MakeMove {fromField}-{toField} wTime:{wTime}  bTime{bTime} wInc{wInc}  bInc:{bInc} ");
-            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            
+            _currentColor = color;
+            List<EngineInfoUserControl> engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().ToList();
+            foreach (var engineInfoUserControl in engineInfoUserControls)
             {
-                engine.Value.UciEngine.MakeMove(fromField, toField, wTime, bTime, wInc, bInc);
+                if (engineInfoUserControl.Color == Fields.COLOR_EMPTY)
+                {
+                    engineInfoUserControl.CurrentColor(_currentColor);
+                }
             }
         }
+
         private void EngineInfoUserControl_MultiPvEvent(object sender, EngineInfoUserControl.MultiPvEventArgs e)
         {
             if (_loadedEngines.ContainsKey(e.Name))
@@ -786,7 +671,120 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetConfigValue("EngineWindowHideInfo", _hideInfo);
         }
 
+        private void LogWindow_SendEvent(object sender, LogWindow.SendEventArgs e)
+        {
+            if (_loadedEngines.ContainsKey(e.EngineName))
+            {
+                _loadedEngines[e.EngineName].UciEngine.SendToEngine(e.Command);
+            }
+        }
 
+        private void FileLogger_UciCommunicationEvent(object sender, UciEventArgs e)
+        {
+            _logWindow?.ShowLog(e.Name, e.Command.Replace("<<", string.Empty).Replace(">>", string.Empty), e.Direction);
+        }
+
+        private void EngineInfoUserControl_StartStopEvent(object sender, EngineInfoUserControl.StartStopEventArgs startStop)
+        {
+            if (startStop.Stop)
+            {
+                _pausedEngines[startStop.Name] = true;
+                Stop(startStop.Name);
+            }
+            else
+            {
+                _pausedEngines.TryRemove(startStop.Name, out bool _);
+                GoInfinite(-1, startStop.Name);
+            }
+        }
+
+        private void EngineInfoUserControl_ConfigEvent(object sender, string engineName)
+        {
+            _fileLogger?.LogInfo($"Config for {engineName}");
+            if (!_loadedUciInfos.ContainsKey(engineName))
+            {
+                return;
+            }
+            var uciConfigWindow = new UciConfigWindow(_loadedUciInfos[engineName], false, true, true) { Owner = this };
+            uciConfigWindow.ButtonConfigEvent += BtnConfig_Click;
+            var showDialog = uciConfigWindow.ShowDialog();
+            if (showDialog.HasValue && showDialog.Value)
+            {
+                var uciInfo = uciConfigWindow.GetUciInfo();
+
+                if (uciInfo.OptionValues != null)
+                {
+                    foreach (var uciInfoOptionValue in uciInfo.OptionValues)
+                    {
+                        SendToEngine(uciInfoOptionValue, uciInfo.Name);
+                    }
+                }
+            }
+            uciConfigWindow.ButtonConfigEvent -= BtnConfig_Click;
+        }
+
+        private void BtnConfig_Click(object sender, UciConfigWindow.ButtonConfigEventArgs configEventArgs)
+        {
+            SendToEngine(configEventArgs.ConfigCmd, configEventArgs.EngineName);
+        }
+
+
+        private void EngineInfoUserControl_CloseEvent(object sender, string engineName)
+        {
+            _fileLogger?.LogInfo($"EngineControl for {engineName} closed");
+            var loadedUciEngine = _loadedEngines[engineName];
+            loadedUciEngine.UciEngine.Stop();
+            loadedUciEngine.UciEngine.IsReady();
+            loadedUciEngine.UciEngine.Quit();
+            loadedUciEngine.UciEngine.StopProcess();
+            _loadedUciInfos.Remove(engineName);
+            _loadedEngines.Remove(engineName);
+            _logWindow?.RemoveFor(engineName);
+            var infoUserControl = stackPanelEngines.Children.Cast<EngineInfoUserControl>()
+                .FirstOrDefault(f => f.EngineName.Equals(engineName));
+            if (infoUserControl != null)
+            {
+                infoUserControl.CloseEvent -= EngineInfoUserControl_CloseEvent;
+                infoUserControl.MultiPvEvent -= EngineInfoUserControl_MultiPvEvent;
+            }
+
+            _firstEngineName = string.Empty;
+            List<EngineInfoUserControl> engineInfoUserControls;
+            if (_whiteOnTop)
+            {
+                engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().Where(c => !c.EngineName.Equals(engineName)).OrderBy(c => c.Color).ToList();
+            }
+            else
+            {
+                engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().Where(c => !c.EngineName.Equals(engineName)).OrderByDescending(c => c.Color).ToList();
+            }
+            stackPanelEngines.Children.Clear();
+            foreach (var engineInfoUserControl in engineInfoUserControls)
+            {
+                if (engineInfoUserControl.Color == Fields.COLOR_EMPTY)
+                {
+                    continue;
+                }
+                if (string.IsNullOrWhiteSpace(_firstEngineName))
+                {
+                    _firstEngineName = engineInfoUserControl.EngineName;
+                }
+                stackPanelEngines.Children.Add(engineInfoUserControl);
+            }
+            foreach (var engineInfoUserControl in engineInfoUserControls)
+            {
+                if (engineInfoUserControl.Color != Fields.COLOR_EMPTY)
+                {
+                    continue;
+                }
+                stackPanelEngines.Children.Add(engineInfoUserControl);
+            }
+            _fileLogger?.LogDebug(@"Set to first engine: {_firstEngineName}");
+            if (stackPanelEngines.Children.Count == 0)
+            {
+                Close();
+            }
+        }
 
     }
 }

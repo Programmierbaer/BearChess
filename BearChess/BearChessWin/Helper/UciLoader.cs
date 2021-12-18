@@ -32,7 +32,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Process _engineProcess;
         private readonly UciInfo _uciInfo;
         private readonly ILogging _logger;
-        private  bool _lookForBookMoves;
+        private bool _lookForBookMoves;
         private readonly ConcurrentQueue<string> _waitForFromEngine = new ConcurrentQueue<string>();
         private readonly ConcurrentQueue<string> _sendToUciEngine = new ConcurrentQueue<string>();
         private volatile bool _waitFor = false;
@@ -160,7 +160,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _allMoves.Add($"position fen {fen} moves");
             _bookMove = null;
             _lookForBookMoves = false;
-
         }
 
         public void AddMove(string fromField, string toField, string promote)

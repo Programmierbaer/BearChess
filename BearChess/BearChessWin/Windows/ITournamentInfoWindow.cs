@@ -9,5 +9,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void Show();
         void Close();
         void CloseInfoWindow();
+        void SetReadOnly();
+
+        event EventHandler Closed;
     }
 }

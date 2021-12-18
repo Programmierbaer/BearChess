@@ -238,5 +238,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// Indicates if there a draw by to less material on board
         /// </summary>
         bool DrawByMaterial { get; }
+
+        bool DrawBy50Moves { get; }
     }
 }

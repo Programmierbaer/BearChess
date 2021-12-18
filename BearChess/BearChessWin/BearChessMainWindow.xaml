@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded" Activated="BearChessMainWindow_OnActivated"
         mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke"
         Title="BearChess" Height="740" Width="650" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
     <StackPanel>
@@ -41,6 +41,12 @@
                                   Click="MenuItemLoadDuel_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/file_manager.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Pause after game" Name="menuItemPauseDuelGame"
+                                  Click="PauseDuelGame_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/tick.png" Name="imagePauseDuelGame" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
@@ -146,6 +152,12 @@
                                   Click="MenuItemEngineShowHash_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageEngineShowHash" Source="Assets/Icons/tick.png" Visibility="Visible" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemEngineShowForWhite" Header="From the point of view of White"
+                                  Click="MenuItemEngineShowForWhite_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageEngineShowForWhite" Source="Assets/Icons/tick.png" Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>

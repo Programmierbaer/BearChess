@@ -199,6 +199,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ShowMove();
         }
 
+        public string GetWhiteMove
+        {
+            get => _color == Fields.COLOR_WHITE ? _move : string.Empty;
+        }
+
+        public string GetBlackMove
+        {
+            get => _color == Fields.COLOR_BLACK ? _move : string.Empty;
+        }
+
         private void ShowMove()
         {
             if (string.IsNullOrWhiteSpace(_move))

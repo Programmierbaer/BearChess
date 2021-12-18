@@ -8,7 +8,7 @@ using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 using System.Management;
-
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 
 namespace www.SoLaNoSoft.com.BearChessTools
@@ -53,17 +53,21 @@ namespace www.SoLaNoSoft.com.BearChessTools
             return result.ToArray();
         }
 
-        public static string[] GetBTComPort(string boardName, Configuration configuration)
+        public static string[] GetBTComPort(string boardName, Configuration configuration, ILogging fileLogger)
         {
+            fileLogger?.LogInfo($"Get BT com ports for {boardName}");
             string boardDevice = boardName.Equals("Certabo", StringComparison.OrdinalIgnoreCase)
                                      ? "raspberrypi"
                                      : "MILLENNIUM CHESS";
             try
             {
                 var cli = new BluetoothClient();
+                fileLogger?.LogInfo("Discover BT devices...");
                 IReadOnlyCollection<BluetoothDeviceInfo> bluetoothDeviceInfos = cli.DiscoverDevices();
+                fileLogger?.LogInfo($"{bluetoothDeviceInfos.Count} devices found");
                 foreach (var bluetoothDeviceInfo in bluetoothDeviceInfos)
                 {
+                    fileLogger?.LogInfo($"Check {bluetoothDeviceInfo.DeviceName}");
                     var deviceName = bluetoothDeviceInfo.DeviceName;
                     if (boardName.Equals("Certabo", StringComparison.OrdinalIgnoreCase) &&
                         deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
@@ -71,6 +75,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
                         // Certabo
                         try
                         {
+                            fileLogger?.LogInfo("Open Certabo BT endpoint");
                             var bluetoothEndPoint =
                                 new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress, BluetoothService.SerialPort,
                                                       10);
@@ -79,6 +84,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
                                 cli.Connect(bluetoothEndPoint);
                                 if (cli.Connected)
                                 {
+                                    fileLogger?.LogInfo("Connected");
                                     cli.Close();
                                     configuration.Save(bluetoothDeviceInfo.DeviceAddress);
                                     var list = new List<string>(GetPortNames());
@@ -87,9 +93,9 @@ namespace www.SoLaNoSoft.com.BearChessTools
                                 }
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            //
+                            fileLogger?.LogError(ex);
                         }
 
                         break;
@@ -98,6 +104,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
                     if (deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
                     {
+                        fileLogger?.LogInfo("Set service as serial port for Millennium ChessLink");
                         // Millennium
                         bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
                         break;

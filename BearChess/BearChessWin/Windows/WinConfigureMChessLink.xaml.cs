@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,8 @@ using System.Threading;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 
@@ -22,18 +25,35 @@ namespace www.SoLaNoSoft.com.BearChessWin
  
         private List<string> _allPortNames;
         private MChessLinkLoader _loader;
+        private readonly ILogging _fileLogger;
 
         public WinConfigureMChessLink(Configuration configuration, bool useBluetooth)
         {
             InitializeComponent();
             _allPortNames = new List<string> { "<auto>" };
             List<string> portNames;
-
-            if (useBluetooth) { 
+            _fileName = Path.Combine(configuration.FolderPath, MChessLinkLoader.EBoardName, $"{MChessLinkLoader.EBoardName}Cfg.xml");
+            var fileInfo = new FileInfo(_fileName);
+            if (!Directory.Exists(fileInfo.DirectoryName))
+            {
+                Directory.CreateDirectory(fileInfo.DirectoryName);
+                Directory.CreateDirectory(Path.Combine(fileInfo.DirectoryName,"log"));
+            }
+            try
+            {
+                _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "MChessLinkCfg.log"), 10, 10);
+            }
+            catch
+            {
+                _fileLogger = null;
+            }
+            if (useBluetooth) 
+            { 
 
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
-                portNames = SerialCommunicationTools.GetBTComPort(MChessLinkLoader.EBoardName,configuration).ToList();
+                portNames = SerialCommunicationTools
+                            .GetBTComPort(MChessLinkLoader.EBoardName, configuration, _fileLogger).ToList();
                 comPortSearchWindow.Close();
 
             }
@@ -47,13 +67,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             comboBoxComPorts.ItemsSource = _allPortNames;
             comboBoxComPorts.SelectedIndex = 0;
 
-            _fileName = Path.Combine(configuration.FolderPath, MChessLinkLoader.EBoardName, $"{MChessLinkLoader.EBoardName}Cfg.xml");
-            var fileInfo = new FileInfo(_fileName);
-            if (!Directory.Exists(fileInfo.DirectoryName))
-            {
-                Directory.CreateDirectory(fileInfo.DirectoryName);
-            }
-
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             if (portNames.Count == 0)
             {
@@ -64,7 +77,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(_eChessBoardConfiguration.PortName);
             }
             var flashInSync = _eChessBoardConfiguration.FlashInSync;
-            var dimLeds = _eChessBoardConfiguration.DimLeds;
             sliderDim.Value = _eChessBoardConfiguration.DimLevel;
             radioButtonSync.IsChecked = flashInSync;
             radioButtonAlternate.IsChecked = !flashInSync;
@@ -106,33 +118,50 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCheck_OnClick(object sender, RoutedEventArgs e)
         {
-            var chessLinkLoader = new MChessLinkLoader(true, MChessLinkLoader.EBoardName);
-            var portName = comboBoxComPorts.SelectionBoxItem.ToString();
-            if (portName.Contains("auto"))
+            try
             {
-                var portNames = SerialCommunicationTools.GetPortNames().ToList();
-                foreach (var name in portNames)
+                var chessLinkLoader = new MChessLinkLoader(true, MChessLinkLoader.EBoardName);
+                var portName = comboBoxComPorts.SelectionBoxItem.ToString();
+                _fileLogger?.LogInfo($"Check com port {portName}");
+                if (portName.Contains("auto"))
                 {
-                    if (chessLinkLoader.CheckComPort(name))
+                    var portNames = SerialCommunicationTools.GetPortNames().ToList();
+                    foreach (var name in portNames)
                     {
-                        MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
-                        comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
-                        return;
+                        _fileLogger?.LogInfo($"Check for {name}");
+                        if (chessLinkLoader.CheckComPort(name))
+                        {
+                            _fileLogger?.LogInfo($"Check successful for {name}");
+                            MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK,
+                                            MessageBoxImage.Information);
+                            comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
+                            return;
+                        }
                     }
+                    _fileLogger?.LogInfo($"Check failed for all");
+                    MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                    return;
+
                 }
-                MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
 
+                if (chessLinkLoader.CheckComPort(portName))
+                {
+                    _fileLogger?.LogInfo($"Check successful for {portName}");
+                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
+                                    MessageBoxImage.Information);
+                    comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(portName);
+                }
+                else
+                {
+                    _fileLogger?.LogInfo($"Check failed for {portName}");
+                    MessageBox.Show($"Check failed for {portName} ", "Check", MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                }
             }
-
-            if (chessLinkLoader.CheckComPort(portName))
+            catch (Exception ex)
             {
-                MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
-                comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(portName);
-            }
-            else
-            {
-                MessageBox.Show($"Check failed for {portName} ", "Check", MessageBoxButton.OK, MessageBoxImage.Error);
+                _fileLogger?.LogError(ex);
             }
 
         }
