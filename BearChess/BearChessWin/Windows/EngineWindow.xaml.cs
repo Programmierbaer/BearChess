@@ -321,8 +321,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _fileLogger?.LogInfo("New game");
             foreach (var engine in _loadedEngines)
             {
-                engine.Value.UciEngine.NewGame();
+                engine.Value.UciEngine.NewGame(this);
             }
+         
 
             _lastCommand = string.Empty;
             CurrentColor(Fields.COLOR_WHITE);

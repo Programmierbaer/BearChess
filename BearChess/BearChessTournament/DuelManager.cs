@@ -32,6 +32,13 @@ namespace www.SoLaNoSoft.com.BearChessTournament
             return _currentDuel;
         }
 
+        public void Update(CurrentDuel currentDuel, int duelId)
+        {
+            _duelId = duelId;
+            _database.UpdateDuel(currentDuel,duelId);
+            _currentDuel = _database.LoadDuel(_duelId).CurrentDuel;
+        }
+
         public void SaveGame(DatabaseGame currentGame)
         {
             _database.SaveDuelGamePair(_duelId, _database.Save(currentGame));
@@ -59,8 +66,8 @@ namespace www.SoLaNoSoft.com.BearChessTournament
                                               _currentDuel.Players[1].Name,
                                               startFromBasePosition: _currentDuel.StartFromBasePosition, duelEngine: true, duelGames: _currentDuel.Cycles)
                               {
-                                  Round = 1,
-                                  CurrentDuelGame = gamesCount+1,
+                                  Round = gamesCount + 1,
+                                  CurrentDuelGame = gamesCount + 1,
                                   SwitchedColor = _currentDuel.DuelSwitchColor && !gamesCountIsEven
                               };
 

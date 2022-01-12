@@ -95,5 +95,19 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void FlashSync(bool flashSync);
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
         void SendCommand(string anyCommand);
+
+        string BatteryLevel { get; }
+        string BatteryStatus { get; }
+
+        void SetDemoMode(bool inDemoMode);
+        void AllowTakeBack(bool allowTakeBack);
+
+        void SetFen(string fen);
+        bool PieceRecognition { get; }
+
+        void Stop(bool stop);
+        void Ignore(bool ignore);
+
+        string Information { get; }
     }
 }

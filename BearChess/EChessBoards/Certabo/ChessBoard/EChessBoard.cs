@@ -12,9 +12,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
     {
         private readonly bool _useBluetooth;
 
-
         private readonly ICalibrateStorage _calibrateStorage;
-
 
         private readonly Dictionary<string, string> _boardCodesToChessPiece = new Dictionary<string, string>();
 
@@ -68,6 +66,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName,useBluetooth);
             _calibrateStorage = new CalibrateStorage(basePath);
             _logger = logger;
+            BatteryLevel = "100";
+            BatteryStatus = "Full";
             var calibrationData = _calibrateStorage.GetCalibrationData();
             if (!string.IsNullOrWhiteSpace(calibrationData.BasePositionCodes))
             {
@@ -75,13 +75,16 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 IsCalibrated = Calibrate(calibrationData);
             }
             IsConnected = EnsureConnection();
+            Information = "Certabo";
         }
 
         public EChessBoard(ILogging logger)
         {
             _isFirstInstance = true;
             _logger = logger;
-
+            BatteryLevel = "100";
+            BatteryStatus = "Full";
+            Information = "Certabo";
         }
 
 
@@ -194,6 +197,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         public override void DimLeds(int level)
         {
             // ignore
+        }
+
+        public override void SpeedLeds(int level)
+        {
+            //
         }
 
         public override void FlashSync(bool flashSync)
@@ -598,6 +606,16 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 return new DataFromBoard(fenLine.Contains(UnknownPieceCode) ? UnknownPieceCode : fenLine,
                     boardData.Repeated);
             }
+        }
+
+        protected override void SetToNewGame()
+        {
+            //
+        }
+
+        public override void SetFen(string fen)
+        {
+            //
         }
 
 

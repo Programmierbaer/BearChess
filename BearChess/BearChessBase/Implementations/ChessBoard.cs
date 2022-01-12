@@ -1464,7 +1464,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             for (var f = startField; f <= targetField; f++)
             {
                 var tmpFigure = _figures[f];
-                if (tmpFigure.FigureId == FigureId.NO_PIECE)
+                if (tmpFigure?.FigureId == FigureId.NO_PIECE)
                 {
                     noFigureCounter++;
                 }
@@ -1475,7 +1475,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         line = line + noFigureCounter;
                     }
                     noFigureCounter = 0;
-                    line = line + tmpFigure.FenFigureCharacter;
+                    line = line + tmpFigure?.FenFigureCharacter;
                 }
             }
             if (noFigureCounter > 0)

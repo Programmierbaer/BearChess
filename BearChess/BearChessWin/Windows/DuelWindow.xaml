@@ -123,6 +123,10 @@
                 <Image Source="../Assets/Icons/control_repeat_blue.png" Width="32" Height="32"></Image>
             </Button>
 
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonAdd" Click="ButtonAdd_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Increase number of games">
+                <Image Source="../Assets/Icons/plus_light_blue.png" Width="32" Height="32"></Image>
+            </Button>
+
             <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonDelete" Click="ButtonDelete_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete duel">
                 <Image Source="../Assets/Icons/bin.png" Width="32" Height="32"></Image>
             </Button>

@@ -31,11 +31,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         private bool _piecesFenBasePosition;
         private string _lastChangedFigure = string.Empty;
         private string _lastFenColor = string.Empty;
+        
 
         public event EventHandler<string> MoveEvent;
         public event EventHandler<string> FenEvent;
         public event EventHandler BasePositionEvent;
         public event EventHandler AwaitedPosition;
+        public event EventHandler BatteryChangedEvent;
 
         protected AbstractEBoardWrapper(string name, string basePath)
         {
@@ -109,6 +111,20 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _board?.SendCommand(anyCommand);
         }
 
+        public string BatteryLevel => _board?.BatteryLevel;
+        public string BatteryStatus => _board?.BatteryStatus;
+        public string Information => _board?.Information;
+        public void AllowTakeBack(bool allowTakeBack)
+        {
+            _board?.AllowTakeBack(allowTakeBack);
+        }
+
+        public bool PieceRecognition => _board?.PieceRecognition ?? true;
+        public void Ignore(bool ignore)
+        {
+            _board?.Ignore(ignore);
+        }
+
         protected abstract IEBoard GetEBoard();
         protected abstract IEBoard GetEBoard(bool check);
 
@@ -121,6 +137,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
                 _inReplayMode = false;
             }
+
+            _board?.SetDemoMode(inDemoMode);
         }
 
         /// <inheritdoc />
@@ -258,6 +276,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
             _internalChessBoard.NewGame();
             _internalChessBoard.SetPosition(fen);
+            _board?.SetFen(fen);
             var position = _internalChessBoard.GetPosition();
             if (string.IsNullOrWhiteSpace(allMoves))
             {
@@ -307,11 +326,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void Stop()
         {
             _stop = true;
+            _board.Stop(_stop);
+            
         }
 
         public void Continue()
         {
             _stop = false;
+            _board.Stop(_stop);
         }
 
         public void PlayWithWhite(bool withWhite)
@@ -375,6 +397,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             string prevFen = string.Empty;
             string potentialMove = string.Empty;
             string changedFenHelper = string.Empty;
+            string batteryLevel = string.Empty;
             _fileLogger?.LogDebug("C: Handle board");
             while (!_stopCommunication)
             {
@@ -439,6 +462,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     BasePositionEvent?.Invoke(this, null);
                 }
 
+                if (!batteryLevel.Equals(_board?.BatteryLevel))
+                {
+                    batteryLevel = _board?.BatteryLevel;
+                    BatteryChangedEvent?.Invoke(this, null);
+                }
                 if (!string.IsNullOrWhiteSpace(waitForFen))
                 {
                     //_board?.SetAllLedsOff();

@@ -449,6 +449,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _chessBoard = null;
             }
+            ShowControlButtons(false);
         }
 
         public void ClearPosition()

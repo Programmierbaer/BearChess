@@ -153,13 +153,18 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             _isFirstInstance = isFirstInstance;
             Version = string.Empty;
             Eprom = string.Empty;
+            BatteryLevel = "100";
+            BatteryStatus = "Full";
             IsConnected = EnsureConnection();
+            Information = "Millennium ChessLink";
         }
 
         public EChessBoard(ILogging logger)
         {
             _isFirstInstance = true;
             _logger = logger;
+            BatteryLevel = "100";
+            BatteryStatus = "Full";
         }
 
         public override bool CheckComPort(string portName)
@@ -179,6 +184,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     if (readLine.Length > 0 && readLine.StartsWith("v"))
                     {
                         Version = readLine;
+                        Information = $"Millennium ChessLink {Version}";
                     }
                     readLine = _serialCommunication.GetRawFromBoard("R00");
 
@@ -312,6 +318,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
         }
 
+        public override void SpeedLeds(int level)
+        {
+            //
+        }
+
         public override void FlashSync(bool flashSync)
         {
             _flashSync = flashSync;
@@ -383,6 +394,16 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
             return new DataFromBoard(result.Substring(0, result.Length - 1), dataFromBoard.Repeated);
 
+        }
+
+        protected override void SetToNewGame()
+        {
+            //
+        }
+
+        public override void SetFen(string fen)
+        {
+            //
         }
 
         private string GetFenLine(string substring)

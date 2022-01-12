@@ -51,6 +51,10 @@
       <Project>{72bad856-2f5e-45db-9ff1-42d68a4998f5}</Project>
       <Name>BearChessBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\BearChessCommunication\BearChessCommunication.csproj">
+      <Project>{a8118cc3-827d-4635-8613-345b190ee763}</Project>
+      <Name>BearChessCommunication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\BearChessEChessBoard\BearChessEChessBoard\BearChessEChessBoard.csproj">
       <Project>{a6bcdc78-1edc-40c7-936f-880423360ba3}</Project>
       <Name>BearChessEChessBoard</Name>

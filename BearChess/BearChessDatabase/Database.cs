@@ -1161,9 +1161,6 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             return allGames;
         }
 
-      
-
-
         public bool IsDuelGame(int gameId)
         {
             if (_inError)
@@ -1183,7 +1180,56 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             _connection.Close();
             return isDuelGame;
         }
-        
+
+        public void UpdateDuel(CurrentDuel engineDuel, int id)
+        {
+            if (_inError)
+            {
+                return;
+            }
+
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return;
+                }
+            }
+
+            _connection.Open();
+
+            try
+            {
+
+                var aSerializer = new XmlSerializer(typeof(CurrentDuel));
+                var sb = new StringBuilder();
+                var sw = new StringWriter(sb);
+                aSerializer.Serialize(sw, engineDuel);
+                var xmlResult = sw.GetStringBuilder().ToString();
+                var sql = @"UPDATE duel SET gamesToPlay=@gamesToPlay, configXML=@configXML
+                           WHERE ID=@ID; ";
+                using (var command2 = new SQLiteCommand(sql, _connection))
+                {
+                    command2.Parameters.Add("@ID", DbType.Int32).Value = id;
+                    command2.Parameters.Add("@gamesToPlay", DbType.Int32).Value = engineDuel.Cycles;
+                    command2.Parameters.Add("@configXML", DbType.String).Value = xmlResult;
+                    command2.ExecuteNonQuery();
+                }
+
+             
+            }
+            catch (Exception ex)
+            {
+
+                _logging?.LogError(ex);
+
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+        }
         #endregion
 
         #region Tournament

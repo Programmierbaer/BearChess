@@ -210,7 +210,7 @@
                 </Border>
 
                 <Border Grid.Column="0" Grid.Row="5" BorderBrush="Gray" BorderThickness="0"
-                        Margin="5"
+                        Margin="5" Grid.ColumnSpan="2"
                         Visibility="Visible" HorizontalAlignment="Left">
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
@@ -221,7 +221,7 @@
                             <Image Source="../Assets/Icons/file_manager.png" Width="32" Height="32" />
                         </Button>
                         <Label Width="70" VerticalAlignment="Center">Database:</Label>
-                        <Label Name="labelDatabaseName" Width="190" VerticalAlignment="Center">??????????????????</Label>
+                        <Label Name="labelDatabaseName" Width="490" VerticalAlignment="Center">??????????????????</Label>
                     </StackPanel>
                 </Border>
 

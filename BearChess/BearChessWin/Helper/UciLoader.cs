@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Windows;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessDatabase;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
-    public class UciLoader
+    public sealed class UciLoader
     {
 
         public class EngineEventArgs : EventArgs
@@ -47,7 +47,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public UciLoader(UciInfo uciInfo, ILogging logger,  bool lookForBookMoves)
         {
-            
             _uciInfo = uciInfo;
             _logger = logger;
             _lookForBookMoves = lookForBookMoves;
@@ -87,7 +86,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _engineProcess.Start();
             _engineProcess.Exited += EngineProcess_Exited;
             _engineProcess.Disposed += EngineProcess_Disposed;
-            Thread thread = new Thread(InitEngine) { IsBackground = true };
+            var thread = new Thread(InitEngine) { IsBackground = true };
             thread.Start();
             if (!thread.Join(10000))
             {
@@ -131,14 +130,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        public void NewGame()
+        public void NewGame(Window ownerWindow)
         {
             _allMoves.Clear();
             _allMoves.Add("position startpos moves");
             SendToEngine("ucinewgame");
             _bookMove = _lookForBookMoves ? _openingBook?.GetMove(new BookMove(string.Empty,string.Empty,0)) : null;
             IsReady();
-            
+            if (_uciInfo.WaitForStart)
+            {
+                var engineWaitWindow = new EngineWaitWindow(_uciInfo.Name, _uciInfo.WaitSeconds)
+                                       {
+                                           Owner = ownerWindow
+                                       };
+                engineWaitWindow.ShowDialog();
+            }
         }
 
         public void SetFen(string fen, string moves)
@@ -148,14 +154,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            if (string.IsNullOrWhiteSpace(moves))
-            {
-                SendToEngine($"position fen {fen}");
-            }
-            else
-            {
-                SendToEngine($"position fen {fen} moves {moves}");
-            }
+
+            SendToEngine(string.IsNullOrWhiteSpace(moves)
+                             ? $"position fen {fen}"
+                             : $"position fen {fen} moves {moves}");
             _allMoves.Clear();
             _allMoves.Add($"position fen {fen} moves");
             _bookMove = null;
@@ -166,7 +168,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _logger?.LogDebug($"Add move: {fromField}{toField}{promote}");
             _allMoves.Add($"{fromField}{toField}{promote}".Trim().ToLower());
-            _bookMove = _lookForBookMoves ?  _openingBook?.GetMove(_allMoves.ToArray()) : null;
+            _bookMove = _lookForBookMoves ? _openingBook?.GetMove(_allMoves.ToArray()) : null;
             if (_bookMove != null && !_bookMove.EmptyMove)
             {
                 _logger?.LogDebug($"Book move: {_bookMove.FromField}{_bookMove.ToField}");
@@ -241,9 +243,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_bookMove == null || _bookMove.EmptyMove)
             {
                 if (wInc == "0" && bInc == "0")
+                {
                     SendToEngine($"go wtime {wTime} btime {bTime}");
+                }
                 else
+                {
                     SendToEngine($"go wtime {wTime} btime {bTime} winc {wInc} binc {bInc}");
+                }
             }
             else
             {
@@ -304,7 +310,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SendToEngine(string command)
         {
-            // _logger?.LogDebug($"SendToEngine: {command}");
             if (command.Equals("clear"))
             {
                 while (!_waitForFromEngine.IsEmpty)
@@ -400,7 +405,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         _logger?.LogDebug($">> {commandToEngine}");
                         try
                         {
-                            _engineProcess.StandardInput.WriteLine(commandToEngine);
+                            _engineProcess.StandardInput.Write(commandToEngine);
+                            _engineProcess.StandardInput.Write("\n");
                         }
                         catch (Exception ex)
                         {
@@ -426,7 +432,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             try
             {
                 _logger?.LogDebug(">> uci");
-                _engineProcess.StandardInput.WriteLine("uci");
+                _engineProcess.StandardInput.Write("uci");
+                _engineProcess.StandardInput.Write("\n");
                 string waitingFor = "uciok";
                 while (true)
                 {
@@ -438,7 +445,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             waitingFor = "readyok";
                             _logger?.LogDebug(">> isready");
-                            _engineProcess.StandardInput.WriteLine("isready");
+                            _engineProcess.StandardInput.Write("isready");
+                            _engineProcess.StandardInput.Write("\n");
                             continue;
                         }
                         break;
@@ -451,7 +459,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        protected virtual void OnEngineReadingEvent(EngineEventArgs e)
+        private void OnEngineReadingEvent(EngineEventArgs e)
         {
             EngineReadingEvent?.Invoke(this, e);
         }

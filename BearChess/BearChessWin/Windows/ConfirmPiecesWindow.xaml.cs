@@ -270,6 +270,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     return;
                 }
                 var allFiles = Directory.GetFiles(_path, "*.png", SearchOption.TopDirectoryOnly);
+                if (allFiles.Length == 1)
+                {
+                    BoardPiecesSetup.WhiteKingFileName = allFiles[0];
+                    LoadBigImage(BoardPiecesSetup.WhiteKingFileName);
+                    return;
+                }
                 foreach (var allFile in allFiles)
                 {
                     var fileInfo = new FileInfo(allFile);

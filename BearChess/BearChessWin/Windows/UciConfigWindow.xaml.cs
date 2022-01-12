@@ -88,6 +88,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             radioButtonFlexible.IsChecked = variation == OpeningBook.VariationsEnum.Flexible;
             radioButtonWide.IsChecked = variation == OpeningBook.VariationsEnum.Wide;
             checkBoxUseOpeningBook.IsEnabled = installedBooks.Length > 0;
+            checkBoxWaitForStart.IsChecked = uciInfo.WaitForStart;
+            numericUpDownUserControlWait.Value = uciInfo.WaitSeconds;
             if (!string.IsNullOrWhiteSpace(uciInfo.OpeningBook))
             {
                 for (int i = 0; i < installedBooks.Length; i++)
@@ -177,7 +179,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 OpeningBookVariation = GetVariation(),
                 AdjustStrength = false,
                 CommandParameter = textBlockFileParameter.Text,
-                LogoFileName = textBlockLogoFileName.Text
+                LogoFileName = textBlockLogoFileName.Text,
+                WaitForStart = checkBoxWaitForStart.IsChecked.HasValue && checkBoxWaitForStart.IsChecked.Value,
+                WaitSeconds = numericUpDownUserControlWait.Value
             };
             foreach (var uciInfoOption in _uciInfo.Options)
             {
@@ -721,6 +725,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                 }
             }
+        }
+
+        private void CheckBoxWaitForStart_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            numericUpDownUserControlWait.IsEnabled = false;
+        }
+
+        private void CheckBoxWaitForStart_OnChecked(object sender, RoutedEventArgs e)
+        {
+            numericUpDownUserControlWait.IsEnabled = true;
         }
     }
 }

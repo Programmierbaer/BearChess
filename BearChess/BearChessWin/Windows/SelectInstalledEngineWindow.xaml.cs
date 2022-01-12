@@ -110,6 +110,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     SelectedEngine.AdjustStrength = uciInfo.AdjustStrength;
                     SelectedEngine.CommandParameter = uciInfo.CommandParameter;
                     SelectedEngine.LogoFileName = uciInfo.LogoFileName;
+                    SelectedEngine.WaitForStart = uciInfo.WaitForStart;
+                    SelectedEngine.WaitSeconds = uciInfo.WaitSeconds;
                     foreach (var uciInfoOptionValue in uciInfo.OptionValues)
                     {
                         SelectedEngine.AddOptionValue(uciInfoOptionValue);
@@ -167,7 +169,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var showDialog = openFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
-                LoadNewEngine(openFileDialog.FileName);
+                LoadNewEngine(openFileDialog.FileName, string.Empty, string.Empty);
             }
         }
 
@@ -190,13 +192,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
 
-        private void LoadNewEngine(string fileName)
+        private void LoadNewEngine(string fileName, string parameters, string engineName)
         {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return;
+            }
             try
             {
-                string parameters = string.Empty;
+                //string parameters = string.Empty;
                 string avatarName = string.Empty;
-                if (fileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase))
+                if (fileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase) && string.IsNullOrWhiteSpace(parameters))
                 {
                     var fileInfo = new FileInfo(fileName);
                     string enginesList = Path.Combine(fileInfo.DirectoryName, "Engines.lst");
@@ -217,7 +223,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         return;
                     }
                 }
-                if (fileName.EndsWith("avatar.exe", StringComparison.InvariantCultureIgnoreCase))
+                if (fileName.EndsWith("avatar.exe", StringComparison.InvariantCultureIgnoreCase) && string.IsNullOrWhiteSpace(parameters))
                 {
                     var fileInfo = new FileInfo(fileName);
                     string avatars = Path.Combine(fileInfo.DirectoryName, "avatar_weights");
@@ -262,6 +268,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 UciInstaller uciInstaller = new UciInstaller();
                 UciInfo uciInfo = uciInstaller.Install(fileName, parameters);
+                if (!string.IsNullOrWhiteSpace(engineName))
+                {
+                    uciInfo.Name = engineName;
+                }
                 if (!uciInfo.Valid)
                 {
                     throw new Exception($"{uciInfo.FileName} is not a valid UCI engine");
@@ -359,7 +369,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (files != null)
                 {
                     var fileInfo = new FileInfo(files[0]);
-                    LoadNewEngine(fileInfo.FullName);
+                    LoadNewEngine(fileInfo.FullName, string.Empty, string.Empty);
                 }
             }
         }
@@ -377,6 +387,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
+            }
+        }
+
+        private void ButtonAddConfigure_OnClick(object sender, RoutedEventArgs e)
+        {
+            var selectFileAndParameterWindow = new SelectFileAndParameterWindow
+                                               {
+                                                   Owner = this
+                                               };
+            var showDialog = selectFileAndParameterWindow.ShowDialog();
+            if (showDialog.HasValue && showDialog.Value)
+            {
+                LoadNewEngine(selectFileAndParameterWindow.Filename,selectFileAndParameterWindow.Parameter, selectFileAndParameterWindow.EngineName);
             }
         }
     }

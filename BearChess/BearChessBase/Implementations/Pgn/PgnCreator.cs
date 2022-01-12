@@ -101,6 +101,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
                 }
                 else
                 {
+
                     pgnMove = move.ToFieldName.ToLower();
                 }
 

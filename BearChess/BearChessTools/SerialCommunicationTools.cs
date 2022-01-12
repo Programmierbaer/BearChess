@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
-using System.Security.Principal;
-using System.Threading.Tasks;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
@@ -13,7 +10,7 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessTools
 {
-    public class SerialCommunicationTools
+    public static class SerialCommunicationTools
     {
         private const string Win32_SerialPort = "Win32_SerialPort";
 

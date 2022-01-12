@@ -128,6 +128,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         event EventHandler BasePositionEvent;
 
+        event EventHandler BatteryChangedEvent;
+
         /// <summary>
         /// Return a best move
         /// </summary>
@@ -179,6 +181,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         /// <returns></returns>
         bool IsOnBasePosition();
+
+        string BatteryLevel { get; }
+        string BatteryStatus { get; }
+        string Information { get; }
+        void AllowTakeBack(bool allowTakeBack);
+        bool PieceRecognition { get; }
+
+        void Ignore(bool ignore);
 
     }
 }

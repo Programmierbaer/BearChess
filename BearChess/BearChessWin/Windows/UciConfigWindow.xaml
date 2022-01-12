@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="UCI Engine Configuration" Height="720" Width="400" SizeToContent="Width">
+        Title="UCI Engine Configuration" Height="770" Width="400" SizeToContent="Width">
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Name="textBlockName" Margin="5">Name:</TextBlock>
@@ -36,6 +36,14 @@
                 </Grid.ColumnDefinitions>
             </Grid>
          </ScrollViewer>
+        </Border>
+        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="5" Text="Wait for new game:" VerticalAlignment="Center" FontWeight="DemiBold"></TextBlock>
+                <CheckBox VerticalAlignment="Center" Name="checkBoxWaitForStart" Margin="5" Unchecked="CheckBoxWaitForStart_OnUnchecked" Checked="CheckBoxWaitForStart_OnChecked"></CheckBox>
+                <local:NumericUpDownUserControl Margin="30,0,0,0" Width="70" x:Name="numericUpDownUserControlWait" MaxValue="120" MinValue="0" IsEnabled="False" ToolTip="0 seconds = until button click"></local:NumericUpDownUserControl>
+                <TextBlock Margin="5" Text="sec." VerticalAlignment="Center" ></TextBlock>
+            </StackPanel>
         </Border>
         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
             <StackPanel Orientation="Horizontal">

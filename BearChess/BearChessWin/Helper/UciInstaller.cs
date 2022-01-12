@@ -52,12 +52,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ReadFromEngine()
         {
+            
             try
             {
-                _engineProcess.StandardInput.WriteLine("uci");
                 string waitingFor = "uciok";
+                _engineProcess.StandardInput.Write("uci");
+                _engineProcess.StandardInput.Write("\n");
+                
                 while (true)
                 {
+                    if (_engineProcess.StandardOutput.Peek() <= 0)
+                    {
+                        _engineProcess.StandardInput.WriteLine("uci");
+                    }
                     var readToEnd = _engineProcess.StandardOutput.ReadLine();
 
                     if (!string.IsNullOrWhiteSpace(readToEnd) && readToEnd.Equals(waitingFor))
@@ -80,6 +87,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             _uciInfo.Author = readToEnd.Substring("id author".Length).Trim();
                         }
+
                     }
 
                 }

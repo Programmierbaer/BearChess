@@ -27,6 +27,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected ILogging _logger;
         protected bool _playWithWhite = true;
         protected bool _isFirstInstance;
+        protected bool _inDemoMode = false;
+        protected bool _allowTakeBack;
+        private bool _pieceRecognition = true;
+        protected bool _stopReading = false;
+        protected bool _ignoreReading = false;
+
 
         public bool IsCalibrated { get; protected set; }
         public bool PiecesAreOnBasePosition { get; protected set; }
@@ -52,6 +58,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void DimLeds(bool dimLeds);
 
         public abstract void DimLeds(int level);
+        public abstract void SpeedLeds(int level);
 
         public abstract void FlashSync(bool flashSync);
 
@@ -60,6 +67,39 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void Calibrate();
 
         public abstract DataFromBoard GetPiecesFen();
+
+        protected abstract void SetToNewGame();
+        public abstract void SetFen(string fen);
+
+        public bool PieceRecognition
+        {
+            get => _pieceRecognition;
+            set => _pieceRecognition = value;
+        }
+
+        public void Stop(bool stop)
+        {
+            _stopReading = stop;
+        }
+
+        public void Ignore(bool ignore)
+        {
+            _ignoreReading = ignore;
+        }
+
+        public  string BatteryLevel { get; protected set; }
+        public  string BatteryStatus { get; protected set; }
+        public  string Information { get; protected set; }
+        public void SetDemoMode(bool inDemoMode)
+        {
+            _inDemoMode = inDemoMode;
+        }
+
+        public void AllowTakeBack(bool allowTakeBack)
+        {
+            _allowTakeBack = allowTakeBack;
+        }
+
 
         public void PlayWithWhite()
         {
@@ -77,6 +117,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             _logger?.LogDebug("New game");
             EnsureConnection();
+            SetToNewGame();
+            _allowTakeBack = false;
         }
 
         public void SetComPort(string portName)

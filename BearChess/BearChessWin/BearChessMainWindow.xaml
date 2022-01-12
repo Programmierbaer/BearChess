@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded" Activated="BearChessMainWindow_OnActivated"
-        mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke"
+        mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke" LocationChanged="BearChessMainWindow_OnLocationChanged"
         Title="BearChess" Height="740" Width="650" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
     <StackPanel>
         <Grid>
@@ -324,6 +324,18 @@
                         </MenuItem>
 
                     </MenuItem>
+                    <MenuItem Header="DGT Pegasus" Name="menuItemPegasus">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/pegasus.png"  />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToPegasus" Header="Connect"
+                                  Click="MenuItemConnectPegasus_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/connect.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                    </MenuItem>
                     <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup"
                               Click="MenuItemConnectOnStartup_OnClick">
                         <MenuItem.Icon>
@@ -373,13 +385,14 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Info" Click="MenuItemInfo_OnClick" />
+                <MenuItem Header="Help" Click="MenuItemHelp_OnClick" />
             </Menu>
             <local:GraphicsChessBoardUserControl Margin="5,5,5,0" Grid.Column="0" Grid.Row="1"
                                                  x:Name="chessBoardUcGraphics" Visibility="Visible" />
 
         </Grid>
         <DockPanel Margin="5">
-            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect"
+            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect" 
                     Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonConnect_OnClick">
                 <StackPanel Orientation="Horizontal">
                     <Image Name="imageConnect" Source="Assets/Icons/disconnect.png" Width="16" />

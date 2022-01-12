@@ -2,12 +2,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
 using System.Threading;
-using InTheHand.Net.Bluetooth;
-using InTheHand.Net.Sockets;
+using www.SoLaNoSoft.com.BearChess.BearChessBTTools;
+using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessBTLETools;
 
 namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 {
@@ -260,11 +260,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 try
                 {
-                    if (_boardName.Equals("MChessLink"))
+                    if (_boardName.Equals("MChessLink",StringComparison.OrdinalIgnoreCase))
                     {
                         _comPort = new SerialComPort(comPort, 38400, Parity.Odd, 7, StopBits.One) {ReadTimeout = 1000, WriteTimeout = 1000};
                     }
-                    else
+                    if (_boardName.Equals("Certabo",StringComparison.OrdinalIgnoreCase))
                     {
                         if (comPort.Equals("BT"))
                         {
@@ -272,10 +272,38 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         }
                         else
                         {
-                            _comPort = new SerialComPort(comPort, 38400, Parity.None) {ReadTimeout = -1};
+                            _comPort = new SerialComPort(comPort, 38400, Parity.None) { ReadTimeout = 1000, WriteTimeout = 1000 }; ;
                         }
                     }
 
+                    if (_boardName.Equals("Pegasus", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                        {
+                            int counter = 0;
+                            SerialBTLECommunicationTools.StartWatching(_logger);
+                            while (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo("No BTLE Port for Pegasus");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceId);
+                        SerialBTLECommunicationTools.StopWatching();
+
+                    }
+
+                    if (_comPort == null)
+                    {
+                        _logger?.LogError("S: Check: No COM Port  ");
+                        return false;
+                    }
                     if (_comPort.IsOpen)
                     {
                         return false;
@@ -292,7 +320,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 }
                 catch (Exception ex)
                 {
-                    _logger?.LogDebug($"S: Error on open port {comPort}: {ex.Message}");
+                    _logger?.LogError($"S: Error on open port {comPort}: {ex.Message}");
                     //
                 }
 
@@ -335,11 +363,24 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (CheckConnect(portName))
                     {
+                        if (_boardName.Equals("Pegasus", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                CurrentComPort = portName;
+                                return true;
+                            }
+                        }
                         // For MChessLink
-                        SendRawToBoard("W0000");
-                        SendRawToBoard("W011E");
-                        SendRawToBoard("W0203");
-                        SendRawToBoard("W030A");
+                        if (_boardName.Equals("MChessLink", StringComparison.OrdinalIgnoreCase))
+                        {
+                            SendRawToBoard("W0000");
+                            SendRawToBoard("W011E");
+                            SendRawToBoard("W0203");
+                            SendRawToBoard("W030A");
+                        }
+
                         var readLine = GetRawFromBoard(string.Empty);
                         DisConnectFromCheck();
                         if (readLine.Length > 0)

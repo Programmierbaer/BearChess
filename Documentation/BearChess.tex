@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.5.7.0}
+\fancyhead[R]{Version 0.5.8.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{19.12.2021} 
+\date{10.01.2022} 
 
 
 \begin{document}
@@ -39,11 +39,11 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you not need an electronic chessboard to use BearChess.
 
-BearChess supports the chessboards from Certabo and the boards connected via Millennium ChessLink.\\
+BearChess supports Certabo chessboards, chessboards connected via Millennium ChessLink and the DGT Pegasus chessboard.\\
 
 As you can see from the version number, this software is still under development. There are still some functions that are not fully implemented and there are certainly still many bugs. But BearChess has now reached a level where it can be used and feedback from other users is welcome.\\
 
-I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo) or Millennium 2000 GmbH. If something does not work, Certabo or Millennium is not responsible for it.\\
+I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo) or Millennium 2000 GmbH or Digital Game Technology B.V. If something does not work, Certabo, Millennium or DGT is not responsible for it.\\
 
 Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 
@@ -72,6 +72,7 @@ BearChess offers among others the following functions:
 \begin{enumerate}
 	  \item Play with Certabo chessboards.
 	  \item Play with Millennium chessboards via ChessLink modul.
+	  \item Play with DGT Pegasus chessboard.	  
   	  \item Play against human beings or UCI engines.
   	  \item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs. Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
   	  \item Use Certabo Avatar UCI engines.  	  
@@ -84,7 +85,8 @@ BearChess offers among others the following functions:
   	  \item Individual chessmen and board fields.
 \end{enumerate}
 
-BearChess follows the design of Single Document Interface (SDI). You can place different windows, e.g. chess engine output or chess move list, anywhere on your Windows desktop. If you close them or exit BearChess, the position is saved and set to the same position when reopening.\\\\
+BearChess follows the design of Single Document Interface (SDI). You can place different windows, e.g. chess engine output or chess move list, anywhere on your Windows desktop. If you close them or exit BearChess, the position is saved and set to the same position when reopening.\\ 
+If you click on the BearChess main screen, all other open windowss are alo grought to the foreground. If you hold down the Shift key and move the BearChess main screen, all other windows will also be moved synchronously.\\\\
 The version numbering follows the following scheme:\\ 
 "\textit{major release}"\textbf{.}""\textit{minor release}"\textbf{.}""\textit{sub release}"\textbf{.}""\textit{bug fix}"\\
 Currently the \textit{major release} is still 0 and will only become a 1 when all planned functions are implemented. The \textit{minor release} is increased when new features are added. The \textit{sub release} is increased when minor features are added or improved. The last number is incremented if only errors were corrected.
@@ -264,6 +266,7 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 \begin{itemize}
 	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
+	\item  \includegraphics[scale=0.05]{Pegasus.png} \textbf{DGT Pegasus} connect to DGT Pegasus chessboard.	
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
 	\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
@@ -281,6 +284,12 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	\item \textbf{Arrange} auto arange all windows to fit on your screen and not overlapping.
 	\item \textbf{Captured pieces} shows the captured pieces. Either all or as a difference. 
 \end{itemize}
+
+\subsection{Info}
+Opens a windows where you can easily go to the path where all configuration is stored.
+
+\subsection{Help}
+Opens this document.
 
 \section{Install, Configure and Load a chess engine} \label{loadEngines}
 
@@ -300,21 +309,25 @@ BearChess does not include a chess engine. Click on "Load \& manage engines" to 
 
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{robot.png} Load selected engine
-	\item \includegraphics[scale=0.5]{cog.png} Configure selected engine
+	\item \includegraphics[scale=0.5]{cog_edit.png} Configure selected engine
 	\item \includegraphics[scale=0.5]{file_extension_exe.png} Install a new engine
+    \item \includegraphics[scale=0.5]{cog_add.png} Opens a dialog for installing a new engine, which requires parameters to start
 	\item \includegraphics[scale=0.5]{bin.png} Uninstall selected engine
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window
 \end{itemize}
 
 \subsection{Install a new engine} \label{InstallEngine}
 
-To install a new engine click on \includegraphics[scale=0.5]{file_extension_exe.png} and select an UCI engine file, e.g. the Wasp exe file. Or you just drag \& drop the exe file onto the button.
+To install a new engine click on \includegraphics[scale=0.5]{file_extension_exe.png} and select an UCI engine file, e.g. the Wasp exe file. Or you just drag \& drop the exe file onto the button.\\
+If the program needs parameters at the very beginning to be recognized as a UCI chess engine, then click on \includegraphics[scale=0.5]{cog_add.png} and fill out the dialog.\\
+
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{DropEngine.png}
-	\caption{Drop an engine file}
-	\label{fig:DropEngine}
+	\includegraphics[scale=1.0]{loadEngine3.png}
+	\caption{Load parameter}
+	\label{fig:LoadEngine4}
 \end{figure}
+Aonther way is described in chapter \textbf{\ref{ViaCMDFile}  \nameref{ViaCMDFile}} on page \pageref{ViaCMDFile}.\\
 
 If the file detected as UCI engine, confirm your selection.\\
 \begin{figure}[H]
@@ -339,6 +352,29 @@ The name is freely assignable, must be unique across all engines. But this way y
 \end{itemize}
 The small \includegraphics[scale=0.3]{folder.png} button, e.g. 'OwnBook\_File', opens a file or directory selection dialog, depending on the configuration name (file, path, dir).\\
 The configuration type 'button', e.g. 'Clear Hash', works only if the engine is loaded.
+
+\subsubsection{Wait for a new game} \label{WaitForANewgame}
+For the MessChess programs it can be useful not to start immediately but to set parameters first, e.g. an opening book, which are not possible via the UCI configuration.\\
+If you enable this option, every time you start a new game with this engine, a dialog will appear waiting for your confirmation.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{waitNewGame1.png}
+	\caption{Wait}
+	\label{fig:waitnewGame1}
+\end{figure}
+
+If they set a countdown greater than 0 seconds, the confirmation is automatic.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.9]{waitNewGame2.png}
+\caption{Countdown}
+\label{fig:waitnewGame2}
+\end{figure}
+
+
+
 
 \subsubsection{Assign a logo file}
 The small \includegraphics[scale=0.3]{folder.png} button on the 'Logo:' line opens a file selection dialog where you can choose a logo file for this engine.
@@ -431,6 +467,19 @@ There are only some configuration options. In the bottom line you can see the re
 	\caption{Configure}
 	\label{fig:MessChess3}
 \end{figure}
+
+If you need to set some more options, see \textbf{\ref{WaitForANewgame}  \nameref{WaitForANewgame}} on page \pageref{WaitForANewgame}.
+
+\subsubsection{Install an engine via CMD file} \label{ViaCMDFile}
+If an engine needs special parameters or a parameter to be recognized as a UCI engine, you can use a CMD file instead of the EXE file. Write all required command into the CMD file and install.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{LoadEngineCmd.png}
+	\caption{Load CMD file}
+	\label{fig:LoadCMDfile}
+\end{figure}
+
 
 \subsection{Configure an engine}
 
@@ -762,7 +811,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports two electronic chessboards: Certabo boards and Millennium boards via the ChessLink module. Both boards communicates via an USB port as serial COM port or via bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.
+BearChess supports three electronic chessboards: Certabo boards, Millennium boards via the ChessLink module and DGT Pegasus. Certabo and Millennium boards communicates via an USB port as serial COM port or via bluetooth. DGT Pegasus communications only via bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.
 
 \subsection{Configure Certabo boards} \label{ConfigureCertabo}
 \begin{figure}[H]
@@ -977,8 +1026,42 @@ In the lower right corner a new button appears, which allows you to easily conne
 	\label{fig:MillenniumChessLink8}
 \end{figure}
 
+\subsection{Connect DGT Pegasus} \label{ConfigurePegasus}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Pegasus1.png}
+	\caption{Connect to DGT Pegasus }
+	\label{fig:Pegasus1}
+\end{figure}
+
+No configuration is required for your DGT Pegasus chessboard.\\
+Unlike the other chessboards, the DGT Pegasus requires a Bluetooth LE (Bluetooth Low Energy, formerly marketed as Bluetooth Smart) connection. Make sure that your Bluetooth adapter also supports LE.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Pegasus2.png}
+	\caption{Connected}
+	\label{fig:Pegasus2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Pegasus3.png}
+	\caption{Disconnected}
+	\label{fig:Pegasus3}
+\end{figure}
+
+After a successful connection, you need to confirm that the figures are all in the right place.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Pegasus4.png}
+	\caption{Confirm position}
+	\label{fig:Pegasus4}
+\end{figure}
+
 \subsection{Switch side}
-BearChess automatically recognizes whether you are playing with the White or Black pieces, depending on how you set up the pieces in the base position.
+BearChess automatically recognizes whether you are playing with the White or Black pieces, depending on how you set up the pieces in the base position (except for DGT Pegasus).
 
 \section{Play a game}
 
@@ -1102,7 +1185,7 @@ When you play against an engine BearChess collects more information.\\
 	\label{fig:moveList3}
 \end{figure}
 
-Use the cursor keys and the scroll up and down keys to maneuver through the list.
+When the move list window is selected, you can use the cursor keys and the scroll up and down keys to maneuver through the list.
 
 \section{Easy start or restart of a game} \label{easyStart}
 
@@ -1207,7 +1290,7 @@ Now, when you starts the game and the next engine move will bring you in a bad p
 	\label{fig:Relaxed2}
 \end{figure}
  It takes some seconds more to evaluate an alternate move for the engine. BearChess will not make any other move if the current move captures one of your pieces or all alternative moves 
- are not realistic.\\ \\
+ are not realistic.\\
 Some technical things: The control of the opponent's engine and the evaluation of alternative moves is performed by the engine "Teddy". You will see a Teddy.exe on the Windows Task Manager.
 "Teddy" is not a clone of any other chess engines and does not simply call the multivaration modus 
 of the opponent engine. That's why you can use almost any engine without multivariation support.\\\\
@@ -1237,7 +1320,7 @@ You can achieve all this with the analysis mode.\\
 
 \subsection{With electronic chessboard}
 
-You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. Connect your electronic chessboard before you start the analysis mode.\\ 
+You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. DGT Pegasus has not. Connect your electronic chessboard before you start the analysis mode.\\ 
 When you start the analysis mode, you will be asked to select a supporting analysis engine.
 
 \begin{figure}[H]
@@ -1405,6 +1488,7 @@ Shows an overview of all duels. The top list shows duel information and below it
 	\item \includegraphics[scale=0.5]{control_play_blue.png} Continue a running duel with the last unfinished game at the same position.
 	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Load the selected duel configuration as template for a new duel.
 	\item \includegraphics[scale=0.5]{control_repeat_blue.png} Deletes all games of the selected duel and runs the duel again.
+\item \includegraphics[scale=0.5]{plus_light_blue.png} Opens a dialog where you can increase the number of games.	
     \item \includegraphics[scale=0.5]{bin.png} Deletes the selected duel and all associated games.
 	\item \includegraphics[scale=0.5]{text_exports.png} Exports all or the selected games into a PGN file.    
 	\item \includegraphics[scale=0.5]{information.png} Display information window for the selected duel.    	
@@ -1535,7 +1619,7 @@ Setup a new position is very easy. You can do it with or without the support of 
 \subsection{With support of an electronic chessboard}
 
 \textbf{First connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.
-The small board starts with the current position.
+The small board starts with the current position. When a DGT Pegasus board is connected, the behavior is as if no board is connected.
 
 \begin{figure}[H]
 	\centering
@@ -1560,6 +1644,7 @@ With the button \includegraphics[scale=0.5]{accept_button.png} the new position 
 \subsection{Without support of an electronic chessboard}
 
 \textbf{First} ensure you are \textbf{not connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.\\
+If a DGT Pegasus is connected, they do not need to disconnect. You will be prompted at the end to place the figures correctly. \\
 The small board starts with the current position.
 
 \begin{figure}[H]
@@ -1741,6 +1826,9 @@ If you have performed the calibration without extra queens and are performing a 
 \subsection{Millennium ChessLink: board orientation}
 Figure recognition assumes that the board is oriented so that the company sign faces the front.
 
+\subsection{DGT Pegasus: Piece recognition}
+The DGT Pegasus board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible.
+
 \subsection{Electronic chessboard and engine duels}
 When two engines play against each other, all moves are ignored by the electronic chess board.
 
@@ -1751,16 +1839,16 @@ When two engines play against each other, all moves are ignored by the electroni
 	\item Check the correct COM port in the configuration dialog.
 	\item Reconnect to the chessboard.	
 	\item Check the position of the chessmen. Moves are only accepted if the chessmen are on the correct square. Fields with missing or wrong figure light up.
+	\item Repeat the last move.
 \end{itemize}
 
 
 \section{Known Issues}
 \begin{itemize}
     \item Relaxed mode and the game analysis are new features. There are certainly still some errors in it.
-    \item Synchronization between move list and chessboard works only in the simple move list.
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time.
-	\item If you want to play an engine match with the same engine for black and white you have to install the engine twice with a different name.
+	\item You cannot to play an engine match with the same engine. This will fixed in the next version.
 	\item Sometimes showing incorrect material balance for "All".
 	\item Opening books may not work if the game is not started from the base position.	
 \end{itemize}
@@ -1770,17 +1858,30 @@ When two engines play against each other, all moves are ignored by the electroni
 These are some ideas what will come in one of the next versions.
 
 \begin{itemize}
-	    \item Improve MessChess chess computer emulation by Franz Huber.	 
 		\item Extend the game analysis.
 		\item Improve eletronic chess board handling
   	    \item Improve the performance of the opening book.
+    	\item Support for Square Off Pro chessboard.
 	\end{itemize} 
 
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.5.7.0 $\Rightarrow$  0.5.8.0}
+\begin{itemize}
+	\item New: Support for DGT Pegasus chessboard.
+    \item New: Improved engine configuration.	
+    \item New: "Help" opens this document.
+	\item New: Move all windows synchron.	
+	\item New: Improvements for MessChess engines
+	\item New: Increase the number of games in a duel
+	\item Fix: Communication with UCI engine HIARCS 15.0
+	\item Fix: Duel manager saved all games as "Round 1"
+	\item Fix: Handling en passent move in PGN
+	\item Fix: Improvement in the calibration of Certabo boards
+\end{itemize}
 
-\subsection{Version 0.5.6.2 =\textgreater 0.5.7.0}
+\subsection{Version 0.5.6.2 $\Rightarrow$  0.5.7.0}
 \begin{itemize}
 	\item New: Export games into a PGN file.
 	\item New: Option to always display the evaluation value from the point of view of white.
@@ -1798,42 +1899,42 @@ These are some ideas what will come in one of the next versions.
 	\item Fix: Handling 50 moves draw rule.
 \end{itemize}
 
-\subsection{Version 0.5.6.1 =\textgreater 0.5.6.2}
+\subsection{Version 0.5.6.1  $\Rightarrow$  0.5.6.2}
 \begin{itemize}
 	\item Fix send invalid fen position to engines.
 	\item Fix running coach engine from current position.
 \end{itemize}
 
-\subsection{Version 0.5.6.0 =\textgreater 0.5.6.1}
+\subsection{Version 0.5.6.0  $\Rightarrow$  0.5.6.1}
 \begin{itemize}
 	\item Fix broken "Analyze mode".
 	\item Fix "Arange windows". 
 \end{itemize}
 
-\subsection{Version 0.5.5.3 =\textgreater 0.5.6.0}
+\subsection{Version 0.5.5.3  $\Rightarrow$  0.5.6.0}
 \begin{itemize}
 	\item Automatic detection of whether the game is played with white or black pieces.
 	Therefore removed the unnecessary option "Black pieces in front".
 	\item Sounds
 \end{itemize}
 
-\subsection{Version 0.5.5.2 =\textgreater 0.5.5.3}
+\subsection{Version 0.5.5.2  $\Rightarrow$  0.5.5.3}
 \begin{itemize}
 	\item Fix communication with Millennium ChessLink
 \end{itemize}
 
-\subsection{Version 0.5.5.1 =\textgreater 0.5.5.2}
+\subsection{Version 0.5.5.1  $\Rightarrow$  0.5.5.2}
 \begin{itemize}
 	\item Fix closing loaded engines.
     \item Fix handling coach engines.
 \end{itemize}
 
-\subsection{Version 0.5.5.0 =\textgreater 0.5.5.1}
+\subsection{Version 0.5.5.0  $\Rightarrow$  0.5.5.1}
 \begin{itemize}
 	\item Fix level configuration for MessChess chess computer emulation by Franz Huber.	
 \end{itemize}
 
-\subsection{Version 0.5.0.0 =\textgreater 0.5.5.0}
+\subsection{Version 0.5.0.0  $\Rightarrow$  0.5.5.0}
 \begin{itemize}
 	\item New analyze mode for played games.
 	\item Relaxed mode against any UCI engine.
@@ -1846,14 +1947,14 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.
 \end{itemize}
 
-\subsection{Version 0.4.4.0 =\textgreater 0.5.0.0}
+\subsection{Version 0.4.4.0  $\Rightarrow$  0.5.0.0}
 \begin{itemize}
 	\item Engine duels and tournaments.
 	\item Filter games.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.4.3.1 =\textgreater 0.4.4.0}
+\subsection{Version 0.4.3.1  $\Rightarrow$  0.4.4.0}
 \begin{itemize}
 	\item Changes and fixes in the move list.
     \item Now, "Captured pieces" counts if you capture a promoted figure.
@@ -1862,12 +1963,12 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.4.3.0 =\textgreater 0.4.3.1}
+\subsection{Version 0.4.3.0  $\Rightarrow$  0.4.3.1}
 \begin{itemize}
 	\item Fixed a bug that occurred in the analysis mode without an electronic chessboard.
 \end{itemize}
 
-\subsection{Version 0.4.2.3 =\textgreater 0.4.3.0}
+\subsection{Version 0.4.2.3  $\Rightarrow$  0.4.3.0}
 \begin{itemize}
 	\item Give "Player" a first and last name
     \item Show best moves on electronic chessboards in analyse mode.
@@ -1875,29 +1976,29 @@ These are some ideas what will come in one of the next versions.
     \item Improvement in automatic window arrangement.
 \end{itemize}
 
-\subsection{Version 0.4.2.2 =\textgreater 0.4.2.3}
+\subsection{Version 0.4.2.2  $\Rightarrow$  0.4.2.3}
 \begin{itemize}
 	\item Fixed a bug with the display of the taken back move on the chessboard.
 \end{itemize}
 
-\subsection{Version 0.4.2.1 =\textgreater 0.4.2.2}
+\subsection{Version 0.4.2.1  $\Rightarrow$  0.4.2.2}
 \begin{itemize}
 	\item Fixed a bug running additional engines in a game.	
 \end{itemize}
 
-\subsection{Version 0.4.2.0 =\textgreater 0.4.2.1}
+\subsection{Version 0.4.2.0  $\Rightarrow$  0.4.2.1}
 \begin{itemize}
 	\item Fixed bug in number conversion that crashes the program.
 \end{itemize}
 
-\subsection{Version 0.4.1.0 =\textgreater 0.4.2.0}
+\subsection{Version 0.4.1.0  $\Rightarrow$  0.4.2.0}
 \begin{itemize}
 	\item Bluetooth support for Certabo chessboards.
 	\item Playing games in tournament mode.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.4.0.0 =\textgreater 0.4.1.0}
+\subsection{Version 0.4.0.0  $\Rightarrow$  0.4.1.0}
 \begin{itemize}
 	\item Using a database file instead PGN.
 	\item Allows you to continue a previously saved game.
@@ -1906,7 +2007,7 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.3.3.0 =\textgreater 0.4.0.0}
+\subsection{Version 0.3.3.0  $\Rightarrow$  0.4.0.0}
 \begin{itemize}
 	\item New time configuration "Adapted time".
 	\item Implementation of the "Start the clock after the move is executed on the electronic board" time setting.
@@ -1920,7 +2021,7 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.3.2.0 =\textgreater 0.3.3.0}
+\subsection{Version 0.3.2.0  $\Rightarrow$ 0.3.3.0}
 \begin{itemize}
     \item Support of opening books for engines.
     \item Opening book: When castling, the correct squares are displayed.
@@ -1928,7 +2029,7 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.3.1.1 =\textgreater 0.3.2.0}
+\subsection{Version 0.3.1.1  $\Rightarrow$  0.3.2.0}
 \begin{itemize}
 	\item Show check and mate signs in move list.
 	\item Show captured pieces.	
@@ -1937,13 +2038,13 @@ These are some ideas what will come in one of the next versions.
 	\item Improvements to install a new engine.
 \end{itemize}
 
-\subsection{Version 0.3.1.0 =\textgreater 0.3.1.1}
+\subsection{Version 0.3.1.0  $\Rightarrow$  0.3.1.1}
 \begin{itemize}
 	\item \textbf{Hotfix} Error at pure engine match.
 	\item Improvements in the handling of UCI configuration values.
 \end{itemize}
 
-\subsection{Version 0.3.0.0 =\textgreater 0.3.1.0}
+\subsection{Version 0.3.0.0  $\Rightarrow$  0.3.1.0}
 \begin{itemize}
 	    \item Improvements in the calibration for Certabo chessboards.
 	    \item Fixed an error on pawn conversation.

@@ -517,7 +517,9 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             }
 
             _fileLogger?.LogDebug($"Send to engine: {command}");
-            _engineProcess?.StandardInput.WriteLine(command);
+            //_engineProcess?.StandardInput.WriteLine(command);
+            _engineProcess?.StandardInput.Write(command);
+            _engineProcess?.StandardInput.Write("\n");
             if (command.Contains("MultiPV"))
             {
                 _multiPvValue = string.Empty;

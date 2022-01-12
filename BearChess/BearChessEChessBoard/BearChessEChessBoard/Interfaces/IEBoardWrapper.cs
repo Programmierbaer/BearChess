@@ -109,6 +109,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         event EventHandler AwaitedPosition;
         event EventHandler BasePositionEvent;
+        event EventHandler BatteryChangedEvent;
 
         /// <summary>
         /// Return a best move
@@ -144,5 +145,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
 
         void SendCommand(string anyCommand);
+
+        string BatteryLevel { get; }
+        string BatteryStatus { get; }
+        string Information { get; }
+        void AllowTakeBack(bool allowTakeBack);
+        bool PieceRecognition { get; }
+        void Ignore(bool ignore);
     }
 }

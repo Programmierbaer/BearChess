@@ -1,0 +1,35 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.DuelIncrementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
+        xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" 
+        Title="Increment Cycles" Height="150" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel  Grid.Column="0" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+            <Label Width="110" VerticalAlignment="Center">Number of games:</Label>
+            <bearChessWin:NumericUpDownUserControl x:Name="numericUpDownUserControlNumberOfGames" Height="40"
+                                            MinValue="1" MaxValue="999" Value="1" />
+
+        </StackPanel>
+        <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="False" Margin="5">
+            <Button Name="buttonOk" Click="ButtonOk_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left"
+                    Background="Transparent" BorderBrush="Transparent">
+                <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32" />
+            </Button>
+            <Button Name="buttonCancel" Click="ButtonCancel_OnClick" Margin="5,5,20,5" DockPanel.Dock="Right"
+                    Background="Transparent" BorderBrush="Transparent">
+                <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32" />
+            </Button>
+        </DockPanel>
+    </Grid>
+</Window>

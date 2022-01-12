@@ -132,6 +132,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                                 var s = BitConverter.ToString(data);
                                 _logger?.LogDebug($"SC: Send byte array: {s}");
                                 _comPort.Write(data, 0, data.Length);
+                                //_logger?.LogDebug($"SC: bytes send");
                                 //  Thread.Sleep(15);
                             }
                         }
@@ -140,9 +141,10 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         {
                             try
                             {
+                                //_logger?.LogDebug($"SC: Readline.... ");
                                 var readLine = _comPort.ReadLine();
 
-
+                                //_logger?.LogDebug($"SC: Read: {readLine} ");
                                 if (_dataFromBoard.Count > 20)
                                 {
                                     _dataFromBoard.TryDequeue(out _);
@@ -178,10 +180,10 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         private bool ValidCalibrateCodes(string codes)
         {
-            if (!codes.Contains(_allEmpty) && !codes.Contains(_withQueensEmpty))
-            {
-                return false;
-            }
+            //if (!codes.Contains(_allEmpty) && !codes.Contains(_withQueensEmpty))
+            //{
+            //    return false;
+            //}
 
             var dataArray = codes.Replace('\0', ' ').Trim()
                                  .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);

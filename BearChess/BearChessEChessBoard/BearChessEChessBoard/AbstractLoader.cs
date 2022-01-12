@@ -16,6 +16,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public event EventHandler<string> FenEvent;
         public event EventHandler AwaitedPosition;
         public event EventHandler BasePositionEvent;
+        public event EventHandler BatteryChangedEvent;
 
         public void SetReplayMode(bool inReplayMode)
         {
@@ -76,6 +77,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.MoveEvent += EChessBoard_MoveEvent;
             _eChessBoard.AwaitedPosition += EChessBoard_AwaitedPosition;
             _eChessBoard.BasePositionEvent += EChessBoard_BasePositionEvent;
+            _eChessBoard.BatteryChangedEvent += EChessBoard_BatteryChangedEvent;
 
         }
 
@@ -246,6 +248,21 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _eChessBoard.IsOnBasePosition();
         }
 
+        public string BatteryLevel => _eChessBoard.BatteryLevel;
+        public string BatteryStatus => _eChessBoard.BatteryStatus;
+        public string Information => _eChessBoard.Information;
+
+        public void AllowTakeBack(bool allowTakeBack)
+        {
+            _eChessBoard.AllowTakeBack(allowTakeBack);
+        }
+
+        public bool PieceRecognition => _eChessBoard.PieceRecognition;
+        public void Ignore(bool ignore)
+        {
+            _eChessBoard.Ignore(ignore);
+        }
+
         #region private
 
         private void EChessBoard_MoveEvent(object sender, string move)
@@ -276,6 +293,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         private void EChessBoard_BasePositionEvent(object sender, EventArgs e)
         {
             BasePositionEvent?.Invoke(sender, e);
+        }
+
+        private void EChessBoard_BatteryChangedEvent(object sender, EventArgs e)
+        {
+            BatteryChangedEvent?.Invoke(sender, e);
         }
 
 

@@ -23,6 +23,9 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool AdjustStrength { get; set; }
         public string CommandParameter { get; set; }
 
+        public bool WaitForStart { get; set; }
+        public int WaitSeconds { get; set; }
+
         public UciInfo()
         {
             Options = Array.Empty<string>();
@@ -30,6 +33,8 @@ namespace www.SoLaNoSoft.com.BearChessBase
             OpeningBookVariation = "1";
             AdjustStrength = false;
             LogoFileName = string.Empty;
+            WaitForStart = false;
+            WaitSeconds = 0;
         }
 
         public UciInfo(string fileName) : this()

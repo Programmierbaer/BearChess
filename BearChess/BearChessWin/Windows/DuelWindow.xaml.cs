@@ -319,5 +319,46 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetDoubleValue("DuelWindowTop", Top);
             _configuration.SetDoubleValue("DuelWindowLeft", Left);
         }
+
+        private void ButtonAdd_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.Items.Count == 0)
+            {
+                return;
+            }
+            int currentDuelId = 0;
+            if (_duelManager == null)
+            {
+                _duelManager = new DuelManager(_configuration, _database);
+            }
+
+            var selectedItem = dataGridDuel.SelectedItems[0];
+            if (selectedItem is DatabaseDuel duel)
+            {
+                currentDuelId = duel.DuelId;
+
+            }
+            else
+            {
+                return;
+            }
+
+            CurrentDuel currentDuel = _duelManager.Load(currentDuelId);
+            if (currentDuel != null)
+            {
+                var duelIncrementWindow = new DuelIncrementWindow(currentDuel.Cycles)
+                                          {
+                                              Owner = this
+                                          };
+                var showDialog = duelIncrementWindow.ShowDialog();
+                if (showDialog.HasValue && showDialog.Value)
+                {
+                    currentDuel.Cycles = duelIncrementWindow.Cycles;
+                    _duelManager.Update(currentDuel, currentDuelId);
+                    dataGridDuel.ItemsSource = _database.LoadDuel();
+                    dataGridGames.ItemsSource = null;
+                }
+            }
+        }
     }
 }

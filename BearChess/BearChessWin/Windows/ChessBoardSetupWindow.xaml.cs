@@ -128,7 +128,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    var confirmPiecesWindow = new ConfirmPiecesWindow(dialog.SelectedPath, new string[0],string.Empty) { Owner = this };
+                    var confirmPiecesWindow = new ConfirmPiecesWindow(dialog.SelectedPath, Array.Empty<string>(),string.Empty) { Owner = this };
                     var confirm = confirmPiecesWindow.ShowDialog();
                     if (confirm.HasValue && confirm.Value)
                     {

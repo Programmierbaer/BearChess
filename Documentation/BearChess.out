@@ -10,105 +10,112 @@
 \BOOKMARK [2][-]{subsection.3.5}{Settings}{section.3}% 10
 \BOOKMARK [2][-]{subsection.3.6}{Electronic Boards}{section.3}% 11
 \BOOKMARK [2][-]{subsection.3.7}{Windows}{section.3}% 12
-\BOOKMARK [1][-]{section.4}{Install, Configure and Load a chess engine}{}% 13
-\BOOKMARK [2][-]{subsection.4.1}{Install a new engine}{section.4}% 14
-\BOOKMARK [3][-]{subsubsection.4.1.1}{Assign a logo file}{subsection.4.1}% 15
-\BOOKMARK [3][-]{subsubsection.4.1.2}{Add start parameter}{subsection.4.1}% 16
-\BOOKMARK [3][-]{subsubsection.4.1.3}{Use opening book}{subsection.4.1}% 17
-\BOOKMARK [3][-]{subsubsection.4.1.4}{Install Certabo Avatar UCI Chess engine}{subsection.4.1}% 18
-\BOOKMARK [3][-]{subsubsection.4.1.5}{Install MessChess engine}{subsection.4.1}% 19
-\BOOKMARK [2][-]{subsection.4.2}{Configure an engine}{section.4}% 20
-\BOOKMARK [2][-]{subsection.4.3}{Additional configuration for an installed engine}{section.4}% 21
-\BOOKMARK [2][-]{subsection.4.4}{Load an engine}{section.4}% 22
-\BOOKMARK [3][-]{subsubsection.4.4.1}{Load a MessChess engine}{subsection.4.4}% 23
-\BOOKMARK [1][-]{section.5}{Load and Manage Opening Books}{}% 24
-\BOOKMARK [1][-]{section.6}{Configure Board and Pieces}{}% 25
-\BOOKMARK [2][-]{subsection.6.1}{Install new board colors and pieces}{section.6}% 26
-\BOOKMARK [3][-]{subsubsection.6.1.1}{New board colors}{subsection.6.1}% 27
-\BOOKMARK [3][-]{subsubsection.6.1.2}{New pieces}{subsection.6.1}% 28
-\BOOKMARK [1][-]{section.7}{Configure Notation and Moves}{}% 29
-\BOOKMARK [1][-]{section.8}{Configure clock style}{}% 30
-\BOOKMARK [1][-]{section.9}{Configure sounds}{}% 31
-\BOOKMARK [1][-]{section.10}{Show captured pieces}{}% 32
-\BOOKMARK [1][-]{section.11}{Electronic chessboards}{}% 33
-\BOOKMARK [2][-]{subsection.11.1}{Configure Certabo boards}{section.11}% 34
-\BOOKMARK [3][-]{subsubsection.11.1.1}{Configure Bluetooth}{subsection.11.1}% 35
-\BOOKMARK [3][-]{subsubsection.11.1.2}{Calibration}{subsection.11.1}% 36
-\BOOKMARK [3][-]{subsubsection.11.1.3}{Connect}{subsection.11.1}% 37
-\BOOKMARK [2][-]{subsection.11.2}{Configure Millennium ChessLink}{section.11}% 38
-\BOOKMARK [3][-]{subsubsection.11.2.1}{LEDs}{subsection.11.2}% 39
-\BOOKMARK [3][-]{subsubsection.11.2.2}{Configure Bluetooth}{subsection.11.2}% 40
-\BOOKMARK [3][-]{subsubsection.11.2.3}{Connect}{subsection.11.2}% 41
-\BOOKMARK [2][-]{subsection.11.3}{Switch side}{section.11}% 42
-\BOOKMARK [1][-]{section.12}{Play a game}{}% 43
-\BOOKMARK [2][-]{subsection.12.1}{Select opponent}{section.12}% 44
-\BOOKMARK [2][-]{subsection.12.2}{Playing in relaxed mode}{section.12}% 45
-\BOOKMARK [2][-]{subsection.12.3}{Start from}{section.12}% 46
-\BOOKMARK [2][-]{subsection.12.4}{Time control}{section.12}% 47
-\BOOKMARK [2][-]{subsection.12.5}{Tournament mode}{section.12}% 48
-\BOOKMARK [2][-]{subsection.12.6}{Allow to take a move back}{section.12}% 49
-\BOOKMARK [2][-]{subsection.12.7}{Extra time for human player}{section.12}% 50
-\BOOKMARK [2][-]{subsection.12.8}{Start the clock after the move is executed on the electronic board}{section.12}% 51
-\BOOKMARK [2][-]{subsection.12.9}{Configuration for startup game}{section.12}% 52
-\BOOKMARK [1][-]{section.13}{Move list}{}% 53
-\BOOKMARK [1][-]{section.14}{Easy start or restart of a game}{}% 54
-\BOOKMARK [2][-]{subsubsection.14.0.1}{Continue a game}{section.14}% 55
-\BOOKMARK [2][-]{subsection.14.1}{Influence of BearChess in engine games}{section.14}% 56
-\BOOKMARK [1][-]{section.15}{Relaxed mode}{}% 57
-\BOOKMARK [1][-]{section.16}{Analysis mode}{}% 58
-\BOOKMARK [2][-]{subsection.16.1}{Free analyse}{section.16}% 59
-\BOOKMARK [2][-]{subsection.16.2}{With electronic chessboard}{section.16}% 60
-\BOOKMARK [2][-]{subsection.16.3}{Without electronic chessboard}{section.16}% 61
-\BOOKMARK [2][-]{subsection.16.4}{Analyse a game}{section.16}% 62
-\BOOKMARK [1][-]{section.17}{Engine duel}{}% 63
-\BOOKMARK [2][-]{subsection.17.1}{Start a new engine duel}{section.17}% 64
-\BOOKMARK [3][-]{subsubsection.17.1.1}{Engine duel information}{subsection.17.1}% 65
-\BOOKMARK [2][-]{subsection.17.2}{Manage engine duels}{section.17}% 66
-\BOOKMARK [1][-]{section.18}{Engine tournament}{}% 67
-\BOOKMARK [2][-]{subsection.18.1}{Start a new engine tournament}{section.18}% 68
-\BOOKMARK [3][-]{subsubsection.18.1.1}{Engine tournament information}{subsection.18.1}% 69
-\BOOKMARK [2][-]{subsection.18.2}{Manage engine tournaments}{section.18}% 70
-\BOOKMARK [1][-]{section.19}{Setup position}{}% 71
-\BOOKMARK [2][-]{subsection.19.1}{With support of an electronic chessboard}{section.19}% 72
-\BOOKMARK [2][-]{subsection.19.2}{Without support of an electronic chessboard}{section.19}% 73
-\BOOKMARK [1][-]{section.20}{Run startup game on start}{}% 74
-\BOOKMARK [1][-]{section.21}{Games}{}% 75
-\BOOKMARK [2][-]{subsection.21.1}{Save}{section.21}% 76
-\BOOKMARK [2][-]{subsection.21.2}{Show and load}{section.21}% 77
-\BOOKMARK [1][-]{section.22}{Engine window}{}% 78
-\BOOKMARK [1][-]{section.23}{Extended engine support}{}% 79
-\BOOKMARK [1][-]{section.24}{Important To Know}{}% 80
-\BOOKMARK [2][-]{subsection.24.1}{Install a new version}{section.24}% 81
-\BOOKMARK [2][-]{subsection.24.2}{MessChess engines}{section.24}% 82
-\BOOKMARK [2][-]{subsection.24.3}{Certabo: board orientation}{section.24}% 83
-\BOOKMARK [2][-]{subsection.24.4}{Certabo: Calibration}{section.24}% 84
-\BOOKMARK [2][-]{subsection.24.5}{Certabo: Pawn conversion to a queen}{section.24}% 85
-\BOOKMARK [2][-]{subsection.24.6}{Millennium ChessLink: board orientation}{section.24}% 86
-\BOOKMARK [2][-]{subsection.24.7}{Electronic chessboard and engine duels}{section.24}% 87
-\BOOKMARK [1][-]{section.25}{Trouble shooting}{}% 88
-\BOOKMARK [2][-]{subsection.25.1}{The chess moves are not or not correctly displayed}{section.25}% 89
-\BOOKMARK [1][-]{section.26}{Known Issues}{}% 90
-\BOOKMARK [1][-]{section.27}{Next Steps}{}% 91
-\BOOKMARK [1][-]{section.28}{Changelog}{}% 92
-\BOOKMARK [2][-]{subsection.28.1}{Version 0.5.6.2 =>0.5.7.0}{section.28}% 93
-\BOOKMARK [2][-]{subsection.28.2}{Version 0.5.6.1 =>0.5.6.2}{section.28}% 94
-\BOOKMARK [2][-]{subsection.28.3}{Version 0.5.6.0 =>0.5.6.1}{section.28}% 95
-\BOOKMARK [2][-]{subsection.28.4}{Version 0.5.5.3 =>0.5.6.0}{section.28}% 96
-\BOOKMARK [2][-]{subsection.28.5}{Version 0.5.5.2 =>0.5.5.3}{section.28}% 97
-\BOOKMARK [2][-]{subsection.28.6}{Version 0.5.5.1 =>0.5.5.2}{section.28}% 98
-\BOOKMARK [2][-]{subsection.28.7}{Version 0.5.5.0 =>0.5.5.1}{section.28}% 99
-\BOOKMARK [2][-]{subsection.28.8}{Version 0.5.0.0 =>0.5.5.0}{section.28}% 100
-\BOOKMARK [2][-]{subsection.28.9}{Version 0.4.4.0 =>0.5.0.0}{section.28}% 101
-\BOOKMARK [2][-]{subsection.28.10}{Version 0.4.3.1 =>0.4.4.0}{section.28}% 102
-\BOOKMARK [2][-]{subsection.28.11}{Version 0.4.3.0 =>0.4.3.1}{section.28}% 103
-\BOOKMARK [2][-]{subsection.28.12}{Version 0.4.2.3 =>0.4.3.0}{section.28}% 104
-\BOOKMARK [2][-]{subsection.28.13}{Version 0.4.2.2 =>0.4.2.3}{section.28}% 105
-\BOOKMARK [2][-]{subsection.28.14}{Version 0.4.2.1 =>0.4.2.2}{section.28}% 106
-\BOOKMARK [2][-]{subsection.28.15}{Version 0.4.2.0 =>0.4.2.1}{section.28}% 107
-\BOOKMARK [2][-]{subsection.28.16}{Version 0.4.1.0 =>0.4.2.0}{section.28}% 108
-\BOOKMARK [2][-]{subsection.28.17}{Version 0.4.0.0 =>0.4.1.0}{section.28}% 109
-\BOOKMARK [2][-]{subsection.28.18}{Version 0.3.3.0 =>0.4.0.0}{section.28}% 110
-\BOOKMARK [2][-]{subsection.28.19}{Version 0.3.2.0 =>0.3.3.0}{section.28}% 111
-\BOOKMARK [2][-]{subsection.28.20}{Version 0.3.1.1 =>0.3.2.0}{section.28}% 112
-\BOOKMARK [2][-]{subsection.28.21}{Version 0.3.1.0 =>0.3.1.1}{section.28}% 113
-\BOOKMARK [2][-]{subsection.28.22}{Version 0.3.0.0 =>0.3.1.0}{section.28}% 114
+\BOOKMARK [2][-]{subsection.3.8}{Info}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.9}{Help}{section.3}% 14
+\BOOKMARK [1][-]{section.4}{Install, Configure and Load a chess engine}{}% 15
+\BOOKMARK [2][-]{subsection.4.1}{Install a new engine}{section.4}% 16
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Wait for a new game}{subsection.4.1}% 17
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Assign a logo file}{subsection.4.1}% 18
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Add start parameter}{subsection.4.1}% 19
+\BOOKMARK [3][-]{subsubsection.4.1.4}{Use opening book}{subsection.4.1}% 20
+\BOOKMARK [3][-]{subsubsection.4.1.5}{Install Certabo Avatar UCI Chess engine}{subsection.4.1}% 21
+\BOOKMARK [3][-]{subsubsection.4.1.6}{Install MessChess engine}{subsection.4.1}% 22
+\BOOKMARK [3][-]{subsubsection.4.1.7}{Install an engine via CMD file}{subsection.4.1}% 23
+\BOOKMARK [2][-]{subsection.4.2}{Configure an engine}{section.4}% 24
+\BOOKMARK [2][-]{subsection.4.3}{Additional configuration for an installed engine}{section.4}% 25
+\BOOKMARK [2][-]{subsection.4.4}{Load an engine}{section.4}% 26
+\BOOKMARK [3][-]{subsubsection.4.4.1}{Load a MessChess engine}{subsection.4.4}% 27
+\BOOKMARK [1][-]{section.5}{Load and Manage Opening Books}{}% 28
+\BOOKMARK [1][-]{section.6}{Configure Board and Pieces}{}% 29
+\BOOKMARK [2][-]{subsection.6.1}{Install new board colors and pieces}{section.6}% 30
+\BOOKMARK [3][-]{subsubsection.6.1.1}{New board colors}{subsection.6.1}% 31
+\BOOKMARK [3][-]{subsubsection.6.1.2}{New pieces}{subsection.6.1}% 32
+\BOOKMARK [1][-]{section.7}{Configure Notation and Moves}{}% 33
+\BOOKMARK [1][-]{section.8}{Configure clock style}{}% 34
+\BOOKMARK [1][-]{section.9}{Configure sounds}{}% 35
+\BOOKMARK [1][-]{section.10}{Show captured pieces}{}% 36
+\BOOKMARK [1][-]{section.11}{Electronic chessboards}{}% 37
+\BOOKMARK [2][-]{subsection.11.1}{Configure Certabo boards}{section.11}% 38
+\BOOKMARK [3][-]{subsubsection.11.1.1}{Configure Bluetooth}{subsection.11.1}% 39
+\BOOKMARK [3][-]{subsubsection.11.1.2}{Calibration}{subsection.11.1}% 40
+\BOOKMARK [3][-]{subsubsection.11.1.3}{Connect}{subsection.11.1}% 41
+\BOOKMARK [2][-]{subsection.11.2}{Configure Millennium ChessLink}{section.11}% 42
+\BOOKMARK [3][-]{subsubsection.11.2.1}{LEDs}{subsection.11.2}% 43
+\BOOKMARK [3][-]{subsubsection.11.2.2}{Configure Bluetooth}{subsection.11.2}% 44
+\BOOKMARK [3][-]{subsubsection.11.2.3}{Connect}{subsection.11.2}% 45
+\BOOKMARK [2][-]{subsection.11.3}{Connect DGT Pegasus}{section.11}% 46
+\BOOKMARK [2][-]{subsection.11.4}{Switch side}{section.11}% 47
+\BOOKMARK [1][-]{section.12}{Play a game}{}% 48
+\BOOKMARK [2][-]{subsection.12.1}{Select opponent}{section.12}% 49
+\BOOKMARK [2][-]{subsection.12.2}{Playing in relaxed mode}{section.12}% 50
+\BOOKMARK [2][-]{subsection.12.3}{Start from}{section.12}% 51
+\BOOKMARK [2][-]{subsection.12.4}{Time control}{section.12}% 52
+\BOOKMARK [2][-]{subsection.12.5}{Tournament mode}{section.12}% 53
+\BOOKMARK [2][-]{subsection.12.6}{Allow to take a move back}{section.12}% 54
+\BOOKMARK [2][-]{subsection.12.7}{Extra time for human player}{section.12}% 55
+\BOOKMARK [2][-]{subsection.12.8}{Start the clock after the move is executed on the electronic board}{section.12}% 56
+\BOOKMARK [2][-]{subsection.12.9}{Configuration for startup game}{section.12}% 57
+\BOOKMARK [1][-]{section.13}{Move list}{}% 58
+\BOOKMARK [1][-]{section.14}{Easy start or restart of a game}{}% 59
+\BOOKMARK [2][-]{subsubsection.14.0.1}{Continue a game}{section.14}% 60
+\BOOKMARK [2][-]{subsection.14.1}{Influence of BearChess in engine games}{section.14}% 61
+\BOOKMARK [1][-]{section.15}{Relaxed mode}{}% 62
+\BOOKMARK [1][-]{section.16}{Analysis mode}{}% 63
+\BOOKMARK [2][-]{subsection.16.1}{Free analyse}{section.16}% 64
+\BOOKMARK [2][-]{subsection.16.2}{With electronic chessboard}{section.16}% 65
+\BOOKMARK [2][-]{subsection.16.3}{Without electronic chessboard}{section.16}% 66
+\BOOKMARK [2][-]{subsection.16.4}{Analyse a game}{section.16}% 67
+\BOOKMARK [1][-]{section.17}{Engine duel}{}% 68
+\BOOKMARK [2][-]{subsection.17.1}{Start a new engine duel}{section.17}% 69
+\BOOKMARK [3][-]{subsubsection.17.1.1}{Engine duel information}{subsection.17.1}% 70
+\BOOKMARK [2][-]{subsection.17.2}{Manage engine duels}{section.17}% 71
+\BOOKMARK [1][-]{section.18}{Engine tournament}{}% 72
+\BOOKMARK [2][-]{subsection.18.1}{Start a new engine tournament}{section.18}% 73
+\BOOKMARK [3][-]{subsubsection.18.1.1}{Engine tournament information}{subsection.18.1}% 74
+\BOOKMARK [2][-]{subsection.18.2}{Manage engine tournaments}{section.18}% 75
+\BOOKMARK [1][-]{section.19}{Setup position}{}% 76
+\BOOKMARK [2][-]{subsection.19.1}{With support of an electronic chessboard}{section.19}% 77
+\BOOKMARK [2][-]{subsection.19.2}{Without support of an electronic chessboard}{section.19}% 78
+\BOOKMARK [1][-]{section.20}{Run startup game on start}{}% 79
+\BOOKMARK [1][-]{section.21}{Games}{}% 80
+\BOOKMARK [2][-]{subsection.21.1}{Save}{section.21}% 81
+\BOOKMARK [2][-]{subsection.21.2}{Show and load}{section.21}% 82
+\BOOKMARK [1][-]{section.22}{Engine window}{}% 83
+\BOOKMARK [1][-]{section.23}{Extended engine support}{}% 84
+\BOOKMARK [1][-]{section.24}{Important To Know}{}% 85
+\BOOKMARK [2][-]{subsection.24.1}{Install a new version}{section.24}% 86
+\BOOKMARK [2][-]{subsection.24.2}{MessChess engines}{section.24}% 87
+\BOOKMARK [2][-]{subsection.24.3}{Certabo: board orientation}{section.24}% 88
+\BOOKMARK [2][-]{subsection.24.4}{Certabo: Calibration}{section.24}% 89
+\BOOKMARK [2][-]{subsection.24.5}{Certabo: Pawn conversion to a queen}{section.24}% 90
+\BOOKMARK [2][-]{subsection.24.6}{Millennium ChessLink: board orientation}{section.24}% 91
+\BOOKMARK [2][-]{subsection.24.7}{DGT Pegasus: Piece recognition}{section.24}% 92
+\BOOKMARK [2][-]{subsection.24.8}{Electronic chessboard and engine duels}{section.24}% 93
+\BOOKMARK [1][-]{section.25}{Trouble shooting}{}% 94
+\BOOKMARK [2][-]{subsection.25.1}{The chess moves are not or not correctly displayed}{section.25}% 95
+\BOOKMARK [1][-]{section.26}{Known Issues}{}% 96
+\BOOKMARK [1][-]{section.27}{Next Steps}{}% 97
+\BOOKMARK [1][-]{section.28}{Changelog}{}% 98
+\BOOKMARK [2][-]{subsection.28.1}{Version 0.5.7.0 \0400.5.8.0}{section.28}% 99
+\BOOKMARK [2][-]{subsection.28.2}{Version 0.5.6.2 \0400.5.7.0}{section.28}% 100
+\BOOKMARK [2][-]{subsection.28.3}{Version 0.5.6.1 \0400.5.6.2}{section.28}% 101
+\BOOKMARK [2][-]{subsection.28.4}{Version 0.5.6.0 \0400.5.6.1}{section.28}% 102
+\BOOKMARK [2][-]{subsection.28.5}{Version 0.5.5.3 \0400.5.6.0}{section.28}% 103
+\BOOKMARK [2][-]{subsection.28.6}{Version 0.5.5.2 \0400.5.5.3}{section.28}% 104
+\BOOKMARK [2][-]{subsection.28.7}{Version 0.5.5.1 \0400.5.5.2}{section.28}% 105
+\BOOKMARK [2][-]{subsection.28.8}{Version 0.5.5.0 \0400.5.5.1}{section.28}% 106
+\BOOKMARK [2][-]{subsection.28.9}{Version 0.5.0.0 \0400.5.5.0}{section.28}% 107
+\BOOKMARK [2][-]{subsection.28.10}{Version 0.4.4.0 \0400.5.0.0}{section.28}% 108
+\BOOKMARK [2][-]{subsection.28.11}{Version 0.4.3.1 \0400.4.4.0}{section.28}% 109
+\BOOKMARK [2][-]{subsection.28.12}{Version 0.4.3.0 \0400.4.3.1}{section.28}% 110
+\BOOKMARK [2][-]{subsection.28.13}{Version 0.4.2.3 \0400.4.3.0}{section.28}% 111
+\BOOKMARK [2][-]{subsection.28.14}{Version 0.4.2.2 \0400.4.2.3}{section.28}% 112
+\BOOKMARK [2][-]{subsection.28.15}{Version 0.4.2.1 \0400.4.2.2}{section.28}% 113
+\BOOKMARK [2][-]{subsection.28.16}{Version 0.4.2.0 \0400.4.2.1}{section.28}% 114
+\BOOKMARK [2][-]{subsection.28.17}{Version 0.4.1.0 \0400.4.2.0}{section.28}% 115
+\BOOKMARK [2][-]{subsection.28.18}{Version 0.4.0.0 \0400.4.1.0}{section.28}% 116
+\BOOKMARK [2][-]{subsection.28.19}{Version 0.3.3.0 \0400.4.0.0}{section.28}% 117
+\BOOKMARK [2][-]{subsection.28.20}{Version 0.3.2.0 \0400.3.3.0}{section.28}% 118
+\BOOKMARK [2][-]{subsection.28.21}{Version 0.3.1.1 \0400.3.2.0}{section.28}% 119
+\BOOKMARK [2][-]{subsection.28.22}{Version 0.3.1.0 \0400.3.1.1}{section.28}% 120
+\BOOKMARK [2][-]{subsection.28.23}{Version 0.3.0.0 \0400.3.1.0}{section.28}% 121

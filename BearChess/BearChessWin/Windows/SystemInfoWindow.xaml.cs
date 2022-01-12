@@ -11,10 +11,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         private readonly Configuration _configuration;
 
-        public SystemInfoWindow(Configuration configuration)
+        public SystemInfoWindow(Configuration configuration, string chessBoardInfo)
         {
             InitializeComponent();
             _configuration = configuration;
+            textBlockBoard.Text = chessBoardInfo;
         }
 
         private void SystemInfoWindow_OnLoaded(object sender, RoutedEventArgs e)
