@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.5.8.0}
+\fancyhead[R]{Version 0.5.8.1}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{10.01.2022} 
+\date{14.01.2022} 
 
 
 \begin{document}
@@ -1848,7 +1848,6 @@ When two engines play against each other, all moves are ignored by the electroni
     \item Relaxed mode and the game analysis are new features. There are certainly still some errors in it.
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time.
-	\item You cannot to play an engine match with the same engine. This will fixed in the next version.
 	\item Sometimes showing incorrect material balance for "All".
 	\item Opening books may not work if the game is not started from the base position.	
 \end{itemize}
@@ -1867,6 +1866,11 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.5.8.0 $\Rightarrow$  0.5.8.1}
+\begin{itemize}
+	\item Fix: When two engines play against each other with almost the same name
+\end{itemize}
+
 \subsection{Version 0.5.7.0 $\Rightarrow$  0.5.8.0}
 \begin{itemize}
 	\item New: Support for DGT Pegasus chessboard.

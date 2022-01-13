@@ -332,11 +332,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void AddMove(string fromField, string toField, string promote, string engineName = "")
         {
             _fileLogger?.LogInfo($"Send AddMove {fromField}-{toField}{promote}");
-            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            _lastCommand = string.Empty;
+            if (string.IsNullOrEmpty(engineName))
+            {
+                foreach (var engine in _loadedEngines)
+                {
+                    engine.Value.UciEngine.AddMove(fromField, toField, promote);
+                }
+
+                return;
+            }
+
+            foreach (var engine in _loadedEngines.Where(e => e.Key.Equals(engineName, StringComparison.OrdinalIgnoreCase)))
             {
                 engine.Value.UciEngine.AddMove(fromField, toField, promote);
             }
-            _lastCommand = string.Empty;
         }
 
         public void AddMoveForCoaches(string fromField, string toField, string promote)
@@ -352,11 +362,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void MakeMove(string fromField, string toField, string promote, string engineName="")
         {
             _fileLogger?.LogInfo($"Send MakeMove {fromField}-{toField}{promote}");
-            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            _lastCommand = string.Empty;
+            if (string.IsNullOrEmpty(engineName))
+            {
+                foreach (var engine in _loadedEngines)
+                {
+                    engine.Value.UciEngine.MakeMove(fromField, toField, promote);
+                }
+
+                return;
+            }
+            foreach (var engine in _loadedEngines.Where(e => e.Key.Equals(engineName, StringComparison.OrdinalIgnoreCase)))
             {
                 engine.Value.UciEngine.MakeMove(fromField, toField, promote);
             }
-            _lastCommand = string.Empty;
+            
         }
 
         private void MakeMoveForCoaches(string fenPosition)
