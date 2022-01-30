@@ -16,6 +16,10 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
         public string PortName => "BT";
 
         public int ReadTimeout { get; set; }
+        public void ClearBuffer()
+        {
+            //
+        }
 
         public BTComPort(BluetoothAddress btAddress)
         {

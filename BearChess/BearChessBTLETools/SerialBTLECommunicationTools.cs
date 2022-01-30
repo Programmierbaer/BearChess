@@ -14,14 +14,16 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
     {
         private static readonly Dictionary<string, DeviceInformation> allDevices = new Dictionary<string, DeviceInformation>();
 
-        private static DeviceWatcher deviceWatcher;
+        private static DeviceWatcher _deviceWatcher;
         private static ILogging _logger;
+        private static string _deviceName;
 
-        public static void StartWatching(ILogging logger)
+        public static bool StartWatching(ILogging logger, string deviceName)
         {
             try
             {
                 _logger = logger;
+                _deviceName = deviceName;
                 DeviceId = string.Empty;
                 string[] requestedProperties =
                 {
@@ -33,38 +35,42 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 string aqsAllBluetoothLEDevices =
                     "(System.Devices.Aep.ProtocolId:=\"{bb7bb05e-5972-42b5-94fc-76eaa7084d49}\")";
                 allDevices.Clear();
-                deviceWatcher =
+                _deviceWatcher =
                     DeviceInformation.CreateWatcher(
                         aqsAllBluetoothLEDevices,
                         requestedProperties,
                         DeviceInformationKind.AssociationEndpoint);
-                deviceWatcher.Added += DeviceWatcher_Added;
-                deviceWatcher.Removed += DeviceWatcher_Removed;
+                _deviceWatcher.Added += DeviceWatcher_Added;
+                _deviceWatcher.Removed += DeviceWatcher_Removed;
                 _logger?.LogDebug("Start Watching");
-                deviceWatcher.Start();
+                _deviceWatcher.Start();
             }
             catch (Exception ex)
             {
+                _deviceWatcher = null;
                 _logger?.LogError("Start Watching", ex);
+                return false;
             }
+
+            return true;
         }
 
         public static void StopWatching()
         {
-            if (deviceWatcher != null)
+            if (_deviceWatcher != null)
             {
                 // Unregister the event handlers.
-                deviceWatcher.Added -= DeviceWatcher_Added;
-                deviceWatcher.Removed -= DeviceWatcher_Removed;
+                _deviceWatcher.Added -= DeviceWatcher_Added;
+                _deviceWatcher.Removed -= DeviceWatcher_Removed;
 
                 // Stop the watcher.
-                deviceWatcher.Stop();
-                deviceWatcher = null;
+                _deviceWatcher.Stop();
+                _deviceWatcher = null;
                 _logger?.LogDebug("Stop Watching");
             }
         }
 
-        public static string DeviceId { get; private set; }
+        public static string DeviceId { get;  set; }
 
         public static string GetBTComPort(string boardName)
         {
@@ -76,8 +82,14 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 {
                     continue;
                 }
+                _logger?.LogDebug($"GET {device.Name}");
 
                 if (device.Name.StartsWith("DGT_PEGASUS", StringComparison.OrdinalIgnoreCase))
+                {
+                    portName = device.Name;
+                    DeviceId = device.Id;
+                }
+                if (device.Name.StartsWith("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
                 {
                     portName = device.Name;
                     DeviceId = device.Id;
@@ -108,10 +120,21 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 allDevices[deviceInfo.Id] = deviceInfo;
                 if (!string.IsNullOrWhiteSpace(deviceInfo.Name))
                 {
+                    if (deviceInfo.Name.StartsWith(_deviceName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        DeviceId = deviceInfo.Id;
+                        
+                    }
+                    /*
                     if (deviceInfo.Name.StartsWith("DGT_PEGASUS", StringComparison.OrdinalIgnoreCase))
                     {
                         DeviceId = deviceInfo.Id;
                     }
+                    if (deviceInfo.Name.StartsWith("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
+                    {
+                        DeviceId = deviceInfo.Id;
+                    }
+                    */
                 }
             }
         }

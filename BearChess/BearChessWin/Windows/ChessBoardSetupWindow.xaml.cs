@@ -8,6 +8,7 @@ using System.Windows.Forms.VisualStyles;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 using Microsoft.Win32;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -56,11 +57,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             checkBoxShowBestMove.IsChecked = showBestMove;
             checkBoxShowLastMove.IsChecked = showLastMove;
-            installedFields["BearChess"] = new BoardFieldsSetup()
-                                           {
-                                               Name = "BearChess",WhiteFileName = string.Empty, BlackFileName = string.Empty,Id = "BearChess"
-                                           };
-            installedPieces["BearChess"] = new BoardPiecesSetup() {Name = "BearChess",Id = "BearChess"};
+            installedFields[Constants.BearChess] = new BoardFieldsSetup()
+                                                   {
+                                                       Name = Constants.BearChess,
+                WhiteFileName = string.Empty, BlackFileName = string.Empty,Id = Constants.BearChess
+            };
+            installedPieces[Constants.BearChess] = new BoardPiecesSetup() {Name = Constants.BearChess, Id = Constants.BearChess };
             _boardPath = boardPath;
             _piecesPath = piecesPath;
             _installedFields = installedFields;
@@ -156,7 +158,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                BoardFieldsSetup = _installedFields.First(f => f.Value.Name.Equals("BearChess", StringComparison.OrdinalIgnoreCase)).Value;
+                BoardFieldsSetup = _installedFields.First(f => f.Value.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase)).Value;
                 BoardSetupChangedEvent?.Invoke(this, new EventArgs());
                 File.Delete(Path.Combine(_boardPath, ((BoardFieldsSetup)e.RemovedItems[0]).Id+".cfg"));
                 
@@ -172,7 +174,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                BoardPiecesSetup = _installedPieces.First(f => f.Value.Name.Equals("BearChess", StringComparison.OrdinalIgnoreCase)).Value;
+                BoardPiecesSetup = _installedPieces.First(f => f.Value.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase)).Value;
                 PiecesSetupChangedEvent?.Invoke(this, new EventArgs());
                 File.Delete(Path.Combine(_piecesPath, ((BoardPiecesSetup)e.RemovedItems[0]).Id + ".cfg"));
             }
@@ -180,7 +182,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDeleteBoard_OnClick(object sender, RoutedEventArgs e)
         {
-            if (BoardFieldsSetup.Name.Equals("BearChess", StringComparison.OrdinalIgnoreCase))
+            if (BoardFieldsSetup.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase))
             {
                 MessageBox.Show("You cannot delete board 'BearChess'", "Information", MessageBoxButton.OK,
                                 MessageBoxImage.Hand);
@@ -192,13 +194,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _installedFields.Remove(BoardFieldsSetup.Id);
                 comboBoxBoards.ItemsSource = null;
                 comboBoxBoards.ItemsSource = _installedFields.Values.OrderBy(f => f.Name);
-                comboBoxBoards.SelectedItem = _installedFields.First(f => f.Value.Name.Equals("BearChess", StringComparison.OrdinalIgnoreCase)).Value;
+                comboBoxBoards.SelectedItem = _installedFields.First(f => f.Value.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase)).Value;
             }
         }
 
         private void ButtonDeletePieces_OnClick(object sender, RoutedEventArgs e)
         {
-            if (BoardPiecesSetup.Name.Equals("BearChess", StringComparison.OrdinalIgnoreCase))
+            if (BoardPiecesSetup.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase))
             {
                 MessageBox.Show("You cannot delete pieces 'BearChess'", "Information", MessageBoxButton.OK,
                                 MessageBoxImage.Hand);
@@ -210,7 +212,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _installedPieces.Remove(BoardPiecesSetup.Id);
                 comboBoxPieces.ItemsSource = null;
                 comboBoxPieces.ItemsSource = _installedPieces.Values.OrderBy(f => f.Name);
-                comboBoxPieces.SelectedItem = _installedPieces.First(f => f.Value.Name.Equals("BearChess",StringComparison.OrdinalIgnoreCase)).Value;
+                comboBoxPieces.SelectedItem = _installedPieces.First(f => f.Value.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase)).Value;
             }
         }
 

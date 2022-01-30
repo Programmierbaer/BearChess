@@ -44,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChessTournament
             _database.SaveDuelGamePair(_duelId, _database.Save(currentGame));
         }
 
-        public CurrentGame GetNextGame()
+        public CurrentGame GetNextGame(string lastResult)
         {
             if (_currentDuel == null)
             {
@@ -57,7 +57,67 @@ namespace www.SoLaNoSoft.com.BearChessTournament
             if (gamesCount < numberOfTotalGames)
             {
                 bool gamesCountIsEven = (gamesCount % 2) == 0;
+                if (!string.IsNullOrWhiteSpace(lastResult) && (_currentDuel.AdjustEloWhite || _currentDuel.AdjustEloWhite))
+                {
+                    int pIndex = _currentDuel.AdjustEloWhite ? 0 : 1;
+                    var currentDuelPlayer = _currentDuel.Players[pIndex];
+                    var configuredElo = currentDuelPlayer.GetConfiguredElo();
+                    var minimumElo = currentDuelPlayer.GetMinimumElo();
+                    var maximumElo = currentDuelPlayer.GetMaximumElo();
+                    var newElo = configuredElo;
+                    if (_currentDuel.CurrentMaxElo <= 0)
+                    {
+                        _currentDuel.CurrentMaxElo = maximumElo;
+                    }
+                    if (_currentDuel.CurrentMinElo <= 0)
+                    {
+                        _currentDuel.CurrentMinElo = minimumElo;
+                    }
+                    if (configuredElo <= 0)
+                    {
+                        configuredElo = maximumElo;
+                    }
 
+                    if (!lastResult.Equals("1/2"))
+                    {
+
+                        if (pIndex == 0 && lastResult.StartsWith("1"))
+                        {
+                            _currentDuel.CurrentMaxElo = configuredElo;
+                      
+                            
+                        }
+
+                        if (pIndex == 0 && lastResult.StartsWith("0"))
+                        {
+                            _currentDuel.CurrentMinElo = configuredElo;
+                         
+                        }
+
+                        if (pIndex == 1 && lastResult.StartsWith("1"))
+                        {
+                            _currentDuel.CurrentMinElo = configuredElo;
+                        }
+
+                        if (pIndex == 1 && lastResult.StartsWith("0"))
+                        {
+                            _currentDuel.CurrentMaxElo = configuredElo;
+                        }
+                        newElo = (_currentDuel.CurrentMaxElo + _currentDuel.CurrentMinElo) / 2;
+                        if (newElo < minimumElo)
+                        {
+                            newElo = minimumElo;
+                        }
+
+                        if (newElo > maximumElo)
+                        {
+                            newElo = maximumElo;
+                        }
+
+                        currentDuelPlayer.SetElo(newElo);
+                    }
+
+                }
                 currentGame = new CurrentGame(_currentDuel.Players[0],
                                               _currentDuel.Players[1],
                                               _currentDuel.GameEvent,

@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
@@ -15,7 +16,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private Thread _readingThread;
         
 
-        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName) : base(isFirstInstance, logger, portName, "MChessLink")
+        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName) : base(isFirstInstance, logger, portName, Constants.MChessLink)
         {
         }
 
@@ -27,16 +28,30 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 param = "V";
             }
+            int counter = 10;
             int readByte = int.MaxValue;
             string readLine = string.Empty;
             try
             {
                 var convertToSend = ConvertToSend(param);
+                Thread.Sleep(100);
+                _comPort.ClearBuffer();
+                _logger?.LogDebug($"SC: Write {param}");
                 _comPort.Write(convertToSend, 0, convertToSend.Length);
-                while (readByte > 0 )
+                while (readByte > 0 || counter>0)
                 {
                     readByte = _comPort.ReadByte();
-                    var convertFromRead = ConvertFromRead(readByte);
+                    _logger?.LogDebug($"SC: Read {readByte}");
+                    if (readByte < 0)
+                    {
+                        return string.Empty;
+                    }
+                    if (readByte == 0)
+                    {
+                        counter--;
+                        Thread.Sleep(100);
+                    }
+                    var convertFromRead = ConvertFromRead(readByte); 
                     readLine += convertFromRead;
                     if (readLine.Contains(param.ToLower()))
                     {
@@ -45,7 +60,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                         {
                             _logger?.LogDebug($"SC: readline {readLine}");
                             result = readLine.Substring(startIndex, 5);
-                            readLine = string.Empty;
+                            _comPort.ClearBuffer();
+                            break;
                         }
                     }
                 }
@@ -106,16 +122,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                 while (readByte > 0)
                                 {
                                     readByte = _comPort.ReadByte();
-                                    var convertFromRead = ConvertFromRead(readByte);
-                                    // _logger?.LogDebug($"SC: Read:  {convertFromRead}");
-                                    readLine += convertFromRead;
-                                    //if (convertFromRead.Equals("3"))
-                                    //{
-                                    //    if (readLine.Length > 1)
-                                    //    {
-                                    //        break;
-                                    //    }
-                                    //}
+                                    if (readByte > 0)
+                                    {
+                                        var convertFromRead = ConvertFromRead(readByte);
+                                        // _logger?.LogDebug($"SC: Read:  {convertFromRead}");
+                                        readLine += convertFromRead;
+                                    }
+                                  
                                 }
                             }
                             catch
@@ -259,5 +272,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             var i = data & 127;
             return Encoding.ASCII.GetString(new[] { (byte)i });
         }
+
     }
 }

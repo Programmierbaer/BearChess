@@ -2,6 +2,7 @@
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
@@ -15,7 +16,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
 
         public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, bool useBluetooth) : base(
-            isFirstInstance, logger, portName, "Certabo")
+            isFirstInstance, logger, portName, Constants.Certabo)
         {
             _useBluetooth = useBluetooth;
         }

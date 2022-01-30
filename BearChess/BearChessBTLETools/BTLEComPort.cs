@@ -15,12 +15,19 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
     // ReSharper disable once IdentifierTypo
     public class BTLEComPort : IComPort
     {
+        private readonly string _pegasusService         = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _mChessLinkService      = "49535343-FE7D-4AE5-8FA9-9FAFD205E455";
+        private readonly string _mChessLinkServiceWrite = "49535343-8841-43F4-A8D4-ECBE34729BB3";
+        private readonly string _mChessLinkServiceRead  = "49535343-1E4D-4BD9-BA61-23C647249616";
+        private readonly string _pegasusServiceWrite    = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _pegasusServiceRead     = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _deviceId;
         private BluetoothLEDevice _bluetoothLeDevice = null;
         private GattCharacteristic _writeCharacteristic = null;
         private GattCharacteristic _readCharacteristic = null;
         private GattDeviceService _service = null;
-        private ConcurrentQueue<byte[]> _bytesQueue = new ConcurrentQueue<byte[]>();
+        private readonly ConcurrentQueue<byte[]> _byteArrayQueue = new ConcurrentQueue<byte[]>();
+        private readonly ConcurrentQueue<byte> _byteQueue = new ConcurrentQueue<byte>();
 
         private static readonly Guid ResultCharacteristicUuid = Guid.Parse("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
 
@@ -31,11 +38,19 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         readonly int E_DEVICE_NOT_AVAILABLE = unchecked((int)0x800710df); // HRESULT_FROM_WIN32(ERROR_DEVICE_NOT_AVAILABLE)
         #endregion
 
+        private List<string> _allServices;
+        private List<string> _allReadCharServices;
+        private List<string> _allWriteCharServices;
+
         public string PortName => "BTE";
 
         public BTLEComPort(string deviceId)
         {
             _deviceId = deviceId;
+            _allServices = new List<string>() { _pegasusService, _mChessLinkService };
+            _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead };
+            _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite };
+
         }
 
         private static ushort ParseHeartRateValue(byte[] data)
@@ -54,41 +69,41 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             return data[1];
         }
 
-        public  void Open()
+        public void Open()
         {
-
 
             _bluetoothLeDevice = AsyncHelper.RunSync(async () => await BluetoothLEDevice.FromIdAsync(_deviceId));
             if (_bluetoothLeDevice != null)
             {
-                GattDeviceServicesResult result = AsyncHelper.RunSync(async () => await _bluetoothLeDevice.GetGattServicesAsync(BluetoothCacheMode.Uncached));
+                
+                GattDeviceServicesResult result = AsyncHelper.RunSync(async () => await _bluetoothLeDevice.GetGattServicesAsync(BluetoothCacheMode.Cached));
                 if (result.Status == GattCommunicationStatus.Success)
                 {
                     var services = result.Services;
                     foreach (GattDeviceService service in services)
                     {
-                      
-                        if (service.Uuid.ToString("D")
-                                   .Equals("6E400001-B5A3-F393-E0A9-E50E24DCCA9E", StringComparison.OrdinalIgnoreCase))
+                        var serviceUuid = service.Uuid.ToString("D").ToUpper();
+                        if (_allServices.Contains(serviceUuid))
                         {
                             _service = service;
-
+                            _readCharacteristic = null;
+                            _writeCharacteristic = null;
                             GattCharacteristicsResult readOnlyList = AsyncHelper.RunSync(async () => await service.GetCharacteristicsAsync(
-                                BluetoothCacheMode.Uncached));
+                                BluetoothCacheMode.Cached));
                             foreach (var gattCharacteristic in readOnlyList.Characteristics)
                             {
-                                if (gattCharacteristic.Uuid.ToString("D").Equals(
-                                        "6E400002-B5A3-F393-E0A9-E50E24DCCA9E", StringComparison.OrdinalIgnoreCase))
-                                {
-                                    _writeCharacteristic = gattCharacteristic;
-                                }
-                                if (gattCharacteristic.Uuid.ToString("D").Equals(
-                                        "6E400003-B5A3-F393-E0A9-E50E24DCCA9E", StringComparison.OrdinalIgnoreCase))
+                                var gattChar = gattCharacteristic.Uuid.ToString("D").ToUpper();
+                                if (_allReadCharServices.Contains(gattChar))
                                 {
                                     _readCharacteristic = gattCharacteristic;
                                 }
+                                if (_allWriteCharServices.Contains(gattChar))
+                                {
+                                    _writeCharacteristic = gattCharacteristic;
+                                }
                             }
-                            break;
+                            if (_readCharacteristic!=null && _writeCharacteristic != null)
+                              break;
                         }
                     }
                 }
@@ -101,7 +116,8 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                                                                          GattClientCharacteristicConfigurationDescriptorValue.Notify));
             }
 
-            while (_bytesQueue.TryDequeue(out byte[] _)) ;
+            while (_byteArrayQueue.TryDequeue(out byte[] _)) ;
+            while (_byteQueue.TryDequeue(out byte _)) ;
         }
 
         private void _readCharacteristic_ValueChanged(GattCharacteristic sender, GattValueChangedEventArgs args)
@@ -109,7 +125,11 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             CryptographicBuffer.CopyToByteArray(args.CharacteristicValue, out var data);
             if (data != null)
             {
-                _bytesQueue.Enqueue(data);
+                _byteArrayQueue.Enqueue(data);
+                foreach (var b in data)
+                {
+                    _byteQueue.Enqueue(b);
+                }
             }
         }
 
@@ -122,7 +142,8 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             }
 
             _writeCharacteristic = null;
-            while (_bytesQueue.TryDequeue(out byte[] _)) ;
+            while (_byteArrayQueue.TryDequeue(out byte[] _));
+            while (_byteQueue.TryDequeue(out byte _));
             SerialBTLECommunicationTools.Clear();
             _service.Dispose();
             _bluetoothLeDevice.Dispose();
@@ -132,8 +153,9 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
         public string ReadLine()
         {
+            while (_byteQueue.TryDequeue(out byte _));
             string r = string.Empty;
-            if (_bytesQueue.TryDequeue(out byte[] bArray))
+            if (_byteArrayQueue.TryDequeue(out byte[] bArray))
             {
                 foreach (var b in bArray)
                 {
@@ -141,22 +163,25 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 }
 
             }
-
             return r;
         }
 
         public byte[] ReadByteArray()
         {
-            if (_bytesQueue.TryDequeue(out byte[] bArray))
+            while (_byteQueue.TryDequeue(out byte _));
+            if (_byteArrayQueue.TryDequeue(out byte[] bArray))
             {
                 return bArray;
             }
-
+            
             return Array.Empty<byte>();
         }
 
         public int ReadByte()
         {
+            while (_byteArrayQueue.TryDequeue(out byte[] _));
+            if (_byteQueue.TryDequeue(out byte b))
+              return b;
             return 0;
         }
 
@@ -181,6 +206,11 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         }
 
         public int ReadTimeout { get; set; }
+        public void ClearBuffer()
+        {
+            while (_byteArrayQueue.TryDequeue(out byte[] _));
+            while (_byteQueue.TryDequeue(out byte _));
+        }
 
         private string FormatValueByPresentation(IBuffer buffer, GattPresentationFormat format)
         {

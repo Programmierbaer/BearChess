@@ -5,6 +5,7 @@ using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 using System.Management;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 
@@ -16,6 +17,10 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public static bool IsBTPort(string portName)
         {
+            if (portName == "BTLE")
+            {
+                return true;
+            }
             var q = new SelectQuery(Win32_SerialPort);
             var s = new ManagementObjectSearcher(q);
             foreach (var cur in s.Get())
@@ -50,68 +55,86 @@ namespace www.SoLaNoSoft.com.BearChessTools
             return result.ToArray();
         }
 
-        public static string[] GetBTComPort(string boardName, Configuration configuration, ILogging fileLogger)
+        public static string[] GetBTComPort(string boardName, Configuration configuration, ILogging fileLogger, bool btClasic, bool btLE)
         {
             fileLogger?.LogInfo($"Get BT com ports for {boardName}");
-            string boardDevice = boardName.Equals("Certabo", StringComparison.OrdinalIgnoreCase)
+            string boardDevice = boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase)
                                      ? "raspberrypi"
                                      : "MILLENNIUM CHESS";
-            try
+            if (btClasic)
             {
-                var cli = new BluetoothClient();
-                fileLogger?.LogInfo("Discover BT devices...");
-                IReadOnlyCollection<BluetoothDeviceInfo> bluetoothDeviceInfos = cli.DiscoverDevices();
-                fileLogger?.LogInfo($"{bluetoothDeviceInfos.Count} devices found");
-                foreach (var bluetoothDeviceInfo in bluetoothDeviceInfos)
+                try
                 {
-                    fileLogger?.LogInfo($"Check {bluetoothDeviceInfo.DeviceName}");
-                    var deviceName = bluetoothDeviceInfo.DeviceName;
-                    if (boardName.Equals("Certabo", StringComparison.OrdinalIgnoreCase) &&
-                        deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
+
+                    var cli = new BluetoothClient();
+                    fileLogger?.LogInfo("Discover BT devices...");
+                    IReadOnlyCollection<BluetoothDeviceInfo> bluetoothDeviceInfos = cli.DiscoverDevices();
+                    fileLogger?.LogInfo($"{bluetoothDeviceInfos.Count} devices found");
+                    foreach (var bluetoothDeviceInfo in bluetoothDeviceInfos)
                     {
-                        // Certabo
-                        try
+                        fileLogger?.LogInfo($"Check {bluetoothDeviceInfo.DeviceName}");
+                        var deviceName = bluetoothDeviceInfo.DeviceName;
+                        if (boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase) &&
+                            deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
                         {
-                            fileLogger?.LogInfo("Open Certabo BT endpoint");
-                            var bluetoothEndPoint =
-                                new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress, BluetoothService.SerialPort,
-                                                      10);
-                            if (!cli.Connected)
+                            // Certabo
+                            try
                             {
-                                cli.Connect(bluetoothEndPoint);
-                                if (cli.Connected)
+                                fileLogger?.LogInfo("Open Certabo BT endpoint");
+                                var bluetoothEndPoint =
+                                    new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress,
+                                                          BluetoothService.SerialPort,
+                                                          10);
+                                if (!cli.Connected)
                                 {
-                                    fileLogger?.LogInfo("Connected");
-                                    cli.Close();
-                                    configuration.Save(bluetoothDeviceInfo.DeviceAddress);
-                                    var list = new List<string>(GetPortNames());
-                                    list.Add("BT");
-                                    return list.ToArray();
+                                    cli.Connect(bluetoothEndPoint);
+                                    if (cli.Connected)
+                                    {
+                                        fileLogger?.LogInfo("Connected");
+                                        cli.Close();
+                                        configuration.Save(bluetoothDeviceInfo.DeviceAddress);
+                                        var list = new List<string>(GetPortNames());
+                                        list.Add("BT");
+                                        return list.ToArray();
+                                    }
                                 }
                             }
+                            catch (Exception ex)
+                            {
+                                fileLogger?.LogError(ex);
+                            }
+
+                            break;
+
                         }
-                        catch (Exception ex)
+
+                        if (boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase) &&
+                            deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
                         {
-                            fileLogger?.LogError(ex);
+                            fileLogger?.LogInfo("Set service as serial port for Millennium ChessLink");
+                            // Millennium
+                            bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
+                            break;
                         }
 
-                        break;
-
-                    }
-
-                    if (deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
-                    {
-                        fileLogger?.LogInfo("Set service as serial port for Millennium ChessLink");
-                        // Millennium
-                        bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
-                        break;
                     }
 
                 }
+                catch
+                {
+                    //
+                }
             }
-            catch
+
+            if (btLE)
             {
-                //
+                if (boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))
+                {
+                    var list = new List<string>();
+                    list.Add("BTLE");
+                    list.AddRange(GetPortNames());
+                    return list.ToArray();
+                }
             }
 
             return GetPortNames(); 

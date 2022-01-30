@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
@@ -34,7 +35,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             Name = name;
             Check = check;
             var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                                        "BearChess", Name);
+                                        Constants.BearChess, Name);
             _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
             EChessBoardConfiguration configuration = ReadConfiguration();
             // ReSharper disable once VirtualMemberCallInConstructor
@@ -54,7 +55,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             Name = name;
             var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "BearChess", name);
+                                        Constants.BearChess, name);
             Init(basePath);
         }
 

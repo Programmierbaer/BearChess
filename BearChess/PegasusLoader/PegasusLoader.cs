@@ -1,13 +1,14 @@
 ﻿
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChess.PegasusLoader
 {
     public class PegasusLoader : AbstractLoader
     {
 
-        public static string EBoardName = "Pegasus";
+        public static readonly string EBoardName = Constants.Pegasus;
 
         public PegasusLoader(bool check, string name) : base(check, name)
         {

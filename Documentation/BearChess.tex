@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.5.8.1}
+\fancyhead[R]{Version 0.5.9.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{14.01.2022} 
+\date{30.01.2022} 
 
 
 \begin{document}
@@ -811,7 +811,9 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports three electronic chessboards: Certabo boards, Millennium boards via the ChessLink module and DGT Pegasus. Certabo and Millennium boards communicates via an USB port as serial COM port or via bluetooth. DGT Pegasus communications only via bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.
+BearChess supports three electronic chessboards: Certabo boards, Millennium boards via the ChessLink module and DGT Pegasus. Certabo and Millennium boards communicates via an USB port as serial COM port or via Bluetooth. DGT Pegasus communications only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.\\
+For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
+In the classic variant, coupling is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No coupling is necessary and there is no conversion to a COM port.
 
 \subsection{Configure Certabo boards} \label{ConfigureCertabo}
 \begin{figure}[H]
@@ -821,7 +823,7 @@ BearChess supports three electronic chessboards: Certabo boards, Millennium boar
 	\label{fig:Certabo1}
 \end{figure}
 
-Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the bluetooth module from Certabo, you can also connect to the Certabo board via bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows.\\
+Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the Bluetooth module from Certabo, you can also connect to the Certabo board via bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows.\\
 The figure recognition assumes that the board is aligned so that the USB port is on the bottom right.
 
 \begin{figure}[H]
@@ -935,13 +937,13 @@ In the lower right corner a new button appears, which allows you to easily conne
 	\label{fig:MillenniumChessLink1}
 \end{figure}
 
-For your Millennium ChessLink you may need to configure the COM port used. You can also change how the LEDs should light up.\\
-If your PC supports Bluetooth, you can also connect to the ChessLink module via Bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows. \\
-The figure recognition assumes that the board is aligned so that the USB port is on the bottom right.
+For your Millennium ChessLink you may need to configure the COM port or Bluetooth used. You can also change how the LEDs should light up.\\
+If your PC supports Bluetooth, you can also connect to the ChessLink module via Bluetooth. If you want to do this, check the option "Bluetooth Classic" and/or "Bluetooth LE" first, before opening the configuration windows.\\
+The figure recognition assumes that the board is aligned so that the cable is on right.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{MillenniumChessLink9.png}
+	\includegraphics[scale=0.8]{MillenniumChessLink9.png}
 	\caption{Search for Bluetooth }
 	\label{fig:MillenniumChessLink9}
 \end{figure}
@@ -991,7 +993,7 @@ A click on \includegraphics[scale=0.4]{eye.png} connects to the board and you ca
 
 \subsubsection{Configure Bluetooth} \label{Bluetooth}
 
-If the "Bluetooth" option is set, the following window will be displayed for a short time if you open the configuration dialog.
+If the "Bluetooth Classic" option is set, the following window will be displayed for a short time if you open the configuration dialog.
 
 \begin{figure}[H]
 	\centering
@@ -1000,7 +1002,10 @@ If the "Bluetooth" option is set, the following window will be displayed for a s
 	\label{fig:MillenniumChessLink10}
 \end{figure}
 
-During this time or if you connect to the first time, Windows may ask you to connect to the Millennium ChessLink module. In this case, confirm this.
+During this time or if you connect to the first time, Windows may ask you to connect to the Millennium ChessLink module. In this case, confirm this.\\
+
+If the "Bluetooth LE" option is set, the connection is not emulated as a serial COM port. The configuration shows the port name as "BTLE".
+
 
 \subsubsection{Connect}
 \begin{figure}[H]
@@ -1035,7 +1040,7 @@ In the lower right corner a new button appears, which allows you to easily conne
 \end{figure}
 
 No configuration is required for your DGT Pegasus chessboard.\\
-Unlike the other chessboards, the DGT Pegasus requires a Bluetooth LE (Bluetooth Low Energy, formerly marketed as Bluetooth Smart) connection. Make sure that your Bluetooth adapter also supports LE.
+Unlike the other chessboards, the DGT Pegasus requires a Bluetooth LE connection. Make sure that your Bluetooth adapter also supports LE.
 
 \begin{figure}[H]
 	\centering
@@ -1089,7 +1094,7 @@ Select the opponents for white \includegraphics[scale=0.4]{KingW.png} and black 
 
 \textbf{Hint:} You cannot use an electronic chessboard for a pure engine match.\\
 
-\includegraphics[scale=0.4]{cog.png} opens the engine configuration dialog. This is the same dialog as for load and manage engines. However, all changes are only used for this game and are not saved permanently.\\
+\includegraphics[scale=0.4]{cog.png} opens the engine configuration dialog. This is the same dialog as for load and manage engines. \textbf{However, all changes are only used until you close BearChess you explicit reload the engine.}\\
 Below the engine selection, there are up to three information which gives you a quick overview of the current engine configuration.
 
 \begin{itemize}
@@ -1186,6 +1191,10 @@ When you play against an engine BearChess collects more information.\\
 \end{figure}
 
 When the move list window is selected, you can use the cursor keys and the scroll up and down keys to maneuver through the list.
+
+\section{Pause and continue a game} \label{pauseAGame}
+
+The button \includegraphics[scale=0.4]{stopwatch_pause.png} is an easy way to pause a game.  The clocks are stopped until you make move or press the button \includegraphics[scale=0.4]{stopwatch_start.png}. If an engine is in progress, BearChess waits for the last move before stopping the clocks. \textbf{These options are not available for games against MessChess engines.}
 
 \section{Easy start or restart of a game} \label{easyStart}
 
@@ -1778,6 +1787,7 @@ If the engine allows to configure its ELO number, it appears under the name.
 	\item \includegraphics[scale=0.5]{eye.png} Hide engine information.		
 \end{itemize}
 
+
 If you have configured that currently the best move should be displayed, the analysis of the topmost engine is taken.
 
 \begin{figure}[H]
@@ -1858,7 +1868,8 @@ These are some ideas what will come in one of the next versions.
 
 \begin{itemize}
 		\item Extend the game analysis.
-		\item Improve eletronic chess board handling
+		\item Determine ELO (engines and/or player).
+		\item Improve eletronic chess board handling.
   	    \item Improve the performance of the opening book.
     	\item Support for Square Off Pro chessboard.
 	\end{itemize} 
@@ -1866,6 +1877,17 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.5.8.1 $\Rightarrow$  0.5.9.0}
+\begin{itemize}
+	\item New: Bluetooth LE for Millennium ChessLink.
+	\item New: Keeping the temporarily changed engine configurations.
+	\item New: Pause and continue a game.	
+	\item New: Show player names.	
+	\item Fix: Handling MessChess engines (not suitable for take back, starting not from base position or pause a game).
+	\item Fix: Handling of time control after losing by timeout.
+	\item Fix: Check COM-Ports takes a long time.
+\end{itemize}
+
 \subsection{Version 0.5.8.0 $\Rightarrow$  0.5.8.1}
 \begin{itemize}
 	\item Fix: When two engines play against each other with almost the same name

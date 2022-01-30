@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Documents;
 using www.SoLaNoSoft.com.BearChess.CertaboLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessBTLETools;
@@ -29,7 +30,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private List<string> _allPortNames;
         private readonly ILogging _fileLogger;
 
-        public string SelectedPortName => (string) comboBoxComPorts.SelectedItem;
+        public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
         public WinConfigureCertabo(Configuration configuration, bool useBluetooth)
         {
@@ -44,6 +45,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 Directory.CreateDirectory(fileInfo.DirectoryName);
                 Directory.CreateDirectory(Path.Combine(fileInfo.DirectoryName, "log"));
             }
+
             try
             {
                 _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "CertaboCfg.log"), 10, 10);
@@ -52,20 +54,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _fileLogger = null;
             }
+
             _allPortNames = new List<string> { "<auto>" };
             if (_useBluetooth)
             {
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
-                _portNames = SerialCommunicationTools.GetBTComPort(CertaboLoader.EBoardName,configuration, _fileLogger).ToList();
-                var btComPort = SerialBTLECommunicationTools.GetBTComPort("Certabo");
+                _portNames = SerialCommunicationTools
+                             .GetBTComPort(CertaboLoader.EBoardName, configuration, _fileLogger, true, false).ToList();
+                var btComPort = SerialBTLECommunicationTools.GetBTComPort(Constants.Certabo);
                 comPortSearchWindow.Close();
                 if (btComPort.Length > 0)
                 {
                     var btleComPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceId);
                     btleComPort.Open();
                 }
-                
+
             }
             else
             {
@@ -75,7 +79,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _portNames.ForEach(f => _allPortNames.Add(f));
             comboBoxComPorts.ItemsSource = _allPortNames;
             comboBoxComPorts.SelectedIndex = 0;
-          
+
 
             _calibrateFileName = Path.Combine(_configuration.FolderPath, CertaboLoader.EBoardName, "calibrate.xml");
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
@@ -106,13 +110,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCalibrate_OnClick(object sender, RoutedEventArgs e)
         {
-            var calibrateBaseWindow = new CalibrateBaseWindow {Owner = this};
+            var calibrateBaseWindow = new CalibrateBaseWindow { Owner = this };
             var showDialog = calibrateBaseWindow.ShowDialog();
             if (!showDialog.HasValue || !showDialog.Value)
             {
                 return;
             }
-         
+
 
             var infoWindow = new InfoWindow
                              {
@@ -129,44 +133,75 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 infoWindow.Close();
                 certaboLoader.Stop();
                 certaboLoader.SetAllLedsOff();
-                MessageBox.Show(this,"Calibration finished", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(this, "Calibration finished", "Calibrate", MessageBoxButton.OK,
+                                MessageBoxImage.Information);
                 certaboLoader.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this,$"{ex.Message}", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, $"{ex.Message}", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
             textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
 
         }
 
         private void ButtonCheck_OnClick(object sender, RoutedEventArgs e)
         {
-            var certaboLoader = new CertaboLoader(true,CertaboLoader.EBoardName);
-            var portName = comboBoxComPorts.SelectionBoxItem.ToString();
-            if (portName.Contains("auto"))
+            try
             {
-                foreach (var name in _portNames)
+                var infoWindow = new ProgressWindow()
+                                 {
+                                     Owner = this
+                                 };
+                var certaboLoader = new CertaboLoader(true, CertaboLoader.EBoardName);
+                var portName = comboBoxComPorts.SelectionBoxItem.ToString();
+                if (portName.Contains("auto"))
                 {
-                    if (certaboLoader.CheckComPort(name))
+                    infoWindow.SetMaxValue(_portNames.Count);
+                    infoWindow.Show();
+                    var i = 0;
+                    foreach (var name in _portNames)
                     {
-                        MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
-                        comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
-                        return;
+                        infoWindow.SetCurrentValue(i, name);
+                        infoWindow.SetCurrentValue(i);
+                        i++;
+                        if (certaboLoader.CheckComPort(name))
+                        {
+                            infoWindow.Close();
+                            MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK,
+                                            MessageBoxImage.Information);
+                            comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
+                            return;
+                        }
                     }
+
+                    infoWindow.Close();
+                    MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                    return;
+
                 }
-                MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
 
+                infoWindow.SetMaxValue(1);
+                infoWindow.Show();
+                infoWindow.SetCurrentValue(1, portName);
+                if (certaboLoader.CheckComPort(portName))
+                {
+                    infoWindow.Close();
+                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
+                                    MessageBoxImage.Information);
+                }
+                else
+                {
+                    infoWindow.Close();
+                    MessageBox.Show($"Check failed for {portName}", "Check", MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                }
             }
-
-            if (certaboLoader.CheckComPort(portName))
+            catch (Exception ex)
             {
-                MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show($"Check failed for {portName} ", "Check", MessageBoxButton.OK, MessageBoxImage.Error);
+                _fileLogger?.LogError(ex);
             }
 
         }

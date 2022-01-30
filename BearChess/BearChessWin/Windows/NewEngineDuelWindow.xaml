@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" SizeToContent="Height"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" Icon="../Assets/Icons/6-2-chess-png.png"
-        Title="New Engine Duel" Height="550" Width="660">
+        Title="New Engine Duel" Height="630" Width="660">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -32,7 +32,8 @@
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                             <Label Width="110" VerticalAlignment="Center">Event:</Label>
-                            <TextBox Name="textBoxEvent" Width="200" VerticalAlignment="Center" TextAlignment="Left"  VerticalContentAlignment="Center" Text="Engine Duel" Height="30"></TextBox> 
+                            <TextBox Name="textBoxEvent" Width="200" VerticalAlignment="Center" TextAlignment="Left"
+                                     VerticalContentAlignment="Center" Text="Engine Duel" Height="30" />
 
                         </StackPanel>
 
@@ -192,11 +193,16 @@
                     </StackPanel>
                 </Border>
                 <Border Grid.Column="0" Grid.Row="4" BorderBrush="Gray" BorderThickness="0"
-                        Margin="5"
+                        Margin="5" Grid.ColumnSpan="2"
                         Visibility="Visible" HorizontalAlignment="Left">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
-                            <Label Width="110" VerticalAlignment="Center">Number of games:</Label>
+                            <StackPanel VerticalAlignment="Center">
+                                <Label  Width="110" Name="labelNumberOfGames" Visibility="Visible" VerticalAlignment="Center">Number of games:</Label>
+                                <TextBlock Width="110" Name="labelNumberOfGames2" Visibility="Collapsed" TextWrapping="Wrap" VerticalAlignment="Center">Maximal number of games:</TextBlock>
+
+                            </StackPanel>
+
                             <local:NumericUpDownUserControl x:Name="numericUpDownUserControlNumberOfGames" Height="40"
                                                             MinValue="1" MaxValue="999" Value="1" />
 
@@ -206,6 +212,30 @@
                             <CheckBox Name="checkBoxSwitchColor" VerticalAlignment="Center"
                                       HorizontalAlignment="Center" />
                         </StackPanel>
+                        <StackPanel HorizontalAlignment="Left" Margin="5" Orientation="Horizontal" Name="stackPanelElo">
+                            <Label HorizontalAlignment="Left" Width="70" VerticalAlignment="Center" >Adjust ELO:</Label>
+                            <RadioButton Name="radioButtonEloWhite" Margin="40,0,0,0"  VerticalAlignment="Center"
+                                      HorizontalAlignment="Center" GroupName="estimate" IsChecked="True" VerticalContentAlignment="Center">
+                                <Image  Source="../Assets/Stone/Symbol/KingW.png" Width="32" Height="32" />
+                            </RadioButton>
+
+
+                            <RadioButton Name="radioButtonEloBlack" Margin="20,0,0,0"  VerticalAlignment="Center"
+                                      HorizontalAlignment="Center" GroupName="estimate" VerticalContentAlignment="Center">
+                                <Image  Source="../Assets/Stone/Symbol/KingB.png" Width="32"
+                                       Height="32" />
+                            </RadioButton>
+
+                            <!--
+                            <Label Margin="10,0,0,0" Width="40" VerticalAlignment="Center">Step:</Label>
+                            <local:NumericUpDownUserControl x:Name="numericUpDownUserControlAdjustEloWhite"
+                                                            Height="40"
+                                                            MinValue="1" MaxValue="999" Value="10" />
+                            <Label Width="40" VerticalAlignment="Center">ELO</Label>
+                            -->
+                        </StackPanel>
+
+                        
                     </StackPanel>
                 </Border>
 

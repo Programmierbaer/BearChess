@@ -4,17 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" WindowStartupLocation="CenterOwner"
-        mc:Ignorable="d"
-        Title="Information" Height="150" Width="300" >
+        mc:Ignorable="d" SizeToContent="Height" 
+        Title="Information" Height="270" Width="300" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Margin="20" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">Please wait..</TextBlock>
+        <TextBlock Margin="20" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" FontWeight="DemiBold" VerticalAlignment="Center">Please wait...</TextBlock>
         <ProgressBar Name="progressBar" Margin="20" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="20" ></ProgressBar>
+        <TextBlock Name="textBlockInfo" Margin="20" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" TextAlignment="Center"></TextBlock>
     </Grid>
 </Window>

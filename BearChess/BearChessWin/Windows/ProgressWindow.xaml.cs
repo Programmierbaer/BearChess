@@ -35,7 +35,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetCurrentValue(int current)
         {
             progressBar.Dispatcher.Invoke(() => progressBar.Value = current, DispatcherPriority.Background);
+        }
 
+        public void SetCurrentValue(int current, string info)
+        {
+            textBlockInfo.Dispatcher.Invoke(() => textBlockInfo.Text = info, DispatcherPriority.Background);
+            progressBar.Dispatcher.Invoke(() => progressBar.Value = current, DispatcherPriority.Background);
+            
         }
     }
 }

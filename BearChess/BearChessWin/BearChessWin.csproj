@@ -1131,6 +1131,21 @@
   <ItemGroup>
     <Resource Include="Assets\Icons\plus_light_blue.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\clock_pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\clock_play.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\stopwatch_start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\stopwatch_pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\chart_line.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

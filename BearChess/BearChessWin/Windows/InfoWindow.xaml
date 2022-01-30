@@ -10,6 +10,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TextBlock Margin="20" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Please wait..</TextBlock>
+        <TextBlock Margin="20" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">Please wait...</TextBlock>
     </Grid>
 </Window>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChessWin.Windows
 {
@@ -19,7 +20,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         {
             InitializeComponent();
             textBoxDate.Text = DateTime.Now.ToString("dd.MM.yyyy");
-            textBoxEvent.Text = "BearChess";
+            textBoxEvent.Text = Constants.BearChess;
             textBlockMoves.Text = moveList;
         }
 

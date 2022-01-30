@@ -207,7 +207,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock VerticalAlignment="Center" Margin="10,5" Grid.Column="0">Start from:</TextBlock>
-                        <StackPanel VerticalAlignment="Center" Margin="5" Grid.Column="1" Orientation="Horizontal">
+                        <StackPanel Name="stackPanelStartFrom" VerticalAlignment="Center" Margin="5" Grid.Column="1" Orientation="Horizontal">
                             <RadioButton Name="radioButtonStartPosition" Margin="0,5" GroupName="start"
                                          IsChecked="True">
                                 Base position

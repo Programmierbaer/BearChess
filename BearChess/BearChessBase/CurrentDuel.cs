@@ -16,17 +16,29 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public string GameEvent { get; set; }
         public bool StartFromBasePosition { get; set; }
         public int Cycles { get; set; }
+        public bool AdjustEloWhite { get; set; }
+        public bool AdjustEloBlack { get; set; }
+        public int AdjustEloStep { get; set; }
+        public int CurrentMaxElo { get; set; }
+        public int CurrentMinElo { get; set; }
 
 
-        public CurrentDuel(List<UciInfo> players, TimeControl timeControl,  int cycles, bool duelSwitchColor, string gameEvent, bool startFromBasePosition)
+        public CurrentDuel(List<UciInfo> players, TimeControl timeControl,  int cycles, 
+                           bool duelSwitchColor, string gameEvent, bool startFromBasePosition, bool adjustEloWhite, bool adjustEloBlack,
+                           int adjustEloStep)
         {
             TimeControl = timeControl;
             Cycles = cycles;
             DuelSwitchColor = duelSwitchColor;
             GameEvent = gameEvent;
             StartFromBasePosition = startFromBasePosition;
+            AdjustEloWhite = adjustEloWhite;
+            AdjustEloBlack = adjustEloBlack;
+            AdjustEloStep = adjustEloStep;
             Players = players.ToArray();
             DuelSaveGames = true;
+            CurrentMaxElo = -1;
+            CurrentMinElo = -1;
         }
 
         public CurrentDuel()

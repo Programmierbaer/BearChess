@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTestEncoding.cs" />
     <Compile Include="UnitTestOpeningBook.cs" />
     <Compile Include="UnitTestPgnNotation.cs" />
     <Compile Include="UnitTestPolyglot.cs" />
@@ -63,6 +64,10 @@
     <ProjectReference Include="..\BearChessTools\BearChessTools.csproj">
       <Project>{58EAB818-7176-4BA9-A62A-AC2F27B089AE}</Project>
       <Name>BearChessTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\MChessLink\MChessLinkChessBoard\MChessLinkChessBoard.csproj">
+      <Project>{D984142B-AF41-4348-A3E4-51FFB4D30502}</Project>
+      <Name>MChessLinkChessBoard</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

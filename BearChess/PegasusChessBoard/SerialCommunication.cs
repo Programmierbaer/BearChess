@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
@@ -19,7 +20,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         }
 
         public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, bool useBluetooth) : base(
-            isFirstInstance, logger, portName, "Pegasus")
+            isFirstInstance, logger, portName, Constants.Pegasus)
         {
             _useBluetooth = useBluetooth;
         }

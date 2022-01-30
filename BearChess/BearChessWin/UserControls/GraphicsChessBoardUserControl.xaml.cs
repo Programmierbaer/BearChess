@@ -67,6 +67,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler TakeFullBackEvent;
         public event EventHandler TakeFullForwardEvent;
         public event EventHandler PausePlayEvent;
+        public event EventHandler PauseGameEvent;
         public event EventHandler ResetBasePositionEvent;
         public event EventHandler RotateBoardEvent;
 
@@ -101,6 +102,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly HashSet<int> _markedNonGreenFields = new HashSet<int>();
         private bool _acceptMouse = true;
         private bool _isConnected;
+        private string _whitePlayer = string.Empty;
+        private string _blackPlayer = string.Empty;
 
 
         public GraphicsChessBoardUserControl()
@@ -115,6 +118,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockWhiteClock.FontFamily = fontFamily;
             textBlockBlackClock.Visibility = Visibility.Hidden;
             textBlockWhiteClock.Visibility = Visibility.Hidden;
+            textBlockWhitePlayer.Text = string.Empty;
+            textBlockBlackPlayer.Text = string.Empty;
             _piecesBitmaps.Clear();
             HideRobot();
         }
@@ -696,6 +701,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockWhiteClock.Text = WhiteOnTop ? "c" : "C";
             textBlockBlackClock.ToolTip = WhiteOnTop ? "Black's move" : "White's move";
             textBlockWhiteClock.ToolTip = WhiteOnTop ? "White's move" : "Black's move";
+            textBlockWhitePlayer.Text = WhiteOnTop ? _whitePlayer : _blackPlayer;
+            textBlockBlackPlayer.Text = WhiteOnTop ? _blackPlayer : _whitePlayer;
             textBlock1.Text = WhiteOnTop ? "1" : "8";
             textBlock2.Text = WhiteOnTop ? "2" : "7";
             textBlock3.Text = WhiteOnTop ? "3" : "6";
@@ -713,6 +720,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockG.Text = WhiteOnTop ? "G" : "B";
             textBlockH.Text = WhiteOnTop ? "H" : "A";
             TagFields();
+        }
+
+        public void SetPlayer(string whitePlayer, string blackPlayer)
+        {
+            _whitePlayer = whitePlayer;
+            _blackPlayer = blackPlayer;
+            textBlockWhitePlayer.Text = WhiteOnTop ? _whitePlayer : _blackPlayer;
+            textBlockBlackPlayer.Text = WhiteOnTop ? _blackPlayer : _whitePlayer;
         }
 
         public void RemarkFields()
@@ -819,6 +834,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
               UnMarkField(boardField);    
             }
+        }
+        public void ShowPauseGame(bool show)
+        {
+            if (show)
+            {
+                imageClockPause.Visibility = Visibility.Visible;
+                imageClockPlay.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                imageClockPlay.Visibility = Visibility.Visible;
+                imageClockPause.Visibility = Visibility.Collapsed;
+            }
+            buttonPauseGame.Visibility = Visibility.Visible;
+        }
+
+        public void HidePauseGame()
+        {
+            imageClockPlay.Visibility = Visibility.Collapsed;
+            imageClockPause.Visibility = Visibility.Collapsed;
+            buttonPauseGame.Visibility = Visibility.Collapsed;
         }
 
         public void ShowRobot(bool show)
@@ -1329,5 +1365,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         //}
 
 
+        private void MovePauseGame_OnClick(object sender, RoutedEventArgs e)
+        {
+          PauseGameEvent?.Invoke(this, new EventArgs());
+        }
     }
 }

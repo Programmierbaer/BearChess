@@ -1,6 +1,7 @@
 ﻿using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 
 namespace www.SoLaNoSoft.com.BearChess.MChessLinkLoader
@@ -8,7 +9,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkLoader
     public class MChessLinkLoader : AbstractLoader
     {
 
-        public static string EBoardName = "MChessLink";
+        public static readonly string EBoardName = Constants.MChessLink;
 
         public MChessLinkLoader(bool check, string name) : base(check, name)
         {

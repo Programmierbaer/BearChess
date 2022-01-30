@@ -295,6 +295,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                              textBlockEloWhite, imageBookWhite, imageBookWhite2);
 
             SetRelaxedVisibility();
+            stackPanelStartFrom.IsEnabled = ValidForAnalysis();
+            if (!ValidForAnalysis())
+            {
+                radioButtonStartPosition.IsChecked = true;
+            }
         }
 
         private void SetPonderControl(UciInfo playConfigValue, TextBlock textBlockPonder, Image ponderImage, Image ponderImage2, TextBlock textBlockElo, Image bookImage, Image bookImage2)
@@ -329,22 +334,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
-
-            var uciElo = playConfigValue.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
-            if (uciElo != null)
+            if (playConfigValue.CanConfigureElo())
             {
                 textBlockElo.Text = "Elo: ----";
-                var uciEloLimit = playConfigValue.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
-                if (uciEloLimit != null)
+                var configuredElo = playConfigValue.GetConfiguredElo();
+                if (configuredElo > 0)
                 {
-                    if (uciEloLimit.Contains("true"))
-                    {
-                        var strings = uciElo.Split(" ".ToCharArray());
-                        textBlockElo.Text = $"Elo: {strings[strings.Length - 1]}";
-                    }
+                    textBlockElo.Text = $"Elo: {configuredElo}";
                 }
+                ;
             }
-
+        
             bookImage.Visibility = Visibility.Collapsed;
             bookImage2.Visibility = Visibility.Visible;
             var book = playConfigValue.OptionValues.FirstOrDefault(o => o.Contains("OwnBook"));
@@ -371,6 +371,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         
             SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
             SetRelaxedVisibility();
+            stackPanelStartFrom.IsEnabled = ValidForAnalysis();
+            if (!ValidForAnalysis())
+            {
+                radioButtonStartPosition.IsChecked = true;
+            }
         }
 
         private void SetRelaxedVisibility()
@@ -380,10 +385,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 || (buttonConfigureBlack.Visibility == Visibility.Hidden &&
                     buttonConfigureWhite.Visibility == Visibility.Visible))
             {
-                if (PlayerBlackConfigValues != null &&
-                    PlayerBlackConfigValues.FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase)
-                    || PlayerWhiteConfigValues != null &&
-                    PlayerWhiteConfigValues.FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase))
+                if (!ValidForAnalysis())
                 {
                     stackPanelRelaxed.Visibility = Visibility.Hidden;
                     CheckBoxRelaxed_OnUnchecked(this, null);
@@ -567,7 +569,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void CheckBoxAllowTournament_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            checkBoxAllowTakeMoveBack.IsEnabled = true;
+            checkBoxAllowTakeMoveBack.IsEnabled = ValidForAnalysis();
+            if (!ValidForAnalysis())
+            {
+                checkBoxAllowTakeMoveBack.IsChecked = false;
+            }
             checkBoxAllowTakeMoveBack.FontWeight = FontWeights.Normal;
             checkBoxAllowTakeMoveBack.IsChecked = _isCheckedAllowTakeBack;
             checkBoxAllowTakeMoveBack.Foreground = _foreground;
@@ -596,9 +602,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
             numericUpDownUserControlAverageTime.IsEnabled = true;
             radioButtonSecond.IsEnabled = true;
             checkBoxTournamentMode.IsEnabled = true;
-            checkBoxAllowTakeMoveBack.IsEnabled = true;
+            checkBoxAllowTakeMoveBack.IsEnabled = ValidForAnalysis();
+            if (!ValidForAnalysis())
+            {
+                checkBoxAllowTakeMoveBack.IsChecked = false;
+            }
+
             checkBoxStartAfterMoveOnBoard.IsEnabled = true;
          
         }
+
+        private bool ValidForAnalysis()
+        {
+            if (PlayerBlackConfigValues != null &&
+                !PlayerBlackConfigValues.ValidForAnalysis
+                || PlayerWhiteConfigValues != null &&
+                !PlayerWhiteConfigValues.ValidForAnalysis)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

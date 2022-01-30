@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Timers;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using Timer = System.Timers.Timer;
@@ -89,7 +90,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
         {
             Name = name;
             _basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                                     "BearChess", name);
+                                     Constants.BearChess, name);
             var logPath = Path.Combine(_basePath, "log");
             try
             {

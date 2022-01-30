@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml.Serialization;
 using InTheHand.Net;
 using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessTools
@@ -46,7 +47,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         private Configuration()
         {
-            FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"BearChess");
+            FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.BearChess);
             if (!Directory.Exists(FolderPath))
             {
                 try
@@ -55,7 +56,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 }
                 catch
                 {
-                    FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "BearChess");
+                    FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Constants.BearChess);
                 }
             }
             TimeControlFileName = Path.Combine(FolderPath, "bearchess_tc.xml");

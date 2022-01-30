@@ -20,7 +20,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         private  ObservableCollection<UciInfo> _uciInfos;
         private  HashSet<string> _installedEngines;
-        private readonly string[] _installedBooks;
         private readonly string _uciPath;
         public UciInfo SelectedEngine => (UciInfo) dataGridEngine.SelectedItem;
 
@@ -29,7 +28,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             InitializeComponent();
         }
 
-        public SelectInstalledEngineWindow(IEnumerable<UciInfo> uciInfos, string[] installedBooks, string lastEngineId, string uciPath) : this()
+        public SelectInstalledEngineWindow(IEnumerable<UciInfo> uciInfos, string lastEngineId, string uciPath) : this()
         {
             _uciInfos =  new ObservableCollection<UciInfo>(uciInfos.OrderBy(e => e.Name).ToList());
             var firstOrDefault = _uciInfos.FirstOrDefault(u => u.Id.Equals(lastEngineId));
@@ -37,7 +36,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 firstOrDefault = _uciInfos.Count > 0 ? _uciInfos[0] : null;
             }
-            _installedBooks = installedBooks;
             _uciPath = uciPath;
             dataGridEngine.ItemsSource = _uciInfos;
             if (firstOrDefault != null)
@@ -83,6 +81,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (showDialog.HasValue && showDialog.Value)
             {
                 var uciInfo = uciConfigWindow.GetUciInfo();
+                uciInfo.ChangeDateTime = DateTime.UtcNow;
                 if (uciConfigWindow.SaveAsNew)
                 {
                     if (SelectedEngine.Name.Equals(uciInfo.Name, StringComparison.OrdinalIgnoreCase))
@@ -94,7 +93,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         Directory.CreateDirectory(uciPath);
                     }
-
                     XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
                     TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
                     serializer.Serialize(textWriter, uciInfo);
@@ -112,6 +110,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     SelectedEngine.LogoFileName = uciInfo.LogoFileName;
                     SelectedEngine.WaitForStart = uciInfo.WaitForStart;
                     SelectedEngine.WaitSeconds = uciInfo.WaitSeconds;
+                    SelectedEngine.ChangeDateTime = uciInfo.ChangeDateTime;
                     foreach (var uciInfoOptionValue in uciInfo.OptionValues)
                     {
                         SelectedEngine.AddOptionValue(uciInfoOptionValue);
@@ -165,7 +164,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonInstall_OnClick(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog { Filter = "UCI Engine|*.exe|UCI Engine|*.cmd|All Files|*.*" };
+            var openFileDialog = new OpenFileDialog { Filter = "UCI Engine|*.exe|UCI Engine|*.cmd;*.bat|All Files|*.*" };
             var showDialog = openFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
@@ -368,6 +367,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 if (files != null)
                 {
+                    e.Handled = true;
                     var fileInfo = new FileInfo(files[0]);
                     LoadNewEngine(fileInfo.FullName, string.Empty, string.Empty);
                 }

@@ -67,6 +67,22 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <MenuItem Header="Determine ELO" Name="menuItemEloEstimate" Visibility="Collapsed">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/chart_line.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Header="With a new game" Name="menuItemEloEstimateNewGame" Click="MenuItemEloEstimateNewGame_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="With a new engine duel" Name="menuItemEloEstimateEngineMatch"
+                                  Click="MenuItemEloEstimateEngineMatch_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/6-2-chess-png.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
                     <MenuItem Header="Setup position" Name="menuItemSetupPosition"
                               Click="MenuItemSetupPosition_OnClick">
                         <MenuItem.Icon>
@@ -315,12 +331,23 @@
                                 <Image Source="Assets/Icons/cog.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBluetoothMChessLink" Header="Bluetooth"
-                                  Click="MenuItemBluetoothChessLink_OnClick">
+                        <MenuItem Name="menuItemBluetoothMChessLink" Header="Bluetooth" >
                             <MenuItem.Icon>
                                 <Image Name="imageChessLinkBluetooth" Source="Assets/Icons/tick.png"
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
+                            <MenuItem Name="menuItemBluetoothClassicMChessLink" Header="Bluetooth Classic"  Click="MenuItemBluetoothClassicMChessLink_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageBluetoothClassicMChessLink" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemBluetoothLEMChessLink" Header="Bluetooth LE"  Click="MenuItemBluetoothLEMChessLink_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageBluetoothLEMChessLink" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
 
                     </MenuItem>
@@ -412,7 +439,10 @@
             </StatusBarItem>
             <Separator />
             <StatusBarItem>
-                <TextBlock Name="textBlockEBoard">Electronic board: Disconnected</TextBlock>
+                <Image Source="Assets/Icons/checkerboard.png" Height="15"></Image>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="textBlockEBoard"> Disconnected</TextBlock>
             </StatusBarItem>
             <StatusBarItem>
                 <Image Name="imageBT" Width="16" Height="16" Source="Assets/Icons/bluetooth.png" Visibility="Hidden" />

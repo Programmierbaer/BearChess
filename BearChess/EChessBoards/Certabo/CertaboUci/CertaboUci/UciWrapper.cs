@@ -3,6 +3,7 @@ using System.IO;
 using www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboUci
 {
@@ -10,7 +11,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboUci
     {
         protected override IEBoardWrapper GetEBoardWrapper()
         {
-            return new CertaboImpl("Certabo", _basePath, _isFirstInstance, _configuration.PortName, false);
+            return new CertaboImpl(Constants.Certabo, _basePath, _isFirstInstance, _configuration.PortName, false);
         }
 
        

@@ -3,6 +3,7 @@ using System.IO;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChess.MChessLinkUci
 {
@@ -11,7 +12,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkUci
         /// <inheritdoc />
         protected override IEBoardWrapper GetEBoardWrapper()
         {
-            return new MChessLinkImpl("MChessLink", _basePath, _isFirstInstance, _configuration.PortName);
+            return new MChessLinkImpl(Constants.MChessLink, _basePath, _isFirstInstance, _configuration.PortName);
         }
 
         /// <inheritdoc />

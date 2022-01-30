@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Eventing.Reader;
+﻿using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -156,7 +157,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             BatteryLevel = "100";
             BatteryStatus = "Full";
             IsConnected = EnsureConnection();
-            Information = "Millennium ChessLink";
+            Information = "Millennium "+_serialCommunication.BoardInformation;
         }
 
         public EChessBoard(ILogging logger)
@@ -171,73 +172,87 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         {
             lock (_locker)
             {
-                _serialCommunication = new SerialCommunication(true, _logger, portName);
-                if (_serialCommunication.CheckConnect(portName))
+                try
                 {
-
-                    _serialCommunication.SendRawToBoard("W0000");
-                    _serialCommunication.SendRawToBoard("W011E");
-                    _serialCommunication.SendRawToBoard("W0203");
-                    _serialCommunication.SendRawToBoard("W030A");
-                    var readLine = _serialCommunication.GetRawFromBoard("V");
-
-                    if (readLine.Length > 0 && readLine.StartsWith("v"))
+                    _logger?.LogDebug($"CheckComPort {portName}");
+                    _serialCommunication = new SerialCommunication(true, _logger, portName);
+                    if (_serialCommunication.CheckConnect(portName))
                     {
-                        Version = readLine;
-                        Information = $"Millennium ChessLink {Version}";
+                        _logger?.LogDebug("CheckComPort successful. Send ROM initialize ");
+                        _serialCommunication.SendRawToBoard("W0000");
+                        _serialCommunication.SendRawToBoard("W011E");
+                        _serialCommunication.SendRawToBoard("W0203");
+                        _serialCommunication.SendRawToBoard("W030A");
+                        var readLine = _serialCommunication.GetRawFromBoard("V");
+
+                        if (readLine.Length > 0 && readLine.StartsWith("v"))
+                        {
+                            Version = readLine;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                        readLine = _serialCommunication.GetRawFromBoard("R00");
+
+
+                        if (readLine.Length > 0 && readLine.StartsWith("r"))
+                        {
+                            Eprom += readLine + " ";
+                        }
+
+                        readLine = _serialCommunication.GetRawFromBoard("R01");
+
+
+                        if (readLine.Length > 0 && readLine.StartsWith("r"))
+                        {
+                            Eprom += readLine + " ";
+                        }
+
+                        readLine = _serialCommunication.GetRawFromBoard("R02");
+
+
+                        if (readLine.Length > 0 && readLine.StartsWith("r"))
+                        {
+                            Eprom += readLine + " ";
+                        }
+
+                        readLine = _serialCommunication.GetRawFromBoard("R03");
+
+
+                        if (readLine.Length > 0 && readLine.StartsWith("r"))
+                        {
+                            Eprom += readLine + " ";
+                        }
+
+                        readLine = _serialCommunication.GetRawFromBoard("R04");
+
+
+                        if (readLine.Length > 0 && readLine.StartsWith("r"))
+                        {
+                            Eprom += readLine + " ";
+                        }
+
+                        readLine = _serialCommunication.GetRawFromBoard("R04");
+
+
+                        if (readLine.Length > 0 && readLine.StartsWith("r"))
+                        {
+                            Eprom += readLine + " ";
+                        }
+
+                        _serialCommunication.DisConnectFromCheck();
+
                     }
-                    readLine = _serialCommunication.GetRawFromBoard("R00");
 
-
-                    if (readLine.Length > 0 && readLine.StartsWith("r"))
-                    {
-                        Eprom += readLine+" ";
-                    }
-
-                    readLine = _serialCommunication.GetRawFromBoard("R01");
-
-
-                    if (readLine.Length > 0 && readLine.StartsWith("r"))
-                    {
-                        Eprom += readLine + " ";
-                    }
-
-                    readLine = _serialCommunication.GetRawFromBoard("R02");
-
-
-                    if (readLine.Length > 0 && readLine.StartsWith("r"))
-                    {
-                        Eprom += readLine + " ";
-                    }
-
-                    readLine = _serialCommunication.GetRawFromBoard("R03");
-
-
-                    if (readLine.Length > 0 && readLine.StartsWith("r"))
-                    {
-                        Eprom += readLine + " ";
-                    }
-
-                    readLine = _serialCommunication.GetRawFromBoard("R04");
-
-
-                    if (readLine.Length > 0 && readLine.StartsWith("r"))
-                    {
-                        Eprom += readLine + " ";
-                    }
-
-                    readLine = _serialCommunication.GetRawFromBoard("R04");
-
-
-                    if (readLine.Length > 0 && readLine.StartsWith("r"))
-                    {
-                        Eprom += readLine + " ";
-                    }
-                    _serialCommunication.DisConnectFromCheck();
-
+                    _logger?.LogDebug($"C: Version: {Version}  Eprom: {Eprom}");
+                    return !string.IsNullOrWhiteSpace(Version) && !string.IsNullOrWhiteSpace(Eprom);
                 }
-                _logger?.LogDebug($"C: Version: {Version}  Eprom: {Eprom}");
-                return !string.IsNullOrWhiteSpace(Version) && !string.IsNullOrWhiteSpace(Eprom);
+                catch (Exception ex)
+                {
+                    _logger?.LogDebug($"C: Error on check: {ex.Message}");
+                    return false;
+                }
 
             }
         }
@@ -342,6 +357,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 _serialCommunication.Send("S");
                 IsCalibrated = true;
+                //_serialCommunication.Send("V");
+                //var readLine = _serialCommunication.GetRawFromBoard("V");
+
+                //if (readLine.Length > 0 && readLine.StartsWith("v"))
+                //{
+                //    Version = readLine;
+                //    Information = $"Millennium ChessLink {Version}";
+                //}
             }
         }
 

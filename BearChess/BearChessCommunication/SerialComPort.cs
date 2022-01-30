@@ -50,7 +50,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             }
             catch
             {
-                return 0;
+                return -1;
             }
         }
 
@@ -70,6 +70,11 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         {
             get => _serialPort.ReadTimeout;
             set => _serialPort.ReadTimeout = value;
+        }
+
+        public void ClearBuffer()
+        {
+            //
         }
 
         public int WriteTimeout

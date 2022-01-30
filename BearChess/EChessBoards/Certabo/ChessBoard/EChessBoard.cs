@@ -75,7 +75,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 IsCalibrated = Calibrate(calibrationData);
             }
             IsConnected = EnsureConnection();
-            Information = "Certabo";
+            Information = Constants.Certabo;
         }
 
         public EChessBoard(ILogging logger)
@@ -84,7 +84,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _logger = logger;
             BatteryLevel = "100";
             BatteryStatus = "Full";
-            Information = "Certabo";
+            Information = Constants.Certabo;
         }
 
 

@@ -82,5 +82,7 @@
         /// </summary>
         /// <param name="portName">Name of the COM-Port</param>
         bool SetComPort(string portName);
+
+        string BoardInformation { get; }
     }
 }

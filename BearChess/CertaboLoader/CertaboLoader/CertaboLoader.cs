@@ -1,12 +1,13 @@
 ﻿using www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChess.CertaboLoader
 {
     public class CertaboLoader : AbstractLoader
     {
      
-        public static string EBoardName = "Certabo";
+        public static string EBoardName = Constants.Certabo;
 
         public CertaboLoader(bool check, string name) : base(check, name)
         {

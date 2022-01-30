@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -7,13 +9,24 @@ namespace www.SoLaNoSoft.com.BearChessBase
     [Serializable]
     public class UciInfo
     {
+        private string _fileName;
         public string Id { get; set; }
         public string Name { get; set; }
         public string OriginName { get; set; }
         public string Author { get; set; }
         [XmlArray("Options")]
         public string[] Options { get; set; }
-        public string FileName { get; set; }
+
+        public string FileName
+        {
+            get => _fileName;
+            set
+            {
+                _fileName = value;
+                CheckIsValidForAnalysis();
+            }
+        }
+
         public string LogoFileName { get; set; }
         public bool Valid { get; set; }
         public string OpeningBook { get; set; }
@@ -22,9 +35,11 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public string[] OptionValues { get; set; }
         public bool AdjustStrength { get; set; }
         public string CommandParameter { get; set; }
-
         public bool WaitForStart { get; set; }
         public int WaitSeconds { get; set; }
+        public bool ValidForAnalysis { get; set; }
+
+        public DateTime ChangeDateTime { get; set; }
 
         public UciInfo()
         {
@@ -35,6 +50,9 @@ namespace www.SoLaNoSoft.com.BearChessBase
             LogoFileName = string.Empty;
             WaitForStart = false;
             WaitSeconds = 0;
+            ValidForAnalysis = true;
+            _fileName = string.Empty;
+            ChangeDateTime = DateTime.MinValue;
         }
 
         public UciInfo(string fileName) : this()
@@ -65,6 +83,130 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public override string ToString()
         {
             return $"{OriginName} from {Author}";
+        }
+
+        public bool CanConfigureElo()
+        {
+            var uciElo = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
+            return uciElo != null;
+        }
+
+        public int GetConfiguredElo()
+        {
+            var uciElo = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
+            if (uciElo != null)
+            {
+                var uciEloLimit = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
+                if (uciEloLimit != null)
+                {
+                    if (uciEloLimit.Contains("true"))
+                    {
+                        var strings = uciElo.Split(" ".ToCharArray());
+                        if (int.TryParse(strings[strings.Length - 1], out int elo))
+                        {
+                            return elo;
+                        }
+
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        public int GetMinimumElo()
+        {
+            int minValue = -1;
+            if (CanConfigureElo())
+            {
+                var uciElo = Options.FirstOrDefault(f => f.StartsWith("option name UCI_Elo"));
+                var optionSplit = uciElo.Split(" ".ToCharArray());
+                for (int i= 0; i < optionSplit.Length; i++)
+                {
+                    if (optionSplit[i].Equals("min"))
+                    {
+                        i++;
+                        int.TryParse(optionSplit[i], out minValue);
+                        break;
+                    }
+
+                }
+
+            }
+
+            return minValue;
+        }
+
+        public int GetMaximumElo()
+        {
+            int maxValue = -1;
+            if (CanConfigureElo())
+            {
+                var uciElo = Options.FirstOrDefault(f => f.StartsWith("option name UCI_Elo"));
+                var optionSplit = uciElo.Split(" ".ToCharArray());
+                for (int i = 0; i < optionSplit.Length; i++)
+                {
+                    if (optionSplit[i].Equals("max"))
+                    {
+                        i++;
+                        int.TryParse(optionSplit[i], out maxValue);
+                        break;
+                    }
+
+                }
+
+            }
+
+            return maxValue;
+        }
+
+        public void SetElo(int elo)
+        {
+            List<string> newOptionValues = new List<string>();
+            for (int i = 0; i < OptionValues.Length; i++)
+            {
+                var optionValue = OptionValues[i];
+                if (optionValue.StartsWith("setoption name UCI_Elo"))
+                {
+                    optionValue = $"setoption name UCI_Elo value {elo}";
+                }
+
+                if (optionValue.StartsWith("setoption name UCI_LimitStrength"))
+                {
+                    optionValue = "setoption name UCI_LimitStrength value true";
+                }
+                newOptionValues.Add(optionValue);
+
+            }
+
+            OptionValues = newOptionValues.ToArray();
+        }
+
+
+        private void CheckIsValidForAnalysis()
+        {
+            ValidForAnalysis = true;
+            if (FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase))
+            {
+                ValidForAnalysis = false;
+                return;
+            }
+
+            if (FileName.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase) || FileName.EndsWith(".bat", StringComparison.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    string allText = File.ReadAllText(FileName);
+                    if (allText.IndexOf("MessChess", StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        ValidForAnalysis = false;
+                    }
+                }
+                catch
+                {
+                    //
+                }
+            }
         }
     }
 }

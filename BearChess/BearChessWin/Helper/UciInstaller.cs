@@ -61,10 +61,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 
                 while (true)
                 {
-                    if (_engineProcess.StandardOutput.Peek() <= 0)
-                    {
-                        _engineProcess.StandardInput.WriteLine("uci");
-                    }
+                    
                     var readToEnd = _engineProcess.StandardOutput.ReadLine();
 
                     if (!string.IsNullOrWhiteSpace(readToEnd) && readToEnd.Equals(waitingFor))
@@ -91,7 +88,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
 
                 }
-                _engineProcess.StandardInput.WriteLine("quit");
+                _engineProcess.StandardInput.Write("quit");
+                _engineProcess.StandardInput.Write("\n");
                 Thread.Sleep(100);
             }
             catch
