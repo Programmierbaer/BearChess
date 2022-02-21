@@ -32,6 +32,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             get => _drawBy50MoveCounter > 49;
         }
+
+        public int RemainingMovesFor50MovesDraw => 50 - _drawBy50MoveCounter;
         public bool DrawByMaterial { get; private set; }
         private FileLogger _fileLogger;
 

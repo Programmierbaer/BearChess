@@ -137,6 +137,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _canClose = true;
         }
 
+        public void SetForRunning()
+        {
+            _isFinished = false;
+            buttonPause.Visibility = Visibility.Visible;
+            buttonContinue.Visibility = Visibility.Collapsed;
+            buttonClose.Visibility = Visibility.Collapsed;
+        }
+
         public void AddResult(string result, int[] pairing)
         {
             var switchResult = pairing[0] == _currentTournament.Deliquent;

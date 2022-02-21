@@ -31,6 +31,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler<DatabaseGame> SelectedGameChanged;
         public event EventHandler<int> ContinueTournamentSelected;
         public event EventHandler<int> CloneTournamentSelected;
+        public event EventHandler<int> RepeatGameSelected;
 
         public TournamentWindow(Configuration configuration, Database database)
         {
@@ -183,6 +184,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             SelectedGameChanged?.Invoke(this, e);
         }
 
+        protected virtual void OnSelectedRepeatGame(int e)
+        {
+            RepeatGameSelected?.Invoke(this, e);
+        }
+
+
         protected virtual void OnSelectedTournamentChanged(int e)
         {
             ContinueTournamentSelected?.Invoke(this, e);
@@ -314,6 +321,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void _tournamentInfoWindow_Closed(object sender, EventArgs e)
         {
             _tournamentInfoWindow = null;
+        }
+
+        private void MenuItemReplay_OnClick(object sender, RoutedEventArgs e)
+        {
+           
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+            {
+                if (MessageBox.Show($"Repeat selected game?{Environment.NewLine}The previous result will be overwritten.", "Repeat game", MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    OnSelectedRepeatGame(pgnGame.Id);
+                }
+            }
         }
     }
 }

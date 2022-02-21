@@ -7,8 +7,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string FromBoard { get; }
         public ulong Repeated { get; }
         public bool PlayWithWhite { get; }
-        public bool BasePosition { get; }
+        public bool BasePosition { get; set; }
         public bool Invalid { get; set; }
+
+        public bool IsFieldDump { get; set; }
 
         public DataFromBoard(string fromBoard, ulong repeated=0)
         {
@@ -18,6 +20,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                            fromBoard.StartsWith(FenCodes.WhiteBoardBasePosition);
             PlayWithWhite = fromBoard.StartsWith(FenCodes.WhiteBoardBasePosition);
             Invalid = false;
+            IsFieldDump = false;
         }
     }
 }

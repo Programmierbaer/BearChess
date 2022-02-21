@@ -102,6 +102,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastMoveNumber = 0;
             listBoxMoves.Items.Clear();
             _allMoves.Clear();
+            Title = "Moves";
+        }
+
+        public void RemainingMovesFor50MovesDraw(int remainingMoves)
+        {
+            if (bool.TryParse(_configuration.GetConfigValue("show50moverule","false"), out bool showRule))
+            {
+                if (showRule)
+                    Title = $"Moves ( {remainingMoves} up to fifty-move rule )";
+                else
+                    Title = "Moves";
+            }
+            
         }
 
         public void AddMove(Move move, bool tournamentMode)
@@ -151,9 +164,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     ((IMoveUserControl) listBoxMoves.Items[number]).Mark(color);
                 }
             }
-            listBoxMoves.ScrollIntoView(listBoxMoves.Items[number]);
-            _currentMoveNumber = ((IMoveUserControl)listBoxMoves.Items[number]).GetMoveNumber();
-            _currentColor = color;
+
+            if (listBoxMoves.Items.Count > number)
+            {
+                listBoxMoves.ScrollIntoView(listBoxMoves.Items[number]);
+                _currentMoveNumber = ((IMoveUserControl)listBoxMoves.Items[number]).GetMoveNumber();
+                _currentColor = color;
+            }
         }
 
         public void ClearMark()

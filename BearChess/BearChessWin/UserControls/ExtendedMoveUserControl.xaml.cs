@@ -83,7 +83,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockFigureSymbolBlack.FontSize = 14;
                     columnDefinition1.Width = new GridLength(30);
                     columnDefinition2.Width = new GridLength(60);
-                    columnDefinitionScore.Width = new GridLength(45);
+                    columnDefinitionScore.Width = new GridLength(55);
                     break;
                 }
                 case 2:
@@ -99,7 +99,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockMoveList.FontSize = 14;
                     columnDefinition1.Width = new GridLength(45);
                     columnDefinition2.Width = new GridLength(85);
-                    columnDefinitionScore.Width = new GridLength(45);
+                    columnDefinitionScore.Width = new GridLength(55);
                     break;
                 }
                 case 3:
@@ -115,7 +115,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     textBlockMoveList.FontSize = 18;
                     columnDefinition1.Width = new GridLength(45);
                     columnDefinition2.Width = new GridLength(85);
-                    columnDefinitionScore.Width = new GridLength(55);
+                    columnDefinitionScore.Width = new GridLength(65);
                     break;
                 }
                 default:

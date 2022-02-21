@@ -240,5 +240,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         bool DrawByMaterial { get; }
 
         bool DrawBy50Moves { get; }
+
+        int RemainingMovesFor50MovesDraw { get; }
     }
 }

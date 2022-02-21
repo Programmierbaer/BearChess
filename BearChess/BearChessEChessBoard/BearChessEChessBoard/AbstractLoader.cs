@@ -175,6 +175,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.SetAllLedsOff();
         }
 
+        public void RequestDump()
+        {
+            _eChessBoard.RequestDump();
+        }
+
         /// <inheritdoc />
         public void PlayWithWhite(bool withWhite)
         {

@@ -38,7 +38,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 _comPort.ClearBuffer();
                 _logger?.LogDebug($"SC: Write {param}");
                 _comPort.Write(convertToSend, 0, convertToSend.Length);
-                while (readByte > 0 || counter>0)
+                while (readByte > 0 || counter > 0)
                 {
                     readByte = _comPort.ReadByte();
                     _logger?.LogDebug($"SC: Read {readByte}");
@@ -46,12 +46,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     {
                         return string.Empty;
                     }
+
                     if (readByte == 0)
                     {
                         counter--;
                         Thread.Sleep(100);
                     }
-                    var convertFromRead = ConvertFromRead(readByte); 
+
+                    var convertFromRead = ConvertFromRead(readByte);
                     readLine += convertFromRead;
                     if (readLine.Contains(param.ToLower()))
                     {
@@ -110,9 +112,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     {
                         withConnection = Connect();
                     }
+
                     if (withConnection && !_pauseReading)
                     {
-                        
+
                         if (_isFirstInstance)
                         {
                             int readByte = int.MaxValue;
@@ -128,7 +131,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                         // _logger?.LogDebug($"SC: Read:  {convertFromRead}");
                                         readLine += convertFromRead;
                                     }
-                                  
+
                                 }
                             }
                             catch
@@ -146,13 +149,15 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                             {
                                 continue;
                             }
+
                             _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
                             if (readLine.Contains("s"))
                             {
 
                                 lock (_locker)
                                 {
-                                    string tmpLine = readLine.Substring(readLine.IndexOf("s", StringComparison.Ordinal));
+                                    string tmpLine =
+                                        readLine.Substring(readLine.IndexOf("s", StringComparison.Ordinal));
 
                                     while (true)
                                     {
@@ -161,6 +166,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                         {
                                             break;
                                         }
+
                                         string currentPosition = tmpLine.Substring(startIndex, 67);
                                         //if (!_currentPosition.Equals(currentPosition))
                                         //{
@@ -186,12 +192,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                 }
 
                             }
+
                             if (_clientConnected)
                             {
                                 _serverPipe.WriteString(readLine);
                             }
                         }
                     }
+
                     Thread.Sleep(5);
                 }
                 catch (Exception ex)

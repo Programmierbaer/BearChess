@@ -46,6 +46,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         void Calibrate();
 
+        void RequestDump();
+
         /// <summary>
         /// Indicates if a calibration needed
         /// </summary>

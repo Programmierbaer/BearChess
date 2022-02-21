@@ -9,6 +9,7 @@ using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessBTLETools;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 {
@@ -36,6 +37,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         private string _setPortName = "<auto>";
         protected bool _stopReading;
         private Thread _thread;
+        protected bool _forcedSend;
+        protected byte[] _forcedSendValue;
 
         public string CurrentComPort { get; private set; }
         public bool IsCommunicating { get; protected set; }
@@ -139,6 +142,13 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
             _thread = new Thread(Communicate) {IsBackground = true};
             _thread.Start();
+        }
+
+        public void Send(byte[] data, bool forcedSend)
+        {
+            _forcedSend = forcedSend;
+            _forcedSendValue = data;
+            _byteDataToBoard.Enqueue(data);
         }
 
         public void Send(byte[] data)
@@ -307,12 +317,18 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (comPort.Equals("BT"))
                     {
                         _comPort = new BTComPort(null);
+                        if (!((BTComPort)_comPort).EndPointFound)
+                        {
+                            SerialCommunicationTools.GetBTComPort(_boardName, BearChessTools.Configuration.Instance, _logger, true, false);
+                        }
+                        _comPort = new BTComPort(null);
+
                     }
                     else
                     {
                         _comPort = new SerialComPort(comPort, 38400, Parity.None)
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
-                        ;
+                        
                     }
                 }
 

@@ -13,7 +13,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             InitializeComponent();
             textBlockMV.Text = "1.";
-            //scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
         }
 
         public EngineInfoLineUserControl(int number) : this()
@@ -21,7 +20,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockMV.Text = $"{number}.";
             textBlockMVValue.Text = string.Empty;
             textBlockMvLine.Text = string.Empty;
-            // scrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
         }
 
         public void ClearLine()

@@ -28,6 +28,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public UciInfo PlayerBlackConfigValues;
         public UciInfo PlayerWhiteConfigValues;
         private bool _validConfig;
+        private int _playerIndex;
+        private bool? _isCheckedAllowTakeBack;
+        private Brush _foreground;
 
         public NewEngineDuelWindow(Configuration configuration, Database database, bool estimateElo)
         {
@@ -35,14 +38,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _database = database;
             _estimateElo = estimateElo;
             InitializeComponent();
+            textBoxEvent.Text = estimateElo ? "Elo Duel" : "Duel";
             labelDatabaseName.Content = _database.FileName;
             labelDatabaseName.ToolTip = _database.FileName;
             _isInitialized = true;
             stackPanelElo.Visibility = estimateElo ? Visibility.Visible : Visibility.Collapsed;
             labelNumberOfGames.Visibility = estimateElo ? Visibility.Collapsed : Visibility.Visible;
             labelNumberOfGames2.Visibility = estimateElo ? Visibility.Visible : Visibility.Collapsed;
-       //     labelNumberOfGames3.Visibility = estimateElo ? Visibility.Visible : Visibility.Collapsed;
-            numericUpDownUserControlNumberOfGames.Value = estimateElo ? 999 : 2;
+            numericUpDownUserControlNumberOfGames.Value = estimateElo ? 10 : 2;
+            _playerIndex = 0;
         }
 
         public string PlayerWhite => comboBoxPlayerWhite.SelectedItem as string;
@@ -54,8 +58,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public bool SwitchColors => checkBoxSwitchColor.IsChecked.HasValue && checkBoxSwitchColor.IsChecked.Value;
         public string DuelEvent => textBoxEvent.Text;
 
-        public bool AdjustEloWhite => radioButtonEloWhite.IsChecked.HasValue && radioButtonEloWhite.IsChecked.Value;
-        public bool AdjustEloBlack => radioButtonEloBlack.IsChecked.HasValue && radioButtonEloBlack.IsChecked.Value;
+        public bool AdjustEloWhite => _estimateElo && radioButtonEloWhite.IsChecked.HasValue && radioButtonEloWhite.IsChecked.Value;
+        public bool AdjustEloBlack => _estimateElo && radioButtonEloBlack.IsChecked.HasValue && radioButtonEloBlack.IsChecked.Value;
 
         // public int AdjustEloStep => numericUpDownUserControlAdjustEloWhite.Value;
 
@@ -117,14 +121,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-
             _allUciInfos.Clear();
             var selectedIndexWhite = 0;
             var selectedIndexBlack = 0;
-            var array = uciInfos.OrderBy(u => u.Name).ToArray();
+            var array =  uciInfos.OrderBy(u => u.Name).ToArray();
+
             for (var i = 0; i < array.Length; i++)
             {
                 var uciInfo = array[i];
+                if (uciInfo.IsPlayer)
+                {
+                    _playerIndex = i;
+                }
                 _allUciInfos[uciInfo.Name] = uciInfo;
                 comboBoxPlayerWhite.Items.Add(uciInfo.Name);
                 comboBoxPlayerBlack.Items.Add(uciInfo.Name);
@@ -203,6 +211,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             PlayerWhiteConfigValues = _allUciInfos.ContainsKey(comboBoxPlayerWhite.SelectedItem.ToString())
                                           ? _allUciInfos[comboBoxPlayerWhite.SelectedItem.ToString()]
                                           : null;
+            buttonConfigureWhite.Visibility =
+                comboBoxPlayerWhite.SelectedIndex == _playerIndex ? Visibility.Hidden : Visibility.Visible;
             SetPonderEloBookControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
                              textBlockEloWhite, imageBookWhite, imageBookWhite2);
             CheckForEstimateElo();
@@ -227,6 +237,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             PlayerBlackConfigValues = _allUciInfos.ContainsKey(comboBoxPlayerBlack.SelectedItem.ToString())
                                           ? _allUciInfos[comboBoxPlayerBlack.SelectedItem.ToString()]
                                           : null;
+            buttonConfigureBlack.Visibility =
+                comboBoxPlayerBlack.SelectedIndex == _playerIndex ? Visibility.Hidden : Visibility.Visible;
             SetPonderEloBookControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
             CheckForEstimateElo();
         }
@@ -309,6 +321,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
+            if (playConfigValue.IsPlayer)
+            {
+                return;
+            }
             if (playConfigValue.Options.Any(O => O.Contains("Ponder")))
             {
                 textBlockPonder.Visibility = Visibility.Visible;
@@ -336,7 +353,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     textBlockElo.Text = $"Elo: {configuredElo}";
                 }
-                ;
             }
           
             bookImage.Visibility = Visibility.Collapsed;
@@ -384,6 +400,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
+                radioButtonEloWhite.IsChecked = false;
+                radioButtonEloBlack.IsChecked = false;
                 radioButtonEloBlack.IsEnabled = false;
                 radioButtonEloWhite.IsEnabled = false;
                 _validConfig = false;
@@ -396,6 +414,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
             databaseWindow.ShowDialog();
             labelDatabaseName.Content = _database.FileName;
             labelDatabaseName.ToolTip = _database.FileName;
+        }
+
+        private void ButtonPlayerBlack_OnClick(object sender, RoutedEventArgs e)
+        {
+            comboBoxPlayerBlack.SelectedIndex = _playerIndex;
+        }
+
+        private void ButtonPlayerWhite_OnClick(object sender, RoutedEventArgs e)
+        {
+            comboBoxPlayerWhite.SelectedIndex = _playerIndex;
+        }
+
+        private void CheckBoxAllowTournament_OnChecked(object sender, RoutedEventArgs e)
+        {
+            _isCheckedAllowTakeBack = checkBoxAllowTakeMoveBack.IsChecked;
+            _foreground = checkBoxAllowTakeMoveBack.Foreground;
+            checkBoxAllowTakeMoveBack.IsChecked = false;
+            checkBoxAllowTakeMoveBack.IsEnabled = false;
+            checkBoxAllowTakeMoveBack.Foreground = new SolidColorBrush(Colors.DarkGray);
+        }
+
+        private void CheckBoxAllowTournament_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            checkBoxAllowTakeMoveBack.IsEnabled = ValidForAnalysis();
+            if (!ValidForAnalysis())
+            {
+                checkBoxAllowTakeMoveBack.IsChecked = false;
+            }
+            checkBoxAllowTakeMoveBack.FontWeight = FontWeights.Normal;
+            checkBoxAllowTakeMoveBack.IsChecked = _isCheckedAllowTakeBack;
+            checkBoxAllowTakeMoveBack.Foreground = _foreground;
+        }
+        private bool ValidForAnalysis()
+        {
+            if (PlayerBlackConfigValues != null &&
+                !PlayerBlackConfigValues.ValidForAnalysis
+                || PlayerWhiteConfigValues != null &&
+                !PlayerWhiteConfigValues.ValidForAnalysis)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

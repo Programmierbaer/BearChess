@@ -179,8 +179,14 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                             if (_isFirstInstance)
                             {
                                 var convertFromRead = ConvertFromRead(byteData);
-                                if (!lastSend.Equals(convertFromRead))
+                                bool force = false;
+                                if (_forcedSend)
                                 {
+                                    force =  ConvertFromRead(_forcedSendValue).Equals(convertFromRead);
+                                }
+                                if (!lastSend.Equals(convertFromRead) || force)
+                                {
+                                    _forcedSend = false;
                                     _logger?.LogDebug($"SC: Send byteData {convertFromRead}");
                                     _comPort.Write(byteData, 0, byteData.Length);
                                     lastSend = convertFromRead;

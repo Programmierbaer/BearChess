@@ -11,6 +11,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void CloseInfoWindow();
         void SetReadOnly();
 
+        void SetForRunning();
+
         event EventHandler Closed;
     }
 }

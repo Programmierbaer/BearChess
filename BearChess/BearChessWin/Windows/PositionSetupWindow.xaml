@@ -19,7 +19,12 @@
         <StackPanel Margin="5" Grid.Row="0" Grid.Column="1">
             <DockPanel VerticalAlignment="Top" Name="dockPanelSetFen">
                 <Button DockPanel.Dock="Left" Width="40" Margin="2" Content="Set" Name="buttonSetPosition"
-                        Click="ButtonSetPosition_OnClick" />
+                        Click="ButtonSetPosition_OnClick" Visibility="Collapsed" />
+                <Button DockPanel.Dock="Left" Width="40" Margin="2" Name="buttonCopyPosition" ToolTip="Copy to clipboard"
+                        Click="ButtonCopyPosition_OnClick" Background="Transparent" BorderBrush="Transparent" >
+                    <Image Source="../Assets/Icons/clipboard_sign_out.png" Width="32"></Image>
+                </Button>
+
                 <TextBox DockPanel.Dock="Right" Margin="5,2,2,2" Name="textBoxFenPosition"
                          GotMouseCapture="TextBoxFenPosition_OnGotMouseCapture" Width="400"
                          GotKeyboardFocus="TextBoxFenPosition_OnGotKeyboardFocus" />

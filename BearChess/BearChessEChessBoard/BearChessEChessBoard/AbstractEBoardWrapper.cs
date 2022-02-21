@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
@@ -85,6 +86,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         public abstract void Calibrate();
+        public void RequestDump()
+        {
+            _board?.RequestDump();
+        }
 
         public string GetCurrentCOMPort()
         {
@@ -579,21 +584,54 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
                 return null;
             }
-            if (!string.IsNullOrWhiteSpace(fenPosition.FromBoard) && fenPosition.FromBoard.Equals(_board?.UnknownPieceCode))
-            {
-                return fenPosition;
-            }
             var invalidFields = new List<string>();
-            var internalChessBoard = new InternalChessBoard();
-            internalChessBoard.NewGame();
-            internalChessBoard.SetPosition(fenPosition.FromBoard);
-
-            for (var f = InternalChessBoard.FA1; f <= InternalChessBoard.FH8; f++)
+            if (fenPosition.IsFieldDump)
             {
-                if (!_internalChessBoard.GetFigureOnField(f).Equals(internalChessBoard.GetFigureOnField(f)))
+                var hashSet = new HashSet<string>(fenPosition.FromBoard.Split(",".ToCharArray()));
+                for (int i=0; i<Fields.BoardFields.Length; i++)
                 {
-                    //_fileLogger?.LogDebug($"C: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
-                    invalidFields.Add(InternalChessBoard.GetFieldName(f));
+                    int f = Fields.BoardFields[i];
+                    var figureOnField = _internalChessBoard.GetFigureOnField(f);
+                    var fieldName = InternalChessBoard.GetFieldName(f);
+                    if (string.IsNullOrWhiteSpace(figureOnField))
+                    {
+                        if (hashSet.Contains(fieldName))
+                        {
+                            invalidFields.Add(fieldName);
+                            hashSet.Remove(fieldName);
+                        }
+                    }
+                    else
+                    {
+                        if (hashSet.Contains(fieldName))
+                        {
+                            hashSet.Remove(fieldName);
+                        }
+                    }
+
+                }
+                invalidFields.AddRange(hashSet);
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(fenPosition.FromBoard) &&
+                    fenPosition.FromBoard.Equals(_board?.UnknownPieceCode))
+                {
+                    return fenPosition;
+                }
+
+             
+                var internalChessBoard = new InternalChessBoard();
+                internalChessBoard.NewGame();
+                internalChessBoard.SetPosition(fenPosition.FromBoard);
+
+                for (var f = InternalChessBoard.FA1; f <= InternalChessBoard.FH8; f++)
+                {
+                    if (!_internalChessBoard.GetFigureOnField(f).Equals(internalChessBoard.GetFigureOnField(f)))
+                    {
+                        //_fileLogger?.LogDebug($"C: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
+                        invalidFields.Add(InternalChessBoard.GetFieldName(f));
+                    }
                 }
             }
 
@@ -601,7 +639,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
              
                 fenPosition.Invalid = true;
-            
                 _board?.SetLedForFields(invalidFields.ToArray());
                 _allLedOff = false;
             }

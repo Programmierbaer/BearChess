@@ -29,14 +29,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler<DatabaseGame> SelectedGameChanged;
         public event EventHandler<int> ContinueDuelSelected;
         public event EventHandler<int> CloneDuelSelected;
+        public event EventHandler<int> RepeatGameSelected;
 
         public DuelWindow(Configuration configuration, Database database)
         {
             InitializeComponent();
             _configuration = configuration;
             _database = database;
-            Top = _configuration.GetWinDoubleValue("DuelWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
-            Left = _configuration.GetWinDoubleValue("DuelWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
+            Top = _configuration.GetWinDoubleValue("DuelWindowTop", Configuration.WinScreenInfo.Top,
+                                                   SystemParameters.VirtualScreenHeight,
+                                                   SystemParameters.VirtualScreenWidth);
+            Left = _configuration.GetWinDoubleValue("DuelWindowLeft", Configuration.WinScreenInfo.Left,
+                                                    SystemParameters.VirtualScreenHeight,
+                                                    SystemParameters.VirtualScreenWidth);
             dataGridDuel.ItemsSource = _database.LoadDuel();
             Title = $"Duels on: {_database.FileName}";
         }
@@ -47,10 +52,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
             if (dataGridDuel.SelectedItems.Count > 1)
             {
                 MessageBox.Show("Please select only one duel", "Cannot continue",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -60,7 +66,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (duel.GamesToPlay == duel.PlayedGames && _duelFinished)
                 {
                     MessageBox.Show("Cannot continue the duel, it is finished", "Cannot continue",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
@@ -74,10 +80,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
             if (dataGridDuel.SelectedItems.Count > 1)
             {
                 MessageBox.Show("Please select only one duel", "Cannot load as new",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -93,10 +100,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             ContinueDuelSelected?.Invoke(this, e);
         }
+
         protected virtual void OnSelectedCloneDuel(int e)
         {
             CloneDuelSelected?.Invoke(this, e);
         }
+
+        protected virtual void OnSelectedRepeatGame(int e)
+        {
+            RepeatGameSelected?.Invoke(this, e);
+        }
+
+
         protected virtual void OnSelectedGamedChanged(DatabaseGame e)
         {
             SelectedGameChanged?.Invoke(this, e);
@@ -129,11 +144,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
             if (dataGridDuel.SelectedItems.Count > 1)
             {
                 if (MessageBox.Show($"Delete all {dataGridDuel.SelectedItems.Count} selected duels?",
-                    "Delete duel", MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes)
+                                    "Delete duel", MessageBoxButton.YesNo,
+                                    MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes)
                 {
                     return;
                 }
@@ -141,7 +157,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             else
             {
                 if (MessageBox.Show("Delete selected duel?", "Delete duel", MessageBoxButton.YesNo,
-                    MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
+                                    MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
                 {
                     return;
                 }
@@ -195,13 +211,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (dataGridDuel.SelectedItems.Count > 1)
             {
                 MessageBox.Show("Please select only one duel", "Cannot continue",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (MessageBox.Show("Delete all games and repeat selected duel?", "Repeat duel",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes)
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes)
             {
                 return;
             }
@@ -225,8 +241,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            if (MessageBox.Show($"Delete all {dataGridDuel.Items.Count} duels?", "Delete all duels", MessageBoxButton.YesNo,
-                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+
+            if (MessageBox.Show($"Delete all {dataGridDuel.Items.Count} duels?", "Delete all duels",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 _database.DeleteAllDuel();
                 dataGridDuel.ItemsSource = _database.LoadDuel();
@@ -239,9 +257,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.Items.Count == 0)
             {
-                MessageBox.Show("Select a duel for export", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Select a duel for export", "Information", MessageBoxButton.OK,
+                                MessageBoxImage.Information);
                 return;
             }
+
             IList selectedItems = dataGridGames.SelectedItems;
             if (selectedItems.Count == 0)
             {
@@ -253,7 +273,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonInfo_OnClick(object sender, RoutedEventArgs e)
         {
-           ShowInfoWindow();
+            ShowInfoWindow();
         }
 
         private void ShowInfoWindow()
@@ -262,6 +282,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
             int currentDuelId = 0;
             if (_duelManager == null)
             {
@@ -274,6 +295,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _duelInfoWindow.CloseInfoWindow();
                 _duelInfoWindow = null;
             }
+
             var selectedItem = dataGridDuel.SelectedItems[0];
             if (selectedItem is DatabaseDuel duel)
             {
@@ -298,6 +320,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         continue;
                     }
+
                     bool gamesCountIsEven = (gamesCount % 2) == 0;
                     _duelInfoWindow.AddResult(gamesCount, databaseGameSimple.Result,
                                               currentDuel.DuelSwitchColor && !gamesCountIsEven);
@@ -305,6 +328,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
             }
+
             _duelInfoWindow?.SetReadOnly();
         }
 
@@ -326,6 +350,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
             int currentDuelId = 0;
             if (_duelManager == null)
             {
@@ -360,5 +385,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
         }
+
+        private void MenuItemReplay_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+            {
+                if (MessageBox.Show($"Repeat selected game?{Environment.NewLine}The previous result will be overwritten.", "Repeat game", MessageBoxButton.YesNo,
+                                    MessageBoxImage.Question,MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    OnSelectedRepeatGame(pgnGame.Id);
+                }
+            }
+        }
     }
 }
+
+

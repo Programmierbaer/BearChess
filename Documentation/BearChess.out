@@ -66,59 +66,61 @@
 \BOOKMARK [2][-]{subsection.17.2}{With electronic chessboard}{section.17}% 66
 \BOOKMARK [2][-]{subsection.17.3}{Without electronic chessboard}{section.17}% 67
 \BOOKMARK [2][-]{subsection.17.4}{Analyse a game}{section.17}% 68
-\BOOKMARK [1][-]{section.18}{Engine duel}{}% 69
-\BOOKMARK [2][-]{subsection.18.1}{Start a new engine duel}{section.18}% 70
+\BOOKMARK [1][-]{section.18}{Duel}{}% 69
+\BOOKMARK [2][-]{subsection.18.1}{Start a new duel}{section.18}% 70
 \BOOKMARK [3][-]{subsubsection.18.1.1}{Engine duel information}{subsection.18.1}% 71
-\BOOKMARK [2][-]{subsection.18.2}{Manage engine duels}{section.18}% 72
-\BOOKMARK [1][-]{section.19}{Engine tournament}{}% 73
-\BOOKMARK [2][-]{subsection.19.1}{Start a new engine tournament}{section.19}% 74
-\BOOKMARK [3][-]{subsubsection.19.1.1}{Engine tournament information}{subsection.19.1}% 75
-\BOOKMARK [2][-]{subsection.19.2}{Manage engine tournaments}{section.19}% 76
-\BOOKMARK [1][-]{section.20}{Setup position}{}% 77
-\BOOKMARK [2][-]{subsection.20.1}{With support of an electronic chessboard}{section.20}% 78
-\BOOKMARK [2][-]{subsection.20.2}{Without support of an electronic chessboard}{section.20}% 79
-\BOOKMARK [1][-]{section.21}{Run startup game on start}{}% 80
-\BOOKMARK [1][-]{section.22}{Games}{}% 81
-\BOOKMARK [2][-]{subsection.22.1}{Save}{section.22}% 82
-\BOOKMARK [2][-]{subsection.22.2}{Show and load}{section.22}% 83
-\BOOKMARK [1][-]{section.23}{Engine window}{}% 84
-\BOOKMARK [1][-]{section.24}{Extended engine support}{}% 85
-\BOOKMARK [1][-]{section.25}{Important To Know}{}% 86
-\BOOKMARK [2][-]{subsection.25.1}{Install a new version}{section.25}% 87
-\BOOKMARK [2][-]{subsection.25.2}{MessChess engines}{section.25}% 88
-\BOOKMARK [2][-]{subsection.25.3}{Certabo: board orientation}{section.25}% 89
-\BOOKMARK [2][-]{subsection.25.4}{Certabo: Calibration}{section.25}% 90
-\BOOKMARK [2][-]{subsection.25.5}{Certabo: Pawn conversion to a queen}{section.25}% 91
-\BOOKMARK [2][-]{subsection.25.6}{Millennium ChessLink: board orientation}{section.25}% 92
-\BOOKMARK [2][-]{subsection.25.7}{DGT Pegasus: Piece recognition}{section.25}% 93
-\BOOKMARK [2][-]{subsection.25.8}{Electronic chessboard and engine duels}{section.25}% 94
-\BOOKMARK [1][-]{section.26}{Trouble shooting}{}% 95
-\BOOKMARK [2][-]{subsection.26.1}{The chess moves are not or not correctly displayed}{section.26}% 96
-\BOOKMARK [1][-]{section.27}{Known Issues}{}% 97
-\BOOKMARK [1][-]{section.28}{Next Steps}{}% 98
-\BOOKMARK [1][-]{section.29}{Changelog}{}% 99
-\BOOKMARK [2][-]{subsection.29.1}{Version 0.5.8.1 \0400.5.9.0}{section.29}% 100
-\BOOKMARK [2][-]{subsection.29.2}{Version 0.5.8.0 \0400.5.8.1}{section.29}% 101
-\BOOKMARK [2][-]{subsection.29.3}{Version 0.5.7.0 \0400.5.8.0}{section.29}% 102
-\BOOKMARK [2][-]{subsection.29.4}{Version 0.5.6.2 \0400.5.7.0}{section.29}% 103
-\BOOKMARK [2][-]{subsection.29.5}{Version 0.5.6.1 \0400.5.6.2}{section.29}% 104
-\BOOKMARK [2][-]{subsection.29.6}{Version 0.5.6.0 \0400.5.6.1}{section.29}% 105
-\BOOKMARK [2][-]{subsection.29.7}{Version 0.5.5.3 \0400.5.6.0}{section.29}% 106
-\BOOKMARK [2][-]{subsection.29.8}{Version 0.5.5.2 \0400.5.5.3}{section.29}% 107
-\BOOKMARK [2][-]{subsection.29.9}{Version 0.5.5.1 \0400.5.5.2}{section.29}% 108
-\BOOKMARK [2][-]{subsection.29.10}{Version 0.5.5.0 \0400.5.5.1}{section.29}% 109
-\BOOKMARK [2][-]{subsection.29.11}{Version 0.5.0.0 \0400.5.5.0}{section.29}% 110
-\BOOKMARK [2][-]{subsection.29.12}{Version 0.4.4.0 \0400.5.0.0}{section.29}% 111
-\BOOKMARK [2][-]{subsection.29.13}{Version 0.4.3.1 \0400.4.4.0}{section.29}% 112
-\BOOKMARK [2][-]{subsection.29.14}{Version 0.4.3.0 \0400.4.3.1}{section.29}% 113
-\BOOKMARK [2][-]{subsection.29.15}{Version 0.4.2.3 \0400.4.3.0}{section.29}% 114
-\BOOKMARK [2][-]{subsection.29.16}{Version 0.4.2.2 \0400.4.2.3}{section.29}% 115
-\BOOKMARK [2][-]{subsection.29.17}{Version 0.4.2.1 \0400.4.2.2}{section.29}% 116
-\BOOKMARK [2][-]{subsection.29.18}{Version 0.4.2.0 \0400.4.2.1}{section.29}% 117
-\BOOKMARK [2][-]{subsection.29.19}{Version 0.4.1.0 \0400.4.2.0}{section.29}% 118
-\BOOKMARK [2][-]{subsection.29.20}{Version 0.4.0.0 \0400.4.1.0}{section.29}% 119
-\BOOKMARK [2][-]{subsection.29.21}{Version 0.3.3.0 \0400.4.0.0}{section.29}% 120
-\BOOKMARK [2][-]{subsection.29.22}{Version 0.3.2.0 \0400.3.3.0}{section.29}% 121
-\BOOKMARK [2][-]{subsection.29.23}{Version 0.3.1.1 \0400.3.2.0}{section.29}% 122
-\BOOKMARK [2][-]{subsection.29.24}{Version 0.3.1.0 \0400.3.1.1}{section.29}% 123
-\BOOKMARK [2][-]{subsection.29.25}{Version 0.3.0.0 \0400.3.1.0}{section.29}% 124
+\BOOKMARK [2][-]{subsection.18.2}{Estimate ELO}{section.18}% 72
+\BOOKMARK [2][-]{subsection.18.3}{Manage duels}{section.18}% 73
+\BOOKMARK [1][-]{section.19}{Engine tournament}{}% 74
+\BOOKMARK [2][-]{subsection.19.1}{Start a new engine tournament}{section.19}% 75
+\BOOKMARK [3][-]{subsubsection.19.1.1}{Engine tournament information}{subsection.19.1}% 76
+\BOOKMARK [2][-]{subsection.19.2}{Manage engine tournaments}{section.19}% 77
+\BOOKMARK [1][-]{section.20}{Setup position}{}% 78
+\BOOKMARK [2][-]{subsection.20.1}{With support of an electronic chessboard}{section.20}% 79
+\BOOKMARK [2][-]{subsection.20.2}{Without support of an electronic chessboard}{section.20}% 80
+\BOOKMARK [1][-]{section.21}{Run startup game on start}{}% 81
+\BOOKMARK [1][-]{section.22}{Games}{}% 82
+\BOOKMARK [2][-]{subsection.22.1}{Save}{section.22}% 83
+\BOOKMARK [2][-]{subsection.22.2}{Show and load}{section.22}% 84
+\BOOKMARK [1][-]{section.23}{Engine window}{}% 85
+\BOOKMARK [1][-]{section.24}{Extended engine support}{}% 86
+\BOOKMARK [1][-]{section.25}{Important To Know}{}% 87
+\BOOKMARK [2][-]{subsection.25.1}{Install a new version}{section.25}% 88
+\BOOKMARK [2][-]{subsection.25.2}{MessChess engines}{section.25}% 89
+\BOOKMARK [2][-]{subsection.25.3}{Certabo: board orientation}{section.25}% 90
+\BOOKMARK [2][-]{subsection.25.4}{Certabo: Calibration}{section.25}% 91
+\BOOKMARK [2][-]{subsection.25.5}{Certabo: Pawn conversion to a queen}{section.25}% 92
+\BOOKMARK [2][-]{subsection.25.6}{Millennium ChessLink: board orientation}{section.25}% 93
+\BOOKMARK [2][-]{subsection.25.7}{DGT Pegasus: Piece recognition}{section.25}% 94
+\BOOKMARK [2][-]{subsection.25.8}{Electronic chessboard and engine duels}{section.25}% 95
+\BOOKMARK [1][-]{section.26}{Trouble shooting}{}% 96
+\BOOKMARK [2][-]{subsection.26.1}{The chess moves are not or not correctly displayed}{section.26}% 97
+\BOOKMARK [1][-]{section.27}{Known Issues}{}% 98
+\BOOKMARK [1][-]{section.28}{Next Steps}{}% 99
+\BOOKMARK [1][-]{section.29}{Changelog}{}% 100
+\BOOKMARK [2][-]{subsection.29.1}{Version 0.5.9.0 \0400.6.0.0}{section.29}% 101
+\BOOKMARK [2][-]{subsection.29.2}{Version 0.5.8.1 \0400.5.9.0}{section.29}% 102
+\BOOKMARK [2][-]{subsection.29.3}{Version 0.5.8.0 \0400.5.8.1}{section.29}% 103
+\BOOKMARK [2][-]{subsection.29.4}{Version 0.5.7.0 \0400.5.8.0}{section.29}% 104
+\BOOKMARK [2][-]{subsection.29.5}{Version 0.5.6.2 \0400.5.7.0}{section.29}% 105
+\BOOKMARK [2][-]{subsection.29.6}{Version 0.5.6.1 \0400.5.6.2}{section.29}% 106
+\BOOKMARK [2][-]{subsection.29.7}{Version 0.5.6.0 \0400.5.6.1}{section.29}% 107
+\BOOKMARK [2][-]{subsection.29.8}{Version 0.5.5.3 \0400.5.6.0}{section.29}% 108
+\BOOKMARK [2][-]{subsection.29.9}{Version 0.5.5.2 \0400.5.5.3}{section.29}% 109
+\BOOKMARK [2][-]{subsection.29.10}{Version 0.5.5.1 \0400.5.5.2}{section.29}% 110
+\BOOKMARK [2][-]{subsection.29.11}{Version 0.5.5.0 \0400.5.5.1}{section.29}% 111
+\BOOKMARK [2][-]{subsection.29.12}{Version 0.5.0.0 \0400.5.5.0}{section.29}% 112
+\BOOKMARK [2][-]{subsection.29.13}{Version 0.4.4.0 \0400.5.0.0}{section.29}% 113
+\BOOKMARK [2][-]{subsection.29.14}{Version 0.4.3.1 \0400.4.4.0}{section.29}% 114
+\BOOKMARK [2][-]{subsection.29.15}{Version 0.4.3.0 \0400.4.3.1}{section.29}% 115
+\BOOKMARK [2][-]{subsection.29.16}{Version 0.4.2.3 \0400.4.3.0}{section.29}% 116
+\BOOKMARK [2][-]{subsection.29.17}{Version 0.4.2.2 \0400.4.2.3}{section.29}% 117
+\BOOKMARK [2][-]{subsection.29.18}{Version 0.4.2.1 \0400.4.2.2}{section.29}% 118
+\BOOKMARK [2][-]{subsection.29.19}{Version 0.4.2.0 \0400.4.2.1}{section.29}% 119
+\BOOKMARK [2][-]{subsection.29.20}{Version 0.4.1.0 \0400.4.2.0}{section.29}% 120
+\BOOKMARK [2][-]{subsection.29.21}{Version 0.4.0.0 \0400.4.1.0}{section.29}% 121
+\BOOKMARK [2][-]{subsection.29.22}{Version 0.3.3.0 \0400.4.0.0}{section.29}% 122
+\BOOKMARK [2][-]{subsection.29.23}{Version 0.3.2.0 \0400.3.3.0}{section.29}% 123
+\BOOKMARK [2][-]{subsection.29.24}{Version 0.3.1.1 \0400.3.2.0}{section.29}% 124
+\BOOKMARK [2][-]{subsection.29.25}{Version 0.3.1.0 \0400.3.1.1}{section.29}% 125
+\BOOKMARK [2][-]{subsection.29.26}{Version 0.3.0.0 \0400.3.1.0}{section.29}% 126

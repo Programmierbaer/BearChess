@@ -38,8 +38,14 @@
                 <DataGridTextColumn Binding="{Binding White}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>White</DataGridTextColumn.Header>
                 </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding WhiteElo}" Width="Auto" FontSize="13">
+                    <DataGridTextColumn.Header>Elo</DataGridTextColumn.Header>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Black}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Black</DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding BlackElo}" Width="Auto" FontSize="13">
+                    <DataGridTextColumn.Header>Elo</DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding GameEvent}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Event</DataGridTextColumn.Header>
@@ -103,10 +109,16 @@
                 <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
             </Button>
 
+
             <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete database">
                 <Image Source="../Assets/Icons/database_delete.png" Width="32" Height="32"></Image>
             </Button>
-        
-        </DockPanel>
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonSaveDb" Click="ButtonSaveDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Save database">
+                <Image Source="../Assets/Icons/database_save.png" Width="32" Height="32"></Image>
+            </Button>
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonRestoreDb" Click="ButtonRestoreDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Restore database">
+                <Image Source="../Assets/Icons/database_refresh.png" Width="32" Height="32"></Image>
+            </Button>
+</DockPanel>
     </Grid>
 </Window>

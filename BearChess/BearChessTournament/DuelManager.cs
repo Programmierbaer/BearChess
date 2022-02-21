@@ -11,6 +11,8 @@ namespace www.SoLaNoSoft.com.BearChessTournament
         private int _duelId;
         private CurrentDuel _currentDuel;
 
+        public int CurrentDuelId => _duelId;
+
         public DuelManager(Configuration configuration, Database database)
         {
             _configuration = configuration;
@@ -32,6 +34,16 @@ namespace www.SoLaNoSoft.com.BearChessTournament
             return _currentDuel;
         }
 
+        public CurrentDuel LoadByGame(int gameId)
+        {
+            var loadDuelByGame = _database.LoadDuelByGame(gameId);
+            _currentDuel = loadDuelByGame.CurrentDuel;
+            _duelId = loadDuelByGame.DuelId;
+            return _currentDuel;
+        }
+
+
+
         public void Update(CurrentDuel currentDuel, int duelId)
         {
             _duelId = duelId;
@@ -41,7 +53,14 @@ namespace www.SoLaNoSoft.com.BearChessTournament
 
         public void SaveGame(DatabaseGame currentGame)
         {
-            _database.SaveDuelGamePair(_duelId, _database.Save(currentGame));
+            if (currentGame.CurrentGame.RepeatedGame)
+            {
+                _database.Save(currentGame);
+            }
+            else
+            {
+                _database.SaveDuelGamePair(_duelId, _database.Save(currentGame));
+            }
         }
 
         public CurrentGame GetNextGame(string lastResult)
@@ -57,14 +76,14 @@ namespace www.SoLaNoSoft.com.BearChessTournament
             if (gamesCount < numberOfTotalGames)
             {
                 bool gamesCountIsEven = (gamesCount % 2) == 0;
-                if (!string.IsNullOrWhiteSpace(lastResult) && (_currentDuel.AdjustEloWhite || _currentDuel.AdjustEloWhite))
+                if (!string.IsNullOrWhiteSpace(lastResult) && (_currentDuel.AdjustEloWhite || _currentDuel.AdjustEloBlack))
                 {
                     int pIndex = _currentDuel.AdjustEloWhite ? 0 : 1;
+                   
                     var currentDuelPlayer = _currentDuel.Players[pIndex];
                     var configuredElo = currentDuelPlayer.GetConfiguredElo();
                     var minimumElo = currentDuelPlayer.GetMinimumElo();
                     var maximumElo = currentDuelPlayer.GetMaximumElo();
-                    var newElo = configuredElo;
                     if (_currentDuel.CurrentMaxElo <= 0)
                     {
                         _currentDuel.CurrentMaxElo = maximumElo;
@@ -81,10 +100,13 @@ namespace www.SoLaNoSoft.com.BearChessTournament
                     if (!lastResult.Equals("1/2"))
                     {
 
+                        if (_currentDuel.DuelSwitchColor && gamesCountIsEven)
+                        {
+                            pIndex = pIndex == 1 ? 0 : 1;
+                        }
                         if (pIndex == 0 && lastResult.StartsWith("1"))
                         {
                             _currentDuel.CurrentMaxElo = configuredElo;
-                      
                             
                         }
 
@@ -103,7 +125,7 @@ namespace www.SoLaNoSoft.com.BearChessTournament
                         {
                             _currentDuel.CurrentMaxElo = configuredElo;
                         }
-                        newElo = (_currentDuel.CurrentMaxElo + _currentDuel.CurrentMinElo) / 2;
+                        var newElo = (_currentDuel.CurrentMaxElo + _currentDuel.CurrentMinElo) / 2;
                         if (newElo < minimumElo)
                         {
                             newElo = minimumElo;
@@ -118,18 +140,21 @@ namespace www.SoLaNoSoft.com.BearChessTournament
                     }
 
                 }
-                currentGame = new CurrentGame(_currentDuel.Players[0],
-                                              _currentDuel.Players[1],
+
+                bool switchedColor = _currentDuel.DuelSwitchColor && !gamesCountIsEven;
+                currentGame = new CurrentGame(_currentDuel.Players[switchedColor ? 1: 0],
+                                              _currentDuel.Players[switchedColor ? 0 : 1],
                                               _currentDuel.GameEvent,
                                               _currentDuel.TimeControl,
-                                              _currentDuel.Players[0].Name,
-                                              _currentDuel.Players[1].Name,
-                                              startFromBasePosition: _currentDuel.StartFromBasePosition, duelEngine: true, duelGames: _currentDuel.Cycles)
+                                              _currentDuel.Players[switchedColor ? 1: 0].Name,
+                                              _currentDuel.Players[switchedColor ? 0: 1].Name,
+                                              startFromBasePosition: _currentDuel.StartFromBasePosition, duelEngine: true, duelGames: _currentDuel.Cycles,
+                                              _currentDuel.Players[0].IsPlayer || _currentDuel.Players[1].IsPlayer)
                               {
                                   Round = gamesCount + 1,
                                   CurrentDuelGame = gamesCount + 1,
-                                  SwitchedColor = _currentDuel.DuelSwitchColor && !gamesCountIsEven
-                              };
+                                  SwitchedColor = switchedColor
+                };
 
             }
 

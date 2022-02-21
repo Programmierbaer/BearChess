@@ -27,14 +27,20 @@
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Engine duel">
+                    <MenuItem Header="Duel">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/6-2-chess-png.png" />
                         </MenuItem.Icon>
-                        <MenuItem Header="Start a new engine duel" Name="menuItemEngineMatch"
+                        <MenuItem Header="Start a new duel" Name="menuItemEngineMatch"
                                   Click="MenuItemEngineMatch_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/6-2-chess-png.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Estimate ELO " Name="menuItemEloEstimateEngineMatch"
+                                  Click="MenuItemEloEstimateEngineMatch_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/chart_line.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Header="Duel manager" Name="menuItemLoadEngineDuel"
@@ -67,11 +73,12 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="Determine ELO" Name="menuItemEloEstimate" Visibility="Collapsed">
+                    <!--
+                    <MenuItem Header="Estimate ELO" Name="menuItemEloEstimate">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/chart_line.png" />
                         </MenuItem.Icon>
-                        <MenuItem Header="With a new game" Name="menuItemEloEstimateNewGame" Click="MenuItemEloEstimateNewGame_OnClick">
+                        <MenuItem Header="With a new player duel" Name="menuItemEloEstimateNewGame" Click="MenuItemEloEstimateNewGame_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" />
                             </MenuItem.Icon>
@@ -83,6 +90,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    -->
                     <MenuItem Header="Setup position" Name="menuItemSetupPosition"
                               Click="MenuItemSetupPosition_OnClick">
                         <MenuItem.Icon>
@@ -227,6 +235,12 @@
                                   Click="MenuItemMovesShowOnStart_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageShowMoves" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemMovesShow50MovesRule" Header="Show fifty-move rule"
+                                  Click="MenuItemMovesShow50MovesRule_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageShow50MoveRule" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
@@ -426,6 +440,10 @@
                     <Image Name="imageDisconnect" Visibility="Collapsed" Source="Assets/Icons/connect.png" Width="16" />
                     <TextBlock Name="textBlockButtonConnect" Margin="5,0,0,0">Connect</TextBlock>
                 </StackPanel>
+            </Button>
+            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonAccept" ToolTip="Show board information"
+                                              Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonAccept_OnClick">
+                <Image  Source="Assets/Icons/emotion_question.png" Width="16" />
             </Button>
             <Image DockPanel.Dock="Left" VerticalAlignment="Center" Margin="5,0" Source="Assets/Icons/book_open.png"
                    Width="16" />

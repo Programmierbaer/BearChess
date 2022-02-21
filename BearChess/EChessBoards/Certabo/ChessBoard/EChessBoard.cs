@@ -250,6 +250,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             IsCalibrated = true;
         }
 
+        public override void RequestDump()
+        {
+            //
+        }
+
         private string GetPiecesFen(string[] dataArray)
         {
             var codes = new string[40];

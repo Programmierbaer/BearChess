@@ -101,6 +101,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         void Calibrate();
 
+        void RequestDump();
+
+
         /// <summary>
         /// Play with white or black pieces from the base line.
         /// </summary>

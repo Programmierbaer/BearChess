@@ -32,6 +32,8 @@
         /// Sends <paramref name="data"/> to the board. 
         /// </summary>
         /// <param name="data">data to send</param>
+        void Send(byte[] data, bool forcedSend);
+
         void Send(byte[] data);
 
         void Send(string data);

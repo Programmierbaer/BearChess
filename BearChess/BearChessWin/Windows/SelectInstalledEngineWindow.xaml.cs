@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -9,6 +10,7 @@ using System.Xml.Serialization;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessDatabase;
+using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -26,11 +28,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public SelectInstalledEngineWindow()
         {
             InitializeComponent();
+            Top =    Configuration.Instance.GetWinDoubleValue("InstalledEngineWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, "300"); 
+            Left =   Configuration.Instance.GetWinDoubleValue("InstalledEngineWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,"400");
+            Height = Configuration.Instance.GetDoubleValue("InstalledEngineWindowHeight",  "390");
+            Width =  Configuration.Instance.GetDoubleValue("InstalledEngineWindowWidth",  "500");
         }
 
         public SelectInstalledEngineWindow(IEnumerable<UciInfo> uciInfos, string lastEngineId, string uciPath) : this()
         {
-            _uciInfos =  new ObservableCollection<UciInfo>(uciInfos.OrderBy(e => e.Name).ToList());
+            _uciInfos =  new ObservableCollection<UciInfo>(uciInfos.Where(u => !u.IsPlayer).OrderBy(e => e.Name).ToList());
             var firstOrDefault = _uciInfos.FirstOrDefault(u => u.Id.Equals(lastEngineId));
             if (firstOrDefault == null)
             {
@@ -401,6 +407,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 LoadNewEngine(selectFileAndParameterWindow.Filename,selectFileAndParameterWindow.Parameter, selectFileAndParameterWindow.EngineName);
             }
+        }
+
+        private void SelectInstalledEngineWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            Configuration.Instance.SetDoubleValue("InstalledEngineWindowLeft", Left);
+            Configuration.Instance.SetDoubleValue("InstalledEngineWindowTop", Top);
+            Configuration.Instance.SetDoubleValue("InstalledEngineWindowWidth", Width);
+            Configuration.Instance.SetDoubleValue("InstalledEngineWindowHeight", Height);
         }
     }
 }

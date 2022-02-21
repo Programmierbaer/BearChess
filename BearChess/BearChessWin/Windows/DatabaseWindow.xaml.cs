@@ -130,14 +130,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     if (_database.IsDuelGame(pgnGame.Id))
                     {
-                        MessageBox.Show("Game is participant of a duel. Use duel manager to delete duel games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Game is part of a duel. Use duel manager to delete duel games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
                         
                             return;
                         
                     }
                     if (_database.IsTournamentGame(pgnGame.Id))
                     {
-                        MessageBox.Show("Game is participant of a tournament. Use tournament manager to delete tournament games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Game is part of a tournament. Use tournament manager to delete tournament games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
 
                         return;
 
@@ -306,5 +306,59 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ExportGames.Export(selectedItems,_database, this);
         }
 
+        private void ButtonSaveDb_OnClick(object sender, RoutedEventArgs e)
+        {
+            var backup = _database.Backup();
+            if (backup.StartsWith("Error"))
+            {
+                MessageBox.Show($"Unable to save database{Environment.NewLine}{backup}", "Save database", MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBox.Show($"Database saved to{Environment.NewLine}{backup}", "Save database", MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+            }
+
+            dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
+                                            ? _database.GetGames(_gamesFilter, _lastSyncFen)
+                                            : _database.GetGames(_gamesFilter);
+        }
+
+        private void ButtonRestoreDb_OnClick(object sender, RoutedEventArgs e)
+        {
+            var fileInfo = new FileInfo(_database.FileName);
+            var openFileDialog = new OpenFileDialog
+                                 {
+                                     Filter = "Saved Database|*.bak_*;",
+                                     InitialDirectory = fileInfo.DirectoryName
+                                 };
+            var showDialog = openFileDialog.ShowDialog(this);
+            if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            {
+                var info = new FileInfo(openFileDialog.FileName);
+                if (MessageBox.Show($"Override current database with a backup{Environment.NewLine}from {info.CreationTime}?", "Restore database", MessageBoxButton.YesNo,
+                                    MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    var restore = _database.Restore(openFileDialog.FileName);
+                    if (string.IsNullOrWhiteSpace(restore))
+                    {
+                        MessageBox.Show("Database restored", "Restore database", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Unable to restore database{Environment.NewLine}{restore}", "Restore database",
+                                        MessageBoxButton.OK,
+                                        MessageBoxImage.Error);
+                    }
+
+                    dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
+                                                    ? _database.GetGames(_gamesFilter, _lastSyncFen)
+                                                    : _database.GetGames(_gamesFilter);
+                    UpdateTitle();
+                }
+            }
+        }
     }
 }

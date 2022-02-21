@@ -49,6 +49,18 @@ namespace www.SoLaNoSoft.com.BearChessTools
             set => AddValue("Round", value);
         }
 
+        public string WhiteElo
+        {
+            get => GetValue("WhiteElo");
+            set => AddValue("WhiteElo", value);
+        }
+
+        public string BlackElo
+        {
+            get => GetValue("BlackElo");
+            set => AddValue("BlackElo", value);
+        }
+
         public string MoveList => GetMoveList();
 
         public int MoveCount => _moveList.Count;
@@ -70,6 +82,10 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public void AddValue(string keyWord, string keyValue)
         {
+            if (keyValue==null)
+            {
+                return;
+            }
             _userDefined[keyWord] = keyValue.Replace("\"",string.Empty).Trim();
         }
 
@@ -100,6 +116,12 @@ namespace www.SoLaNoSoft.com.BearChessTools
             }
             return sb.ToString();
         }
+
+        public void ClearMoveList()
+        {
+            _moveList.Clear();
+        }
+
 
         public string GetGame()
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChessBase;
@@ -14,6 +15,7 @@ namespace www.SoLaNoSoft.com.BearChessTournament
         private int _tournamentId;
         private CurrentTournament _currentTournament;
         private readonly List<int[]> _pairing = new List<int[]>();
+        public int CurrentTournamentId => _tournamentId;
 
         public TournamentManager(Configuration configuration, Database database )
         {
@@ -42,9 +44,27 @@ namespace www.SoLaNoSoft.com.BearChessTournament
 
         }
 
+        public CurrentTournament LoadByGame(int gameId)
+        {
+            var loadTournamentbyGame = _database.LoadTournamentByGame(gameId);
+            _currentTournament = loadTournamentbyGame.CurrentTournament;
+            _tournamentId = loadTournamentbyGame.TournamentId;
+            FillPairing();
+            return _currentTournament;
+
+        }
+
         public void SaveGame(DatabaseGame currentGame)
         {
-            _database.SaveTournamentGamePair(_tournamentId,_database.Save(currentGame));
+            if (currentGame.CurrentGame.RepeatedGame)
+            {
+                _database.Save(currentGame);
+            }
+            else
+            {
+                _database.SaveTournamentGamePair(_tournamentId, _database.Save(currentGame));
+            }
+          
         }
 
         public CurrentGame GetNextGame()
@@ -71,9 +91,9 @@ namespace www.SoLaNoSoft.com.BearChessTournament
                                               _currentTournament.TimeControl,
                                               _currentTournament.Players[pair[0]].Name,
                                               _currentTournament.Players[pair[1]].Name,
-                                              startFromBasePosition: true, duelEngine: true, duelGames: 1)
+                                              startFromBasePosition: true, duelEngine: true, duelGames: 1,false)
                               {
-                                  Round = (gamesCount + 1) / gamesPerCycle
+                                  Round = (int)Math.Ceiling(((decimal)(gamesCount + 1) / gamesPerCycle))
                               };
 
             }

@@ -84,14 +84,25 @@
                             <Image Source="../Assets/Icons/clipboard_sign_out.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Repeat game" Name="menuItemReplay" Click="MenuItemReplay_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/Icons/control_repeat_blue.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding White}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>White</DataGridTextColumn.Header>
                 </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding WhiteElo}" Width="Auto" FontSize="13">
+                    <DataGridTextColumn.Header>Elo</DataGridTextColumn.Header>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Black}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Black</DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding BlackElo}" Width="Auto" FontSize="13">
+                    <DataGridTextColumn.Header>Elo</DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding GameEvent}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Event</DataGridTextColumn.Header>

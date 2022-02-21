@@ -41,7 +41,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _chessBoard.Init();
             _chessBoard.NewGame();
             _chessBoard.SetPosition(fenPosition);
-            dockPanelSetFen.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
+            buttonSetPosition.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
+            buttonCopyPosition.Visibility = _acceptMouse ? Visibility.Collapsed : Visibility.Visible;
+            textBoxFenPosition.IsReadOnly = !_acceptMouse;
             stackPanelPieces1.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
             stackPanelPieces2.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
             buttonBase.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
@@ -196,6 +198,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonCancel_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+        }
+
+        private void ButtonCopyPosition_OnClick(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(textBoxFenPosition.Text);
         }
     }
 }

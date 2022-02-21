@@ -27,16 +27,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private UciInfo PlayerWhiteConfigValues { get;  set; }
         private bool? _isCheckedAllowTakeBack;
         private Brush _foreground;
+        private int _playerIndex;
 
         public NewGameWindow(Configuration configuration)
         {
             _configuration = configuration;
             InitializeComponent();
             _isInitialized = true;
-            comboBoxPlayerWhite.Items.Add("Player");
-            comboBoxPlayerBlack.Items.Add("Player");
+        //  comboBoxPlayerWhite.Items.Add("Player");
+       //   comboBoxPlayerBlack.Items.Add("Player");
             comboBoxPlayerBlack.SelectedIndex = 0;
             comboBoxPlayerWhite.SelectedIndex = 0;
+            _playerIndex = 0;
         }
 
         public string PlayerWhite => comboBoxPlayerWhite.SelectedItem as string;
@@ -142,23 +144,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
             for (var i = 0; i < array.Length; i++)
             {
                 var uciInfo = array[i];
+                if (uciInfo.IsPlayer)
+                {
+                    _playerIndex = i;
+                }
                 _allUciInfos[uciInfo.Name] = uciInfo;
                 comboBoxPlayerWhite.Items.Add(uciInfo.Name);
                 comboBoxPlayerBlack.Items.Add(uciInfo.Name);
                 if (uciInfo.Id.Equals(lastSelectedEngineIdWhite, StringComparison.OrdinalIgnoreCase))
                 {
-                    selectedIndexWhite = i + 1;
+                    selectedIndexWhite = i ;
                 }
 
                 if (uciInfo.Id.Equals(lastSelectedEngineIdBlack, StringComparison.OrdinalIgnoreCase))
                 {
-                    selectedIndexBlack = i + 1;
+                    selectedIndexBlack = i;
                 }
             }
 
            
-            comboBoxPlayerWhite.SelectedItem = comboBoxPlayerWhite.Items[selectedIndexWhite];
-            comboBoxPlayerBlack.SelectedItem = comboBoxPlayerBlack.Items[selectedIndexBlack];
+            comboBoxPlayerWhite.SelectedItem = comboBoxPlayerWhite.Items[selectedIndexWhite == 0 ? _playerIndex : selectedIndexWhite];
+            comboBoxPlayerBlack.SelectedItem = comboBoxPlayerBlack.Items[selectedIndexBlack == 0 ? _playerIndex : selectedIndexBlack];
             PlayerWhiteConfigValues = _allUciInfos.ContainsKey(comboBoxPlayerWhite.SelectedItem.ToString())
                                           ? _allUciInfos[comboBoxPlayerWhite.SelectedItem.ToString()]
                                           : null;
@@ -290,7 +296,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                           ? _allUciInfos[comboBoxPlayerWhite.SelectedItem.ToString()]
                                           : null;
             buttonConfigureWhite.Visibility =
-                comboBoxPlayerWhite.SelectedIndex == 0 ? Visibility.Hidden : Visibility.Visible;
+                comboBoxPlayerWhite.SelectedIndex == _playerIndex ? Visibility.Hidden : Visibility.Visible;
             SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
                              textBlockEloWhite, imageBookWhite, imageBookWhite2);
 
@@ -367,7 +373,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                           ? _allUciInfos[comboBoxPlayerBlack.SelectedItem.ToString()]
                                           : null;
             buttonConfigureBlack.Visibility =
-                comboBoxPlayerBlack.SelectedIndex == 0 ? Visibility.Hidden : Visibility.Visible;
+                comboBoxPlayerBlack.SelectedIndex == _playerIndex ? Visibility.Hidden : Visibility.Visible;
         
             SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
             SetRelaxedVisibility();
@@ -439,12 +445,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonPlayerBlack_OnClick(object sender, RoutedEventArgs e)
         {
-            comboBoxPlayerBlack.SelectedIndex = 0;
+            comboBoxPlayerBlack.SelectedIndex = _playerIndex;
         }
 
         private void ButtonPlayerWhite_OnClick(object sender, RoutedEventArgs e)
         {
-            comboBoxPlayerWhite.SelectedIndex = 0;
+            comboBoxPlayerWhite.SelectedIndex = _playerIndex;
         }
 
         private void ButtonSave_OnClick(object sender, RoutedEventArgs e)

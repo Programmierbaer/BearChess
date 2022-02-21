@@ -8,8 +8,11 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         public int Id { get; set; }
 
         public string White { get; set; }
-        
+
+        public string WhiteElo { get; set; }
+
         public string Black { get; set; }
+        public string BlackElo { get; set; }
         
         public string GameEvent { get; set; }
 

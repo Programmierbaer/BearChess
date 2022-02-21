@@ -25,13 +25,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         /// <inheritdoc />
         protected override IEBoard GetEBoard()
         {
-            return new MChessLinkChessBoard.EChessBoard(logger: _fileLogger, isFirstInstance: _isFirstInstance,
-                                                        portName: _comPortName);
+            return new MChessLinkChessBoard.EChessBoard(_fileLogger, _isFirstInstance, _comPortName);
         }
 
         protected override IEBoard GetEBoard(bool check)
         {
-            return new MChessLinkChessBoard.EChessBoard(logger: _fileLogger);
+            return new MChessLinkChessBoard.EChessBoard(_fileLogger);
         }
 
 

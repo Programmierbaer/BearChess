@@ -10,6 +10,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
     public class UciInfo
     {
         private string _fileName;
+        private int _playerElo;
         public string Id { get; set; }
         public string Name { get; set; }
         public string OriginName { get; set; }
@@ -41,6 +42,8 @@ namespace www.SoLaNoSoft.com.BearChessBase
 
         public DateTime ChangeDateTime { get; set; }
 
+        public bool IsPlayer { get; set; }
+
         public UciInfo()
         {
             Options = Array.Empty<string>();
@@ -53,6 +56,8 @@ namespace www.SoLaNoSoft.com.BearChessBase
             ValidForAnalysis = true;
             _fileName = string.Empty;
             ChangeDateTime = DateTime.MinValue;
+            IsPlayer = false;
+            _playerElo = 0;
         }
 
         public UciInfo(string fileName) : this()
@@ -87,12 +92,17 @@ namespace www.SoLaNoSoft.com.BearChessBase
 
         public bool CanConfigureElo()
         {
+
             var uciElo = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
             return uciElo != null;
         }
 
         public int GetConfiguredElo()
         {
+            if (IsPlayer)
+            {
+                return _playerElo;
+            }
             var uciElo = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
             if (uciElo != null)
             {
@@ -162,6 +172,11 @@ namespace www.SoLaNoSoft.com.BearChessBase
 
         public void SetElo(int elo)
         {
+            if (IsPlayer)
+            {
+                _playerElo = elo;
+                return;
+            }
             List<string> newOptionValues = new List<string>();
             for (int i = 0; i < OptionValues.Length; i++)
             {
@@ -181,6 +196,8 @@ namespace www.SoLaNoSoft.com.BearChessBase
 
             OptionValues = newOptionValues.ToArray();
         }
+
+
 
 
         private void CheckIsValidForAnalysis()

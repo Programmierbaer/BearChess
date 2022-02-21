@@ -13,6 +13,8 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
         private BluetoothClient _client;
         private readonly BluetoothEndPoint _bluetoothEndPoint;
 
+        public bool EndPointFound => _bluetoothEndPoint!= null;
+
         public string PortName => "BT";
 
         public int ReadTimeout { get; set; }
@@ -26,6 +28,11 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
             if (btAddress == null)
             {
                 btAddress = BearChessTools.Configuration.Instance.LoadBtAddress();
+                if (btAddress == null)
+                {
+                    _bluetoothEndPoint = null;
+                    return;
+                }
             }
 
             _bluetoothEndPoint = new BluetoothEndPoint(btAddress, BluetoothService.SerialPort, 10);

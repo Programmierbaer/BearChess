@@ -3,15 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Icon="../Assets/Icons/robot.png"
-        mc:Ignorable="d"  ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
-        Title="Load and Manage UCI Engines" Height="390" Width="450"  MinWidth="450" >
+        mc:Ignorable="d" Closing="SelectInstalledEngineWindow_OnClosing" 
+        Title="Load and Manage UCI Engines" Height="390" Width="500"  MinWidth="500" >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="290"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Name="dataGridEngine" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False" MouseDoubleClick="DataGridEngine_OnMouseDoubleClick" 
+        <DataGrid Name="dataGridEngine" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False" 
                   SelectionMode="Single" IsReadOnly="True" AllowDrop="True" Drop="DataGridEngine_OnDrop" DragOver="DataGridEngine_OnDragOver" >
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="MouseDoubleClick" Handler="DataGridEngine_OnMouseDoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="CornflowerBlue"/>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>

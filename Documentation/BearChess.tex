@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.5.9.0}
+\fancyhead[R]{Version 0.6.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{30.01.2022} 
+\date{19.02.2022} 
 
 
 \begin{document}
@@ -37,7 +37,7 @@ Many GUIs support electronic chessboards, but do not use the full potential that
 
 Another feature is the extended engine support. Read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}.
 
-So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you not need an electronic chessboard to use BearChess.
+So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
 BearChess supports Certabo chessboards, chessboards connected via Millennium ChessLink and the DGT Pegasus chessboard.\\
 
@@ -86,7 +86,7 @@ BearChess offers among others the following functions:
 \end{enumerate}
 
 BearChess follows the design of Single Document Interface (SDI). You can place different windows, e.g. chess engine output or chess move list, anywhere on your Windows desktop. If you close them or exit BearChess, the position is saved and set to the same position when reopening.\\ 
-If you click on the BearChess main screen, all other open windowss are alo grought to the foreground. If you hold down the Shift key and move the BearChess main screen, all other windows will also be moved synchronously.\\\\
+If you click on the BearChess main screen, all other open windows are also brought to the foreground. If you hold down the Shift key and move the BearChess main screen, all other windows will also be moved synchronously.\\\\
 The version numbering follows the following scheme:\\ 
 "\textit{major release}"\textbf{.}""\textit{minor release}"\textbf{.}""\textit{sub release}"\textbf{.}""\textit{bug fix}"\\
 Currently the \textit{major release} is still 0 and will only become a 1 when all planned functions are implemented. The \textit{minor release} is increased when new features are added. The \textit{sub release} is increased when minor features are added or improved. The last number is incremented if only errors were corrected.
@@ -164,9 +164,9 @@ Read more in chapter \textbf{\ref{easyStart}  \nameref{easyStart}} on page \page
 	
 	\item \includegraphics[scale=0.5]{robot.png} \textbf{Run in analyze mode} allows you to analyze games or positions with suppport of several chess engines (see chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode})
 	
-	\item \includegraphics[scale=0.5]{6-2-chess-png.png} \textbf{Engine duel} starts and manage engine duels (see chapter )
+	\item \includegraphics[scale=0.5]{6-2-chess-png.png} \textbf{Duel} starts and manage duels (see chapter  \textbf{\ref{EngineDuel}  \nameref{EngineDuel}} on page \pageref{EngineDuel} ).
 	
-	\item \includegraphics[scale=0.5]{cup_gold.png} \textbf{Engine tournament} starts and manage engine tournaments (see chapter )
+	\item \includegraphics[scale=0.5]{cup_gold.png} \textbf{Engine tournament} starts and manage engine tournaments (see chapter  \textbf{\ref{EngineTournamentl}  \nameref{EngineTournamentl}} on page \pageref{EngineTournamentl} ).
 	
 	\item \includegraphics[scale=0.03]{Chess_Board.png} see chapter \textbf{\ref{SetupPosition}  \nameref{SetupPosition}} on page \pageref{SetupPosition}.
 	
@@ -286,7 +286,7 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 \end{itemize}
 
 \subsection{Info}
-Opens a windows where you can easily go to the path where all configuration is stored.
+Opens a window where you can easily go to the path where all configuration is stored.
 
 \subsection{Help}
 Opens this document.
@@ -299,7 +299,7 @@ Opens this document.
 	\caption{Open Load And Manage UCI Engines window}
 	\label{fig:LoadEngine}
 \end{figure}
-BearChess does not include a chess engine. Click on "Load \& manage engines" to install and configure one. "\textit{Install}" means to make a chess program BearChess known, not to install it on your computer. BearChess supports any UCI engine.\\
+BearChess does not include a chess engine. Click on "Load \& manage engines" to install and configure one. "\textit{Install}" means to make a chess program known to BearChess, not to install it on your computer. BearChess supports any UCI engine.\\
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{LoadManageEngine1.png}
@@ -364,7 +364,7 @@ If you enable this option, every time you start a new game with this engine, a d
 	\label{fig:waitnewGame1}
 \end{figure}
 
-If they set a countdown greater than 0 seconds, the confirmation is automatic.
+If you set a countdown greater than 0 seconds, the confirmation is automatic.
 
 \begin{figure}[H]
 \centering
@@ -396,7 +396,7 @@ You can enter a start parameter if the engine needs one.
 \end{figure}
 
 \subsubsection{Use opening book}
-Some engines comes with there own opening book and you have an option to use them or not. You can also tell BearChess to use an opening book before the moves are calculated by the engines. You can configure how BearChess determines the book move. 
+Some engines come with their own opening book and you have an option to use them or not. You can also tell BearChess to use an opening book before the moves are calculated by the engines. You can configure how BearChess determines the book move. 
 \begin{itemize}
 	\item \textbf{Best} Always chooses the best move
 	\item \textbf{Flexible} Selects one of the best moves
@@ -406,9 +406,9 @@ Look at chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pag
 
 \subsubsection{Install Certabo Avatar UCI Chess engine}
 Certabo provides a special engine, called Avatar UCI Chess engine (look at \url{https://www.avataruci.org/}).\\
-This engine is not intended for super strong player but tries to replicate your style. It learn from your games (you do no need many many thousand), it can start with some tens or hundreds. Certabo have an learning alghrithm which create some weights and opening books emulating personality. Certabo created avatar of some player from the past and you can find in the latest Certabo software already just select Avatar as main engine and you will be prompted to choose the Avatar you want to play.\\
-You can use this engine in BearChess, too. 
-If you have installed the latest Certabo software (Version 4.5 or above), select the avatar.exe file from the engines subfolder as the new engine. BearChess looks at the 'avatar\_weights' subfolder and ask you to select an avatar.
+This engine is not intended for super strong players but tries to replicate your style. It learns from your games (you do not need many many thousand), it can start with some tens or hundreds. Certabo has a learning algohrithm which creates some weights and opening books emulating personality. Certabo created avatars of some players from the past and you can find them in the latest Certabo software. Just select Avatar as main engine and you will be prompted to choose the Avatar you want to play.\\
+You can use this engine in BearChess too. 
+If you have installed the latest Certabo software (Version 4.5 or above), select the avatar.exe file from the engines subfolder as the new engine. BearChess looks at the 'avatar\_weights' subfolder and asks you to select an avatar.
 
 \begin{figure}[H]
 	\centering
@@ -471,7 +471,7 @@ There are only some configuration options. In the bottom line you can see the re
 If you need to set some more options, see \textbf{\ref{WaitForANewgame}  \nameref{WaitForANewgame}} on page \pageref{WaitForANewgame}.
 
 \subsubsection{Install an engine via CMD file} \label{ViaCMDFile}
-If an engine needs special parameters or a parameter to be recognized as a UCI engine, you can use a CMD file instead of the EXE file. Write all required command into the CMD file and install.
+If an engine needs special parameters or a parameter to be recognized as a UCI engine, you can use a CMD file instead of the EXE file. Write all required commands into the CMD file and install.
 
 \begin{figure}[H]
 	\centering
@@ -512,7 +512,7 @@ To load an installed engine, select an engine and click on \includegraphics[scal
 
 \subsubsection{Load a MessChess engine}
 
-When you load a MessChess engine the emulation window will appears, too.
+When you load a MessChess engine the emulation window will appear too.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{MessChess4.png}
@@ -520,7 +520,7 @@ When you load a MessChess engine the emulation window will appears, too.
 	\label{fig:MessChess4}
 \end{figure}
 Use only BearChess or your electronic chessboard to make any moves. You can use the emulaton window to set options, e.g. levels or time control.\\
-{\color{red}\textbf{*}} When you play a game against a MessChess engines, the selected time control for the game cannot transferred to the emulation. To avoid that BearChess ends the game too early by timeout, you should select here only an average time per move.
+{\color{red}\textbf{*}} When you play a game against a MessChess engine, the selected time control for the game cannot be transferred to the emulation. To avoid, that BearChess ends the game too early by timeout, you should select here only an average time per move.
 
 \section{Load and Manage Opening Books} \label{OpeningBooks}
 
@@ -531,7 +531,7 @@ Use only BearChess or your electronic chessboard to make any moves. You can use 
 	\label{fig:LoadManageBooks1}
 \end{figure}
 
-BearChess does not include opening books. Click on "Load \& manage opening books" to install one. "\textit{Install}" means to make a opening book BearChess known, not to install it on your computer. BearChess supports Polyglot and Arena opening books.\\
+BearChess does not include opening books. Click on "Load \& manage opening books" to install one. "\textit{Install}" means to make a opening book known BearChess, not to install it on your computer. BearChess supports Polyglot and Arena opening books.\\
 
 \begin{figure}[H]
 	\centering
@@ -547,7 +547,7 @@ BearChess does not include opening books. Click on "Load \& manage opening books
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window
 \end{itemize}
 
-To install a new opening book click on \includegraphics[scale=0.5]{book_add.png} and select a book file. The file extension for Polyglot books is \textbf{bin} and for Arena is \textbf{abk}.
+To install a new opening book, click on \includegraphics[scale=0.5]{book_add.png} and select a book file. The file extension for Polyglot books is \textbf{bin} and for Arena is \textbf{abk}.
 
 \begin{figure}[H]
 	\centering
@@ -556,7 +556,7 @@ To install a new opening book click on \includegraphics[scale=0.5]{book_add.png}
 	\label{fig:LoadManageBooks3}
 \end{figure}
 
-To select an opening book click on \includegraphics[scale=0.5]{book_open.png} or just double-click. 
+To select an opening book, click on \includegraphics[scale=0.5]{book_open.png} or just double-click. 
 A new window opens and shows the current possible moves found in the book.
 
 \begin{figure}[H]
@@ -566,7 +566,7 @@ A new window opens and shows the current possible moves found in the book.
 	\label{fig:OpeningBook}
 \end{figure}
 
-You can load more than one book. Every book has their own window and is synchronized with the current position on the chessboard.
+You can load more than one book. Every book has its own window and is synchronized with the current position on the chessboard.
 
 \begin{figure}[H]
 	\centering
@@ -586,7 +586,7 @@ You can load more than one book. Every book has their own window and is synchron
 	\label{fig:SettingsBoardAndPieces}
 \end{figure}
 
-To change the appearance of BearChess select "Board and Pieces". A new window opens where your can configure it. BearChess comes with one set of pieces and board colors.
+To change the appearance of BearChess select "Board and Pieces". A new window opens where you can configure it. BearChess comes with one set of pieces and board colors.
 
 \begin{figure}[H]
 	\centering
@@ -633,7 +633,7 @@ Click on \includegraphics[scale=0.5]{file_manager.png} to select a directory whe
 	\label{fig:WoodPieces}
 \end{figure}
 
-If BearChess find both files inside the directory it builds an empty chessboard to confirm your choice. A name for your board is required.
+If BearChess finds both files inside the directory, it builds an empty chessboard to confirm your choice. A name for your board is required.
 
 \begin{figure}[H]
 	\centering
@@ -643,7 +643,7 @@ If BearChess find both files inside the directory it builds an empty chessboard 
 \end{figure}
 
 \subsubsection{New pieces}
-There a two ways to install a new set of pieces. One png file for each piece or one png file with all pieces inside. \\
+There are two ways to install a new set of pieces. One png file for each piece or one png file with all pieces inside. \\
 Click on \includegraphics[scale=0.5]{file_manager.png} to select a directory where the files are located.\\ \textbf{Important:} The png files must have a transparent background color, otherwise they would paint over the fields.
 BearChess accepts following names for the different pieces:
 \begin{itemize}
@@ -669,9 +669,9 @@ BearChess accepts following names for the different pieces:
 	\label{fig:Pieces}
 \end{figure}
 
-If BearChess find all files inside the directory it builds an piece set to confirm your choice.\\
+If BearChess finds all files inside the directory, it builds a piece set to confirm your choice.\\
 
-If BearChess find only one png file inside the directory it assumes that this file contains all pieces at once.
+If BearChess finds only one png file inside the directory, it assumes that this file contains all pieces at once.
 
 \begin{figure}[H]
 	\centering
@@ -682,7 +682,7 @@ If BearChess find only one png file inside the directory it assumes that this fi
 
 The png must have the pieces in the order and colors shown above.\\
 If you have one png file for all pieces, you can just drag \& drop the png file onto the
-open file dialog icon. It avoids the effort of having to have a separate directory for each file.
+open file dialog icon. It avoids the effort to have a separate directory for each file.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.9]{DropPieceSet.png}
@@ -697,7 +697,7 @@ open file dialog icon. It avoids the effort of having to have a separate directo
 	\label{fig:ConfirmPieces}
 \end{figure}
 
-BearChess builds an piece set to confirm your choice. A name for your set is required.
+BearChess builds a piece set to confirm your choice. A name for your set is required.
 Now you can combine your boards with your pieces.
 
 \begin{figure}[H]
@@ -768,7 +768,7 @@ You can configure here if BearChess should play a sound when the engine makes a 
 
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{sound.png} Play the sound
-	\item \includegraphics[scale=0.5]{file_extension_wav.png} Opens a files selection dialog for an individuel sound file.
+	\item \includegraphics[scale=0.5]{file_extension_wav.png} Opens a files selection dialog for an individual sound file.
 	\item \includegraphics[scale=0.5]{delete.png} Removes the sound file selection.
 \end{itemize}
 
@@ -797,7 +797,7 @@ You can configure this window so that it is displayed at startup.
 	\label{fig:CapturedPieces3}
 \end{figure}
 
-Figure \ref{fig:CapturedPieces3} shows all captured pieces. Black is one queen, one knight a two pawns ahead.
+Figure \ref{fig:CapturedPieces3} shows all captured pieces.
 
 \begin{figure}[H]
 	\centering
@@ -811,9 +811,9 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports three electronic chessboards: Certabo boards, Millennium boards via the ChessLink module and DGT Pegasus. Certabo and Millennium boards communicates via an USB port as serial COM port or via Bluetooth. DGT Pegasus communications only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.\\
+BearChess supports three electronic chessboards: Certabo boards, Millennium boards via the ChessLink module and DGT Pegasus. Certabo and Millennium boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus communication only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.\\
 For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
-In the classic variant, coupling is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No coupling is necessary and there is no conversion to a COM port.
+In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
 \subsection{Configure Certabo boards} \label{ConfigureCertabo}
 \begin{figure}[H]
@@ -823,8 +823,8 @@ In the classic variant, coupling is necessary and the connection is then made to
 	\label{fig:Certabo1}
 \end{figure}
 
-Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the Bluetooth module from Certabo, you can also connect to the Certabo board via bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows.\\
-The figure recognition assumes that the board is aligned so that the USB port is on the bottom right.
+Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the Bluetooth module from Certabo, you can also connect to the Certabo board via bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration window.\\
+The piece recognition assumes that the USB port of the board is on the bottom right.
 
 \begin{figure}[H]
 	\centering
@@ -842,7 +842,7 @@ Read chapter \textbf{\ref{CertaboBluetooth}  \nameref{CertaboBluetooth}} on page
 	\label{fig:Certabo2}
 \end{figure}
 
-Select the COM port (BT for Bluetooth) if you know them or let the <auto> selection. 
+Select the COM port (BT for Bluetooth) if you know it or use the <auto> selection. 
 Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
 
 \begin{figure}[H]
@@ -852,7 +852,7 @@ Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
 	\label{fig:Calibrate1}
 \end{figure}
 
-If you select an invalid COM port, you will receive the following error message:
+If you select an invalid COM port, you will see the following error message:
 
 \begin{figure}[H]
 	\centering
@@ -870,7 +870,7 @@ If you select <auto> and no board is found, you will receive the following error
 	\label{fig:Calibrate3}
 \end{figure}
 
-\textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can always take some seconds until the right one is recognized.
+\textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can take some seconds until the right one is recognized.
 
 \subsubsection{Configure Bluetooth} \label{CertaboBluetooth}
 
@@ -883,7 +883,7 @@ If the "Bluetooth" option is set, the following window will be displayed for a s
 	\label{fig:CertaboBT10}
 \end{figure}
 
-During this time or if you connect to the first time, Windows may ask you to connect to the module. In this case, confirm this. 
+During this time or if you connect for the first time, Windows may ask you to connect to the module. In this case, confirm this. 
 
 \subsubsection{Calibration}
 At the first start, BearChess needs a calibration to identify your chessmen. A new calibration is only required if you use another set of chessmen.\\
@@ -894,7 +894,7 @@ Click on \includegraphics[scale=0.08]{chessboard_base.png} to open the calibrati
 	\caption{Calibrate base position }
 	\label{fig:CalibrateBase}
 \end{figure}
-If all pieces on the right position click the accept button. When a calibration is running, you will see the chessboard LEDs flashing each row. Please wait until all LEDs are off and the confirm dialog appears.
+If all pieces on the correct position, click the \includegraphics[scale=0.5]{accept_button.png} button. When a calibration is running, you will see the chessboard LEDs flashing. Please wait until all LEDs are off and the confirm dialog appears.
 
 \begin{figure}[H]
 	\centering
@@ -912,8 +912,8 @@ If all pieces on the right position click the accept button. When a calibration 
 	\caption{Connect to Certabo}
 	\label{fig:Certabo3}
 \end{figure}
-When the configuration is complete, you can connect to your chessboard.
-In the lower right corner a new button appears, which allows you to easily connect or disconnect your board. The current status is also written.
+When the configuration is complete, you can connect your chessboard.
+In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
 
 \begin{figure}[H]
 	\centering
@@ -937,9 +937,9 @@ In the lower right corner a new button appears, which allows you to easily conne
 	\label{fig:MillenniumChessLink1}
 \end{figure}
 
-For your Millennium ChessLink you may need to configure the COM port or Bluetooth used. You can also change how the LEDs should light up.\\
+For your Millennium ChessLink you may need to configure if you want to use a COM port or Bluetooth. You can also change how the LEDs should light up.\\
 If your PC supports Bluetooth, you can also connect to the ChessLink module via Bluetooth. If you want to do this, check the option "Bluetooth Classic" and/or "Bluetooth LE" first, before opening the configuration windows.\\
-The figure recognition assumes that the board is aligned so that the cable is on right.
+The piece recognition assumes that the cable is on the right side of the board.
 
 \begin{figure}[H]
 	\centering
@@ -956,7 +956,7 @@ Read chapter \textbf{\ref{Bluetooth}  \nameref{Bluetooth}} on page \pageref{Blue
 	\label{fig:MillenniumChessLink2}
 \end{figure}
 
-Select the COM port if you know them or let the <auto> selection.
+Select the COM port if you know it or use the <auto> selection.
 Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
 
 \begin{figure}[H]
@@ -966,7 +966,7 @@ Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
 	\label{fig:MillenniumChessLink3}
 \end{figure}
 
-If you select an invalid COM port, you will receive the following error message:
+If you select an invalid COM port, you will see the following error message:
 
 \begin{figure}[H]
 	\centering
@@ -984,10 +984,10 @@ If you select <auto> and no board is found, you will receive the following error
 	\label{fig:MillenniumChessLink5}
 \end{figure}
 
-\textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can always take some seconds until the right one is recognized.\\
+\textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can take some seconds until the right one is recognized.\\
 
 \subsubsection{LEDs}
-You can change how the LEDs should light up. The brightness and whether the LEDs should flash alternately or synchronously when indicating moves.\\
+You can change the brightness of the LEDs and whether they should or synchronously when indicating moves.\\
 Use the slider to change the brightness from dim to light.\\
 A click on \includegraphics[scale=0.4]{eye.png} connects to the board and you can see the changes live.
 
@@ -1002,7 +1002,7 @@ If the "Bluetooth Classic" option is set, the following window will be displayed
 	\label{fig:MillenniumChessLink10}
 \end{figure}
 
-During this time or if you connect to the first time, Windows may ask you to connect to the Millennium ChessLink module. In this case, confirm this.\\
+During this time or if you connect for the first time, Windows may ask you to connect to the Millennium ChessLink module. In this case, confirm this.\\
 
 If the "Bluetooth LE" option is set, the connection is not emulated as a serial COM port. The configuration shows the port name as "BTLE".
 
@@ -1015,7 +1015,7 @@ If the "Bluetooth LE" option is set, the connection is not emulated as a serial 
 	\label{fig:MillenniumChessLink6}
 \end{figure}
 When the configuration is complete, you can connect to your chessboard.
-In the lower right corner a new button appears, which allows you to easily connect or disconnect your board. The current status is also written.
+In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
 
 \begin{figure}[H]
 	\centering
@@ -1056,7 +1056,7 @@ Unlike the other chessboards, the DGT Pegasus requires a Bluetooth LE connection
 	\label{fig:Pegasus3}
 \end{figure}
 
-After a successful connection, you need to confirm that the figures are all in the right place.
+After a successful connection, you need to confirm that the pieces are all in the correct position.
 
 \begin{figure}[H]
 	\centering
@@ -1066,7 +1066,7 @@ After a successful connection, you need to confirm that the figures are all in t
 \end{figure}
 
 \subsection{Switch side}
-BearChess automatically recognizes whether you are playing with the White or Black pieces, depending on how you set up the pieces in the base position (except for DGT Pegasus).
+BearChess automatically recognizes whether you are playing with the white or black pieces, depending on how you set up the pieces in the base position (except for DGT Pegasus).
 
 \section{Play a game}
 
@@ -1094,13 +1094,13 @@ Select the opponents for white \includegraphics[scale=0.4]{KingW.png} and black 
 
 \textbf{Hint:} You cannot use an electronic chessboard for a pure engine match.\\
 
-\includegraphics[scale=0.4]{cog.png} opens the engine configuration dialog. This is the same dialog as for load and manage engines. \textbf{However, all changes are only used until you close BearChess you explicit reload the engine.}\\
-Below the engine selection, there are up to three information which gives you a quick overview of the current engine configuration.
+\includegraphics[scale=0.4]{cog.png} opens the engine configuration dialog. This is the same dialog as for load and manage engines. \textbf{However, all changes are only valid until you close BearChess or you explicitly  reload the engine.}\\
+Below the engine selection, there are up to three informations which give you a quick overview of the current engine configuration.
 
 \begin{itemize}
-	\item \textbf{Ponder} if the engine supports pondering, the icons \includegraphics[scale=0.4]{tick.png} and \includegraphics[scale=0.4]{delete.png} shows the current state.
-	\item \textbf{Elo} if the engine supports allows to restrict the Elo performance, the current value is shown.
-	\item  \includegraphics[scale=0.4]{book_open.png} for "yes" and \includegraphics[scale=0.4]{book.png} for "no" shows the current state of using an opening book.
+	\item \textbf{Ponder} if the engine supports pondering, the icons \includegraphics[scale=0.4]{tick.png} and \includegraphics[scale=0.4]{delete.png} show the current state.
+	\item \textbf{Elo} if the engine supports to restrict the Elo performance, the current value is shown.
+	\item  \includegraphics[scale=0.4]{book_open.png} for "yes" and \includegraphics[scale=0.4]{book.png} for "no" shows if an opening book will be used.
 \end{itemize}
 
 \subsection{Playing in relaxed mode}
@@ -1123,7 +1123,7 @@ Select your start position. The default is the base position, but you can start 
 
 \begin{itemize}
 	\item \textbf{Time per game} limits the entire game to the given minutes.
-	\item \textbf{Time per game with increment} limits the entire game to the given minutes but give extra seconds for every move.
+	\item \textbf{Time per game with increment} limits the entire game to the given minutes, but gives extra seconds for every move.
 	\item \textbf{Time per given move} limits the game for moves in a certain time frame, e.g. 40 moves in 60 minutes.
 	\item \textbf{Average time per move} requires the engine to execute the moves in an average time of seconds or minutes.
 	\item \textbf{Adapted time} gives the program the same average time in which the player makes his moves.	
@@ -1426,30 +1426,33 @@ The electronic chessboard indicates the move proposal from the engine.\\
 If you make a valid move outside the move list on your electronic chessboard, e.g. if you follow the suggestions of the engine, the engine continues the analysis but you will not see the move on the chessboard on the screen. You can make all valid moves back and forth on your electronic chessboard but the chessboard on the screen and the move list show you the last position in the game. If you go back to a valid position from the game the chessboard and move list will continue.
 
 
-\section{Engine duel} \label{EngineDuel}
+\section{Duel} \label{EngineDuel}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{EngineDuel1.png}
-	\caption{Engine duel}
+	\caption{Duel}
 	\label{fig:EngineDuel}
 \end{figure}
 
 \begin{itemize}
-	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Start a new engine duel.
-	\item \includegraphics[scale=0.5]{file_manager.png} Manage or continue an engine duel. 
+	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Start a new duel.
+	\item \includegraphics[scale=0.5]{chart_line.png} Estimate ELO by a duel.	
+	\item \includegraphics[scale=0.5]{file_manager.png} Manage or continue a duel. 
+	\item \includegraphics[scale=0.5]{file_manager.png} Manage or continue a duel. 	
+	\item \includegraphics[scale=0.5]{tick.png} If it is activated, wait before starting a new game.	
 \end{itemize}
 
-\subsection{Start a new engine duel}
+\subsection{Start a new duel}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{EngineDuel2.png}
-	\caption{New engine duel}
+	\caption{New duel}
 	\label{fig:EngineDuel2}
 \end{figure}
 
-In a duel, two engines play one or more games against each other. You can define the number of games and whether to change colors after each game. First, give the event an useful name and select the engines. 
+In a duel, two engines or players play one or more games against each other. You can define the number of games and whether to change colors after each game. First, give the event an useful name and select the opponents. The other configuration options correspond to those of a new game (see chapter \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent}).
 With \includegraphics[scale=0.5]{file_manager.png} you can change the database where the games are stored.
 
 \subsubsection{Engine duel information}
@@ -1458,7 +1461,7 @@ When you have started the duel, the following information window appears:
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{EngineDuel3.png}
-	\caption{Engine duel information}
+	\caption{Duel information}
 	\label{fig:EngineDuel3}
 \end{figure}
 
@@ -1482,12 +1485,39 @@ If you confirm, the current duel and game is stored and you can continue the due
 
 The final result is shown after the duel is finished.
 
-\subsection{Manage engine duels}
+\subsection{Estimate ELO}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{EstimateElo1.png}
+	\caption{New ELO duel}
+	\label{fig:EstimateElo1}
+\end{figure}
+
+You can your ELO number or the ELO number of another engine determined via a duel.
+The procedure is as follows:
+\begin{itemize}
+	 \item Select an engine to determine the ELO number. This engine must have the ability to change its ELO number. Not every UCI engine offers this possibility. 
+	 \item Select the engine whose ELO number is to be determined. Or you choose "Player" if you want to determine your own ELO number.
+	 \item Set the maximal number of games. The determination of the ELO number needs some games. 10 games have proven to be a good value so far.
+\end{itemize}	 
+
+The dialog shows the example in which the "Deep HIARCS 15" engine is to be used to determine the ELO number of "Tasc ChessSystem R30".
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.00]{EstimateElo2.png}
+	\caption{Choose color}
+	\label{fig:EstimateElo2}
+\end{figure}
+If both engines offer the possibility to adjust their ELO number, you must select the color to be used for the determination
+
+\subsection{Manage duels}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{EngineDuel6.png}
-	\caption{Manage engine duels}
+	\caption{Manage duels}
 	\label{fig:EngineDuel6}
 \end{figure}
 
@@ -1868,7 +1898,6 @@ These are some ideas what will come in one of the next versions.
 
 \begin{itemize}
 		\item Extend the game analysis.
-		\item Determine ELO (engines and/or player).
 		\item Improve eletronic chess board handling.
   	    \item Improve the performance of the opening book.
     	\item Support for Square Off Pro chessboard.
@@ -1877,6 +1906,18 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Changelog}
+\subsection{Version 0.5.9.0 $\Rightarrow$  0.6.0.0}
+\begin{itemize}
+		\item New: Estimate ELO (engine and/or player).
+		\item New: Players can now also participate in duels		
+		\item New: Repeat a single game (duel or tournament)
+		\item New: Show remaining moves to Fifty-move rule.		
+		\item New: Improve position setup dialog		
+		\item Fix: Show best line and value on move list.
+		\item Fix: Mark current best move.
+		\item Fix: Duel information.		
+\end{itemize}
+
 \subsection{Version 0.5.8.1 $\Rightarrow$  0.5.9.0}
 \begin{itemize}
 	\item New: Bluetooth LE for Millennium ChessLink.

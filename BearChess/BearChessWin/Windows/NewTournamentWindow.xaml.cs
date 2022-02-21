@@ -48,7 +48,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _configuration = configuration;
             _database = database;
-            _uciInfos = new ObservableCollection<UciInfo>(uciInfos.OrderBy(e => e.Name).ToList());
+            _uciInfos = new ObservableCollection<UciInfo>(uciInfos.Where(u => !u.IsPlayer).OrderBy(e => e.Name).ToList());
             _uciInfosPlayer = new ObservableCollection<UciInfo>();
             dataGridEngine.ItemsSource = _uciInfos;
             labelEngines.Content = $"Available engines ({_uciInfos.Count})";
@@ -66,7 +66,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _configuration = configuration;
             _database = database;
-            _uciInfos = new ObservableCollection<UciInfo>(uciInfos.OrderBy(e => e.Name).ToList());
+            _uciInfos = new ObservableCollection<UciInfo>(uciInfos.Where(u => !u.IsPlayer).OrderBy(e => e.Name).ToList());
             _uciInfosPlayer = new ObservableCollection<UciInfo>(currentTournament.Players);
             dataGridEngine.ItemsSource = _uciInfos;
             labelEngines.Content = $"Available engines ({_uciInfos.Count})";

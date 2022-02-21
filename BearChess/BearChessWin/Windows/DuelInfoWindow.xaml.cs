@@ -164,13 +164,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetForRunning()
         {
-
+            _isFinished = false;
             buttonStop.Visibility = Visibility.Visible;
             buttonContinue.Visibility = Visibility.Collapsed;
             buttonClose.Visibility = Visibility.Collapsed;
         }
-
-
 
 
         private void ButtonCancel_OnClick(object sender, RoutedEventArgs e)

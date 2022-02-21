@@ -55,13 +55,13 @@ namespace www.SoLaNoSoft.com.BearChessTools
             return result.ToArray();
         }
 
-        public static string[] GetBTComPort(string boardName, Configuration configuration, ILogging fileLogger, bool btClasic, bool btLE)
+        public static string[] GetBTComPort(string boardName, Configuration configuration, ILogging fileLogger, bool btClassic, bool btLE)
         {
             fileLogger?.LogInfo($"Get BT com ports for {boardName}");
             string boardDevice = boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase)
                                      ? "raspberrypi"
                                      : "MILLENNIUM CHESS";
-            if (btClasic)
+            if (btClassic)
             {
                 try
                 {

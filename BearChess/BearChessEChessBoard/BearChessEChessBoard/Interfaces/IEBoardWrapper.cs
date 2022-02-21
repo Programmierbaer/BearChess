@@ -93,6 +93,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         void Calibrate();
 
+        void RequestDump();
+
         void PlayWithWhite(bool withWhite);
 
         bool PlayingWithWhite { get; }

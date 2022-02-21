@@ -66,6 +66,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract void Calibrate();
 
+        public abstract void RequestDump();
+
         public abstract DataFromBoard GetPiecesFen();
 
         protected abstract void SetToNewGame();

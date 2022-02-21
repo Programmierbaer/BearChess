@@ -132,6 +132,9 @@
     <Compile Include="Windows\DuelWindow.xaml.cs">
       <DependentUpon>DuelWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\EBoardInfoWindow.xaml.cs">
+      <DependentUpon>EBoardInfoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EngineWaitWindow.xaml.cs">
       <DependentUpon>EngineWaitWindow.xaml</DependentUpon>
     </Compile>
@@ -324,6 +327,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\DuelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EBoardInfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1145,6 +1152,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\chart_line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\database_save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\database_refresh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

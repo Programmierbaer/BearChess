@@ -368,6 +368,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
         }
 
+        public override void RequestDump()
+        {
+            //
+        }
+
         public override DataFromBoard GetPiecesFen()
         {
             if (!EnsureConnection())

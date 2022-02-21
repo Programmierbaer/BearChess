@@ -33,6 +33,12 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         public string Result => PgnGame.Result;
 
         [XmlIgnore]
+        public string WhiteElo => PgnGame.WhiteElo;
+
+        [XmlIgnore]
+        public string BlackElo => PgnGame.BlackElo;
+
+        [XmlIgnore]
         public DateTime GameDate
         {
             get => _gameDate;
@@ -40,6 +46,9 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
         [XmlIgnore]
         public Move[] MoveList => AllMoves;
+
+        [XmlIgnore]
+        public int Id { get; set; }
 
         public DatabaseGame(PgnGame pgnGame, Move[] moveList, CurrentGame currentGame)
         {
@@ -58,11 +67,21 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             AllMoves = myMove.ToArray();
             if (currentGame!=null)
               Round = currentGame.Round;
+            Id = 0;
         }
 
         public DatabaseGame()
         {
             
         }
+        public void Reset()
+        {
+            AllMoves = Array.Empty<Move>();
+            WhiteClockTime = new ClockTime();
+            BlackClockTime = new ClockTime();
+            PgnGame.Result = "*";
+            PgnGame.ClearMoveList();
+        }
+
     }
 }

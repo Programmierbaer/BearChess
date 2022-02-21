@@ -13,10 +13,21 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
     public class EChessBoard : AbstractEBoard
     {
         private readonly byte[] _allLEDsOff = { 96, 2, 0, 0 };
-        private readonly byte[] _resetBoard = { 64 };
-        private readonly byte[] _batteryState = { 76 };
-        private readonly byte[] _startReading = { 68 };
-        private readonly byte[] _requestTrademark = { 71 };
+        private readonly byte[] _resetBoard = { 64 }; // @
+        private readonly byte[] _dumpBoard = { 66 };  // B
+        private readonly byte[] _startReading = { 68 }; // D
+        private readonly byte[] _serialNumber = { 69 }; // E
+        private readonly byte[] _unknown144 = { 70 }; // F
+        private readonly byte[] _requestTrademark = { 71 }; // G
+        private readonly byte[] _hardwareVersion = { 72 }; // H
+        private readonly byte[] _unknown143 = { 73 }; // I
+        private readonly byte[] _batteryState = { 76 }; // L
+
+        private readonly byte[] _requestVersion = { 77 }; // M
+        private readonly byte[] _serialNumberLong = { 85 }; // U
+        private readonly byte[] _unknown163 = { 86 }; // V
+        private readonly byte[] _lockState = { 89 }; // Y
+        private readonly byte[] _authorized = { 90 }; // Y
         private readonly byte[] _initialize = { 99, 7, 190, 245, 174, 221, 169, 95, 0 };
 
 
@@ -56,6 +67,30 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         private byte _currentTimes = 0;
         private byte _currentIntensity = 2;
         private string _lastLogMessage = string.Empty;
+        private string prevRead = string.Empty;
+
+        private string[] _basePosition =
+        {
+            "1", "1", "1", "1", "1", "1", "1", "1",
+            "1", "1", "1", "1", "1", "1", "1", "1",
+            "0", "0", "0", "0", "0", "0", "0", "0",
+            "0", "0", "0", "0", "0", "0", "0", "0",
+            "0", "0", "0", "0", "0", "0", "0", "0",
+            "0", "0", "0", "0", "0", "0", "0", "0",
+            "1", "1", "1", "1", "1", "1", "1", "1",
+            "1", "1", "1", "1", "1", "1", "1", "1"
+        };
+
+        private string[] _baseFields =
+        {
+            "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8",
+            "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7",
+            "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2",
+            "A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"
+        };
+
+        private bool _isCalibrating;
+
 
         public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth)
         {
@@ -96,7 +131,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
         public override void SetLedForFields(string[] fieldNames)
         {
-            
+
+            if (fieldNames == null || fieldNames.Length == 0)
+            {
+                return;
+            }
             List<byte> allBytes = new List<byte>();
             var fieldNamesLength = fieldNames.Length;
             string sendFields = string.Join(" ", fieldNames);
@@ -117,7 +156,14 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             allBytes.Add(_currentIntensity); // Intensity
             foreach (var fieldName in fieldNames)
             {
-                allBytes.Add(_fieldName2FieldByte[fieldName.ToUpper()]);
+                if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
+                {
+                    allBytes.Add(_fieldName2FieldByte[fieldName.ToUpper()]);
+                }
+                else
+                {
+                    break;
+                }
             }
             allBytes.Add(0);
             _serialCommunication.Send(allBytes.ToArray());
@@ -185,17 +231,35 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             //
         }
 
+        public override void RequestDump()
+        {
+            _serialCommunication.Send(_dumpBoard, true);
+        }
+
         public override void Calibrate()
         {
-            //
+           //
         }
 
         public override DataFromBoard GetPiecesFen()
         {
-
+            ulong repeated = 0;
+          
             while (true)
             {
                 var dataFromBoard = _serialCommunication.GetFromBoard();
+                if (!dataFromBoard.FromBoard.Equals(prevRead))
+                {
+                    _logger?.LogDebug($"PS: Read from board: {dataFromBoard.FromBoard}");
+                    prevRead = dataFromBoard.FromBoard;
+                }
+
+                repeated = dataFromBoard.Repeated;
+                if (dataFromBoard.FromBoard.Length == 0)
+                {
+                    break;
+                }
+                var strings = dataFromBoard.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 if (_ignoreReading)
                 {
                     _fromField = string.Empty;
@@ -206,8 +270,6 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                     _tmpToField = string.Empty;
                     if (!string.IsNullOrWhiteSpace(dataFromBoard.FromBoard))
                     {
-                        var strings =
-                            dataFromBoard.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         if (strings.Length > 3)
                         {
                             if (strings[0] == "146")
@@ -222,12 +284,46 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                             }
                         }
                     }
-
                     return new DataFromBoard(_chessBoard.GetFenPosition(), 3);
                 }
+
+                    if (strings[0] == "134")
+                    {
+                        bool isBasePosition = true;
+                        List<string> dumpFields = new List<string>();
+                        for (byte i = 0; i < 64; i++)
+                        {
+                            if (strings[3 + i] != _basePosition[i])
+                            {
+                                isBasePosition = false;
+                            }
+
+                            var key = byte.Parse(strings[3 + i]);
+                            if (key == 1)
+                            {
+                                dumpFields.Add(_fielByte2FieldName[i]);
+                            }
+
+                        }
+
+                        if (isBasePosition)
+                        {
+                            _isCalibrating = false;
+                            IsCalibrated = true;
+                        }
+                        else
+                        {
+                            _serialCommunication.Send(_dumpBoard);
+                        }
+                        return new DataFromBoard(string.Join(",", dumpFields), 3)
+                               { IsFieldDump = true, BasePosition = isBasePosition };
+                    }
+                    //return new DataFromBoard(string.Empty,3){ IsFieldDump = true, BasePosition = false };
+                
+
                 if (!string.IsNullOrWhiteSpace(dataFromBoard.FromBoard) && dataFromBoard.Repeated==0)
                 {
-                    var strings = dataFromBoard.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                
 
                     if (strings.Length == 5)
                     {
@@ -292,6 +388,28 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
                             Information = trademark;
                         }
+
+                        if (strings[0] == "134")
+                        {
+                            bool isBasePosition = true;
+                            List<string> dumpFields = new List<string>();
+                            for (byte i = 0; i < 64; i++)
+                            {
+                                if (strings[3 + i] != _basePosition[i])
+                                {
+                                    isBasePosition = false;
+                                }
+
+                                var key = byte.Parse(strings[3 + i]);
+                                if (key == 1)
+                                {
+                                    dumpFields.Add(_fielByte2FieldName[i]);
+                                }
+
+                            }
+
+                            return new DataFromBoard(string.Join(",",dumpFields), 3) {IsFieldDump = true, BasePosition = isBasePosition};
+                        }
                     }
 
                     if (!string.IsNullOrWhiteSpace(_fromField) && !string.IsNullOrWhiteSpace(_toField))
@@ -320,7 +438,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                 }
             }
 
-            var logMessage = $"PS: Current: [{_fromField}-{_toField}]   Last: [{_lastFromField}-{_lastToField}]  Temp: [{_tmpFromField}- {_tmpToField}]";
+            var logMessage = $"PS: Current: [{_fromField}-{_toField}]   Last: [{_lastFromField}-{_lastToField}]  Temp: [{_tmpFromField}-{_tmpToField}]";
             if (!logMessage.Equals(_lastLogMessage))
             {
                 _logger?.LogDebug(logMessage);
@@ -386,6 +504,23 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                             _toField = string.Empty;
                             _tmpFromField = string.Empty;
                             _tmpToField = string.Empty;
+                        }
+                        else
+                        {
+
+                            var chessBoard = new ChessBoard();
+                            chessBoard.Init(_chessBoard);
+                            var chessFigure = chessBoard.GetFigureOn(fromFieldNumber);
+                            chessBoard.RemoveFigureFromField(fromFieldNumber);
+                            chessBoard.RemoveFigureFromField(toFieldNumber);
+                            chessBoard.SetFigureOnPosition(chessFigure.FigureId, toFieldNumber);
+                            chessBoard.CurrentColor = chessFigure.EnemyColor;
+                            if (repeated == 0 && !_isCalibrating)
+                            {
+                                _serialCommunication.Send(_dumpBoard);
+                            }
+
+                            return new DataFromBoard(chessBoard.GetFenPosition(), 3);
                         }
                     }
                     else
