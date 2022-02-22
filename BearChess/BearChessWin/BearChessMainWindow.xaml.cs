@@ -15,6 +15,7 @@ using System.Xml.Serialization;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChess.CertaboLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
 using www.SoLaNoSoft.com.BearChess.PegasusLoader;
 using www.SoLaNoSoft.com.BearChessBase;
@@ -207,6 +208,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _show50MovesRule;
         private int[] _currentPairing;
         private bool _ignoreEBoard;
+        private TelnetClient _telnetClient;
+        private readonly string _ficsPath;
 
         public BearChessMainWindow()
         {
@@ -228,6 +231,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _bookPath   = Path.Combine(_configuration.FolderPath, "book");
             _boardPath  = Path.Combine(_configuration.FolderPath, "board");
             _piecesPath = Path.Combine(_configuration.FolderPath, "pieces");
+            _ficsPath = Path.Combine(_configuration.FolderPath, "fics");
             var dbPath = Path.Combine(_configuration.FolderPath, "db");
             
             if (!Directory.Exists(logPath))
@@ -253,6 +257,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (!Directory.Exists(_piecesPath))
             {
                 Directory.CreateDirectory(_piecesPath);
+            }
+            if (!Directory.Exists(_ficsPath))
+            {
+                Directory.CreateDirectory(_ficsPath);
             }
             if (!Directory.Exists(dbPath))
             {
@@ -6126,6 +6134,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var eBoardInfoWindow = new EBoardInfoWindow(_eChessBoard) { Owner = this };
             eBoardInfoWindow.ShowDialog();
             _ignoreEBoard = false;
+        }
+
+        private void MenuItemConnectFics_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_telnetClient != null)
+            {
+                _telnetClient.Close();
+                _telnetClient = null;
+                return;
+            }
+
+            _telnetClient = new TelnetClient("www.freechess.org", 5000, "LarsBearchess", "iohwuv",
+                                             new FileLogger(Path.Combine(_ficsPath, "fics.log"), 10, 10));
+            _telnetClient.ReadEvent += _telnetClient_ReadEvent;
+
+            _telnetClient.Connect();
+            //_telnetClient.Login("LarsBearchess", "iohwuv");
+        }
+
+        private void _telnetClient_ReadEvent(object sender, string e)
+        {
+            _fileLogger.LogDebug($"FICS: {e}");
+          
         }
     }
 }

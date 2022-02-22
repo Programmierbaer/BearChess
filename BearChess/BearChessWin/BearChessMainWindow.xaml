@@ -97,6 +97,14 @@
                             <Image Source="Assets/Icons/chess_board.png" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <!--
+                    <MenuItem Header="Connect to FICS" Name="menuItemConnectFics"
+                              Click="MenuItemConnectFics_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/FicsLogo.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    -->
                     <Separator />
                     <MenuItem Header="Run startup game on start" Name="menuItemRunLastGame"
                               Click="MenuItemRunLastGame_OnClick">

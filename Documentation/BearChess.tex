@@ -24,7 +24,7 @@ linkcolor=black
 \fancyhead[R]{Version 0.6.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{19.02.2022} 
+\date{22.02.2022} 
 
 
 \begin{document}
@@ -1040,7 +1040,7 @@ In the lower right corner appears a new button, which allows you to easily conne
 \end{figure}
 
 No configuration is required for your DGT Pegasus chessboard.\\
-Unlike the other chessboards, the DGT Pegasus requires a Bluetooth LE connection. Make sure that your Bluetooth adapter also supports LE.
+DGT Pegasus requires a Bluetooth LE connection. Make sure that your Bluetooth adapter also supports LE.
 
 \begin{figure}[H]
 	\centering
@@ -1064,6 +1064,18 @@ After a successful connection, you need to confirm that the pieces are all in th
 	\caption{Confirm position}
 	\label{fig:Pegasus4}
 \end{figure}
+
+\subsubsection{Verify position} \label{VerifyPegasusPosition}
+DGT Pegasus has no real piece recognition and can only give the information per field whether there is a piece or not. To verify if a piece is palced on a field, press the  \includegraphics[scale=0.4]{emotion_question.png} button.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Pegasus5.png}
+	\caption{Verify position}
+	\label{fig:Pegasus5}
+\end{figure}
+
+Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
 
 \subsection{Switch side}
 BearChess automatically recognizes whether you are playing with the white or black pieces, depending on how you set up the pieces in the base position (except for DGT Pegasus).
@@ -1439,7 +1451,6 @@ If you make a valid move outside the move list on your electronic chessboard, e.
 	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Start a new duel.
 	\item \includegraphics[scale=0.5]{chart_line.png} Estimate ELO by a duel.	
 	\item \includegraphics[scale=0.5]{file_manager.png} Manage or continue a duel. 
-	\item \includegraphics[scale=0.5]{file_manager.png} Manage or continue a duel. 	
 	\item \includegraphics[scale=0.5]{tick.png} If it is activated, wait before starting a new game.	
 \end{itemize}
 
@@ -1527,12 +1538,22 @@ Shows an overview of all duels. The top list shows duel information and below it
 	\item \includegraphics[scale=0.5]{control_play_blue.png} Continue a running duel with the last unfinished game at the same position.
 	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Load the selected duel configuration as template for a new duel.
 	\item \includegraphics[scale=0.5]{control_repeat_blue.png} Deletes all games of the selected duel and runs the duel again.
-\item \includegraphics[scale=0.5]{plus_light_blue.png} Opens a dialog where you can increase the number of games.	
+    \item \includegraphics[scale=0.5]{plus_light_blue.png} Opens a dialog where you can increase the number of games.	
     \item \includegraphics[scale=0.5]{bin.png} Deletes the selected duel and all associated games.
 	\item \includegraphics[scale=0.5]{text_exports.png} Exports all or the selected games into a PGN file.    
 	\item \includegraphics[scale=0.5]{information.png} Display information window for the selected duel.    	
     \item \includegraphics[scale=0.5]{database_delete.png} Deletes all duels and all associated games.
 \end{itemize}
+
+\subsubsection{Repeat a game}
+If you want to repeat a single game, you can do this by clicking the right mouse button on a game.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{EngineDuel7.png}
+	\caption{Repeat a game}
+	\label{fig:EngineDuel7}
+\end{figure}
 
 \section{Engine tournament} \label{EngineTournamentl}
 
@@ -1643,6 +1664,17 @@ Shows an overview of all tournaments. The top list shows tournament information 
 	\item \includegraphics[scale=0.5]{information.png} Display information window for the selected tournament.    		
 	\item \includegraphics[scale=0.5]{database_delete.png} Deletes all tournaments and all associated games.
 \end{itemize}
+
+\subsubsection{Repeat a game}
+If you want to repeat a single game, you can do this by clicking the right mouse button on a game.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{EngineTournament8.png}
+	\caption{Repeat a game}
+	\label{fig:EngineTournament8}
+\end{figure}
+
 
 \section{Setup position} \label{SetupPosition}
 

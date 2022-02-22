@@ -244,7 +244,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         public override DataFromBoard GetPiecesFen()
         {
             ulong repeated = 0;
-          
+
             while (true)
             {
                 var dataFromBoard = _serialCommunication.GetFromBoard();
@@ -259,6 +259,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                 {
                     break;
                 }
+
                 var strings = dataFromBoard.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 if (_ignoreReading)
                 {
@@ -284,46 +285,48 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                             }
                         }
                     }
+
                     return new DataFromBoard(_chessBoard.GetFenPosition(), 3);
                 }
 
-                    if (strings[0] == "134")
-                    {
-                        bool isBasePosition = true;
-                        List<string> dumpFields = new List<string>();
-                        for (byte i = 0; i < 64; i++)
-                        {
-                            if (strings[3 + i] != _basePosition[i])
-                            {
-                                isBasePosition = false;
-                            }
-
-                            var key = byte.Parse(strings[3 + i]);
-                            if (key == 1)
-                            {
-                                dumpFields.Add(_fielByte2FieldName[i]);
-                            }
-
-                        }
-
-                        if (isBasePosition)
-                        {
-                            _isCalibrating = false;
-                            IsCalibrated = true;
-                        }
-                        else
-                        {
-                            _serialCommunication.Send(_dumpBoard);
-                        }
-                        return new DataFromBoard(string.Join(",", dumpFields), 3)
-                               { IsFieldDump = true, BasePosition = isBasePosition };
-                    }
-                    //return new DataFromBoard(string.Empty,3){ IsFieldDump = true, BasePosition = false };
-                
-
-                if (!string.IsNullOrWhiteSpace(dataFromBoard.FromBoard) && dataFromBoard.Repeated==0)
+                if (strings[0] == "134")
                 {
-                
+                    bool isBasePosition = true;
+                    List<string> dumpFields = new List<string>();
+                    for (byte i = 0; i < 64; i++)
+                    {
+                        if (strings[3 + i] != _basePosition[i])
+                        {
+                            isBasePosition = false;
+                        }
+
+                        var key = byte.Parse(strings[3 + i]);
+                        if (key == 1)
+                        {
+                            dumpFields.Add(_fielByte2FieldName[i]);
+                        }
+
+                    }
+
+                    if (isBasePosition)
+                    {
+                        _isCalibrating = false;
+                        IsCalibrated = true;
+                    }
+                    else
+                    {
+                        _serialCommunication.Send(_dumpBoard);
+                    }
+
+                    return new DataFromBoard(string.Join(",", dumpFields), 3)
+                           { IsFieldDump = true, BasePosition = isBasePosition };
+                }
+                //return new DataFromBoard(string.Empty,3){ IsFieldDump = true, BasePosition = false };
+
+
+                if (!string.IsNullOrWhiteSpace(dataFromBoard.FromBoard) && dataFromBoard.Repeated == 0)
+                {
+
 
                     if (strings.Length == 5)
                     {
@@ -337,6 +340,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                                 {
                                     _tmpToField = fromField;
                                 }
+
                                 if (_inDemoMode)
                                 {
                                     _fromField = fromField;
@@ -359,6 +363,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                                 {
                                     _tmpFromField = _toField;
                                 }
+
                                 if (!_inDemoMode && _chessBoard.GetFigureOn(Fields.GetFieldNumber(_toField)).Color ==
                                     _chessBoard.CurrentColor)
                                 {
@@ -373,12 +378,13 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                         if (strings[0] == "160" && strings[1] == "0" && strings[2] == "12")
                         {
                             BatteryLevel = strings[3];
-                            BatteryStatus =  strings[11].Equals("1") ? "🔋" : "";
+                            BatteryStatus = strings[11].Equals("1") ? "🔋" : "";
                         }
                     }
+
                     if (strings.Length > 3)
                     {
-                        if (strings[0] == "146" )
+                        if (strings[0] == "146")
                         {
                             string trademark = string.Empty;
                             for (int i = 3; i < strings.Length; i++)
@@ -408,7 +414,8 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
                             }
 
-                            return new DataFromBoard(string.Join(",",dumpFields), 3) {IsFieldDump = true, BasePosition = isBasePosition};
+                            return new DataFromBoard(string.Join(",", dumpFields), 3)
+                                   { IsFieldDump = true, BasePosition = isBasePosition };
                         }
                     }
 
@@ -438,14 +445,16 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                 }
             }
 
-            var logMessage = $"PS: Current: [{_fromField}-{_toField}]   Last: [{_lastFromField}-{_lastToField}]  Temp: [{_tmpFromField}-{_tmpToField}]";
+            var logMessage =
+                $"PS: Current: [{_fromField}-{_toField}]   Last: [{_lastFromField}-{_lastToField}]  Temp: [{_tmpFromField}-{_tmpToField}]";
             if (!logMessage.Equals(_lastLogMessage))
             {
                 _logger?.LogDebug(logMessage);
-                _lastLogMessage =logMessage;
+                _lastLogMessage = logMessage;
             }
 
-            if (!_inDemoMode && _allowTakeBack && !string.IsNullOrWhiteSpace(_tmpFromField) && !string.IsNullOrWhiteSpace(_tmpToField))
+            if (!_inDemoMode && _allowTakeBack && !string.IsNullOrWhiteSpace(_tmpFromField) &&
+                !string.IsNullOrWhiteSpace(_tmpToField))
             {
                 _logger?.LogInfo("PS: Take move back. Replay all previous moves");
                 var playedMoveList = _chessBoard.GetPlayedMoveList();
@@ -458,11 +467,13 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                     _lastFromField = playedMoveList[i].FromFieldName.ToUpper();
                     _lastToField = playedMoveList[i].ToFieldName.ToUpper();
                 }
+
                 _fromField = string.Empty;
                 _toField = string.Empty;
                 _tmpFromField = string.Empty;
                 _tmpToField = string.Empty;
             }
+
             if (!string.IsNullOrWhiteSpace(_fromField) && !string.IsNullOrWhiteSpace(_toField))
             {
                 _logger?.LogDebug($"PS: Read move: Fromfield: {_fromField}  ToField: {_toField}");
@@ -541,6 +552,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                     }
                 }
             }
+
             return new DataFromBoard(_chessBoard.GetFenPosition(), 3);
         }
 

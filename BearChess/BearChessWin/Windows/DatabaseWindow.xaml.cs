@@ -130,14 +130,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     if (_database.IsDuelGame(pgnGame.Id))
                     {
-                        MessageBox.Show("Game is part of a duel. Use duel manager to delete duel games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Game is part of a duel. Use duel manager to repeat duel games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
                         
                             return;
                         
                     }
                     if (_database.IsTournamentGame(pgnGame.Id))
                     {
-                        MessageBox.Show("Game is part of a tournament. Use tournament manager to delete tournament games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("Game is part of a tournament. Use tournament manager to repeat tournament games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
 
                         return;
 

@@ -44,18 +44,19 @@
 \contentsline {subsubsection}{\numberline {11.2.2}Configure Bluetooth}{54}{subsubsection.11.2.2}%
 \contentsline {subsubsection}{\numberline {11.2.3}Connect}{55}{subsubsection.11.2.3}%
 \contentsline {subsection}{\numberline {11.3}Connect DGT Pegasus}{56}{subsection.11.3}%
-\contentsline {subsection}{\numberline {11.4}Switch side}{56}{subsection.11.4}%
-\contentsline {section}{\numberline {12}Play a game}{57}{section.12}%
+\contentsline {subsubsection}{\numberline {11.3.1}Verify position}{56}{subsubsection.11.3.1}%
+\contentsline {subsection}{\numberline {11.4}Switch side}{57}{subsection.11.4}%
+\contentsline {section}{\numberline {12}Play a game}{58}{section.12}%
 \contentsline {subsection}{\numberline {12.1}Select opponent}{58}{subsection.12.1}%
 \contentsline {subsection}{\numberline {12.2}Playing in relaxed mode}{59}{subsection.12.2}%
 \contentsline {subsection}{\numberline {12.3}Start from}{59}{subsection.12.3}%
-\contentsline {subsection}{\numberline {12.4}Time control}{59}{subsection.12.4}%
+\contentsline {subsection}{\numberline {12.4}Time control}{60}{subsection.12.4}%
 \contentsline {subsection}{\numberline {12.5}Tournament mode}{60}{subsection.12.5}%
 \contentsline {subsection}{\numberline {12.6}Allow to take a move back}{60}{subsection.12.6}%
-\contentsline {subsection}{\numberline {12.7}Extra time for human player}{60}{subsection.12.7}%
-\contentsline {subsection}{\numberline {12.8}Start the clock after the move is executed on the electronic board}{60}{subsection.12.8}%
-\contentsline {subsection}{\numberline {12.9}Configuration for startup game}{60}{subsection.12.9}%
-\contentsline {section}{\numberline {13}Move list}{60}{section.13}%
+\contentsline {subsection}{\numberline {12.7}Extra time for human player}{61}{subsection.12.7}%
+\contentsline {subsection}{\numberline {12.8}Start the clock after the move is executed on the electronic board}{61}{subsection.12.8}%
+\contentsline {subsection}{\numberline {12.9}Configuration for startup game}{61}{subsection.12.9}%
+\contentsline {section}{\numberline {13}Move list}{61}{section.13}%
 \contentsline {section}{\numberline {14}Pause and continue a game}{63}{section.14}%
 \contentsline {section}{\numberline {15}Easy start or restart of a game}{63}{section.15}%
 \contentsline {subsubsection}{\numberline {15.0.1}Continue a game}{65}{subsubsection.15.0.1}%
@@ -71,56 +72,58 @@
 \contentsline {subsubsection}{\numberline {18.1.1}Engine duel information}{75}{subsubsection.18.1.1}%
 \contentsline {subsection}{\numberline {18.2}Estimate ELO}{78}{subsection.18.2}%
 \contentsline {subsection}{\numberline {18.3}Manage duels}{79}{subsection.18.3}%
+\contentsline {subsubsection}{\numberline {18.3.1}Repeat a game}{80}{subsubsection.18.3.1}%
 \contentsline {section}{\numberline {19}Engine tournament}{80}{section.19}%
-\contentsline {subsection}{\numberline {19.1}Start a new engine tournament}{80}{subsection.19.1}%
+\contentsline {subsection}{\numberline {19.1}Start a new engine tournament}{81}{subsection.19.1}%
 \contentsline {subsubsection}{\numberline {19.1.1}Engine tournament information}{83}{subsubsection.19.1.1}%
 \contentsline {subsection}{\numberline {19.2}Manage engine tournaments}{84}{subsection.19.2}%
+\contentsline {subsubsection}{\numberline {19.2.1}Repeat a game}{85}{subsubsection.19.2.1}%
 \contentsline {section}{\numberline {20}Setup position}{85}{section.20}%
-\contentsline {subsection}{\numberline {20.1}With support of an electronic chessboard}{85}{subsection.20.1}%
+\contentsline {subsection}{\numberline {20.1}With support of an electronic chessboard}{86}{subsection.20.1}%
 \contentsline {subsection}{\numberline {20.2}Without support of an electronic chessboard}{87}{subsection.20.2}%
 \contentsline {section}{\numberline {21}Run startup game on start}{88}{section.21}%
 \contentsline {section}{\numberline {22}Games}{89}{section.22}%
 \contentsline {subsection}{\numberline {22.1}Save}{89}{subsection.22.1}%
 \contentsline {subsection}{\numberline {22.2}Show and load}{90}{subsection.22.2}%
 \contentsline {section}{\numberline {23}Engine window}{91}{section.23}%
-\contentsline {section}{\numberline {24}Extended engine support}{93}{section.24}%
-\contentsline {section}{\numberline {25}Important To Know}{95}{section.25}%
-\contentsline {subsection}{\numberline {25.1}Install a new version}{95}{subsection.25.1}%
-\contentsline {subsection}{\numberline {25.2}MessChess engines}{95}{subsection.25.2}%
-\contentsline {subsection}{\numberline {25.3}Certabo: board orientation}{95}{subsection.25.3}%
-\contentsline {subsection}{\numberline {25.4}Certabo: Calibration}{95}{subsection.25.4}%
-\contentsline {subsection}{\numberline {25.5}Certabo: Pawn conversion to a queen}{95}{subsection.25.5}%
-\contentsline {subsection}{\numberline {25.6}Millennium ChessLink: board orientation}{95}{subsection.25.6}%
-\contentsline {subsection}{\numberline {25.7}DGT Pegasus: Piece recognition}{95}{subsection.25.7}%
-\contentsline {subsection}{\numberline {25.8}Electronic chessboard and engine duels}{96}{subsection.25.8}%
-\contentsline {section}{\numberline {26}Trouble shooting}{96}{section.26}%
-\contentsline {subsection}{\numberline {26.1}The chess moves are not or not correctly displayed}{96}{subsection.26.1}%
-\contentsline {section}{\numberline {27}Known Issues}{96}{section.27}%
-\contentsline {section}{\numberline {28}Next Steps}{96}{section.28}%
-\contentsline {section}{\numberline {29}Changelog}{97}{section.29}%
-\contentsline {subsection}{\numberline {29.1}Version 0.5.9.0 $\Rightarrow $ 0.6.0.0}{97}{subsection.29.1}%
-\contentsline {subsection}{\numberline {29.2}Version 0.5.8.1 $\Rightarrow $ 0.5.9.0}{97}{subsection.29.2}%
-\contentsline {subsection}{\numberline {29.3}Version 0.5.8.0 $\Rightarrow $ 0.5.8.1}{97}{subsection.29.3}%
-\contentsline {subsection}{\numberline {29.4}Version 0.5.7.0 $\Rightarrow $ 0.5.8.0}{97}{subsection.29.4}%
-\contentsline {subsection}{\numberline {29.5}Version 0.5.6.2 $\Rightarrow $ 0.5.7.0}{98}{subsection.29.5}%
-\contentsline {subsection}{\numberline {29.6}Version 0.5.6.1 $\Rightarrow $ 0.5.6.2}{98}{subsection.29.6}%
-\contentsline {subsection}{\numberline {29.7}Version 0.5.6.0 $\Rightarrow $ 0.5.6.1}{99}{subsection.29.7}%
-\contentsline {subsection}{\numberline {29.8}Version 0.5.5.3 $\Rightarrow $ 0.5.6.0}{99}{subsection.29.8}%
-\contentsline {subsection}{\numberline {29.9}Version 0.5.5.2 $\Rightarrow $ 0.5.5.3}{99}{subsection.29.9}%
-\contentsline {subsection}{\numberline {29.10}Version 0.5.5.1 $\Rightarrow $ 0.5.5.2}{99}{subsection.29.10}%
-\contentsline {subsection}{\numberline {29.11}Version 0.5.5.0 $\Rightarrow $ 0.5.5.1}{99}{subsection.29.11}%
-\contentsline {subsection}{\numberline {29.12}Version 0.5.0.0 $\Rightarrow $ 0.5.5.0}{99}{subsection.29.12}%
-\contentsline {subsection}{\numberline {29.13}Version 0.4.4.0 $\Rightarrow $ 0.5.0.0}{100}{subsection.29.13}%
-\contentsline {subsection}{\numberline {29.14}Version 0.4.3.1 $\Rightarrow $ 0.4.4.0}{100}{subsection.29.14}%
-\contentsline {subsection}{\numberline {29.15}Version 0.4.3.0 $\Rightarrow $ 0.4.3.1}{100}{subsection.29.15}%
-\contentsline {subsection}{\numberline {29.16}Version 0.4.2.3 $\Rightarrow $ 0.4.3.0}{100}{subsection.29.16}%
-\contentsline {subsection}{\numberline {29.17}Version 0.4.2.2 $\Rightarrow $ 0.4.2.3}{100}{subsection.29.17}%
-\contentsline {subsection}{\numberline {29.18}Version 0.4.2.1 $\Rightarrow $ 0.4.2.2}{100}{subsection.29.18}%
-\contentsline {subsection}{\numberline {29.19}Version 0.4.2.0 $\Rightarrow $ 0.4.2.1}{100}{subsection.29.19}%
-\contentsline {subsection}{\numberline {29.20}Version 0.4.1.0 $\Rightarrow $ 0.4.2.0}{101}{subsection.29.20}%
-\contentsline {subsection}{\numberline {29.21}Version 0.4.0.0 $\Rightarrow $ 0.4.1.0}{101}{subsection.29.21}%
-\contentsline {subsection}{\numberline {29.22}Version 0.3.3.0 $\Rightarrow $ 0.4.0.0}{101}{subsection.29.22}%
-\contentsline {subsection}{\numberline {29.23}Version 0.3.2.0 $\Rightarrow $ 0.3.3.0}{101}{subsection.29.23}%
-\contentsline {subsection}{\numberline {29.24}Version 0.3.1.1 $\Rightarrow $ 0.3.2.0}{102}{subsection.29.24}%
-\contentsline {subsection}{\numberline {29.25}Version 0.3.1.0 $\Rightarrow $ 0.3.1.1}{102}{subsection.29.25}%
-\contentsline {subsection}{\numberline {29.26}Version 0.3.0.0 $\Rightarrow $ 0.3.1.0}{102}{subsection.29.26}%
+\contentsline {section}{\numberline {24}Extended engine support}{94}{section.24}%
+\contentsline {section}{\numberline {25}Important To Know}{96}{section.25}%
+\contentsline {subsection}{\numberline {25.1}Install a new version}{96}{subsection.25.1}%
+\contentsline {subsection}{\numberline {25.2}MessChess engines}{96}{subsection.25.2}%
+\contentsline {subsection}{\numberline {25.3}Certabo: board orientation}{96}{subsection.25.3}%
+\contentsline {subsection}{\numberline {25.4}Certabo: Calibration}{96}{subsection.25.4}%
+\contentsline {subsection}{\numberline {25.5}Certabo: Pawn conversion to a queen}{96}{subsection.25.5}%
+\contentsline {subsection}{\numberline {25.6}Millennium ChessLink: board orientation}{96}{subsection.25.6}%
+\contentsline {subsection}{\numberline {25.7}DGT Pegasus: Piece recognition}{96}{subsection.25.7}%
+\contentsline {subsection}{\numberline {25.8}Electronic chessboard and engine duels}{97}{subsection.25.8}%
+\contentsline {section}{\numberline {26}Trouble shooting}{97}{section.26}%
+\contentsline {subsection}{\numberline {26.1}The chess moves are not or not correctly displayed}{97}{subsection.26.1}%
+\contentsline {section}{\numberline {27}Known Issues}{97}{section.27}%
+\contentsline {section}{\numberline {28}Next Steps}{97}{section.28}%
+\contentsline {section}{\numberline {29}Changelog}{98}{section.29}%
+\contentsline {subsection}{\numberline {29.1}Version 0.5.9.0 $\Rightarrow $ 0.6.0.0}{98}{subsection.29.1}%
+\contentsline {subsection}{\numberline {29.2}Version 0.5.8.1 $\Rightarrow $ 0.5.9.0}{98}{subsection.29.2}%
+\contentsline {subsection}{\numberline {29.3}Version 0.5.8.0 $\Rightarrow $ 0.5.8.1}{98}{subsection.29.3}%
+\contentsline {subsection}{\numberline {29.4}Version 0.5.7.0 $\Rightarrow $ 0.5.8.0}{98}{subsection.29.4}%
+\contentsline {subsection}{\numberline {29.5}Version 0.5.6.2 $\Rightarrow $ 0.5.7.0}{99}{subsection.29.5}%
+\contentsline {subsection}{\numberline {29.6}Version 0.5.6.1 $\Rightarrow $ 0.5.6.2}{99}{subsection.29.6}%
+\contentsline {subsection}{\numberline {29.7}Version 0.5.6.0 $\Rightarrow $ 0.5.6.1}{100}{subsection.29.7}%
+\contentsline {subsection}{\numberline {29.8}Version 0.5.5.3 $\Rightarrow $ 0.5.6.0}{100}{subsection.29.8}%
+\contentsline {subsection}{\numberline {29.9}Version 0.5.5.2 $\Rightarrow $ 0.5.5.3}{100}{subsection.29.9}%
+\contentsline {subsection}{\numberline {29.10}Version 0.5.5.1 $\Rightarrow $ 0.5.5.2}{100}{subsection.29.10}%
+\contentsline {subsection}{\numberline {29.11}Version 0.5.5.0 $\Rightarrow $ 0.5.5.1}{100}{subsection.29.11}%
+\contentsline {subsection}{\numberline {29.12}Version 0.5.0.0 $\Rightarrow $ 0.5.5.0}{100}{subsection.29.12}%
+\contentsline {subsection}{\numberline {29.13}Version 0.4.4.0 $\Rightarrow $ 0.5.0.0}{101}{subsection.29.13}%
+\contentsline {subsection}{\numberline {29.14}Version 0.4.3.1 $\Rightarrow $ 0.4.4.0}{101}{subsection.29.14}%
+\contentsline {subsection}{\numberline {29.15}Version 0.4.3.0 $\Rightarrow $ 0.4.3.1}{101}{subsection.29.15}%
+\contentsline {subsection}{\numberline {29.16}Version 0.4.2.3 $\Rightarrow $ 0.4.3.0}{101}{subsection.29.16}%
+\contentsline {subsection}{\numberline {29.17}Version 0.4.2.2 $\Rightarrow $ 0.4.2.3}{101}{subsection.29.17}%
+\contentsline {subsection}{\numberline {29.18}Version 0.4.2.1 $\Rightarrow $ 0.4.2.2}{101}{subsection.29.18}%
+\contentsline {subsection}{\numberline {29.19}Version 0.4.2.0 $\Rightarrow $ 0.4.2.1}{101}{subsection.29.19}%
+\contentsline {subsection}{\numberline {29.20}Version 0.4.1.0 $\Rightarrow $ 0.4.2.0}{102}{subsection.29.20}%
+\contentsline {subsection}{\numberline {29.21}Version 0.4.0.0 $\Rightarrow $ 0.4.1.0}{102}{subsection.29.21}%
+\contentsline {subsection}{\numberline {29.22}Version 0.3.3.0 $\Rightarrow $ 0.4.0.0}{102}{subsection.29.22}%
+\contentsline {subsection}{\numberline {29.23}Version 0.3.2.0 $\Rightarrow $ 0.3.3.0}{102}{subsection.29.23}%
+\contentsline {subsection}{\numberline {29.24}Version 0.3.1.1 $\Rightarrow $ 0.3.2.0}{103}{subsection.29.24}%
+\contentsline {subsection}{\numberline {29.25}Version 0.3.1.0 $\Rightarrow $ 0.3.1.1}{103}{subsection.29.25}%
+\contentsline {subsection}{\numberline {29.26}Version 0.3.0.0 $\Rightarrow $ 0.3.1.0}{103}{subsection.29.26}%

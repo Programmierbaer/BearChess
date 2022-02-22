@@ -9,7 +9,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 {
    
 
-    public  class Telnet
+    public  class Telnet 
     {
         private readonly string _hostname;
         private readonly int _port;
@@ -38,6 +38,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         {
             _hostname = hostname;
             _port = port;
+            _tcpSocket = null;
 
         }
 
@@ -68,6 +69,8 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                 if (IsConnected)
                 {
                     _tcpSocket.Close();
+                    _tcpSocket.Dispose();
+                    _tcpSocket = null;
 
                 }
             }
@@ -106,6 +109,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                     return;
                 }
 
+                cmd += "\n";
                 byte[] buf = Encoding.ASCII.GetBytes(cmd.Replace("\0xFF", "\0xFF\0xFF"));
                 _tcpSocket.GetStream().Write(buf, 0, buf.Length);
             }
@@ -119,11 +123,12 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         {
             try
             {
-                if (!_tcpSocket.Connected)
+                if (!IsConnected)
                 {
                     return null;
                 }
 
+              
                 var sb = new StringBuilder();
                 do
                 {
@@ -201,5 +206,6 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                 //
             }
         }
+
     }
 }
