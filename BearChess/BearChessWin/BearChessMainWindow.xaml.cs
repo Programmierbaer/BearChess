@@ -5558,6 +5558,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                              BlackClockTime = _chessClocksWindowBlack.GetClockTime(),
                                              Id = _currentGame.RepeatedGame ? _databaseGame.Id : 0
             });
+            _duelManager?.Update(_currentDuel,_currentDuelId);
             Dispatcher?.Invoke(() => { MenuItemNewGame_OnClick(this, null); });
         }
 

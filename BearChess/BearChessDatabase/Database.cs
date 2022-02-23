@@ -1373,7 +1373,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo" +
                 " FROM games as g  " +
                 " JOIN duelGames t ON (t.game_id=g.id)" +
-                "WHERE t.duel_id=@duelId;", _connection))
+                "WHERE t.duel_id=@duelId ORDER BY g.id;", _connection))
             {
                 cmd.Parameters.Add("@duelId", DbType.Int32).Value = duelId;
                 using (var rdr = cmd.ExecuteReader())
@@ -1948,7 +1948,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo" +
                 " FROM games as g  " +
                 " JOIN tournamentGames t ON (t.game_id=g.id)" +
-                "WHERE t.tournament_id=@tournamentId;", _connection))
+                "WHERE t.tournament_id=@tournamentId ORDER BY g.id;", _connection))
             {
                 cmd.Parameters.Add("@tournamentId", DbType.Int32).Value = tournamentId;
                 using (var rdr = cmd.ExecuteReader())
