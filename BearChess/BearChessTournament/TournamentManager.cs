@@ -104,7 +104,8 @@ namespace www.SoLaNoSoft.com.BearChessTournament
 
         public int[] GetPairing()
         {
-            return _pairing[_database.GetTournamentGamesCount(_tournamentId)];
+            var tournamentGamesCount = _database.GetTournamentGamesCount(_tournamentId) - 1;
+            return _pairing[tournamentGamesCount];
         }
 
         public int[] GetPairing(int gamesCount)
