@@ -55,11 +55,11 @@ namespace www.SoLaNoSoft.com.BearChessTournament
         {
             if (currentGame.CurrentGame.RepeatedGame)
             {
-                _database.Save(currentGame);
+                _database.Save(currentGame, false);
             }
             else
             {
-                _database.SaveDuelGamePair(_duelId, _database.Save(currentGame));
+                _database.SaveDuelGamePair(_duelId, _database.Save(currentGame, false));
             }
         }
 

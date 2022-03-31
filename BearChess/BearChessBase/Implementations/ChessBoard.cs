@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
@@ -514,13 +515,49 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         /// <inheritdoc />
-        public void MakeMove(string pgnMove)
+        public void MakePgnMove(string pgnMove, string comment)
         {
             if (string.IsNullOrWhiteSpace(pgnMove) || pgnMove.Equals("*") || pgnMove.Equals("1-0") || pgnMove.Equals("0-1") || pgnMove.Equals("1/2-1/2"))
             {
                 return;
             }
 
+            string firstMoveSign = string.Empty;
+            string firstPositionSign = string.Empty;
+            var commentStrings = comment.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < commentStrings.Length; i++)
+            {
+                string commentString = commentStrings[i];
+
+                if (commentString.StartsWith("$"))
+                {
+                    if (i == 0 || i==1)
+                    {
+                        if (commentString.Length == 2)
+                        {
+                            firstMoveSign = PgnDefinitions.NagToSymbol.ContainsKey(commentString)
+                                                ? PgnDefinitions.NagToSymbol[commentString]
+                                                : string.Empty;
+                        }
+                        else
+                        {
+                            firstPositionSign = PgnDefinitions.NagToSymbol.ContainsKey(commentString)
+                                                    ? PgnDefinitions.NagToSymbol[commentString]
+                                                    : string.Empty;
+                        }
+                        commentStrings[i] = string.Empty;
+                    }
+                    else
+                    {
+                        commentStrings[i] =
+                            PgnDefinitions.NagToSymbol.ContainsKey(commentString)
+                                ? PgnDefinitions.NagToSymbol[commentString]
+                                : string.Empty;
+                    }
+                }
+            }
+
+            comment = string.Join(" ", commentStrings);
             int fieldNumber;
             var moveList = GenerateMoveList();
             if (pgnMove.Equals("0-0") || pgnMove.Equals("O-O"))
@@ -528,9 +565,15 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 if (CurrentColor == Fields.COLOR_WHITE)
                 {
                     MakeMove("e1","g1");
+                    _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
+                    _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
+                    _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
                     return;
                 }
                 MakeMove("e8", "g8");
+                _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
+                _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
+                _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
                 return;
             }
             if (pgnMove.Equals("0-0-0") || pgnMove.Equals("O-O-O"))
@@ -538,9 +581,15 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 if (CurrentColor == Fields.COLOR_WHITE)
                 {
                     MakeMove("e1", "c1");
+                    _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
+                    _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
+                    _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
                     return;
                 }
                 MakeMove("e8", "c8");
+                _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
+                _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
+                _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
                 return;
             }
             if (pgnMove.EndsWith("+"))
@@ -613,6 +662,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             if (moves.Count == 1)
             {
                 MakeMove(moves[0].FromField, moves[0].ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
+                _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
+                _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
+                _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
             }
             else
             {
@@ -628,12 +680,18 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                             if (fieldName.StartsWith(fromField))
                             {
                                 MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
+                                _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
+                                _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
+                                _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
                                 return;
                             }
                         }
                         if (string.IsNullOrWhiteSpace(fromField) || fieldName.Contains(fromField))
                         {
                             MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
+                            _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
+                            _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
+                            _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
                             return;
                         }
                     }
@@ -925,7 +983,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         /// <inheritdoc />
-        public void SetPosition(string fenPosition)
+        public void SetPosition(string fenPosition, bool calculateCastle = false)
         {
             var currentPosition = GetFenPosition();
             try
@@ -1026,6 +1084,23 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 }
                 if (epdArray.Length <= 2)
                 {
+                    if (calculateCastle)
+                    {
+                        if (GetFigureOn(Fields.FE1).FigureId==FigureId.WHITE_KING) 
+                        {
+                            if (GetFigureOn(Fields.FH1).FigureId == FigureId.WHITE_ROOK)
+                              _canCastling[Fields.COLOR_WHITE].ShortCastling = true;
+                            if (GetFigureOn(Fields.FA1).FigureId == FigureId.WHITE_ROOK)
+                                _canCastling[Fields.COLOR_WHITE].LongCastling = true;
+                        }
+                        if (GetFigureOn(Fields.FE8).FigureId == FigureId.BLACK_KING)
+                        {
+                            if (GetFigureOn(Fields.FH8).FigureId == FigureId.BLACK_ROOK)
+                                _canCastling[Fields.COLOR_BLACK].ShortCastling = true;
+                            if (GetFigureOn(Fields.FA8).FigureId == FigureId.BLACK_ROOK)
+                                _canCastling[Fields.COLOR_BLACK].LongCastling = true;
+                        }
+                    }
                     return;
                 }
                 var castling = epdArray[2];

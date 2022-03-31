@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
-namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
+namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
 {
     public class PgnCreator
     {
         private readonly List<Move> _allMoves;
         private readonly List<string> _allPgnMoves;
         private IChessBoard _chessBoard;
+
+      
 
         public PgnCreator()
         {
@@ -72,16 +73,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
             switch (move.FromField)
             {
                 case Fields.FE1 when move.ToField.Equals(Fields.FG1):
-                    castle = "0-0";
+                    castle = "O-O";
                     return true;
                 case Fields.FE1 when move.ToField.Equals(Fields.FC1):
-                    castle = "0-0-0";
+                    castle = "O-O-O";
                     return true;
                 case Fields.FE8 when move.ToField.Equals(Fields.FG8):
-                    castle = "0-0";
+                    castle = "O-O";
                     return true;
                 case Fields.FE8 when move.ToField.Equals(Fields.FC8):
-                    castle = "0-0-0";
+                    castle = "O-O-O";
                     return true;
                 default:
                     return false;
@@ -138,12 +139,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
                             if (fieldToLineTmp != fieldToLineFrom)
                             {
                                 pgnMove =
-                                    $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(0, 1).ToLower()}{move.ToFieldName.ToLower()}";
+                                    $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(0, 1).ToLower()}{move.ToFieldName.ToLower()}".Trim();
                             }
                             else
                             {
                                 pgnMove =
-                                    $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(1, 1).ToLower()}{move.ToFieldName.ToLower()}";
+                                    $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(1, 1).ToLower()}{move.ToFieldName.ToLower()}".Trim();
                             }
                         }
                     }
@@ -152,12 +153,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
                         if (move.CapturedFigure != FigureId.NO_PIECE)
                         {
                             pgnMove =
-                                $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}x{move.ToFieldName.ToLower()}";
+                                $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}x{move.ToFieldName.ToLower()}".Trim();
                         }
                         else
                         {
                             pgnMove =
-                                $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.ToFieldName.ToLower()}";
+                                $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.ToFieldName.ToLower()}".Trim();
                         }
                     }
                 }
@@ -185,9 +186,35 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn
 
                 pgnMove += isMate ? "#" : "+";
             }
+            string mComment = string.IsNullOrWhiteSpace(move.Comment) ? string.Empty : "{"+ReplaceNagInComment(move.Comment)+"}"; 
+            string mBestline = string.IsNullOrWhiteSpace(move.BestLine) ? string.Empty : "{"+move.Score.ToString(CultureInfo.InvariantCulture)+"} (" + move.BestLine+")";
+            //string mScore = move.IsEngineMove ? move.Score.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            return $"{pgnMove} {GetNAG(move.MoveSymbol)} {GetNAG(move.EvaluationSymbol)} {mComment} {mBestline}".Trim();
+        }
 
+        private string ReplaceNagInComment(string comment)
+        {
+            var commentStrings = comment.Split(" ".ToCharArray(), System.StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < commentStrings.Length; i++)
+            {
+                string commentString = commentStrings[i];
+                if (PgnDefinitions.SymbolToNag.ContainsKey(commentString))
+                {
+                    commentStrings[i] = PgnDefinitions.SymbolToNag[commentString];
+                }
+            }
 
-            return pgnMove;
+            return string.Join(" ", commentStrings);
+        }
+
+        private string GetNAG(string symbol)
+        {
+            if (!string.IsNullOrWhiteSpace(symbol) && PgnDefinitions.SymbolToNag.ContainsKey(symbol))
+            {
+                return PgnDefinitions.SymbolToNag[symbol];
+            }
+
+            return string.Empty;
         }
     }
 }

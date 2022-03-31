@@ -179,6 +179,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _loadedEngines[loadedEnginesKey].UciEngine.EngineReadingEvent -= UciLoader_EngineReadingEvent;
                 _loadedEngines[loadedEnginesKey].UciEngine.Quit();
             }
+            foreach (string loadedEnginesKey in _loadedEngines.Keys)
+            {
+                _loadedEngines[loadedEnginesKey].UciEngine.StopProcess();
+            }
             _loadedEngines.Clear();
             _loadedUciInfos.Clear();
             stackPanelEngines.Children.Clear();
@@ -361,7 +365,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void MakeMove(string fromField, string toField, string promote, string engineName = "")
         {
-            _fileLogger?.LogInfo($"Send MakeMove {fromField}-{toField}{promote}");
+            _fileLogger?.LogInfo($"Send MakePgnMove {fromField}-{toField}{promote}");
             _lastCommand = string.Empty;
             if (string.IsNullOrEmpty(engineName))
             {
@@ -385,7 +389,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {
                 engine.Value.UciEngine.SetFen(fenPosition, string.Empty);
-                //engine.Value.UciEngine.MakeMove();
+                //engine.Value.UciEngine.MakePgnMove();
             }
 
         }
@@ -447,6 +451,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
                 engine.Value.UciEngine.Quit();
+            }
+            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            {
+                engine.Value.UciEngine.StopProcess();
             }
             _lastCommand = string.Empty;
         }

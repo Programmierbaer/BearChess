@@ -36,7 +36,103 @@
         </ScrollViewer>
         <Separator></Separator>
         <DockPanel Margin="5">
+            <Button Name="buttonWin" Margin="25,5,5,5" HorizontalAlignment="Right" Width="32" Height="32"
+                    Background="Transparent" ToolTip="Save the game as won for white"
+                    BorderBrush="Transparent" DockPanel.Dock="Left"
+                    Click="ButtonWin_OnClick" Content="1-0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Stroke="DodgerBlue"
+                                     StrokeThickness="1">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush>
+                                        <GradientStop Offset="0"
+                                                      Color="lightBlue" />
+                                        <GradientStop Offset="1"
+                                                      Color="lightBlue" />
+                                        <GradientStop Offset="1"
+                                                      Color="LightBlue" />
+                                        <RadialGradientBrush.Transform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleY="0.65" />
+                                            </TransformGroup>
+                                        </RadialGradientBrush.Transform>
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
+            <Button Name="buttonLose" Margin="5" HorizontalAlignment="Right" Width="32" Height="32"
+                    Background="Transparent" ToolTip="Save the game as won for black"
+                    BorderBrush="Transparent" DockPanel.Dock="Left"
+                    Click="ButtonLose_OnClick" Content="0-1">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Stroke="DodgerBlue"
+                                     StrokeThickness="1">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush>
+                                        <GradientStop Offset="0"
+                                                      Color="LightBlue" />
+                                        <GradientStop Offset="1"
+                                                      Color="LightBlue" />
+                                        <GradientStop Offset="1"
+                                                      Color="LightBlue" />
+                                        <RadialGradientBrush.Transform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleY="0.65" />
+                                            </TransformGroup>
+                                        </RadialGradientBrush.Transform>
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+
+            <Button Name="buttonDraw" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Width="32"
+                    Height="32"
+                    Background="Transparent" ToolTip="Save the game as a draw"
+                    BorderBrush="Transparent" DockPanel.Dock="Left"
+                    Click="ButtonDraw_OnClick" Content="1/2">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Stroke="DodgerBlue"
+                                     StrokeThickness="1">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush>
+                                        <GradientStop Offset="0"
+                                                      Color="LightBlue" />
+                                        <GradientStop Offset="1"
+                                                      Color="LightBlue" />
+                                        <GradientStop Offset="1"
+                                                      Color="LightBlue" />
+                                        <RadialGradientBrush.Transform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleY="0.65" />
+                                            </TransformGroup>
+                                        </RadialGradientBrush.Transform>
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
             <Button Name="buttonPause" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right"
                     Background="Transparent"
                     BorderBrush="Transparent"

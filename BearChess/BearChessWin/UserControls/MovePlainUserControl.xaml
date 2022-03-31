@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="www.SoLaNoSoft.com.BearChessWin.MovePlainUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" FontSize="18"
+             d:DesignHeight="150" d:DesignWidth="200">
+    <StackPanel Name="stackPanelMove">
+        <WrapPanel Orientation="Horizontal">
+            <Button VerticalContentAlignment="Top" Click="ButtonBase_OnClick" Name="button" BorderBrush="Transparent"
+                    HorizontalContentAlignment="Left">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Move symbol">
+                            <MenuItem Icon="!" Header="Good move" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="?" Header="Poor move" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="!!" Header="Very good move" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="??" Header="Very poor move" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="!?" Header="Speculative move" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="?!" Header="Questionable move" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="□" Header="Only move" Click="MenuItemMoveSymbol_OnClick" />
+                            <Separator />
+                            <MenuItem Header="Remove symbol" Click="MenuItemMoveSymbol_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="../Assets/Icons/bin.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="Evaluation symbol">
+                            <MenuItem Icon="+-" Header="White has a decisive advantage"
+                                      Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="-+" Header="Black has a decisive advantage"
+                                      Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="=" Header="Equal position" Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="∞" Header="Unclear position" Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="+=" Header="White has a slight advantage"
+                                      Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="=+" Header="Black has a slight advantage"
+                                      Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="±" Header="White has a moderate advantage"
+                                      Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="∓" Header="Black has a moderate advantage"
+                                      Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="∞=" Header="With compensation" Click="MenuItemMoveEvaluation_OnClick" />
+                            <Separator />
+                            <MenuItem Header="Remove symbol" Click="MenuItemMoveEvaluation_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="../Assets/Icons/bin.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="Edit comment..." Name="menuItemEditComment"
+                                  Click="MenuItemEditComment_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="../Assets/Icons/script_add.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                <WrapPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal" FontWeight="DemiBold"
+                               Name="textBlockMoveNumber"
+                               VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left">
+                        99.
+                    </TextBlock>
+                    <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockFigureSymbol"
+                               VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left">
+                        Q
+                    </TextBlock>
+                    <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockMove"
+                               VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left">
+                        e2-e4Q
+                    </TextBlock>
+                    <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockMoveSymbol"
+                               Visibility="Collapsed" FontWeight="DemiBold"
+                               VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left"
+                               Foreground="Red">
+                        !
+                    </TextBlock>
+                    <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal"
+                               Name="textBlockMoveEvaluation" Visibility="Collapsed" FontWeight="DemiBold"
+                               VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left"
+                               Foreground="Red">
+                        !
+                    </TextBlock>
+                    <TextBlock Margin="2,1,0,1" FontFamily="Calibri" FontStretch="Normal"
+                               Name="textBlockCommentInternal"
+                               Foreground="Green"
+                               TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Left" Visibility="Collapsed"
+                               HorizontalAlignment="Left">
+                        Comment
+                    </TextBlock>
+                </WrapPanel>
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Border" BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Button.IsFocused" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="LightBlue" />
+                            </Trigger>
+                            <Trigger Property="Button.IsFocused" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+        </WrapPanel>
+        <TextBlock Margin="25,2,1,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockComment"
+                   Foreground="Green"
+                   TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Left" Visibility="Visible"
+                   HorizontalAlignment="Left">
+            Comment
+        </TextBlock>
+        <WrapPanel Orientation="Horizontal">
+            <TextBlock Margin="25,2,2,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockMoveValue"
+                       TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Left"
+                       HorizontalAlignment="Left">
+                1
+            </TextBlock>
+            <TextBlock Margin="1,2,1,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockBestLine"
+                       Foreground="Blue"
+                       TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Left"
+                       HorizontalAlignment="Left">
+                Comment
+            </TextBlock>
+        </WrapPanel>
+    </StackPanel>
+</UserControl>

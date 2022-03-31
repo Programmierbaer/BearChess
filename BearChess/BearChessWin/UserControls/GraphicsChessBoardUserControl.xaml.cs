@@ -425,7 +425,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             else
             {
                 _chessBoard = null;
-                resetStartPosition.Visibility = Visibility.Visible;
+                multiButton.Visibility = Visibility.Visible;
             }
         }
 
@@ -436,7 +436,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             moveStepBack.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
             moveStepForward.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
             //buttonPauseEngine.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
-            //resetStartPosition.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+            //multiButton.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        public void ShowMultiButton(bool showButton)
+        {
+            multiButton.Visibility = showButton ? Visibility.Visible : Visibility.Hidden;
         }
 
         public void SetInPositionMode(bool inPositionMode, string fenPosition, bool acceptMouse)
@@ -472,7 +477,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void ShowFiguresOnField(string[] fields, string figureCharacter)
         {
-            resetStartPosition.Visibility =  Visibility.Hidden;
+            multiButton.Visibility =  Visibility.Hidden;
             HashSet<string> allFields = new HashSet<string>(fields);
             imageFA1.Source = GetImageResource(Fields.FA1) as BitmapImage;
             imageFA2.Source = GetImageResource(Fields.FA2) as BitmapImage;

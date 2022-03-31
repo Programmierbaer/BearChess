@@ -4,6 +4,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
     public interface IEBoardWrapper
     {
+
+        void Reset();
+
         /// <summary>
         /// If demo mode is true, all position changes are possible.
         /// </summary>
@@ -36,7 +39,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         void ShowMove(string fromField, string toField);
 
-        void SetLedsFor(string[] fields);
+        void SetLedsFor(string[] fields, bool thinking);
 
         /// <summary>
         /// All led off

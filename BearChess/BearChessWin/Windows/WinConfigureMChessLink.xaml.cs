@@ -199,7 +199,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 _loader.FlashInSync(radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value);
                 _loader.DimLeds((int)sliderDim.Value);
-                _loader.SetLedsFor(new[] { "e2", "e4" });
+                _loader.SetLedsFor(new[] { "e2", "e4" }, false);
             }
             else
             {
@@ -219,7 +219,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _loader.FlashInSync(radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value);
                 _loader.DimLeds((int)sliderDim.Value);
-                _loader.SetLedsFor(new[] { "e2", "e4" });
+                _loader.SetLedsFor(new[] { "e2", "e4" }, false);
             }
         }
 
@@ -229,7 +229,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _loader.FlashInSync(radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value);
                 _loader.DimLeds((int)sliderDim.Value);
-                _loader.SetLedsFor(new[] { "e2", "e4" });
+                _loader.SetLedsFor(new[] { "e2", "e4" }, false);
             }
         }
     }

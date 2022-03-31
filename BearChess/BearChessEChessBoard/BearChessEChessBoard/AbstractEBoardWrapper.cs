@@ -133,6 +133,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected abstract IEBoard GetEBoard();
         protected abstract IEBoard GetEBoard(bool check);
 
+        public void Reset()
+        {
+            _board?.Reset();
+        }
+
         /// <inheritdoc />
         public void SetDemoMode(bool inDemoMode)
         {
@@ -194,7 +199,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 // Set LEDs on for received move and wait until board is in same position
                 _waitForFen.Enqueue(position);
             }
-            _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2));
+            _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2), false);
             _stop = false;
         }
 
@@ -203,14 +208,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _internalChessBoard.MakeMove(fromField, toField, string.Empty);
             var position = _internalChessBoard.GetPosition();
             _waitForFen.Enqueue(position);
-            _board?.SetLedForFields(fromField,toField);
+            _board?.SetLedForFields(fromField,toField, false);
             _stop = false;
         }
 
-        public void SetLedsFor(string[] fields)
+        public void SetLedsFor(string[] fields, bool thinking)
         {
             //_allLedOff =  _inDemoMode;
-            _board?.SetLedForFields(fields);
+            _board?.SetLedForFields(fields, thinking);
         }
 
         public void SetAllLedsOff()
@@ -281,8 +286,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
             _internalChessBoard.NewGame();
             _internalChessBoard.SetPosition(fen);
+            var dataFromBoard = _board?.GetPiecesFen();
+            _fileLogger?.LogDebug($"C: current Fen: {dataFromBoard?.FromBoard}");
             _board?.SetFen(fen);
             var position = _internalChessBoard.GetPosition();
+
             if (string.IsNullOrWhiteSpace(allMoves))
             {
                 _fileLogger?.LogDebug($"C: Wait for: {position}");
@@ -312,7 +320,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _fileLogger?.LogDebug($"C: Wait for: {position}");
             // Set LEDs on for received move and wait until board is in same position
             _waitForFen.Enqueue(position);
-            _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2));
+            _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2), false);
             _stop = false;
          
         }
@@ -639,7 +647,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
              
                 fenPosition.Invalid = true;
-                _board?.SetLedForFields(invalidFields.ToArray());
+                _board?.SetLedForFields(invalidFields.ToArray(), false);
                 _allLedOff = false;
             }
             else

@@ -40,6 +40,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
             // ignore
         }
 
+      
         /// <inheritdoc />
         public override void DimLeds(bool dimLeds)
         {

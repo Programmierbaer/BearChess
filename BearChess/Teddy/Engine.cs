@@ -61,7 +61,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
         {
             _chessBoard.NewGame();
             _gamePhase = GamePhase.Opening;
-            _chessBoard.SetPosition(fen);
+            _chessBoard.SetPosition(fen, false);
         }
 
         public void Init(IChessBoard chessBoard)

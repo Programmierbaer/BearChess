@@ -10,16 +10,15 @@ namespace www.SoLaNoSoft.com.BearChessTournament
 {
     public class TournamentManager
     {
-        private readonly Configuration _configuration;
+        
         private readonly Database _database;
         private int _tournamentId;
         private CurrentTournament _currentTournament;
         private readonly List<int[]> _pairing = new List<int[]>();
         public int CurrentTournamentId => _tournamentId;
 
-        public TournamentManager(Configuration configuration, Database database )
+        public TournamentManager(Database database )
         {
-            _configuration = configuration;
             _database = database;
         }
 
@@ -58,11 +57,11 @@ namespace www.SoLaNoSoft.com.BearChessTournament
         {
             if (currentGame.CurrentGame.RepeatedGame)
             {
-                _database.Save(currentGame);
+                _database.Save(currentGame, false);
             }
             else
             {
-                _database.SaveTournamentGamePair(_tournamentId, _database.Save(currentGame));
+                _database.SaveTournamentGamePair(_tournamentId, _database.Save(currentGame, false));
             }
           
         }
@@ -104,7 +103,7 @@ namespace www.SoLaNoSoft.com.BearChessTournament
 
         public int[] GetPairing()
         {
-            var tournamentGamesCount = _database.GetTournamentGamesCount(_tournamentId) - 1;
+            var tournamentGamesCount = _database.GetTournamentGamesCount(_tournamentId)-1;
             return _pairing[tournamentGamesCount];
         }
 

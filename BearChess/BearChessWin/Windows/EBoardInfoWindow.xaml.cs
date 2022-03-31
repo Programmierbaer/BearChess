@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
-namespace www.SoLaNoSoft.com.BearChessWin.Windows
+namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
     /// Interaktionslogik für EBoardInfoWindow.xaml
@@ -26,19 +17,21 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         private readonly Thread _thread;
         private bool _stopRunning;
+        private readonly ChessBoard _chessBoard;
 
         public EBoardInfoWindow()
         {
             InitializeComponent();
         }
 
-        public EBoardInfoWindow(IElectronicChessBoard eChessBoard) : this()
+        public EBoardInfoWindow(IElectronicChessBoard eChessBoard, string eBoardName) : this()
         {
-            textBlockBoard.Text = $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}Each pawn represents a piece on a field.{Environment.NewLine}DGT Pegasus has no real piece recognition "+
-                                  "and can only give the information per field whether there is a piece or not.";
+            buttonReset.Visibility = Visibility.Collapsed;
+
             chessBoardUcGraphics.SetPiecesMaterial();
-            chessBoardUcGraphics.SetInPositionMode(true,string.Empty,false);
+            chessBoardUcGraphics.SetInPositionMode(true, string.Empty, false);
             chessBoardUcGraphics.ClearPosition();
+            chessBoardUcGraphics.ShowMultiButton(false);
             _eChessBoard = eChessBoard;
             _thread = new Thread(ReadFromBoard)
                       {
@@ -46,6 +39,20 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                       };
             _thread.Start();
             _eChessBoard.RequestDump();
+            _chessBoard = null;
+            if (_eChessBoard.Information.Contains(Constants.MeOne))
+            {
+                _chessBoard = new ChessBoard();
+                textBlockBoard.Text =
+                    $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}Current position reported by the board.{Environment.NewLine}";
+
+            }
+            else
+            {
+                textBlockBoard.Text =
+                    $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}Each pawn represents a piece on a field.{Environment.NewLine}{eBoardName} has no real piece recognition " +
+                    "and can only give the information per field whether there is a piece or not.";
+            }
         }
 
         private void ReadFromBoard()
@@ -58,27 +65,39 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                 {
                     count++;
                 }
-                if (dataFromBoard.IsFieldDump && !string.IsNullOrWhiteSpace(dataFromBoard.FromBoard))
-                {
-                    count = 0;
-                    Dispatcher?.Invoke(() =>
-                    {
-                        chessBoardUcGraphics.ShowFiguresOnField(dataFromBoard.FromBoard.Split(",".ToCharArray()), "P");
-                    });
 
-                    if (!dataFromBoard.BasePosition)
-                    {
-                        _eChessBoard.RequestDump();
-                    }
+                if (_chessBoard != null)
+                {
+                    _chessBoard.NewGame();
+                    _chessBoard.SetPosition(dataFromBoard.FromBoard);
+                    Dispatcher?.Invoke(() => { chessBoardUcGraphics.RepaintBoard(_chessBoard); });
                 }
                 else
                 {
-                    if (count > 10)
+                    if (dataFromBoard.IsFieldDump && !string.IsNullOrWhiteSpace(dataFromBoard.FromBoard))
                     {
-                        _eChessBoard.RequestDump();
                         count = 0;
+                        Dispatcher?.Invoke(() =>
+                        {
+                            chessBoardUcGraphics.ShowFiguresOnField(
+                                dataFromBoard.FromBoard.Split(",".ToCharArray()), "P");
+                        });
+
+                        if (!dataFromBoard.BasePosition)
+                        {
+                            _eChessBoard.RequestDump();
+                        }
+                    }
+                    else
+                    {
+                        if (count > 10)
+                        {
+                            _eChessBoard.RequestDump();
+                            count = 0;
+                        }
                     }
                 }
+
                 Thread.Sleep(100);
             }
         }
@@ -92,6 +111,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         {
             _stopRunning = true;
             DialogResult = true;
+        }
+
+        private void ButtonReset_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Sen a reset command to the board?", "Reset board", MessageBoxButton.YesNo,
+                                MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                _eChessBoard.Reset();
+            }
         }
     }
 }

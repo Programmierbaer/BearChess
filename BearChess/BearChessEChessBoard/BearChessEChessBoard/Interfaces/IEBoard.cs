@@ -4,18 +4,21 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
     public interface IEBoard : IDisposable
     {
+
+        void Reset();
+
         /// <summary>
         /// Set the leds on for the given fields <paramref name="fromFieldName"/> and <paramref name="toFieldName"/>-
         /// </summary>
         /// <param name="fromFieldName">Field name e.g. E2</param>
         /// <param name="toFieldName">Field name e.g. E4</param>
-        void SetLedForFields(string fromFieldName, string toFieldName);
+        void SetLedForFields(string fromFieldName, string toFieldName, bool thinking);
 
         /// <summary>
         /// Set the leds on for the given fields <paramref name="fieldNames"/>-
         /// </summary>
         /// <param name="fieldNames">Field names e.g. E2</param>
-        void SetLedForFields(string[] fieldNames);
+        void SetLedForFields(string[] fieldNames, bool thinking);
 
         void SetLastLeds();
 

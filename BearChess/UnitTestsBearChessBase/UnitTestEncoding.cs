@@ -17,7 +17,7 @@ namespace UnitTestsBearChessBase
             var result = 214 & 127;
             Assert.AreEqual(86, result);
             result = 87 & 127;
-            Assert.AreEqual(86, result);
+            Assert.AreEqual(87, result);
         }
     }
 }

@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.6.0.1}
+\fancyhead[R]{Version 0.6.1.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{28.02.2022} 
+\date{31.03.2022} 
 
 
 \begin{document}
@@ -1181,26 +1181,21 @@ The move list shows all moves of your game.
 	\label{fig:moveList1}
 \end{figure}
 
-\includegraphics[scale=0.5]{text_smallcaps.png} changes the font size in three different levels. Small font for all, larger font only for the played moves, larger font for all.\\
+\includegraphics[scale=0.5]{script_gear.png} changes the information content of the move list. Every click on the button switches between only moves, moves with first best move or moves with best line.\\
 
-When you play against an engine BearChess collects more information.\\
+\includegraphics[scale=0.5]{comments.png} shows or hides the comments on a move.\\
 
-\includegraphics[scale=0.5]{show_detail.png} expands the move list and shows the value and best move calculated by the engine.
+\includegraphics[scale=0.5]{font_size_decrease.png} and \includegraphics[scale=0.5]{font_size_increase.png} changes the font size.\\
+
+When you select a move, you can add symbols or comments to the move using the context menu (right mouse button).
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{movelist2.png}
-	\caption{Move list}
+	\caption{Add symbols or comment}
 	\label{fig:moveList2}
 \end{figure}
 
-\includegraphics[scale=0.5]{script_add.png} expands the move list and shows the value and the full best move list calculated by the engine.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{movelist3.png}
-	\caption{Full move list}
-	\label{fig:moveList3}
-\end{figure}
 
 When the move list window is selected, you can use the cursor keys and the scroll up and down keys to maneuver through the list.
 
@@ -1476,7 +1471,14 @@ When you have started the duel, the following information window appears:
 	\label{fig:EngineDuel3}
 \end{figure}
 
-\includegraphics[scale=0.5]{control_stop_blue.png} ask you if you want to stop the current duel.
+
+\begin{itemize}
+	\item \textbf{1-0} ends the game with a win for white.
+	\item \textbf{0-1} ends the game with a win for black.
+    \item \textbf{1/2} ends the game with a draw.
+	\item \includegraphics[scale=0.5]{control_stop_blue.png} ask you if you want to stop the current duel.
+\end{itemize}
+
 
 \begin{figure}[H]
 	\centering
@@ -1641,6 +1643,14 @@ When you have started the tournament, the following information window appears:
 	\caption{Engine tournament information gauntlet}
 	\label{fig:EngineTournameent6}
 \end{figure}
+
+
+\begin{itemize}
+	\item \textbf{1-0} ends the game with a win for white.
+	\item \textbf{0-1} ends the game with a win for black.
+	\item \textbf{1/2} ends the game with a draw.
+	\item \includegraphics[scale=0.5]{control_stop_blue.png} ask you if you want to stop the current duel.
+\end{itemize}
 
 \includegraphics[scale=0.5]{control_stop_blue.png} ask you if you want to stop the current tournament.
 
@@ -1938,6 +1948,16 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Changelog}
+
+\subsection{Version 0.6.0.1 $\Rightarrow$  0.6.1.0}
+\begin{itemize}
+    \item New: Redesign of move list window.
+    \item New: Add move symbols and comments.
+	\item New: Premature termination of duel or tournament game.
+	\item Fix: Continue an Elo Duel
+	\item Fix: Setup positions on eOne
+\end{itemize}
+
 \subsection{Version 0.6.0.0 $\Rightarrow$  0.6.0.1}
 \begin{itemize}
 	\item Fix: Tournament information.		

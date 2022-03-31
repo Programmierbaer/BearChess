@@ -85,6 +85,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         protected abstract IEBoardWrapper GetEBoardImpl(string basePath, EChessBoardConfiguration configuration);
 
+        public void Reset()
+        {
+            _eChessBoard.Reset();
+        }
+
         /// <inheritdoc />
         public void SetDemoMode(bool inDemoMode)
         {
@@ -104,10 +109,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         /// <inheritdoc />
-        public void SetLedsFor(string[] fields)
+        public void SetLedsFor(string[] fields, bool thinking)
         {
-            _eChessBoard.SetLedsFor(fields);
+            _eChessBoard.SetLedsFor(fields, thinking);
         }
+
 
         /// <inheritdoc />
         public void SetAllLedsOff()

@@ -5,6 +5,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public interface ITournamentInfoWindow
     {
         event EventHandler StopTournament;
+        event EventHandler<string> SaveGame;
         void AddResult(string result, int[] pairing);
         void Show();
         void Close();

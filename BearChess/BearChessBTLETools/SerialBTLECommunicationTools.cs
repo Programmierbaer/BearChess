@@ -94,6 +94,11 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                     portName = device.Name;
                     DeviceId = device.Id;
                 }
+                if (device.Name.StartsWith("SQUARE OFF", StringComparison.OrdinalIgnoreCase))
+                {
+                    portName = device.Name;
+                    DeviceId = device.Id;
+                }
             }
 
             return portName;

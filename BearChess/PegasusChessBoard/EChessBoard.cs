@@ -63,11 +63,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         private string _tmpFromField = string.Empty;
         private string _tmpToField = string.Empty;
         private string _lastSendFields;
-        private byte _currentSpeed = 3;
+        private byte _currentSpeed = 2;
         private byte _currentTimes = 0;
         private byte _currentIntensity = 2;
         private string _lastLogMessage = string.Empty;
-        private string prevRead = string.Empty;
+        private string _prevRead = string.Empty;
 
         private string[] _basePosition =
         {
@@ -124,12 +124,17 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         }
 
 
+        public override void Reset()
+        {
+            //
+        }
+
         public override bool CheckComPort(string portName)
         {
             return true;
         }
 
-        public override void SetLedForFields(string[] fieldNames)
+        public override void SetLedForFields(string[] fieldNames, bool thinking)
         {
 
             if (fieldNames == null || fieldNames.Length == 0)
@@ -145,15 +150,21 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             }
 
             _lastSendFields = sendFields;
-            _logger?.LogDebug("PS: Set LED for fields: " + _lastSendFields);
-           
+            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} Thinking: {thinking}");
+            
+            if (thinking && fieldNamesLength > 1)
+            {
+                SetLedForFields(new string[] {fieldNames[0]},thinking);
+                SetLedForFields(new string[] {fieldNames[1]},thinking);
+                return;
+            }
             byte anzahl = byte.Parse((fieldNamesLength + 5).ToString());
             allBytes.Add(96);
             allBytes.Add(anzahl);
             allBytes.Add(5);
-            allBytes.Add(_currentSpeed); // Speed
-            allBytes.Add(_currentTimes); // Times
-            allBytes.Add(_currentIntensity); // Intensity
+            allBytes.Add(thinking ? (byte)0 : _currentSpeed); // Speed
+            allBytes.Add(thinking ? (byte)0 : _currentTimes); // Times
+            allBytes.Add(thinking ? (byte)1 : _currentIntensity); // Intensity
             foreach (var fieldName in fieldNames)
             {
                 if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
@@ -196,10 +207,10 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             _currentSpeed = 10;
             _currentTimes = 3;
             _currentIntensity = 1;
-            SetLedForFields(new string[]
+            SetLedForFields(new[]
                             {
                                 "A1","H1","H8","A8"
-                            });
+                            }, false);
             Thread.Sleep(3000);
             _currentSpeed = currentSpeed;
             _currentTimes = currentTimes; 
@@ -248,10 +259,10 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             while (true)
             {
                 var dataFromBoard = _serialCommunication.GetFromBoard();
-                if (!dataFromBoard.FromBoard.Equals(prevRead))
+                if (!dataFromBoard.FromBoard.Equals(_prevRead))
                 {
                     _logger?.LogDebug($"PS: Read from board: {dataFromBoard.FromBoard}");
-                    prevRead = dataFromBoard.FromBoard;
+                    _prevRead = dataFromBoard.FromBoard;
                 }
 
                 repeated = dataFromBoard.Repeated;
@@ -507,7 +518,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                     {
                         if (_chessBoard.MoveIsValid(fromFieldNumber, toFieldNumber))
                         {
-                            _logger?.LogDebug($"PS: MakeMove: {_fromField} {_toField}");
+                            _logger?.LogDebug($"PS: MakePgnMove: {_fromField} {_toField}");
                             _chessBoard.MakeMove(_fromField, _toField);
                             _lastFromField = _fromField;
                             _lastToField = _toField;
@@ -543,7 +554,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                                                         Fields.GetFieldNumber(switchToField)))
                             {
                                 _logger?.LogDebug(
-                                    $"PS: Switched MakeMove: {switchFromField} {switchToField}");
+                                    $"PS: Switched MakePgnMove: {switchFromField} {switchToField}");
                                 _chessBoard.MakeMove(switchFromField, switchToField);
                                 _fromField = string.Empty;
                                 _toField = string.Empty;
@@ -569,7 +580,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         public override void SetFen(string fen)
         {
             _chessBoard.Init();
-            _chessBoard.SetPosition(fen);
+            _chessBoard.SetPosition(fen, false);
         }
     }
 }

@@ -9,9 +9,9 @@ using System.Text;
 using System.Xml.Serialization;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using www.SoLaNoSoft.com.BearChessBase.Implementations.Pgn;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
+using PgnCreator = www.SoLaNoSoft.com.BearChessBase.Implementations.pgn.PgnCreator;
 
 namespace www.SoLaNoSoft.com.BearChessDatabase
 {
@@ -403,7 +403,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
         #region Games
 
-        public int Save(DatabaseGame game)
+        public int Save(DatabaseGame game, bool updateGame)
         {
             if (_inError)
             {
@@ -418,8 +418,6 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 }
             }
 
-         
-
             var gameId = game.Id;
            _connection.Open();
             var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
@@ -431,15 +429,24 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 var sw = new StringWriter(sb);
                 aSerializer.Serialize(sw, game);
                 var xmlResult = sw.GetStringBuilder().ToString();
-                if (game.CurrentGame.RepeatedGame)
+                if (game.CurrentGame.RepeatedGame || updateGame)
                 {
                  
                     var sql = @"UPDATE games set result=@result, gameDate=@gameDate, pgn=@pgn, pgnXML=@pgnXML,pgnHash=@pgnHash
                            WHERE id=@id; ";
                     using (var command2 = new SQLiteCommand(sql, _connection))
                     {
+                        DateTime gameDate = game.GameDate;
+                        if (gameDate.Equals(DateTime.MinValue))
+                        {
+                            if (!DateTime.TryParse(game.PgnGame.GameDate.Replace("??", "01"), out gameDate))
+                            {
+                                gameDate = DateTime.UtcNow;
+                            }
+                        }
+
                         command2.Parameters.Add("@result", DbType.String).Value = game.Result;
-                        command2.Parameters.Add("@gameDate", DbType.Int64).Value = game.GameDate.ToFileTime();
+                        command2.Parameters.Add("@gameDate", DbType.Int64).Value = gameDate.ToFileTime();
                         command2.Parameters.Add("@pgn", DbType.String).Value = game.PgnGame.MoveList;
                         command2.Parameters.Add("@pgnXml", DbType.String).Value = xmlResult;
                         command2.Parameters.Add("@pgnHash", DbType.Int32).Value = deterministicHashCode;
@@ -1373,7 +1380,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo" +
                 " FROM games as g  " +
                 " JOIN duelGames t ON (t.game_id=g.id)" +
-                "WHERE t.duel_id=@duelId ORDER BY g.id;", _connection))
+                "WHERE t.duel_id=@duelId;", _connection))
             {
                 cmd.Parameters.Add("@duelId", DbType.Int32).Value = duelId;
                 using (var rdr = cmd.ExecuteReader())
@@ -1948,7 +1955,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo" +
                 " FROM games as g  " +
                 " JOIN tournamentGames t ON (t.game_id=g.id)" +
-                "WHERE t.tournament_id=@tournamentId ORDER BY g.id;", _connection))
+                "WHERE t.tournament_id=@tournamentId;", _connection))
             {
                 cmd.Parameters.Add("@tournamentId", DbType.Int32).Value = tournamentId;
                 using (var rdr = cmd.ExecuteReader())

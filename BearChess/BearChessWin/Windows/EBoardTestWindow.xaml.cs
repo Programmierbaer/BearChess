@@ -61,7 +61,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonGo_OnClick(object sender, RoutedEventArgs e)
         {
-            _eChessBoard?.SetLedsFor(textBoxFields.Text.Split(" ".ToCharArray()));
+            _eChessBoard?.SetLedsFor(textBoxFields.Text.Split(" ".ToCharArray()),false);
         }
 
         private void ButtonAllOff_OnClick(object sender, RoutedEventArgs e)

@@ -1,4 +1,4 @@
-﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.Windows.EBoardInfoWindow"
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.EBoardInfoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -22,6 +22,9 @@
         <TextBlock Margin="10" Name="textBlockBoard" Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left" Width="300" TextWrapping="Wrap" VerticalAlignment="Top"></TextBlock>
         <Button Margin="5" Name="buttonOk" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" >
             <Image Source="../Assets/Icons/accept_button.png" Width="32" />
+        </Button>
+        <Button Margin="5" Name="buttonReset" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Click="ButtonReset_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Reset board" >
+            <Image Source="../Assets/Icons/Board64 black.ico" Width="32" />
         </Button>
 
     </Grid>

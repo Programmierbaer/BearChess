@@ -18,6 +18,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public interface IMoveUserControl
     {
         event EventHandler<int> SelectedMoveChanged;
+        event EventHandler<string> AddComment;
         object Content { get; set; }
         bool HasContent { get; }
         DataTemplate ContentTemplate { get; set; }

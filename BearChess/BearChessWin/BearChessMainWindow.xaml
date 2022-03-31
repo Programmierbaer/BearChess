@@ -15,7 +15,7 @@
             </Grid.RowDefinitions>
             <Menu Grid.Row="0" Margin="5,0,5,0" Background="Transparent">
 
-                <MenuItem Header="Actions">
+                <MenuItem Header="Actions" Name="menuItemActions">
                     <MenuItem Header="Start a new game" Name="menuItemNewGame" Click="MenuItemNewGame_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" />
@@ -73,24 +73,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <!--
-                    <MenuItem Header="Estimate ELO" Name="menuItemEloEstimate">
-                        <MenuItem.Icon>
-                            <Image Source="Assets/Icons/chart_line.png" />
-                        </MenuItem.Icon>
-                        <MenuItem Header="With a new player duel" Name="menuItemEloEstimateNewGame" Click="MenuItemEloEstimateNewGame_OnClick">
-                            <MenuItem.Icon>
-                                <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="With a new engine duel" Name="menuItemEloEstimateEngineMatch"
-                                  Click="MenuItemEloEstimateEngineMatch_OnClick">
-                            <MenuItem.Icon>
-                                <Image Source="Assets/Icons/6-2-chess-png.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </MenuItem>
-                    -->
+                  
                     <MenuItem Header="Setup position" Name="menuItemSetupPosition"
                               Click="MenuItemSetupPosition_OnClick">
                         <MenuItem.Icon>
@@ -119,7 +102,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Games">
+                <MenuItem Header="Games" Name="menuItemGames">
                     <MenuItem Name="menuItemGamesSave" Header="Save" Click="MenuItemGamesSave_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/diskette.png" Stretch="UniformToFill" />
@@ -220,14 +203,7 @@
                                 <Image Name="imageAdjustedForPlayer" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <!--
-                        <MenuItem Name="menuItemAdjustedForEBoard" Header="Adjusted for the electronic board"
-                                  Click="MenuItemAdjustedForEBoard_OnClick">
-                            <MenuItem.Icon>
-                                <Image Name="imageAdjustedForEBoard" Source="Assets/Icons/tick.png" Visibility="Hidden" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        -->
+                    
                     </MenuItem>
                     <MenuItem Name="menuItemSettingsMoves" Header="Notation/Moves">
                         <MenuItem.Icon>
@@ -313,7 +289,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Electronic Boards">
+                <MenuItem Header="Electronic Boards" Name="menuItemElectronicBoards">
                     <MenuItem Name="menuItemCertabo" Header="Certabo">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/Certabo_icon.ico" />
@@ -385,6 +361,20 @@
                         </MenuItem>
 
                     </MenuItem>
+                    <MenuItem Header="SquareOff Pro" Name="menuItemSquareOffPro">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/squareoff.png"  />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToSquareOffPro" Header="Connect"
+                                  Click="MenuItemConnectSquareOffPro_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/connect.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                    </MenuItem>
+                  
+                    <Separator/>
                     <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup"
                               Click="MenuItemConnectOnStartup_OnClick">
                         <MenuItem.Icon>
@@ -401,6 +391,12 @@
                               Click="MenuItemShowBestMoveInAnalyse_OnClick">
                         <MenuItem.Icon>
                             <Image Name="imageShowBestMoveOnAnalysisMode" Source="Assets/Icons/tick.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Show best move in game" Name="menuItemShowBestMoveInGame"
+                              Click="MenuItemShowBestMoveInGame_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageShowBestMoveOnGame" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  -->

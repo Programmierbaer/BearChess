@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 
@@ -189,21 +190,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 foreach (var pgnGame in pgnLoader.Load(openFileDialog.FileName))
                 {
-                    var moveList = pgnGame.GetMoveList();
-                    var allMoves = moveList.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var aMove in allMoves)
+                    for (int i = 0; i < pgnGame.MoveCount; i++)
                     {
-                        var pgnMove = aMove;
-                        if (pgnMove.IndexOf(".", StringComparison.Ordinal) > 0)
-                        {
-                            pgnMove = pgnMove.Substring(pgnMove.IndexOf(".", StringComparison.Ordinal) + 1);
-                        }
-
-                        chessBoard.MakeMove(pgnMove);
+                        chessBoard.MakePgnMove(pgnGame.GetMove(i), pgnGame.GetComment(i));
                     }
 
                     count++;
-                    if (_database.Save(new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList(), null))>0)
+                    if (_database.Save(new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList(), null),false)>0)
                     {
                         chessBoard.Init();
                         chessBoard.NewGame();

@@ -40,7 +40,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
-            _chessBoard.SetPosition(fenPosition);
+            _chessBoard.SetPosition(fenPosition, false);
             buttonSetPosition.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
             buttonCopyPosition.Visibility = _acceptMouse ? Visibility.Collapsed : Visibility.Visible;
             textBoxFenPosition.IsReadOnly = !_acceptMouse;
@@ -180,7 +180,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonReset_OnClick(object sender, RoutedEventArgs e)
         {
             textBoxFenPosition.Text = _fenPosition;
-            _chessBoard.SetPosition(_fenPosition);
+            _chessBoard.SetPosition(_fenPosition, false);
             checkBoxWhiteShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
             checkBoxWhiteLongCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Long);
             checkBoxBlackShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Short);

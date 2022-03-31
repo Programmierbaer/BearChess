@@ -358,6 +358,57 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
                 }
 
+                if (_boardName.Equals(Constants.SquareOffPro, StringComparison.OrdinalIgnoreCase))
+                {
+                    // if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                    {
+                        int counter = 0;
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, "Squareoff Pro"))
+                        {
+                            while (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo("No BTLE Port for SquareOff Pro");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+
+                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceId);
+                        SerialBTLECommunicationTools.StopWatching();
+                    }
+
+                }
+                if (_boardName.Equals(Constants.SquareOff, StringComparison.OrdinalIgnoreCase))
+                {
+                    // if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                    {
+                        int counter = 0;
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, "Square Off"))
+                        {
+                            while (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo("No BTLE Port for SquareOff");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+
+                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceId);
+                        SerialBTLECommunicationTools.StopWatching();
+                    }
+
+                }
+
                 if (_comPort == null)
                 {
                     _logger?.LogError("S: CheckConnect: No COM Port  ");
@@ -433,6 +484,24 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 return true;
                             }
                         }
+                        if (_boardName.Equals(Constants.SquareOffPro, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                CurrentComPort = portName;
+                                return true;
+                            }
+                        }
+                        if (_boardName.Equals(Constants.SquareOff, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                CurrentComPort = portName;
+                                return true;
+                            }
+                        }
                         // For MChessLink
                         if (_boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))
                         {
@@ -441,21 +510,22 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             SendRawToBoard("W0203");
                             SendRawToBoard("W030A");
                         }
-
-                        var readLine = GetRawFromBoard(string.Empty);
+                        var readLine = GetRawFromBoard("R06");
+                        readLine = GetRawFromBoard(string.Empty);
                         if (_boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))
                         {
                             if (readLine.StartsWith("v") && readLine.Length==5)
                             {
                                 int value = Convert.ToInt32(readLine.Substring(1,4), 16);
-                                BoardInformation = "eOne";
+                                BoardInformation = Constants.MeOne;
+                                
                                 if (value <= 511)
                                 {
-                                    BoardInformation = "King Performance";
+                                    BoardInformation = Constants.KingPerformance;
                                 }
                                 if (value <= 271)
                                 {
-                                    BoardInformation = "Exclusive";
+                                    BoardInformation = Constants.Exclusive;
                                 }
 
                             }

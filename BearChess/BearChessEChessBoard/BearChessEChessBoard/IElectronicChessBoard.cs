@@ -5,6 +5,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
     public interface IElectronicChessBoard
     {
+
+        void Reset();
+
         /// <summary>
         /// If demo mode is true, all position changes are possible.
         /// </summary>
@@ -43,7 +46,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Show all fields <paramref name="fields"/> on board.
         /// </summary>
-        void SetLedsFor(string[] fields);
+        void SetLedsFor(string[] fields, bool thinking);
 
         /// <summary>
         /// All led off
@@ -190,7 +193,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         string Information { get; }
         void AllowTakeBack(bool allowTakeBack);
         bool PieceRecognition { get; }
-
         void Ignore(bool ignore);
 
     }

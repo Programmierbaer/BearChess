@@ -107,7 +107,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// Make a move in PGN notation
         /// </summary>
         /// <param name="pgnMove">PGN notation</param>
-        void MakeMove(string pgnMove);
+        void MakePgnMove(string pgnMove, string comment);
+        
 
         /// <summary>
         /// Returns the previous move
@@ -123,7 +124,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// <summary>
         /// Set the board positions based on <paramref name="fenPosition"/>.
         /// </summary>        
-        void SetPosition(string fenPosition);
+        void SetPosition(string fenPosition, bool calculateCastle);
 
         /// <summary>
         /// Set the board positions based on <paramref name="moveNumber"/> and <paramref name="color"/>.

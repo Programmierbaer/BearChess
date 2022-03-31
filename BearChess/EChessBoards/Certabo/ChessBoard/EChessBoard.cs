@@ -88,6 +88,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         }
 
 
+        public override void Reset()
+        {
+            //
+        }
+
         public override bool CheckComPort(string portName)
         {
             _serialCommunication = new SerialCommunication(true, _logger, portName, _useBluetooth);
@@ -102,7 +107,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         }
 
 
-        public override void SetLedForFields(string[] fieldNames)
+        public override void SetLedForFields(string[] fieldNames, bool thinking)
         {
             if (!EnsureConnection())
             {
@@ -112,7 +117,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             lock (_locker)
             {
                 var joinedString = string.Join(" ", fieldNames);
-                if (_flashLeds && fieldNames.Length == 2)
+                if (thinking && fieldNames.Length == 2)
                 {
                     prevLedField = prevLedField == 1 ? 0 : 1;
                 }
@@ -129,7 +134,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
                 byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
                 Array.Copy(AllOff, result, AllOff.Length);
-                if (_flashLeds && fieldNames.Length == 2)
+                if (thinking && fieldNames.Length == 2)
                 {
                     result = UpdateLedsForField(fieldNames[prevLedField], result);
                 }
@@ -222,7 +227,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
 
             _logger?.LogDebug("B: start calibrate ");
-            SetLedForFields(new[] { "A1", "B1", "C1","D1","E1","F1","G1","H1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7","D3","D6" });
+            SetLedForFields(new[] { "A1", "B1", "C1","D1","E1","F1","G1","H1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7","D3","D6" }, false);
             var boardData = _serialCommunication.GetCalibrateData();
             _logger?.LogDebug($"B: calibrate data: {boardData}");
             if (!Calibrate(boardData))

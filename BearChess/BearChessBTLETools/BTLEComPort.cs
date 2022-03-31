@@ -15,12 +15,14 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
     // ReSharper disable once IdentifierTypo
     public class BTLEComPort : IComPort
     {
-        private readonly string _pegasusService         = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
-        private readonly string _mChessLinkService      = "49535343-FE7D-4AE5-8FA9-9FAFD205E455";
-        private readonly string _mChessLinkServiceWrite = "49535343-8841-43F4-A8D4-ECBE34729BB3";
-        private readonly string _mChessLinkServiceRead  = "49535343-1E4D-4BD9-BA61-23C647249616";
-        private readonly string _pegasusServiceWrite    = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
-        private readonly string _pegasusServiceRead     = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _pegasusService           = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _mChessLinkService        = "49535343-FE7D-4AE5-8FA9-9FAFD205E455";
+        private readonly string _mChessLinkServiceWrite   = "49535343-8841-43F4-A8D4-ECBE34729BB3";
+        private readonly string _mChessLinkServiceRead    = "49535343-1E4D-4BD9-BA61-23C647249616";
+        private readonly string _pegasusServiceWrite      = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _pegasusServiceRead       = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _squareOffProServiceWrite = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _squareOffProServiceRead  = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _deviceId;
         private BluetoothLEDevice _bluetoothLeDevice = null;
         private GattCharacteristic _writeCharacteristic = null;
@@ -48,8 +50,8 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         {
             _deviceId = deviceId;
             _allServices = new List<string>() { _pegasusService, _mChessLinkService };
-            _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead };
-            _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite };
+            _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead, _squareOffProServiceRead };
+            _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite, _squareOffProServiceWrite };
 
         }
 

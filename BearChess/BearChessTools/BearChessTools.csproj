@@ -52,8 +52,6 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationSettings.cs" />
-    <Compile Include="PgnGame.cs" />
-    <Compile Include="PgnLoader.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialCommunicationTools.cs" />

@@ -118,11 +118,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HandlingClocks.cs" />
     <Compile Include="Helper\BoardFieldsSetup.cs" />
     <Compile Include="Helper\BoardPiecesSetup.cs" />
     <Compile Include="Helper\ExportGames.cs" />
     <Compile Include="Helper\ProgressWorker.cs" />
     <Compile Include="Helper\SplashProgressControlContent.cs" />
+    <Compile Include="UserControls\MovePlainUserControl.xaml.cs">
+      <DependentUpon>MovePlainUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\DatabaseFilterWindow.xaml.cs">
       <DependentUpon>DatabaseFilterWindow.xaml</DependentUpon>
     </Compile>
@@ -135,10 +139,16 @@
     <Compile Include="Windows\EBoardInfoWindow.xaml.cs">
       <DependentUpon>EBoardInfoWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\EditCommentWindow.xaml.cs">
+      <DependentUpon>EditCommentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EngineWaitWindow.xaml.cs">
       <DependentUpon>EngineWaitWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ITournamentInfoWindow.cs" />
+    <Compile Include="Windows\MoveListPlainWindow.xaml.cs">
+      <DependentUpon>MoveListPlainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\NewTournamentWindow.xaml.cs">
       <DependentUpon>NewTournamentWindow.xaml</DependentUpon>
     </Compile>
@@ -169,13 +179,7 @@
     <Compile Include="UciConfigControls\UciNumericUpdownUserControl.xaml.cs">
       <DependentUpon>UciNumericUpdownUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ExtendedMoveUserControl.xaml.cs">
-      <DependentUpon>ExtendedMoveUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\IMoveUserControl.cs" />
-    <Compile Include="UserControls\MoveUserControl.xaml.cs">
-      <DependentUpon>MoveUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\SplashProgressControlEventArgs.cs" />
     <Compile Include="UserControls\SplashProgressControl.xaml.cs">
       <DependentUpon>SplashProgressControl.xaml</DependentUpon>
@@ -231,9 +235,6 @@
     </Compile>
     <Compile Include="Windows\MaterialWindow.xaml.cs">
       <DependentUpon>MaterialWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\MoveListWindow.xaml.cs">
-      <DependentUpon>MoveListWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MovesConfigWindow.xaml.cs">
       <DependentUpon>MovesConfigWindow.xaml</DependentUpon>
@@ -318,6 +319,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\MovePlainUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\DatabaseFilterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -334,7 +339,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\EditCommentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\EngineWaitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MoveListPlainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -367,14 +380,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UciConfigControls\UciNumericUpdownUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\ExtendedMoveUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\MoveUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -473,10 +478,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MaterialWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\MoveListWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -753,6 +754,14 @@
     <ProjectReference Include="..\PegasusLoader\PegasusLoader.csproj">
       <Project>{C9E9E3B5-A30C-448D-A595-FC3E893AAA3F}</Project>
       <Name>PegasusLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SquareOffLoader\SquareOffLoader.csproj">
+      <Project>{3b9fed35-76c8-4b8b-ad3c-49820cd432a2}</Project>
+      <Name>SquareOffLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SquareOffProLoader\SquareOffProLoader.csproj">
+      <Project>{519d9a7a-b72f-4922-9341-445cd2fc9a85}</Project>
+      <Name>SquareOffProLoader</Name>
     </ProjectReference>
     <ProjectReference Include="..\Teddy\Teddy.csproj">
       <Project>{a05313c6-91fe-4b82-8fad-6f6f66cf812a}</Project>
@@ -1165,6 +1174,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\FicsLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\squareoff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\script_gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\font_size_decrease.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\font_size_increase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\comments.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

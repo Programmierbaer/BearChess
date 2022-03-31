@@ -40,14 +40,16 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public string UnknownPieceCode => "unknown";
 
-        public void SetLedForFields(string fromFieldName, string toFieldName)
+        public abstract void Reset();
+
+        public void SetLedForFields(string fromFieldName, string toFieldName, bool thinking)
         {
-            SetLedForFields(new[] { fromFieldName, toFieldName });
+            SetLedForFields(new[] { fromFieldName, toFieldName }, thinking);
         }
 
         public abstract bool CheckComPort(string portName);
 
-        public abstract void SetLedForFields(string[] fieldNames);
+        public abstract void SetLedForFields(string[] fieldNames, bool thinking);
 
         public abstract void SetLastLeds();
 

@@ -135,7 +135,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             var strings = moves.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             foreach (var s in strings)
             {
-                chessBoard.MakeMove(s.Contains(".") ? s.Substring(s.IndexOf(".") + 1) : s);
+                chessBoard.MakePgnMove(s.Contains(".") ? s.Substring(s.IndexOf(".") + 1) : s, string.Empty);
             }
 
             return chessBoard.GetFenPosition();

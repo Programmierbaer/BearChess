@@ -26,6 +26,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _canClose;
 
         public event EventHandler StopTournament;
+        public event EventHandler<string> SaveGame;
 
         public TournamentInfoRoundRobinWindow(Configuration configuration)
         {
@@ -235,6 +236,39 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetDoubleValue("EngineTournamentRRWindowTop", Top);
             _configuration.SetDoubleValue("EngineTournamentRRWindowLeft", Left);
             _configuration.SetDoubleValue("EngineTournamentRRWindowWidth", Width);
+        }
+
+        private void ButtonWin_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Save the game as won for white?", "Save game",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                _canClose = true;
+                SaveGame?.Invoke(this, "1-0");
+            }
+        }
+
+        private void ButtonLose_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Save the game as won for black?", "Save game",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                _canClose = true;
+                SaveGame?.Invoke(this, "0-1");
+            }
+        }
+
+        private void ButtonDraw_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Save the game as as a draw?", "Save game",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                _canClose = true;
+                SaveGame?.Invoke(this, "1/2");
+            }
         }
     }
 }

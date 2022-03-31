@@ -10,50 +10,56 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     {
         public static readonly int[] MoveOffsets = { -9, -11, 9, 11, -10, 10, 1, -1, 19, 21, 12, -8, -19, -21, -12, 8 };
 
-        /// <inheritdoc />
+        
         public int Figure { get; set;  }
 
-        /// <inheritdoc />
+        
         public int FigureColor { get; set; }
 
-        /// <inheritdoc />
+        
         public int FromField { get; set; }
 
-        /// <inheritdoc />
+        
         public string FromFieldName { get; set; }
 
-        /// <inheritdoc />
+        
         public int ToField { get; set; }
 
-        /// <inheritdoc />
+        
         public string ToFieldName { get; set; }
 
-        /// <inheritdoc />
+        
         public int CapturedFigure { get; set; }
 
-        /// <inheritdoc />
+        
         public int PromotedFigure { get; set; }
 
-        /// <inheritdoc />
+        
         public int Value { get; set; }
 
-        /// <inheritdoc />
+        
         public decimal Score { get; set; }
 
-        /// <inheritdoc />
+        
         public string BestLine { get; set; }
 
-        /// <inheritdoc />
+        
         public int CapturedFigureMaterial { get; set; }
 
-        /// <inheritdoc />
+        
         public int Identifier { get; set; }
 
-        /// <inheritdoc />
+        
         public bool IsEngineMove { get; set;  }
-
-        /// <inheritdoc />
+        
+        
         public string CheckOrMateSign { get; set; }
+
+        public string Comment { get; set; }
+        public string EvaluationSymbol { get; set; }
+        public string MoveSymbol { get; set; }
+
+
 
         [XmlIgnore]
         public BoardEvaluation[] BoardEvaluations { get; set; }
@@ -78,6 +84,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             Score = 0;
             BestLine = string.Empty;
             IsEngineMove = false;
+            Comment = string.Empty;
+            EvaluationSymbol = string.Empty;
+            MoveSymbol = string.Empty;
         }
 
         public Move(int fromField, int toField,  int color, int figureId, IChessFigure capturedFigure) : this(fromField,toField, color, figureId)
@@ -136,6 +145,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             Score = move.Score;
             BestLine = move.BestLine;
             IsEngineMove = move.IsEngineMove;
+            Comment  = move.Comment;
+            EvaluationSymbol = move.EvaluationSymbol;
+            MoveSymbol= move.MoveSymbol;
         }
 
         public override string ToString()

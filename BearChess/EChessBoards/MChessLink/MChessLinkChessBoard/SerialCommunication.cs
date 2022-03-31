@@ -192,6 +192,43 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                 }
 
                             }
+                            if (readLine.Contains("g"))
+                            {
+
+                                lock (_locker)
+                                {
+                                    string tmpLine =
+                                        readLine.Substring(readLine.IndexOf("g", StringComparison.Ordinal));
+
+                                    while (true)
+                                    {
+                                        var startIndex = tmpLine.IndexOf("g", StringComparison.Ordinal);
+                                        if (tmpLine.Length < startIndex + 67)
+                                        {
+                                            break;
+                                        }
+
+                                        string currentPosition = tmpLine.Substring(startIndex, 67);
+                                        _currentPosition = currentPosition;
+                                        _dataFromBoard.Enqueue(_currentPosition);
+                                        if (tmpLine.Length > 67)
+                                        {
+                                            tmpLine = tmpLine.Substring(67);
+                                            //_logger?.LogDebug($"SC: new tmp line: {tmpLine}");
+                                            if (!tmpLine.StartsWith("s"))
+                                            {
+                                                break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+
+                                }
+
+                            }
 
                             if (_clientConnected)
                             {
@@ -233,7 +270,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     {
                         if (_stringDataToBoard.TryDequeue(out string data))
                         {
-                            if (!data.Equals("X") && lastReadToSend.Equals(data))
+                            if (!data.Equals("X") && !data.Equals("G") && lastReadToSend.Equals(data))
                             {
                                 // _logger?.LogDebug($"SC: Skip last send {data}");
                                 continue;

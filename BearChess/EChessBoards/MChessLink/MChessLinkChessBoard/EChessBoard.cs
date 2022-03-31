@@ -3,6 +3,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
@@ -158,6 +159,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             BatteryStatus = "Full";
             IsConnected = EnsureConnection();
             Information = "Millennium "+_serialCommunication.BoardInformation;
+            PieceRecognition = _serialCommunication.BoardInformation != Constants.MeOne;
         }
 
         public EChessBoard(ILogging logger)
@@ -166,6 +168,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             _logger = logger;
             BatteryLevel = "100";
             BatteryStatus = "Full";
+        }
+
+        public override void Reset()
+        {
+            lock (_locker)
+            {
+                _serialCommunication.Send("T");
+            }
         }
 
         public override bool CheckComPort(string portName)
@@ -257,18 +267,18 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
         }
 
-        public override void SetLedForFields(string[] fieldNames)
+        public override void SetLedForFields(string[] fieldNames, bool thinking)
         {
             if (!EnsureConnection())
             {
                 return;
             }
-            var ledForFields = GetLedForFields(fieldNames);
+            var ledForFields = GetLedForFields(fieldNames, thinking);
             if (!string.IsNullOrWhiteSpace(_lastSendLeds) && _lastSendLeds.Equals($"L22{ledForFields}"))
             {
                 return;
             }
-            _lastSendLeds = $"L22{ledForFields}";
+            _lastSendLeds =  $"L22{ledForFields}";
             _logger?.LogDebug($"SendFields : {string.Join(" ",fieldNames)}");
             lock (_locker)
             {
@@ -370,8 +380,16 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void RequestDump()
         {
-            //
+            lock (_locker)
+            {
+                if (!PieceRecognition)
+                {
+                    _serialCommunication.Send("G");
+                }
+            }
         }
+
+        
 
         public override DataFromBoard GetPiecesFen()
         {
@@ -380,6 +398,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 return new DataFromBoard(string.Empty);
             }
 
+            bool isDump = false;
             var result = string.Empty;
 
             var dataFromBoard = _serialCommunication.GetFromBoard();
@@ -396,22 +415,17 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 {
                     _playWithWhite = true;
                 }
-                if (_playWithWhite)
-                {
-                    for (int i = 57; i > 0; i -= 8)
-                    {
-                        var substring = dataFromBoard.FromBoard.Substring(i, 8);
-                        result += GetFenLine(substring);
-                    }
-                }
-                else
-                {
-                    for (int i = 1; i < 58; i += 8)
-                    {
-                        var substring = dataFromBoard.FromBoard.Substring(i, 8);
-                        result += GetFenLine(string.Concat(substring.Reverse()));
-                    }
-                }
+
+                result = FenConversions.GetPiecesFen(dataFromBoard.FromBoard, true, _playWithWhite);
+               
+            }
+
+            if (dataFromBoard.FromBoard.StartsWith("g") && dataFromBoard.FromBoard.Length == 67)
+            {
+                isDump = true;
+               
+                result = FenConversions.GetPiecesFen(dataFromBoard.FromBoard, false, true);
+               
             }
 
 
@@ -420,7 +434,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 return new DataFromBoard(UnknownPieceCode, dataFromBoard.Repeated);
             }
 
-            return new DataFromBoard(result.Substring(0, result.Length - 1), dataFromBoard.Repeated);
+            return new DataFromBoard(result, dataFromBoard.Repeated) {IsFieldDump = isDump};
 
         }
 
@@ -431,7 +445,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void SetFen(string fen)
         {
-            //
+            lock (_locker)
+            {
+                if (!PieceRecognition)
+                {
+                    var chessLinkFen = FenConversions.GetChessLinkFen(fen);
+                    _serialCommunication.Send($"G{chessLinkFen}");
+                }
+            }
         }
 
         private string GetFenLine(string substring)
@@ -470,10 +491,16 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             return codes.PadLeft(162, 'C');
         }
 
-        private string GetLedForFields(string[] fieldNames)
+        private string GetLedForFields(string[] fieldNames, bool thinking)
         {
             var codes = string.Empty;
             var toCode = _flashSync ? "CC" : "33";
+            var fromCode = "CC";
+            if (thinking)
+            {
+                toCode = "FF";
+                fromCode = "FF";
+            }
             for (var i = 0; i < 81; i++)
             {
                 var code = "00";
@@ -483,7 +510,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     {
                         if (_upperRight && _ledUpperRightToField[i].Contains(fieldNames[j].ToLower()))
                         {
-                            code = j == 0 ? "CC" : toCode;
+                            code = j == 0 ? fromCode : toCode;
 
                             break;
                         }
@@ -491,21 +518,21 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                         if (_upperLeft && _ledUpperLeftToField[i].Contains(fieldNames[j].ToLower()))
                         {
-                            code = j == 0 ? "CC" : toCode;
+                            code = j == 0 ? fromCode : toCode;
 
                             break;
                         }
 
                         if (_lowerRight && _ledLowerRightToField[i].Contains(fieldNames[j].ToLower()))
                         {
-                            code = j == 0 ? "CC" : toCode;
+                            code = j == 0 ? fromCode : toCode;
 
                             break;
                         }
 
                         if (_lowerLeft && _ledLowerLeftToField[i].Contains(fieldNames[j].ToLower()))
                         {
-                            code = j == 0 ? "CC" : toCode;
+                            code = j == 0 ? fromCode : toCode;
 
                             break;
                         }
@@ -514,7 +541,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     {
                         if (_upperRight && _ledUpperRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
-                            code = j == 0 ? "CC" : toCode;
+                            code = j == 0 ? fromCode : toCode;
 
                             break;
                         }
@@ -522,21 +549,21 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                         if (_upperLeft && _ledUpperLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
-                            code = j == 0 ? "CC" : toCode;
+                            code = j == 0 ? fromCode : toCode;
 
                             break;
                         }
 
                         if (_lowerRight && _ledLowerRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
-                            code = j == 0 ? "CC" : toCode;
+                            code = j == 0 ? fromCode : toCode;
 
                             break;
                         }
 
                         if (_lowerLeft && _ledLowerLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
-                            code = j == 0 ? "CC" : toCode;
+                            code = j == 0 ? fromCode : toCode;
 
                             break;
                         }

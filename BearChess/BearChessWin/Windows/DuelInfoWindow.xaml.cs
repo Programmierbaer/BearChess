@@ -5,11 +5,10 @@ using System.Windows;
 using System.Windows.Controls;
 using www.SoLaNoSoft.com.BearChessTools;
 
-
 namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
-    /// Interaktionslogik für DuelInfoWindow.xaml
+    ///     Interaktionslogik für DuelInfoWindow.xaml
     /// </summary>
     public partial class DuelInfoWindow : Window
     {
@@ -17,41 +16,42 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly int _duelGames;
 
 
-        private readonly decimal[] _results = {0, 0};
+        private readonly decimal[] _results = { 0, 0 };
+        private bool _canClose;
         private bool _isFinished;
-        private bool _canClose = false;
-        private bool _pauseAfterGame = true;
-
-        public event EventHandler StopDuel;
-        public event EventHandler ContinueDuel;
-
-        public bool PausedAfterGame => _pauseAfterGame;
 
         public DuelInfoWindow(Configuration configuration)
         {
             InitializeComponent();
             _configuration = configuration;
-            Top = _configuration.GetWinDoubleValue("EngineDuelWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
-            Left = _configuration.GetWinDoubleValue("EngineDuelWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
-            Width = _configuration.GetWinDoubleValue("EngineDuelWindowWidth", Configuration.WinScreenInfo.Width, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
+            Top = _configuration.GetWinDoubleValue("EngineDuelWindowTop", Configuration.WinScreenInfo.Top,
+                                                   SystemParameters.VirtualScreenHeight,
+                                                   SystemParameters.VirtualScreenWidth);
+            Left = _configuration.GetWinDoubleValue("EngineDuelWindowLeft", Configuration.WinScreenInfo.Left,
+                                                    SystemParameters.VirtualScreenHeight,
+                                                    SystemParameters.VirtualScreenWidth);
+            Width = _configuration.GetWinDoubleValue("EngineDuelWindowWidth", Configuration.WinScreenInfo.Width,
+                                                     SystemParameters.VirtualScreenHeight,
+                                                     SystemParameters.VirtualScreenWidth,
                                                      (Width / 2).ToString(CultureInfo.InvariantCulture));
-            _pauseAfterGame = bool.Parse(_configuration.GetConfigValue("_pauseDuelGame", "false"));
-            checkBoxPauseAfterGame.IsChecked = _pauseAfterGame;
+            PausedAfterGame = bool.Parse(_configuration.GetConfigValue("_pauseDuelGame", "false"));
+            checkBoxPauseAfterGame.IsChecked = PausedAfterGame;
         }
 
-       
-        public DuelInfoWindow(string engine1, string engine2, int duelGames, bool switchColor, Configuration configuration) : this(configuration)
+
+        public DuelInfoWindow(string engine1, string engine2, int duelGames, bool switchColor,
+                              Configuration configuration) : this(configuration)
         {
             _duelGames = duelGames;
-            for (int i = 1; i <= duelGames; i++)
+            for (var i = 1; i <= duelGames; i++)
             {
-                gridDuel.ColumnDefinitions.Add(new ColumnDefinition() {Width = new GridLength(40)});
-                var textBlock = new TextBlock()
+                gridDuel.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(40) });
+                var textBlock = new TextBlock
                                 {
                                     Text = i.ToString(),
                                     Margin = new Thickness(5)
                                 };
-                Grid.SetColumn(textBlock, i+1);
+                Grid.SetColumn(textBlock, i + 1);
                 Grid.SetRow(textBlock, 0);
                 gridDuel.Children.Add(textBlock);
             }
@@ -60,8 +60,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockEngine2.Text = engine2;
             checkBoxSwitchColor.IsChecked = switchColor;
             textBlockStatus.Text = $"Game 1 of {duelGames}";
-
         }
+
+        public bool PausedAfterGame { get; private set; } = true;
+
+        public event EventHandler StopDuel;
+        public event EventHandler ContinueDuel;
+        public event EventHandler<string> SaveGame;
 
         public void CloseInfoWindow()
         {
@@ -71,14 +76,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void AddResult(int gameNumber, string result, bool switchSide)
         {
-            var textBlock1 = new TextBlock() {Margin = new Thickness(5)};
-            var textBlock2 = new TextBlock() {Margin = new Thickness(5)};
+            var textBlock1 = new TextBlock { Margin = new Thickness(5) };
+            var textBlock2 = new TextBlock { Margin = new Thickness(5) };
             if (result.Contains("/"))
             {
                 textBlock1.Text = "½";
                 textBlock2.Text = "½";
-                _results[0] = _results[0] + (decimal) 0.5;
-                _results[1] = _results[1] + (decimal) 0.5;
+                _results[0] = _results[0] + (decimal)0.5;
+                _results[1] = _results[1] + (decimal)0.5;
             }
             else
             {
@@ -88,13 +93,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         textBlock1.Text = "0";
                         textBlock2.Text = "1";
-                        _results[1] = _results[1] + (decimal)1;
+                        _results[1] = _results[1] + 1;
                     }
                     else
                     {
                         textBlock1.Text = "1";
                         textBlock2.Text = "0";
-                        _results[0] = _results[0] + (decimal)1;
+                        _results[0] = _results[0] + 1;
                     }
                 }
 
@@ -104,16 +109,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         textBlock1.Text = "1";
                         textBlock2.Text = "0";
-                        _results[0] = _results[0] + (decimal)1;
+                        _results[0] = _results[0] + 1;
                     }
                     else
                     {
                         textBlock1.Text = "0";
                         textBlock2.Text = "1";
-                        _results[1] = _results[1] + (decimal)1;
+                        _results[1] = _results[1] + 1;
                     }
-
-
                 }
             }
 
@@ -130,7 +133,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     buttonContinue.Visibility = Visibility.Visible;
                     buttonStop.Visibility = Visibility.Collapsed;
-                    buttonClose.Visibility = Visibility.Collapsed;
+                    buttonClose.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -148,6 +151,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 buttonStop.Visibility = Visibility.Collapsed;
                 buttonContinue.Visibility = Visibility.Collapsed;
             }
+
             textBlockResult1.Text = $"{_results[0]}";
             textBlockResult2.Text = $"{_results[1]}";
         }
@@ -202,17 +206,56 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonStop.Visibility = Visibility.Visible;
             buttonContinue.Visibility = Visibility.Collapsed;
             buttonClose.Visibility = Visibility.Collapsed;
-           ContinueDuel?.Invoke(this, EventArgs.Empty);
+            ContinueDuel?.Invoke(this, EventArgs.Empty);
         }
 
         private void CheckBoxPauseAfterGame_OnChecked(object sender, RoutedEventArgs e)
         {
-            _pauseAfterGame = true;
+            PausedAfterGame = true;
         }
 
         private void CheckBoxPauseAfterGame_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            _pauseAfterGame = false;
+            PausedAfterGame = false;
+        }
+
+        private void ButtonWin_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Save the game as won for white?", "Save game",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                _canClose = true;
+                SaveGame?.Invoke(this, "1-0");
+            }
+        }
+
+        private void ButtonLose_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Save the game as won for black?", "Save game",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                _canClose = true;
+                SaveGame?.Invoke(this, "0-1");
+            }
+        }
+
+        private void ButtonDraw_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Save the game as as a draw?", "Save game",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            {
+                _canClose = true;
+                SaveGame?.Invoke(this, "1/2");
+            }
+        }
+
+        private void ButtonClose_OnClick(object sender, RoutedEventArgs e)
+        {
+            _canClose = true;
+            Close();
         }
     }
 }

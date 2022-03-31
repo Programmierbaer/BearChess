@@ -288,7 +288,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (_tournamentManager == null)
                 {
-                    _tournamentManager = new TournamentManager(_configuration, _database);
+                    _tournamentManager = new TournamentManager(_database);
                 }
 
                 _tournamentManager.Load(tournament.TournamentId);

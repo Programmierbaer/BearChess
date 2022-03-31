@@ -58,7 +58,7 @@
 \contentsline {subsection}{\numberline {12.9}Configuration for startup game}{61}{subsection.12.9}%
 \contentsline {section}{\numberline {13}Move list}{61}{section.13}%
 \contentsline {section}{\numberline {14}Pause and continue a game}{63}{section.14}%
-\contentsline {section}{\numberline {15}Easy start or restart of a game}{63}{section.15}%
+\contentsline {section}{\numberline {15}Easy start or restart of a game}{64}{section.15}%
 \contentsline {subsubsection}{\numberline {15.0.1}Continue a game}{65}{subsubsection.15.0.1}%
 \contentsline {subsection}{\numberline {15.1}Influence of BearChess in engine games}{65}{subsection.15.1}%
 \contentsline {section}{\numberline {16}Relaxed mode}{66}{section.16}%
@@ -76,16 +76,16 @@
 \contentsline {section}{\numberline {19}Engine tournament}{80}{section.19}%
 \contentsline {subsection}{\numberline {19.1}Start a new engine tournament}{81}{subsection.19.1}%
 \contentsline {subsubsection}{\numberline {19.1.1}Engine tournament information}{83}{subsubsection.19.1.1}%
-\contentsline {subsection}{\numberline {19.2}Manage engine tournaments}{84}{subsection.19.2}%
-\contentsline {subsubsection}{\numberline {19.2.1}Repeat a game}{85}{subsubsection.19.2.1}%
-\contentsline {section}{\numberline {20}Setup position}{85}{section.20}%
+\contentsline {subsection}{\numberline {19.2}Manage engine tournaments}{85}{subsection.19.2}%
+\contentsline {subsubsection}{\numberline {19.2.1}Repeat a game}{86}{subsubsection.19.2.1}%
+\contentsline {section}{\numberline {20}Setup position}{86}{section.20}%
 \contentsline {subsection}{\numberline {20.1}With support of an electronic chessboard}{86}{subsection.20.1}%
-\contentsline {subsection}{\numberline {20.2}Without support of an electronic chessboard}{87}{subsection.20.2}%
-\contentsline {section}{\numberline {21}Run startup game on start}{88}{section.21}%
-\contentsline {section}{\numberline {22}Games}{89}{section.22}%
-\contentsline {subsection}{\numberline {22.1}Save}{89}{subsection.22.1}%
-\contentsline {subsection}{\numberline {22.2}Show and load}{90}{subsection.22.2}%
-\contentsline {section}{\numberline {23}Engine window}{91}{section.23}%
+\contentsline {subsection}{\numberline {20.2}Without support of an electronic chessboard}{88}{subsection.20.2}%
+\contentsline {section}{\numberline {21}Run startup game on start}{89}{section.21}%
+\contentsline {section}{\numberline {22}Games}{90}{section.22}%
+\contentsline {subsection}{\numberline {22.1}Save}{90}{subsection.22.1}%
+\contentsline {subsection}{\numberline {22.2}Show and load}{91}{subsection.22.2}%
+\contentsline {section}{\numberline {23}Engine window}{92}{section.23}%
 \contentsline {section}{\numberline {24}Extended engine support}{94}{section.24}%
 \contentsline {section}{\numberline {25}Important To Know}{96}{section.25}%
 \contentsline {subsection}{\numberline {25.1}Install a new version}{96}{subsection.25.1}%
@@ -101,30 +101,31 @@
 \contentsline {section}{\numberline {27}Known Issues}{97}{section.27}%
 \contentsline {section}{\numberline {28}Next Steps}{97}{section.28}%
 \contentsline {section}{\numberline {29}Changelog}{98}{section.29}%
-\contentsline {subsection}{\numberline {29.1}Version 0.6.0.0 $\Rightarrow $ 0.6.0.1}{98}{subsection.29.1}%
-\contentsline {subsection}{\numberline {29.2}Version 0.5.9.0 $\Rightarrow $ 0.6.0.0}{98}{subsection.29.2}%
-\contentsline {subsection}{\numberline {29.3}Version 0.5.8.1 $\Rightarrow $ 0.5.9.0}{98}{subsection.29.3}%
-\contentsline {subsection}{\numberline {29.4}Version 0.5.8.0 $\Rightarrow $ 0.5.8.1}{98}{subsection.29.4}%
-\contentsline {subsection}{\numberline {29.5}Version 0.5.7.0 $\Rightarrow $ 0.5.8.0}{99}{subsection.29.5}%
-\contentsline {subsection}{\numberline {29.6}Version 0.5.6.2 $\Rightarrow $ 0.5.7.0}{99}{subsection.29.6}%
-\contentsline {subsection}{\numberline {29.7}Version 0.5.6.1 $\Rightarrow $ 0.5.6.2}{100}{subsection.29.7}%
-\contentsline {subsection}{\numberline {29.8}Version 0.5.6.0 $\Rightarrow $ 0.5.6.1}{100}{subsection.29.8}%
-\contentsline {subsection}{\numberline {29.9}Version 0.5.5.3 $\Rightarrow $ 0.5.6.0}{100}{subsection.29.9}%
-\contentsline {subsection}{\numberline {29.10}Version 0.5.5.2 $\Rightarrow $ 0.5.5.3}{100}{subsection.29.10}%
-\contentsline {subsection}{\numberline {29.11}Version 0.5.5.1 $\Rightarrow $ 0.5.5.2}{100}{subsection.29.11}%
-\contentsline {subsection}{\numberline {29.12}Version 0.5.5.0 $\Rightarrow $ 0.5.5.1}{100}{subsection.29.12}%
-\contentsline {subsection}{\numberline {29.13}Version 0.5.0.0 $\Rightarrow $ 0.5.5.0}{100}{subsection.29.13}%
-\contentsline {subsection}{\numberline {29.14}Version 0.4.4.0 $\Rightarrow $ 0.5.0.0}{101}{subsection.29.14}%
-\contentsline {subsection}{\numberline {29.15}Version 0.4.3.1 $\Rightarrow $ 0.4.4.0}{101}{subsection.29.15}%
-\contentsline {subsection}{\numberline {29.16}Version 0.4.3.0 $\Rightarrow $ 0.4.3.1}{101}{subsection.29.16}%
-\contentsline {subsection}{\numberline {29.17}Version 0.4.2.3 $\Rightarrow $ 0.4.3.0}{101}{subsection.29.17}%
-\contentsline {subsection}{\numberline {29.18}Version 0.4.2.2 $\Rightarrow $ 0.4.2.3}{101}{subsection.29.18}%
-\contentsline {subsection}{\numberline {29.19}Version 0.4.2.1 $\Rightarrow $ 0.4.2.2}{101}{subsection.29.19}%
-\contentsline {subsection}{\numberline {29.20}Version 0.4.2.0 $\Rightarrow $ 0.4.2.1}{102}{subsection.29.20}%
-\contentsline {subsection}{\numberline {29.21}Version 0.4.1.0 $\Rightarrow $ 0.4.2.0}{102}{subsection.29.21}%
-\contentsline {subsection}{\numberline {29.22}Version 0.4.0.0 $\Rightarrow $ 0.4.1.0}{102}{subsection.29.22}%
-\contentsline {subsection}{\numberline {29.23}Version 0.3.3.0 $\Rightarrow $ 0.4.0.0}{102}{subsection.29.23}%
-\contentsline {subsection}{\numberline {29.24}Version 0.3.2.0 $\Rightarrow $ 0.3.3.0}{103}{subsection.29.24}%
-\contentsline {subsection}{\numberline {29.25}Version 0.3.1.1 $\Rightarrow $ 0.3.2.0}{103}{subsection.29.25}%
-\contentsline {subsection}{\numberline {29.26}Version 0.3.1.0 $\Rightarrow $ 0.3.1.1}{103}{subsection.29.26}%
-\contentsline {subsection}{\numberline {29.27}Version 0.3.0.0 $\Rightarrow $ 0.3.1.0}{103}{subsection.29.27}%
+\contentsline {subsection}{\numberline {29.1}Version 0.6.0.1 $\Rightarrow $ 0.6.1.0}{98}{subsection.29.1}%
+\contentsline {subsection}{\numberline {29.2}Version 0.6.0.0 $\Rightarrow $ 0.6.0.1}{98}{subsection.29.2}%
+\contentsline {subsection}{\numberline {29.3}Version 0.5.9.0 $\Rightarrow $ 0.6.0.0}{98}{subsection.29.3}%
+\contentsline {subsection}{\numberline {29.4}Version 0.5.8.1 $\Rightarrow $ 0.5.9.0}{98}{subsection.29.4}%
+\contentsline {subsection}{\numberline {29.5}Version 0.5.8.0 $\Rightarrow $ 0.5.8.1}{99}{subsection.29.5}%
+\contentsline {subsection}{\numberline {29.6}Version 0.5.7.0 $\Rightarrow $ 0.5.8.0}{99}{subsection.29.6}%
+\contentsline {subsection}{\numberline {29.7}Version 0.5.6.2 $\Rightarrow $ 0.5.7.0}{99}{subsection.29.7}%
+\contentsline {subsection}{\numberline {29.8}Version 0.5.6.1 $\Rightarrow $ 0.5.6.2}{100}{subsection.29.8}%
+\contentsline {subsection}{\numberline {29.9}Version 0.5.6.0 $\Rightarrow $ 0.5.6.1}{100}{subsection.29.9}%
+\contentsline {subsection}{\numberline {29.10}Version 0.5.5.3 $\Rightarrow $ 0.5.6.0}{100}{subsection.29.10}%
+\contentsline {subsection}{\numberline {29.11}Version 0.5.5.2 $\Rightarrow $ 0.5.5.3}{100}{subsection.29.11}%
+\contentsline {subsection}{\numberline {29.12}Version 0.5.5.1 $\Rightarrow $ 0.5.5.2}{100}{subsection.29.12}%
+\contentsline {subsection}{\numberline {29.13}Version 0.5.5.0 $\Rightarrow $ 0.5.5.1}{100}{subsection.29.13}%
+\contentsline {subsection}{\numberline {29.14}Version 0.5.0.0 $\Rightarrow $ 0.5.5.0}{100}{subsection.29.14}%
+\contentsline {subsection}{\numberline {29.15}Version 0.4.4.0 $\Rightarrow $ 0.5.0.0}{101}{subsection.29.15}%
+\contentsline {subsection}{\numberline {29.16}Version 0.4.3.1 $\Rightarrow $ 0.4.4.0}{101}{subsection.29.16}%
+\contentsline {subsection}{\numberline {29.17}Version 0.4.3.0 $\Rightarrow $ 0.4.3.1}{101}{subsection.29.17}%
+\contentsline {subsection}{\numberline {29.18}Version 0.4.2.3 $\Rightarrow $ 0.4.3.0}{101}{subsection.29.18}%
+\contentsline {subsection}{\numberline {29.19}Version 0.4.2.2 $\Rightarrow $ 0.4.2.3}{101}{subsection.29.19}%
+\contentsline {subsection}{\numberline {29.20}Version 0.4.2.1 $\Rightarrow $ 0.4.2.2}{102}{subsection.29.20}%
+\contentsline {subsection}{\numberline {29.21}Version 0.4.2.0 $\Rightarrow $ 0.4.2.1}{102}{subsection.29.21}%
+\contentsline {subsection}{\numberline {29.22}Version 0.4.1.0 $\Rightarrow $ 0.4.2.0}{102}{subsection.29.22}%
+\contentsline {subsection}{\numberline {29.23}Version 0.4.0.0 $\Rightarrow $ 0.4.1.0}{102}{subsection.29.23}%
+\contentsline {subsection}{\numberline {29.24}Version 0.3.3.0 $\Rightarrow $ 0.4.0.0}{102}{subsection.29.24}%
+\contentsline {subsection}{\numberline {29.25}Version 0.3.2.0 $\Rightarrow $ 0.3.3.0}{103}{subsection.29.25}%
+\contentsline {subsection}{\numberline {29.26}Version 0.3.1.1 $\Rightarrow $ 0.3.2.0}{103}{subsection.29.26}%
+\contentsline {subsection}{\numberline {29.27}Version 0.3.1.0 $\Rightarrow $ 0.3.1.1}{103}{subsection.29.27}%
+\contentsline {subsection}{\numberline {29.28}Version 0.3.0.0 $\Rightarrow $ 0.3.1.0}{103}{subsection.29.28}%
