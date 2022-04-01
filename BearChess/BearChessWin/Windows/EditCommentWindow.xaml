@@ -13,7 +13,7 @@
                 <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32" />
             </Button>
             <Button  Margin="5" HorizontalAlignment="Left" Name="buttonClear" 
-                     Click="ButtonClear_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Remove comment">
+                     Click="ButtonClear_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Remove">
                 <Image Source="../Assets/Icons/clear_formatting.png" Width="32" Height="32" />
             </Button>
             <Button  Margin="5" HorizontalAlignment="Right" Name="buttonCancel"

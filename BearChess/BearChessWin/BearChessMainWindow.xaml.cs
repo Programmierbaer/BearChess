@@ -4908,6 +4908,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
               _moveListWindow.AddMove(_databaseGame.MoveList[i]);
             }
+            _moveListWindow.MarkLastMove();
         }
 
         private void DatabaseWindow_SelectedGameChanged(object sender, DatabaseGame e)

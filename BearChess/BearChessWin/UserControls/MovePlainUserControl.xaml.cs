@@ -96,6 +96,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockMoveSymbol.Visibility = Visibility.Visible;
             }
 
+            if (!string.IsNullOrWhiteSpace(move.OwnSymbol))
+            {
+                textBlockOwnSymbol.Text = move.OwnSymbol;
+                textBlockOwnSymbol.Visibility = Visibility.Visible;
+            }
+
             var s = FigureId.FigureIdToFenCharacter[move.Figure];
             textBlockComment.Visibility = Visibility.Collapsed;
             textBlockBestLine.Visibility = Visibility.Collapsed;
@@ -305,8 +311,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void MenuItemEditComment_OnClick(object sender, RoutedEventArgs e)
         {
-            var editCommentWindow = new EditCommentWindow(CurrentMove.Comment);
-            editCommentWindow.Owner = _parent;
+            var editCommentWindow = new EditCommentWindow("Comment", CurrentMove.Comment)
+                                    {
+                                        Owner = _parent
+                                    };
             var showDialog = editCommentWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -314,6 +322,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockComment.Visibility =
                     textBlockComment.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
                 CurrentMove.Comment = textBlockComment.Text;
+                ContentChanged?.Invoke(this, e);
+            }
+        }
+
+        private void MenuItemEditSymbol_OnClick(object sender, RoutedEventArgs e)
+        {
+            var editCommentWindow = new EditCommentWindow("Symbol",CurrentMove.OwnSymbol)
+                                    {
+                                        Owner = _parent
+                                    };
+            var showDialog = editCommentWindow.ShowDialog();
+            if (showDialog.HasValue && showDialog.Value)
+            {
+                textBlockOwnSymbol.Text = editCommentWindow.Comment;
+                textBlockOwnSymbol.Visibility =
+                    textBlockOwnSymbol.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
+                CurrentMove.OwnSymbol = textBlockOwnSymbol.Text;
                 ContentChanged?.Invoke(this, e);
             }
         }

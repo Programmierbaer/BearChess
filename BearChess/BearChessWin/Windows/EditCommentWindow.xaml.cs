@@ -9,10 +9,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         public string Comment => textBoxComment.Text;
 
-        public EditCommentWindow(string comment)
+        public EditCommentWindow(string header, string comment)
         {
             InitializeComponent();
+            Title = header;
             textBoxComment.Text = comment;
+            textBoxComment.Focus();
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)

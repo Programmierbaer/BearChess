@@ -48,6 +48,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showFullInfo;
         private bool _showComments;
         private double _fontSize;
+        private int _lastMarkedMoveNumber;
+        private int _lastMarkedColor;
 
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
         public event EventHandler<SelectedMoveOfMoveList> ContentChanged;
@@ -133,6 +135,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         }
 
+        public void MarkLastMove()
+        {
+            MarkMove(_lastMarkedMoveNumber,_lastMarkedColor);
+            ;
+        }
+
         public void MarkMove(int number, int color)
         {
             if (number < 0 || stackPanelMoves.Children.Count < 1)
@@ -140,6 +148,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
+            _lastMarkedMoveNumber = number;
+            _lastMarkedColor = color;
             for (int w = 0; w < stackPanelMoves.Children.Count; w++)
             {
                 if (stackPanelMoves.Children[w] is WrapPanel wrapPanel1)
@@ -207,8 +217,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _wrapPanel = new WrapPanel();
                 stackPanelMoves.Children.Add(_wrapPanel);
             }
-            var movePlainUserControl = new MovePlainUserControl(this);
-            movePlainUserControl.FontSize = _fontSize;
+            var movePlainUserControl = new MovePlainUserControl(this)
+                                       {
+                                           FontSize = _fontSize
+                                       };
             movePlainUserControl.SelectedChanged += MovePlainUserControl_SelectedChanged;
             movePlainUserControl.ContentChanged += MovePlainUserControl_ContentChanged;
             movePlainUserControl.SetDisplayTypes(_figureType, _moveType);
@@ -491,10 +503,26 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showOnlyMoves = true;
             _showFullInfo = false;
             Refresh();
+            MarkLastMove();
         }
 
         private void Refresh()
         {
+            for (int w = 0; w < stackPanelMoves.Children.Count; w++)
+            {
+                if (stackPanelMoves.Children[w] is WrapPanel wrapPanel1)
+                {
+                    for (int c = 0; c < wrapPanel1.Children.Count; c++)
+                    {
+                        if (wrapPanel1.Children[c] is MovePlainUserControl movePlainUserControl)
+                        {
+                            movePlainUserControl.SelectedChanged -= MovePlainUserControl_SelectedChanged;
+                            movePlainUserControl.ContentChanged -= MovePlainUserControl_ContentChanged;
+
+                        }
+                    }
+                }
+            }
 
             stackPanelMoves.Children.Clear();
             _lastMoveNumber = 0;

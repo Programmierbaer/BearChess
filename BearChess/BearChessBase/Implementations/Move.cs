@@ -59,6 +59,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public string EvaluationSymbol { get; set; }
         public string MoveSymbol { get; set; }
 
+        public string OwnSymbol { get; set; }
+
 
 
         [XmlIgnore]
@@ -87,6 +89,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             Comment = string.Empty;
             EvaluationSymbol = string.Empty;
             MoveSymbol = string.Empty;
+            OwnSymbol = string.Empty;
         }
 
         public Move(int fromField, int toField,  int color, int figureId, IChessFigure capturedFigure) : this(fromField,toField, color, figureId)
@@ -148,6 +151,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             Comment  = move.Comment;
             EvaluationSymbol = move.EvaluationSymbol;
             MoveSymbol= move.MoveSymbol;
+            OwnSymbol = move.OwnSymbol;
         }
 
         public override string ToString()

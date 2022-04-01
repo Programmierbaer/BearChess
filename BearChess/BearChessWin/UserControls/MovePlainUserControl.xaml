@@ -49,6 +49,12 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
+                        <MenuItem Header="Own symbol..." Name="menuItemEditSymbol"
+                                  Click="MenuItemEditSymbol_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="../Assets/Icons/highlighter_text.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                         <MenuItem Header="Edit comment..." Name="menuItemEditComment"
                                   Click="MenuItemEditComment_OnClick">
                             <MenuItem.Icon>
@@ -79,6 +85,12 @@
                     </TextBlock>
                     <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal"
                                Name="textBlockMoveEvaluation" Visibility="Collapsed" FontWeight="DemiBold"
+                               VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left"
+                               Foreground="Red">
+                        !
+                    </TextBlock>
+                    <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal"
+                               Name="textBlockOwnSymbol" Visibility="Collapsed" FontWeight="DemiBold"
                                VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left"
                                Foreground="Red">
                         !
