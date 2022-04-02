@@ -3804,7 +3804,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                      _currentAction == CurrentAction.InEasyPlayingMode ||
                                      _currentAction == CurrentAction.InGameAnalyzeMode);
             var currentComPort = _eChessBoard?.GetCurrentComPort();
-            textBlockEBoard.Text = " Connected to SquareOffPro chessboard";
+            textBlockEBoard.Text = " Connected to Square Off Pro chessboard";
             imageBT.Visibility = Visibility.Visible;
             _lastEBoard = Constants.SquareOffPro;
             textBlockButtonConnect.Text = _lastEBoard;
@@ -3812,7 +3812,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageConnect.Visibility = Visibility.Collapsed;
             imageDisconnect.Visibility = Visibility.Visible;
             _configuration.SetConfigValue("LastEBoard", _lastEBoard);
-            buttonConnect.ToolTip = "Disconnect from SquareOff Pro chessboard";
+            buttonConnect.ToolTip = "Disconnect from Square Off Pro chessboard";
             if (_currentAction == CurrentAction.InRunningGame)
             {
                 _eChessBoard.SetFen(_chessBoard.GetFenPosition(), string.Empty);

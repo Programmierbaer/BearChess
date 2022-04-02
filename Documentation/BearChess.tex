@@ -24,7 +24,7 @@ linkcolor=black
 \fancyhead[R]{Version 0.6.1.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{31.03.2022} 
+\date{02.04.2022} 
 
 
 \begin{document}
@@ -39,11 +39,11 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports Certabo chessboards, chessboards connected via Millennium ChessLink and the DGT Pegasus chessboard.\\
+BearChess supports Certabo chessboards, chessboards connected via Millennium ChessLink or Millennium eOne, the DGT Pegasus chessboard and Square Off Pro.\\
 
 As you can see from the version number, this software is still under development. There are still some functions that are not fully implemented and there are certainly still many bugs. But BearChess has now reached a level where it can be used and feedback from other users is welcome.\\
 
-I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo) or Millennium 2000 GmbH or Digital Game Technology B.V. If something does not work, Certabo, Millennium or DGT is not responsible for it.\\
+I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo) or Millennium 2000 GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited. If something does not work, Certabo, Millennium or DGT is not responsible for it.\\
 
 Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 
@@ -73,6 +73,7 @@ BearChess offers among others the following functions:
 	  \item Play with Certabo chessboards.
 	  \item Play with Millennium chessboards via ChessLink modul.
 	  \item Play with DGT Pegasus chessboard.	  
+	  \item Play with Square off Pro chessboard.	  	  
   	  \item Play against human beings or UCI engines.
   	  \item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs. Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
   	  \item Use Certabo Avatar UCI engines.  	  
@@ -267,9 +268,11 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
 	\item  \includegraphics[scale=0.05]{Pegasus.png} \textbf{DGT Pegasus} connect to DGT Pegasus chessboard.	
+	\item  \includegraphics[scale=0.05]{squareoff.png} \textbf{Square Off Pro} connect to Square Off Pro chessboard.		
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
 	\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
+	\item \textbf{Show best move in game} displays the current best move of the engine on your electronic chessboard.	
 \end{itemize}
 
 \subsection{Windows}
@@ -1077,8 +1080,55 @@ DGT Pegasus has no real piece recognition and can only give the information per 
 
 Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
 
+\subsection{Connect Square Off Pro} \label{ConfigureSquareOff}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{SquareOffPro1.png}
+	\caption{Connect to Square Off Pro }
+	\label{fig:SquareOffPro1}
+\end{figure}
+
+No configuration is required for your Square off Pro chessboard.\\
+Square Off Pro requires a Bluetooth LE connection. Make sure that your Bluetooth adapter also supports LE.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{SquareOffPro2.png}
+	\caption{Connected}
+	\label{fig:SquareOffPro2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{SquareOffPro3.png}
+	\caption{Disconnected}
+	\label{fig:SquareOffPro3}
+\end{figure}
+
+After a successful connection, you need to confirm that the pieces are all in the correct position.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Pegasus4.png}
+	\caption{Confirm position}
+	\label{fig:SquareOffPro4}
+\end{figure}
+
+\subsubsection{Verify position} \label{VerifyPegasusPosition}
+Square off Pro has no real piece recognition and can only give the information per field whether there is a piece or not. To verify if a piece is palced on a field, press the  \includegraphics[scale=0.4]{emotion_question.png} button.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Pegasus5.png}
+	\caption{Verify position}
+	\label{fig:SquareOffPro5}
+\end{figure}
+
+Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
+
+
 \subsection{Switch side}
-BearChess automatically recognizes whether you are playing with the white or black pieces, depending on how you set up the pieces in the base position (except for DGT Pegasus).
+BearChess automatically recognizes whether you are playing with the white or black pieces, depending on how you set up the pieces in the base position (except for DGT Pegasus or Square Off Pro).
 
 \section{Play a game}
 
@@ -1336,7 +1386,7 @@ You can achieve all this with the analysis mode.\\
 
 \subsection{With electronic chessboard}
 
-You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. DGT Pegasus has not. Connect your electronic chessboard before you start the analysis mode.\\ 
+You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. Millennium eOne, DGT Pegasus and Square Off Pro has not. Connect your electronic chessboard before you start the analysis mode.\\ 
 When you start the analysis mode, you will be asked to select a supporting analysis engine.
 
 \begin{figure}[H]
@@ -1649,10 +1699,8 @@ When you have started the tournament, the following information window appears:
 	\item \textbf{1-0} ends the game with a win for white.
 	\item \textbf{0-1} ends the game with a win for black.
 	\item \textbf{1/2} ends the game with a draw.
-	\item \includegraphics[scale=0.5]{control_stop_blue.png} ask you if you want to stop the current duel.
+	\item \includegraphics[scale=0.5]{control_stop_blue.png} ask you if you want to stop the current tournament.
 \end{itemize}
-
-\includegraphics[scale=0.5]{control_stop_blue.png} ask you if you want to stop the current tournament.
 
 \subsection{Manage engine tournaments}
 
@@ -1700,7 +1748,7 @@ Setup a new position is very easy. You can do it with or without the support of 
 \subsection{With support of an electronic chessboard}
 
 \textbf{First connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.
-The small board starts with the current position. When a DGT Pegasus board is connected, the behavior is as if no board is connected.
+The small board starts with the current position. When a DGT Pegasus or Square Off Pro board is connected, the behavior is as if no board is connected.
 
 \begin{figure}[H]
 	\centering
@@ -1725,7 +1773,7 @@ With the button \includegraphics[scale=0.5]{accept_button.png} the new position 
 \subsection{Without support of an electronic chessboard}
 
 \textbf{First} ensure you are \textbf{not connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.\\
-If a DGT Pegasus is connected, they do not need to disconnect. You will be prompted at the end to place the figures correctly. \\
+If a DGT Pegasus, Square Off Pro or Millennium eOne is connected, they do not need to disconnect. You will be prompted at the end to place the figures correctly. \\
 The small board starts with the current position.
 
 \begin{figure}[H]
@@ -1768,6 +1816,14 @@ There are three buttons to quickly set the base position or empty the board.
 \end{itemize}
 
 With the button \includegraphics[scale=0.5]{accept_button.png} the new position is placed on the chessboard.\\
+If a Millennium eOne, DGT Pegasus or Square Off Pro board ist connected you must set and confirm the new position on your board.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{ConfirmPosition.png}
+	\caption{Confirm position}
+	\label{fig:ConfirmPosition}
+\end{figure}
+
 \textbf{{\color{red}*}} It is not completely checked whether the position is valid. This also applies to castling rights.
 
 \section{Run startup game on start} \label{runstartupgame}
@@ -1891,7 +1947,7 @@ Even if you are not playing a game and are on mode "Easy playing", just load som
 \section{Important To Know}
 
 \subsection{Install a new version}
-All your configration settings for BearChess is not stored in the directory from which you start BearChess. For an installation of a new version of BearChess you can delete the complete BearChess directory and unpack the new version there. Or they unpack the new version in a separate directory and still have the same configuration.
+All your configration settings for BearChess is not stored in the directory from which you start BearChess. For an installation of a new version of BearChess you can delete the complete BearChess directory and unpack the new version there. Or you unpack the new version in a separate directory and still have the same configuration.
 
 \subsection{MessChess engines}
 These engines simluate a chess computer the configuration is limited to the capabilities of them. Not everything that is possible with normal engines can be done here. 
@@ -1905,11 +1961,14 @@ For the first time, the engine assumes that all chessmen are on their initial po
 \subsection{Certabo: Pawn conversion to a queen}
 If you have performed the calibration without extra queens and are performing a pawn conversion with a extra queen on your board for the first time, the program needs a few seconds to identify the new piece. Please wait until the LEDs are off. The new piece code is stored. There is no delay next time.
 
-\subsection{Millennium ChessLink: board orientation}
+\subsection{Millennium ChessLink (not eOne): board orientation}
 Figure recognition assumes that the board is oriented so that the company sign faces the front.
 
 \subsection{DGT Pegasus: Piece recognition}
 The DGT Pegasus board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible.
+
+\subsection{Square Off Pro: Piece recognition}
+The Square Off Pro board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible.
 
 \subsection{Electronic chessboard and engine duels}
 When two engines play against each other, all moves are ignored by the electronic chess board.
@@ -1919,6 +1978,7 @@ When two engines play against each other, all moves are ignored by the electroni
 \subsection{The chess moves are not or not correctly displayed}
 \begin{itemize}
 	\item Check the correct COM port in the configuration dialog.
+	\item Check your Bluetooth device is active.	
 	\item Reconnect to the chessboard.	
 	\item Check the position of the chessmen. Moves are only accepted if the chessmen are on the correct square. Fields with missing or wrong figure light up.
 	\item Repeat the last move.
@@ -1942,7 +2002,7 @@ These are some ideas what will come in one of the next versions.
 		\item Extend the game analysis.
 		\item Improve eletronic chess board handling.
   	    \item Improve the performance of the opening book.
-    	\item Support for Square Off Pro chessboard.
+    	\item Support for more DGT chessboards.
 	\end{itemize} 
 
 \pagebreak
@@ -1954,8 +2014,9 @@ These are some ideas what will come in one of the next versions.
     \item New: Redesign of move list window.
     \item New: Add move symbols and comments.
 	\item New: Premature termination of duel or tournament game.
+	\item New: Square Off Pro support.	
 	\item Fix: Continue an Elo Duel
-	\item Fix: Setup positions on eOne
+	\item Fix: Setup positions on Millennium eOne
 \end{itemize}
 
 \subsection{Version 0.6.0.0 $\Rightarrow$  0.6.0.1}

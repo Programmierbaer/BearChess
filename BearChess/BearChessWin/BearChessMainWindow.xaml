@@ -361,7 +361,7 @@
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Header="SquareOff Pro" Name="menuItemSquareOffPro">
+                    <MenuItem Header="Square Off Pro" Name="menuItemSquareOffPro">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/squareoff.png"  />
                         </MenuItem.Icon>
