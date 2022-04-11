@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
-using Microsoft.Win32;
+using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
@@ -25,6 +25,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _duelFinished;
         private DuelInfoWindow _duelInfoWindow;
         private DuelManager _duelManager;
+
+
+
+        public static Dictionary<int,SolidColorBrush> colorMap = new Dictionary<int,SolidColorBrush>();
+
 
         public event EventHandler<DatabaseGame> SelectedGameChanged;
         public event EventHandler<int> ContinueDuelSelected;
@@ -119,11 +124,37 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DataGridDuel_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Dictionary<int,int> pgnHashCounter = new Dictionary<int,int>();
+            colorMap.Clear();
             _duelFinished = false;
+            int ci = 0;
             if (e.AddedItems.Count > 0)
             {
                 var eAddedItem = (DatabaseDuel)e.AddedItems[0];
-                var databaseGameSimples = _database.GetDuelGames(eAddedItem.DuelId);
+                DatabaseGameSimple[] databaseGameSimples = _database.GetDuelGames(eAddedItem.DuelId);
+                foreach (var databaseGameSimple in databaseGameSimples)
+                {
+                    if (pgnHashCounter.ContainsKey(databaseGameSimple.PgnHash))
+                    {
+                        pgnHashCounter[databaseGameSimple.PgnHash]++;
+                    }
+                    else
+                    {
+                        pgnHashCounter[databaseGameSimple.PgnHash] = 1;
+                    }
+                }
+                foreach (var idCounterKey in pgnHashCounter.Keys)
+                {
+                    if (pgnHashCounter[idCounterKey] > 1)
+                    {
+                        if (ci >= DoublettenColorIndex.colorIndex.Keys.Count)
+                        {
+                            ci = 0;
+                        }
+                        colorMap[idCounterKey] = DoublettenColorIndex.GetColorOfIndex(ci);
+                        ci++;
+                    }
+                }
                 _duelFinished = !databaseGameSimples.Any(g => g.Result.Contains("*"));
                 dataGridGames.ItemsSource = databaseGameSimples;
                 if (_duelInfoWindow != null)
@@ -396,6 +427,38 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     OnSelectedRepeatGame(pgnGame.Id);
                 }
             }
+        }
+    }
+
+    public class DuelValueToBrushConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            int input;
+            try
+            {
+                input = (int)value;
+
+            }
+            catch (InvalidCastException e)
+            {
+                return DependencyProperty.UnsetValue;
+            }
+
+            if (DuelWindow.colorMap.ContainsKey(input))
+            {
+                return DuelWindow.colorMap[input];
+            }
+
+            return DependencyProperty.UnsetValue;
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+                                  System.Globalization.CultureInfo culture)
+        {
+            throw new NotSupportedException();
         }
     }
 }

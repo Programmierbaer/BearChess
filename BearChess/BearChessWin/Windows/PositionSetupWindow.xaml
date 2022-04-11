@@ -106,8 +106,8 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <RadioButton Margin="2" Grid.Column="0" Content="White" Name="radioButtonWhiteOnMove" />
-                                <RadioButton Margin="2" Grid.Column="1" Content="Black" Name="radioButtonBlackOnMove" />
+                                <RadioButton Click="RadioButtonWhiteOnMove_OnClick" Margin="2" Grid.Column="0" Content="White" Name="radioButtonWhiteOnMove" />
+                                <RadioButton Click="RadioButtonBlackOnMove_OnClick" Margin="2" Grid.Column="1" Content="Black" Name="radioButtonBlackOnMove" />
                             </Grid>
                         </GroupBox>
                        

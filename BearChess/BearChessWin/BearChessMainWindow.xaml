@@ -21,8 +21,24 @@
                             <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Run in analysis mode" Name="menuItemAnalyzeMode"
-                              Click="MenuItemAnalyzeMode_OnClick">
+                    <MenuItem Header="Analyse" Name="menuItemAnalyseMode">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/robot.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Header="Free analyse" Name="menuItemAnalyseFreeMode"
+                                  Click="MenuItemAnalyzeFreeMode_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/robot.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Analyse a game" Name="menuItemAnalyseAGame"
+                                  Click="MenuItemAnalyzeGameMode_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/6-2-chess-png.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Stop analyse mode" Name="menuItemStopAnalyseMode" Visibility="Collapsed" Click="MenuItemStopAnalyseMode_OnClick" >
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
@@ -444,6 +460,11 @@
                     <Image Name="imageDisconnect" Visibility="Collapsed" Source="Assets/Icons/connect.png" Width="16" />
                     <TextBlock Name="textBlockButtonConnect" Margin="5,0,0,0">Connect</TextBlock>
                 </StackPanel>
+            </Button>
+            <TextBlock Name="textBlockWhiteKing" DockPanel.Dock="Right" FontSize="18" TextAlignment="Center" VerticalAlignment="Center" ToolTip="Playing with white" >♔</TextBlock>
+            <TextBlock Name="textBlockBlackKing" DockPanel.Dock="Right" FontSize="18" TextAlignment="Center" VerticalAlignment="Center" ToolTip="Playing with black" Visibility="Collapsed">♚</TextBlock>
+            <Button Name="buttonRotate" Click="ButtonRotate_OnClick" DockPanel.Dock="Right"   Background="Transparent" BorderBrush="Transparent" ToolTip="Rotate board" >
+                <Image Source="Assets/Icons/arrow_rotate_anticlockwise.png" Width="16" Height="16" ></Image>
             </Button>
             <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonAccept" ToolTip="Show board information"
                                               Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonAccept_OnClick">

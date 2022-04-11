@@ -707,7 +707,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             if (valid)
             {
                 var color = GetFigureOn(fromField).Color;
-                if (IsInCheck(color))
+               // if (IsInCheck(color))
                 {
                     ChessBoard chessBoard = new ChessBoard();
                     chessBoard.Init(this);
@@ -1155,7 +1155,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             //_fileLogger?.LogDebug($"Go one move back {_allPlayedMoves.Keys.Count}");
             if (_allPlayedMoves.Keys.Count > 1)
             {
-                SetCurrentMove(_allPlayedMoves.Keys.Count, 0);
+                SetCurrentMove(_allPlayedMoves.Keys.Count, 0, string.Empty);
                 return true;
             }
 
@@ -1163,7 +1163,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         /// <inheritdoc />
-        public void SetCurrentMove(int moveNumber, int color)
+        public void SetCurrentMove(int moveNumber, int color, string startFenPosition)
         {
             List<Move> allMoves = new List<Move>();
             var playedMoveList = GetPlayedMoveList();
@@ -1178,6 +1178,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
             Init();
             NewGame();
+            if (!string.IsNullOrWhiteSpace(startFenPosition))
+            {
+                SetPosition(startFenPosition);
+            }
             allMoves.ForEach(MakeMove);
         }
 

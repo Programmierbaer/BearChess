@@ -26,6 +26,8 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
         public string Round { get; set; }
 
+        public int PgnHash { get; set; }
+
         public DatabaseGameSimple()
         {
             

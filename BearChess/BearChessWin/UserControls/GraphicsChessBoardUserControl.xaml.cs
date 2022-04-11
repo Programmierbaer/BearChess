@@ -454,11 +454,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _chessBoard.Init();
                 _chessBoard.NewGame();
                 _chessBoard.SetPosition(fenPosition);
-                buttonRotate.Visibility = Visibility.Hidden;
+                //buttonRotate.Visibility = Visibility.Hidden;
             }
             else
             {
-                buttonRotate.Visibility = Visibility.Visible;
+                //buttonRotate.Visibility = Visibility.Visible;
                 _chessBoard = null;
             }
             ShowControlButtons(false);
@@ -815,6 +815,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (WhiteOnTop)
             {
+                textBlockWhiteKing.Visibility =  Visibility.Visible;
+                textBlockBlackKing.Visibility =  Visibility.Collapsed;
                 textBlockWhiteClock.Visibility = chessBoard.CurrentColor == Fields.COLOR_WHITE
                     ? Visibility.Visible
                     : Visibility.Hidden;
@@ -824,6 +826,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
+                textBlockWhiteKing.Visibility = Visibility.Collapsed;
+                textBlockBlackKing.Visibility = Visibility.Visible;
                 textBlockWhiteClock.Visibility = chessBoard.CurrentColor == Fields.COLOR_BLACK
                     ? Visibility.Visible
                     : Visibility.Hidden;

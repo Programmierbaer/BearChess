@@ -97,9 +97,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         /// <inheritdoc />
-        public void ShowMove(string allMoves, bool waitFor)
+        public void ShowMove(string allMoves, string startFenPosition, bool waitFor)
         {
-            _eChessBoard.ShowMove(allMoves, waitFor);
+            _eChessBoard.ShowMove(allMoves, startFenPosition, waitFor);
         }
 
         /// <inheritdoc />

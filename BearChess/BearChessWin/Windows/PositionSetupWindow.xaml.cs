@@ -21,6 +21,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly string _fenPosition;
         private readonly bool _acceptMouse;
 
+        public event EventHandler RotateBoardEvent;
+
         public string NewFenPosition => chessBoardUserControl.GetFenPosition();
         public bool WhiteShortCastle => checkBoxWhiteShortCastle.IsChecked.HasValue && checkBoxWhiteShortCastle.IsChecked.Value;
         public bool WhiteLongCastle => checkBoxWhiteLongCastle.IsChecked.HasValue && checkBoxWhiteLongCastle.IsChecked.Value;
@@ -29,7 +31,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public bool WhiteOnMove => radioButtonWhiteOnMove.IsChecked.HasValue && radioButtonWhiteOnMove.IsChecked.Value;
 
 
-        public PositionSetupWindow(string fenPosition, bool acceptMouse)
+        public PositionSetupWindow(string fenPosition, bool acceptMouse, bool playWithWhite)
         {
             InitializeComponent();
 
@@ -71,11 +73,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 radioButtonWhiteOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_WHITE || _chessBoard.CurrentColor == Fields.COLOR_EMPTY;
                 radioButtonBlackOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_BLACK;
             }
+            chessBoardUserControl.RotateBoardEvent += ChessBoardUserControl_RotateBoardEvent;
             chessBoardUserControl.SetInPositionMode(true, fenPosition, acceptMouse);
             chessBoardUserControl.SetPiecesMaterial();
+            if (!playWithWhite)
+            {
+                chessBoardUserControl.RotateBoard();
+            }
             chessBoardUserControl.RepaintBoard(_chessBoard);
 
 
+        }
+
+        private void ChessBoardUserControl_RotateBoardEvent(object sender, EventArgs e)
+        {
+            chessBoardUserControl.RotateBoard();
+            chessBoardUserControl.RepaintBoard(_chessBoard);
+            RotateBoardEvent?.Invoke(this, new EventArgs());
         }
 
         public void SetFenPosition(string fenPosition)
@@ -203,6 +217,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonCopyPosition_OnClick(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(textBoxFenPosition.Text);
+
+        }
+
+        private void RadioButtonWhiteOnMove_OnClick(object sender, RoutedEventArgs e)
+        {
+            _chessBoard.CurrentColor = Fields.COLOR_WHITE;
+            chessBoardUserControl.RepaintBoard(_chessBoard);
+        }
+
+        private void RadioButtonBlackOnMove_OnClick(object sender, RoutedEventArgs e)
+        {
+            _chessBoard.CurrentColor = Fields.COLOR_BLACK;
+            chessBoardUserControl.RepaintBoard(_chessBoard);
         }
     }
 }

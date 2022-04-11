@@ -24,12 +24,19 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
         [XmlIgnore]
         public string White => PgnGame.PlayerWhite;
+
         [XmlIgnore]
         public string Black => PgnGame.PlayerBlack;
+
         [XmlIgnore]
         public string GameEvent => PgnGame.GameEvent;
+
         [XmlIgnore]
         public string Pgn => PgnGame.GetGame();
+
+        [XmlIgnore]
+        public string PgnMoveList => PgnGame.GetMoveList();
+
         [XmlIgnore]
         public string Result => PgnGame.Result;
 

@@ -5,7 +5,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -24,14 +26,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Configuration _configuration;
         private readonly Database _database;
         private string _lastSyncFen = string.Empty;
+        private readonly bool _readOnly;
         private bool _syncWithBoard;
         private DatabaseFilterWindow _databaseFilterWindow;
         private GamesFilter _gamesFilter;
 
+        public static Dictionary<int, SolidColorBrush> colorMap = new Dictionary<int, SolidColorBrush>();
+
         public event EventHandler<DatabaseGame> SelectedGameChanged;
         public event EventHandler<GamesFilter> SelectedFilterChanged;
 
-        public DatabaseWindow(Configuration configuration, Database database, string fen)
+        public DatabaseWindow(Configuration configuration, Database database, string fen, bool readOnly)
         {
             InitializeComponent();
             _configuration = configuration;
@@ -39,26 +44,101 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Top = _configuration.GetWinDoubleValue("DatabaseWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("DatabaseWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             _lastSyncFen = fen;
+            _readOnly = readOnly;
             _gamesFilter = _configuration.LoadGamesFilter();
-            dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
+            SetItemsSource();
             imageTableFilterActive.Visibility = _gamesFilter.FilterIsActive ? Visibility.Visible : Visibility.Hidden;
+            SetReadOnly(readOnly);
             UpdateTitle();
         }
 
+        private void SetItemsSource()
+        {
+            Dictionary<int, int> pgnHashCounter = new Dictionary<int, int>();
+            colorMap.Clear();
+            int ci = 0;
+            DatabaseGameSimple[] databaseGameSimples = _database.GetGames(_gamesFilter);
+            foreach (var databaseGameSimple in databaseGameSimples)
+            {
+                if (pgnHashCounter.ContainsKey(databaseGameSimple.PgnHash))
+                {
+                    pgnHashCounter[databaseGameSimple.PgnHash]++;
+                }
+                else
+                {
+                    pgnHashCounter[databaseGameSimple.PgnHash] = 1;
+                }
+            }
+            foreach (var idCounterKey in pgnHashCounter.Keys)
+            {
+                if (pgnHashCounter[idCounterKey] > 1)
+                {
+                    if (ci >= DoublettenColorIndex.colorIndex.Keys.Count)
+                    {
+                        ci = 0;
+                    }
+                    colorMap[idCounterKey] = DoublettenColorIndex.GetColorOfIndex(ci);
+                    ci++;
+                }
+            }
+            dataGridGames.ItemsSource = databaseGameSimples;
+        }
 
+        private void SetItemsSource(string fen)
+        {
+            Dictionary<int, int> pgnHashCounter = new Dictionary<int, int>();
+            colorMap.Clear();
+            int ci = 0;
+            DatabaseGameSimple[] databaseGameSimples = _database.GetGames(_gamesFilter, fen);
+            foreach (var databaseGameSimple in databaseGameSimples)
+            {
+                if (pgnHashCounter.ContainsKey(databaseGameSimple.PgnHash))
+                {
+                    pgnHashCounter[databaseGameSimple.PgnHash]++;
+                }
+                else
+                {
+                    pgnHashCounter[databaseGameSimple.PgnHash] = 1;
+                }
+            }
+            foreach (var idCounterKey in pgnHashCounter.Keys)
+            {
+                if (pgnHashCounter[idCounterKey] > 1)
+                {
+                    if (ci >= DoublettenColorIndex.colorIndex.Keys.Count)
+                    {
+                        ci = 0;
+                    }
+                    colorMap[idCounterKey] = DoublettenColorIndex.GetColorOfIndex(ci);
+                    ci++;
+                }
+            }
+            dataGridGames.ItemsSource = databaseGameSimples;
+        }
+
+        public void SetReadOnly(bool readOnly)
+        {
+            buttonDelete.IsEnabled = !readOnly;
+            buttonDeleteDb.IsEnabled = !readOnly;
+            buttonFileManager.IsEnabled = !readOnly;
+            buttonImport.IsEnabled = !readOnly;
+            buttonNewFolder.IsEnabled = !readOnly;
+            buttonRestoreDb.IsEnabled = !readOnly;
+        }
 
         public void FilterByFen(string fen)
         {
             _lastSyncFen = fen;
             if (_syncWithBoard)
             {
-                dataGridGames.ItemsSource = _database.GetGames(_gamesFilter,fen);
+                SetItemsSource(fen);
+                UpdateTitle();
             }
         }
 
         public void Reload()
         {
-            dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
+            SetItemsSource();
             UpdateTitle();
         }
 
@@ -69,7 +149,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
                 _database.LoadDb(openFileDialog.FileName);
-                dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
+                SetItemsSource();
                 _configuration.SetConfigValue("DatabaseFile", openFileDialog.FileName);
                 UpdateTitle();
             }
@@ -95,7 +175,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
                 _database.LoadDb(saveFileDialog.FileName);
-                dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
+                SetItemsSource();
                 _configuration.SetConfigValue("DatabaseFile", saveFileDialog.FileName);
                 UpdateTitle();
             }
@@ -170,9 +250,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _database.DeleteGame(pgnGame.Id);
                 }
             }
-            dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
-                                            ? _database.GetGames(_gamesFilter,_lastSyncFen)
-                                            : _database.GetGames(_gamesFilter);
+
+            if (_syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen))
+            {
+                SetItemsSource(_lastSyncFen);
+            }
+            else
+            {
+                SetItemsSource();
+            }
             UpdateTitle();
         }
 
@@ -206,7 +292,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         break;
                     }
                 }
-                dataGridGames.ItemsSource = _database.GetGames(_gamesFilter);
+                SetItemsSource();
                 UpdateTitle();
             }
         }
@@ -216,9 +302,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _syncWithBoard = !_syncWithBoard;
             imageLinkApply.Visibility = _syncWithBoard ? Visibility.Collapsed : Visibility.Visible;
             imageLinkClear.Visibility = _syncWithBoard ? Visibility.Visible : Visibility.Collapsed;
-            dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
-                                            ? _database.GetGames(_gamesFilter, _lastSyncFen)
-                                            : _database.GetGames(_gamesFilter);
+            buttonSync.ToolTip = _syncWithBoard ? "Do not synchronize with chessboard" : "Synchronize with chessboard";
+            if (_syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen))
+            {
+                SetItemsSource(_lastSyncFen);
+            }
+            else
+            {
+                SetItemsSource();
+            }
             UpdateTitle();
         }
 
@@ -229,9 +321,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 dataGridGames.ItemsSource = null;
                 _database.Drop();
-                dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
-                                                ? _database.GetGames(_gamesFilter, _lastSyncFen)
-                                                : _database.GetGames(_gamesFilter);
+                if (_syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen))
+                {
+                    SetItemsSource(_lastSyncFen);
+                }
+                else
+                {
+                    SetItemsSource();
+                }
                 UpdateTitle();
             }
         }
@@ -313,9 +410,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 MessageBoxImage.Information);
             }
 
-            dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
-                                            ? _database.GetGames(_gamesFilter, _lastSyncFen)
-                                            : _database.GetGames(_gamesFilter);
+            if (_syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen))
+            {
+                SetItemsSource(_lastSyncFen);
+            }
+            else
+            {
+                SetItemsSource();
+            }
+        
         }
 
         private void ButtonRestoreDb_OnClick(object sender, RoutedEventArgs e)
@@ -345,13 +448,50 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                         MessageBoxButton.OK,
                                         MessageBoxImage.Error);
                     }
-
-                    dataGridGames.ItemsSource = _syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen)
-                                                    ? _database.GetGames(_gamesFilter, _lastSyncFen)
-                                                    : _database.GetGames(_gamesFilter);
+                    if (_syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen))
+                    {
+                        SetItemsSource(_lastSyncFen);
+                    }
+                    else
+                    {
+                        SetItemsSource();
+                    }
+                   
                     UpdateTitle();
                 }
             }
+        }
+    }
+
+    public class GamesValueToBrushConverter : IValueConverter
+    {
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            int input;
+            try
+            {
+                input = (int)value;
+
+            }
+            catch (InvalidCastException e)
+            {
+                return DependencyProperty.UnsetValue;
+            }
+
+            if (DatabaseWindow.colorMap.ContainsKey(input))
+            {
+                return DatabaseWindow.colorMap[input];
+            }
+
+            return DependencyProperty.UnsetValue;
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+                                  System.Globalization.CultureInfo culture)
+        {
+            throw new NotSupportedException();
         }
     }
 }

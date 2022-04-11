@@ -64,7 +64,7 @@
                     </ContextMenu>
                 </Button.ContextMenu>
                 <WrapPanel Orientation="Horizontal">
-                    <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal" FontWeight="DemiBold"
+                    <TextBlock Margin="0,1,1,1" FontFamily="Calibri" FontStretch="Normal" FontWeight="DemiBold"
                                Name="textBlockMoveNumber"
                                VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left">
                         99.

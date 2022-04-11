@@ -168,7 +168,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public bool IsConnected => _board?.IsConnected ?? false;
 
-        public void ShowMove(string allMoves, bool waitFor)
+        public void ShowMove(string allMoves, string startFenPosition, bool waitFor)
         {
             if (string.IsNullOrWhiteSpace(allMoves))
             {
@@ -179,6 +179,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             var moveList = allMoves.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             _internalChessBoard = new InternalChessBoard();
             _internalChessBoard.NewGame();
+            if (!string.IsNullOrWhiteSpace(startFenPosition))
+            {
+                _internalChessBoard.SetPosition(startFenPosition);
+            }
             foreach (string move in moveList)
             {
                 if (move.Length < 4)

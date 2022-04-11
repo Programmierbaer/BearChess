@@ -2,10 +2,10 @@
 {
     public enum CurrentAction
     {
-        InAnalyzeMode,
+        InAnalyseMode,
         InEasyPlayingMode,
         InRunningGame,
         InSetupMode,
-        InGameAnalyzeMode
+        InGameAnalyseMode
     }
 }

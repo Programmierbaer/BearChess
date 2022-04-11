@@ -367,6 +367,23 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
                     }
                 }
+                if (storageVersion == 3)
+                {
+                    Close();
+                    var databaseGameSimples = GetGames(new GamesFilter() { FilterIsActive = false });
+                    foreach (var databaseGameSimple in databaseGameSimples)
+                    {
+                        Save(LoadGame(databaseGameSimple.Id), true);
+                    }
+
+                    Open();
+                    string sql = "UPDATE storageVersion SET version=4; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                }
 
                 _dbExists = true;
                 Close();
@@ -423,7 +440,12 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
             try
             {
-                var deterministicHashCode = game.Pgn.GetDeterministicHashCode();
+                string moveList = string.Empty;
+                foreach (var gameAllMove in game.AllMoves)
+                {
+                    moveList += gameAllMove.FromFieldName + gameAllMove.ToFieldName;
+                }
+                var deterministicHashCode = moveList.GetDeterministicHashCode();
                 var aSerializer = new XmlSerializer(typeof(DatabaseGame));
                 var sb = new StringBuilder();
                 var sw = new StringWriter(sb);
@@ -593,6 +615,12 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     command.ExecuteNonQuery();
                 }
 
+                sql = @"DELETE FROM fens WHERE id NOT IN (SELECT fen_id FROM fenToGames); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
                 sqLiteTransaction.Commit();
             }
             catch (Exception ex)
@@ -673,6 +701,11 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 return Array.Empty<DatabaseGameSimple>();
             }
 
+            if (fen.Equals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"))
+            {
+                return GetBySql(
+                    "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round, white_elo, black_elo FROM games ORDER BY ID;");
+            }
             DatabaseGameSimple[] allGames = null;
             _connection.Open();
             using (var cmd = new SQLiteCommand(
@@ -829,23 +862,26 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
         private DatabaseGameSimple[] GetByReader(SQLiteDataReader rdr)
         {
+
             var allGames = new List<DatabaseGameSimple>(10000);
             while (rdr.Read())
             {
+                var pgnHash = rdr.GetInt32(9);
                 var databaseGameSimple = new DatabaseGameSimple
-                {
-                    Id = rdr.GetInt32(0),
-                    White = rdr.GetString(1),
-                    Black = rdr.GetString(2),
-                    GameEvent = rdr.GetString(3),
-                    GameSite = rdr.GetString(4),
-                    Result = rdr.GetString(5),
-                    GameDate = DateTime.FromFileTime(rdr.GetInt64(6)),
-                    MoveList = rdr.GetString(7),
-                    Round = rdr.GetInt32(10).ToString(),
-                    WhiteElo = rdr.GetString(11),
-                    BlackElo = rdr.GetString(12),
-                };
+                                         {
+                                             Id = rdr.GetInt32(0),
+                                             White = rdr.GetString(1),
+                                             Black = rdr.GetString(2),
+                                             GameEvent = rdr.GetString(3),
+                                             GameSite = rdr.GetString(4),
+                                             Result = rdr.GetString(5),
+                                             GameDate = DateTime.FromFileTime(rdr.GetInt64(6)),
+                                             MoveList = rdr.GetString(7),
+                                             Round = rdr.GetInt32(10).ToString(),
+                                             WhiteElo = rdr.GetString(11),
+                                             BlackElo = rdr.GetString(12),
+                                             PgnHash = pgnHash
+                                         };
                 allGames.Add(databaseGameSimple);
             }
 

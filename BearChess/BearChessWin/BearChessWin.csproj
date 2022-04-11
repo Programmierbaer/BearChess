@@ -130,6 +130,7 @@
     <Compile Include="Windows\DatabaseFilterWindow.xaml.cs">
       <DependentUpon>DatabaseFilterWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\DoublettenColorIndex.cs" />
     <Compile Include="Windows\DuelIncrementWindow.xaml.cs">
       <DependentUpon>DuelIncrementWindow.xaml</DependentUpon>
     </Compile>
@@ -761,6 +762,10 @@
     <ProjectReference Include="..\PegasusLoader\PegasusLoader.csproj">
       <Project>{C9E9E3B5-A30C-448D-A595-FC3E893AAA3F}</Project>
       <Name>PegasusLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SquareOffLoader\SquareOffLoader.csproj">
+      <Project>{3b9fed35-76c8-4b8b-ad3c-49820cd432a2}</Project>
+      <Name>SquareOffLoader</Name>
     </ProjectReference>
     <ProjectReference Include="..\SquareOffProLoader\SquareOffProLoader.csproj">
       <Project>{519d9a7a-b72f-4922-9341-445cd2fc9a85}</Project>

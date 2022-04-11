@@ -35,7 +35,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Shows the LED for the last move in <paramref name="allMoves"/>.
         /// </summary>
-        void ShowMove(string allMoves, bool waitFor);
+        void ShowMove(string allMoves, string startFenPosition, bool waitFor);
 
         void ShowMove(string fromField, string toField);
 

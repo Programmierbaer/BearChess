@@ -694,9 +694,16 @@
         <TextBlock  Margin="5,0,0,0" Width="100"  DockPanel.Dock="Bottom" Name="textBlockWhitePlayer" Grid.Column="9" Grid.Row="5" Grid.RowSpan="2" VerticalAlignment="Bottom" TextAlignment="Left"  HorizontalAlignment="Left"  TextWrapping="Wrap" >White</TextBlock>
         </DockPanel>
         <TextBlock FontSize="30" Margin="10,0,0,0" Name="textBlockWhiteClock" Grid.Column="9" Grid.Row="7" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Left" ToolTip="White's move" >c</TextBlock>
-        <Button Name="buttonRotate" Click="ButtonRotate_OnClick" Grid.Row="8" Grid.Column="9"  Background="Transparent" BorderBrush="Transparent" ToolTip="Rotate board" Width="30" Height="30">
-            <Image Source="../Assets/Icons/arrow_rotate_anticlockwise.png" Width="28" Height="28" Style="{StaticResource controlButtons}"></Image>
-        </Button>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="9" >
+            <Button Name="buttonRotate" Click="ButtonRotate_OnClick" Grid.Row="8" Grid.Column="9"  Background="Transparent" BorderBrush="Transparent" ToolTip="Rotate board" Width="30" Height="30">
+              <Image Source="../Assets/Icons/arrow_rotate_anticlockwise.png" Width="28" Height="28" Style="{StaticResource controlButtons}"></Image>
+            </Button>
+            <TextBlock Name="textBlockWhiteKing" DockPanel.Dock="Right" FontSize="30" TextAlignment="Center" VerticalAlignment="Center" ToolTip="Playing with white" >♔</TextBlock>
+            <TextBlock Name="textBlockBlackKing" DockPanel.Dock="Right" FontSize="30" TextAlignment="Center" VerticalAlignment="Center" ToolTip="Playing with black" Visibility="Collapsed">♚</TextBlock>
+        </StackPanel>
+
+
     </Grid>
     
 </UserControl>

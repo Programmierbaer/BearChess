@@ -134,7 +134,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// <summary>
         /// Set the board current move based on <paramref name="moveNumber"/> and <paramref name="color"/>.
         /// </summary>
-        void SetCurrentMove(int moveNumber, int color);
+        void SetCurrentMove(int moveNumber, int color, string startFenPosition);
 
         /// <summary>
         /// Returns the fen string of the current position.

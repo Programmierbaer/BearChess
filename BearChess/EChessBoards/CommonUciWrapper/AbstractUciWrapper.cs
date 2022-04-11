@@ -442,7 +442,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         var s = strings[strings.Length - 1];
                         if (!_lastMoveFromBoard.Equals(s))
                         {
-                            eBoardWrapper?.ShowMove(command.Substring("position startpos moves".Length), true);
+                            eBoardWrapper?.ShowMove(command.Substring("position startpos moves".Length), string.Empty,true);
                         }
 
                         SendToEngine(_multiPvValue);

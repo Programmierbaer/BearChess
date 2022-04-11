@@ -67,13 +67,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             CurrentMoveNumber = moveNumber;
             if (move.FigureColor == Fields.COLOR_WHITE)
             {
-                textBlockMoveNumber.Text = $"{moveNumber}.";
+                textBlockMoveNumber.Text = $"{moveNumber}. ";
             }
             else
             {
                 if (newPanelAdded)
                 {
-                    textBlockMoveNumber.Text = $"{moveNumber}...";
+                    textBlockMoveNumber.Text = $"{moveNumber}. ...";
                 }
                 else
                 {
