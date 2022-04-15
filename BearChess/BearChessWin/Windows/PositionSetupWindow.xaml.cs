@@ -14,9 +14,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class PositionSetupWindow : Window
     {
-        private Border _lastSelectedSetupBorder;
+        private Button _lastSelectedSetupBorder;
         private Brush _lastSelectedSetupBrush;
-        private int _currentFigureTag = 0;
+        private int _currentFigureTag = 6;
         private readonly IChessBoard _chessBoard;
         private readonly string _fenPosition;
         private readonly bool _acceptMouse;
@@ -81,15 +81,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 chessBoardUserControl.RotateBoard();
             }
             chessBoardUserControl.RepaintBoard(_chessBoard);
-
-
+            FigureButton_OnClick(buttonKing,null);
         }
 
         private void ChessBoardUserControl_RotateBoardEvent(object sender, EventArgs e)
         {
-            chessBoardUserControl.RotateBoard();
-            chessBoardUserControl.RepaintBoard(_chessBoard);
-            RotateBoardEvent?.Invoke(this, new EventArgs());
+           
+            var fenPosition = _chessBoard.GetFenPosition();
+
+            _chessBoard.SetPosition(chessBoardUserControl.GetFenPosition(), false);
+                chessBoardUserControl.RotateBoard();
+                chessBoardUserControl.RepaintBoard(_chessBoard);
+            
+
+            RotateBoardEvent?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetFenPosition(string fenPosition)
@@ -104,23 +109,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
             textBoxFenPosition.Text = fenPosition;
-            var chessBoard = new ChessBoard();
-            chessBoard.Init();
-            chessBoard.NewGame();
-            chessBoard.SetPosition(textBoxFenPosition.Text);
+            _chessBoard.SetPosition(textBoxFenPosition.Text,false);
             chessBoardUserControl.SetInPositionMode(true, textBoxFenPosition.Text, _acceptMouse);
             if (_acceptMouse)
             {
-                checkBoxWhiteShortCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
-                checkBoxWhiteLongCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Long);
-                checkBoxBlackShortCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Short);
-                checkBoxBlackLongCastle.IsChecked = chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Long);
-                radioButtonWhiteOnMove.IsChecked = chessBoard.CurrentColor == Fields.COLOR_WHITE;
-                radioButtonBlackOnMove.IsChecked = chessBoard.CurrentColor == Fields.COLOR_BLACK;
+                checkBoxWhiteShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);
+                checkBoxWhiteLongCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Long);
+                checkBoxBlackShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Short);
+                checkBoxBlackLongCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_BLACK, CastlingEnum.Long);
+                radioButtonWhiteOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_WHITE;
+                radioButtonBlackOnMove.IsChecked = _chessBoard.CurrentColor == Fields.COLOR_BLACK;
             }
 
             chessBoardUserControl.SetPiecesMaterial();
-            chessBoardUserControl.RepaintBoard(chessBoard);
+            chessBoardUserControl.RepaintBoard(_chessBoard);
         }
 
         private void ButtonSetPosition_OnClick(object sender, RoutedEventArgs e)
@@ -144,12 +146,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            if (!(sender is Border border))
+            if (!(sender is Button border))
             {
                 return;
             }
 
-            if (!(border.Child is Image textBlock))
+            if (!(border.Content is Image textBlock))
             {
                 return;
             }
@@ -175,8 +177,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxWhiteLongCastle.IsChecked = false;
             checkBoxBlackShortCastle.IsChecked = false;
             checkBoxBlackLongCastle.IsChecked = false;
-            radioButtonWhiteOnMove.IsChecked = true;
-            radioButtonBlackOnMove.IsChecked = false;
+            // radioButtonWhiteOnMove.IsChecked = true;
+            // radioButtonBlackOnMove.IsChecked = false;
             chessBoardUserControl.ClearPosition();
         }
 
@@ -222,14 +224,55 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void RadioButtonWhiteOnMove_OnClick(object sender, RoutedEventArgs e)
         {
-            _chessBoard.CurrentColor = Fields.COLOR_WHITE;
-            chessBoardUserControl.RepaintBoard(_chessBoard);
+            var fenPosition = _chessBoard.GetFenPosition();
+            _chessBoard.SetPosition(chessBoardUserControl.GetFenPosition(), false);
+            if (!_chessBoard.GetFenPosition().Equals(fenPosition))
+            {
+                _chessBoard.CurrentColor = Fields.COLOR_WHITE;
+                chessBoardUserControl.RepaintBoard(_chessBoard);
+            }
         }
 
         private void RadioButtonBlackOnMove_OnClick(object sender, RoutedEventArgs e)
         {
-            _chessBoard.CurrentColor = Fields.COLOR_BLACK;
-            chessBoardUserControl.RepaintBoard(_chessBoard);
+            var fenPosition = _chessBoard.GetFenPosition();
+            
+            _chessBoard.SetPosition(chessBoardUserControl.GetFenPosition(), false);
+            if (!_chessBoard.GetFenPosition().Equals(fenPosition))
+            {
+                _chessBoard.CurrentColor = Fields.COLOR_BLACK;
+                chessBoardUserControl.RepaintBoard(_chessBoard);
+            }
+        }
+
+        private void FigureButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!_acceptMouse)
+            {
+                return;
+            }
+            if (!(sender is Button border))
+            {
+                return;
+            }
+
+            if (!(border.Content is Image textBlock))
+            {
+                return;
+            }
+
+            if (_lastSelectedSetupBorder == null)
+            {
+                _lastSelectedSetupBrush = border.Background;
+            }
+            else
+            {
+                _lastSelectedSetupBorder.Background = _lastSelectedSetupBrush;
+            }
+            _lastSelectedSetupBorder = border;
+            border.Background = new SolidColorBrush(Colors.BlanchedAlmond);
+            _currentFigureTag = int.Parse(textBlock.Tag.ToString());
+            chessBoardUserControl.SetPositionFigure(_currentFigureTag);
         }
     }
 }

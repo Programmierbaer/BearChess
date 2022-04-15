@@ -42,34 +42,34 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Margin="5" Grid.Row="0" Grid.Column="0" Name="stackPanelPieces1">
+                        <Button  Margin="5" Background="Transparent"  Click="FigureButton_OnClick" > 
+                            <Image Source="../Assets/Icons/White P.ico" Width="32" Height="32" Tag="1"></Image>
+                        </Button>
+                        <!--
                         <Border Margin="5" Height="40" Width="40" BorderBrush="DarkGray" BorderThickness="1"
                                 MouseDown="UIElementSetupBorder_OnMouseDown">
                             <Image Source="../Assets/Icons/White P.ico" Width="32" Height="32" Tag="1"></Image>
                         </Border>
-                        <Border Margin="5" Height="40" Width="40" BorderBrush="DarkGray"
-                                BorderThickness="1" MouseDown="UIElementSetupBorder_OnMouseDown">
+                        -->
+                        <Button Margin="5"  Background="Transparent"  Click="FigureButton_OnClick" >
                             <Image Source="../Assets/Icons/White N.ico" Width="32" Height="32" Tag="3"></Image>
-                        </Border>
-                        <Border Margin="5" Height="40" Width="40" BorderBrush="DarkGray"
-                                BorderThickness="1" MouseDown="UIElementSetupBorder_OnMouseDown">
+                        </Button>
+                        <Button Margin="5"  Background="Transparent"  Click="FigureButton_OnClick" >
                             <Image Source="../Assets/Icons/White B.ico" Width="32" Height="32" Tag="2"></Image>
-                        </Border>
+                        </Button>
                         
                     </StackPanel>
                     <StackPanel Margin="5" Grid.Row="0" Grid.Column="1" Name="stackPanelPieces2">
 
-                        <Border Margin="5" Height="40" Width="40" BorderBrush="DarkGray"
-                                BorderThickness="1" MouseDown="UIElementSetupBorder_OnMouseDown">
+                        <Button Name="buttonKing" Margin="5"  Background="Transparent"  Click="FigureButton_OnClick" IsDefault="True" >
                             <Image Source="../Assets/Icons/White K.ico" Width="32" Height="32" Tag="6"> </Image>
-                        </Border>
-                        <Border Margin="5" Height="40" Width="40" BorderBrush="DarkGray"
-                                BorderThickness="1" MouseDown="UIElementSetupBorder_OnMouseDown">
+                        </Button>
+                        <Button  Margin="5"  Background="Transparent"  Click="FigureButton_OnClick" >
                             <Image Source="../Assets/Icons/White Q.ico" Width="32" Height="32" Tag="5"></Image>
-                        </Border>
-                        <Border Margin="5" Height="40" Width="40" BorderBrush="DarkGray"
-                                BorderThickness="1" MouseDown="UIElementSetupBorder_OnMouseDown">
+                        </Button>
+                        <Button Margin="5"  Background="Transparent"  Click="FigureButton_OnClick" >
                             <Image Source="../Assets/Icons/White R.ico" Width="32" Height="32" Tag="4"></Image>
-                        </Border>
+                        </Button>
                     </StackPanel>
                     <StackPanel Grid.Row="0" Grid.Column="2">
                         <GroupBox Margin="5" Header="Castling">

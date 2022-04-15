@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.6.1.0}
+\fancyhead[R]{Version 0.6.2.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{02.04.2022} 
+\date{15.04.2022} 
 
 
 \begin{document}
@@ -150,7 +150,11 @@ Two buttons are active:
   \item \includegraphics[scale=0.2]{bearchess_2.png} is an easy way to play a game.
 Read more in chapter \textbf{\ref{easyStart}  \nameref{easyStart}} on page \pageref{easyStart}.
 \end{itemize}
-
+The symbols on the right side give information about the current color and the board rotaion.
+\begin{itemize}
+	\item \includegraphics[scale=0.6]{WhiteClock.png} or \includegraphics[scale=0.6]{BlackClock.png} for current color.
+	\item \includegraphics[scale=0.3]{KingW.png}  or \includegraphics[scale=0.3]{KingB.png} for board rotation. 
+\end{itemize}
 
 
 \subsection{Actions}
@@ -188,6 +192,8 @@ Read more in chapter \textbf{\ref{easyStart}  \nameref{easyStart}} on page \page
 	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Games manager} opens a new window in which you can see and load all your previously saved games.
 	\item \includegraphics[scale=0.5]{clipboard_sign_out.png}  \textbf{Copy to clipboard} copy the current game (PGN) to your clipboard.	
 	\item \includegraphics[scale=0.5]{clipboard_sign.png}  \textbf{Paste from clipboard} loads a game (PGN) from your clipboard.
+	\item \includegraphics[scale=0.5]{cog.png}  \textbf{Settings} for show or hide duplicate games.
+	
 \end{itemize}
 All games are saved in a database file. Read more on chapter \textbf{\ref{games}  \nameref{games}} on page \pageref{games}.
 
@@ -1439,7 +1445,11 @@ Click on one the figure to place in on the selected field. If the is a piece on 
 
 \subsection{Analyse a game} \label{AnalyzeMode2}
 
-This mode is available only if you are connected to an electronic chessboard and a game has been loaded from the games manager. In this case BearChess will ask you if you want to analyze a game.\\
+This mode is available only if you are connected to an electronic chessboard.
+You can analyse a loaded game from the games manager or analyse a new game move by move.
+
+\subsubsection{Analyse a loaded game} \label{AnalyzeMode21}
+If a game has been loaded from the games manager, BearChess will ask you if you want to analyse the current game.\\
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{AnalyzeGame1.png}
@@ -1463,25 +1473,40 @@ As next, you will be asked to select a supporting analysis engine.
 	\label{fig:AnalyzeMode2_3}
 \end{figure}
 
-Make your moves as indicated to the move list. The engine immediately starts to analyze the current position. The current move on the move list is highlighted  and the board shows the position. In this example ,the engine prefers the move bishop c1 d2 instead pawn g2 g3.
+Make your moves as indicated to the move list. The engine immediately starts to analyze the current position. The current move on the move list is highlighted  and the board shows the position. In this example ,the engine prefers the move pawn c4xd5 instead knight f3.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{AnalyzeMode5.png}
-	\caption{Analyze after the 4th move}
-	\label{fig:AnalyzeMode5}
-\end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{AnalyzeMode6.png}
-	\caption{Board after the 4th move}
+	\caption{Board after the 6th move}
 	\label{fig:AnalyzeMode6}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{AnalyzeMode5.png}
+	\caption{Analyse after the 6th move}
+	\label{fig:AnalyzeMode5}
 \end{figure}
 
 The electronic chessboard indicates the move proposal from the engine.\\
 If you make a valid move outside the move list on your electronic chessboard, e.g. if you follow the suggestions of the engine, the engine continues the analysis but you will not see the move on the chessboard on the screen. You can make all valid moves back and forth on your electronic chessboard but the chessboard on the screen and the move list show you the last position in the game. If you go back to a valid position from the game the chessboard and move list will continue.
 
+\subsubsection{Analyse a new game} \label{AnalyzeMode22}
+If there is no game loaded from the game manager or you decline the question to analyze the currently loaded game, you can analyze a new game move by move.
+
+First, you will be asked to select a supporting analysis engine.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{AnalyzeMode2.png}
+	\caption{Selection for an analysis engine}
+	\label{fig:AnalyzeMode2_4}
+\end{figure}
+
+Make your moves. The engine immediately starts to analyze the current position. You can take back a move step by step.
 
 \section{Duel} \label{EngineDuel}
 
@@ -1748,7 +1773,8 @@ Setup a new position is very easy. You can do it with or without the support of 
 \subsection{With support of an electronic chessboard}
 
 \textbf{First connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.
-The small board starts with the current position. When a DGT Pegasus or Square Off Pro board is connected, the behavior is as if no board is connected.
+The small board starts with the current position.\\
+\textbf{{\color{red}*}} When a DGT Pegasus or Square Off Pro board is connected, the behavior is as if no board is connected.
 
 \begin{figure}[H]
 	\centering
@@ -1767,7 +1793,12 @@ Don't forget to set the castling rights and current color.
 	\label{fig:castling2}
 \end{figure}
 
-With the button \includegraphics[scale=0.5]{accept_button.png} the new position is placed on the chessboard.\\
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{clipboard_sign_out.png} Copy the current position into the clipboard.
+	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png} Rotate the board e.g. to play with black pieces in front.
+	\item \includegraphics[scale=0.5]{accept_button.png} The new position is placed on the board.
+\end{itemize}
+
 \textbf{{\color{red}*}} It is not completely checked whether the position is valid. This also applies to castling rights.
 
 \subsection{Without support of an electronic chessboard}
@@ -1808,14 +1839,16 @@ Don't forget to set the castling rights and current color.
 	\label{fig:castling}
 \end{figure}
 
-There are three buttons to quickly set the base position or empty the board.
+
 \begin{itemize}
-	\item \includegraphics[scale=1]{Board64black.png} Remove all pieces from the board.
+	\item \includegraphics[scale=1]{Board64black.png} Remove all pieces from the board, except the kings.
 	\item \includegraphics[scale=0.3]{Array.png} Put all pieces on their base position.
 	\item \includegraphics[scale=0.5]{Undo.png} Reset to start position.
+	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png} Rotate the board e.g. to play with black pieces in front.
+	\item \includegraphics[scale=0.5]{accept_button.png} The new position is placed on the board.
 \end{itemize}
 
-With the button \includegraphics[scale=0.5]{accept_button.png} the new position is placed on the chessboard.\\
+
 If a Millennium eOne, DGT Pegasus or Square Off Pro board ist connected you must set and confirm the new position on your board.
 \begin{figure}[H]
 	\centering
@@ -1862,7 +1895,6 @@ The save dialog is prefilled with the known data. But you can correct them befor
 	\label{fig:Games2}
 \end{figure}
 
-{\color{red}*} Currently BearChess does not support comments or variants in the PGN notation.
 
 \subsection{Show and load}
 
@@ -2008,6 +2040,15 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Changelog}
+
+\subsection{Version 0.6.1.0 $\Rightarrow$  0.6.2.0}
+\begin{itemize}
+	\item New: Display duplicate games.
+	\item New: Analysis of a previously unsaved game.
+	\item Fix: Correction in move list when black starts.
+	\item Fix: Correction in position setups
+	\item Fix: Corrections when the electronic chessboard is rotated (for Certabo and Millennium)
+\end{itemize}
 
 \subsection{Version 0.6.0.1 $\Rightarrow$  0.6.1.0}
 \begin{itemize}

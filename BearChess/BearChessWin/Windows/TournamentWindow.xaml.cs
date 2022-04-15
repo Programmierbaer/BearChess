@@ -30,6 +30,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private TournamentManager _tournamentManager;
         private ITournamentInfoWindow _tournamentInfoWindow;
         public static Dictionary<int, SolidColorBrush> colorMap = new Dictionary<int, SolidColorBrush>();
+        public static bool ShowGamesDuplicates = true;
 
         public event EventHandler<DatabaseGame> SelectedGameChanged;
         public event EventHandler<int> ContinueTournamentSelected;
@@ -42,6 +43,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             InitializeComponent();
             _configuration = configuration;
+            ShowGamesDuplicates = bool.Parse(_configuration.GetConfigValue("showGamesDuplicates", "true"));
+            dataGridGames.Columns[0].Visibility = ShowGamesDuplicates ? Visibility.Visible : Visibility.Collapsed;
             _database = database;
             Top = _configuration.GetWinDoubleValue("TournamentWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("TournamentWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
@@ -373,6 +376,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if (!TournamentWindow.ShowGamesDuplicates)
+            {
+                return DependencyProperty.UnsetValue;
+            }
             int input;
             try
             {

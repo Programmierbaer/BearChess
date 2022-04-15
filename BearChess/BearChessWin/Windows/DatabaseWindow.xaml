@@ -38,8 +38,18 @@
                     </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" >
+                        <Setter.Value>
+                            <Binding Path="PgnHash" Converter="{StaticResource ValueToBrushConverter}">
+                            </Binding>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn   Width="Auto" FontSize="13">
+                <DataGridTextColumn  x:Name="dataGridTextColumnDuplicate" Width="Auto" FontSize="13" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Background" Value="{Binding PgnHash, Converter={StaticResource ValueToBrushConverter}}"/>

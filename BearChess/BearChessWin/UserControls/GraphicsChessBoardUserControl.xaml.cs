@@ -472,6 +472,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _chessBoard.SetPosition(string.Empty);
+            _chessBoard.SetFigureOnPosition(FigureId.WHITE_KING,Fields.FE1);
+            _chessBoard.SetFigureOnPosition(FigureId.BLACK_KING,Fields.FE8);
             RepaintBoard(_chessBoard);
         }
 
@@ -1054,6 +1056,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 : _positionFigureId;
 
             var id = _chessBoard.GetFigureOn(fieldTag).FigureId;
+            if (id == FigureId.WHITE_KING || id==FigureId.BLACK_KING)
+            {
+                return;
+            }
             _chessBoard.RemoveFigureFromField(fieldTag);
             if (id != figureId) _chessBoard.SetFigureOnPosition(figureId, fieldTag);
 
@@ -1103,37 +1109,37 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void MoveStepBack_OnClick(object sender, RoutedEventArgs e)
         {
-            TakeStepBackEvent?.Invoke(this, new EventArgs());
+            TakeStepBackEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void MoveStepForward_OnClick(object sender, RoutedEventArgs e)
         {
-            TakeStepForwardEvent?.Invoke(this, new EventArgs());
+            TakeStepForwardEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void MoveStepAllBack_OnClick(object sender, RoutedEventArgs e)
         {
-            TakeFullBackEvent?.Invoke(this, new EventArgs());
+            TakeFullBackEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void MovePause_OnClick(object sender, RoutedEventArgs e)
         {
-            PausePlayEvent?.Invoke(this, new EventArgs());
+            PausePlayEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void MoveStepAllForward_OnClick(object sender, RoutedEventArgs e)
         {
-            TakeFullForwardEvent?.Invoke(this, new EventArgs());
+            TakeFullForwardEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void ResetStartPosition_OnClick(object sender, RoutedEventArgs e)
         {
-            ResetBasePositionEvent?.Invoke(this, new EventArgs());
+            ResetBasePositionEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void ButtonRotate_OnClick(object sender, RoutedEventArgs e)
         {
-            RotateBoardEvent?.Invoke(this, new EventArgs());
+            RotateBoardEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -1511,7 +1517,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void MovePauseGame_OnClick(object sender, RoutedEventArgs e)
         {
-          PauseGameEvent?.Invoke(this, new EventArgs());
+          PauseGameEvent?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -26,10 +26,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DuelInfoWindow _duelInfoWindow;
         private DuelManager _duelManager;
 
-
-
         public static Dictionary<int,SolidColorBrush> colorMap = new Dictionary<int,SolidColorBrush>();
-
+        public static bool ShowGamesDuplicates = true;
 
         public event EventHandler<DatabaseGame> SelectedGameChanged;
         public event EventHandler<int> ContinueDuelSelected;
@@ -40,6 +38,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             InitializeComponent();
             _configuration = configuration;
+            ShowGamesDuplicates = bool.Parse(_configuration.GetConfigValue("showGamesDuplicates", "true"));
+            dataGridGames.Columns[0].Visibility = ShowGamesDuplicates ? Visibility.Visible : Visibility.Collapsed;
             _database = database;
             Top = _configuration.GetWinDoubleValue("DuelWindowTop", Configuration.WinScreenInfo.Top,
                                                    SystemParameters.VirtualScreenHeight,
@@ -435,6 +435,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
+            if (!DuelWindow.ShowGamesDuplicates)
+            {
+                return DependencyProperty.UnsetValue;
+            }
             int input;
             try
             {

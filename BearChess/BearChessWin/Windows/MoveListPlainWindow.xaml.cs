@@ -225,8 +225,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             movePlainUserControl.ContentChanged += MovePlainUserControl_ContentChanged;
             movePlainUserControl.SetDisplayTypes(_figureType, _moveType);
             movePlainUserControl.SetInformationDetails(_showOnlyMoves, _showFullInfo, _showComments);
-            if (move.FigureColor == Fields.COLOR_WHITE)
+            if (move.FigureColor == Fields.COLOR_WHITE || (_lastMoveNumber==0))
             {
+                if (_lastMoveNumber == 0)
+                {
+                    _newPanelAdded = true;
+                }
                 _lastMoveNumber++;
             }
             if (!_showOnlyMoves)
