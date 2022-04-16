@@ -4243,23 +4243,33 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         chessBoard.SetPosition(_gameStartFenPosition);
                     }
+
                     for (var i = 0; i < _currentMoveIndex; i++)
                     {
                         var move = _playedMoveList[i];
                         chessBoard.MakeMove(move);
                         allMoves += $"{move.FromFieldName}{move.ToFieldName} ";
-                       // if (i == _currentMoveIndex - 2)
+                        if (_currentAction != CurrentAction.InGameAnalyseMode)
+                        {
+                            if (i == _currentMoveIndex - 2)
+                            {
+                                _prevFenPosition = chessBoard.GetFenPosition();
+                            }
+                        }
+                        else
                         {
                             _prevFenPosition = chessBoard.GetFenPosition();
                         }
+
                         if (move.FigureColor == Fields.COLOR_WHITE)
                         {
                             currentMoveIndex++;
                         }
                     }
+
                     Dispatcher?.Invoke(() =>
                     {
-                         chessBoardUcGraphics.RepaintBoard(chessBoard);
+                        chessBoardUcGraphics.RepaintBoard(chessBoard);
                         _moveListWindow?.ClearMark();
                         _moveListWindow?.MarkMove(currentMoveIndex +1, chessBoardCurrentColor);
                         
@@ -4508,20 +4518,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 if (_prevFenPosition.Equals(fenPosition.Split(" ".ToArray())[0]))
                 {
+                    _fileLogger?.LogDebug($"Prev fen equal current fen: {_prevFenPosition}");
                     _moveListWindow?.Clear();
                     var playedMoveList = _chessBoard.GetPlayedMoveList();
-                    for (int i = 0; i < playedMoveList.Length - 1; i++)
-                    {
-                        _moveListWindow?.AddMove(playedMoveList[i]);
-                    }
-
                     _chessBoard.NewGame();
                     for (int i = 0; i < playedMoveList.Length - 1; i++)
                     {
+                        _fileLogger?.LogDebug($"Replay move {playedMoveList[i].FromFieldName}{playedMoveList[i].ToFieldName}");
+                        _moveListWindow?.AddMove(playedMoveList[i]);
                         _chessBoard.MakeMove(playedMoveList[i]);
+                        if (i == playedMoveList.Length - 3)
+                        {
+                            _prevFenPosition = _chessBoard.GetFenPosition().Split(" ".ToArray())[0];
+                        }
                     }
-
-                    _prevFenPosition = _chessBoard.GetFenPosition().Split(" ".ToArray())[0];
+                    _fileLogger?.LogDebug($"New prev fen: {_prevFenPosition}");
+                    //_prevFenPosition = _chessBoard.GetFenPosition().Split(" ".ToArray())[0];
                     chessBoardUcGraphics.RepaintBoard(_chessBoard);
                     return;
                 }

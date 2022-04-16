@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -18,12 +19,10 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
         private bool _withLeds = false;
         private string _lastSendFields = string.Empty;
         private string _prevRead = string.Empty;
-        private string _fromField;
-        private string _toField;
-        private string _lastFromField;
-        private string _lastToField;
-        private string _tmpFromField;
-        private string _tmpToField;
+        private string _fromField = string.Empty;
+        private string _toField = string.Empty;
+        private string _lastFromField = string.Empty;
+        private string _lastToField = string.Empty;
         private string[] _basePosition =
         {
             "1", "1", "1", "1", "1", "1", "1", "1",
@@ -47,7 +46,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                                                                             {56, "H1" }, {57, "H2" }, {58, "H3" }, {59, "H4" }, {60, "H5" }, {61, "H6" }, {62, "H7" }, {63, "H8" }
                                                                         };
 
-        private int[] _fieldOrders =
+        private readonly int[] _fieldOrders =
         {
             Fields.FA1, Fields.FA2, Fields.FA3, Fields.FA4, Fields.FA5, Fields.FA6,
             Fields.FA7, Fields.FA8,
@@ -67,14 +66,14 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             Fields.FH7, Fields.FH8
         };
 
-        private object _lastLogMessage;
 
+        private object _lastLogMessage;
 
         public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth, string boardName)
         {
             _withLeds = boardName.Equals(Constants.SquareOffPro);
             _isFirstInstance = isFirstInstance;
-            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName, useBluetooth,boardName);
+            _serialCommunication = new SerialCommunication(isFirstInstance, new FileLogger(Path.Combine(basePath, "log", $"SC_1.log"), 10, 10), portName, useBluetooth,boardName);
 
             _logger = logger;
             BatteryLevel = "--";
@@ -239,7 +238,8 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                     }
                     else
                     {
-                        _toField = fieldName;
+                        if (!string.IsNullOrWhiteSpace(_fromField))
+                          _toField = fieldName;
                     }
                     break;
                 }
@@ -286,33 +286,44 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 break;
             }
             var logMessage =
-                $"SQ: Current: [{_fromField}-{_toField}]   Last: [{_lastFromField}-{_lastToField}]  Temp: [{_tmpFromField}-{_tmpToField}]";
+                $"SQ: Current: [{_fromField}-{_toField}]   Last: [{_lastFromField}-{_lastToField}] ";
             if (!logMessage.Equals(_lastLogMessage))
             {
                 _logger?.LogDebug(logMessage);
                 _lastLogMessage = logMessage;
             }
 
-            if (!_inDemoMode && _allowTakeBack && !string.IsNullOrWhiteSpace(_tmpFromField) &&
-                !string.IsNullOrWhiteSpace(_tmpToField))
+
+            if (!_inDemoMode && _allowTakeBack && !string.IsNullOrWhiteSpace(_lastToField) && !string.IsNullOrWhiteSpace(_toField) &&
+                _fromField.Equals(_lastToField) &&
+                _toField.Equals(_lastFromField))
             {
                 _logger?.LogInfo("SQ: Take move back. Replay all previous moves");
                 var playedMoveList = _chessBoard.GetPlayedMoveList();
+                string setCommand = "30#";
                 _chessBoard.Init();
                 _chessBoard.NewGame();
                 for (int i = 0; i < playedMoveList.Length - 1; i++)
                 {
                     _logger?.LogDebug($"SQ: Move {playedMoveList[i]}");
-                    _chessBoard.MakeMove(playedMoveList[i]);
-                    _lastFromField = playedMoveList[i].FromFieldName.ToUpper();
-                    _lastToField = playedMoveList[i].ToFieldName.ToUpper();
+                    _chessBoard.MakeMove(playedMoveList[i]); 
+                    _lastFromField = playedMoveList[i].FromFieldName.ToLower();
+                    _lastToField = playedMoveList[i].ToFieldName.ToLower();
+                    
                 }
-
+                /*
+                foreach (var fieldOrder in _fieldOrders)
+                {
+                    setCommand += _chessBoard.GetFigureOn(fieldOrder).GeneralFigureId == FigureId.NO_PIECE ? "0" : "1";
+                }
+                _serialCommunication.Send(setCommand);
+                */
                 _fromField = string.Empty;
                 _toField = string.Empty;
-                _tmpFromField = string.Empty;
-                _tmpToField = string.Empty;
+              //  return new DataFromBoard(_chessBoard.GetFenPosition(), 3);
+
             }
+
 
             if (!string.IsNullOrWhiteSpace(_fromField) && !string.IsNullOrWhiteSpace(_toField))
             {
@@ -336,9 +347,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                         _lastToField = _toField;
                         _fromField = string.Empty;
                         _toField = string.Empty;
-                        _tmpFromField = string.Empty;
-                        _tmpToField = string.Empty;
-                        
+
                     }
                     else
                     {
@@ -377,7 +386,20 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 setCommand += _chessBoard.GetFigureOn(fieldOrder).GeneralFigureId == FigureId.NO_PIECE ? "0" : "1";
             }
             _serialCommunication.Send(setCommand);
+        }
 
+        private void SendFen(string fen)
+        {
+            string setCommand = "30#";
+
+            _chessBoard.Init();
+            _chessBoard.NewGame();
+            _chessBoard.SetPosition(fen, true);
+            foreach (var fieldOrder in _fieldOrders)
+            {
+                setCommand += _chessBoard.GetFigureOn(fieldOrder).GeneralFigureId == FigureId.NO_PIECE ? "0" : "1";
+            }
+            _serialCommunication.Send(setCommand);
         }
 
         public override void SpeedLeds(int level)
