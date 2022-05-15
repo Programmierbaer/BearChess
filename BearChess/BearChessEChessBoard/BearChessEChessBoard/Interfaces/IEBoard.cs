@@ -12,13 +12,17 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         /// <param name="fromFieldName">Field name e.g. E2</param>
         /// <param name="toFieldName">Field name e.g. E4</param>
-        void SetLedForFields(string fromFieldName, string toFieldName, bool thinking);
+        /// <param name="thinking"></param>
+        /// <param name="isMove"></param>
+        void SetLedForFields(string fromFieldName, string toFieldName, bool thinking, bool isMove, string displayString);
 
         /// <summary>
         /// Set the leds on for the given fields <paramref name="fieldNames"/>-
         /// </summary>
         /// <param name="fieldNames">Field names e.g. E2</param>
-        void SetLedForFields(string[] fieldNames, bool thinking);
+        /// <param name="thinking"></param>
+        /// <param name="isMove"></param>
+        void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString);
 
         void SetLastLeds();
 
@@ -48,6 +52,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// Performs a new calibration of the board. All pieces must be in their place.
         /// </summary>
         void Calibrate();
+
+        void SendInformation(string message);
 
         void RequestDump();
 
@@ -114,5 +120,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void Ignore(bool ignore);
 
         string Information { get; }
+
+        void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack);
+
+        void StopClock();
+
+        void StartClock(bool white);
+
+        void DisplayOnClock(string display);
     }
 }

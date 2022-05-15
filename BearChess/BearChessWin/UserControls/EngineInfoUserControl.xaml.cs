@@ -187,6 +187,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageTeddy.Visibility = showTeddy ? Visibility.Visible : Visibility.Hidden;
         }
 
+        public void SetElo(UciInfo uciInfo)
+        {
+            var uciElo = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
+            if (uciElo != null)
+            {
+                var uciEloLimit = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
+                if (uciEloLimit != null)
+                {
+                    if (uciEloLimit.Contains("true"))
+                    {
+                        var strings = uciElo.Split(" ".ToCharArray());
+                        textBlockEloValue.Text = strings[strings.Length - 1];
+                    }
+                }
+            }
+        }
+
         private void ShowHidePlay(bool showStop)
         {
             Dispatcher?.Invoke(() =>

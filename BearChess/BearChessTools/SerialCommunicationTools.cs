@@ -58,9 +58,25 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string[] GetBTComPort(string boardName, Configuration configuration, ILogging fileLogger, bool btClassic, bool btLE)
         {
             fileLogger?.LogInfo($"Get BT com ports for {boardName}");
-            string boardDevice = boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase)
-                                     ? "raspberrypi"
-                                     : "MILLENNIUM CHESS";
+            string boardDevice;
+            string boardDevice2 = string.Empty;
+            switch (boardName)
+            {
+                case Constants.Certabo: 
+                    boardDevice = "raspberrypi";
+                    boardDevice2 = "raspberrypi";
+                    break;
+                case Constants.MChessLink:
+                    boardDevice = "MILLENNIUM CHESS";
+                    boardDevice2 = "MILLENNIUM CHESS";
+                    break;
+                case Constants.DGT:
+                    boardDevice = "DGT_BT_";
+                    boardDevice2 = "PCS-REVII";
+                    break;
+                default: boardDevice = string.Empty;
+                    break;
+            }
             if (btClassic)
             {
                 try
@@ -113,6 +129,22 @@ namespace www.SoLaNoSoft.com.BearChessTools
                         {
                             fileLogger?.LogInfo("Set service as serial port for Millennium ChessLink");
                             // Millennium
+                            bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
+                            break;
+                        }
+                        if (boardName.Equals(Constants.DGT, StringComparison.OrdinalIgnoreCase) &&
+                            deviceName.StartsWith(boardDevice, StringComparison.OrdinalIgnoreCase))
+                        {
+                            fileLogger?.LogInfo($"Set service as serial port for DGT e-Board {deviceName}");
+                            // DGT
+                            bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
+                            break;
+                        }
+                        if (boardName.Equals(Constants.DGT, StringComparison.OrdinalIgnoreCase) &&
+                            deviceName.StartsWith(boardDevice2, StringComparison.OrdinalIgnoreCase))
+                        {
+                            fileLogger?.LogInfo($"Set service as serial port for DGT Revelation II {deviceName}");
+                            // DGT
                             bluetoothDeviceInfo.SetServiceState(BluetoothService.SerialPort, true);
                             break;
                         }

@@ -21,6 +21,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DateTime _initTime;
         private DateTime _goTime;
         private DateTime _stopTime;
+        private DateTime _currentTime;
 
         private TimeSpan _duration;
         private int _extraSeconds = 0;
@@ -64,6 +65,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return new ClockTime(_startTime);
         }
 
+        public ClockTime GetCurrentTime()
+        {
+            lock (_locker)
+            {
+                return new ClockTime(_currentTime);
+            }
+        }
+
         public ClockTime GetElapsedTime()
         {
             return new ClockTime(_stopwatch.Elapsed);
@@ -87,7 +96,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _startTime = _initTime;
             _duration = TimeSpan.Zero;
             _stopwatch.Reset();
-            SetDigitalNumbers(_initTime.Hour.ToString(), _initTime.Minute.ToString(), _initTime.Second.ToString());
+            SetDigitalNumbers(_initTime.Hour, _initTime.Minute, _initTime.Second);
         }
 
 
@@ -104,7 +113,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetTime(int hh, int mm, int ss, int extraSeconds = 0)
         {
             _stopwatch.Reset();
-            SetDigitalNumbers(hh.ToString(), mm.ToString(), ss.ToString());
+            SetDigitalNumbers(hh, mm, ss);
             DateTime dateTime = DateTime.Now;
             _startTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
             _initTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
@@ -127,16 +136,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (!CountDown)
             {
                 var stopwatchElapsed = _stopwatch.Elapsed;
-                SetDigitalNumbers(stopwatchElapsed.Hours.ToString(), stopwatchElapsed.Minutes.ToString(),
-                                  stopwatchElapsed.Seconds.ToString());
+                SetDigitalNumbers(stopwatchElapsed.Hours, stopwatchElapsed.Minutes, stopwatchElapsed.Seconds);
                 return;
 
             }
 
             _startTime = _startTime.AddSeconds(_extraSeconds) - _duration;
-            SetDigitalNumbers(_startTime.Hour.ToString(),
-                              _startTime.Minute.ToString(),
-                              _startTime.Second.ToString());
+            SetDigitalNumbers(_startTime.Hour,
+                              _startTime.Minute,
+                              _startTime.Second);
             if (_startTime.Hour == 0 && _startTime.Minute == 0 && _startTime.Second <= 30)
             {
                 borderWarning.Visibility = Visibility.Visible;
@@ -172,8 +180,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         var stopwatchElapsed = _stopwatch.Elapsed;
                         if (!_stop)
                         {
-                            SetDigitalNumbers(stopwatchElapsed.Hours.ToString(), stopwatchElapsed.Minutes.ToString(),
-                                              stopwatchElapsed.Seconds.ToString());
+                            SetDigitalNumbers(stopwatchElapsed.Hours, stopwatchElapsed.Minutes,
+                                              stopwatchElapsed.Seconds);
                         }
 
                     }
@@ -192,8 +200,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                         if (!_stop)
                         {
-                            SetDigitalNumbers(_stopTime.Hour.ToString(), _stopTime.Minute.ToString(),
-                                              _stopTime.Second.ToString());
+                            SetDigitalNumbers(_stopTime.Hour, _stopTime.Minute, _stopTime.Second);
                         }
                     }
 
@@ -208,13 +215,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void SetDigitalNumbers(string hh, string mm, string ss)
+        private void ShowDigitalNumbers(string hh, string mm, string ss)
         {
-            lock (_locker)
-            {
+            
+            
                 textBlockHour1.Text = hh.Length == 2 ? hh : 0 + hh;
                 textBlockMin1.Text = mm.Length == 2 ? mm : 0 + mm;
                 textBlockSec1.Text = ss.Length == 2 ? ss : 0 + ss;
+            
+        }
+
+        private void SetDigitalNumbers(int hh, int mm, int ss)
+        {
+            lock (_locker)
+            {
+                _currentTime = new DateTime(_startTime.Year, _startTime.Month, _startTime.Day, hh, mm, ss);
+                ShowDigitalNumbers(hh.ToString(),mm.ToString(),ss.ToString());
             }
         }
 

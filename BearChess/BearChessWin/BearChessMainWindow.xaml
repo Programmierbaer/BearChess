@@ -308,7 +308,7 @@
                             <Image Source="Assets/Icons/user_silhouette.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemSounds" Header="Sounds..." Click="MenuItemSounds_OnClick">
+                    <MenuItem Name="menuItemSounds" Header="Speech/Sounds..." Click="MenuItemSounds_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/sound.png" />
                         </MenuItem.Icon>
@@ -374,17 +374,44 @@
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Header="DGT Pegasus" Name="menuItemPegasus">
+                    <MenuItem Header="DGT">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/pegasus.png"  />
+                            <Image Source="Assets/Icons/dgt48.PNG"  />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemConnectToPegasus" Header="Connect"
-                                  Click="MenuItemConnectPegasus_OnClick">
+                        <MenuItem Header="DGT e-Board" Name="menuItemDGTEBoard">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/connect.png" />
+                                <Image Source="Assets/Icons/dgt48.PNG"  />
                             </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToDGTEBoard" Header="Connect"
+                                      Click="MenuItemConnectDGTEBoard_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureDGT" Header="Configure"
+                                      Click="MenuItemConfigureDGT_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemBluetoothDGT" Header="Bluetooth"
+                                      Click="MenuItemBluetoothDGT_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageDGTBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>                 
+                        <MenuItem Header="DGT Pegasus" Name="menuItemPegasus">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/pegasus.png"  />
+                            </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToPegasus" Header="Connect"
+                                  Click="MenuItemConnectPegasus_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
-
                     </MenuItem>
                     <MenuItem Header="Square Off Pro" Name="menuItemSquareOffPro">
                         <MenuItem.Icon>

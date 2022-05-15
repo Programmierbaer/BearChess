@@ -29,6 +29,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected string _basePath;
         protected string _comPortName;
         protected bool _useBluetooth;
+        protected  bool _useClock;
+        protected  bool _showMovesOnly;
+        protected  bool _switchClockSide;
         private bool _piecesFenBasePosition;
         private string _lastChangedFigure = string.Empty;
         private string _lastFenColor = string.Empty;
@@ -59,19 +62,23 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _board = GetEBoard(true);
         }
 
-        protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName):this(name, basePath,isFirstInstance,comPortName, false)
+        protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName) : this(
+            name, basePath, isFirstInstance, comPortName, false, true,false, false)
         {
 
         }
 
         protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName,
-                                        bool useBluetooth)
+                                        bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide)
         {
             Name = name;
             _basePath = basePath;
             _isFirstInstance = isFirstInstance;
             _comPortName = comPortName;
             _useBluetooth = useBluetooth;
+            _useClock = useClock;
+            _showMovesOnly = showMovesOnly;
+            _switchClockSide = switchClockSide;
             var number = _isFirstInstance ? 1 : 2;
             try
             {
@@ -86,6 +93,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         public abstract void Calibrate();
+        public abstract void SendInformation(string message);
+
+
         public void RequestDump()
         {
             _board?.RequestDump();
@@ -128,6 +138,26 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void Ignore(bool ignore)
         {
             _board?.Ignore(ignore);
+        }
+
+        public void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack)
+        {
+            _board?.SetClock(hourWhite, minuteWhite, minuteSec, hourBlack, minuteBlack, secondBlack);
+        }
+
+        public void StartClock(bool white)
+        {
+            _board?.StartClock(white);
+        }
+
+        public void DisplayOnClock(string display)
+        {
+            _board?.DisplayOnClock(display);
+        }
+
+        public void StopClock()
+        {
+            _board?.StopClock();
         }
 
         protected abstract IEBoard GetEBoard();
@@ -203,23 +233,23 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 // Set LEDs on for received move and wait until board is in same position
                 _waitForFen.Enqueue(position);
             }
-            _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2), false);
+            _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2), false, true, string.Empty);
             _stop = false;
         }
 
-        public void ShowMove(string fromField, string toField)
+        public void ShowMove(string fromField, string toField, string displayString)
         {
             _internalChessBoard.MakeMove(fromField, toField, string.Empty);
             var position = _internalChessBoard.GetPosition();
             _waitForFen.Enqueue(position);
-            _board?.SetLedForFields(fromField,toField, false);
+            _board?.SetLedForFields(fromField,toField, false, true, displayString);
             _stop = false;
         }
 
         public void SetLedsFor(string[] fields, bool thinking)
         {
             //_allLedOff =  _inDemoMode;
-            _board?.SetLedForFields(fields, thinking);
+            _board?.SetLedForFields(fields, thinking, false, string.Empty);
         }
 
         public void SetAllLedsOff()
@@ -324,7 +354,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _fileLogger?.LogDebug($"C: Wait for: {position}");
             // Set LEDs on for received move and wait until board is in same position
             _waitForFen.Enqueue(position);
-            _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2), false);
+            _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2), false, true, string.Empty);
             _stop = false;
          
         }
@@ -600,7 +630,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             if (fenPosition.IsFieldDump)
             {
                 var hashSet = new HashSet<string>(fenPosition.FromBoard.Split(",".ToCharArray()));
-                for (int i=0; i<Fields.BoardFields.Length; i++)
+                for (int i = 0; i < Fields.BoardFields.Length; i++)
                 {
                     int f = Fields.BoardFields[i];
                     var figureOnField = _internalChessBoard.GetFigureOnField(f);
@@ -623,6 +653,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
                 }
                 invalidFields.AddRange(hashSet);
+                if (invalidFields.Count > 0)
+                {
+                    fenPosition.Invalid = true;
+                }
+                invalidFields.Clear();
             }
             else
             {
@@ -651,14 +686,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
              
                 fenPosition.Invalid = true;
-                _board?.SetLedForFields(invalidFields.ToArray(), false);
+                _board?.SetLedForFields(invalidFields.ToArray(), false, false, string.Empty);
                 _allLedOff = false;
             }
             else
             {
                 if (_waitForFen.IsEmpty && !_stop)
                 {
-                    if (!_allLedOff)
+                    if (!_allLedOff && !fenPosition.IsFieldDump)
                     {
                         _fileLogger?.LogDebug("C: Waiting for fen is empty: Set all LEDs off");
                         _board?.SetAllLedsOff();

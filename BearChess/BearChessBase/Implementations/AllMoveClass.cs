@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
@@ -30,5 +31,67 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return _fens.ContainsKey(color) ? _fens[color] : null;
         }
 
+        public string GetMoveString()
+        {
+            Move move;
+            if (_moves.ContainsKey(Fields.COLOR_BLACK))
+            {
+                move = _moves[Fields.COLOR_BLACK];
+            }
+            else
+            {
+                move = _moves[Fields.COLOR_WHITE];
+            }
+
+            var result = FigureId.FigureIdToFenCharacter[move.Figure].ToUpper();
+            if (result.Equals("P"))
+            {
+                result = " ";
+            }
+
+            result += move.FromFieldName.ToLower();
+            if (move.CapturedFigure == FigureId.NO_PIECE)
+            {
+                result += "-";
+            }
+            else
+            {
+                result += "x";
+            }
+
+            if (move.Figure.Equals(FigureId.WHITE_KING) || move.Figure.Equals(FigureId.BLACK_KING))
+            {
+                if (move.FromField == Fields.FE1)
+                {
+                    if (move.ToField == Fields.FG1)
+                    {
+                        return "   0-0 " + move.CheckOrMateSign;
+                    }
+                    if (move.ToField == Fields.FC1)
+                    {
+                        return " 0-0-0 " + move.CheckOrMateSign;
+                    }
+                }
+                if (move.FromField == Fields.FE8)
+                {
+                    if (move.ToField == Fields.FG8)
+                    {
+                        return "   0-0 " + move.CheckOrMateSign;
+                    }
+                    if (move.ToField == Fields.FC8)
+                    {
+                        return " 0-0-0 " + move.CheckOrMateSign;
+                    }
+                }
+            }
+            string p = string.Empty;
+            if (move.PromotedFigure != FigureId.NO_PIECE)
+            {
+                p = FigureId.FigureIdToFenCharacter[move.PromotedFigure].ToUpper();
+            }
+
+            result += move.ToFieldName.ToLower() + p + move.CheckOrMateSign;
+            return result;
+        }
     }
 }

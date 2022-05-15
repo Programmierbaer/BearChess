@@ -12,14 +12,19 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     {
         public string PortName { get; set; }
         public bool DimLeds { get; set; }
-
         public int DimLevel { get; set; }
         public bool FlashInSync { get; set; }
         public bool UseBluetooth { get; set; }
+        public bool UseClock { get; set; }
+        public bool ClockShowOnlyMoves { get; set; }
+        public bool ClockSwitchSide { get; set; }
 
         public EChessBoardConfiguration()
         {
             DimLevel = -1;
+            UseClock = true;
+            ClockShowOnlyMoves = false;
+            ClockSwitchSide = false;
         }
 
         public static EChessBoardConfiguration Load(string fileName)
@@ -38,6 +43,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.DimLevel = savedConfig.DimLevel;
                     configuration.FlashInSync = savedConfig.FlashInSync;
                     configuration.UseBluetooth = savedConfig.UseBluetooth;
+                    configuration.ClockShowOnlyMoves = savedConfig.ClockShowOnlyMoves;
+                    configuration.UseClock = savedConfig.UseClock;
+                    configuration.ClockSwitchSide = savedConfig.ClockSwitchSide;
                     if (configuration.DimLevel < 0)
                     {
                         configuration.DimLevel = configuration.DimLeds ? 0 : 14;

@@ -23,7 +23,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showFullInformation;
         private bool _showOnlyMoves;
         private bool _showComments;
-
+        private bool _showForWhite;
 
 
         public MovePlainUserControl(Window parent)
@@ -48,11 +48,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _moveType = moveType;
         }
 
-        public void SetInformationDetails(bool showOnlyMoves, bool showFullInformation, bool showComments)
+        public void SetInformationDetails(bool showOnlyMoves, bool showFullInformation, bool showComments, bool showForWhite)
         {
             _showOnlyMoves = showOnlyMoves;
             _showFullInformation = showFullInformation;
             _showComments = showComments;
+            _showForWhite = showForWhite;
         }
 
         public void UnMark()
@@ -83,7 +84,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             textBlockMove.Text = GetMoveDisplay(
                 $"{move.FromFieldName}{move.ToFieldName}{move.CheckOrMateSign}".ToLower(),
-                move.Figure, move.CapturedFigure, move.PromotedFigure);
+                move.Figure, move.CapturedFigure, move.PromotedFigure, move.ShortMoveIdentifier);
             if (!string.IsNullOrWhiteSpace(move.EvaluationSymbol))
             {
                 textBlockMoveEvaluation.Text = move.EvaluationSymbol;
@@ -113,11 +114,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     if (move.IsEngineMove)
                     {
+                        decimal score = move.Score;
                         textBlockBestLine.Visibility = Visibility.Visible;
                         textBlockMoveValue.Visibility = Visibility.Visible;
-                        textBlockMoveValue.Text = move.Score.ToString(CultureInfo.InvariantCulture);
+                        if (move.FigureColor == Fields.COLOR_BLACK && _showForWhite)
+                        {
+                            score = -score;
+                        }
+                        textBlockMoveValue.Text = score.ToString(CultureInfo.InvariantCulture);
+
                         textBlockMoveValue.Foreground =
-                            move.Score < 0 ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);
+                            score < 0 ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);
                         if (_showFullInformation)
                         {
                             textBlockBestLine.Text = move.BestLine;
@@ -181,7 +188,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
 
-        private string GetMoveDisplay(string move, int figureId, int capturedFigureId, int promotedFigureId)
+        private string GetMoveDisplay(string move, int figureId, int capturedFigureId, int promotedFigureId, string shortMoveIdentifier)
         {
             if (move.StartsWith("0"))
             {
@@ -232,10 +239,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (capturedFigureId == FigureId.OUTSIDE_PIECE || capturedFigureId == FigureId.NO_PIECE)
             {
-                return move.Substring(2) + p;
+                return shortMoveIdentifier+move.Substring(2) + p;
             }
 
-            return "x" + move.Substring(2) + p;
+            return shortMoveIdentifier+"x" + move.Substring(2) + p;
         }
 
         private void MenuItemMoveSymbol_OnClick(object sender, RoutedEventArgs e)

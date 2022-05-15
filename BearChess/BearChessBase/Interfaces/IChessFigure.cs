@@ -79,6 +79,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// </summary>
         bool IsAttackedByFigure(int figureId);
 
+        bool IsMultipleAttackedByFigure(int figureId);
+
         /// <summary>
         /// Returns true if this figure is attacked
         /// </summary>

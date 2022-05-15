@@ -48,6 +48,41 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
             {BLACK_KING, FenCodes.BlackKing},
         };
 
+        public static Dictionary<int, string> FigureIdToEnName = new Dictionary<int, string>()
+                                                                       {
+                                                                           {NO_PIECE, string.Empty},
+                                                                           {OUTSIDE_PIECE, string.Empty},
+                                                                           {WHITE_PAWN, "Pawn"},
+                                                                           {WHITE_BISHOP, "Bishop"},
+                                                                           {WHITE_KNIGHT,"Knight"},
+                                                                           {WHITE_ROOK, "Rook"},
+                                                                           {WHITE_QUEEN, "Queen"},
+                                                                           {WHITE_KING, "King"},
+                                                                           {BLACK_PAWN, "Pawn"},
+                                                                           {BLACK_BISHOP, "Bishop"},
+                                                                           {BLACK_KNIGHT, "Knight"},
+                                                                           {BLACK_ROOK, "Rook"},
+                                                                           {BLACK_QUEEN, "Queen"},
+                                                                           {BLACK_KING, "King"},
+                                                                       };
+        public static Dictionary<int, string> FigureIdToDeName = new Dictionary<int, string>()
+                                                               {
+                                                                   {NO_PIECE, string.Empty},
+                                                                   {OUTSIDE_PIECE, string.Empty},
+                                                                   {WHITE_PAWN, "Bauer"},
+                                                                   {WHITE_BISHOP, "Läufer"},
+                                                                   {WHITE_KNIGHT,"Springer"},
+                                                                   {WHITE_ROOK, "Turm"},
+                                                                   {WHITE_QUEEN, "Dame"},
+                                                                   {WHITE_KING, "König"},
+                                                                   {BLACK_PAWN, "Bauer"},
+                                                                   {BLACK_BISHOP, "Läufer"},
+                                                                   {BLACK_KNIGHT, "Springer"},
+                                                                   {BLACK_ROOK, "Turm"},
+                                                                   {BLACK_QUEEN, "Dame"},
+                                                                   {BLACK_KING, "König"},
+                                                               };
+
         public static Dictionary<string, int> FenCharacterToFigureId = new Dictionary<string, int>()
         {
             {string.Empty, NO_PIECE},

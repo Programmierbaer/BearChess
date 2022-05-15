@@ -27,9 +27,17 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             _chessBoard.Init();
             _chessBoard.NewGame();
             _allPgnMoves.Clear();
+            var moveCnt = 0;
+            var newMove = true;
             foreach (var move in _allMoves)
             {
-                _allPgnMoves.Add(ConvertToPgnMove(move));
+                if (newMove)
+                {
+                    moveCnt++;
+                
+                }
+                _allPgnMoves.Add(ConvertToPgnMove(move, moveCnt));
+                newMove = !newMove;
             }
 
             return _allPgnMoves.ToArray();
@@ -50,10 +58,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             var newMove = true;
             foreach (var move in _allMoves)
             {
-                var m = ConvertToPgnMove(move);
                 if (newMove)
                 {
                     moveCnt++;
+                }
+                var m = ConvertToPgnMove(move, moveCnt);
+                if (newMove)
+                {
                     sb.Append($"{moveCnt}.{m}");
                     newMove = false;
                 }
@@ -89,9 +100,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             }
         }
 
-        private string ConvertToPgnMove(Move move)
+        private string ConvertToPgnMove(Move move, int moveCnt)
         {
             var pgnMove = string.Empty;
+            if (move == null)
+            {
+                return pgnMove;
+            }
             var figureFromField = _chessBoard.GetFigureOn(move.FromField);
 
             if (figureFromField.GeneralFigureId == FigureId.PAWN)
@@ -186,10 +201,31 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
 
                 pgnMove += isMate ? "#" : "+";
             }
-            string mComment = string.IsNullOrWhiteSpace(move.Comment) ? string.Empty : "{"+ReplaceNagInComment(move.Comment)+"}"; 
-            string mBestline = string.IsNullOrWhiteSpace(move.BestLine) ? string.Empty : "{"+move.Score.ToString(CultureInfo.InvariantCulture)+"} (" + move.BestLine+")";
-            //string mScore = move.IsEngineMove ? move.Score.ToString(CultureInfo.InvariantCulture) : string.Empty;
-            return $"{pgnMove} {GetNAG(move.MoveSymbol)} {GetNAG(move.EvaluationSymbol)} {mComment} {mBestline}".Trim();
+            string mComment = string.IsNullOrWhiteSpace(move.Comment) ? string.Empty : "{"+ReplaceNagInComment(move.Comment)+"}";
+            string mBestLine = string.IsNullOrWhiteSpace(move.BestLine) ? string.Empty : "{"+move.Score.ToString(CultureInfo.InvariantCulture)+"} (" + AddMoveNumberToBestLine(move.BestLine,moveCnt,move.FigureColor)+")";
+            return $"{pgnMove} {GetNAG(move.MoveSymbol)} {GetNAG(move.EvaluationSymbol)} {mComment} {mBestLine}".Trim();
+        }
+
+        private string AddMoveNumberToBestLine(string bestLine, int moveCnt, int currentColor)
+        {
+            string result = string.Empty;
+            foreach (var move in bestLine.Split(" ".ToCharArray()).ToArray())
+            {
+                if (currentColor == Fields.COLOR_WHITE)
+                {
+                    result += $"{moveCnt}. {move}";
+                    moveCnt++;
+                    currentColor = Fields.COLOR_BLACK;
+                }
+                else
+                {
+                    result += $" {move} ";
+                    currentColor = Fields.COLOR_WHITE;
+                }
+
+            }
+
+            return result;
         }
 
         private string ReplaceNagInComment(string comment)

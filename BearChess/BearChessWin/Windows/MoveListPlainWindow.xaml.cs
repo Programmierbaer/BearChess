@@ -20,7 +20,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public int MoveNumber { get; }
         public Move Move { get; }
-
         public SelectedMoveOfMoveList(Move move, int moveNumber)
         {
             MoveNumber = moveNumber;
@@ -50,6 +49,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private double _fontSize;
         private int _lastMarkedMoveNumber;
         private int _lastMarkedColor;
+        private bool _showForWhite;
 
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
         public event EventHandler<SelectedMoveOfMoveList> ContentChanged;
@@ -70,6 +70,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showOnlyMoves = bool.Parse(_configuration.GetConfigValue("extendMoveList", "false"));
             _showFullInfo = bool.Parse(_configuration.GetConfigValue("extendFull", "false"));
             _showComments = bool.Parse(_configuration.GetConfigValue("extendComments", "false"));
+            _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
             SetContentInfo();
         }
 
@@ -102,6 +103,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _figureType = displayFigureType;
             _moveType = displayMoveType;
+            stackPanelMoves.Children.Clear();
+            _lastMoveNumber = 0;
+            foreach (var move in _moveList)
+            {
+                AddInternalMove(move);
+            }
+        }
+
+        public void SetShowForWhite(bool showForWhite)
+        {
+            _showForWhite = showForWhite;
             stackPanelMoves.Children.Clear();
             _lastMoveNumber = 0;
             foreach (var move in _moveList)
@@ -224,7 +236,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             movePlainUserControl.SelectedChanged += MovePlainUserControl_SelectedChanged;
             movePlainUserControl.ContentChanged += MovePlainUserControl_ContentChanged;
             movePlainUserControl.SetDisplayTypes(_figureType, _moveType);
-            movePlainUserControl.SetInformationDetails(_showOnlyMoves, _showFullInfo, _showComments);
+            movePlainUserControl.SetInformationDetails(_showOnlyMoves, _showFullInfo, _showComments, _showForWhite);
             if (move.FigureColor == Fields.COLOR_WHITE || (_lastMoveNumber==0))
             {
                 if (_lastMoveNumber == 0)

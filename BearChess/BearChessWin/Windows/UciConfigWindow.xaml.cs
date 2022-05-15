@@ -271,7 +271,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     break;
                                 }
 
-                                i++;
+                                //i++;
                             }
                             else if (uciConfigValue.OptionType.Equals("string", StringComparison.OrdinalIgnoreCase))
                             {

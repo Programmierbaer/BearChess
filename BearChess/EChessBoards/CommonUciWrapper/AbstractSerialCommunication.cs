@@ -94,7 +94,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 if (_dataFromBoard.TryDequeue(out var line))
                 {
-                    //_logger?.LogDebug($"SC: Read from board {line}");
+                    _logger?.LogDebug($"SC: Read from board {line}");
                     if (line.Trim().Length > 1)
                     {
                         if (_lastLine.Equals(line))
@@ -328,7 +328,26 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     {
                         _comPort = new SerialComPort(comPort, 38400, Parity.None)
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
-                        
+                    }
+                }
+
+                if (_boardName.Equals(Constants.DGT, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (comPort.Equals("BT"))
+                    {
+                        _comPort = new BTComPort(null);
+                        if (!((BTComPort)_comPort).EndPointFound)
+                        {
+                            SerialCommunicationTools.GetBTComPort(_boardName, BearChessTools.Configuration.Instance, _logger, true, false);
+                        }
+                        _comPort = new BTComPort(null);
+
+                    }
+                    else
+                    {
+                        _comPort = new SerialComportForByteArray(comPort, 9600, Parity.None,8,StopBits.One, _logger)
+                                        { ReadTimeout = 500, WriteTimeout = 500 };
+
                     }
                 }
 
@@ -383,6 +402,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     }
 
                 }
+               
                 if (_boardName.Equals(Constants.SquareOff, StringComparison.OrdinalIgnoreCase))
                 {
                     // if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
@@ -510,10 +530,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             SendRawToBoard("W0203");
                             SendRawToBoard("W030A");
                         }
-                        var readLine = GetRawFromBoard("R06");
-                        readLine = GetRawFromBoard(string.Empty);
+
+                        string readLine = string.Empty;
                         if (_boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))
                         {
+                            readLine = GetRawFromBoard("R06");
                             if (readLine.StartsWith("v") && readLine.Length==5)
                             {
                                 int value = Convert.ToInt32(readLine.Substring(1,4), 16);
@@ -531,7 +552,10 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             }
 
                         }
-
+                        else
+                        {
+                            readLine = GetRawFromBoard(string.Empty);
+                        }
 
                         DisConnectFromCheck();
                         if (readLine.Length > 0)

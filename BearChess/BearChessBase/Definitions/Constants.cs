@@ -6,15 +6,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
 {
     public static class Constants
     {
-        public static string BearChess = "BearChess";
-        public static string Certabo = "Certabo";
+        public const string BearChess = "BearChess";
+        public const string Certabo = "Certabo";
         public static string Pegasus = "Pegasus";
-        public static string MChessLink = "MChessLink";
-        public static string SquareOff = "Square Off";
-        public static string SquareOffPro = "Square Off Pro";
-        public static string Teddy = "Teddy";
-        public static string MeOne = "eOne";
-        public static string KingPerformance = "King Performance";
-        public static string Exclusive = "Exclusive";
+        public const string MChessLink = "MChessLink";
+        public const string SquareOff = "Square Off";
+        public const string SquareOffPro = "Square Off Pro";
+        public const string Teddy = "Teddy";
+        public const string MeOne = "eOne";
+        public const string KingPerformance = "King Performance";
+        public const string Exclusive = "Exclusive";
+        public const string DGT = "DGT";
     }
 }

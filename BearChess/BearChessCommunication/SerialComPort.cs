@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 
 namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
@@ -23,7 +24,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             _serialPort.ReadTimeout = 500;
         }
 
-        
+
 
         public void Open()
         {
@@ -32,7 +33,14 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
         public void Close()
         {
-            _serialPort.Close();
+            try
+            {
+                _serialPort.Close();
+            }
+            catch
+            {
+                //
+            }
         }
 
         public bool IsOpen => _serialPort.IsOpen;
@@ -58,8 +66,9 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         public byte[] ReadByteArray()
         {
             return Array.Empty<byte>();
+
         }
-        
+
 
         public void Write(byte[] buffer, int offset, int count)
         {

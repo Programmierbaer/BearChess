@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
@@ -29,15 +27,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         private bool _analyzeMode;
         private int _drawBy50MoveCounter = 0;
         public bool DrawByRepetition { get; private set; }
-        public bool DrawBy50Moves
-        {
-            get => _drawBy50MoveCounter > 49;
-        }
+        public bool DrawBy50Moves => _drawBy50MoveCounter > 49;
 
         public int RemainingMovesFor50MovesDraw => 50 - _drawBy50MoveCounter;
         public bool DrawByMaterial { get; private set; }
-        private FileLogger _fileLogger;
-
 
         public ChessBoard()
         {
@@ -344,10 +337,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         /// <inheritdoc />
         public void MakeMove(Move move)
         {
-            //if (_analyzeMode)
-            //{
-            //    _fileLogger?.LogDebug($"Make move {move.FromFieldName}{move.ToFieldName}");
-            //}
+          
             var chessFigure = _figures[move.FromField];
 
             if (chessFigure.Color != CurrentColor)
@@ -662,9 +652,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             if (moves.Count == 1)
             {
                 MakeMove(moves[0].FromField, moves[0].ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
-                _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
-                _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
-                _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
+                var lastMove = _allPlayedMoves.Last().Value.GetMove(EnemyColor);
+                lastMove.Comment = comment;
+                lastMove.EvaluationSymbol = firstPositionSign;
+                lastMove.MoveSymbol = firstMoveSign;
             }
             else
             {
@@ -680,18 +671,20 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                             if (fieldName.StartsWith(fromField))
                             {
                                 MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
-                                _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
-                                _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
-                                _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
+                                var lastMove = _allPlayedMoves.Last().Value.GetMove(EnemyColor);
+                                lastMove.Comment = comment;
+                                lastMove.EvaluationSymbol = firstPositionSign;
+                                lastMove.MoveSymbol = firstMoveSign;
                                 return;
                             }
                         }
                         if (string.IsNullOrWhiteSpace(fromField) || fieldName.Contains(fromField))
                         {
                             MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
-                            _allPlayedMoves.Last().Value.GetMove(EnemyColor).Comment = comment;
-                            _allPlayedMoves.Last().Value.GetMove(EnemyColor).EvaluationSymbol = firstPositionSign;
-                            _allPlayedMoves.Last().Value.GetMove(EnemyColor).MoveSymbol = firstMoveSign;
+                            var lastMove = _allPlayedMoves.Last().Value.GetMove(EnemyColor);
+                            lastMove.Comment = comment;
+                            lastMove.EvaluationSymbol = firstPositionSign;
+                            lastMove.MoveSymbol = firstMoveSign;
                             return;
                         }
                     }
@@ -739,7 +732,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public void MakeMove(int fromField, int toField, int promotionFigureId)
         {
-            var chessFigure = _figures[fromField];
+            string multipleAttackSign = string.Empty;
+            IChessFigure chessFigure = _figures[fromField];
 
             if (chessFigure.Color != CurrentColor)
             {
@@ -751,7 +745,28 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _lastMoveFromField = fromField;
             _lastMoveToField = toField;
             CapturedFigure = _lastMoveToFigure;
-
+            if (_lastMoveToFigure.IsMultipleAttackedByFigure(_lastMoveFromFigure.FigureId))
+            {
+                if (_lastMoveToFigure.FigureId == FigureId.NO_PIECE &&
+                    _lastMoveFromFigure.GeneralFigureId == FigureId.PAWN)
+                {
+                    //ignore normal pawn move
+                }
+                else
+                {
+                    var chessFigures = GetFigures(_lastMoveFromFigure.Color)
+                                       .Where(f => f.FigureId == _lastMoveFromFigure.FigureId).ToArray();
+                    // use field number or character?
+                    if (Fields.InLine(Fields.GetLine(chessFigures[0].Field), chessFigures[1].Field))
+                    {
+                        multipleAttackSign = Fields.GetFieldName(fromField).Substring(1, 1).ToLower();
+                    }
+                    else
+                    {
+                        multipleAttackSign = Fields.GetFieldName(fromField).Substring(0, 1).ToLower();
+                    }
+                }
+            }
             CurrentFigureList.Remove(fromField);
             CurrentFigureList.Add(toField);
 
@@ -791,7 +806,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             keysCount = _allPlayedMoves.Keys.Count;
             if ((keysCount == 0) && EnemyColor == Fields.COLOR_BLACK)
             {
-                return;
+                _allPlayedMoves[keysCount] = new AllMoveClass(0);
+                keysCount = 1;
             }
 
             var fenPosition = GetFenPosition();
@@ -822,14 +838,15 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             if (EnemyColor == Fields.COLOR_WHITE)
             {
                 var allPlayedMove = new AllMoveClass(keysCount);
-                allPlayedMove.SetMove(Fields.COLOR_WHITE, new Move(fromField, toField, Fields.COLOR_WHITE, chessFigure.FigureId, CapturedFigure, promotionFigureId),
+                allPlayedMove.SetMove(Fields.COLOR_WHITE, new Move(fromField, toField, Fields.COLOR_WHITE, chessFigure.FigureId, CapturedFigure, promotionFigureId) {ShortMoveIdentifier = multipleAttackSign},
                                       fenPosition);
 
                 _allPlayedMoves[keysCount] = allPlayedMove;
             }
             else
             {
-                _allPlayedMoves[keysCount - 1].SetMove(Fields.COLOR_BLACK, new Move(fromField, toField, Fields.COLOR_BLACK, chessFigure.FigureId, CapturedFigure, promotionFigureId),
+
+                _allPlayedMoves[keysCount - 1].SetMove(Fields.COLOR_BLACK, new Move(fromField, toField, Fields.COLOR_BLACK, chessFigure.FigureId, CapturedFigure, promotionFigureId) { ShortMoveIdentifier = multipleAttackSign },
                                                    fenPosition);
             }
 
@@ -1870,7 +1887,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return null;
         }
 
-    
+
 
         private struct Castling
         {

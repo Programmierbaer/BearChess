@@ -740,7 +740,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (showDialog.HasValue && showDialog.Value)
             {
                 var uciInfo = uciConfigWindow.GetUciInfo();
-
+                _loadedEnginesControls[uciInfo.Name].SetElo(uciInfo);
+                _loadedUciInfos[engineName] = uciInfo;
                 if (uciInfo.OptionValues != null)
                 {
                     foreach (var uciInfoOptionValue in uciInfo.OptionValues)

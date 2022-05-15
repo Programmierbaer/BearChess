@@ -8,6 +8,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         event EventHandler TimeOutEvent;
         ClockTime GetClockTime();
+        ClockTime GetCurrentTime();
         ClockTime GetElapsedTime();
         void SetTime(ClockTime clockTime, int extraSeconds = 0);
         void SetTime(int hh, int mm, int ss, int extraSeconds= 0);

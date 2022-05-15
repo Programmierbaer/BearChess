@@ -40,7 +40,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
             // ignore
         }
 
-      
+        public override void SendInformation(string message)
+        {
+            //
+        }
+
+
         /// <inheritdoc />
         public override void DimLeds(bool dimLeds)
         {

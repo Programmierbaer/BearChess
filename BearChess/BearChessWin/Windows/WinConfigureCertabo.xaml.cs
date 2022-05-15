@@ -129,6 +129,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 var certaboLoader = new CertaboLoader();
                 certaboLoader.Calibrate();
+                certaboLoader.SetAllLedsOn();
+                certaboLoader.SetAllLedsOff();
                 certaboLoader.SetAllLedsOff();
                 infoWindow.Close();
                 certaboLoader.Stop();

@@ -103,9 +103,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         /// <inheritdoc />
-        public void ShowMove(string fromField, string toField)
+        public void ShowMove(string fromField, string toField, string displayString)
         {
-            _eChessBoard.ShowMove(fromField, toField);
+            _eChessBoard.ShowMove(fromField, toField, displayString);
         }
 
         /// <inheritdoc />
@@ -177,8 +177,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void Calibrate()
         {
             _eChessBoard.Calibrate();
-            _eChessBoard.SetAllLedsOn();
-            _eChessBoard.SetAllLedsOff();
+
+        }
+
+        public void SendInformation(string message)
+        {
+            _eChessBoard.SendInformation(message);
         }
 
         public void RequestDump()
@@ -273,6 +277,26 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void Ignore(bool ignore)
         {
             _eChessBoard.Ignore(ignore);
+        }
+
+        public void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack)
+        {
+            _eChessBoard.SetClock(hourWhite, minuteWhite, minuteSec, hourBlack, minuteBlack, secondBlack);
+        }
+
+        public void StopClock()
+        {
+            _eChessBoard.StopClock();
+        }
+
+        public void StartClock(bool white)
+        {
+            _eChessBoard.StartClock(white);
+        }
+
+        public void DisplayOnClock(string display)
+        {
+            _eChessBoard.DisplayOnClock(display);
         }
 
         #region private

@@ -53,7 +53,7 @@
       <Project>{a6bcdc78-1edc-40c7-936f-880423360ba3}</Project>
       <Name>BearChessEChessBoard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PegasusEBoardWrapper\PegasusEBoardWrapper.csproj">
+    <ProjectReference Include="..\EChessBoards\DGT\PegasusEBoardWrapper\PegasusEBoardWrapper.csproj">
       <Project>{88439be8-5467-4f82-bba2-cd1c101f8bca}</Project>
       <Name>PegasusEBoardWrapper</Name>
     </ProjectReference>

@@ -267,7 +267,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
         }
 
-        public override void SetLedForFields(string[] fieldNames, bool thinking)
+        public override void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString)
         {
             if (!EnsureConnection())
             {
@@ -378,6 +378,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
         }
 
+        public override void SendInformation(string message)
+        {
+            //
+        }
+
         public override void RequestDump()
         {
             lock (_locker)
@@ -408,6 +413,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     "srnbqkbnrpppppppp................................PPPPPPPPRNBQKBNR"))
                 {
                     _playWithWhite = false;
+                    
                 }
 
                 if (dataFromBoard.FromBoard.StartsWith(
@@ -453,6 +459,26 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     _serialCommunication.Send($"G{chessLinkFen}");
                 }
             }
+        }
+
+        public override void StopClock()
+        {
+            //
+        }
+
+        public override void StartClock(bool white)
+        {
+            //
+        }
+
+        public override void DisplayOnClock(string display)
+        {
+            //
+        }
+
+        public override void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack)
+        {
+            //
         }
 
         private string GetFenLine(string substring)

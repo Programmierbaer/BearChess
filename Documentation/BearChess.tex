@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.6.2.0}
+\fancyhead[R]{Version 0.7.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{15.04.2022} 
+\date{15.05.2022} 
 
 
 \begin{document}
@@ -39,7 +39,7 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports Certabo chessboards, chessboards connected via Millennium ChessLink or Millennium eOne, the DGT Pegasus chessboard and Square Off Pro.\\
+BearChess supports \textbf{Certabo} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard and \textbf{Square Off Pro}.\\
 
 As you can see from the version number, this software is still under development. There are still some functions that are not fully implemented and there are certainly still many bugs. But BearChess has now reached a level where it can be used and feedback from other users is welcome.\\
 
@@ -72,6 +72,7 @@ BearChess offers among others the following functions:
 \begin{enumerate}
 	  \item Play with Certabo chessboards.
 	  \item Play with Millennium chessboards via ChessLink modul.
+ 	  \item Play with DGT e-Board or Revelation.	  
 	  \item Play with DGT Pegasus chessboard.	  
 	  \item Play with Square off Pro chessboard.	  	  
   	  \item Play against human beings or UCI engines.
@@ -756,7 +757,7 @@ BearChess offers two different clocks: small and big
 	\label{fig:BigClocks}
 \end{figure}
 
-\section{Configure sounds}
+\section{Configure speech and sounds}
 
 \begin{figure}[H]
 	\centering
@@ -766,14 +767,39 @@ BearChess offers two different clocks: small and big
 \end{figure}
 Opens a window where you can configure some sounds.
 
-  \begin{figure}[H]
+\begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{Sounds1.png}
-	\caption{Sound configuration}
+	\caption{Speech and sound configuration}
 	\label{fig:Sounds1}
 \end{figure}	
 
-You can configure here if BearChess should play a sound when the engine makes a move, gives check or mates. Optionally you can configure an individual sound file. Only wave files are supported.
+Here you can set whether BearChess should announce moves or other events in your language or only play a sound when the engine makes a move, gives check or mates. Optionally you can also configure an individual sound file. Only wave files are supported. Only either voice output or playing sounds can be enabled.
+
+\subsection{Configure speech}
+
+\begin{itemize}
+  \item The "\textbf{Speech active}" checkbox activates speech output.
+  \item You can choose between two types of move announcements: The long version, e.g. "Knight from g1 to f3" or the short version "Knight f3".
+  \item If you activate the "Own move" checkbox, your moves will also be announced. This can be usefull for boards without LEDs to verify that the move is recognized by BearChess.
+  \item The "\textbf{Language}" table shows all the languages installed for the speech output. BearChess does not deliver any language files itself. Choose your preferred language. 
+\end{itemize}
+If you choose English or German, BearChess knows all required words for full support of both languages.\\
+If not or you want to change some words or you want BearChess to greet you individually, activate "Define your own translation" and click the button \includegraphics[scale=0.5]{world_edit.png}.
+
+ \begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{Sounds3.png}
+	\caption{Define translation}
+	\label{fig:Sounds3}
+\end{figure}
+Just type the words in your language into the fields. For example, if you want to hear "mate" instead of "check mate", enter it in the field next to "check mate:".\\
+Or if your are Italian, enter all fields with your language, for example "re" for king and "donna" for queen.\\
+{\color{red}*} The speech output is asynchronous and does not slow down the game. However, all texts are always spoken. If there is a fast sequence of moves, the output may lag behind the game.
+
+\subsection{Configure sound}
+
+When the speech output is not active, you can activate some sound effects and also select your own wave files.
 
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{sound.png} Play the sound
@@ -820,7 +846,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports three electronic chessboards: Certabo boards, Millennium boards via the ChessLink module and DGT Pegasus. Certabo and Millennium boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus communication only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.\\
+BearChess supports many electronic chessboards: \textbf{Certabo} boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus} and \textbf{Square Off Pro}. Certabo, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.\\
 For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
 In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
@@ -1040,10 +1066,51 @@ In the lower right corner appears a new button, which allows you to easily conne
 	\label{fig:MillenniumChessLink8}
 \end{figure}
 
+\subsection{Configure DGT e-Board} \label{ConfigureDGTEBoard}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{DGTEBoard1.png}
+	\caption{Open a window to configure DGT e-boards }
+	\label{fig:DGTEBoard1}
+\end{figure}
+
+For your DGT e-Board you may need to configure if you want to use a COM port or Bluetooth. 
+If your PC \textbf{and} your e-Board supports Bluetooth, you can also connect to the e-Board via Bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows.\\
+Read chapter \textbf{\ref{BluetoothDGT}  \nameref{BluetoothDGT}} on page \pageref{BluetoothDGT} for more information.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{DGTEBoard2.png}
+	\caption{Configure DGT e-boards }
+	\label{fig:DGTEBoard2}
+\end{figure}
+
+You can use an external clock (DGT3000, DGTPi) or the Revelation display to display moves and time.
+\begin{itemize}
+	\item Activate "\textbf{Clock}" if you use a clock.
+	\item Activate the "Change side" checkbox if your clock is set on the right side. Normally, the clock is set to the left side for a white player. 
+	\item Activate "Show only moves" if you do not want to display your time on the clock.
+\end{itemize}
+
+
+\subsubsection{Configure Bluetooth} \label{BluetoothDGT}
+
+If the "Bluetooth" option is set, the following window will be displayed for a short time if you open the configuration dialog.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{MillenniumChessLink10.png}
+	\caption{Search for Bluetooth}
+	\label{fig:DGTEBoardBT}
+\end{figure}
+
+During this time or if you connect for the first time, Windows may ask you to connect to the DGT e-Board and maybe you have to enter a pairing code. For more details, read the e-Board user manual.\\
+
+
 \subsection{Connect DGT Pegasus} \label{ConfigurePegasus}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{Pegasus1.png}
+	\includegraphics[scale=0.8]{Pegasus1.png}
 	\caption{Connect to DGT Pegasus }
 	\label{fig:Pegasus1}
 \end{figure}
@@ -1302,7 +1369,7 @@ If you want to play a game and continue on another day, you can do the following
 \end{itemize}
 The game will continue with the same settings of opponent and timing control, setting the clock to the same time as you saved the game.
 
-\subsubsection*{Electronic chessboard}
+\subsubsection{Electronic chessboard}
 If you use an electronic chessboard, connect to the board \textbf{before} you load the game from the database. When you click on \includegraphics[scale=0.5]{control_play_blue.png}  "Continue"
 the following window appears.
 \begin{figure}[H]
@@ -2019,6 +2086,8 @@ When two engines play against each other, all moves are ignored by the electroni
 
 \section{Known Issues}
 \begin{itemize}
+	\item The support of DGT Revelation is not fully tested.
+	\item Start from a predefined position with black is not fully tested.
     \item Relaxed mode and the game analysis are new features. There are certainly still some errors in it.
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time.
@@ -2034,16 +2103,25 @@ These are some ideas what will come in one of the next versions.
 		\item Extend the game analysis.
 		\item Improve eletronic chess board handling.
   	    \item Improve the performance of the opening book.
-    	\item Support for more DGT chessboards.
 	\end{itemize} 
 
 \pagebreak
 
 \section{Changelog}
 
+\subsection{Version 0.6.2.1 $\Rightarrow$  0.6.7.0}
+\begin{itemize}
+	\item New: Support for DGT e-Boards and Revelation.
+	\item New: Speech output in your language.
+	\item Fix: Create PGN notation
+    \item Fix: Reading UCI options
+	\item Fix: Recognize base position with Square Off Pro and DGT Pegasus.
+	\item Fix: Take back if the game is not started from base position.
+\end{itemize}
+
 \subsection{Version 0.6.2.0 $\Rightarrow$  0.6.2.1}
 \begin{itemize}
-	\item Fix: Take back functionality was broken
+	\item Fix: Take back functionality was broken.
 \end{itemize}
 
 \subsection{Version 0.6.1.0 $\Rightarrow$  0.6.2.0}

@@ -127,7 +127,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             if (Active && IsLogLevel(LogLevel.Info))
             {
-                _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:s} Info:    {logMessage}");
+                _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:o} Info:    {logMessage}");
             }
         }
 
@@ -136,7 +136,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             if (Active && IsLogLevel(LogLevel.Debug))
             {
-                _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:s} Debug:   {logMessage}");
+                _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:o} Debug:   {logMessage}");
             }
         }
 
@@ -146,7 +146,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             if (Active && IsLogLevel(LogLevel.Warning))
             {
-                _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:s} Warning: {logMessage}");
+                _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:o} Warning: {logMessage}");
             }
         }
 
@@ -156,7 +156,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             if (Active && IsLogLevel(LogLevel.Warning))
             {
                 _fileQueue.Enqueue(
-                    $"{Environment.NewLine}{DateTime.UtcNow:s} Warning: {logMessage}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                    $"{Environment.NewLine}{DateTime.UtcNow:o} Warning: {logMessage}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 if (ex.InnerException != null)
                 {
                     LogWarning(ex.InnerException);
@@ -171,7 +171,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 LogError($"Art der Ausnahme: {ex.GetType()}");
                 _fileQueue.Enqueue(
-                    $"{Environment.NewLine}{DateTime.UtcNow:s} Warning: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                    $"{Environment.NewLine}{DateTime.UtcNow:o} Warning: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 if (ex.InnerException != null)
                 {
                     LogWarning(ex.InnerException);
@@ -198,7 +198,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 }
 
                 _fileQueue.Enqueue(
-                    $"{Environment.NewLine}{DateTime.UtcNow:s} Error:   {ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                    $"{Environment.NewLine}{DateTime.UtcNow:o} Error:   {ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 if (ex.InnerException != null)
                 {
                     LogError(ex.InnerException);
@@ -211,7 +211,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             if (Active && IsLogLevel(LogLevel.Error))
             {
-                _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:s} Error:   {logMessage}");
+                _fileQueue.Enqueue($"{Environment.NewLine}{DateTime.UtcNow:o} Error:   {logMessage}");
             }
         }
 
@@ -221,7 +221,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             if (Active && IsLogLevel(LogLevel.Error))
             {
                 _fileQueue.Enqueue(
-                    $"{Environment.NewLine}{DateTime.UtcNow:s} Error:   {logMessage}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                    $"{Environment.NewLine}{DateTime.UtcNow:o} Error:   {logMessage}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}");
                 if (ex.InnerException != null)
                 {
                     LogError(ex.InnerException);

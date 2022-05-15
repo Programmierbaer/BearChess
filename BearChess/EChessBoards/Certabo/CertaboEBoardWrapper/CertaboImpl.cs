@@ -12,7 +12,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
         }
 
         public CertaboImpl(string name, string basePath, bool isFirstInstance, string comPortName, bool useBluetooth) : base(
-            name, basePath, isFirstInstance, comPortName, useBluetooth)
+            name, basePath, isFirstInstance, comPortName, useBluetooth, true, false, false)
         {
 
         }
@@ -41,6 +41,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
             _board.Calibrate();
             SetAllLedsOff();
             _stop = false;
+        }
+
+        public override void SendInformation(string message)
+        {
+            //
         }
 
         public override void DimLeds(bool _)

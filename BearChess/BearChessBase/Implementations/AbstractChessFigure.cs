@@ -134,6 +134,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return _attackedByFigure[figureId] > 0;
         }
 
+        public bool IsMultipleAttackedByFigure(int figureId)
+        {
+            return _attackedByFigure[figureId] > 1;
+        }
+
         /// <inheritdoc />
         public bool IsAttackedByFigure(int generalFigureId, int figureColor)
         {

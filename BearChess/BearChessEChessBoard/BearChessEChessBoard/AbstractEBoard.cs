@@ -1,4 +1,5 @@
-﻿using www.SoLaNoSoft.com.BearChess.EChessBoard;
+﻿using System;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 
@@ -31,6 +32,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected bool _allowTakeBack;
         private bool _pieceRecognition = true;
         protected bool _stopReading = false;
+        protected bool _stopAll = false;
         protected bool _ignoreReading = false;
 
 
@@ -42,14 +44,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract void Reset();
 
-        public void SetLedForFields(string fromFieldName, string toFieldName, bool thinking)
+        public void SetLedForFields(string fromFieldName, string toFieldName, bool thinking, bool isMove, string displayString)
         {
-            SetLedForFields(new[] { fromFieldName, toFieldName }, thinking);
+            SetLedForFields(new[] { fromFieldName, toFieldName }, thinking, isMove, displayString);
         }
 
         public abstract bool CheckComPort(string portName);
 
-        public abstract void SetLedForFields(string[] fieldNames, bool thinking);
+        public abstract void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString);
 
         public abstract void SetLastLeds();
 
@@ -67,6 +69,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
 
         public abstract void Calibrate();
+
+        public abstract void SendInformation(string message);
 
         public abstract void RequestDump();
 
@@ -94,6 +98,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public  string BatteryLevel { get; protected set; }
         public  string BatteryStatus { get; protected set; }
         public  string Information { get; protected set; }
+
+        public abstract void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack,
+                                      int secondBlack);
+
+        public abstract void StopClock();
+        public abstract void StartClock(bool white);
+        public abstract void DisplayOnClock(string display);
+
         public void SetDemoMode(bool inDemoMode)
         {
             _inDemoMode = inDemoMode;
@@ -166,6 +178,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public void Dispose()
         {
+            _stopAll = true;
             _serialCommunication.DisConnect();
         }
     }

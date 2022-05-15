@@ -54,12 +54,8 @@
       <Project>{A6BCDC78-1EDC-40C7-936F-880423360BA3}</Project>
       <Name>BearChessEChessBoard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PegasusEBoardWrapper\PegasusEBoardWrapper.csproj">
-      <Project>{88439be8-5467-4f82-bba2-cd1c101f8bca}</Project>
-      <Name>PegasusEBoardWrapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SquareOffEBoardWrapper\SquareOffEBoardWrapper.csproj">
-      <Project>{13640649-4F20-45F2-9368-77B33FD31D1E}</Project>
+    <ProjectReference Include="..\EChessBoards\SquareOff\SquareOffEBoardWrapper\SquareOffEBoardWrapper.csproj">
+      <Project>{13640649-4f20-45f2-9368-77b33fd31d1e}</Project>
       <Name>SquareOffEBoardWrapper</Name>
     </ProjectReference>
   </ItemGroup>

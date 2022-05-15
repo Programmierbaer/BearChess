@@ -41,7 +41,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Show fields <paramref name="fromField"/> and <paramref name="toField"/> on board.
         /// </summary>
-        void ShowMove(string fromField, string toField);
+        void ShowMove(string fromField, string toField, string displayString);
 
         /// <summary>
         /// Show all fields <paramref name="fields"/> on board.
@@ -103,6 +103,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// Calibrate board
         /// </summary>
         void Calibrate();
+
+        /// <summary>
+        /// Send a information to display
+        /// </summary>
+        /// <param name="message"></param>
+        void SendInformation(string message);
 
         void RequestDump();
 
@@ -194,6 +200,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void AllowTakeBack(bool allowTakeBack);
         bool PieceRecognition { get; }
         void Ignore(bool ignore);
+
+        void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack);
+
+        void StopClock();
+        void StartClock(bool white);
+
+        void DisplayOnClock(string display);
 
     }
 }
