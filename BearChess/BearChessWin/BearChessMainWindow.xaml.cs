@@ -6885,7 +6885,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            _telnetClient = new TelnetClient("www.freechess.org", 5000, "LarsBearchess", "iohwuv",
+            _telnetClient = new TelnetClient("www.freechess.org", 5000, "************", "*******",
                                              new FileLogger(Path.Combine(_ficsPath, "fics.log"), 10, 10));
             _telnetClient.ReadEvent += _telnetClient_ReadEvent;
 
