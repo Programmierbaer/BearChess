@@ -2,7 +2,9 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChess.BearChessBTTools;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -24,6 +26,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         protected readonly ConcurrentQueue<string> _stringDataToBoard = new ConcurrentQueue<string>();
         protected bool _clientConnected;
         protected bool _useBluetooth;
+        protected bool _useHID;
 
         protected bool _isFirstInstance;
         private string _lastLine = string.Empty;
@@ -94,7 +97,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 if (_dataFromBoard.TryDequeue(out var line))
                 {
-                    _logger?.LogDebug($"SC: Read from board {line}");
+                    if (!line.Equals(_lastLine))
+                    {
+                        _logger?.LogDebug($"SC: Read from board {line}");
+                    }
+                    
                     if (line.Trim().Length > 1)
                     {
                         if (_lastLine.Equals(line))
@@ -284,15 +291,15 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
 
                     }
-                    else
+                    else if (comPort.StartsWith("B"))
                     {
-                        //if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                        //if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceIdList))
                         {
                             int counter = 0;
                             if (SerialBTLECommunicationTools.StartWatching(_logger, "MILLENNIUM CHESS"))
                             {
-                                _logger?.LogDebug($"S: CheckConnect: Check for BTLE ");
-                                while (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                                _logger?.LogDebug("S: CheckConnect: Check for BTLE ");
+                                while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
                                 {
                                     Thread.Sleep(100);
                                     counter++;
@@ -304,9 +311,22 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                     }
                                 }
                             }
-                            _logger?.LogDebug("S: CheckConnect: Create new BTLE comport ");
-                            _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceId);
                             SerialBTLECommunicationTools.StopWatching();
+                            _logger?.LogDebug("S: CheckConnect: Create new BTLE comport ");
+                            foreach (var deviceId in SerialBTLECommunicationTools.DeviceIdList)
+                            {
+                                _logger?.LogDebug($"S: Check for id {deviceId}");
+                                _comPort = new BTLEComPort(deviceId);
+                                if (!_comPort.IsOpen)
+                                {
+                                    _comPort.Open();
+                                    if (_comPort.IsOpen)
+                                    {
+                                        _comPort.Close();
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                     // _comPort = new SerialComPort(comPort, 38400, Parity.Odd, 7, StopBits.One) {ReadTimeout = 1000, WriteTimeout = 1000};
@@ -324,7 +344,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         _comPort = new BTComPort(null);
 
                     }
-                    else
+                    else if (comPort.StartsWith("C"))
                     {
                         _comPort = new SerialComPort(comPort, 38400, Parity.None)
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
@@ -343,7 +363,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         _comPort = new BTComPort(null);
 
                     }
-                    else
+                    else if (comPort.StartsWith("C"))
                     {
                         _comPort = new SerialComportForByteArray(comPort, 9600, Parity.None,8,StopBits.One, _logger)
                                         { ReadTimeout = 500, WriteTimeout = 500 };
@@ -353,12 +373,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
                 if (_boardName.Equals(Constants.Pegasus, StringComparison.OrdinalIgnoreCase))
                 {
-                    // if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                    if (comPort.StartsWith("B"))
                     {
                         int counter = 0;
                         if (SerialBTLECommunicationTools.StartWatching(_logger, "DGT_PEGASUS"))
                         {
-                            while (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
                             {
                                 Thread.Sleep(100);
                                 counter++;
@@ -371,33 +391,69 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             }
                         }
 
-                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceId);
+                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault());
                         SerialBTLECommunicationTools.StopWatching();
                     }
 
                 }
 
-                if (_boardName.Equals(Constants.SquareOffPro, StringComparison.OrdinalIgnoreCase))
+                if (_boardName.Equals(Constants.ChessnutAir, StringComparison.OrdinalIgnoreCase))
                 {
-                    // if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                    if (_useHID && comPort.StartsWith("H"))
+                    {
+
+                        _comPort = HIDComPort.GetComPort(0x2D80, 0xFF00);
+                        if (_comPort == null)
+                        {
+                            _logger?.LogInfo("No HID port for Chessnut Air");
+                            return false;
+                        }
+                    }
+
+                    if (_useBluetooth && comPort.StartsWith("B"))
                     {
                         int counter = 0;
-                        if (SerialBTLECommunicationTools.StartWatching(_logger, "Squareoff Pro"))
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, "Chessnut Air"))
                         {
-                            while (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
                             {
                                 Thread.Sleep(100);
                                 counter++;
                                 if (counter > 100)
                                 {
-                                    _logger?.LogInfo("No BTLE Port for SquareOff Pro");
+                                    _logger?.LogInfo("No BTLE port for Chessnut Air");
                                     SerialBTLECommunicationTools.StopWatching();
                                     return false;
                                 }
                             }
                         }
 
-                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceId);
+                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault());
+                        SerialBTLECommunicationTools.StopWatching();
+                    }
+                }
+
+                if (_boardName.Equals(Constants.SquareOffPro, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (comPort.StartsWith("B"))
+                    {
+                        int counter = 0;
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, "Squareoff Pro"))
+                        {
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo("No BTLE port for SquareOff Pro");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+
+                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault());
                         SerialBTLECommunicationTools.StopWatching();
                     }
 
@@ -405,25 +461,25 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                
                 if (_boardName.Equals(Constants.SquareOff, StringComparison.OrdinalIgnoreCase))
                 {
-                    // if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                    if (comPort.StartsWith("B"))
                     {
                         int counter = 0;
                         if (SerialBTLECommunicationTools.StartWatching(_logger, "Square Off"))
                         {
-                            while (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceId))
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
                             {
                                 Thread.Sleep(100);
                                 counter++;
                                 if (counter > 100)
                                 {
-                                    _logger?.LogInfo("No BTLE Port for SquareOff");
+                                    _logger?.LogInfo("No BTLE port for SquareOff");
                                     SerialBTLECommunicationTools.StopWatching();
                                     return false;
                                 }
                             }
                         }
 
-                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceId);
+                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault());
                         SerialBTLECommunicationTools.StopWatching();
                     }
 
@@ -431,7 +487,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
                 if (_comPort == null)
                 {
-                    _logger?.LogError("S: CheckConnect: No COM Port  ");
+                    _logger?.LogError("S: CheckConnect: No COM port ");
                     return false;
                 }
                 
@@ -496,6 +552,15 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (CheckConnect(portName))
                     {
                         if (_boardName.Equals(Constants.Pegasus, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                CurrentComPort = portName;
+                                return true;
+                            }
+                        }
+                        if (_boardName.Equals(Constants.ChessnutAir, StringComparison.OrdinalIgnoreCase))
                         {
                             if (_comPort.IsOpen)
                             {
@@ -597,15 +662,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             return true;
         }
 
-        public string[] GetBTComPort(ILogging logger)
-        {
-            _logger?.LogDebug("S: Reading BT devices");
-            List<string>  portNames = new List<string>(GetPortNames(logger));
-            portNames.Add("BT");
-            return portNames.ToArray();
-        }
-
-        public static string[] GetPortNames(ILogging logger)
+      
+        public static string[] GetPortNames(ILogging logger, bool useBluetooth, bool useHID)
         {
             logger?.LogDebug("S: Reading port names");
             var result = new List<string>();
@@ -628,6 +686,14 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 }
             }
 
+            if (useBluetooth)
+            {
+                result.Add("BT");
+            }
+            if (useHID)
+            {
+                result.Add("HID");
+            }
             return result.ToArray();
         }
 
@@ -637,7 +703,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             if (string.IsNullOrWhiteSpace(_setPortName)
                 || _setPortName.Equals("<auto>", StringComparison.OrdinalIgnoreCase))
             {
-                var comPortNames = _useBluetooth ? GetBTComPort(_logger) :   GetPortNames(_logger);
+                var comPortNames = GetPortNames(_logger, _useBluetooth, _useHID);
                 _logger?.LogDebug($"S: All port names: {string.Join(",", comPortNames)}");
                 return comPortNames;
             }

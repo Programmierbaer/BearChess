@@ -47,12 +47,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
 
 
         /// <inheritdoc />
-        public override void DimLeds(bool dimLeds)
+        public override void DimLEDs(bool dimLeds)
         {
             _board?.DimLeds(dimLeds);
         }
 
-        public override void DimLeds(int level)
+        public override void DimLEDs(int level)
         {
             _board?.DimLeds(level);
         }

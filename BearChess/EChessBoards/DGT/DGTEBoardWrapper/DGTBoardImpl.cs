@@ -28,12 +28,12 @@ namespace www.SoLaNoSoft.com.BearChess.DGTEBoardWrapper
             _board.SendInformation(message);
         }
 
-        public override void DimLeds(bool dimLeds)
+        public override void DimLEDs(bool dimLeds)
         {
            // throw new NotImplementedException();
         }
 
-        public override void DimLeds(int level)
+        public override void DimLEDs(int level)
         {
            //  throw new NotImplementedException();
         }

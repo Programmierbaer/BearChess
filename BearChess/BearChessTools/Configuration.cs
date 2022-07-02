@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Xml.Serialization;
 using InTheHand.Net;
 using www.SoLaNoSoft.com.BearChessBase;
@@ -28,6 +29,8 @@ namespace www.SoLaNoSoft.com.BearChessTools
         private string TimeControlFileName { get; }
         private string StartupTimeControlFileName { get; }
         private string DatabaseFilterFileName { get; }
+
+        static byte[] _additionalEntropy = { 9, 8, 7, 6, 5 };
 
         public const string STARTUP_WHITE_ENGINE_ID = "startupWhite.uci";
         public const string STARTUP_BLACK_ENGINE_ID = "startupBlack.uci";
@@ -239,6 +242,12 @@ namespace www.SoLaNoSoft.com.BearChessTools
         }
 
 
+        public void SetSecureConfigValue(string key, string value)
+        {
+            string encryptPlainTextToCipherText = EnDeCryption.EncryptPlainTextToCipherText(value);
+            SetConfigValue(_appSettings, key, encryptPlainTextToCipherText);
+        }
+
 
         public void SetConfigValue(string key, string value)
         {
@@ -249,6 +258,13 @@ namespace www.SoLaNoSoft.com.BearChessTools
         {
             return _appSettings.ContainsKey(key) ? _appSettings[key] : defaultValue;
         }
+
+        public string GetSecureConfigValue(string key, string defaultValue)
+        {
+
+            return _appSettings.ContainsKey(key) ? EnDeCryption.DecryptCipherTextToPlainText(_appSettings[key]) : defaultValue;
+        }
+
 
         private string GetConfigValue(Dictionary<string, string> settings, string key, string defaultValue)
         {

@@ -63,7 +63,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName) : this(
-            name, basePath, isFirstInstance, comPortName, false, true,false, false)
+            name, basePath, isFirstInstance, comPortName, false, false,false, false)
         {
 
         }
@@ -111,9 +111,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _piecesFenBasePosition;
         }
 
-        public abstract void DimLeds(bool dimLeds);
+        public abstract void DimLEDs(bool dimLeds);
 
-        public abstract void DimLeds(int level);
+        public abstract void DimLEDs(int level);
         public abstract void FlashInSync(bool flashSync);
 
         public void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
@@ -374,7 +374,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             _stop = true;
             _board.Stop(_stop);
-            
         }
 
         public void Continue()
@@ -577,7 +576,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             var move = _internalChessBoard.GetMove(fenPosition, _inDemoMode);
             if (string.IsNullOrWhiteSpace(move))
             {
-                _fileLogger?.LogDebug($"C: Move is invalid");
+                _fileLogger?.LogDebug("C: Move is invalid");
                 return;
             }
             _fileLogger?.LogDebug($"C: Move detected: {move}");

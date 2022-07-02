@@ -25,6 +25,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public int Round { get; set; }
         public bool SwitchedColor { get; set; }
         public string GameEvent { get; set; }
+        public string GameNumber { get; set; }
 
         public bool RepeatedGame { get; set; }
      
@@ -38,6 +39,15 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public CurrentGame(UciInfo whiteConfig, UciInfo blackConfig, string gameEvent, TimeControl timeControl,
                            string playerWhite, string playerBlack, bool startFromBasePosition, bool duelEngine, int duelGames, bool duelEnginePlayer)
         {
+            //if (whiteConfig.IsChessServer)
+            //{
+            //    whiteConfig.Name = playerWhite;
+            //}
+
+            //if (blackConfig.IsChessServer)
+            //{
+            //    blackConfig.Name = playerBlack;
+            //}
             WhiteConfig = whiteConfig;
             BlackConfig = blackConfig;
             GameEvent = gameEvent;

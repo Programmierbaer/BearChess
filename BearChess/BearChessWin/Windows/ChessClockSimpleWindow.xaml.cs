@@ -55,7 +55,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             thread.Start();
             Title = capture;
             ToolTip = Title;
-
         }
 
       
@@ -122,6 +121,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ToolTip = Title;
             borderWarning.Visibility = Visibility.Hidden;
             _duration = TimeSpan.Zero;
+        }
+
+
+        public void CorrectTime(int hh, int mm, int ss)
+        {
+            var stop = _stop;
+            if (!stop)
+            {
+                Stop();
+            }
+            _stopwatch.Reset();
+            SetDigitalNumbers(hh, mm, ss);
+            DateTime dateTime = DateTime.Now;
+            _startTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
+            _initTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
+            ToolTip = Title;
+            borderWarning.Visibility = Visibility.Hidden;
+            _duration = TimeSpan.Zero;
+            if (!stop)
+            {
+                Go();
+            }
+
         }
 
         public void Stop()

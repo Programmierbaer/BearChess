@@ -25,6 +25,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             UseClock = true;
             ClockShowOnlyMoves = false;
             ClockSwitchSide = false;
+            UseBluetooth = false;
         }
 
         public static EChessBoardConfiguration Load(string fileName)

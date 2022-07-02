@@ -226,13 +226,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public void DimLeds(bool dimLeds)
         {
-            _eChessBoard.DimLeds(dimLeds);
+            _eChessBoard.DimLEDs(dimLeds);
         }
 
 
         public void DimLeds(int level)
         {
-            _eChessBoard.DimLeds(level);
+            _eChessBoard.DimLEDs(level);
         }
 
         /// <inheritdoc />

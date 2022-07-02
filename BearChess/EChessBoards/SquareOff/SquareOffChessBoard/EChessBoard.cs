@@ -387,6 +387,11 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             _serialCommunication.Send("4#*");
         }
 
+        protected override void Release()
+        {
+            //
+        }
+
         public override void SetFen(string fen)
         {
             string setCommand = "30#";

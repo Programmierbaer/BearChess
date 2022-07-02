@@ -21,17 +21,17 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.7.0.0}
+\fancyhead[R]{Version 0.8.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{15.05.2022} 
+\date{02.07.2022} 
 
+\renewcommand{\abstractname}{Why yet another chess GUI?}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-\textbf{Why yet another chess GUI?}\\
 
 Many GUIs support electronic chessboards, but do not use the full potential that chessboards with piece recognition offer. They could be much better used for training or analysis of games and positions. Read more in chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode}.
 
@@ -39,11 +39,11 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports \textbf{Certabo} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard and \textbf{Square Off Pro}.\\
+BearChess supports \textbf{Certabo} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro} and \textbf{Chessnut Air}.\\
 
 As you can see from the version number, this software is still under development. There are still some functions that are not fully implemented and there are certainly still many bugs. But BearChess has now reached a level where it can be used and feedback from other users is welcome.\\
 
-I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo) or Millennium 2000 GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited. If something does not work, Certabo, Millennium or DGT is not responsible for it.\\
+I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo) or Millennium 2000 GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc. If something does not work, the companies are not responsible for it.\\
 
 Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 
@@ -74,7 +74,8 @@ BearChess offers among others the following functions:
 	  \item Play with Millennium chessboards via ChessLink modul.
  	  \item Play with DGT e-Board or Revelation.	  
 	  \item Play with DGT Pegasus chessboard.	  
-	  \item Play with Square off Pro chessboard.	  	  
+	  \item Play with Square Off Pro chessboard.	  	  
+	  \item Play with Chessnut Air chessboard.	  	  	  
   	  \item Play against human beings or UCI engines.
   	  \item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs. Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
   	  \item Use Certabo Avatar UCI engines.  	  
@@ -1142,7 +1143,7 @@ After a successful connection, you need to confirm that the pieces are all in th
 \end{figure}
 
 \subsubsection{Verify position} \label{VerifyPegasusPosition}
-DGT Pegasus has no real piece recognition and can only give the information per field whether there is a piece or not. To verify if a piece is palced on a field, press the  \includegraphics[scale=0.4]{emotion_question.png} button.
+DGT Pegasus has no real piece recognition and can only give the information per field whether there is a piece or not. To verify if a piece is placed on a field, press the  \includegraphics[scale=0.4]{emotion_question.png} button.
 
 \begin{figure}[H]
 	\centering
@@ -1153,6 +1154,44 @@ DGT Pegasus has no real piece recognition and can only give the information per 
 
 Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
 
+\subsection{Connect Chessnut Air} \label{ConnectChessnutAir}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{ChessnutAir1.png}
+	\caption{Connect to Chessnut Air }
+	\label{fig:ChessnutAir1}
+\end{figure}
+
+No configuration is required for your Chessnut Air chessboard.\\
+Chessnut Air supports USB and Bluetooth LE connections. You cannot use Bluetooth LE when the board is connected to your computer with an USB cable.\\
+For a USB connection, the connection is not simulated as a COM port, but as a human interface device (HID).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{ChessnutAir2.png}
+	\caption{Connected via Bluetooth LE}
+	\label{fig:ChessnutAir2}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{ChessnutAir4.png}
+	\caption{Connected via USB as HID}
+	\label{fig:ChessnutAir4}
+\end{figure}
+
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{ChessnutAir3.png}
+	\caption{Disconnected}
+	\label{fig:ChessnutAir3}
+\end{figure}
+
+
+
 \subsection{Connect Square Off Pro} \label{ConfigureSquareOff}
 \begin{figure}[H]
 	\centering
@@ -1161,7 +1200,7 @@ Each pawn represents a piece on a field. Especially at the beginning, a review i
 	\label{fig:SquareOffPro1}
 \end{figure}
 
-No configuration is required for your Square off Pro chessboard.\\
+No configuration is required for your Square Off Pro chessboard.\\
 Square Off Pro requires a Bluetooth LE connection. Make sure that your Bluetooth adapter also supports LE.
 
 \begin{figure}[H]
@@ -1188,7 +1227,7 @@ After a successful connection, you need to confirm that the pieces are all in th
 \end{figure}
 
 \subsubsection{Verify position} \label{VerifyPegasusPosition}
-Square off Pro has no real piece recognition and can only give the information per field whether there is a piece or not. To verify if a piece is palced on a field, press the  \includegraphics[scale=0.4]{emotion_question.png} button.
+Square off Pro has no real piece recognition and can only give the information per field whether there is a piece or not. To verify if a piece is placed on a field, press the  \includegraphics[scale=0.4]{emotion_question.png} button.
 
 \begin{figure}[H]
 	\centering
@@ -1198,6 +1237,7 @@ Square off Pro has no real piece recognition and can only give the information p
 \end{figure}
 
 Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
+
 
 
 \subsection{Switch side}
@@ -2086,9 +2126,7 @@ When two engines play against each other, all moves are ignored by the electroni
 
 \section{Known Issues}
 \begin{itemize}
-	\item The support of DGT Revelation is not fully tested.
 	\item Start from a predefined position with black is not fully tested.
-    \item Relaxed mode and the game analysis are new features. There are certainly still some errors in it.
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time.
 	\item Sometimes showing incorrect material balance for "All".
@@ -2100,31 +2138,41 @@ When two engines play against each other, all moves are ignored by the electroni
 These are some ideas what will come in one of the next versions.
 
 \begin{itemize}
+		\item Play on Free Internet Chess Server (FICS).
 		\item Extend the game analysis.
 		\item Improve eletronic chess board handling.
   	    \item Improve the performance of the opening book.
+   		\item GUI redesign.
 	\end{itemize} 
 
 \pagebreak
 
 \section{Changelog}
 
-\subsection{Version 0.6.2.1 $\Rightarrow$  0.6.7.0}
+\subsection*{Version 0.7.0.0 $\Rightarrow$  0.8.0.0}
+\begin{itemize}
+	\item New: Support for Chessnut Air.
+	\item Improve the selection of MessChess chess computers.
+	\item Fix: PGN notation (date format and ambiguous moves).
+	\item Fix: Minor changes.	
+\end{itemize}
+
+\subsection*{Version 0.6.2.1 $\Rightarrow$  0.7.0.0}
 \begin{itemize}
 	\item New: Support for DGT e-Boards and Revelation.
 	\item New: Speech output in your language.
-	\item Fix: Create PGN notation
-    \item Fix: Reading UCI options
+	\item Fix: Create PGN notation.
+    \item Fix: Reading UCI options.
 	\item Fix: Recognize base position with Square Off Pro and DGT Pegasus.
 	\item Fix: Take back if the game is not started from base position.
 \end{itemize}
 
-\subsection{Version 0.6.2.0 $\Rightarrow$  0.6.2.1}
+\subsection*{Version 0.6.2.0 $\Rightarrow$  0.6.2.1}
 \begin{itemize}
 	\item Fix: Take back functionality was broken.
 \end{itemize}
 
-\subsection{Version 0.6.1.0 $\Rightarrow$  0.6.2.0}
+\subsection*{Version 0.6.1.0 $\Rightarrow$  0.6.2.0}
 \begin{itemize}
 	\item New: Display duplicate games.
 	\item New: Analysis of a previously unsaved game.
@@ -2133,7 +2181,7 @@ These are some ideas what will come in one of the next versions.
 	\item Fix: Corrections when the electronic chessboard is rotated (for Certabo and Millennium)
 \end{itemize}
 
-\subsection{Version 0.6.0.1 $\Rightarrow$  0.6.1.0}
+\subsection*{Version 0.6.0.1 $\Rightarrow$  0.6.1.0}
 \begin{itemize}
     \item New: Redesign of move list window.
     \item New: Add move symbols and comments.
@@ -2143,12 +2191,12 @@ These are some ideas what will come in one of the next versions.
 	\item Fix: Setup positions on Millennium eOne
 \end{itemize}
 
-\subsection{Version 0.6.0.0 $\Rightarrow$  0.6.0.1}
+\subsection*{Version 0.6.0.0 $\Rightarrow$  0.6.0.1}
 \begin{itemize}
 	\item Fix: Tournament information.		
 \end{itemize}
 
-\subsection{Version 0.5.9.0 $\Rightarrow$  0.6.0.0}
+\subsection*{Version 0.5.9.0 $\Rightarrow$  0.6.0.0}
 \begin{itemize}
 		\item New: Estimate ELO (engine and/or player).
 		\item New: Players can now also participate in duels		
@@ -2160,7 +2208,7 @@ These are some ideas what will come in one of the next versions.
 		\item Fix: Duel information.		
 \end{itemize}
 
-\subsection{Version 0.5.8.1 $\Rightarrow$  0.5.9.0}
+\subsection*{Version 0.5.8.1 $\Rightarrow$  0.5.9.0}
 \begin{itemize}
 	\item New: Bluetooth LE for Millennium ChessLink.
 	\item New: Keeping the temporarily changed engine configurations.
@@ -2171,12 +2219,12 @@ These are some ideas what will come in one of the next versions.
 	\item Fix: Check COM-Ports takes a long time.
 \end{itemize}
 
-\subsection{Version 0.5.8.0 $\Rightarrow$  0.5.8.1}
+\subsection*{Version 0.5.8.0 $\Rightarrow$  0.5.8.1}
 \begin{itemize}
 	\item Fix: When two engines play against each other with almost the same name
 \end{itemize}
 
-\subsection{Version 0.5.7.0 $\Rightarrow$  0.5.8.0}
+\subsection*{Version 0.5.7.0 $\Rightarrow$  0.5.8.0}
 \begin{itemize}
 	\item New: Support for DGT Pegasus chessboard.
     \item New: Improved engine configuration.	
@@ -2190,7 +2238,7 @@ These are some ideas what will come in one of the next versions.
 	\item Fix: Improvement in the calibration of Certabo boards
 \end{itemize}
 
-\subsection{Version 0.5.6.2 $\Rightarrow$  0.5.7.0}
+\subsection*{Version 0.5.6.2 $\Rightarrow$  0.5.7.0}
 \begin{itemize}
 	\item New: Export games into a PGN file.
 	\item New: Option to always display the evaluation value from the point of view of white.
@@ -2208,42 +2256,42 @@ These are some ideas what will come in one of the next versions.
 	\item Fix: Handling 50 moves draw rule.
 \end{itemize}
 
-\subsection{Version 0.5.6.1  $\Rightarrow$  0.5.6.2}
+\subsection*{Version 0.5.6.1  $\Rightarrow$  0.5.6.2}
 \begin{itemize}
 	\item Fix send invalid fen position to engines.
 	\item Fix running coach engine from current position.
 \end{itemize}
 
-\subsection{Version 0.5.6.0  $\Rightarrow$  0.5.6.1}
+\subsection*{Version 0.5.6.0  $\Rightarrow$  0.5.6.1}
 \begin{itemize}
 	\item Fix broken "Analyze mode".
 	\item Fix "Arange windows". 
 \end{itemize}
 
-\subsection{Version 0.5.5.3  $\Rightarrow$  0.5.6.0}
+\subsection*{Version 0.5.5.3  $\Rightarrow$  0.5.6.0}
 \begin{itemize}
 	\item Automatic detection of whether the game is played with white or black pieces.
 	Therefore removed the unnecessary option "Black pieces in front".
 	\item Sounds
 \end{itemize}
 
-\subsection{Version 0.5.5.2  $\Rightarrow$  0.5.5.3}
+\subsection*{Version 0.5.5.2  $\Rightarrow$  0.5.5.3}
 \begin{itemize}
 	\item Fix communication with Millennium ChessLink
 \end{itemize}
 
-\subsection{Version 0.5.5.1  $\Rightarrow$  0.5.5.2}
+\subsection*{Version 0.5.5.1  $\Rightarrow$  0.5.5.2}
 \begin{itemize}
 	\item Fix closing loaded engines.
     \item Fix handling coach engines.
 \end{itemize}
 
-\subsection{Version 0.5.5.0  $\Rightarrow$  0.5.5.1}
+\subsection*{Version 0.5.5.0  $\Rightarrow$  0.5.5.1}
 \begin{itemize}
 	\item Fix level configuration for MessChess chess computer emulation by Franz Huber.	
 \end{itemize}
 
-\subsection{Version 0.5.0.0  $\Rightarrow$  0.5.5.0}
+\subsection*{Version 0.5.0.0  $\Rightarrow$  0.5.5.0}
 \begin{itemize}
 	\item New analyze mode for played games.
 	\item Relaxed mode against any UCI engine.
@@ -2256,14 +2304,14 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.
 \end{itemize}
 
-\subsection{Version 0.4.4.0  $\Rightarrow$  0.5.0.0}
+\subsection*{Version 0.4.4.0  $\Rightarrow$  0.5.0.0}
 \begin{itemize}
 	\item Engine duels and tournaments.
 	\item Filter games.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.4.3.1  $\Rightarrow$  0.4.4.0}
+\subsection*{Version 0.4.3.1  $\Rightarrow$  0.4.4.0}
 \begin{itemize}
 	\item Changes and fixes in the move list.
     \item Now, "Captured pieces" counts if you capture a promoted figure.
@@ -2272,12 +2320,12 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.4.3.0  $\Rightarrow$  0.4.3.1}
+\subsection*{Version 0.4.3.0  $\Rightarrow$  0.4.3.1}
 \begin{itemize}
 	\item Fixed a bug that occurred in the analysis mode without an electronic chessboard.
 \end{itemize}
 
-\subsection{Version 0.4.2.3  $\Rightarrow$  0.4.3.0}
+\subsection*{Version 0.4.2.3  $\Rightarrow$  0.4.3.0}
 \begin{itemize}
 	\item Give "Player" a first and last name
     \item Show best moves on electronic chessboards in analyse mode.
@@ -2285,29 +2333,29 @@ These are some ideas what will come in one of the next versions.
     \item Improvement in automatic window arrangement.
 \end{itemize}
 
-\subsection{Version 0.4.2.2  $\Rightarrow$  0.4.2.3}
+\subsection*{Version 0.4.2.2  $\Rightarrow$  0.4.2.3}
 \begin{itemize}
 	\item Fixed a bug with the display of the taken back move on the chessboard.
 \end{itemize}
 
-\subsection{Version 0.4.2.1  $\Rightarrow$  0.4.2.2}
+\subsection*{Version 0.4.2.1  $\Rightarrow$  0.4.2.2}
 \begin{itemize}
 	\item Fixed a bug running additional engines in a game.	
 \end{itemize}
 
-\subsection{Version 0.4.2.0  $\Rightarrow$  0.4.2.1}
+\subsection*{Version 0.4.2.0  $\Rightarrow$  0.4.2.1}
 \begin{itemize}
 	\item Fixed bug in number conversion that crashes the program.
 \end{itemize}
 
-\subsection{Version 0.4.1.0  $\Rightarrow$  0.4.2.0}
+\subsection*{Version 0.4.1.0  $\Rightarrow$  0.4.2.0}
 \begin{itemize}
 	\item Bluetooth support for Certabo chessboards.
 	\item Playing games in tournament mode.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.4.0.0  $\Rightarrow$  0.4.1.0}
+\subsection*{Version 0.4.0.0  $\Rightarrow$  0.4.1.0}
 \begin{itemize}
 	\item Using a database file instead PGN.
 	\item Allows you to continue a previously saved game.
@@ -2316,7 +2364,7 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.3.3.0  $\Rightarrow$  0.4.0.0}
+\subsection*{Version 0.3.3.0  $\Rightarrow$  0.4.0.0}
 \begin{itemize}
 	\item New time configuration "Adapted time".
 	\item Implementation of the "Start the clock after the move is executed on the electronic board" time setting.
@@ -2330,7 +2378,7 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.3.2.0  $\Rightarrow$ 0.3.3.0}
+\subsection*{Version 0.3.2.0  $\Rightarrow$ 0.3.3.0}
 \begin{itemize}
     \item Support of opening books for engines.
     \item Opening book: When castling, the correct squares are displayed.
@@ -2338,7 +2386,7 @@ These are some ideas what will come in one of the next versions.
 	\item Minor fixes.	
 \end{itemize}
 
-\subsection{Version 0.3.1.1  $\Rightarrow$  0.3.2.0}
+\subsection*{Version 0.3.1.1  $\Rightarrow$  0.3.2.0}
 \begin{itemize}
 	\item Show check and mate signs in move list.
 	\item Show captured pieces.	
@@ -2347,13 +2395,13 @@ These are some ideas what will come in one of the next versions.
 	\item Improvements to install a new engine.
 \end{itemize}
 
-\subsection{Version 0.3.1.0  $\Rightarrow$  0.3.1.1}
+\subsection*{Version 0.3.1.0  $\Rightarrow$  0.3.1.1}
 \begin{itemize}
 	\item \textbf{Hotfix} Error at pure engine match.
 	\item Improvements in the handling of UCI configuration values.
 \end{itemize}
 
-\subsection{Version 0.3.0.0  $\Rightarrow$  0.3.1.0}
+\subsection*{Version 0.3.0.0  $\Rightarrow$  0.3.1.0}
 \begin{itemize}
 	    \item Improvements in the calibration for Certabo chessboards.
 	    \item Fixed an error on pawn conversation.

@@ -34,6 +34,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool Valid { get; set; }
         public string OpeningBook { get; set; }
         public string OpeningBookVariation { get; set; }
+        
         [XmlArray("OptionValues")]
         public string[] OptionValues { get; set; }
         public bool AdjustStrength { get; set; }
@@ -45,6 +46,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public DateTime ChangeDateTime { get; set; }
 
         public bool IsPlayer { get; set; }
+        public bool IsChessServer { get; set; }
 
         public UciInfo()
         {
@@ -59,6 +61,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             _fileName = string.Empty;
             ChangeDateTime = DateTime.MinValue;
             IsPlayer = false;
+            IsChessServer = false;
             _playerElo = 0;
         }
 
@@ -173,7 +176,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
 
         public void SetElo(int elo)
         {
-            if (IsPlayer)
+            if (IsPlayer || IsChessServer)
             {
                 _playerElo = elo;
                 return;

@@ -27,8 +27,8 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         public SaveGameWindow(string playerName, string white, string black, string result, string eventName, string date,
                               string moveList) : this(moveList)
         {
-            textBoxWhite.Text = white.Equals("Player") ? playerName : white;
-            textBoxBlack.Text = black.Equals("Player") ? playerName : black;
+            textBoxWhite.Text = white.Equals(Constants.Player) ? playerName : white;
+            textBoxBlack.Text = black.Equals(Constants.Player) ? playerName : black;
             textBoxEvent.Text = eventName;
             textBoxDate.Text = date;
             if (result.StartsWith("1/2"))

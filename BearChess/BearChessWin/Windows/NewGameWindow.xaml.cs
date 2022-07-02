@@ -34,8 +34,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration = configuration;
             InitializeComponent();
             _isInitialized = true;
-        //  comboBoxPlayerWhite.Items.Add("Player");
-       //   comboBoxPlayerBlack.Items.Add("Player");
             comboBoxPlayerBlack.SelectedIndex = 0;
             comboBoxPlayerWhite.SelectedIndex = 0;
             _playerIndex = 0;

@@ -1,35 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.FicsClient
 {
-    public class FICSClient
+    public class FICSClient : IFICSClient
     {
-        private readonly string _hostname;
-        private readonly int _port;
-        private readonly string _username;
-        private readonly string _password;
         private readonly ILogging _logger;
-        private TelnetClient _telnetClient;
+        private readonly ITelnetClient _telnetClient;
 
-        public FICSClient(string hostname, int port, string username, string password, ILogging logger)
+        public FICSClient(ITelnetClient telnetClient, ILogging logger)
         {
-            _hostname = hostname;
-            _port = port;
-            _username = username;
-            _password = password;
             _logger = logger;
-            _telnetClient = new TelnetClient(_hostname, _port, _username, _password, _logger);
-            _telnetClient.ReadEvent += _telnetClient_ReadEvent;
+            _telnetClient = telnetClient;
+            _telnetClient.ReadEvent += telnetClient_ReadEvent;
         }
 
-        private void _telnetClient_ReadEvent(object sender, string e)
+        public FICSClient(string hostname, int port, string username, string password, ILogging logger) : this(
+            new TelnetClient(hostname, port, username, password, logger), logger)
         {
-            //
+        }
+
+        public event EventHandler<string> ReadEvent;
+
+        public bool IsLoggedIn => _telnetClient.IsLoggedIn;
+
+        public void Connect()
+        {
+            _telnetClient.Connect();
+        }
+
+        public void DisConnect()
+        {
+            _telnetClient.DisConnect();
+        }
+
+        public void Close()
+        {
+            _telnetClient.Close();
+        }
+
+        public void Login(string username, string password)
+        {
+            _telnetClient.Login(username, password);
+        }
+
+        public void Send(string command)
+        {
+            _telnetClient.Send(command);
+        }
+
+        private void telnetClient_ReadEvent(object sender, string e)
+        {
+            e = e.Replace("\n\r", Environment.NewLine);
+            _logger?.LogDebug($"Read: {e}");
+            ReadEvent?.Invoke(this, e);
         }
     }
 }

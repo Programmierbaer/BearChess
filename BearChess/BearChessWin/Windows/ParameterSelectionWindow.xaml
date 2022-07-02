@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="Parameter " Height="260" Width="300">
+        Title="Parameter " Height="360" Width="450">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -26,7 +26,7 @@
             <Button  Grid.Row="0" Grid.Column="2" Name="buttonParameterFile" Click="ButtonParameter_OnClick" BorderBrush="Transparent" Background="Transparent" >
                 <Image Source="../Assets/Icons/folder.png" Width="16" Height="16"></Image>
             </Button>
-            <ListBox VerticalAlignment="Top" Height="110" Margin="5" Grid.Column="1" Grid.Row="1" SelectionMode="Single" SelectionChanged="ListBoxEngines_OnSelectionChanged" Name="listBoxEngines"> </ListBox>
+            <ListBox VerticalAlignment="Top" Margin="5" Grid.Column="1" Grid.Row="1" SelectionMode="Single" SelectionChanged="ListBoxEngines_OnSelectionChanged" Name="listBoxEngines"> </ListBox>
         </Grid>
         <DockPanel Grid.Row="1" Margin="10" LastChildFill="False">
         <Button DockPanel.Dock="Left"  Name="buttonOk" Click="ButtonOk_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Save">

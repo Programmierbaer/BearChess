@@ -41,7 +41,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                                                                      };
 
         private string _prevJoinedString = string.Empty;
-        private int prevLedField = 0;
+        private int _prevLedField = 0;
 
 
         private readonly Dictionary<string, int> unKnowCodeCounter = new Dictionary<string, int>();
@@ -119,7 +119,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 var joinedString = string.Join(" ", fieldNames);
                 if (thinking && fieldNames.Length == 2)
                 {
-                    prevLedField = prevLedField == 1 ? 0 : 1;
+                    _prevLedField = _prevLedField == 1 ? 0 : 1;
                 }
                 else
                 {
@@ -136,7 +136,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 Array.Copy(AllOff, result, AllOff.Length);
                 if (thinking && fieldNames.Length == 2)
                 {
-                    result = UpdateLedsForField(fieldNames[prevLedField], result);
+                    result = UpdateLedsForField(fieldNames[_prevLedField], result);
                 }
                 else
                 {
@@ -238,13 +238,13 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             var calibrateData = new CalibrateData();
             foreach (var key in _boardCodesToChessPiece.Keys)
             {
-                if (_boardCodesToChessPiece[key].Equals(BlackQueenFen))
+                if (_boardCodesToChessPiece[key].Equals(FenCodes.BlackQueen))
                 {
                     calibrateData.BlackQueenCodes = string.IsNullOrEmpty(calibrateData.BlackQueenCodes) ? key : calibrateData.BlackQueenCodes + '#' + key;
                     boardData = boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
                     continue;
                 }
-                if (_boardCodesToChessPiece[key].Equals(WhiteQueenFen))
+                if (_boardCodesToChessPiece[key].Equals(FenCodes.WhiteQueen))
                 {
                     calibrateData.WhiteQueenCodes = string.IsNullOrEmpty(calibrateData.WhiteQueenCodes) ? key : calibrateData.WhiteQueenCodes + '#' + key;
                     boardData = boardData.Replace($"0 {key} 0", "0 0 0 0 0 0 0");
@@ -289,7 +289,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     {
                         if (unKnowCodeCounter[unknownCodes[0]] > 10)
                         {
-                            _boardCodesToChessPiece[unknownCodes[0]] = WhiteQueenFen;
+                            _boardCodesToChessPiece[unknownCodes[0]] = FenCodes.WhiteQueen;
                             calibrationData.WhiteQueenCodes += "#" + unknownCodes[0];
                             _calibrateStorage.SaveCalibrationData(calibrationData);
                             unKnowCodeCounter.Clear();
@@ -326,7 +326,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     {
                         if (unKnowCodeCounter[unknownCodes[0]] > 10)
                         {
-                            _boardCodesToChessPiece[unknownCodes[0]] = BlackQueenFen;
+                            _boardCodesToChessPiece[unknownCodes[0]] = FenCodes.BlackQueen;
                             calibrationData.BlackQueenCodes += "#" + unknownCodes[0];
                             _calibrateStorage.SaveCalibrationData(calibrationData);
                             unKnowCodeCounter.Clear();
@@ -356,7 +356,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         {
                             if (unKnowCodeCounter[unknownCodes[0]] > 10)
                             {
-                                _boardCodesToChessPiece[unknownCodes[0]] = WhiteQueenFen;
+                                _boardCodesToChessPiece[unknownCodes[0]] = FenCodes.WhiteQueen;
                                 calibrationData.WhiteQueenCodes += "#" + unknownCodes[0];
                                 _calibrateStorage.SaveCalibrationData(calibrationData);
                                 unKnowCodeCounter.Clear();
@@ -393,7 +393,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         {
                             if (unKnowCodeCounter[unknownCodes[0]] > 10)
                             {
-                                _boardCodesToChessPiece[unknownCodes[0]] = BlackQueenFen;
+                                _boardCodesToChessPiece[unknownCodes[0]] = FenCodes.BlackQueen;
                                 calibrationData.BlackQueenCodes += "#" + unknownCodes[0];
                                 _calibrateStorage.SaveCalibrationData(calibrationData);
                                 unKnowCodeCounter.Clear();
@@ -499,7 +499,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         {
                             if (unKnowCodeCounter[unknownCodes[0]] > 10)
                             {
-                                _boardCodesToChessPiece[unknownCodes[0]] = WhiteQueenFen;
+                                _boardCodesToChessPiece[unknownCodes[0]] = FenCodes.WhiteQueen;
                                 calibrationData.WhiteQueenCodes += "#" + unknownCodes[0];
                                 _calibrateStorage.SaveCalibrationData(calibrationData);
                                 unKnowCodeCounter.Clear();
@@ -536,7 +536,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         {
                             if (unKnowCodeCounter[unknownCodes[0]] > 10)
                             {
-                                _boardCodesToChessPiece[unknownCodes[0]] = BlackQueenFen;
+                                _boardCodesToChessPiece[unknownCodes[0]] = FenCodes.BlackQueen;
                                 calibrationData.BlackQueenCodes += "#" + unknownCodes[0];
                                 _calibrateStorage.SaveCalibrationData(calibrationData);
                                 unKnowCodeCounter.Clear();
@@ -566,7 +566,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                             {
                                 if (unKnowCodeCounter[unknownCodes[0]] > 10)
                                 {
-                                    _boardCodesToChessPiece[unknownCodes[0]] = WhiteQueenFen;
+                                    _boardCodesToChessPiece[unknownCodes[0]] = FenCodes.WhiteQueen;
                                     calibrationData.WhiteQueenCodes += "#" + unknownCodes[0];
                                     _calibrateStorage.SaveCalibrationData(calibrationData);
                                     unKnowCodeCounter.Clear();
@@ -603,7 +603,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                             {
                                 if (unKnowCodeCounter[unknownCodes[0]] > 10)
                                 {
-                                    _boardCodesToChessPiece[unknownCodes[0]] = BlackQueenFen;
+                                    _boardCodesToChessPiece[unknownCodes[0]] = FenCodes.BlackQueen;
                                     calibrationData.BlackQueenCodes += "#" + unknownCodes[0];
                                     _calibrateStorage.SaveCalibrationData(calibrationData);
                                     unKnowCodeCounter.Clear();
@@ -624,6 +624,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         }
 
         protected override void SetToNewGame()
+        {
+            //
+        }
+
+        protected override void Release()
         {
             //
         }
@@ -667,12 +672,12 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             {
                 foreach (var key in _boardCodesToChessPiece.Keys)
                 {
-                    if (_boardCodesToChessPiece[key].Equals(BlackQueenFen))
+                    if (_boardCodesToChessPiece[key].Equals(FenCodes.BlackQueen))
                     {
                         codes.BlackQueenCodes = key;
                     }
 
-                    if (_boardCodesToChessPiece[key].Equals(WhiteQueenFen))
+                    if (_boardCodesToChessPiece[key].Equals(FenCodes.WhiteQueen))
                     {
                         codes.WhiteQueenCodes = key;
                     }
@@ -684,12 +689,12 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 var queenCodes = codes.BlackQueenCodes.Split("#".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 foreach (var queenCode in queenCodes)
                 {
-                    _boardCodesToChessPiece[queenCode] = BlackQueenFen;
+                    _boardCodesToChessPiece[queenCode] = FenCodes.BlackQueen;
                 }
                 queenCodes = codes.WhiteQueenCodes.Split("#".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 foreach (var queenCode in queenCodes)
                 {
-                    _boardCodesToChessPiece[queenCode] = WhiteQueenFen;
+                    _boardCodesToChessPiece[queenCode] = FenCodes.WhiteQueen;
                 }
             }
             return true;
@@ -708,61 +713,61 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _boardCodesToChessPiece.Clear();
             _boardCodesToChessPiece["0 0 0 0 0"] = string.Empty;
             Array.Copy(dataArray, 0, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = BlackRookFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackRook;
             Array.Copy(dataArray, 5, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = BlackKnightFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackKnight;
             Array.Copy(dataArray, 10, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = BlackBishopFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackBishop;
             Array.Copy(dataArray, 15, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = BlackQueenFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackQueen;
             Array.Copy(dataArray, 20, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = BlackKingFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackKing;
             Array.Copy(dataArray, 25, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = BlackBishopFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackBishop;
             Array.Copy(dataArray, 30, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = BlackKnightFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackKnight;
             Array.Copy(dataArray, 35, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = BlackRookFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackRook;
             for (int i = 40; i < 80; i += 5)
             {
                 Array.Copy(dataArray, i, code, 0, 5);
-                _boardCodesToChessPiece[string.Join(" ", code)] = BlackPawnFen;
+                _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackPawn;
             }
 
             Array.Copy(dataArray, 95, code, 0, 5);
             if (!code.All(f => f.Equals("0")))
             {
-                _boardCodesToChessPiece[string.Join(" ", code)] = BlackQueenFen;
+                _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.BlackQueen;
             }
 
             Array.Copy(dataArray, 215, code, 0, 5);
             if (!code.All(f => f.Equals("0")))
             {
-                _boardCodesToChessPiece[string.Join(" ", code)] = WhiteQueenFen;
+                _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhiteQueen;
             }
 
             for (int i = 240; i < 280; i += 5)
             {
                 Array.Copy(dataArray, i, code, 0, 5);
-                _boardCodesToChessPiece[string.Join(" ", code)] = WhitePawnFen;
+                _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhitePawn;
             }
 
             Array.Copy(dataArray, 280, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = WhiteRookFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhiteRook;
             Array.Copy(dataArray, 285, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = WhiteKnightFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhiteKnight;
             Array.Copy(dataArray, 290, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = WhiteBishopFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhiteBishop;
             Array.Copy(dataArray, 295, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = WhiteQueenFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhiteQueen;
             Array.Copy(dataArray, 300, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = WhiteKingFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhiteKing;
             Array.Copy(dataArray, 305, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = WhiteBishopFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhiteBishop;
             Array.Copy(dataArray, 310, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = WhiteKnightFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhiteKnight;
             Array.Copy(dataArray, 315, code, 0, 5);
-            _boardCodesToChessPiece[string.Join(" ", code)] = WhiteRookFen;
+            _boardCodesToChessPiece[string.Join(" ", code)] = FenCodes.WhiteRook;
             return true;
         }
 

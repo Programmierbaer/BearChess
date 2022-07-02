@@ -97,7 +97,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(uciInfo.LogoFileName))
+            if (uciInfo.IsChessServer)
+            {
+                imageEngine.Visibility = Visibility.Visible;
+                imageEngine.Source = new BitmapImage(new Uri($"pack://application:,,,/BearChessWin;component/Assets/Icons/{uciInfo.LogoFileName}", UriKind.RelativeOrAbsolute));
+            }
+
+            if (!uciInfo.IsChessServer && !string.IsNullOrWhiteSpace(uciInfo.LogoFileName))
             {
                 if (File.Exists(uciInfo.LogoFileName))
                 {

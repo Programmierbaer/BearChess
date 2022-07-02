@@ -662,7 +662,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (textBlockFileName.Text.EndsWith("MessChess.exe",StringComparison.OrdinalIgnoreCase))
             {
                 var fileInfo = new FileInfo(textBlockFileName.Text);
-                string enginesList = Path.Combine(fileInfo.DirectoryName, "Engines.lst");
+                string enginesList = Path.Combine(fileInfo.DirectoryName, "Hiarcs", "MessChess.lst");
+                if (!File.Exists(enginesList))
+                {
+                    enginesList = Path.Combine(fileInfo.DirectoryName, "Shredder", "MessChess.lst");
+                }
+                if (!File.Exists(enginesList))
+                {
+                    enginesList = Path.Combine(fileInfo.DirectoryName, "Engines.lst");
+                }
                 var parameterSelectionWindow = new ParameterSelectionWindow() { Owner = this };
                 if (File.Exists(enginesList))
                 {

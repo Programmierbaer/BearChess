@@ -1,0 +1,45 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.Windows.FicsLogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
+        mc:Ignorable="d"
+        Title="FICS Log" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListBox Margin="5" Grid.Row="0" Name="listBoxInfo" />
+
+        <StackPanel Margin="5" Grid.Row="1" Orientation="Horizontal">
+            <Button Name="buttonStop" VerticalAlignment="Center" Margin="5,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="ButtonStop_OnClick"
+                    ToolTip="Stop/Go">
+                <StackPanel>
+                    <Image Name="imagePlay" Source="../Assets/Icons/control_play_blue.png" Visibility="Collapsed"></Image>
+                    <Image Name="imagePause" Source="../Assets/Icons/control_pause_blue.png" ></Image>
+                </StackPanel>
+
+            </Button>
+            <Button Name="buttonClear" VerticalAlignment="Center" Margin="0,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="ButtonClear_OnClick"
+                    ToolTip="Clear">
+                <Image Source="../Assets/Icons/clear_formatting.png"></Image>
+            </Button>
+            <Button Name="buttonClose" VerticalAlignment="Center" Margin="0,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="ButtonClose_OnClick"
+                    ToolTip="Close">
+                <Image Source="../Assets/Icons/door_out.png"></Image>
+            </Button>
+            <TextBox Margin="0,0,5,0" Name="textBoxCommand" Width="200"  ToolTip="Enter an UCI command."/>
+            <Button Name="buttonSend" VerticalAlignment="Center" Margin="0,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent"  Click="ButtonSend_OnClick"
+                    ToolTip="Send command to engine">
+                <Image Source="../Assets/Icons/bullet_go.png"></Image>
+            </Button>
+            <Button Name="buttonClipboard" VerticalAlignment="Center" Margin="0,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="ButtonClipboard_OnClick" 
+                    ToolTip="Copy to clipboard">
+                <Image Source="../Assets/Icons/clipboard_sign.png"></Image>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

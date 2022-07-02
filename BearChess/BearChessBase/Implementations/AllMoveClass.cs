@@ -50,6 +50,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
 
             result += move.FromFieldName.ToLower();
+
             if (move.CapturedFigure == FigureId.NO_PIECE)
             {
                 result += "-";

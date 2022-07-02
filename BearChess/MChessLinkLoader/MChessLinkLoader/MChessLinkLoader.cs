@@ -32,7 +32,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkLoader
             }
             var mChessLinkImpl = new MChessLinkImpl(name: Name, basePath: basePath, isFirstInstance: true, comPortName: configuration.PortName);
             mChessLinkImpl.FlashInSync(configuration.FlashInSync);
-            mChessLinkImpl.DimLeds(configuration.DimLevel);
+            mChessLinkImpl.DimLEDs(configuration.DimLevel);
             return mChessLinkImpl;
         }
 

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTestEncoding.cs" />
+    <Compile Include="UnitTestHidDevice.cs" />
     <Compile Include="UnitTestOpeningBook.cs" />
     <Compile Include="UnitTestPgnNotation.cs" />
     <Compile Include="UnitTestPolyglot.cs" />
@@ -68,6 +69,10 @@
     <ProjectReference Include="..\EChessBoards\MChessLink\MChessLinkChessBoard\MChessLinkChessBoard.csproj">
       <Project>{D984142B-AF41-4348-A3E4-51FFB4D30502}</Project>
       <Name>MChessLinkChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HidDriver\HidDriver.csproj">
+      <Project>{33c08548-4bdd-4b0f-9bbe-12eda4805f19}</Project>
+      <Name>HidDriver</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

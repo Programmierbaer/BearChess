@@ -48,12 +48,12 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffEBoardWrapper
             //
         }
 
-        public override void DimLeds(bool _)
+        public override void DimLEDs(bool _)
         {
             // Ignore
         }
 
-        public override void DimLeds(int _)
+        public override void DimLEDs(int _)
         {
             // Ignore
         }

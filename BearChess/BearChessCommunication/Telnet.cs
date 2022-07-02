@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 {
-   
-
+    
     public  class Telnet 
     {
         private readonly string _hostname;
@@ -54,7 +53,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                 _tcpSocket.Connect(_hostname,_port);
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 //
             }
@@ -91,13 +90,34 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             SendCommand(username + "\n");
 
             s += Read();
-            if (!s.TrimEnd().EndsWith(":"))
-                throw new Exception("Failed to connect : no password prompt");
-            SendCommand(password + "\n");
+            if (!username.Equals(Constants.Guest,StringComparison.OrdinalIgnoreCase))
+            {
+                if (!s.TrimEnd().EndsWith(":"))
+                    throw new Exception("Failed to connect : no password prompt");
+                SendCommand(password + "\n");
 
-            s += Read();
+                s += Read();
+            }
+
             timeOutInMs = oldTimeOutMs;
             return s;
+        }
+
+        public void SendRaw(byte[] data)
+        {
+            try
+            {
+                if (!IsConnected)
+                {
+                    return;
+                }
+
+                _tcpSocket.GetStream().Write(data, 0, data.Length);
+            }
+            catch
+            {
+                DisConnect();
+            }
         }
 
         public void SendCommand(string cmd)
@@ -113,7 +133,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                 byte[] buf = Encoding.ASCII.GetBytes(cmd.Replace("\0xFF", "\0xFF\0xFF"));
                 _tcpSocket.GetStream().Write(buf, 0, buf.Length);
             }
-            catch (Exception ex)
+            catch 
             {
                 DisConnect();
             }
@@ -134,11 +154,11 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                 {
                     ParseTelnet(sb);
                     System.Threading.Thread.Sleep(timeOutInMs);
-                } while (_tcpSocket.Available > 0);
+                } while (_tcpSocket!=null && _tcpSocket.Available > 0);
 
                 return sb.ToString();
             }
-            catch (Exception ex)
+            catch 
             {
                 DisConnect();
             }
@@ -200,7 +220,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 DisConnect();
                 //

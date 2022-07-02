@@ -36,7 +36,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public SelectInstalledEngineWindow(IEnumerable<UciInfo> uciInfos, string lastEngineId, string uciPath) : this()
         {
-            _uciInfos =  new ObservableCollection<UciInfo>(uciInfos.Where(u => !u.IsPlayer).OrderBy(e => e.Name).ToList());
+            _uciInfos =  new ObservableCollection<UciInfo>(uciInfos.Where(u => !u.IsPlayer && !u.IsChessServer).OrderBy(e => e.Name).ToList());
             var firstOrDefault = _uciInfos.FirstOrDefault(u => u.Id.Equals(lastEngineId));
             if (firstOrDefault == null)
             {
@@ -210,8 +210,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (fileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase) && string.IsNullOrWhiteSpace(parameters))
                 {
                     var fileInfo = new FileInfo(fileName);
-                    string enginesList = Path.Combine(fileInfo.DirectoryName, "Engines.lst");
+                    string enginesList = Path.Combine(fileInfo.DirectoryName,"Hiarcs","MessChess.lst");
                     var parameterSelectionWindow = new ParameterSelectionWindow() { Owner = this };
+                    if (!File.Exists(enginesList))
+                    {
+                        enginesList = Path.Combine(fileInfo.DirectoryName, "Shredder", "MessChess.lst");
+                    }
+                    if (!File.Exists(enginesList))
+                    {
+                        enginesList = Path.Combine(fileInfo.DirectoryName, "Engines.lst");
+                    }
                     if (File.Exists(enginesList))
                     {
                         var readAllLines = File.ReadAllLines(enginesList);

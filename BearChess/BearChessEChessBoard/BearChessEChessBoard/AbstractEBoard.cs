@@ -9,20 +9,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     public abstract class AbstractEBoard : IEBoard
     {
 
-        public static string BlackPawnFen = "p";
-        public static string BlackRookFen = "r";
-        public static string BlackKnightFen = "n";
-        public static string BlackBishopFen = "b";
-        public static string BlackQueenFen = "q";
-        public static string BlackKingFen = "k";
-        public static string WhitePawnFen = "P";
-        public static string WhiteRookFen = "R";
-        public static string WhiteKnightFen = "N";
-        public static string WhiteBishopFen = "B";
-        public static string WhiteQueenFen = "Q";
-        public static string WhiteKingFen = "K";
-
-
         protected ISerialCommunication _serialCommunication;
         protected object _locker = new object();
         protected ILogging _logger;
@@ -77,6 +63,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract DataFromBoard GetPiecesFen();
 
         protected abstract void SetToNewGame();
+
+        protected abstract void Release();
+
         public abstract void SetFen(string fen);
 
         public bool PieceRecognition
@@ -180,6 +169,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             _stopAll = true;
             _serialCommunication.DisConnect();
+            Release();
         }
     }
 }

@@ -22,7 +22,35 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
     public partial class ParameterSelectionWindow : Window
     {
 
-        public string SelectedEngine => textBoxText.Text;
+        private class ParameterSelection
+        {
+            public string ParameterName { get; set; }
+            public string ParameterDisplay { get; set; }
+
+            public ParameterSelection(string parameter)
+            {
+                var strings = parameter.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                if (strings.Length == 3)
+                {
+                    ParameterName=strings[1];
+                    ParameterDisplay=strings[2];
+                }
+                else
+                {
+                    ParameterName = parameter;
+                    ParameterDisplay=parameter;
+                }
+            }
+
+            public override string ToString()
+            {
+                return ParameterDisplay;
+            }
+        }
+
+        private ParameterSelection _parameterSelection;
+
+        public string SelectedEngine => _parameterSelection.ParameterName;
         public string SelectedFile { get; private set; }
 
         public ParameterSelectionWindow()
@@ -40,7 +68,12 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         public void ShowList(string[] listValues)
         {
-            listBoxEngines.ItemsSource = listValues;
+            List< ParameterSelection> selections = new List< ParameterSelection>();
+            foreach (string value in listValues)
+            {
+                selections.Add(new ParameterSelection(value));
+            }
+            listBoxEngines.ItemsSource = selections.OrderBy(s => s.ParameterDisplay);
             listBoxEngines.SelectedIndex = 0;
         }
 
@@ -61,7 +94,9 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         private void ListBoxEngines_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            textBoxText.Text = listBoxEngines.SelectedItem.ToString();
+            
+            _parameterSelection = (ParameterSelection) listBoxEngines.SelectedItem;
+            textBoxText.Text = _parameterSelection.ParameterDisplay;
             SelectedFile = string.Empty;
         }
 
@@ -75,6 +110,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                 if (openFileDialog.FileName.Contains(@"\"))
                 {
                     textBoxText.Text = openFileDialog.FileName.Substring(openFileDialog.FileName.LastIndexOf(@"\") + 1);
+                    _parameterSelection = new ParameterSelection(textBoxText.Text);
                 }
             }
         }

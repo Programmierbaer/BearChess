@@ -576,6 +576,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             _serialCommunication.Send(_batteryState);
         }
 
+        protected override void Release()
+        {
+            //
+        }
+
         public override void SetFen(string fen)
         {
             _chessBoard.Init();

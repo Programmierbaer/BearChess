@@ -262,12 +262,12 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             _lastSendFields = sendFields;
             _logger?.LogDebug($"DGT: Set LED for fields: {_lastSendFields} Thinking: {thinking}");
 
-            if (thinking && fieldNamesLength > 1)
-            {
-                SetLedForFields(new string[] { fieldNames[0], fieldNames[0] }, thinking, isMove, displayString);
-                SetLedForFields(new string[] { fieldNames[1], fieldNames[1] }, thinking, isMove, displayString);
-                return;
-            }
+            //if (thinking && fieldNamesLength > 1)
+            //{
+            //    SetLedForFields(new string[] { fieldNames[0], fieldNames[0] }, thinking, isMove, displayString);
+            //    SetLedForFields(new string[] { fieldNames[1], fieldNames[1] }, thinking, isMove, displayString);
+            //    return;
+            //}
           
             allBytes.Add(96);
             allBytes.Add(4);
@@ -586,6 +586,11 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         protected override void SetToNewGame()
         {
            //
+        }
+
+        protected override void Release()
+        {
+            //
         }
 
         public override void SetFen(string fen)

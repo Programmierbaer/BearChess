@@ -24,7 +24,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new PegasusChessBoard.EChessBoard(basePath: _basePath, logger: _fileLogger, isFirstInstance: _isFirstInstance,portName: _comPortName, _useBluetooth);
+            return new PegasusChessBoard.EChessBoard(_basePath, _fileLogger, _isFirstInstance,_comPortName, _useBluetooth);
         }
 
         protected override IEBoard GetEBoard(bool check)
@@ -48,12 +48,12 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
             //
         }
 
-        public override void DimLeds(bool _)
+        public override void DimLEDs(bool _)
         {
             // Ignore
         }
 
-        public override void DimLeds(int _)
+        public override void DimLEDs(int _)
         {
             // Ignore
         }

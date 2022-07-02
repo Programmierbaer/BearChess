@@ -3,56 +3,57 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
-        mc:Ignorable="d" Closing="DatabaseWindow_OnClosing" WindowStyle="SingleBorderWindow" Icon="../Assets/Icons/database.png"
+        mc:Ignorable="d" Closing="DatabaseWindow_OnClosing" WindowStyle="SingleBorderWindow"
+        Icon="../Assets/Icons/database.png"
         Title="Games" Height="450" Width="800">
     <Window.Resources>
-        <bearChessWin:GamesValueToBrushConverter x:Key="ValueToBrushConverter"/>
+        <bearChessWin:GamesValueToBrushConverter x:Key="ValueToBrushConverter" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <DataGrid Name="dataGridGames" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False"  
-                  VirtualizingStackPanel.IsVirtualizing="True" 
+        <DataGrid Name="dataGridGames" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False"
+                  VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Recycling"
-                  SelectionMode="Extended"  MouseDoubleClick="DataGridGames_OnMouseDoubleClick" IsReadOnly="True">
+                  SelectionMode="Extended" MouseDoubleClick="DataGridGames_OnMouseDoubleClick" IsReadOnly="True">
             <DataGrid.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="CornflowerBlue"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                 Color="CornflowerBlue" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White" />
             </DataGrid.Resources>
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Delete" Name="menuItemDelete" Click="ButtonDelete_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="../Assets/Icons/bin.png"></Image>
+                            <Image Source="../Assets/Icons/bin.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Copy to clipboard" Name="menuItemCopy" Click="MenuItemCopy_OnClick">
                         <MenuItem.Icon>
-                            <Image Source="../Assets/Icons/clipboard_sign_out.png"></Image>
+                            <Image Source="../Assets/Icons/clipboard_sign_out.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
-                    <Setter Property="Background" >
+                    <Setter Property="Background">
                         <Setter.Value>
-                            <Binding Path="PgnHash" Converter="{StaticResource ValueToBrushConverter}">
-                            </Binding>
+                            <Binding Path="PgnHash" Converter="{StaticResource ValueToBrushConverter}" />
                         </Setter.Value>
                     </Setter>
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn  x:Name="dataGridTextColumnDuplicate" Width="Auto" FontSize="13" >
+                <DataGridTextColumn x:Name="dataGridTextColumnDuplicate" Width="Auto" FontSize="13">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Background" Value="{Binding PgnHash, Converter={StaticResource ValueToBrushConverter}}"/>
+                            <Setter Property="Background"
+                                    Value="{Binding PgnHash, Converter={StaticResource ValueToBrushConverter}}" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                     <DataGridTextColumn.Header>=</DataGridTextColumn.Header>
@@ -81,66 +82,82 @@
                 <DataGridTextColumn Binding="{Binding Result}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Result</DataGridTextColumn.Header>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding GameDate , StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" Width="Auto" FontSize="13">
+                <DataGridTextColumn
+                    Binding="{Binding GameDate , StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
+                    Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Date</DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding MoveList}" Width="Auto" FontSize="13">
                     <DataGridTextColumn.Header>Moves</DataGridTextColumn.Header>
                 </DataGridTextColumn>
             </DataGrid.Columns>
-        
+
         </DataGrid>
         <DockPanel Margin="5" Grid.Row="1" LastChildFill="False">
-            <Button Margin="5" DockPanel.Dock="Left" Name="buttonNewFolder" Click="ButtonNewFolder_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="New games database">
-                <Image Source="../Assets/Icons/database_add.png" Width="32" Height="32"></Image>
+            <Button Margin="5" DockPanel.Dock="Left" Name="buttonNewFolder" Click="ButtonNewFolder_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="New games database">
+                <Image Source="../Assets/Icons/database_add.png" Width="32" Height="32" />
             </Button>
 
-            <Button Margin="5" DockPanel.Dock="Left" Name="buttonFileManager" Click="ButtonFileManager_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Open games database">
-                <Image Source="../Assets/Icons/folder_database.png" Width="32" Height="32"></Image>
+            <Button Margin="5" DockPanel.Dock="Left" Name="buttonFileManager" Click="ButtonFileManager_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Open games database">
+                <Image Source="../Assets/Icons/folder_database.png" Width="32" Height="32" />
             </Button>
 
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonDelete" Click="ButtonDelete_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete game">
-                <Image Source="../Assets/Icons/bin.png" Width="32" Height="32"></Image>
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonDelete" Click="ButtonDelete_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Delete game">
+                <Image Source="../Assets/Icons/bin.png" Width="32" Height="32" />
             </Button>
 
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonImport" Click="ButtonImport_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Import games">
-                <Image Source="../Assets/Icons/saved_imports.png" Width="32" Height="32"></Image>
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonImport" Click="ButtonImport_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Import games">
+                <Image Source="../Assets/Icons/saved_imports.png" Width="32" Height="32" />
             </Button>
 
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonCopy" Click="ButtonCopy_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Copy to clipboard">
-                <Image Source="../Assets/Icons/clipboard_sign_out.png" Width="32" Height="32"></Image>
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonCopy" Click="ButtonCopy_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Copy to clipboard">
+                <Image Source="../Assets/Icons/clipboard_sign_out.png" Width="32" Height="32" />
             </Button>
 
-            <Button Margin="35,5,5,5" DockPanel.Dock="Left" Name="buttonSync" Click="ButtonSync_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Synchronize with chessboard">
+            <Button Margin="35,5,5,5" DockPanel.Dock="Left" Name="buttonSync" Click="ButtonSync_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Synchronize with chessboard">
                 <StackPanel Orientation="Horizontal">
-                    <Image Name="imageLinkClear" Source="../Assets/Icons/link_break.png" Width="32" Height="32" Visibility="Collapsed"></Image>
-                    <Image Name="imageLinkApply" Source="../Assets/Icons/link.png" Width="32" Height="32"></Image>
+                    <Image Name="imageLinkClear" Source="../Assets/Icons/link_break.png" Width="32" Height="32"
+                           Visibility="Collapsed" />
+                    <Image Name="imageLinkApply" Source="../Assets/Icons/link.png" Width="32" Height="32" />
                 </StackPanel>
             </Button>
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonFilter" Click="ButtonFilter_OnClick"  Background="Transparent" BorderBrush="Transparent"  ToolTip="Filter games">
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonFilter" Click="ButtonFilter_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Filter games">
                 <StackPanel Orientation="Horizontal">
-                    <Image Name="imageTableFilter" Source="../Assets/Icons/table_filter.png" Width="32" Height="32"></Image>
+                    <Image Name="imageTableFilter" Source="../Assets/Icons/table_filter.png" Width="32" Height="32" />
                 </StackPanel>
             </Button>
-            <Image Name="imageTableFilterActive" Source="../Assets/Icons/filter.png" Width="16" Height="16" Visibility="Hidden" ToolTip="Filter is active"></Image>
-            
-            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonExport" Click="ButtonExport_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Export selected games">
-                <Image Source="../Assets/Icons/text_exports.png" Width="32" Height="32"></Image>
+            <Image Name="imageTableFilterActive" Source="../Assets/Icons/filter.png" Width="16" Height="16"
+                   Visibility="Hidden" ToolTip="Filter is active" />
+
+            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonExport" Click="ButtonExport_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Export selected games">
+                <Image Source="../Assets/Icons/text_exports.png" Width="32" Height="32" />
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
-                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
+                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32" />
             </Button>
 
 
-            <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete database">
-                <Image Source="../Assets/Icons/database_delete.png" Width="32" Height="32"></Image>
+            <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Delete database">
+                <Image Source="../Assets/Icons/database_delete.png" Width="32" Height="32" />
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonSaveDb" Click="ButtonSaveDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Save database">
-                <Image Source="../Assets/Icons/database_save.png" Width="32" Height="32"></Image>
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonSaveDb" Click="ButtonSaveDb_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Save database">
+                <Image Source="../Assets/Icons/database_save.png" Width="32" Height="32" />
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonRestoreDb" Click="ButtonRestoreDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Restore database">
-                <Image Source="../Assets/Icons/database_refresh.png" Width="32" Height="32"></Image>
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonRestoreDb" Click="ButtonRestoreDb_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Restore database">
+                <Image Source="../Assets/Icons/database_refresh.png" Width="32" Height="32" />
             </Button>
-</DockPanel>
+        </DockPanel>
     </Grid>
 </Window>

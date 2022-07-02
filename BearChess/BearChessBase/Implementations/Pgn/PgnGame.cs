@@ -140,7 +140,20 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             var mandatory = new HashSet<string>(_order);
             foreach (var s in _order)
             {
-                sb.AppendLine($"[{s} \"{GetValue(s)}\"]");
+                if (s.Equals("Date"))
+                {
+                    var value = GetValue(s);
+                    if (DateTime.TryParse(value.Replace("??", "01"), out  DateTime gameDate))
+                    {
+                        value = gameDate.ToString("yyyy.MM.dd");
+
+                    }
+                    sb.AppendLine($"[{s} \"{value}\"]");
+                }
+                else
+                {
+                    sb.AppendLine($"[{s} \"{GetValue(s)}\"]");
+                }
             }
             foreach (var key in _userDefined.Keys)
             {

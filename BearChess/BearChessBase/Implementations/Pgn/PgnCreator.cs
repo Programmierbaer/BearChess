@@ -9,6 +9,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
 {
     public class PgnCreator
     {
+        private readonly string _fenStartPosition;
         private readonly List<Move> _allMoves;
         private readonly List<string> _allPgnMoves;
         private IChessBoard _chessBoard;
@@ -21,11 +22,20 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             _allMoves = new List<Move>();
         }
 
+        public PgnCreator(string fenStartPosition) : this()
+        {
+            _fenStartPosition = fenStartPosition;
+        }
+
         public string[] GetAllMoves()
         {
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
+            if (!string.IsNullOrEmpty(_fenStartPosition))
+            {
+                _chessBoard.SetPosition(_fenStartPosition,false);
+            }
             _allPgnMoves.Clear();
             var moveCnt = 0;
             var newMove = true;
@@ -53,6 +63,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
+            if (!string.IsNullOrEmpty(_fenStartPosition))
+            {
+                _chessBoard.SetPosition(_fenStartPosition, false);
+            }
             var sb = new StringBuilder();
             var moveCnt = 0;
             var newMove = true;

@@ -5,14 +5,14 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.FicsClient
 {
-    public class TelnetClient 
+    public class TelnetClient : ITelnetClient
     {
         private readonly string _username;
         private readonly string _password;
         private readonly ILogging _logger;
-        private Telnet _telnet;
+        private readonly Telnet _telnet;
         private bool _stopReading;
-        private Thread _thread;
+        private readonly Thread _thread;
         private bool _sendUserName;
         private bool _sendPassword;
         
@@ -60,10 +60,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
     
             try
             {
-                
                 _logger.LogDebug($"Login: {username}");
-              
-                
                 var logMessage = _telnet.Login(username, password, 1000);
                _logger.LogInfo(logMessage);
                ReadEvent?.Invoke(this, logMessage);
@@ -74,12 +71,25 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
             }
         }
 
-
         public void Send(string command)
         {
             try
             {
                 _logger.LogDebug($"Send: {command}");
+                _telnet.SendCommand(command);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+            }
+
+        }
+
+        private void SendNoLog(string command)
+        {
+            try
+            {
                 _telnet.SendCommand(command);
 
             }
@@ -99,12 +109,12 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                     string read =_telnet.Read();
                     if (!string.IsNullOrWhiteSpace(read))
                     {
-                        _logger.LogDebug($"Read: {read}");
+                        //_logger.LogDebug($"Read: {read}");
                         if (read.Trim().ToLower().EndsWith(":"))
                         {
                             if (_sendUserName && !_sendPassword)
                             {
-                                Send(_password);
+                                SendNoLog(_password);
                                 _sendPassword = true;
                             }
                             if (!_sendUserName && !_sendPassword)
@@ -123,6 +133,5 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                 }
             }
         }
-
     }
 }

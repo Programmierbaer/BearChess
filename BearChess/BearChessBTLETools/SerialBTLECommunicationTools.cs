@@ -12,7 +12,8 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 {
     public static class SerialBTLECommunicationTools
     {
-        private static readonly Dictionary<string, DeviceInformation> allDevices = new Dictionary<string, DeviceInformation>();
+        private static readonly Dictionary<string,  DeviceInformation> allDevices = new Dictionary<string, DeviceInformation>();
+        
 
         private static DeviceWatcher _deviceWatcher;
         private static ILogging _logger;
@@ -24,7 +25,11 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             {
                 _logger = logger;
                 _deviceName = deviceName;
-                DeviceId = string.Empty;
+                if (DeviceIdList == null)
+                {
+                    DeviceIdList = new List<string>();
+                }
+                DeviceIdList.Clear();
                 string[] requestedProperties =
                 {
                     "System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected",
@@ -70,11 +75,11 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             }
         }
 
-        public static string DeviceId { get;  set; }
+        public static List<string> DeviceIdList { get;  set; }
 
         public static string GetBTComPort(string boardName)
         {
-            DeviceId = string.Empty;
+            DeviceIdList.Clear();
             string portName = string.Empty;
             foreach (var device in allDevices.Values)
             {
@@ -87,17 +92,17 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 if (device.Name.StartsWith("DGT_PEGASUS", StringComparison.OrdinalIgnoreCase))
                 {
                     portName = device.Name;
-                    DeviceId = device.Id;
+                    DeviceIdList.Add(device.Id);
                 }
                 if (device.Name.StartsWith("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
                 {
                     portName = device.Name;
-                    DeviceId = device.Id;
+                    DeviceIdList.Add(device.Id);
                 }
                 if (device.Name.StartsWith("SQUARE OFF", StringComparison.OrdinalIgnoreCase))
                 {
                     portName = device.Name;
-                    DeviceId = device.Id;
+                    DeviceIdList.Add(device.Id);
                 }
             }
 
@@ -106,7 +111,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
         public static void Clear()
         {
-            DeviceId = string.Empty;
+            DeviceIdList.Clear();
         }
 
         private static void DeviceWatcher_Removed(DeviceWatcher sender, DeviceInformationUpdate deviceInfo)
@@ -127,19 +132,10 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 {
                     if (deviceInfo.Name.StartsWith(_deviceName, StringComparison.OrdinalIgnoreCase))
                     {
-                        DeviceId = deviceInfo.Id;
+                        DeviceIdList.Add(deviceInfo.Id);
                         
                     }
-                    /*
-                    if (deviceInfo.Name.StartsWith("DGT_PEGASUS", StringComparison.OrdinalIgnoreCase))
-                    {
-                        DeviceId = deviceInfo.Id;
-                    }
-                    if (deviceInfo.Name.StartsWith("MILLENNIUM CHESS", StringComparison.OrdinalIgnoreCase))
-                    {
-                        DeviceId = deviceInfo.Id;
-                    }
-                    */
+                   
                 }
             }
         }

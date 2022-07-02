@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="www.SoLaNoSoft.com.BearChessWin.FicsUserUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+             mc:Ignorable="d" Height="200" Width="800"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <bearChessWin:BoolToContentConverter x:Key="BoolToContentConverter" />
+    </UserControl.Resources>
+    
+    <Border BorderThickness="1" BorderBrush="Black">
+        <Grid Background="AntiqueWhite">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <DataGrid Name="dataGridUsers" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False"
+                      VirtualizingStackPanel.IsVirtualizing="True" 
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      SelectionMode="Extended" MouseDoubleClick="DataGridUsers_OnMouseDoubleClick" IsReadOnly="True">
+                <DataGrid.Resources>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                     Color="CornflowerBlue" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                     Color="White" />
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding UserName}" Width="110" FontSize="13">
+                        <DataGridTextColumn.Header>Name</DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn  Binding="{Binding OpenForGames, Converter={StaticResource BoolToContentConverter}}" Width="100" FontSize="13">
+                        <DataGridTextColumn.Header>Accept games</DataGridTextColumn.Header>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding OnlyUnratedGames, Converter={StaticResource BoolToContentConverter}}" Width="100" FontSize="13">
+                        <DataGridTextColumn.Header>Only unrated</DataGridTextColumn.Header>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding UnregisteredUser, Converter={StaticResource BoolToContentConverter} }" Width="100" FontSize="13">
+                        <DataGridTextColumn.Header>Guest</DataGridTextColumn.Header>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ComputerUser, Converter={StaticResource BoolToContentConverter} }" Width="100" FontSize="13">
+                        <DataGridTextColumn.Header>Computer</DataGridTextColumn.Header>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding StandardElo}" Width="100" FontSize="13">
+                        <DataGridTextColumn.Header>Standard</DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding BlitzElo}" Width="100" FontSize="13">
+                        <DataGridTextColumn.Header>Blitz</DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding LightningElo}" Width="100" FontSize="13">
+                        <DataGridTextColumn.Header>Lightning</DataGridTextColumn.Header>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <DockPanel DockPanel.Dock="Left" Margin="5" Grid.Row="1" LastChildFill="False">
+                <Button Margin="5" DockPanel.Dock="Left" Name="buttonQueryUser" Click="ButtonQueryUsers_OnClick"
+                        Background="Transparent" BorderBrush="Transparent" ToolTip="Query users">
+                    <Image Source="../Assets/Icons/users_3.png" Width="32" Height="32" />
+                </Button>
+                <TextBlock Margin="5" VerticalAlignment="Center" DockPanel.Dock="Left">User:</TextBlock>
+                <TextBox Name="textBoxUser" Margin="5" Width="200" VerticalAlignment="Center" TextChanged="TextBoxUser_OnTextChanged" DockPanel.Dock="Left"></TextBox>
+                <CheckBox Indeterminate="CheckBox_OnIndeterminate" IsThreeState="True" Name="checkBoxOpen" Margin="15,5,5,5" VerticalAlignment="Center" DockPanel.Dock="Left" Unchecked="CheckBoxesChanged"  Checked="CheckBoxesChanged">Accept games</CheckBox>
+                <CheckBox Indeterminate="CheckBox_OnIndeterminate" IsThreeState="True"  Name="checkBoxComputer" Margin="15,5,5,5" VerticalAlignment="Center" DockPanel.Dock="Left" Unchecked="CheckBoxesChanged" Checked="CheckBoxesChanged">Computer</CheckBox>
+                <CheckBox  Indeterminate="CheckBox_OnIndeterminate"  IsThreeState="True" Name="checkBoxGuests" Margin="15,5,5,5" VerticalAlignment="Center" DockPanel.Dock="Left" Unchecked="CheckBoxesChanged" Checked="CheckBoxesChanged">Guests</CheckBox>
+                
+
+            </DockPanel>
+        </Grid>
+    </Border>
+</UserControl>

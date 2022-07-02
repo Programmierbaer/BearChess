@@ -3,11 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded" Activated="BearChessMainWindow_OnActivated"
-        mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke" LocationChanged="BearChessMainWindow_OnLocationChanged"
-        Title="BearChess" Height="740" Width="650" WindowStyle="ThreeDBorderWindow" ResizeMode="NoResize">
-    <StackPanel>
-        <Grid>
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded"
+        Activated="BearChessMainWindow_OnActivated"
+        mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke"
+        LocationChanged="BearChessMainWindow_OnLocationChanged"
+        Title="BearChess" MinHeight="660" MinWidth="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -38,7 +45,8 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="Stop analyse mode" Name="menuItemStopAnalyseMode" Visibility="Collapsed" Click="MenuItemStopAnalyseMode_OnClick" >
+                    <MenuItem Header="Stop analyse mode" Name="menuItemStopAnalyseMode" Visibility="Collapsed"
+                              Click="MenuItemStopAnalyseMode_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
@@ -89,21 +97,20 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                  
+
                     <MenuItem Header="Setup position" Name="menuItemSetupPosition"
                               Click="MenuItemSetupPosition_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/chess_board.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <!--
-                    <MenuItem Header="Connect to FICS" Name="menuItemConnectFics"
+
+                    <MenuItem Header="Connect to FICS" Name="menuItemConnectFics" Visibility="Collapsed"
                               Click="MenuItemConnectFics_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/FicsLogo.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    -->
                     <Separator />
                     <MenuItem Header="Run startup game on start" Name="menuItemRunLastGame"
                               Click="MenuItemRunLastGame_OnClick">
@@ -147,11 +154,12 @@
                         <MenuItem Name="menuItemGamesShowDuplicates" Header="Show duplicates"
                                   Click="MenuItemGamesShowDuplicates_OnClick">
                             <MenuItem.Icon>
-                                <Image Name="imageGamesShowDuplicates" Source="Assets/Icons/tick.png" Visibility="Visible" />
+                                <Image Name="imageGamesShowDuplicates" Source="Assets/Icons/tick.png"
+                                       Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    </MenuItem>
+                </MenuItem>
                 <MenuItem Header="Engines">
                     <MenuItem Header="Load &amp; manage engines" Name="menuItemEngineLoad"
                               Click="MenuItemEngineLoad_OnClick">
@@ -197,7 +205,8 @@
                         <MenuItem Name="menuItemEngineShowForWhite" Header="From the point of view of White"
                                   Click="MenuItemEngineShowForWhite_OnClick">
                             <MenuItem.Icon>
-                                <Image Name="imageEngineShowForWhite" Source="Assets/Icons/tick.png" Visibility="Visible" />
+                                <Image Name="imageEngineShowForWhite" Source="Assets/Icons/tick.png"
+                                       Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
@@ -228,7 +237,7 @@
                                 <Image Name="imageAdjustedForPlayer" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                    
+
                     </MenuItem>
                     <MenuItem Name="menuItemSettingsMoves" Header="Notation/Moves">
                         <MenuItem.Icon>
@@ -313,6 +322,12 @@
                             <Image Source="Assets/Icons/sound.png" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Name="menuItemFICS" Header="FICS..." Click="MenuItemFICS_OnClick" Visibility="Collapsed"
+                              ToolTip="Configure you Free Internet Chess Server connection">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/FicsLogo.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Electronic Boards" Name="menuItemElectronicBoards">
                     <MenuItem Name="menuItemCertabo" Header="Certabo">
@@ -354,18 +369,20 @@
                                 <Image Source="Assets/Icons/cog.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBluetoothMChessLink" Header="Bluetooth" >
+                        <MenuItem Name="menuItemBluetoothMChessLink" Header="Bluetooth">
                             <MenuItem.Icon>
                                 <Image Name="imageChessLinkBluetooth" Source="Assets/Icons/tick.png"
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
-                            <MenuItem Name="menuItemBluetoothClassicMChessLink" Header="Bluetooth Classic"  Click="MenuItemBluetoothClassicMChessLink_OnClick">
+                            <MenuItem Name="menuItemBluetoothClassicMChessLink" Header="Bluetooth Classic"
+                                      Click="MenuItemBluetoothClassicMChessLink_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageBluetoothClassicMChessLink" Source="Assets/Icons/tick.png"
                                            Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothLEMChessLink" Header="Bluetooth LE"  Click="MenuItemBluetoothLEMChessLink_OnClick">
+                            <MenuItem Name="menuItemBluetoothLEMChessLink" Header="Bluetooth LE"
+                                      Click="MenuItemBluetoothLEMChessLink_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageBluetoothLEMChessLink" Source="Assets/Icons/tick.png"
                                            Visibility="Hidden" />
@@ -376,11 +393,11 @@
                     </MenuItem>
                     <MenuItem Header="DGT">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/dgt48.PNG"  />
+                            <Image Source="Assets/Icons/dgt48.PNG" />
                         </MenuItem.Icon>
                         <MenuItem Header="DGT e-Board" Name="menuItemDGTEBoard">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/dgt48.PNG"  />
+                                <Image Source="Assets/Icons/dgt48.PNG" />
                             </MenuItem.Icon>
                             <MenuItem Name="menuItemConnectToDGTEBoard" Header="Connect"
                                       Click="MenuItemConnectDGTEBoard_OnClick">
@@ -400,13 +417,13 @@
                                     <Image Name="imageDGTBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                        </MenuItem>                 
+                        </MenuItem>
                         <MenuItem Header="DGT Pegasus" Name="menuItemPegasus">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/pegasus.png"  />
+                                <Image Source="Assets/Icons/pegasus.png" />
                             </MenuItem.Icon>
                             <MenuItem Name="menuItemConnectToPegasus" Header="Connect"
-                                  Click="MenuItemConnectPegasus_OnClick">
+                                      Click="MenuItemConnectPegasus_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="Assets/Icons/connect.png" />
                                 </MenuItem.Icon>
@@ -415,7 +432,7 @@
                     </MenuItem>
                     <MenuItem Header="Square Off Pro" Name="menuItemSquareOffPro">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/squareoff.png"  />
+                            <Image Source="Assets/Icons/squareoff.png" />
                         </MenuItem.Icon>
                         <MenuItem Name="menuItemConnectToSquareOffPro" Header="Connect"
                                   Click="MenuItemConnectSquareOffPro_OnClick">
@@ -425,8 +442,26 @@
                         </MenuItem>
 
                     </MenuItem>
-                  
-                    <Separator/>
+                    <MenuItem Header="Chessnut Air" Name="menuItemChessnutAirBoard">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/chessnut.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToChessnutAirBoard" Header="Connect"
+                                  Click="MenuItemConnectChessnutAirBoard_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/connect.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemBluetoothChessnutAir" Header="Bluetooth"
+                                  Click="MenuItemBluetoothChesssnutAir_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageChessnutAirBluetooth" Source="Assets/Icons/tick.png"
+                                       Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+
+                    <Separator />
                     <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup"
                               Click="MenuItemConnectOnStartup_OnClick">
                         <MenuItem.Icon>
@@ -443,6 +478,12 @@
                               Click="MenuItemShowBestMoveInAnalyse_OnClick">
                         <MenuItem.Icon>
                             <Image Name="imageShowBestMoveOnAnalysisMode" Source="Assets/Icons/tick.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Show next move in game analysis mode" Name="menuItemShowNextMoveInGameAnalyse"
+                              Click="MenuItemShowNextMoveInGameAnalyse_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageShowNextMoveOnGameAnalysisMode" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Show best move in game" Name="menuItemShowBestMoveInGame"
@@ -488,8 +529,8 @@
                                                  x:Name="chessBoardUcGraphics" Visibility="Visible" />
 
         </Grid>
-        <DockPanel Margin="5">
-            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect" 
+        <DockPanel Margin="5" Grid.Row="1">
+            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect"
                     Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonConnect_OnClick">
                 <StackPanel Orientation="Horizontal">
                     <Image Name="imageConnect" Source="Assets/Icons/disconnect.png" Width="16" />
@@ -497,28 +538,36 @@
                     <TextBlock Name="textBlockButtonConnect" Margin="5,0,0,0">Connect</TextBlock>
                 </StackPanel>
             </Button>
-            <TextBlock Name="textBlockWhiteKing" DockPanel.Dock="Right" FontSize="18" TextAlignment="Center" VerticalAlignment="Center" ToolTip="Playing with white" >♔</TextBlock>
-            <TextBlock Name="textBlockBlackKing" DockPanel.Dock="Right" FontSize="18" TextAlignment="Center" VerticalAlignment="Center" ToolTip="Playing with black" Visibility="Collapsed">♚</TextBlock>
-            <Button Name="buttonRotate" Click="ButtonRotate_OnClick" DockPanel.Dock="Right"   Background="Transparent" BorderBrush="Transparent" ToolTip="Rotate board" >
-                <Image Source="Assets/Icons/arrow_rotate_anticlockwise.png" Width="16" Height="16" ></Image>
+            <TextBlock Name="textBlockWhiteKing" DockPanel.Dock="Right" FontSize="18" TextAlignment="Center"
+                       VerticalAlignment="Center" ToolTip="Playing with white">
+                ♔
+            </TextBlock>
+            <TextBlock Name="textBlockBlackKing" DockPanel.Dock="Right" FontSize="18" TextAlignment="Center"
+                       VerticalAlignment="Center" ToolTip="Playing with black" Visibility="Collapsed">
+                ♚
+            </TextBlock>
+            <Button Name="buttonRotate" Click="ButtonRotate_OnClick" DockPanel.Dock="Right" Background="Transparent"
+                    BorderBrush="Transparent" ToolTip="Rotate board">
+                <Image Source="Assets/Icons/arrow_rotate_anticlockwise.png" Width="16" Height="16" />
             </Button>
-            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonAccept" ToolTip="Show board information"
-                                              Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonAccept_OnClick">
-                <Image  Source="Assets/Icons/emotion_question.png" Width="16" />
+            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonAccept"
+                    ToolTip="Show board information"
+                    Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonAccept_OnClick">
+                <Image Source="Assets/Icons/emotion_question.png" Width="16" />
             </Button>
             <Image DockPanel.Dock="Left" VerticalAlignment="Center" Margin="5,0" Source="Assets/Icons/book_open.png"
                    Width="16" />
             <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="5" Name="textBlockEcoCode" Text="---" />
         </DockPanel>
 
-        <Separator />
-        <StatusBar VerticalAlignment="Bottom">
+
+        <StatusBar Grid.Row="2" VerticalAlignment="Bottom">
             <StatusBarItem>
                 <TextBlock Name="textBlockRunningMode">Mode: Easy playing</TextBlock>
             </StatusBarItem>
             <Separator />
             <StatusBarItem>
-                <Image Source="Assets/Icons/checkerboard.png" Height="15"></Image>
+                <Image Source="Assets/Icons/checkerboard.png" Height="15" />
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock Name="textBlockEBoard"> Disconnected</TextBlock>
@@ -527,5 +576,5 @@
                 <Image Name="imageBT" Width="16" Height="16" Source="Assets/Icons/bluetooth.png" Visibility="Hidden" />
             </StatusBarItem>
         </StatusBar>
-    </StackPanel>
+    </Grid>
 </Window>

@@ -149,7 +149,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void MarkLastMove()
         {
-            MarkMove(_lastMarkedMoveNumber,_lastMarkedColor);
+            MarkMove(_lastMarkedMoveNumber, _lastMarkedColor);
             ;
         }
 

@@ -45,8 +45,10 @@
   <ItemGroup>
     <Compile Include="AsyncHelper.cs" />
     <Compile Include="BTLEComPort.cs" />
+    <Compile Include="HIDComPort.cs" />
     <Compile Include="SerialBTLECommunicationTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialHIDCommunicationTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
@@ -61,6 +63,10 @@
     <ProjectReference Include="..\BearChessCommunication\BearChessCommunication.csproj">
       <Project>{a8118cc3-827d-4635-8613-345b190ee763}</Project>
       <Name>BearChessCommunication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HidDriver\HidDriver.csproj">
+      <Project>{33C08548-4BDD-4B0F-9BBE-12EDA4805F19}</Project>
+      <Name>HidDriver</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

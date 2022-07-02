@@ -143,9 +143,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         bool IsOnBasePosition();
 
-        void DimLeds(bool dimLeds);
+        void DimLEDs(bool dimLeds);
 
-        void DimLeds(int level);
+        void DimLEDs(int level);
 
         void FlashInSync(bool flashSync);
 

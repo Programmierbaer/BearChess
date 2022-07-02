@@ -86,8 +86,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -129,6 +129,16 @@
     <Compile Include="Helper\ProgressWorker.cs" />
     <Compile Include="Helper\SpeechWrapper.cs" />
     <Compile Include="Helper\SplashProgressControlContent.cs" />
+    <Compile Include="Helper\ValeConverter.cs" />
+    <Compile Include="UserControls\FicsAdsUserControl.xaml.cs">
+      <DependentUpon>FicsAdsUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FicsLogUserControl.xaml.cs">
+      <DependentUpon>FicsLogUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FicsUserUserControl.xaml.cs">
+      <DependentUpon>FicsUserUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\MovePlainUserControl.xaml.cs">
       <DependentUpon>MovePlainUserControl.xaml</DependentUpon>
     </Compile>
@@ -156,6 +166,15 @@
     </Compile>
     <Compile Include="Windows\EngineWaitWindow.xaml.cs">
       <DependentUpon>EngineWaitWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FICSConfigureWindow.xaml.cs">
+      <DependentUpon>FICSConfigureWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FicsLogWindow.xaml.cs">
+      <DependentUpon>FicsLogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FicsWindow.xaml.cs">
+      <DependentUpon>FicsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ITournamentInfoWindow.cs" />
     <Compile Include="Windows\MoveListPlainWindow.xaml.cs">
@@ -334,6 +353,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\FicsAdsUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\FicsLogUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\FicsUserUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\MovePlainUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -367,6 +398,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EngineWaitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FICSConfigureWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FicsLogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FicsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -765,6 +808,10 @@
     <ProjectReference Include="..\CertaboLoader\CertaboLoader\CertaboLoader.csproj">
       <Project>{40462629-633b-4944-873d-5beed2a60d88}</Project>
       <Name>CertaboLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChessnutAirLoader\ChessnutAirLoader.csproj">
+      <Project>{95124641-45A1-4C23-ACA7-ED7525718656}</Project>
+      <Name>ChessnutAirLoader</Name>
     </ProjectReference>
     <ProjectReference Include="..\DGTLoader\DGTLoader.csproj">
       <Project>{32ea5f2d-ae7b-4364-823e-8f0eaaf6d6ec}</Project>
@@ -1237,6 +1284,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\world_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\freechess.org.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\users_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\chessnut.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

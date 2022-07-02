@@ -104,6 +104,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         : $"Clock {_capture} ({hh:00}:{mm:00}:{ss:00}";
             borderWarning.Visibility = Visibility.Hidden;
         }
+        public void CorrectTime(int hh, int mm, int ss)
+        {
+            var stop = _stop;
+            if (!stop)
+            {
+                Stop();
+            }
+
+            _stopwatch.Reset();
+            SetDigitalNumbers(hh, mm, ss);
+            DateTime dateTime = DateTime.Now;
+            _startTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
+            _initTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
+            ToolTip = Title;
+            borderWarning.Visibility = Visibility.Hidden;
+            _duration = TimeSpan.Zero;
+            if (!stop)
+            {
+                Go();
+            }
+
+        }
 
         public void SetContinueTime(ClockTime clockTime, int extraSeconds = 0)
         {

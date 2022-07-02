@@ -19,7 +19,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkUci
         protected override void SendUciIdentification()
         {
             var portNames = "var <auto> ";
-            foreach (var portName in AbstractSerialCommunication.GetPortNames(null))
+            foreach (var portName in AbstractSerialCommunication.GetPortNames(null, false, false))
             {
                 portNames += $"var {portName} ";
             }
@@ -94,7 +94,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkUci
             
             if (command.Contains("Dim"))
             {
-                eBoardWrapper?.DimLeds(command.EndsWith("true"));
+                eBoardWrapper?.DimLEDs(command.EndsWith("true"));
                 return true;
             }
 

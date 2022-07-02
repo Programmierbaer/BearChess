@@ -21,7 +21,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboUci
 
             var portNames = "var <auto> ";
             
-            foreach (var portName in AbstractSerialCommunication.GetPortNames(null))
+            foreach (var portName in AbstractSerialCommunication.GetPortNames(null,false,false))
             {
                 portNames += $"var {portName} ";
             }

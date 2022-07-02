@@ -172,10 +172,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void Reset()
         {
-            lock (_locker)
-            {
-                _serialCommunication.Send("T");
-            }
+            //
         }
 
         public override bool CheckComPort(string portName)
@@ -445,6 +442,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         }
 
         protected override void SetToNewGame()
+        {
+            //
+        }
+
+        protected override void Release()
         {
             //
         }
