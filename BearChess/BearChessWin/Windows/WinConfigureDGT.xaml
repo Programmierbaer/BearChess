@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="Height"
-        Title="Configure DGT Chessboard" Height="232" Width="390" >
+        Title="Configure DGT Chessboard" Height="242" Width="390" >
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -54,11 +54,17 @@
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
                 </Grid.RowDefinitions>
                 <CheckBox Name="checkBoxUseClock" Margin="5"  VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" FontWeight="DemiBold" Unchecked="CheckBoxUseClock_OnUnchecked" Checked="CheckBoxUseClock_OnChecked" ToolTip="Use DGT 3000 clock if connected">Clock</CheckBox>
                 <CheckBox Name="checkBoxSwitchSide" VerticalAlignment="Center" Margin="25,5,5,5" Grid.Row="1" Grid.Column="0" Checked="CheckBoxSwitchSide_OnChecked" Unchecked="CheckBoxSwitchSide_OnUnchecked" ToolTip="Left left side shows the time for white">Switch side</CheckBox>
-                <TextBlock Name="textBlockClock" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Row="1" Margin="5,0,0,0"  Grid.Column="1">C</TextBlock>
+                <TextBlock Name="textBlockClock" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" Margin="5,0,0,0"  Grid.Column="1">C</TextBlock>
                 <CheckBox Name="checkBoxShowOnlyMoves"  VerticalAlignment="Center" Margin="25,5,5,5" Grid.Row="2" Grid.Column="0">Show only moves</CheckBox>
+                <StackPanel Grid.Row="3" Grid.Column="0" Margin="25,5,5,5" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Style:"></TextBlock>
+                    <RadioButton Name="radioButtonLongFormat"  GroupName="moveFormat" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,5,5,5"  IsChecked="True">e2-e4</RadioButton>
+                  <RadioButton Name="radioButtonShortFormat"  GroupName="moveFormat" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,5,5,5" Grid.Row="2" Grid.Column="1">e4</RadioButton>
+                </StackPanel>
             </Grid>
         </Border>
         <Grid>

@@ -19,6 +19,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool ClockShowOnlyMoves { get; set; }
         public bool ClockSwitchSide { get; set; }
 
+        public bool LongMoveFormat { get; set; }
+
         public EChessBoardConfiguration()
         {
             DimLevel = -1;
@@ -26,18 +28,19 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             ClockShowOnlyMoves = false;
             ClockSwitchSide = false;
             UseBluetooth = false;
+            LongMoveFormat = true;
         }
 
         public static EChessBoardConfiguration Load(string fileName)
         {
-            EChessBoardConfiguration configuration = new EChessBoardConfiguration();
+            var configuration = new EChessBoardConfiguration();
             try
             {
                 if (File.Exists(fileName))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(EChessBoardConfiguration));
                     TextReader textReader = new StreamReader(fileName);
-                    EChessBoardConfiguration savedConfig = (EChessBoardConfiguration)serializer.Deserialize(textReader);
+                    var savedConfig = (EChessBoardConfiguration)serializer.Deserialize(textReader);
                     textReader.Close();
                     configuration.PortName = savedConfig.PortName;
                     configuration.DimLeds = savedConfig.DimLeds;
@@ -47,6 +50,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.ClockShowOnlyMoves = savedConfig.ClockShowOnlyMoves;
                     configuration.UseClock = savedConfig.UseClock;
                     configuration.ClockSwitchSide = savedConfig.ClockSwitchSide;
+                    configuration.LongMoveFormat = savedConfig.LongMoveFormat;
                     if (configuration.DimLevel < 0)
                     {
                         configuration.DimLevel = configuration.DimLeds ? 0 : 14;
@@ -55,7 +59,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 else
                 {
                     configuration.PortName = "<auto>";
-
                 }
             }
             catch
@@ -71,7 +74,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             try
             {
-
                 XmlSerializer serializer = new XmlSerializer(typeof(EChessBoardConfiguration));
                 TextWriter textWriter = new StreamWriter(fileName, false);
                 serializer.Serialize(textWriter, configuration);

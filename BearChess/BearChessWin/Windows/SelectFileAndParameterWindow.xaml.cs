@@ -10,7 +10,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
 
         public string Filename => textBoxFilename.Text;
-
         public string Parameter => textBoxParameter.Text;
         public string EngineName => textBoxName.Text;
 

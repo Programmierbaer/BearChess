@@ -90,6 +90,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxShowOnlyMoves.IsChecked = _eChessBoardConfiguration.ClockShowOnlyMoves;
             checkBoxSwitchSide.IsChecked = _eChessBoardConfiguration.ClockSwitchSide;
             textBlockClock.Text = _eChessBoardConfiguration.ClockSwitchSide ? "C" : "c";
+            if (_eChessBoardConfiguration.LongMoveFormat)
+            {
+                radioButtonLongFormat.IsChecked = true;
+            }
+            else
+            {
+                radioButtonShortFormat.IsChecked = true;
+            }
         }
 
         private void ButtonCheck_OnClick(object sender, RoutedEventArgs e)
@@ -158,6 +166,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.UseClock = checkBoxUseClock.IsChecked.HasValue && checkBoxUseClock.IsChecked.Value;
             _eChessBoardConfiguration.ClockShowOnlyMoves = checkBoxShowOnlyMoves.IsChecked.HasValue && checkBoxShowOnlyMoves.IsChecked.Value;
             _eChessBoardConfiguration.ClockSwitchSide = checkBoxSwitchSide.IsChecked.HasValue && checkBoxSwitchSide.IsChecked.Value;
+            _eChessBoardConfiguration.LongMoveFormat =
+                radioButtonLongFormat.IsChecked.HasValue && radioButtonLongFormat.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }

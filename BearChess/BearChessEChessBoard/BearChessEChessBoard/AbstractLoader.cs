@@ -10,6 +10,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     {
         private IEBoardWrapper _eChessBoard;
         private  string _configFile;
+        public EChessBoardConfiguration Configuration { get; private set; }
         protected string Name { get; }
         protected bool Check { get; }
 
@@ -37,9 +38,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                                         Constants.BearChess, Name);
             _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
-            EChessBoardConfiguration configuration = ReadConfiguration();
+            Configuration = ReadConfiguration();
             // ReSharper disable once VirtualMemberCallInConstructor
-            _eChessBoard = GetEBoardImpl(basePath, configuration);
+            _eChessBoard = GetEBoardImpl(basePath, Configuration);
         }
 
 
@@ -47,6 +48,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             Name = name;
             var basePath = Path.Combine(folderPath, name);
+            _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
+            Configuration = ReadConfiguration();
             Init(basePath);
 
         }
@@ -56,6 +59,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             Name = name;
             var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                                         Constants.BearChess, name);
+            _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
+            Configuration = ReadConfiguration();
             Init(basePath);
         }
 

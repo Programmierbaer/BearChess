@@ -31,7 +31,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return _fens.ContainsKey(color) ? _fens[color] : null;
         }
 
-        public string GetMoveString()
+        public string GetMoveString(bool longFormat = true)
         {
             Move move;
             if (_moves.ContainsKey(Fields.COLOR_BLACK))
@@ -43,17 +43,28 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 move = _moves[Fields.COLOR_WHITE];
             }
 
+            //var result = move.ShortMoveIdentifier;
             var result = FigureId.FigureIdToFenCharacter[move.Figure].ToUpper();
             if (result.Equals("P"))
             {
                 result = " ";
             }
 
-            result += move.FromFieldName.ToLower();
+            if (longFormat)
+            {
+                result += move.FromFieldName.ToLower();
+            }
+            else
+            {
+                result += move.ShortMoveIdentifier;
+            }
 
             if (move.CapturedFigure == FigureId.NO_PIECE)
             {
-                result += "-";
+                if (longFormat)
+                {
+                    result += "-";
+                }
             }
             else
             {

@@ -6,6 +6,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     public interface IElectronicChessBoard
     {
 
+        EChessBoardConfiguration Configuration { get; }
+
         void Reset();
 
         /// <summary>
