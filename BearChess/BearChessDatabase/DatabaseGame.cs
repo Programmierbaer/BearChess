@@ -64,7 +64,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             PgnGame = pgnGame;
             if (!DateTime.TryParse(pgnGame.GameDate.Replace("??", "01"), out _gameDate))
             {
-                _gameDate = DateTime.MinValue;
+                _gameDate = DateTime.Now;
             }
             List<Move> myMove = new List<Move>();
             foreach (var move in moveList)

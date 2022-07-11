@@ -277,7 +277,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 else
                 {
-                    uciLoader = new UciLoader(uciInfo,ficsClient, gameNumber);
+                    UciLogger fileLogger =
+                        new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
+                    fileLogger.UciCommunicationEvent += FileLogger_UciCommunicationEvent;
+                    uciLoader = new UciLoader(uciInfo, fileLogger,ficsClient, gameNumber);
                 }
 
                 _loadedUciInfos[uciInfo.Name] = uciInfo;

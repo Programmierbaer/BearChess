@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ListBox Margin="5" Grid.Row="0" Name="listBoxInfo" />
+        <ListBox Margin="5" Grid.Row="0" Name="listBoxInfo" FontFamily="Consolas"/>
 
         <StackPanel Margin="5" Grid.Row="1" Orientation="Horizontal">
             <Button Name="buttonStop" VerticalAlignment="Center" Margin="5,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent" Click="ButtonStop_OnClick"

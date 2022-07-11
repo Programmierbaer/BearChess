@@ -548,7 +548,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
 
             comment = string.Join(" ", commentStrings);
-            int fieldNumber;
+            int fieldNumber = 0;
             var moveList = GenerateMoveList();
             if (pgnMove.Equals("0-0") || pgnMove.Equals("O-O"))
             {
@@ -597,7 +597,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 fieldNumber = Fields.GetFieldNumber(pgnMove);
             }
-            else
+            if (pgnMove.Length > 2)
             {
                 if (pgnMove.Contains("="))
                 {

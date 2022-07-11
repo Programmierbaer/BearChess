@@ -9,6 +9,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     public class Move : ICloneable
     {
         public static readonly int[] MoveOffsets = { -9, -11, 9, 11, -10, 10, 1, -1, 19, 21, 12, -8, -19, -21, -12, 8 };
+        private string _pgnMove;
 
         public int Figure { get; set; }
         public int FigureColor { get; set; }
@@ -29,8 +30,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public string EvaluationSymbol { get; set; }
         public string MoveSymbol { get; set; }
         public string OwnSymbol { get; set; }
-
         public string ShortMoveIdentifier { get; set; }
+
+        [XmlIgnore]
+        public string PGNMove
+        {
+            get => GetPGNMove();
+            set => _pgnMove = value;
+        }
 
         [XmlIgnore] public BoardEvaluation[] BoardEvaluations { get; set; }
 
@@ -58,6 +65,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             MoveSymbol = string.Empty;
             OwnSymbol = string.Empty;
             ShortMoveIdentifier = string.Empty;
+           
         }
 
         public Move(int fromField, int toField, int color, int figureId, IChessFigure capturedFigure) : this(fromField,
@@ -73,6 +81,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             CapturedFigure = capturedFigure.FigureId;
             CapturedFigureMaterial = capturedFigure.Material;
             PromotedFigure = promotedFigure;
+
         }
 
         public Move(int fromField, int toField, int color, int figureId, int promotedFigure) : this(fromField, toField,
@@ -129,7 +138,19 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             ShortMoveIdentifier = move.ShortMoveIdentifier;
         }
 
-
+        private string GetPGNMove()
+        {
+            if (!string.IsNullOrWhiteSpace(_pgnMove))
+            {
+                return _pgnMove;
+            }
+            var figureSymbol = FigureId.FigureIdToFenCharacter[Figure].ToUpper();
+            if (figureSymbol.Equals("P"))
+            {
+                _pgnMove = figureSymbol.Equals("P") ? ToFieldName : figureSymbol + ToFieldName;
+            }
+            return _pgnMove;
+        }
 
         public object Clone()
         {

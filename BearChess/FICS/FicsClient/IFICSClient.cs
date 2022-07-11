@@ -2,5 +2,7 @@
 {
     public interface IFICSClient : ITelnetClient
     {
+        bool AsGuest { get; }
+        string Username { get; set; }
     }
 }

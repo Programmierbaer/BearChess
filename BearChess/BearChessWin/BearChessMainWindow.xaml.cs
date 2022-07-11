@@ -7094,7 +7094,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                 }
               
-                _ficsClient = new FICSClient(serverName, portResult, userName, password,
+                _ficsClient = new FICSClient(serverName, portResult, userName, password,asGuest,
                                              new FileLogger(Path.Combine(_ficsPath, "fics.log"), 10, 10));
                 _ficsClient.ReadEvent += ficsClientReadEvent;
                 
@@ -7115,6 +7115,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ficsWindow_NewGameEvent(object sender, FicsWindow.NewGameInfo e)
         {
             var ficsUserName = _ficsWindow.FicsUserName;
+            _ficsClient.Username = ficsUserName;
             if (!int.TryParse(e.Time1, out int time1))
             {
                 time1 = 5;

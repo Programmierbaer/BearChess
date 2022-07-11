@@ -99,7 +99,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 timeControl.Value2 = 0;
             }
 
-            
+            timeControl.HumanValue = numericUpDownUserExtraTime.Value;
             timeControl.AllowTakeBack = false;
             if (timeControl.TimeControlType == TimeControlEnum.Adapted)
             {

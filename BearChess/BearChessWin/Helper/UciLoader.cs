@@ -48,10 +48,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler<EngineEventArgs> EngineReadingEvent;
 
 
-        public UciLoader(UciInfo uciInfo, IFICSClient ficsClient, string gameNumber)
+        public UciLoader(UciInfo uciInfo, ILogging logger, IFICSClient ficsClient, string gameNumber)
         {
             _uciInfo = uciInfo;
-            _logger = null;
+            _logger = logger;
             _lookForBookMoves = false;
             _openingBook = null;
             _bookMove = null;

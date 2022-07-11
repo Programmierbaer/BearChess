@@ -8,6 +8,9 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
         private readonly ILogging _logger;
         private readonly ITelnetClient _telnetClient;
 
+        public bool AsGuest { get; }
+        public string Username { get; set; }
+
         public FICSClient(ITelnetClient telnetClient, ILogging logger)
         {
             _logger = logger;
@@ -15,9 +18,11 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
             _telnetClient.ReadEvent += telnetClient_ReadEvent;
         }
 
-        public FICSClient(string hostname, int port, string username, string password, ILogging logger) : this(
+        public FICSClient(string hostname, int port, string username, string password,bool asGuest, ILogging logger) : this(
             new TelnetClient(hostname, port, username, password, logger), logger)
         {
+            AsGuest = asGuest;
+            Username = username;
         }
 
         public event EventHandler<string> ReadEvent;
@@ -55,5 +60,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
             _logger?.LogDebug($"Read: {e}");
             ReadEvent?.Invoke(this, e);
         }
+
+        
     }
 }

@@ -450,7 +450,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 var sw = new StringWriter(sb);
                 aSerializer.Serialize(sw, game);
                 var xmlResult = sw.GetStringBuilder().ToString();
-                if (game.CurrentGame.RepeatedGame || updateGame)
+                if (game.CurrentGame != null && (game.CurrentGame.RepeatedGame || updateGame))
                 {
                  
                     var sql = @"UPDATE games set result=@result, gameDate=@gameDate, pgn=@pgn, pgnXML=@pgnXML,pgnHash=@pgnHash

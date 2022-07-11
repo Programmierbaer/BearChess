@@ -154,6 +154,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                         textBlockUser.Text = _asGuest ? $"{_username} (guest)" : _username;
                         ficsAdsUserControl.EnableButtons();
                         ficsUserUserControl.EnableButtons();
+                        _ficsClient.Send("set style 12");
                     });
                 }
             }

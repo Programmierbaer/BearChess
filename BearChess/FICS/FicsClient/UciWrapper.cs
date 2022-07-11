@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 
 namespace www.SoLaNoSoft.com.BearChess.FicsClient
 {
@@ -14,13 +16,14 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
         private readonly ChessBoard _chessBoard;
         private readonly string _gameNumber;
         private readonly IFICSClient _ficsClient;
-        private readonly FileLogger _fileLogger;
+        private  FileLogger _fileLogger;
         private readonly ConcurrentQueue<string> _messagesFromGui = new ConcurrentQueue<string>();
         private readonly ConcurrentQueue<string> _messagesToGui = new ConcurrentQueue<string>();
         private string _lastCommand;
         private string _lastMoveCommand;
         private string _lastMoves;
         private bool _quitReceived;
+      
 
         public UciWrapper(string gameNumber, IFICSClient ficsClient)
         {
@@ -30,7 +33,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
             {
                 var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                                             Constants.BearChess,Constants.FICS);
-                _fileLogger = new FileLogger(Path.Combine(logPath, "FICSUci.log"), 10, 100);
+                _fileLogger = new FileLogger(Path.Combine(logPath, "FICSUci2.log"), 10, 100);
             }
             catch
             {
@@ -40,6 +43,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
+      
             _ficsClient.ReadEvent += ficsClient_ReadEvent;
         }
 
@@ -48,10 +52,13 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
             e = e.Trim();
             _fileLogger?.LogDebug($"Read from FICS: {e}");
             var lines = e.Split(Environment.NewLine.ToCharArray());
+            bool readingGuestMove = false;
             foreach (var line in lines)
             {
+            
                 if (line.StartsWith("<12>"))
                 {
+                    
                     var move = ExtractMove(line);
                     if (!string.IsNullOrWhiteSpace(move))
                     {
@@ -213,6 +220,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                     {
                         _lastMoves = command.Substring("position startpos moves".Length).Trim();
                         _chessBoard.NewGame();
+      
                         var moveList = _lastMoves.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         foreach (var move in moveList)
                         {
@@ -226,6 +234,8 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                             var promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
                             _lastMoveCommand = move.Substring(0, 2) + "-" + move.Substring(2, 2) + promote;
                             _chessBoard.MakeMove(move.Substring(0, 2), move.Substring(2, 2), promote);
+                            var move1 = _chessBoard.GetPrevMove().GetMove(_chessBoard.EnemyColor);
+      
                         }
 
                         continue;
@@ -250,6 +260,8 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                 }
 
                 _ficsClient.ReadEvent -= ficsClient_ReadEvent;
+                _fileLogger?.Close();
+                _fileLogger = null;
             }
             catch (Exception ex)
             {

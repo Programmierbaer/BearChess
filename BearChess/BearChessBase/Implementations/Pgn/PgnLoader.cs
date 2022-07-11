@@ -23,13 +23,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                     using (StreamReader sr = new StreamReader(bs))
                     {
                         string allLine;
+                        bool startNewGame = false;
                         while ((allLine = sr.ReadLine()) != null)
                         {
                             var line = allLine.Trim();
-                            if (line.StartsWith("[Event ", StringComparison.OrdinalIgnoreCase))
+                            if (!startNewGame && line.StartsWith("[", StringComparison.OrdinalIgnoreCase))
                             {
+                                startNewGame = true;
                                 if (sb.Length> 0)
-                                
                                 {
                                     currentGame = GetGame(sb.ToString());
                                     sb.Clear();
@@ -40,11 +41,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                             }
                             else
                             {
+                                if (startNewGame && !line.StartsWith("["))
+                                {
+                                    startNewGame = false;
+                                }
                                 sb.AppendLine(line);
                             }
                         }
                         if (sb.Length > 0)
-
                         {
                             currentGame = GetGame(sb.ToString());
                             sb.Clear();
@@ -55,10 +59,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             }
        
 
-            if (currentGame != null)
-            {
-                yield return currentGame;
-            }
+            //if (currentGame != null)
+            //{
+            //    yield return currentGame;
+            //}
         }
 
        
@@ -70,6 +74,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             var allLines = pgnGame.Split(new[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries);
             int ji = 0;
             string line;
+            bool startNewGame = false;
             for (int j= 0; j < allLines.Length; j++)
             {
                 line = allLines[j];
@@ -77,17 +82,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                 {
                     continue;
                 }
-                if (line.StartsWith("[Event ", StringComparison.OrdinalIgnoreCase))
+                if (!startNewGame && line.StartsWith("[", StringComparison.OrdinalIgnoreCase))
                 {
-                    ji += line.Length +2;
-                    currentGame = new PgnGame
-                                  {
-                                      GameEvent = line
-                                                  .Replace("[Event", string.Empty)
-                                                  .Replace("]", string.Empty)
-                                  };
+                    startNewGame = true;
+                   // ji += line.Length +2;
+                    currentGame = new PgnGame();
 
-                    continue;
+                    //                    continue;
                 }
                 if (line.StartsWith("["))
                 {
