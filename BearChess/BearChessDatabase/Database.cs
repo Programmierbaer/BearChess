@@ -700,7 +700,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 return Array.Empty<DatabaseGameSimple>();
             }
 
-            if (fen.Equals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"))
+            if (fen.StartsWith("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
             {
                 return GetBySql(
                     "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round, white_elo, black_elo FROM games ORDER BY ID;");
