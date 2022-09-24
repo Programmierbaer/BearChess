@@ -12,7 +12,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     public abstract class AbstractEBoardWrapper : IEBoardWrapper
     {
 
-        protected bool _isFirstInstance;
         
         private bool _stopCommunication = false;
         private bool _allLedOff = true;
@@ -47,11 +46,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             Name = name;
             _basePath = basePath;
-            _isFirstInstance = true;
-            var number = _isFirstInstance ? 1 : 2;
+
             try
             {
-                _fileLogger = new FileLogger(Path.Combine(basePath, "log", $"{Name}_{number}.log"), 10, 10);
+                _fileLogger = new FileLogger(Path.Combine(basePath, "log", $"{Name}_1.log"), 10, 10);
             }
             catch
             {
@@ -62,27 +60,25 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _board = GetEBoard(true);
         }
 
-        protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName) : this(
-            name, basePath, isFirstInstance, comPortName, false, false,false, false)
+        protected AbstractEBoardWrapper(string name, string basePath,  string comPortName) : this(
+            name, basePath, comPortName, false, false,false, false)
         {
 
         }
 
-        protected AbstractEBoardWrapper(string name, string basePath, bool isFirstInstance, string comPortName,
+        protected AbstractEBoardWrapper(string name, string basePath, string comPortName,
                                         bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide)
         {
             Name = name;
             _basePath = basePath;
-            _isFirstInstance = isFirstInstance;
             _comPortName = comPortName;
             _useBluetooth = useBluetooth;
             _useClock = useClock;
             _showMovesOnly = showMovesOnly;
             _switchClockSide = switchClockSide;
-            var number = _isFirstInstance ? 1 : 2;
             try
             {
-                _fileLogger = new FileLogger(Path.Combine(basePath, "log", $"{Name}_{number}.log"), 10, 10);
+                _fileLogger = new FileLogger(Path.Combine(basePath, "log", $"{Name}_1.log"), 10, 10);
             }
             catch
             {
@@ -114,6 +110,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void DimLEDs(bool dimLeds);
 
         public abstract void DimLEDs(int level);
+
+        public abstract void SetScanTime(int scanTime);
+        public abstract void SetDebounce(int debounce);
+
         public abstract void FlashInSync(bool flashSync);
 
         public void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)

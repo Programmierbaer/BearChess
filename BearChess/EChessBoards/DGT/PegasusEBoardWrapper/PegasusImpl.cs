@@ -11,10 +11,20 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
         {
         }
 
-        public PegasusImpl(string name, string basePath, bool isFirstInstance, string comPortName, bool useBluetooth) : base(
-            name, basePath, isFirstInstance, comPortName, useBluetooth, true, false, false)
+        public PegasusImpl(string name, string basePath, string comPortName, bool useBluetooth) : base(
+            name, basePath,  comPortName, useBluetooth, true, false, false)
         {
 
+        }
+
+        public override void SetScanTime(int scanTime)
+        {
+            //
+        }
+
+        public override void SetDebounce(int debounce)
+        {
+            // ignore
         }
 
         public override void FlashInSync(bool flashInSync)
@@ -24,7 +34,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new PegasusChessBoard.EChessBoard(_basePath, _fileLogger, _isFirstInstance,_comPortName, _useBluetooth);
+            return new PegasusChessBoard.EChessBoard(_basePath, _fileLogger, _comPortName, _useBluetooth);
         }
 
         protected override IEBoard GetEBoard(bool check)

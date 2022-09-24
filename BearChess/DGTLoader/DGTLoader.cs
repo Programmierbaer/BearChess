@@ -28,7 +28,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTLoader
                 return new DGTBoardImpl(Name, basePath);
             }
 
-            var eBoardWrapper = new DGTBoardImpl(Name, basePath, true, configuration.PortName, configuration.UseBluetooth, configuration.UseClock, configuration.ClockShowOnlyMoves, configuration.ClockSwitchSide);
+            var eBoardWrapper = new DGTBoardImpl(Name, basePath, configuration.PortName, configuration.UseBluetooth, configuration.UseClock, configuration.ClockShowOnlyMoves, configuration.ClockSwitchSide);
             return eBoardWrapper;
         }
     }

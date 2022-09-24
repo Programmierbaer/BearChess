@@ -235,6 +235,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// </summary>
         bool DrawByRepetition { get; }
 
+        bool IsDraw { get; }
+
         /// <summary>
         /// Indicates if there a draw by to less material on board
         /// </summary>

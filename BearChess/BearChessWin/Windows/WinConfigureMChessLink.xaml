@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         Icon="../Assets/Icons/Millennium ChessLink.png"
-        Title="Configure Millennium ChessLink" Height="280" Width="390" SizeToContent="Height">
+        Title="Configure Millennium ChessLink" Height="480" Width="390" SizeToContent="WidthAndHeight">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -49,54 +49,139 @@
                 <DockPanel Margin="0,5,0,0" LastChildFill="False">
                     <TextBlock DockPanel.Dock="Left" Margin="5" Text="LEDs:" FontWeight="DemiBold" Width="70"
                                HorizontalAlignment="Left" VerticalAlignment="Center" />
-                    <Image DockPanel.Dock="Left" Margin="0,0,0,0" Source="../Assets/Icons/lightbulb_delete.png"
-                           Width="32" Height="32" />
-                    <Slider DockPanel.Dock="Left" Name="sliderDim" Margin="15,5,5,5" Minimum="0" Maximum="14" Width="100"
+                    <Button Margin="0" Name="buttonDecrementDim" Background="Transparent" DockPanel.Dock="Left" 
+                            BorderBrush="Transparent" Width="32" Height="32" Click="ButtonDecrementDim_OnClick">
+                        <Image Source="../Assets/Icons/lightbulb_delete.png" />
+                    </Button>
+
+                    <Slider DockPanel.Dock="Left" Name="sliderDim" Margin="15,5,5,5" Minimum="0" Maximum="14"
+                            Width="100"
                             ValueChanged="SliderDim_OnValueChanged" />
-                    <Image DockPanel.Dock="Left" Margin="5,0,0,0" Source="../Assets/Icons/lightbulb_add.png" Width="32"
-                           Height="32" />
-             
+                    <Button Margin="5,0,0,0" Name="buttonIncrementDim" Background="Transparent" DockPanel.Dock="Left" 
+                            BorderBrush="Transparent" Width="32" Height="32" Click="ButtonIncrementDim_OnClick">
+                        <Image Source="../Assets/Icons/lightbulb_add.png" />
+                    </Button>
+
                 </DockPanel>
                 <DockPanel>
-                    <TextBlock  DockPanel.Dock="Left"  Margin="5" Text="Move LEDs:" FontWeight="DemiBold" Width="70"
-                                HorizontalAlignment="Left" VerticalAlignment="Center" />
-                    <RadioButton  DockPanel.Dock="Left"  Margin="5" GroupName="sync" Width="110" Name="radioButtonSync"
-                                  VerticalContentAlignment="Center" Checked="RadioButtonSync_OnChecked">
+                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="Move LEDs:" FontWeight="DemiBold" Width="70"
+                               HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <RadioButton DockPanel.Dock="Left" Margin="5" GroupName="sync" Width="125" Name="radioButtonSync"
+                                 VerticalContentAlignment="Center" Checked="RadioButtonSync_OnChecked">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center">Synchron</TextBlock>
+                            <Label VerticalAlignment="Center">Synchron</Label>
                             <Image Margin="10,0,0,0" Source="../Assets/Icons/images_flickr - 2.png" Width="32"
                                    Height="32" />
                         </StackPanel>
 
                     </RadioButton>
-                    <RadioButton  DockPanel.Dock="Left"  Margin="45,5,5,5" HorizontalAlignment="Left" VerticalContentAlignment="Center"
-                                  Name="radioButtonAlternate" GroupName="sync" Checked="RadioButtonSync_OnChecked">
+                    <RadioButton DockPanel.Dock="Left" Margin="25,5,5,5" HorizontalAlignment="Left"
+                                 VerticalContentAlignment="Center"
+                                 Name="radioButtonAlternate" GroupName="sync" Checked="RadioButtonSync_OnChecked">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center">Alternate</TextBlock>
+                            <Label VerticalAlignment="Center">Alternate</Label>
                             <Image Margin="10,0,0,0" Source="../Assets/Icons/images_flickr.png" Width="32" Height="32" />
                         </StackPanel>
                     </RadioButton>
                 </DockPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button  Margin="10,5,0,5" Name="buttonShowDim" Background="Transparent" ToolTip="Show LEDs"
+                    <Button Margin="10,5,0,5" Name="buttonShowDim" Background="Transparent" ToolTip="Show LEDs"
                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonShowDim_OnClick">
                         <Image Source="../Assets/Icons/eye.png" />
                     </Button>
-                    <Button  Margin="10,5,0,5" Name="buttonShowDim2" Background="Transparent" Visibility="Collapsed" ToolTip="Hide LEDs"
+                    <Button Margin="10,5,0,5" Name="buttonShowDim2" Background="Transparent" Visibility="Collapsed"
+                            ToolTip="Hide LEDs"
                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonShowDim_OnClick">
                         <Image Source="../Assets/Icons/eye_half.png" />
                     </Button>
                 </StackPanel>
             </StackPanel>
         </Border>
+      
 
+        <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
+            <StackPanel Margin="0,5,0,5">
+                <DockPanel LastChildFill="False">
+                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="Delay..." FontWeight="DemiBold" Width="70"
+                               HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="A higher value increases the delay when the board reports a change (debounce)" />
+                    <Button DockPanel.Dock="Left" Margin="0,0,0,0" HorizontalAlignment="Left" Name="buttonDelDebounce"
+                            Width="32"
+                            Height="32"
+                            Click="ButtonDebounceDelete_OnClick" Background="Transparent" BorderBrush="Transparent"
+                            ToolTip="Decrement delay">
+                        <Image Source="../Assets/Icons/time_delete.png" />
+                    </Button>
+
+                    <Slider DockPanel.Dock="Left" Name="sliderDebounce" Margin="15,5,5,5" Minimum="0" Maximum="4"
+                            Width="100" Value="20"
+                            ValueChanged="SliderDebounce_OnValueChanged" />
+
+                    <Button DockPanel.Dock="Left" Margin="5,0,0,0" HorizontalAlignment="Left" Name="buttonPlusDebounce"
+                            Width="32"
+                            Height="32"
+                            Click="ButtonDebounceAdd_OnClick" Background="Transparent" BorderBrush="Transparent"
+                            ToolTip="Increment delay">
+                        <Image Source="../Assets/Icons/time_add.png" />
+                    </Button>
+                    <TextBlock Name="textBlockDebounce" DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center" Text="0" />
+                </DockPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Margin="10,5,10,5" Name="buttonDebounceDefault" Background="Transparent" ToolTip="Reset to default"
+                            BorderBrush="Transparent" Width="32" Height="32" Click="ButtonResetDebounce_OnClick">
+                        <Image Source="../Assets/Icons/time.png" />
+                    </Button>
+                    <TextBlock VerticalAlignment="Center">reset to default value, without delay</TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
+            <StackPanel Margin="0,5,0,5">
+                <DockPanel LastChildFill="False">
+                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="Scans..." FontWeight="DemiBold" Width="70"
+                               HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="How many times per second the board is scanned for any changes" />
+                    <Button DockPanel.Dock="Left" Margin="0,0,0,0" HorizontalAlignment="Left" Name="buttonDelScan"
+                            Width="32"
+                            Height="32"
+                            Click="ButtonTimeDelete_OnClick" Background="Transparent" BorderBrush="Transparent"
+                            ToolTip="Decrement scan time">
+                        <Image Source="../Assets/Icons/time_delete.png" />
+                    </Button>
+
+                    <Slider DockPanel.Dock="Left" Name="sliderScanTime" Margin="15,5,5,5" Minimum="15" Maximum="255"
+                            Width="100" Value="20"
+                            ValueChanged="SliderScan_OnValueChanged" />
+
+                    <Button DockPanel.Dock="Left" Margin="5,0,0,0" HorizontalAlignment="Left" Name="buttonPlusScan"
+                            Width="32"
+                            Height="32"
+                            Click="ButtonTimeAdd_OnClick" Background="Transparent" BorderBrush="Transparent"
+                            ToolTip="Increment scan time">
+                        <Image Source="../Assets/Icons/time_add.png" />
+                    </Button>
+                    <TextBlock Name="textBlockScansPerSec" DockPanel.Dock="Left" HorizontalAlignment="Left"
+                               Margin="5,0,0,0"
+                               VerticalAlignment="Center" Text="per sec." />
+                </DockPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Margin="10,5,10,5" Name="buttonScanDefault" Background="Transparent" ToolTip="Reset to default"
+                            BorderBrush="Transparent" Width="32" Height="32" Click="ButtonResetScan_OnClick">
+                        <Image Source="../Assets/Icons/time.png" />
+                    </Button>
+                    <TextBlock  VerticalAlignment="Center">reset to default with 16.3 scans per sec</TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Border>
         <DockPanel Margin="0,0,0,5">
-            <Button DockPanel.Dock="Left" Margin="10,5,5,5" HorizontalAlignment="Left" Name="buttonOk" Width="32" Height="32"
+            <Button DockPanel.Dock="Left" Margin="10,5,5,5" HorizontalAlignment="Left" Name="buttonOk" Width="32"
+                    Height="32"
                     Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">
                 <Image Source="../Assets/Icons/accept_button.png" />
             </Button>
-         
-            <Button DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right" Name="buttonCancel" Width="32" Height="32"
+
+            <Button DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right" Name="buttonCancel" Width="32"
+                    Height="32"
                     Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent"
                     ToolTip="Cancel">
                 <Image Source="../Assets/Icons/cancel.png" />

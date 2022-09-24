@@ -78,10 +78,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             var flashInSync = _eChessBoardConfiguration.FlashInSync;
             sliderDim.Value = _eChessBoardConfiguration.DimLevel;
+            sliderScanTime.Value = _eChessBoardConfiguration.ScanTime;
+            sliderDebounce.Value = _eChessBoardConfiguration.Debounce;
             radioButtonSync.IsChecked = flashInSync;
             radioButtonAlternate.IsChecked = !flashInSync;
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
-
+            SetScanText();
+            SetDebounceText();
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -99,6 +102,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.DimLeds = true;
             _eChessBoardConfiguration.DimLevel = (int)sliderDim.Value;
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
+            _eChessBoardConfiguration.ScanTime = (int)sliderScanTime.Value;
+            _eChessBoardConfiguration.Debounce = (int)sliderDebounce.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -231,6 +236,91 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _loader.DimLeds((int)sliderDim.Value);
                 _loader.SetLedsFor(new[] { "e2", "e4" }, false);
             }
+        }
+
+        private void SliderScan_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            SetScanText();
+        }
+
+        private void SetScanText()
+        {
+            double time = 1000 / (2.048 * sliderScanTime.Value);
+            if (textBlockScansPerSec != null)
+            {
+                textBlockScansPerSec.Text = $"{time.ToString("##.#")} per sec.";
+            }
+        }
+
+        private void ButtonTimeAdd_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sliderScanTime.Value < sliderScanTime.Maximum)
+            {
+                sliderScanTime.Value++;
+            }
+        }
+
+        private void ButtonTimeDelete_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sliderScanTime.Value > sliderScanTime.Minimum)
+            {
+                sliderScanTime.Value--;
+            }
+        }
+
+        private void ButtonResetScan_OnClick(object sender, RoutedEventArgs e)
+        {
+            sliderScanTime.Value = 30;
+        }
+
+        private void ButtonDecrementDim_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sliderDim.Value > sliderDim.Minimum)
+            {
+                sliderDim.Value--;
+            }
+        }
+
+        private void ButtonIncrementDim_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sliderDim.Value < sliderDim.Maximum)
+            {
+                sliderDim.Value++;
+            }
+        }
+
+        private void SliderDebounce_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            SetDebounceText();
+        }
+
+        private void SetDebounceText()
+        {
+            if (textBlockDebounce != null)
+            {
+                textBlockDebounce.Text = ((int)sliderDebounce.Value).ToString();
+            }
+        }
+
+        private void ButtonDebounceAdd_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sliderDebounce.Value < sliderDebounce.Maximum)
+            {
+                sliderDebounce.Value++;
+            }
+        }
+
+        private void ButtonDebounceDelete_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sliderDebounce.Value > sliderDebounce.Minimum)
+            {
+                sliderDebounce.Value--;
+            }
+        }
+
+        private void ButtonResetDebounce_OnClick(object sender, RoutedEventArgs e)
+        {
+            sliderDebounce.Value = 0;
         }
     }
 }

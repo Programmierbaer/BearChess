@@ -20,6 +20,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly FontFamily _fontFamily;
         private DisplayFigureType _figureType = DisplayFigureType.Symbol;
         private DisplayMoveType _moveType = DisplayMoveType.FromToField;
+        private DisplayCountryType _countryType = DisplayCountryType.GB;
         private bool _showFullInformation;
         private bool _showOnlyMoves;
         private bool _showComments;
@@ -42,10 +43,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler SelectedChanged;
         public event EventHandler ContentChanged;
 
-        public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType)
+        public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType)
         {
             _figureType = figureType;
             _moveType = moveType;
+            _countryType = countryType;
         }
 
         public void SetInformationDetails(bool showOnlyMoves, bool showFullInformation, bool showComments, bool showForWhite)
@@ -164,7 +166,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                     else
                     {
-                        textBlockFigureSymbol.Text = s.ToUpper();
+                        textBlockFigureSymbol.Text = CountryLetter(s.ToUpper(),_countryType);
                     }
                 }
                 else
@@ -224,7 +226,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var p = string.Empty;
             if (promotedFigureId != FigureId.NO_PIECE)
             {
-                p = FigureId.FigureIdToFenCharacter[promotedFigureId].ToUpper();
+                p =  CountryLetter(FigureId.FigureIdToFenCharacter[promotedFigureId].ToUpper(),_countryType);
             }
 
             if (_moveType == DisplayMoveType.FromToField)
@@ -243,6 +245,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             return shortMoveIdentifier+"x" + move.Substring(2) + p;
+        }
+
+        private string CountryLetter(string letter, DisplayCountryType countryType)
+        {
+            switch (countryType)
+            {
+                case DisplayCountryType.GB:
+                    return letter;                    
+                case DisplayCountryType.DE:
+                    return FigureId.FigureGBtoDE[letter];
+                case DisplayCountryType.FR:
+                    return FigureId.FigureGBtoFR[letter];
+                case DisplayCountryType.IT:
+                    return FigureId.FigureGBtoIT[letter];
+                case DisplayCountryType.SP:
+                    return FigureId.FigureGBtoSP[letter];
+                case DisplayCountryType.DA:
+                    return FigureId.FigureGBtoDA[letter];
+                default:
+                    break;
+            }
+            return  letter;
         }
 
         private void MenuItemMoveSymbol_OnClick(object sender, RoutedEventArgs e)

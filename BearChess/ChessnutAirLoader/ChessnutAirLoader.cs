@@ -29,7 +29,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutAirLoader
                 return new ChessnutAirImpl(Name, basePath);
             }
 
-            var eBoardWrapper = new ChessnutAirImpl(Name, basePath, true, configuration.PortName, configuration.UseBluetooth);
+            var eBoardWrapper = new ChessnutAirImpl(Name, basePath, configuration.PortName, configuration.UseBluetooth);
             return eBoardWrapper;
         }
         public static void Save(string basePath, bool useBluetooth)

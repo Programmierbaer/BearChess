@@ -26,7 +26,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
 
-        //         _ficsClient = new FICSClient("www.freechess.org", 5000, "LarsBearchess", "iohwuv",
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(textBlockPort.Text) && !int.TryParse(textBlockPort.Text, out _))

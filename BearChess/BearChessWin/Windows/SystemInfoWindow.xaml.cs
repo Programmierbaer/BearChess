@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -16,6 +17,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
             InitializeComponent();
             _configuration = configuration;
             textBlockBoard.Text = chessBoardInfo;
+            if (!string.IsNullOrWhiteSpace(chessBoardInfo))
+            {
+
+                if (chessBoardInfo.Equals("Millennium " + Constants.MeOne))
+                {
+                    imageeOne.Visibility = Visibility.Visible;
+                }
+
+                if (chessBoardInfo.Equals("Millennium " + Constants.Exclusive))
+                {
+                    imageExclusive.Visibility = Visibility.Visible;
+                }
+
+                if (chessBoardInfo.Equals("Millennium " + Constants.KingPerformance))
+                {
+                    imageKingPerformance.Visibility = Visibility.Visible;
+                }
+
+                if (chessBoardInfo.Equals(Constants.Certabo))
+                {
+                    imageCertabo.Visibility = Visibility.Visible;
+                }
+
+                if (chessBoardInfo.StartsWith(Constants.Pegasus))
+                {
+                    imagePegasus.Visibility = Visibility.Visible;
+                }
+
+                if (chessBoardInfo.Equals(Constants.DGT))
+                {
+                    imageDGT.Visibility = Visibility.Visible;
+                }
+
+                if (chessBoardInfo.Equals(Constants.ChessnutAir))
+                {
+                    imageChessnutAir.Visibility = Visibility.Visible;
+                }
+
+                if (chessBoardInfo.Equals(Constants.SquareOffPro))
+                {
+                    imageSquareOffPro.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         private void SystemInfoWindow_OnLoaded(object sender, RoutedEventArgs e)

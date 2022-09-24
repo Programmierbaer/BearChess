@@ -83,10 +83,9 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         private bool _isCalibrating;
 
 
-        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth)
+        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth)
         {
-            _isFirstInstance = isFirstInstance;
-            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName, useBluetooth);
+            _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
             
             _logger = logger;
             BatteryLevel = "--";
@@ -117,7 +116,6 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
         public EChessBoard(ILogging logger)
         {
-            _isFirstInstance = true;
             _logger = logger;
             BatteryLevel = "--";
             BatteryStatus = "";
@@ -229,6 +227,16 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             _currentIntensity = (byte)level;
         }
 
+        public override void SetScanTime(int scanTime)
+        {
+            // ignore
+        }
+
+        public override void SetDebounce(int debounce)
+        {
+            //
+        }
+
         public override void SpeedLeds(int level)
         {
             _currentSpeed = (byte)level;
@@ -299,7 +307,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                                     trademark += Encoding.UTF8.GetString(new byte[] { byte.Parse(strings[i]) });
                                 }
 
-                                Information = trademark;
+                                Information = $"{Constants.Pegasus}{Environment.NewLine}{trademark}";
                             }
                         }
                     }

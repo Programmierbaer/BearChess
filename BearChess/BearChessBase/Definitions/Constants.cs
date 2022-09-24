@@ -13,6 +13,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
         public const string SquareOff = "Square Off";
         public const string SquareOffPro = "Square Off Pro";
         public const string ChessnutAir = "Chessnut Air";
+        public const string UCB = "UCB";
         public const string Teddy = "Teddy";
         public const string MeOne = "eOne";
         public const string KingPerformance = "King Performance";

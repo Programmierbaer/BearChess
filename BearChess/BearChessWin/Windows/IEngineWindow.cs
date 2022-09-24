@@ -1,18 +1,14 @@
 ﻿using System;
+using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
-
-    public abstract class AbstractEngineWindow
-    {
-
-    }
     public interface IEngineWindow
     {
-        event EventHandler<EngineWindow.EngineEventArgs> EngineEvent;
+        event EventHandler<EngineEventArgs> EngineEvent;
         event EventHandler Closed;
 
         double Left { get; set; }
@@ -29,6 +25,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void UnloadUciEngines();
         void LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY);
         void LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY);
+        void LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, Move[] playedMoves, bool lookForBookMoves, int color, string gameNumber);
         void ShowTeddy(bool showTeddy);
         void SetOptions();
         void IsReady();
@@ -50,4 +47,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void GoInfinite(int color = Fields.COLOR_EMPTY, string engineName = "");
         void CurrentColor(int color);
     }
+
+    public abstract class AbstractEngineWindow
+    {
+    }
+
+   
 }

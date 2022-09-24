@@ -32,6 +32,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public int RemainingMovesFor50MovesDraw => 50 - _drawBy50MoveCounter;
         public bool DrawByMaterial { get; private set; }
 
+        public bool IsDraw => DrawBy50Moves || DrawByMaterial || DrawByRepetition;
+
         public ChessBoard()
         {
             _outsideFigure = new OutsideFigure(this, Fields.OutsideFields[0]);
@@ -756,14 +758,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 {
                     var chessFigures = GetFigures(_lastMoveFromFigure.Color)
                                        .Where(f => f.FigureId == _lastMoveFromFigure.FigureId).ToArray();
-                    // use field number or character?
-                    if (Fields.InLine(Fields.GetLine(chessFigures[0].Field), chessFigures[1].Field))
+                    if (chessFigures.Length > 1)
                     {
-                        multipleAttackSign = Fields.GetFieldName(fromField).Substring(1, 1).ToLower();
-                    }
-                    else
-                    {
-                        multipleAttackSign = Fields.GetFieldName(fromField).Substring(0, 1).ToLower();
+                        if (Fields.InLine(Fields.GetLine(chessFigures[0].Field), chessFigures[1].Field))
+                        {
+                            multipleAttackSign = Fields.GetFieldName(fromField).Substring(1, 1).ToLower();
+                        }
+                        else
+                        {
+                            multipleAttackSign = Fields.GetFieldName(fromField).Substring(0, 1).ToLower();
+                        }
                     }
                 }
             }
@@ -1484,7 +1488,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 string promote = fromFenFigure.Equals(toFenFigure) ? string.Empty : toFenFigure;
                 return $"{fromField}{toField}".ToLower()+promote;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return string.Empty;
             }

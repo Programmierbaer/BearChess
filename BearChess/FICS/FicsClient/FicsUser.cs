@@ -16,5 +16,10 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
         public bool ComputerUser { get; set; }
         public bool OpenForGames { get; set; }
         public bool OnlyUnratedGames { get; set; }
+
+        public override string ToString()
+        {
+            return UserName; 
+        }
     }
 }

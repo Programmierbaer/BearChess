@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Reflection.Emit;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
@@ -148,11 +150,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         public string Version { get; private set; }
         public string Eprom { get; private set; }
 
-        public EChessBoard(ILogging logger, bool isFirstInstance, string portName)
+        public EChessBoard(ILogging logger, string portName)
         {
             _logger = logger;
-            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName);
-            _isFirstInstance = isFirstInstance;
+            _serialCommunication = new SerialCommunication(logger, portName);
             Version = string.Empty;
             Eprom = string.Empty;
             BatteryLevel = "100";
@@ -164,7 +165,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public EChessBoard(ILogging logger)
         {
-            _isFirstInstance = true;
             _logger = logger;
             BatteryLevel = "100";
             BatteryStatus = "Full";
@@ -182,7 +182,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 try
                 {
                     _logger?.LogDebug($"CheckComPort {portName}");
-                    _serialCommunication = new SerialCommunication(true, _logger, portName);
+                    _serialCommunication = new SerialCommunication(_logger, portName);
                     if (_serialCommunication.CheckConnect(portName))
                     {
                         _logger?.LogDebug("CheckComPort successful. Send ROM initialize ");
@@ -335,8 +335,30 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         {
             lock (_locker)
             {
-                string levelCode = level>14  ? "14" : level.ToString("00");
-                _serialCommunication?.Send($"W04{levelCode}");
+                if (level > 14)
+                {
+                    level = 14;
+                }
+                string hexValue = $"{level:x2}";
+                _serialCommunication?.Send($"W04{hexValue.ToUpper()}");
+            }
+        }
+
+        public override void SetScanTime(int scanTime)
+        {
+            lock (_locker)
+            {
+                string hexValue = $"{scanTime:x2}";
+                _serialCommunication?.Send($"W01{hexValue.ToUpper()}");
+            }
+        }
+
+        public override void SetDebounce(int debounce)
+        {
+            lock (_locker)
+            {
+                debounce = 3 + debounce;
+                _serialCommunication?.Send($"W020{debounce}");
             }
         }
 

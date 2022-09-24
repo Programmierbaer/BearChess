@@ -11,8 +11,8 @@ namespace www.SoLaNoSoft.com.BearChess.DGTEBoardWrapper
         }
 
      
-        public DGTBoardImpl(string name, string basePath, bool isFirstInstance, string comPortName, bool useBluetooth, bool useClock, bool showOnlyMoves, bool switchClockSide) : base(
-            name, basePath, isFirstInstance, comPortName, useBluetooth, useClock, showOnlyMoves, switchClockSide)
+        public DGTBoardImpl(string name, string basePath, string comPortName, bool useBluetooth, bool useClock, bool showOnlyMoves, bool switchClockSide) : base(
+            name, basePath, comPortName, useBluetooth, useClock, showOnlyMoves, switchClockSide)
         {
 
         }
@@ -38,6 +38,16 @@ namespace www.SoLaNoSoft.com.BearChess.DGTEBoardWrapper
            //  throw new NotImplementedException();
         }
 
+        public override void SetScanTime(int scanTime)
+        {
+            // ignore
+        }
+
+        public override void SetDebounce(int debounce)
+        {
+            // ignore
+        }
+
         public override void FlashInSync(bool flashSync)
         {
             // throw new NotImplementedException();
@@ -46,7 +56,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTEBoardWrapper
         protected override IEBoard GetEBoard()
         {
             return new DGTChessBoard.EChessBoard(basePath: _basePath, logger: _fileLogger,
-                                                 isFirstInstance: _isFirstInstance, portName: _comPortName,
+                                                  portName: _comPortName,
                                                  _useBluetooth, _useClock, _showMovesOnly, _switchClockSide);
         }
 

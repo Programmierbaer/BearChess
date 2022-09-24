@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
+
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
@@ -62,17 +57,16 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         private object _lastLogMessage;
 
-        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth, string boardName)
+        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, string boardName)
         {
             _withLeds = boardName.Equals(Constants.SquareOffPro);
-            _isFirstInstance = isFirstInstance;
-            _serialCommunication = new SerialCommunication(isFirstInstance, new FileLogger(Path.Combine(basePath, "log", $"SC_1.log"), 10, 10), portName, useBluetooth,boardName);
+            _serialCommunication = new SerialCommunication(new FileLogger(Path.Combine(basePath, "log", $"SC_1.log"), 10, 10), portName, useBluetooth,boardName);
 
             _logger = logger;
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
-            Information = string.Empty;
+            Information = boardName;
             IsConnected = EnsureConnection();
             _serialCommunication.Send("14#1*");
             _serialCommunication.Send("4#*");
@@ -97,7 +91,6 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         public EChessBoard(ILogging logger)
         {
-            _isFirstInstance = true;
             _logger = logger;
             BatteryLevel = "--";
             BatteryStatus = "";
@@ -192,6 +185,16 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
         public override void DimLeds(int level)
         {
             //throw new NotImplementedException();
+        }
+
+        public override void SetScanTime(int scanTime)
+        {
+            // Ignore
+        }
+
+        public override void SetDebounce(int debounce)
+        {
+            // ignore
         }
 
         public override void FlashSync(bool flashSync)
@@ -311,8 +314,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 _toField.Equals(_lastFromField))
             {
                 _logger?.LogInfo("SQ: Take move back. Replay all previous moves");
-                var playedMoveList = _chessBoard.GetPlayedMoveList();
-                string setCommand = "30#";
+                var playedMoveList = _chessBoard.GetPlayedMoveList();             
                 _chessBoard.Init();
                 _chessBoard.NewGame();
                 for (int i = 0; i < playedMoveList.Length - 1; i++)

@@ -157,14 +157,13 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         private int _readingClockIndex = 0;
 
 
-        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth, bool useClock, bool showOnlyMoves, bool switchClockSide)
+        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, bool useClock, bool showOnlyMoves, bool switchClockSide)
         {
             _useBluetooth = useBluetooth;
             _useClock = useClock;
             _showOnlyMoves = showOnlyMoves;
             _switchClockSide = switchClockSide;
-            _isFirstInstance = isFirstInstance;
-            _serialCommunication = new SerialCommunication(isFirstInstance, new FileLogger(Path.Combine(basePath, "log", $"DGTSC_1.log"), 10, 10), portName, useBluetooth);
+            _serialCommunication = new SerialCommunication(new FileLogger(Path.Combine(basePath, "log", $"DGTSC_1.log"), 10, 10), portName, useBluetooth);
 
             _logger = logger;
             BatteryLevel = "--";
@@ -215,7 +214,6 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
 
         public EChessBoard(ILogging logger)
         {
-            _isFirstInstance = true;
             _logger = logger;
             BatteryLevel = "--";
             BatteryStatus = "";
@@ -232,7 +230,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
 
         public override bool CheckComPort(string portName)
         {
-            var serialCommunication = new SerialCommunication(true, _logger, portName, _useBluetooth);
+            var serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth);
             if (serialCommunication.CheckConnect(portName))
             {
                 var readLine = serialCommunication.GetRawFromBoard(string.Empty);
@@ -329,6 +327,16 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             //
         }
 
+        public override void SetScanTime(int scanTime)
+        {
+            // ignore
+        }
+
+        public override void SetDebounce(int debounce)
+        {
+            // ignore
+        }
+
         public override void FlashSync(bool flashSync)
         {
            //
@@ -359,7 +367,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
 
         public override DataFromBoard GetPiecesFen()
         {
-            ulong repeated = 0;
+            
             if (!EnsureConnection())
             {
                 return new DataFromBoard(string.Empty);

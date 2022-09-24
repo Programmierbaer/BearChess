@@ -19,16 +19,14 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
     {
         private readonly string _boardName;
         protected readonly ConcurrentQueue<byte[]> _byteDataToBoard = new ConcurrentQueue<byte[]>();
-        private readonly ClientPipe _clientPipe;
+     
 
         protected readonly ConcurrentQueue<string> _dataFromBoard = new ConcurrentQueue<string>();
         protected readonly ILogging _logger;
         protected readonly ConcurrentQueue<string> _stringDataToBoard = new ConcurrentQueue<string>();
-        protected bool _clientConnected;
         protected bool _useBluetooth;
         protected bool _useHID;
 
-        protected bool _isFirstInstance;
         private string _lastLine = string.Empty;
         private string _lastSend = string.Empty;
         private readonly object _locker = new object();
@@ -36,7 +34,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         private ulong _repeated;
 
         protected IComPort _comPort;
-        protected ServerPipe _serverPipe;
+      
         private string _setPortName = "<auto>";
         protected bool _stopReading;
         private Thread _thread;
@@ -49,7 +47,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         public string BoardInformation { get; private set; }
 
 
-        protected AbstractSerialCommunication(bool isFirstInstance, ILogging logger, string portName, string boardName)
+        protected AbstractSerialCommunication(ILogging logger, string portName, string boardName)
         {
         
             if (!string.IsNullOrWhiteSpace(portName))
@@ -58,37 +56,9 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             }
 
             BoardInformation = string.Empty;
-            _isFirstInstance = isFirstInstance;
             _logger = logger;
             _boardName = boardName;
-            if (_isFirstInstance)
-            {
-                _logger?.LogDebug("S: Create server pipe");
-                _serverPipe = new ServerPipe($"{_boardName}UciPipe", p => p.StartStringReaderAsync());
-                _serverPipe.DataReceived += (sndr, args) => { Send(args.Data); };
-
-                _serverPipe.Connected += (sndr, args) =>
-                {
-                    _logger?.LogDebug("S: Pipe client connected");
-                    _clientConnected = true;
-                };
-            }
-            else
-            {
-                _logger?.LogDebug("S: Create client pipe");
-                _clientPipe = new ClientPipe(".", $"{_boardName}UciPipe", p => p.StartStringReaderAsync());
-                _clientPipe.PipeClosed += ClientPipe_PipeClosed;
-                _clientPipe.DataReceived += (sndr, args) => { _dataFromBoard.Enqueue(args.String); };
-                try
-                {
-                    _clientPipe.Connect(500);
-                }
-                catch (Exception ex)
-                {
-                    _logger?.LogDebug("S: Connected to pipe server");
-                    _logger?.LogError($"S: Unable to connect to pipe server: {ex.Message}");
-                }
-            }
+           
         }
 
         public DataFromBoard GetFromBoard()
@@ -198,13 +168,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
             try
             {
-                if (_isFirstInstance)
-                {
-                    _comPort?.Close();
-                }
-
-                _clientPipe?.Close();
-                _serverPipe?.Close();
+                _comPort?.Close();
             }
             catch
             {
@@ -350,6 +314,17 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
                     }
                 }
+
+                if (_boardName.Equals(Constants.UCB, StringComparison.OrdinalIgnoreCase))
+                {
+                   
+                    if (comPort.StartsWith("C"))
+                    {
+                        _comPort = new SerialComPort(comPort, 9600, Parity.None,8,StopBits.One)
+                                   { ReadTimeout = 1000, WriteTimeout = 1000 };
+                    }
+                }
+
 
                 if (_boardName.Equals(Constants.DGT, StringComparison.OrdinalIgnoreCase))
                 {
@@ -519,11 +494,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public bool Connect()
         {
-            if (!_isFirstInstance)
-            {
-                return true;
-            }
-
+           
             var portNames = GetComPortNames();
             if (portNames.Length == 0)
             {
@@ -551,12 +522,27 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (CheckConnect(portName))
                     {
+                        if (_boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase))
+                        {
+                            BoardInformation = Constants.Certabo;
+                        }
+                        if (_boardName.Equals(Constants.UCB, StringComparison.OrdinalIgnoreCase))
+                        {
+                            BoardInformation = Constants.UCB;
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                CurrentComPort = portName;
+                                return true;
+                            }
+                        }
                         if (_boardName.Equals(Constants.Pegasus, StringComparison.OrdinalIgnoreCase))
                         {
                             if (_comPort.IsOpen)
                             {
                                 _logger?.LogInfo($"S: Open COM-Port {portName}");
                                 CurrentComPort = portName;
+                                BoardInformation = Constants.Pegasus;
                                 return true;
                             }
                         }
@@ -566,6 +552,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             {
                                 _logger?.LogInfo($"S: Open COM-Port {portName}");
                                 CurrentComPort = portName;
+                                BoardInformation = Constants.ChessnutAir;
                                 return true;
                             }
                         }
@@ -575,6 +562,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             {
                                 _logger?.LogInfo($"S: Open COM-Port {portName}");
                                 CurrentComPort = portName;
+                                BoardInformation = Constants.SquareOffPro;
                                 return true;
                             }
                         }
@@ -584,6 +572,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             {
                                 _logger?.LogInfo($"S: Open COM-Port {portName}");
                                 CurrentComPort = portName;
+                                BoardInformation = Constants.SquareOff;
                                 return true;
                             }
                         }
@@ -599,7 +588,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         string readLine = string.Empty;
                         if (_boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))
                         {
-                            readLine = GetRawFromBoard("R06");
+                            readLine = GetRawFromBoard("V");
                             if (readLine.StartsWith("v") && readLine.Length==5)
                             {
                                 int value = Convert.ToInt32(readLine.Substring(1,4), 16);
@@ -613,9 +602,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 {
                                     BoardInformation = Constants.Exclusive;
                                 }
-
                             }
-
                         }
                         else
                         {
@@ -717,16 +704,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         {
             _logger?.LogDebug("S: Connection to pipe server closed");
             _logger?.LogDebug("S: Switch to first instance");
-            _isFirstInstance = true;
             _logger?.LogDebug("S: Create server pipe");
-            _serverPipe = new ServerPipe($"{_boardName}UciPipe", p => p.StartStringReaderAsync());
-            _serverPipe.DataReceived += (sndr, args) => { Send(args.Data); };
-
-            _serverPipe.Connected += (sndr, args) =>
-            {
-                _logger?.LogDebug("S: Pipe client connected");
-                _clientConnected = true;
-            };
+        
             StopCommunication();
             Thread.Sleep(500);
             _stopReading = false;

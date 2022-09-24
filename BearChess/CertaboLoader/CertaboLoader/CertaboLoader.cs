@@ -30,7 +30,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboLoader
                 return new CertaboImpl(Name, basePath);
             }
 
-            var eBoardWrapper = new CertaboImpl(Name, basePath, true, configuration.PortName, configuration.UseBluetooth);
+            var eBoardWrapper = new CertaboImpl(Name, basePath, configuration.PortName, configuration.UseBluetooth);
          //   eBoardWrapper.FlashInSync(true);
             return eBoardWrapper ;
         }

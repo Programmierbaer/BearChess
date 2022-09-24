@@ -16,7 +16,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private Thread _readingThread;
         
 
-        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName) : base(isFirstInstance, logger, portName, Constants.MChessLink)
+        public SerialCommunication(ILogging logger, string portName) : base(logger, portName, Constants.MChessLink)
         {
         }
 
@@ -116,8 +116,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     if (withConnection && !_pauseReading)
                     {
 
-                        if (_isFirstInstance)
-                        {
                             int readByte = int.MaxValue;
                             readLine = string.Empty;
                             try
@@ -230,11 +228,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                             }
 
-                            if (_clientConnected)
-                            {
-                                _serverPipe.WriteString(readLine);
-                            }
-                        }
+                          
+                        
                     }
 
                     Thread.Sleep(5);
@@ -275,13 +270,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                 // _logger?.LogDebug($"SC: Skip last send {data}");
                                 continue;
                             }
-                            if (_isFirstInstance)
-                            {
+                      
                                 _logger?.LogDebug($"SC: Send {data}");
                                 lastReadToSend = data;
                                 var convertToSend = ConvertToSend(data);
                                 _comPort.Write(convertToSend, 0, convertToSend.Length);
-                            }
+                            
                         }
 
                         

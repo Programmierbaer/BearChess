@@ -1,7 +1,4 @@
-﻿using System;
-using www.SoLaNoSoft.com.BearChess.EChessBoard;
-using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessTools;
+﻿using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
@@ -13,7 +10,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected object _locker = new object();
         protected ILogging _logger;
         protected bool _playWithWhite = true;
-        protected bool _isFirstInstance;
         protected bool _inDemoMode = false;
         protected bool _allowTakeBack;
         private bool _pieceRecognition = true;
@@ -49,6 +45,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract void DimLeds(int level);
         public abstract void SpeedLeds(int level);
+
+        public abstract void SetScanTime(int scanTime);
+
+        public abstract void SetDebounce(int debounce);
 
         public abstract void FlashSync(bool flashSync);
 

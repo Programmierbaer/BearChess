@@ -4,7 +4,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
     public interface IEBoardWrapper
     {
-
         void Reset();
 
         /// <summary>
@@ -146,6 +145,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void DimLEDs(bool dimLeds);
 
         void DimLEDs(int level);
+
+        void SetScanTime(int scanTime);
+
+        void SetDebounce(int debounce);
 
         void FlashInSync(bool flashSync);
 

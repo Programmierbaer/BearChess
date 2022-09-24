@@ -51,8 +51,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
         {
             e = e.Trim();
             _fileLogger?.LogDebug($"Read from FICS: {e}");
-            var lines = e.Split(Environment.NewLine.ToCharArray());
-            bool readingGuestMove = false;
+            var lines = e.Split(Environment.NewLine.ToCharArray());           
             foreach (var line in lines)
             {
             
@@ -66,9 +65,15 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                         {
                             _fileLogger?.LogDebug($"Extracted move {move} is not equal last move {_lastMoveCommand}");
                             var moveList = _chessBoard.GenerateMoveList();
-                            var engineMove = moveList.FirstOrDefault(mv => $"{mv.FromFieldName}{mv.ToFieldName}"
-                                                                           .ToLower()
-                                                                           .Equals(move));
+                            int promoteId = FigureId.NO_PIECE;
+                            if (move.Length > 4)
+                            {
+                                promoteId = FigureId.FenCharacterToFigureId[move[4].ToString()];
+                            }
+                            var engineMove = moveList.FirstOrDefault(mv => move.StartsWith($"{mv.FromFieldName}{mv.ToFieldName}"
+                                                                         .ToLower()));
+
+                         
                             if (engineMove != null)
                             {
                                 _chessBoard.MakeMove(engineMove);
@@ -88,18 +93,23 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                     }
                 }
 
-                if (line.StartsWith("{Game " + _gameNumber))
-                {
-                    if (line.Contains("forfeits"))
-                    {
-                        var strings = line.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                        var result = strings[strings.Length - 1];
-                    }
-                    if (line.Contains("aborted"))
-                    {
-                        var result = "*";
-                    }
-                }
+                //if (line.StartsWith("{Game " + _gameNumber))
+                //{
+                //    if (line.Contains("forfeits"))
+                //    {
+                //        var strings = line.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                //        var result = strings[strings.Length - 1];
+                //    }
+                //    if (line.Contains("aborted"))
+                //    {
+                //        var result = "*";
+                //    }
+                //    if (line.Contains("checkmated"))
+                //    {
+                //        var strings = line.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                //        var result = strings[strings.Length - 1];
+                //    }
+                //}
             }
         }
 
@@ -108,17 +118,25 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
             _fileLogger?.LogDebug($"Extract move from: {line}");
             var move = string.Empty;
             var strings = line.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            if (strings.Length > 6)
+            if (strings.Length > 27)
             {
-                if (!strings[strings.Length - 6].Equals("none", StringComparison.OrdinalIgnoreCase))
+                string moveColor = strings[9];
+                string playerWhite = strings[17];
+                string playerBlack = strings[18];
+                string moveRelation = strings[19];
+                string initialTime = strings[20];
+                string incrementTime = strings[21];
+                string remainingTimeWhite = strings[24];
+                string remainingTimeBlack = strings[25];
+                string moveNumber = strings[26];
+                move = moveRelation.Equals("1") ? strings[27] : string.Empty;
+                if (moveRelation.Equals("1") && !move.Equals("none", StringComparison.OrdinalIgnoreCase))
                 {
-                    move = strings[strings.Length - 6];
-                    var color = strings[9];
                     _fileLogger?.LogDebug($"Move: {move}");
-                    _fileLogger?.LogDebug($"Color: {color}");
+                    _fileLogger?.LogDebug($"Color: {moveColor}");
                     if (move.Equals("o-o", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (color.Equals("B", StringComparison.OrdinalIgnoreCase))
+                        if (moveColor.Equals("B", StringComparison.OrdinalIgnoreCase))
                         {
                             move = "K/e1-g1";
                         }
@@ -130,7 +148,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
 
                     if (move.Equals("o-o-o", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (color.Equals("B", StringComparison.OrdinalIgnoreCase))
+                        if (moveColor.Equals("B", StringComparison.OrdinalIgnoreCase))
                         {
                             move = "K/e1-c1";
                         }
@@ -140,7 +158,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                         }
                     }
 
-                    move = move.Substring(2).Replace("-", string.Empty);
+                    move = move.Substring(2).Replace("-", string.Empty).Replace("=",string.Empty);
                 }
             }
 
@@ -168,6 +186,8 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
 
         public void Run()
         {
+            string promote = string.Empty;
+
             try
             {
                 while (!_quitReceived)
@@ -216,6 +236,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                         continue;
                     }
 
+                    promote = string.Empty;
                     if (command.StartsWith("position startpos moves"))
                     {
                         _lastMoves = command.Substring("position startpos moves".Length).Trim();
@@ -231,8 +252,9 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                                 return;
                             }
 
-                            var promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
-                            _lastMoveCommand = move.Substring(0, 2) + "-" + move.Substring(2, 2) + promote;
+                            promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
+                            //_lastMoveCommand = move.Substring(0, 2) + "-" + move.Substring(2, 2) + promote;
+                            _lastMoveCommand = move.Substring(0, 2) + "-" + move.Substring(2, 2);
                             _chessBoard.MakeMove(move.Substring(0, 2), move.Substring(2, 2), promote);
                             var move1 = _chessBoard.GetPrevMove().GetMove(_chessBoard.EnemyColor);
       
@@ -243,8 +265,17 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
 
                     if (command.StartsWith("go"))
                     {
-                        SendToFics(_lastMoveCommand);
-                        _lastMoveCommand = _lastMoveCommand.Replace("-", string.Empty);
+                        if (!string.IsNullOrWhiteSpace(_lastMoveCommand))
+                        {
+                            if (!string.IsNullOrWhiteSpace(promote))
+                            {
+                                SendToFics($"promote {promote.ToLower()}");
+                            }
+
+                            SendToFics(_lastMoveCommand);
+                            _lastMoveCommand = _lastMoveCommand.Replace("-", string.Empty);
+                        }
+
                         continue;
                     }
 

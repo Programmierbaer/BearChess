@@ -59,11 +59,10 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         private bool _flashLeds;
 
 
-        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth)
+        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth)
         {
             _useBluetooth = useBluetooth;
-            _isFirstInstance = isFirstInstance;
-            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName,useBluetooth);
+            _serialCommunication = new SerialCommunication(logger, portName,useBluetooth);
             _calibrateStorage = new CalibrateStorage(basePath);
             _logger = logger;
             BatteryLevel = "100";
@@ -80,7 +79,6 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public EChessBoard(ILogging logger)
         {
-            _isFirstInstance = true;
             _logger = logger;
             BatteryLevel = "100";
             BatteryStatus = "Full";
@@ -95,7 +93,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override bool CheckComPort(string portName)
         {
-            _serialCommunication = new SerialCommunication(true, _logger, portName, _useBluetooth);
+            _serialCommunication = new SerialCommunication( _logger, portName, _useBluetooth);
             if (_serialCommunication.CheckConnect(portName))
             {
                 var readLine = _serialCommunication.GetRawFromBoard(string.Empty);
@@ -200,6 +198,16 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         }
 
         public override void DimLeds(int level)
+        {
+            // ignore
+        }
+
+        public override void SetScanTime(int scanTime)
+        {
+            // ignore
+        }
+
+        public override void SetDebounce(int debounce)
         {
             // ignore
         }

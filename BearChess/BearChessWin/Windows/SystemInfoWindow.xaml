@@ -26,11 +26,18 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="10"  Grid.Column="0"  FontWeight="DemiBold" VerticalAlignment="Center"  Text="Chessboard:"></TextBlock>
+            <TextBlock Margin="10"  Grid.Column="0" FontWeight="DemiBold" VerticalAlignment="Center"  Text="Chessboard:"></TextBlock>
             <TextBlock Margin="10" Name="textBlockBoard" Grid.Column="1"  TextWrapping="Wrap" VerticalAlignment="Center"></TextBlock>
         </Grid>
+        <Image DockPanel.Dock="Top" Source="../Assets/exclusive.jpeg" Width="150" Name="imageExclusive" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/eone.jpeg" Width="150" Name="imageeOne" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/kingperformance.jpeg" Width="150" Name="imageKingPerformance" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/certabo.jpg" Width="150" Name="imageCertabo" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/pegasus.jpeg" Width="150" Name="imagePegasus" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/dgt.jpg" Width="150" Name="imageDGT" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/chessnutair.jpg" Width="150" Name="imageChessnutAir" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/squareoffpro.jpeg" Width="150" Name="imageSquareOffPro" Visibility="Collapsed"></Image>
         <Button DockPanel.Dock="Bottom" Margin="5" HorizontalAlignment="Left" Width="32"
                 Height="32" 
                 Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">

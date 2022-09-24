@@ -21,6 +21,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             progressBar.Maximum = 100;
         }
 
+        public void IsIndeterminate(bool IsIndeterminate)
+        {
+            progressBar.IsIndeterminate = IsIndeterminate;
+        }
+
        
         public void SetMaxValue(int maxValue)
         {

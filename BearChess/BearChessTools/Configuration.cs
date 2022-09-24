@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using InTheHand.Net;
+using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -27,6 +28,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
         private string ConfigFileName { get; }
         private string BtConfigFileName { get; }
         private string TimeControlFileName { get; }
+        private string FicTimeControlFileName { get; }
         private string StartupTimeControlFileName { get; }
         private string DatabaseFilterFileName { get; }
 
@@ -63,6 +65,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 }
             }
             TimeControlFileName = Path.Combine(FolderPath, "bearchess_tc.xml");
+            FicTimeControlFileName = Path.Combine(FolderPath, "bearchess_ficstc.xml");
             StartupTimeControlFileName = Path.Combine(FolderPath, "bearchess_start_tc.xml");
             ConfigFileName = Path.Combine(FolderPath, "bearchess.xml");
             BtConfigFileName = Path.Combine(FolderPath, "bearchess_bt.xml");
@@ -241,6 +244,36 @@ namespace www.SoLaNoSoft.com.BearChessTools
             return timeControl;
         }
 
+        public void Save(FicsTimeControl timeControl, int number)
+        {
+            try
+            {
+                string fileName = FicTimeControlFileName.Replace("ficstc", $"ficstc_{number}");
+                XmlSerializer serializer = new XmlSerializer(typeof(FicsTimeControl));
+                TextWriter textWriter = new StreamWriter(fileName, false);
+                serializer.Serialize(textWriter, timeControl);
+                textWriter.Close();
+            }
+            catch
+            {
+                //
+            }
+        }
+
+        public FicsTimeControl LoadFicsTimeControl(int number)
+        {
+            string fileName = FicTimeControlFileName.Replace("ficstc", $"ficstc_{number}");
+            if (!File.Exists(fileName))
+            {
+                return new FicsTimeControl(number);
+            }
+            XmlSerializer serializer = new XmlSerializer(typeof(FicsTimeControl));
+            TextReader textReader = new StreamReader(fileName);
+            FicsTimeControl timeControl = (FicsTimeControl)serializer.Deserialize(textReader);
+            textReader.Close();
+            return timeControl;
+        }
+
 
         public void SetSecureConfigValue(string key, string value)
         {
@@ -252,6 +285,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public void SetConfigValue(string key, string value)
         {
             SetConfigValue(_appSettings, key, value);
+        }
+
+        public void DeleteConfigValue(string key)
+        {
+            if (_appSettings.ContainsKey(key))
+            {
+                _appSettings.Remove(key);
+            }
         }
 
         public string GetConfigValue(string key, string defaultValue)

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.UserControls"
              xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
-             mc:Ignorable="d" Height="200" Width="950"
+             mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="950">
     <UserControl.Resources>
         <bearChessWin:BoolToContentConverter x:Key="BoolToContentConverter" />
@@ -14,14 +14,16 @@
     <Border BorderThickness="1" BorderBrush="Black">
         <Grid Background="AntiqueWhite">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
-            <DataGrid Name="dataGridGamesAd" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False"
+            <Image Margin="5"  Grid.Row="0" HorizontalAlignment="Left" Source="../Assets/Icons/chessboard_base.png" Width="32" Height="32" />
+            <DataGrid Name="dataGridGamesAd" ItemsSource="{Binding}" Grid.Row="1" Margin="5" AutoGenerateColumns="False"
                       VirtualizingStackPanel.IsVirtualizing="True" 
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
-                      SelectionMode="Extended" MouseDoubleClick="DataGridUsers_OnMouseDoubleClick" IsReadOnly="True">
+                      SelectionMode="Single" MouseDoubleClick="DataGridUsers_OnMouseDoubleClick" IsReadOnly="True">
                 <DataGrid.Resources>
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
                                      Color="CornflowerBlue" />
@@ -33,7 +35,7 @@
                         <DataGridTextColumn.Header>No</DataGridTextColumn.Header>
                     </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding UserName}" Width="110" FontSize="13">
-                        <DataGridTextColumn.Header>Name</DataGridTextColumn.Header>
+                        <DataGridTextColumn.Header>Username</DataGridTextColumn.Header>
                     </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding Rating}" Width="110" FontSize="13">
                         <DataGridTextColumn.Header>Rating</DataGridTextColumn.Header>
@@ -62,22 +64,22 @@
                     <DataGridTextColumn Binding="{Binding StartType}" Width="110" FontSize="13">
                         <DataGridTextColumn.Header>Start</DataGridTextColumn.Header>
                     </DataGridTextColumn>
-
                 </DataGrid.Columns>
             </DataGrid>
-            <DockPanel DockPanel.Dock="Left" Margin="5" Grid.Row="1" LastChildFill="False">
+            <DockPanel DockPanel.Dock="Left" Margin="5" Grid.Row="2" LastChildFill="False">
                 <Button Margin="5" DockPanel.Dock="Left" Name="buttonQueryAds" Click="ButtonQueryAds_OnClick"
-                        Background="Transparent" BorderBrush="Transparent" ToolTip="Show games advertisements">
-                    <Image Source="../Assets/Icons/chessboard_base.png" Width="32" Height="32" />
+                        Background="Transparent" BorderBrush="Transparent" ToolTip="Query for games advertisements">
+                    <Image Source="../Assets/Icons/table_refresh.png" Width="32" Height="32" />
                 </Button>
                 <TextBlock Margin="5" VerticalAlignment="Center" DockPanel.Dock="Left">User:</TextBlock>
                 <TextBox Name="textBoxUser" Margin="5" Width="200" VerticalAlignment="Center" TextChanged="TextBoxUser_OnTextChanged" DockPanel.Dock="Left"></TextBox>
                 <CheckBox Indeterminate="CheckBox_OnIndeterminate" IsThreeState="True" Name="checkBoxRated" Margin="15,5,5,5" VerticalAlignment="Center" DockPanel.Dock="Left" Unchecked="CheckBoxesChanged"  Checked="CheckBoxesChanged">Rated</CheckBox>
                 <CheckBox Indeterminate="CheckBox_OnIndeterminate" IsThreeState="True"  Name="checkBoxComputer" Margin="15,5,5,5" VerticalAlignment="Center" DockPanel.Dock="Left" Unchecked="CheckBoxesChanged" Checked="CheckBoxesChanged">Computer</CheckBox>
-                <CheckBox  Indeterminate="CheckBox_OnIndeterminate"  IsThreeState="True" Name="checkBoxGuests" Margin="15,5,5,5" VerticalAlignment="Center" DockPanel.Dock="Left" Unchecked="CheckBoxesChanged" Checked="CheckBoxesChanged">Guests</CheckBox>
-
-
             </DockPanel>
+            <StackPanel Margin="5"  Grid.Row="3" Orientation="Horizontal">
+        
+                <Label Name="labelInfo" Margin="5,0" Height="25" VerticalAlignment="Center"></Label>
+            </StackPanel>
         </Grid>
-    </Border>
+        </Border>
 </UserControl>

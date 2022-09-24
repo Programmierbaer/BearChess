@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
-             mc:Ignorable="d" Height="200" Width="800"
+             mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <bearChessWin:BoolToContentConverter x:Key="BoolToContentConverter" />
@@ -13,11 +13,13 @@
     <Border BorderThickness="1" BorderBrush="Black">
         <Grid Background="AntiqueWhite">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-
-            <DataGrid Name="dataGridUsers" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False"
+            <Image Margin="5" Source="../Assets/Icons/users_3.png" Width="32" Height="32" Grid.Row="0" HorizontalAlignment="Left" />
+            <DataGrid Name="dataGridUsers" ItemsSource="{Binding}" Grid.Row="1" Margin="5" AutoGenerateColumns="False"
                       VirtualizingStackPanel.IsVirtualizing="True" 
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
                       SelectionMode="Extended" MouseDoubleClick="DataGridUsers_OnMouseDoubleClick" IsReadOnly="True">
@@ -78,19 +80,20 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <DockPanel DockPanel.Dock="Left" Margin="5" Grid.Row="1" LastChildFill="False">
+            <DockPanel DockPanel.Dock="Left" Margin="5" Grid.Row="2" LastChildFill="False">
                 <Button Margin="5" DockPanel.Dock="Left" Name="buttonQueryUser" Click="ButtonQueryUsers_OnClick"
-                        Background="Transparent" BorderBrush="Transparent" ToolTip="Query users">
-                    <Image Source="../Assets/Icons/users_3.png" Width="32" Height="32" />
+                        Background="Transparent" BorderBrush="Transparent" ToolTip="Query for users">
+                    <Image Source="../Assets/Icons/table_refresh.png" Width="32" Height="32" />
                 </Button>
                 <TextBlock Margin="5" VerticalAlignment="Center" DockPanel.Dock="Left">User:</TextBlock>
-                <TextBox Name="textBoxUser" Margin="5" Width="200" VerticalAlignment="Center" TextChanged="TextBoxUser_OnTextChanged" DockPanel.Dock="Left"></TextBox>
+                <TextBox Name="textBoxUser" Margin="5" Width="200" VerticalAlignment="Center" TextChanged="TextBoxUser_OnTextChanged" DockPanel.Dock="Left" ToolTip="Filter user name"></TextBox>
                 <CheckBox Indeterminate="CheckBox_OnIndeterminate" IsThreeState="True" Name="checkBoxOpen" Margin="15,5,5,5" VerticalAlignment="Center" DockPanel.Dock="Left" Unchecked="CheckBoxesChanged"  Checked="CheckBoxesChanged">Accept games</CheckBox>
                 <CheckBox Indeterminate="CheckBox_OnIndeterminate" IsThreeState="True"  Name="checkBoxComputer" Margin="15,5,5,5" VerticalAlignment="Center" DockPanel.Dock="Left" Unchecked="CheckBoxesChanged" Checked="CheckBoxesChanged">Computer</CheckBox>
                 <CheckBox  Indeterminate="CheckBox_OnIndeterminate"  IsThreeState="True" Name="checkBoxGuests" Margin="15,5,5,5" VerticalAlignment="Center" DockPanel.Dock="Left" Unchecked="CheckBoxesChanged" Checked="CheckBoxesChanged">Guests</CheckBox>
-                
-
             </DockPanel>
+            <StackPanel Margin="5"  Grid.Row="3" Orientation="Horizontal">
+                <Label Name="labelInfo" Margin="5,0" Height="25" VerticalAlignment="Center"></Label>
+            </StackPanel>
         </Grid>
     </Border>
 </UserControl>

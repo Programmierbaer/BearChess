@@ -40,10 +40,10 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         private static readonly Guid ResultCharacteristicUuid = Guid.Parse("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
 
         #region Error Codes
-        readonly int E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED = unchecked((int)0x80650003);
-        readonly int E_BLUETOOTH_ATT_INVALID_PDU = unchecked((int)0x80650004);
-        readonly int E_ACCESSDENIED = unchecked((int)0x80070005);
-        readonly int E_DEVICE_NOT_AVAILABLE = unchecked((int)0x800710df); // HRESULT_FROM_WIN32(ERROR_DEVICE_NOT_AVAILABLE)
+        //readonly int E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED = unchecked((int)0x80650003);
+        //readonly int E_BLUETOOTH_ATT_INVALID_PDU = unchecked((int)0x80650004);
+        //readonly int E_ACCESSDENIED = unchecked((int)0x80070005);
+        //readonly int E_DEVICE_NOT_AVAILABLE = unchecked((int)0x800710df); // HRESULT_FROM_WIN32(ERROR_DEVICE_NOT_AVAILABLE)
         #endregion
 
         private List<string> _allServices;
@@ -240,7 +240,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                     GattWriteResult result = await _writeCharacteristic.WriteValueWithResultAsync(fromByteArray);
                 });
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 //
             }

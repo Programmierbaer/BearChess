@@ -11,7 +11,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboUci
     {
         protected override IEBoardWrapper GetEBoardWrapper()
         {
-            return new CertaboImpl(Constants.Certabo, _basePath, _isFirstInstance, _configuration.PortName, false);
+            return new CertaboImpl(Constants.Certabo, _basePath,  _configuration.PortName, false);
         }
 
        

@@ -8,7 +8,7 @@ using System.Windows;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("BearChess")]
-[assembly: AssemblyDescription("BearChess GUI")]
+[assembly: AssemblyDescription("BearChess GUI by Lars Nowak")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SoLaNoSoft")]
 [assembly: AssemblyProduct("BearChess GUI")]
@@ -51,6 +51,6 @@ using System.Windows;
 // Sie können alle Werte angeben oder Standardwerte für die Build- und Revisionsnummern verwenden,
 // indem Sie "*" wie unten gezeigt eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.8.0.3")]
-[assembly: AssemblyFileVersion("0.8.0.3")]
+[assembly: AssemblyVersion("0.9.0.0")]
+[assembly: AssemblyFileVersion("0.9.0.0")]
 [assembly: AssemblyInformationalVersion("Release")]

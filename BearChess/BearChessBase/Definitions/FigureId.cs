@@ -48,6 +48,54 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
             {BLACK_KING, FenCodes.BlackKing},
         };
 
+        public static Dictionary<string, string> FigureGBtoDE = new Dictionary<string, string>()
+        {
+            { "K","K" },
+            { "Q","D" },
+            { "R","T" },
+            { "N","S" },
+            { "B","L" },
+            { "","" }
+        };
+        public static Dictionary<string, string> FigureGBtoFR = new Dictionary<string, string>()
+        {
+            { "K","R" },
+            { "Q","D" },
+            { "R","T" },
+            { "N","C" },
+            { "B","F" },
+            { "","" }
+        };
+        public static Dictionary<string, string> FigureGBtoIT = new Dictionary<string, string>()
+        {
+            { "K","R" },
+            { "Q","D" },
+            { "R","T" },
+            { "N","C" },
+            { "B","A" },
+            { "","" }
+        };
+
+        public static Dictionary<string, string> FigureGBtoSP = new Dictionary<string, string>()
+        {
+            { "K","R" },
+            { "Q","D" },
+            { "R","T" },
+            { "N","C" },
+            { "B","A" },
+            { "","" }
+        };
+
+        public static Dictionary<string, string> FigureGBtoDA = new Dictionary<string, string>()
+        {
+            { "K","K" },
+            { "Q","D" },
+            { "R","T" },
+            { "N","S" },
+            { "B","L" },
+            { "","" }
+        };
+
         public static Dictionary<int, string> FigureIdToEnName = new Dictionary<int, string>()
                                                                        {
                                                                            {NO_PIECE, string.Empty},

@@ -73,14 +73,13 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         private readonly byte[] _allLEDSOn = { 0x0A, 0x08, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
         private ConcurrentQueue<string[]> _flashFields = new ConcurrentQueue<string[]>();
-        public EChessBoard(string basePath, ILogging logger, bool isFirstInstance, string portName, bool useBluetooth)
+        public EChessBoard(string basePath, ILogging logger,string portName, bool useBluetooth)
         {
             _useBluetooth = useBluetooth;
             _logger = logger;
-            _isFirstInstance = isFirstInstance;
             BatteryLevel = "100";
             BatteryStatus = "Full";
-            _serialCommunication = new SerialCommunication(isFirstInstance, logger, portName, useBluetooth);
+            _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
             Information = "Chessnut Air";
             var thread = new Thread(FlashLeds) { IsBackground = true };
             thread.Start();
@@ -117,7 +116,6 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
 
         public EChessBoard(ILogging logger)
         {
-            _isFirstInstance = true;
             _logger = logger;
             BatteryLevel = "100";
             BatteryStatus = "Full";
@@ -240,6 +238,16 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         public override void DimLeds(int level)
         {
             //
+        }
+
+        public override void SetScanTime(int scanTime)
+        {
+            // ignore
+        }
+
+        public override void SetDebounce(int debounce)
+        {
+            // ignore
         }
 
         public override void FlashSync(bool flashSync)

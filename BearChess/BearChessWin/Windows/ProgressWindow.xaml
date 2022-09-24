@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" WindowStartupLocation="CenterOwner"
-        mc:Ignorable="d" SizeToContent="Height" 
+        mc:Ignorable="d" SizeToContent="Height" WindowStyle="ToolWindow"
         Title="Information" Height="270" Width="300" >
     <Grid>
         <Grid.ColumnDefinitions>

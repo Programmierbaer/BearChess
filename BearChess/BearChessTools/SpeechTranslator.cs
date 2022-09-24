@@ -12,35 +12,34 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public static string GetWelcome(string langCode, Configuration configuration)
         {
-            string result = string.Empty;
+            string result = "Welcome to BearChess";
+            string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "Willkommen zu Bärchess";
             }
-            if (langCode.Contains("en"))
-            {
-                result = "Welcome to BearChess";
-            }
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
-                return configuration.GetConfigValue("SpeechWelcome", result);
+                resultConfig = configuration.GetConfigValue("SpeechWelcome", string.Empty);
             }
-            return result;
+
+            if (string.IsNullOrWhiteSpace(resultConfig))
+            {
+                return result;
+            }
+            return resultConfig;
+          
         }
 
         public static string GetFigureName(int figureId, string langCode, Configuration configuration)
         {
-            string result = string.Empty;
+            string result = FigureId.FigureIdToEnName[figureId];
             string figureName = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = FigureId.FigureIdToDeName[figureId];
-            }
-            if (langCode.Contains("en"))
-            {
-                result = FigureId.FigureIdToEnName[figureId];
             }
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
@@ -84,17 +83,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public static string GetFrom(string langCode, Configuration configuration)
         {
-            string result = string.Empty;
+            string result = "from";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "von";
             }
-            if (langCode.Contains("en"))
-            {
-                result = "from";
-            }
+            
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
                 resultConfig =  configuration.GetConfigValue("SpeechFrom", string.Empty);
@@ -109,18 +105,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public static string GetTo(string langCode, Configuration configuration)
         {
-            string result = string.Empty;
+            string result = "to";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "nach";
             }
-            if (langCode.Contains("en"))
-            {
-                result = "to";
-            }
-
+           
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
                 resultConfig = configuration.GetConfigValue("SpeechTo", string.Empty);
@@ -135,17 +127,13 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public static string GetCheck(string langCode, Configuration configuration)
         {
-         
-            string result = string.Empty;
+
+            string result = "check";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "Schach";
-            }
-            if (langCode.Contains("en"))
-            {
-                result = "check";
             }
 
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
@@ -163,18 +151,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string GetGameEnd(string langCode, Configuration configuration)
         {
 
-            string result = string.Empty;
+            string result = "game finished";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "Spiel beendet";
             }
-            if (langCode.Contains("en"))
-            {
-                result = "game finished";
-            }
-
+            
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
                 resultConfig = configuration.GetConfigValue("SpeechGameFinished", string.Empty);
@@ -189,18 +173,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public static string GetMate(string langCode, Configuration configuration)
         {
-            string result = string.Empty;
+            string result = "check mate";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "Schach Matt";
             }
-            if (langCode.Contains("en"))
-            {
-                result = "check mate";
-            }
-
+            
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
                 resultConfig = configuration.GetConfigValue("SpeechCheckMate", string.Empty);
@@ -216,16 +196,12 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string GetDraw(string langCode, Configuration configuration)
         {
 
-            string result = string.Empty;
+            string result = "draw";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "Remis";
-            }
-            if (langCode.Contains("en"))
-            {
-                result = "draw";
             }
 
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
@@ -243,16 +219,12 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string GetNewGame(string langCode, Configuration configuration)
         {
 
-            string result = string.Empty;
+            string result = "new game";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "Neues Spiel";
-            }
-            if (langCode.Contains("en"))
-            {
-                result = "new game";
             }
 
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
@@ -270,18 +242,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string GetCapture(string langCode, Configuration configuration)
         {
 
-            string result = string.Empty;
+            string result = "takes";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "schlägt";
             }
-            if (langCode.Contains("en"))
-            {
-                result = "takes";
-            }
-
+            
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
                 resultConfig = configuration.GetConfigValue("SpeechTakes", string.Empty);
@@ -297,16 +265,12 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string GetCastleKingsSide(string langCode, Configuration configuration)
         {
 
-            string result = string.Empty;
+            string result = "castling king's side";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "kurze Rochade";
-            }
-            if (langCode.Contains("en"))
-            {
-                result = "castling king's side";
             }
 
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
@@ -324,18 +288,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string GetCastleQueensSide(string langCode, Configuration configuration)
         {
 
-            string result = string.Empty;
+            string result = "castling queen's side";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "lange Rochade";
             }
-            if (langCode.Contains("en"))
-            {
-                result = "castling queen's side";
-            }
-
+            
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
                 resultConfig = configuration.GetConfigValue("SpeechCastleQueen", string.Empty);
@@ -351,18 +311,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string GetAgainst(string langCode, Configuration configuration)
         {
 
-            string result = string.Empty;
+            string result = "against";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "gegen";
             }
-            if (langCode.Contains("en"))
-            {
-                result = "against";
-            }
-
+            
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
                 resultConfig = configuration.GetConfigValue("SpeechAgainst", string.Empty);
@@ -378,16 +334,12 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string GetWinsByMate(string langCode, Configuration configuration)
         {
 
-            string result = string.Empty;
+            string result = "wins by mate";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "gewinnt durch Matt";
-            }
-            if (langCode.Contains("en"))
-            {
-                result = "wins by mate";
             }
 
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
@@ -405,18 +357,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public static string GetWinsByScore(string langCode, Configuration configuration)
         {
 
-            string result = string.Empty;
+            string result = "wins by score";
             string resultConfig = string.Empty;
 
             if (langCode.Contains("de"))
             {
                 result = "gewinnt durch Bewertung";
             }
-            if (langCode.Contains("en"))
-            {
-                result = "wins by score";
-            }
-
+            
             if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
             {
                 resultConfig = configuration.GetConfigValue("SpeechWinsByScore", string.Empty);
@@ -427,6 +375,76 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 return result;
             }
             return resultConfig;
+        }
+
+        public static string GetFICSWelcome(string langCode, Configuration configuration)
+        {
+            string result = "Welcome to Free Internet Chess Server";
+            string resultConfig = string.Empty;
+
+            if (langCode.Contains("de"))
+            {
+                result = "Willkommen beim Free Internet Chess Server";
+            }
+            if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
+            {
+                resultConfig = configuration.GetConfigValue("SpeechFICSWelcome", string.Empty);
+            }
+
+            if (string.IsNullOrWhiteSpace(resultConfig))
+            {
+                return result;
+            }
+           
+            return resultConfig;
+        }
+        public static string GetFICSConnectedAs(string langCode, Configuration configuration)
+        {
+            string result = "Your are connected as %USERNAME%";
+            string resultConfig = string.Empty;
+            if (langCode.Contains("de"))
+            {
+                result = "Sie sind angemeldet als %USERNAME%";
+            }
+           
+            if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
+            {
+                resultConfig = configuration.GetConfigValue("SpeechFICSConnectedAs", string.Empty);
+            }
+
+            if (string.IsNullOrWhiteSpace(resultConfig))
+            {
+                return result;
+            }
+
+            return resultConfig;
+            
+        }
+
+        public static string GetFICSChallenge(string langCode, Configuration configuration)
+        {
+            string result = "%OPPONENT% challenges you to a game";
+            string resultConfig = string.Empty;
+
+            if (langCode.Contains("de"))
+            {
+                result = "%OPPONENT% fordert Sie zu einer Partie heraus";
+            }
+
+            if (bool.Parse(configuration.GetConfigValue("SpeechOwnLanguage", "false")))
+            {
+                resultConfig = configuration.GetConfigValue("SpeechFICSChallenge", string.Empty);
+            }
+
+            if (string.IsNullOrWhiteSpace(resultConfig))
+            {
+                return result;
+            }
+
+            return resultConfig;
+
+
+          
         }
     }
 }

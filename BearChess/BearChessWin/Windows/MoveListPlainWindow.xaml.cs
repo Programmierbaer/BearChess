@@ -34,12 +34,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class MoveListPlainWindow : Window
     {
-        private readonly Window _parent;
         private readonly Configuration _configuration;
         private int _lastMoveNumber;
         private WrapPanel _wrapPanel;
         private DisplayFigureType _figureType;
         private DisplayMoveType _moveType;
+        private DisplayCountryType _countryType;
         private readonly List<Move> _moveList;
         private bool _newPanelAdded = false;
         private MovePlainUserControl _movePlainUserControl;
@@ -66,6 +66,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _moveType = (DisplayMoveType)Enum.Parse(typeof(DisplayMoveType),
                                                     _configuration.GetConfigValue(
                                                         "DisplayMoveType", DisplayMoveType.FromToField.ToString()));
+            _countryType = (DisplayCountryType)Enum.Parse(typeof(DisplayCountryType),
+                                                             _configuration.GetConfigValue(
+                                                                 "DisplayCountryType", DisplayCountryType.GB.ToString()));
             _moveList = new List<Move>();
             _showOnlyMoves = bool.Parse(_configuration.GetConfigValue("extendMoveList", "false"));
             _showFullInfo = bool.Parse(_configuration.GetConfigValue("extendFull", "false"));
@@ -99,10 +102,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastMoveNumber = 0;
         }
 
-        public void SetDisplayTypes(DisplayFigureType displayFigureType, DisplayMoveType displayMoveType)
+        public void SetDisplayTypes(DisplayFigureType displayFigureType, DisplayMoveType displayMoveType, DisplayCountryType displayCountryType)
         {
             _figureType = displayFigureType;
             _moveType = displayMoveType;
+            _countryType = displayCountryType;
             stackPanelMoves.Children.Clear();
             _lastMoveNumber = 0;
             foreach (var move in _moveList)
@@ -235,7 +239,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                        };
             movePlainUserControl.SelectedChanged += MovePlainUserControl_SelectedChanged;
             movePlainUserControl.ContentChanged += MovePlainUserControl_ContentChanged;
-            movePlainUserControl.SetDisplayTypes(_figureType, _moveType);
+            movePlainUserControl.SetDisplayTypes(_figureType, _moveType, _countryType);
             movePlainUserControl.SetInformationDetails(_showOnlyMoves, _showFullInfo, _showComments, _showForWhite);
             if (move.FigureColor == Fields.COLOR_WHITE || (_lastMoveNumber==0))
             {

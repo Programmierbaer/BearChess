@@ -1,0 +1,163 @@
+﻿<UserControl x:Class="www.SoLaNoSoft.com.BearChessWin.FicsMainUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border BorderThickness="1" BorderBrush="Black">
+        <Grid Background="AliceBlue">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border BorderThickness="1" BorderBrush="Black" Grid.Column="2" Grid.Row="0" Grid.RowSpan="3" Margin="0,5,5,5" Background="LightYellow">
+                <StackPanel Margin="5">
+                    <Label FontWeight="SemiBold">Seek for...</Label>
+                    <Border BorderThickness="1" BorderBrush="Black" Margin="1">
+                        <StackPanel>
+                            <Button Margin="5" Name="buttonSetting1" Click="ButtonSetting1_OnClick">
+                                <TextBlock Text="5 min" TextWrapping="Wrap" />
+                            </Button>
+                            <Button Margin="5" Name="buttonConfigSetting1" Click="ButtonConfigSetting1_OnClick"
+                                    Background="Transparent" BorderBrush="Transparent">
+                                <Image Height="16" Width="16" Source="../Assets/Icons/cog.png" />
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="Black" Margin="1">
+                        <StackPanel Margin="5">
+                            <Button Margin="5" Name="buttonSetting2" Click="ButtonSetting2_OnClick">5min + 5sec</Button>
+                            <Button Margin="5" Name="buttonConfigSetting2" Click="ButtonConfigSetting2_OnClick"
+                                    Background="Transparent" BorderBrush="Transparent">
+                                <Image Height="16" Width="16" Source="../Assets/Icons/cog.png" />
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="Black" Margin="1">
+                        <StackPanel Margin="5">
+                            <Button Margin="5" Name="buttonSetting3" Click="ButtonSetting3_OnClick">10min</Button>
+                            <Button Margin="5" Name="buttonConfigSetting3" Click="ButtonConfigSetting3_OnClick"
+                                    Background="Transparent" BorderBrush="Transparent">
+                                <Image Height="16" Width="16" Source="../Assets/Icons/cog.png" />
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+                    <Button Margin="5,15,5,5" Name="buttonUnSeekSetting" Click="ButtonUnSeek_OnClick"
+                            ToolTip="unseek">
+                        <TextBlock Text="Cancel seek" TextWrapping="Wrap" />
+                    </Button>
+                </StackPanel>
+            </Border>
+            <Border BorderThickness="1" BorderBrush="Black" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="5"
+                    Background="WhiteSmoke">
+                <bearChessWin:FicsGameUserControl x:Name="gameUserControl" />
+            </Border>
+            <Border Margin="5,0,5,5" Grid.Row="1" BorderThickness="1" BorderBrush="Black" Grid.Column="0" Grid.ColumnSpan="2" Background="LightYellow">
+              <StackPanel>
+                  <Label FontWeight="SemiBold">Your commands</Label>
+                  <Grid>
+                      <Grid.ColumnDefinitions>
+                          <ColumnDefinition></ColumnDefinition>
+                          <ColumnDefinition></ColumnDefinition>
+                          <ColumnDefinition></ColumnDefinition>
+                          <ColumnDefinition></ColumnDefinition>
+                      </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" Grid.ColumnSpan="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Margin="5" Name="buttonUserSetting0" Click="ButtonUserSetting0_OnClick" >
+                                <TextBlock Name="textBlockUserSetting0" Text="5 min" TextWrapping="Wrap" />
+                            </Button>
+                            <Button Grid.Column="1" Margin="5" Name="buttonUserConfigSetting0" Click="ButtonConfigUserSetting0_OnClick"
+                                  Background="Transparent" BorderBrush="Transparent" Width="20">
+                                <Image Height="16" Width="16" Source="../Assets/Icons/cog.png" />
+                            </Button>
+                            <Button Grid.Column="2" Margin="5" Name="buttonUserSetting1" Click="ButtonUserSetting1_OnClick">
+                                <TextBlock Name="textBlockUserSetting1" Text="5 min" TextWrapping="Wrap" />
+                            </Button>
+                            <Button Grid.Column="3" Margin="5" Name="buttonUserConfigSetting1" Click="ButtonConfigUserSetting1_OnClick"
+                                  Background="Transparent" BorderBrush="Transparent">
+                                <Image Height="16" Width="16" Source="../Assets/Icons/cog.png" />
+                            </Button>
+                            <Button Grid.Column="4" Margin="5" Name="buttonUserSetting2" Click="ButtonUserSetting2_OnClick">
+                                <TextBlock Name="textBlockUserSetting2"  Text="5 min" TextWrapping="Wrap" />
+                            </Button>
+                            <Button Grid.Column="5" Margin="5" Name="buttonUserConfigSetting2" Click="ButtonConfigUserSetting2_OnClick"
+                                  Background="Transparent" BorderBrush="Transparent">
+                                <Image Height="16" Width="16" Source="../Assets/Icons/cog.png" />
+                            </Button>
+                            <Button Grid.Column="6" Margin="5" Name="buttonUserSetting3" Click="ButtonUserSetting3_OnClick">
+                                <TextBlock Name="textBlockUserSetting3"  Text="5 min" TextWrapping="Wrap" />
+                            </Button>
+                            <Button Grid.Column="7" Margin="5" Name="buttonUserConfigSetting3" Click="ButtonConfigUserSetting3_OnClick"
+                                  Background="Transparent" BorderBrush="Transparent">
+                                <Image Height="16" Width="16" Source="../Assets/Icons/cog.png" />
+                            </Button>
+
+                        </Grid>
+                      
+                    </Grid>
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                       <Label Margin="5" >Command:</Label>
+                        <TextBox Margin="5" Name="textBoxCommonMessage" Width="400" KeyDown="OnKeyDownCommonMessageHandler" ></TextBox>
+                        <Button Name="buttonCommonSend" VerticalAlignment="Center" Margin="0,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent"  Click="ButtonSendCommand_OnClick"
+                                ToolTip="Send command">
+                            <Image Source="../Assets/Icons/bullet_go.png"></Image>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border Margin="5,0,5,5" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="Black" Background="AliceBlue">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="5">
+                        <Label Margin="5,0" Width="60" >Channel:</Label>
+                        <ComboBox Name="comboBoxChannels" Width="100" Margin="5,0"/>
+                        <TextBox Margin="5,0" Name="textBoxChannelMessage" KeyDown="OnKeyDownChannelMessageHandler" Width="300"></TextBox>
+                        <Button Name="buttonSend" VerticalAlignment="Center" Margin="0,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent"  Click="ButtonSend_OnClick"
+                                ToolTip="Send message to channel">
+                            <Image Source="../Assets/Icons/bullet_go.png"></Image>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Margin="5">
+                        <Label Margin="5,0" Width="60" >User:</Label>
+                        <ComboBox Name="comboBoxUsers" Width="100" Margin="5,0"/>
+                        <TextBox Margin="5,0" Name="textBoxUserMessage" KeyDown="OnKeyDownUserMessageHandler" Width="300"></TextBox>
+                        <Button Name="buttonSendUser" VerticalAlignment="Center" Margin="0,0,5,0" Width="24" Height="24" Background="Transparent" BorderBrush="Transparent"  Click="ButtonSendUser_OnClick"
+                                ToolTip="Send message to user">
+                            <Image Source="../Assets/Icons/bullet_go.png"></Image>
+                        </Button>
+                    </StackPanel>
+                    <Grid Grid.Row="2" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <ListBox Margin="5" Grid.Row="0" Name="listBoxMessages" FontFamily="Consolas"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>

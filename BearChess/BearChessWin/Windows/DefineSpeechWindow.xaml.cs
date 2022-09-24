@@ -40,6 +40,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBoxWinsByScore.Text = _config.GetConfigValue("SpeechWinsByScore", string.Empty);
             textBoxNewGame.Text = _config.GetConfigValue("SpeechNewGame", string.Empty);
             textBoxWelcome.Text = _config.GetConfigValue("SpeechWelcome", string.Empty);
+            textBoxFICSWelcome.Text = _config.GetConfigValue("SpeechFICSWelcome", string.Empty);
+            textBoxFICSConnectedAs.Text = _config.GetConfigValue("SpeechFICSConnectedAs", string.Empty);
+            textBoxFICSChallenge.Text = _config.GetConfigValue("SpeechFICSChallenge", string.Empty);
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -66,6 +69,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
            _config.SetConfigValue("SpeechWinsByScore", textBoxWinsByScore.Text);
            _config.SetConfigValue("SpeechNewGame", textBoxNewGame.Text);
            _config.SetConfigValue("SpeechWelcome", textBoxWelcome.Text);
+           _config.SetConfigValue("SpeechFICSWelcome", textBoxFICSWelcome.Text);
+           _config.SetConfigValue("SpeechFICSConnectedAs", textBoxFICSConnectedAs.Text);
+           _config.SetConfigValue("SpeechFICSChallenge", textBoxFICSChallenge.Text);
            DialogResult = true;
         }
     }

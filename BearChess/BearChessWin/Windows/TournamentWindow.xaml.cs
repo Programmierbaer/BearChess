@@ -386,7 +386,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 input = (int)value;
 
             }
-            catch (InvalidCastException e)
+            catch (InvalidCastException) 
             {
                 return DependencyProperty.UnsetValue;
             }

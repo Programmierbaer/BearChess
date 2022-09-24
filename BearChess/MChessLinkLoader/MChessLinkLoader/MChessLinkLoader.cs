@@ -30,9 +30,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkLoader
             {
                 return new MChessLinkImpl(name: Name, basePath: basePath);
             }
-            var mChessLinkImpl = new MChessLinkImpl(name: Name, basePath: basePath, isFirstInstance: true, comPortName: configuration.PortName);
+            var mChessLinkImpl = new MChessLinkImpl(name: Name, basePath: basePath,  comPortName: configuration.PortName);
             mChessLinkImpl.FlashInSync(configuration.FlashInSync);
             mChessLinkImpl.DimLEDs(configuration.DimLevel);
+            mChessLinkImpl.SetScanTime(configuration.ScanTime);
+            mChessLinkImpl.SetDebounce(configuration.Debounce);
             return mChessLinkImpl;
         }
 

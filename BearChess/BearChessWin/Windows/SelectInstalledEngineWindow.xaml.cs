@@ -151,12 +151,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
             try
             {
                 var uciPath = Path.Combine(_uciPath, engineId);
-                var fileNames = Directory.GetFiles(uciPath);
-                foreach (var fileName in fileNames)
+                if (Directory.Exists(uciPath))
                 {
-                    File.Delete(fileName);
+                    var fileNames = Directory.GetFiles(uciPath);
+                    foreach (var fileName in fileNames)
+                    {
+                        File.Delete(fileName);
+                    }
+
+                    Directory.Delete(uciPath);
                 }
-                Directory.Delete(uciPath);
+
                 _installedEngines.Remove(engineName);
                 _uciInfos.Remove(SelectedEngine);
             }
@@ -203,6 +208,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
+            string[] multiParameters = null;
+            bool multiSelection = false;
+            bool skipWarnings = false;
             try
             {
                 //string parameters = string.Empty;
@@ -226,10 +235,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         parameterSelectionWindow.ShowList(readAllLines);
                     }
                     parameterSelectionWindow.SetLabel("Engine:");
+                    parameterSelectionWindow.SetMultiSelectionMode();
+                    multiSelection = true;
                     var showDialog = parameterSelectionWindow.ShowDialog();
                     if (showDialog.HasValue && showDialog.Value)
                     {
-                        parameters = parameterSelectionWindow.SelectedEngine;
+                        multiParameters = parameterSelectionWindow.SelectedEngines;
+                        parameters = multiParameters.First();
+                        skipWarnings = parameterSelectionWindow.SkipWarnings;
                     }
                     else
                     {
@@ -261,6 +274,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             avatarName = parameterSelectionWindow.SelectedEngine;
                             parameters = $"--weights \"{Path.Combine(avatars, avatarName)}\"";
+                            skipWarnings = parameterSelectionWindow.SkipWarnings;
                         }
                         else
                         {
@@ -279,8 +293,67 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         }
                     }
                 }
-                UciInstaller uciInstaller = new UciInstaller();
-                UciInfo uciInfo = uciInstaller.Install(fileName, parameters);
+
+                UciInstaller uciInstaller = null;
+                UciInfo uciInfo = null;
+                bool isAdded = false;
+                if (multiSelection && multiParameters.Length>1)
+                {
+                    foreach (var multiParameter in multiParameters)
+                    {
+                        uciInstaller = new UciInstaller();
+                        uciInfo = uciInstaller.Install(fileName, multiParameter);
+                       
+                        if (!uciInfo.Valid)
+                        {
+                            throw new Exception($"{uciInfo.FileName} is not a valid UCI engine");
+                        }
+                        if ( _installedEngines.Contains(uciInfo.Name))
+                        {
+                            if (!skipWarnings)
+                            {
+                                MessageBox.Show(
+                                    this,
+                                    $"Engine '{uciInfo.Name}' already installed!", "UCI Engine", MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                            }
+
+                            continue;
+                        }
+                        uciInfo.Id = "uci" + Guid.NewGuid().ToString("N");
+                        _installedEngines.Add(uciInfo.Name);
+                        var uciPath = Path.Combine(_uciPath, uciInfo.Id);
+                        if (!Directory.Exists(uciPath))
+                        {
+                            Directory.CreateDirectory(uciPath);
+                        }
+
+                        XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
+                        TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
+                        serializer.Serialize(textWriter, uciInfo);
+                        textWriter.Close();
+                        for (int i = 0; i < _uciInfos.Count; i++)
+                        {
+                            if (_uciInfos[i].Name.CompareTo(uciInfo.Name) < 0)
+                            {
+                                continue;
+
+                            }
+
+                            isAdded = true;
+                            _uciInfos.Insert(i, uciInfo);
+                            break;
+                        }
+
+                        if (!isAdded)
+                        {
+                            _uciInfos.Add(uciInfo);
+                        }
+                    }
+                    return;
+                }
+                uciInstaller = new UciInstaller();
+                uciInfo = uciInstaller.Install(fileName, parameters);
                 if (!string.IsNullOrWhiteSpace(engineName))
                 {
                     uciInfo.Name = engineName;
@@ -296,13 +369,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 if (_installedEngines.Contains(uciInfo.Name))
                 {
-                    MessageBox.Show(
-                        this,
-                        $"Engine '{uciInfo.Name}' already installed!", "UCI Engine", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (!skipWarnings)
+                    {
+                        MessageBox.Show(
+                            this,
+                            $"Engine '{uciInfo.Name}' already installed!", "UCI Engine", MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
+
                     return;
                 }
 
-                bool isAdded = false;
+               
                 uciInfo.Id = "uci" + Guid.NewGuid().ToString("N");
                 if (MessageBox.Show(this, $"Install UCI engine{Environment.NewLine}{uciInfo.Name}{Environment.NewLine}Author: {uciInfo.Author}",
                         "UCI Engine", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)

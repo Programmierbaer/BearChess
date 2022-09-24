@@ -18,8 +18,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool UseClock { get; set; }
         public bool ClockShowOnlyMoves { get; set; }
         public bool ClockSwitchSide { get; set; }
-
         public bool LongMoveFormat { get; set; }
+        public int ScanTime { get; set; }
+        public int Debounce { get; set; }
 
         public EChessBoardConfiguration()
         {
@@ -29,6 +30,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             ClockSwitchSide = false;
             UseBluetooth = false;
             LongMoveFormat = true;
+            ScanTime = 30; // Default for ChessLink
+            Debounce = 0; // Default for ChessLink
         }
 
         public static EChessBoardConfiguration Load(string fileName)
@@ -51,6 +54,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.UseClock = savedConfig.UseClock;
                     configuration.ClockSwitchSide = savedConfig.ClockSwitchSide;
                     configuration.LongMoveFormat = savedConfig.LongMoveFormat;
+                    configuration.ScanTime = savedConfig.ScanTime;
+                    configuration.Debounce = savedConfig.Debounce;
                     if (configuration.DimLevel < 0)
                     {
                         configuration.DimLevel = configuration.DimLeds ? 0 : 14;

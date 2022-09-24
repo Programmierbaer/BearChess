@@ -15,14 +15,13 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         private Thread _readingThread;
 
-        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, string boardName) : base(isFirstInstance, logger, portName, boardName)
+        public SerialCommunication( ILogging logger, string portName, string boardName) : base( logger, portName, boardName)
         {
         }
 
        
 
-        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, bool useBluetooth, string boardName) : base(
-            isFirstInstance, logger, portName, boardName)
+        public SerialCommunication(ILogging logger, string portName, bool useBluetooth, string boardName) : base(logger, portName, boardName)
         {
             _useBluetooth = useBluetooth;
         }
@@ -73,8 +72,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                     if (withConnection && !_pauseReading)
                     {
 
-                        if (_isFirstInstance)
-                        {
+                     
                             readLine = string.Empty;
                             try
                             {
@@ -102,11 +100,8 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                             _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
                             _dataFromBoard.Enqueue(readLine);
 
-                            if (_clientConnected)
-                            {
-                                _serverPipe.WriteString(readLine);
-                            }
-                        }
+                            
+                        
                     }
 
                 }
@@ -154,18 +149,16 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                         if (_stringDataToBoard.TryDequeue(out string data))
                         {
 
-                            if (_isFirstInstance)
-                            {
+
                                 _logger?.LogDebug($"SC: Send {data}");
                                 var convertToSend = ConvertToSend(data);
                                 _comPort.Write(convertToSend, 0, convertToSend.Length);
-                            }
+                            
                         }
 
                         if (_byteDataToBoard.TryDequeue(out byte[] byteData))
                         {
-                            if (_isFirstInstance)
-                            {
+                            
                                 var convertFromRead = ConvertFromRead(byteData);
                                 bool force = false;
                                 if (_forcedSend)
@@ -179,7 +172,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                                     _comPort.Write(byteData, 0, byteData.Length);
                                     lastSend = convertFromRead;
                                 }
-                            }
+                            
                         }
 
                     }

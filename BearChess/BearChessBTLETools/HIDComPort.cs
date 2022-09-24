@@ -21,8 +21,8 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
         //private static ushort vendorId = 0x2D80;
         //private static ushort productId = 0x8002;
-        private ushort usagePage = 0xFF00;
-        private ushort usageId = 0x01;
+        //private ushort usagePage = 0xFF00;
+        //private ushort usageId = 0x01;
         private readonly ConcurrentQueue<byte[]> _byteArrayQueue = new ConcurrentQueue<byte[]>();
         private Thread _readingThread;
         private bool _stopReading;
@@ -62,7 +62,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
                     }
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     //
                 }

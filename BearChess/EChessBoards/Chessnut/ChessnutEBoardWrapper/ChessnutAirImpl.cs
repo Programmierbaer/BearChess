@@ -13,8 +13,8 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
             
         }
 
-        public ChessnutAirImpl(string name, string basePath, bool isFirstInstance, string comPortName, bool useBluetooth) : base(
-            name, basePath, isFirstInstance, comPortName, useBluetooth, false, false, false)
+        public ChessnutAirImpl(string name, string basePath, string comPortName, bool useBluetooth) : base(
+            name, basePath, comPortName, useBluetooth, false, false, false)
         {
 
         }
@@ -44,6 +44,16 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
             //throw new System.NotImplementedException();
         }
 
+        public override void SetScanTime(int scanTime)
+        {
+            // ignore
+        }
+
+        public override void SetDebounce(int debounce)
+        {
+            // ignore
+        }
+
         public override void FlashInSync(bool flashSync)
         {
             //throw new System.NotImplementedException();
@@ -51,7 +61,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new ChessnutChessBoard.EChessBoard(_basePath, _fileLogger, _isFirstInstance, _comPortName, _useBluetooth);
+            return new ChessnutChessBoard.EChessBoard(_basePath, _fileLogger, _comPortName, _useBluetooth);
         }
 
         protected override IEBoard GetEBoard(bool check)

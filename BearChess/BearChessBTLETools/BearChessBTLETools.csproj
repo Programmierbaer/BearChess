@@ -9,11 +9,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>www.SoLaNoSoft.com.BearChessBTLETools</RootNamespace>
     <AssemblyName>BearChessBTLETools</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,7 +49,6 @@
     <Compile Include="HIDComPort.cs" />
     <Compile Include="SerialBTLECommunicationTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerialHIDCommunicationTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">

@@ -10,7 +10,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>www.SoLaNoSoft.com.BearChessWin</RootNamespace>
     <AssemblyName>BearChessWin</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -125,6 +125,7 @@
     <Compile Include="HandlingClocks.cs" />
     <Compile Include="Helper\BoardFieldsSetup.cs" />
     <Compile Include="Helper\BoardPiecesSetup.cs" />
+    <Compile Include="Helper\EgineEventArgs.cs" />
     <Compile Include="Helper\ExportGames.cs" />
     <Compile Include="Helper\ProgressWorker.cs" />
     <Compile Include="Helper\SpeechWrapper.cs" />
@@ -133,8 +134,11 @@
     <Compile Include="UserControls\FicsAdsUserControl.xaml.cs">
       <DependentUpon>FicsAdsUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\FicsLogUserControl.xaml.cs">
-      <DependentUpon>FicsLogUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\FicsGameUserControl.xaml.cs">
+      <DependentUpon>FicsGameUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FicsMainUserControl.xaml.cs">
+      <DependentUpon>FicsMainUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\FicsUserUserControl.xaml.cs">
       <DependentUpon>FicsUserUserControl.xaml</DependentUpon>
@@ -167,15 +171,20 @@
     <Compile Include="Windows\EngineWaitWindow.xaml.cs">
       <DependentUpon>EngineWaitWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\EngineWindowFactory.cs" />
+    <Compile Include="Windows\FicsCommandWindow.xaml.cs">
+      <DependentUpon>FicsCommandWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\FICSConfigureWindow.xaml.cs">
       <DependentUpon>FICSConfigureWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\FicsLogWindow.xaml.cs">
-      <DependentUpon>FicsLogWindow.xaml</DependentUpon>
+    <Compile Include="Windows\FicsTimeControlWindow.xaml.cs">
+      <DependentUpon>FicsTimeControlWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\FicsWindow.xaml.cs">
       <DependentUpon>FicsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\IEngineWindow.cs" />
     <Compile Include="Windows\ITournamentInfoWindow.cs" />
     <Compile Include="Windows\MoveListPlainWindow.xaml.cs">
       <DependentUpon>MoveListPlainWindow.xaml</DependentUpon>
@@ -357,7 +366,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\FicsLogUserControl.xaml">
+    <Page Include="UserControls\FicsGameUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\FicsMainUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -401,11 +414,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\FicsCommandWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\FICSConfigureWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\FicsLogWindow.xaml">
+    <Page Include="Windows\FicsTimeControlWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -840,6 +857,10 @@
     <ProjectReference Include="..\Teddy\Teddy.csproj">
       <Project>{a05313c6-91fe-4b82-8fad-6f6f66cf812a}</Project>
       <Name>Teddy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UCBLoader\UCBLoader.csproj">
+      <Project>{be531507-acd6-486a-be1d-f688414c6b49}</Project>
+      <Name>UCBLoader</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -1293,6 +1314,60 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\chessnut.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\table_refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\handshake.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\lightning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\lightning_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\time_add.png" />
+    <Resource Include="Assets\Icons\time_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\eone.jpeg" />
+    <Resource Include="Assets\exclusive.jpeg" />
+    <Resource Include="Assets\kingperformance.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\certabo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\pegasus.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\dgt.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\chessnutair.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\squareoffpro.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\flag_germany.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\flag_great_britain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\flag_france.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\flag_italy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\flag_spain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\flag_denmark.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

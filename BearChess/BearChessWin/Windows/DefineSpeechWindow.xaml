@@ -3,158 +3,186 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" ResizeMode="NoResize" SizeToContent="Height"
-        Title="Define Translation" Height="450" Width="700"  WindowStartupLocation="CenterOwner"> 
-    <StackPanel Background="AliceBlue">
-        <StackPanel Margin="5" Orientation="Horizontal">
-            <TextBlock Width="60" Margin="5">Welcome:</TextBlock>
-            <TextBox Name="textBoxWelcome" Width="310" Margin="5">Welcome to BearChess</TextBox>
-        </StackPanel>
-        <Grid Background="Azure">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
+        mc:Ignorable="d" WindowStyle="ToolWindow" ResizeMode="NoResize"
+        Title="Define Translation" Height="500" Width="700" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0">
+            <TabItem Header="Common">
+                <StackPanel Background="AliceBlue">
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <TextBlock Width="60" Margin="5">Welcome:</TextBlock>
+                        <TextBox Name="textBoxWelcome" Width="310" Margin="5">Welcome to BearChess</TextBox>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Chess">
+                <StackPanel Background="AliceBlue">
+                    <Grid Background="Azure">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">king:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxKing" Margin="5">King</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">queen:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxQueen" Margin="5">Queen</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="2">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">rook:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxRook" Margin="5">Rook</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="1" Grid.Column="0">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">bishop:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxBishop" Margin="5">Bishop</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="1" Grid.Column="1">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">knight:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxKnight" Margin="5">Knight</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="1" Grid.Column="2">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">pawn:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxPawn" Margin="5">Pawn</TextBox>
+                        </DockPanel>
+                    </Grid>
+                    <Grid Background="AliceBlue">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
 
-            </Grid.RowDefinitions>
+                        </Grid.RowDefinitions>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">from:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxFrom" Margin="5">from</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">to:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxTo" Margin="5">to</TextBox>
+                        </DockPanel>
 
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
-                <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">king:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxKing" Margin="5">King</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
-                <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">queen:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxQueen" Margin="5">Queen</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="2">
-                <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">rook:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxRook" Margin="5">Rook</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="1" Grid.Column="0">
-                <TextBlock Width="60"  DockPanel.Dock="Left" Margin="5">bishop:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxBishop" Margin="5">Bishop</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="1" Grid.Column="1">
-                <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">knight:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxKnight" Margin="5">Knight</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="1" Grid.Column="2">
-                <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">pawn:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxPawn" Margin="5">Pawn</TextBox>
-            </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="2">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">takes:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxTakes" Margin="5">takes</TextBox>
+                        </DockPanel>
+                    </Grid>
+                    <Grid Background="Azure">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="250" />
 
-          
-        </Grid>
-        <Grid Background="AliceBlue">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
 
-            </Grid.RowDefinitions>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
-                <TextBlock Width="60"  DockPanel.Dock="Left" Margin="5">from:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxFrom" Margin="5">from</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
-                <TextBlock  Width="60" DockPanel.Dock="Left" Margin="5">to:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxTo" Margin="5">to</TextBox>
-            </DockPanel>
+                        </Grid.RowDefinitions>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
+                            <TextBlock Width="70" DockPanel.Dock="Left" Margin="5">check:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxCheck" Margin="5">check</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
+                            <TextBlock Width="70" DockPanel.Dock="Left" Margin="5">check mate:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxCheckMate" Margin="5">check mate</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="1" Grid.Column="0">
+                            <TextBlock Width="70" DockPanel.Dock="Left" Margin="5">draw:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxDraw" Margin="5">draw</TextBox>
+                        </DockPanel>
+                    </Grid>
+                    <Grid Background="AliceBlue">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300" />
+                            <ColumnDefinition Width="300" />
 
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="2">
-                <TextBlock Width="60"  DockPanel.Dock="Left" Margin="5">takes:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxTakes" Margin="5">takes</TextBox>
-            </DockPanel>
-        </Grid>
-        <Grid Background="Azure">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="250" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
 
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
+                            <TextBlock DockPanel.Dock="Left" Margin="5">castling king's side:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxCastleKingSide" Margin="5">castling king's side</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="1" Grid.Column="0">
+                            <TextBlock DockPanel.Dock="Left" Margin="5">castling queen's side:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxCastleQueenSide" Margin="5">castling king's side</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
+                            <TextBlock DockPanel.Dock="Left" Margin="5">wins by mate:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxWinsByMate" Margin="5">wins by mate</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="1" Grid.Column="1">
+                            <TextBlock DockPanel.Dock="Left" Margin="5">wins by score:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxWinsByScore" Margin="5">wins by score</TextBox>
+                        </DockPanel>
+                    </Grid>
+                    <Grid Background="Azure">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300" />
+                            <ColumnDefinition Width="300" />
 
-            </Grid.RowDefinitions>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
-                <TextBlock Width="70" DockPanel.Dock="Left" Margin="5">check:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxCheck" Margin="5">check</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
-                <TextBlock Width="70" DockPanel.Dock="Left" Margin="5">check mate:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxCheckMate" Margin="5">check mate</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="1" Grid.Column="0">
-                <TextBlock Width="70"  DockPanel.Dock="Left" Margin="5">draw:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxDraw" Margin="5">draw</TextBox>
-            </DockPanel>
-        </Grid>
-        <Grid Background="AliceBlue">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
-                <ColumnDefinition Width="300" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
 
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-
-            </Grid.RowDefinitions>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
-                <TextBlock DockPanel.Dock="Left" Margin="5">castling king's side:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxCastleKingSide" Margin="5">castling king's side</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="1" Grid.Column="0">
-                <TextBlock DockPanel.Dock="Left" Margin="5">castling queen's side:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxCastleQueenSide" Margin="5">castling king's side</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
-                <TextBlock DockPanel.Dock="Left" Margin="5">wins by mate:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxWinsByMate" Margin="5">wins by mate</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="1" Grid.Column="1">
-                <TextBlock DockPanel.Dock="Left" Margin="5">wins by score:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxWinsByScore" Margin="5">wins by score</TextBox>
-            </DockPanel>
-        </Grid>
-        <Grid Background="Azure">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
-                <ColumnDefinition Width="300" />
-
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-
-            </Grid.RowDefinitions>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
-                <TextBlock DockPanel.Dock="Left" Margin="5">new game:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxNewGame" Margin="5">new game</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
-                <TextBlock DockPanel.Dock="Left" Margin="5">game finished:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxGameFinished" Margin="5">game finished</TextBox>
-            </DockPanel>
-            <DockPanel Margin="5" Grid.Row="1" Grid.Column="0">
-                <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">against:</TextBlock>
-                <TextBox DockPanel.Dock="Right" Name="textBoxAgainst" Margin="5">against</TextBox>
-            </DockPanel>
-        </Grid>
-        <DockPanel Margin="5"  LastChildFill="False">
+                        </Grid.RowDefinitions>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="0">
+                            <TextBlock DockPanel.Dock="Left" Margin="5">new game:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxNewGame" Margin="5">new game</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="0" Grid.Column="1">
+                            <TextBlock DockPanel.Dock="Left" Margin="5">game finished:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxGameFinished" Margin="5">game finished</TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="5" Grid.Row="1" Grid.Column="0">
+                            <TextBlock Width="60" DockPanel.Dock="Left" Margin="5">against:</TextBlock>
+                            <TextBox DockPanel.Dock="Right" Name="textBoxAgainst" Margin="5">against</TextBox>
+                        </DockPanel>
+                    </Grid>
+                 
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="FICS">
+                <StackPanel Background="AliceBlue">
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <TextBlock Width="60" Margin="5">Welcome:</TextBlock>
+                        <TextBox Name="textBoxFICSWelcome" Width="310" Margin="5">Welcome to FICS</TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <TextBlock Width="60" Margin="5">Connected:</TextBlock>
+                        <TextBox Name="textBoxFICSConnectedAs" Width="310" Margin="5">You are connected as %USERNAME%</TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="5" Orientation="Horizontal">
+                        <TextBlock Width="60" Margin="5">Challenge:</TextBlock>
+                        <TextBox Name="textBoxFICSChallenge" Width="310" Margin="5">%OPPONENT% challenges you to a game</TextBox>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <DockPanel Margin="5" LastChildFill="False" Grid.Row="1"> 
             <Button Name="buttonOk" Margin="5" DockPanel.Dock="Left" Width="30" Height="30"
-                    Background="Transparent" BorderBrush="Transparent" IsDefault="True" Click="ButtonOk_OnClick">
+                    Background="Transparent" BorderBrush="Transparent" IsDefault="True"
+                    Click="ButtonOk_OnClick">
                 <Image Source="../Assets/Icons/accept_button.png" />
             </Button>
             <Button Name="buttonCancel" Margin="5" DockPanel.Dock="Right" Width="30" Height="30"
@@ -162,5 +190,5 @@
                 <Image Source="../Assets/Icons/cancel.png" />
             </Button>
         </DockPanel>
-    </StackPanel>
+    </Grid>
 </Window>

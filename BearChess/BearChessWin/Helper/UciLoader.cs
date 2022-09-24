@@ -44,12 +44,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private BookMove _bookMove;
         private UciWrapper _uciWrapper = null;
         public bool IsTeddy => _uciInfo.AdjustStrength;
+        public bool isLoaded { get; private set; }
 
         public event EventHandler<EngineEventArgs> EngineReadingEvent;
 
 
         public UciLoader(UciInfo uciInfo, ILogging logger, IFICSClient ficsClient, string gameNumber)
         {
+            isLoaded = false;
             _uciInfo = uciInfo;
             _logger = logger;
             _lookForBookMoves = false;
@@ -62,9 +64,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             threadReading.Start();
             var threadSending = new Thread(SendToEngine) { IsBackground = true };
             threadSending.Start();
+            isLoaded = true;
         }
         public UciLoader(UciInfo uciInfo, ILogging logger,  bool lookForBookMoves)
         {
+            isLoaded = false;
             _uciInfo = uciInfo;
             _logger = logger;
             _lookForBookMoves = lookForBookMoves;
@@ -123,7 +127,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             threadReading.Start();
             var threadSending = new Thread(SendToEngine) { IsBackground = true };
             threadSending.Start();
-          
+            isLoaded = true;
         }
 
         private void EngineProcess_Disposed(object sender, EventArgs e)
@@ -155,7 +159,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             SendToEngine("ucinewgame");
             _bookMove = _lookForBookMoves ? _openingBook?.GetMove(new BookMove(string.Empty,string.Empty,0)) : null;
             IsReady();
-            if (_uciInfo.WaitForStart)
+            if (_uciInfo.WaitForStart && ownerWindow!=null)
             {
                 var engineWaitWindow = new EngineWaitWindow(_uciInfo.Name, _uciInfo.WaitSeconds)
                                        {
@@ -478,7 +482,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 while (true)
                 {
 
-                    var readToEnd = _uciInfo.IsChessServer ? _uciWrapper?.ToGui() :  _engineProcess?.StandardOutput.ReadLine();
+                    var readToEnd = _uciInfo.IsChessServer ? _uciWrapper?.ToGui() : _engineProcess?.StandardOutput.ReadLine();
                     _logger?.LogDebug($"<< {readToEnd}");
                     if (!string.IsNullOrWhiteSpace(readToEnd) && readToEnd.Equals(waitingFor))
                     {

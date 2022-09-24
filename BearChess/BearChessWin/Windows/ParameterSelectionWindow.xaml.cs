@@ -1,57 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 
 namespace www.SoLaNoSoft.com.BearChessWin.Windows
 {
     /// <summary>
-    /// Interaktionslogik für ParameterSelectionWindow.xaml
+    ///     Interaktionslogik für ParameterSelectionWindow.xaml
     /// </summary>
     public partial class ParameterSelectionWindow : Window
     {
-
-        private class ParameterSelection
-        {
-            public string ParameterName { get; set; }
-            public string ParameterDisplay { get; set; }
-
-            public ParameterSelection(string parameter)
-            {
-                var strings = parameter.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (strings.Length == 3)
-                {
-                    ParameterName=strings[1];
-                    ParameterDisplay=strings[2];
-                }
-                else
-                {
-                    ParameterName = parameter;
-                    ParameterDisplay=parameter;
-                }
-            }
-
-            public override string ToString()
-            {
-                return ParameterDisplay;
-            }
-        }
-
-        private ParameterSelection _parameterSelection;
-
-        public string SelectedEngine => _parameterSelection.ParameterName;
-        public string SelectedFile { get; private set; }
+        private readonly List<ParameterSelection> _parameterSelections = new List<ParameterSelection>();
+        private List<ParameterSelection> _selections = new List<ParameterSelection>();
 
         public ParameterSelectionWindow()
         {
@@ -61,20 +23,55 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             buttonParameterFile.Visibility = Visibility.Collapsed;
         }
 
+        public string SelectedEngine => _parameterSelections.First().ParameterName;
+
+        public string[] SelectedEngines => _parameterSelections.Select(x => x.ParameterName).ToArray();
+
+        public bool SkipWarnings => checkBoxSkipWarning.IsChecked.HasValue && checkBoxSkipWarning.IsChecked.Value;
+
+        public string SelectedFile { get; private set; }
+
         public void SetLabel(string label)
         {
             textBlockText.Text = label;
         }
 
+        public void SetMultiSelectionMode()
+        {
+            listBoxEngines.SelectionMode = SelectionMode.Extended;
+            textBoxFilter.Visibility = Visibility.Visible;
+            textBlockFilter.Visibility = Visibility.Visible;
+        }
+
         public void ShowList(string[] listValues)
         {
-            List< ParameterSelection> selections = new List< ParameterSelection>();
-            foreach (string value in listValues)
+            _selections.Clear();
+            foreach (var value in listValues)
             {
-                selections.Add(new ParameterSelection(value));
+                _selections.Add(new ParameterSelection(value));
             }
-            listBoxEngines.ItemsSource = selections.OrderBy(s => s.ParameterDisplay);
+            BuildFilter();
+            _parameterSelections.Clear();
+        }
+
+        private void BuildFilter()
+        {
+
+            if (textBoxFilter.Text.Trim().Length > 0)
+            {
+
+                listBoxEngines.ItemsSource = _selections
+                                             .Where(f => f.ParameterDisplay.ToLower()
+                                                          .Contains(textBoxFilter.Text.Trim().ToLower()))
+                                             .OrderBy(s => s.ParameterDisplay);
+            }
+            else
+            {
+                listBoxEngines.ItemsSource = _selections.OrderBy(s => s.ParameterDisplay);
+            }
+            //            
             listBoxEngines.SelectedIndex = 0;
+
         }
 
         public void ShowParameterButton(bool show)
@@ -94,9 +91,24 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         private void ListBoxEngines_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-            _parameterSelection = (ParameterSelection) listBoxEngines.SelectedItem;
-            textBoxText.Text = _parameterSelection.ParameterDisplay;
+            _parameterSelections.Clear();
+            foreach (var selectedItem in listBoxEngines.SelectedItems)
+            {
+                _parameterSelections.Add((ParameterSelection)selectedItem);
+            }
+            /*
+            foreach (var eAddedItem in e.AddedItems)
+            {
+                _parameterSelections.Add((ParameterSelection)eAddedItem);
+            }
+            foreach (var eRemovedItem in e.RemovedItems)
+            {
+                _parameterSelections.Remove((ParameterSelection)eRemovedItem);
+            }
+
+            */
+
+            textBoxText.Text = _parameterSelections.Count>0 ?  _parameterSelections.First().ParameterDisplay : string.Empty;
             SelectedFile = string.Empty;
         }
 
@@ -110,9 +122,41 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                 if (openFileDialog.FileName.Contains(@"\"))
                 {
                     textBoxText.Text = openFileDialog.FileName.Substring(openFileDialog.FileName.LastIndexOf(@"\") + 1);
-                    _parameterSelection = new ParameterSelection(textBoxText.Text);
+                    _parameterSelections.Clear();
+                    _parameterSelections.Add(new ParameterSelection(textBoxText.Text));
                 }
             }
+        }
+
+        private class ParameterSelection
+        {
+            public ParameterSelection(string parameter)
+            {
+                var strings = parameter.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                if (strings.Length == 3)
+                {
+                    ParameterName = strings[1];
+                    ParameterDisplay = strings[2];
+                }
+                else
+                {
+                    ParameterName = parameter;
+                    ParameterDisplay = parameter;
+                }
+            }
+
+            public string ParameterName { get; }
+            public string ParameterDisplay { get; }
+
+            public override string ToString()
+            {
+                return ParameterDisplay;
+            }
+        }
+
+        private void TextBoxFilter_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            BuildFilter();
         }
     }
 }

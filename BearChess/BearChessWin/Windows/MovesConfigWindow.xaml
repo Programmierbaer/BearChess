@@ -14,18 +14,44 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="80"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <RadioButton GroupName="figureType" Margin="5" Grid.Row="0" Grid.Column="0" Name="radioButtonFigurine" IsChecked="True" Click="RadioButton_OnClick">Figurine</RadioButton>
         <RadioButton GroupName="figureType" Margin="5" Grid.Row="1" Grid.Column="0" Name="radioButtonLetter" Click="RadioButton_OnClick">KQRNB</RadioButton>
         <RadioButton GroupName="moveType" Margin="5" Grid.Row="0" Grid.Column="1" Name="radioButtonLong" IsChecked="True" Click="RadioButton_OnClick">1. e2-e4</RadioButton>
         <RadioButton GroupName="moveType" Margin="5" Grid.Row="1" Grid.Column="1" Name="radioButtonShort" Click="RadioButton_OnClick">1. e4</RadioButton>
+        <StackPanel Grid.Row="3"  Grid.Column="0" >
+        <RadioButton Grid.Row="3" Grid.Column="0" GroupName="country" Name="radioButtonGB" IsChecked="True" Margin="10,5" Click="RadioButtonCountry_OnClick">
+                <Image Width="16" Height="16" Source="../Assets/Icons/flag_great_britain.png"></Image>
+            </RadioButton>
+        <RadioButton Grid.Row="4" Grid.Column="0" GroupName="country" Margin="10,5" Name="radioButtonDE" Click="RadioButtonCountry_OnClick" >
+                <Image Width="16" Height="16" Source="../Assets/Icons/flag_germany.png"></Image>
+            </RadioButton>
+            <RadioButton Grid.Row="4" Grid.Column="0" GroupName="country" Margin="10,5" Name="radioButtonSP" Click="RadioButtonCountry_OnClick" >
+                <Image Width="16" Height="16" Source="../Assets/Icons/flag_spain.png"></Image>
+            </RadioButton>        
+        </StackPanel>
+        <StackPanel Grid.Row="3" Grid.Column="1" >
+            <RadioButton Grid.Row="4" Grid.Column="0" GroupName="country" Margin="10,5" Name="radioButtonFR" Click="RadioButtonCountry_OnClick" >
+                <Image Width="16" Height="16" Source="../Assets/Icons/flag_france.png"></Image>
+            </RadioButton>
+            <RadioButton Grid.Row="4" Grid.Column="0" GroupName="country" Margin="10,5" Name="radioButtonIT" Click="RadioButtonCountry_OnClick" >
+                <Image Width="16" Height="16" Source="../Assets/Icons/flag_italy.png"></Image>
+            </RadioButton>
+            <RadioButton Grid.Row="4" Grid.Column="0" GroupName="country" Margin="10,5" Name="radioButtonDA" Click="RadioButtonCountry_OnClick" >
+                <Image Width="16" Height="16" Source="../Assets/Icons/flag_denmark.png"></Image>
+            </RadioButton>            
+        </StackPanel>
+
         <Button Name="buttonOk" Margin="5" HorizontalAlignment="Left"  VerticalAlignment="Bottom"  Grid.Column="0" Background="Transparent" BorderBrush="Transparent"
-                Grid.Row="2" Click="ButtonOk_OnClick"  Width="32" Height="32">
+                Grid.Row="5" Click="ButtonOk_OnClick"  Width="32" Height="32">
             <Image Source="../Assets/Icons/accept_button.png"></Image>
         </Button>
         <Button Name="buttonCancel" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Grid.Column="1" Background="Transparent" BorderBrush="Transparent"
-                Grid.Row="2"  Click="ButtonCancel_OnClick" Width="32" Height="32" >
+                Grid.Row="5" Click="ButtonCancel_OnClick" Width="32" Height="32" >
             <Image Source="../Assets/Icons/cancel.png" ></Image>
         </Button>
     </Grid>

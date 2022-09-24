@@ -594,6 +594,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             comboBoxTimeControl.IsEnabled = false;
             numericUpDownUserControlAverageTime.IsEnabled = false;
             radioButtonSecond.IsEnabled = false;
+            radioButtonMinute.IsEnabled = false;
             checkBoxTournamentMode.IsEnabled = false;
             checkBoxAllowTakeMoveBack.IsEnabled = false;
             checkBoxStartAfterMoveOnBoard.IsEnabled = false;
@@ -605,6 +606,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             comboBoxTimeControl.IsEnabled = true;
             numericUpDownUserControlAverageTime.IsEnabled = true;
             radioButtonSecond.IsEnabled = true;
+            radioButtonMinute.IsEnabled = true;
             checkBoxTournamentMode.IsEnabled = true;
             checkBoxAllowTakeMoveBack.IsEnabled = ValidForAnalysis();
             if (!ValidForAnalysis())

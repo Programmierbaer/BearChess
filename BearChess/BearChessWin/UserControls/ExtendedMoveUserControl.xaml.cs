@@ -47,7 +47,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
         public event EventHandler<int> SelectedMoveChanged;
-        public event EventHandler<string> AddComment;
+        //public event EventHandler<string> AddComment;
 
         public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType)
         {

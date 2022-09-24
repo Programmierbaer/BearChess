@@ -12,7 +12,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkUci
         /// <inheritdoc />
         protected override IEBoardWrapper GetEBoardWrapper()
         {
-            return new MChessLinkImpl(Constants.MChessLink, _basePath, _isFirstInstance, _configuration.PortName);
+            return new MChessLinkImpl(Constants.MChessLink, _basePath, _configuration.PortName);
         }
 
         /// <inheritdoc />

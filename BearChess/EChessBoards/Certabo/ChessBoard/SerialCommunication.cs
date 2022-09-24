@@ -15,8 +15,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         private const string _withQueensEmpty =
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
 
-        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, bool useBluetooth) : base(
-            isFirstInstance, logger, portName, Constants.Certabo)
+        public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.Certabo)
         {
             _useBluetooth = useBluetooth;
         }
@@ -128,18 +127,16 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
                         if (_byteDataToBoard.TryDequeue(out var data))
                         {
-                            if (_isFirstInstance)
-                            {
+
                                 var s = BitConverter.ToString(data);
                                 _logger?.LogDebug($"SC: Send byte array: {s}");
                                 _comPort.Write(data, 0, data.Length);
                                 //_logger?.LogDebug($"SC: bytes send");
                                 //  Thread.Sleep(15);
-                            }
+                            
                         }
 
-                        if (_isFirstInstance)
-                        {
+                        
                             try
                             {
                                 //_logger?.LogDebug($"SC: Readline.... ");
@@ -152,16 +149,13 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                                 }
 
                                 _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
-                                if (_clientConnected)
-                                {
-                                    _serverPipe.WriteString(readLine.Replace(":", string.Empty));
-                                }
+                              
                             }
-                            catch (TimeoutException tx)
+                            catch (TimeoutException )
                             {
                                 continue;
                             }
-                        }
+                        
                     }
 
                     Thread.Sleep(10);

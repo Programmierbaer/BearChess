@@ -14,12 +14,11 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
     {
 
         private Thread _readingThread;
-        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, string boardName) : base(isFirstInstance, logger, portName, boardName)
+        public SerialCommunication(ILogging logger, string portName, string boardName) : base(logger, portName, boardName)
         {
         }
 
-        public SerialCommunication(bool isFirstInstance, ILogging logger, string portName, bool useBluetooth) : base(
-            isFirstInstance, logger, portName, Constants.ChessnutAir)
+        public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.ChessnutAir)
         {
             _useBluetooth = useBluetooth;
             _useHID = !useBluetooth;
@@ -77,8 +76,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                     {
                         if (_byteDataToBoard.TryDequeue(out byte[] byteData))
                         {
-                            if (_isFirstInstance)
-                            {
+                          
                                 convertFromRead = ConvertFromArray(byteData);
                                 bool force = false;
                                 if (_forcedSend)
@@ -93,7 +91,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                                     _comPort.Write(byteData, 0, byteData.Length);
                                     lastReadToSend = convertFromRead;
                                 }
-                            }
+                            
                         }
 
                     }
@@ -166,8 +164,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                     if (withConnection && !_pauseReading)
                     {
 
-                        if (_isFirstInstance)
-                        {
+
                             readLine = string.Empty;
                             try
                             {
@@ -196,11 +193,8 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                             prevLine = readLine;
                             _dataFromBoard.Enqueue(readLine);
 
-                            if (_clientConnected)
-                            {
-                                _serverPipe.WriteString(readLine);
-                            }
-                        }
+                           
+                        
                     }
 
                 }

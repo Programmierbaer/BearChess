@@ -21,10 +21,14 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.8.0.3}
+\fancyhead[R]{Version 0.9.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{13.07.2022} 
+\date{24.09.2022} 
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 \renewcommand{\abstractname}{Why yet another chess GUI?}
 
@@ -70,19 +74,20 @@ Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@
 \section{Introduction}
 BearChess offers among others the following functions:
 \begin{enumerate}
-	  \item Play with Certabo chessboards.
-	  \item Play with Millennium chessboards via ChessLink modul.
- 	  \item Play with DGT e-Board or Revelation.	  
-	  \item Play with DGT Pegasus chessboard.	  
-	  \item Play with Square Off Pro chessboard.	  	  
-	  \item Play with Chessnut Air chessboard.	  	  	  
+	  \item Play with \textbf{Certabo} chessboards.
+	  \item Play with \textbf{Millennium} chessboards via \textbf{ChessLink} modul or \textbf{eOne}.
+ 	  \item Play with \textbf{DGT e-Board} or \textbf{Revelation}.	  
+	  \item Play with \textbf{DGT Pegasus} chessboard.	  
+	  \item Play with \textbf{Square Off Pro} chessboard.	  	  
+	  \item Play with \textbf{Chessnut Air} chessboard.	  	  	  
   	  \item Play against human beings or UCI engines.
+  	  \item Play online on Free Internet Chess Server (\textbf{FICS})
   	  \item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs. Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
-  	  \item Use Certabo Avatar UCI engines.  	  
-  	  \item Use MessChess chess computer emulation by Franz Huber.  	    	  
-  	  \item Analyze your games or trainings with the help of electronic chessboards.
+  	  \item Use \textbf{Certabo Avatar} UCI engines.  	  
+  	  \item Use \textbf{MessChess} chess computer emulation by Franz Huber.  	    	  
+  	  \item \textbf{Analyze} your games or trainings with the help of electronic chessboards.
   	  \item Use multiple chess engines at the same time for playing and analyzing.
-  	  \item Engine duels and tournaments.
+  	  \item Engine \textbf{duels} and \textbf{tournaments}.
   	  \item Support for Polyglot and Arena opening books.
   	  \item Save and load your games.
   	  \item Individual chessmen and board fields.
@@ -167,15 +172,17 @@ The symbols on the right side give information about the current color and the b
 	\label{fig:Actions}
 \end{figure}
 \begin{itemize}
-	\item \includegraphics[scale=0.2]{bearchess.png} \textbf{Play a new game} opens a new window to select opponents and time control (see chapter \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent}).
+	\item \includegraphics[scale=0.2]{bearchess.png} \textbf{Start a new game} opens a new window to select opponents and time control (see chapter \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent}).
 	
-	\item \includegraphics[scale=0.5]{robot.png} \textbf{Run in analyze mode} allows you to analyze games or positions with suppport of several chess engines (see chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode})
+	\item \includegraphics[scale=0.5]{robot.png} \textbf{Analysis} allows you to analyze games or positions with suppport of several chess engines (see chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode})
 	
 	\item \includegraphics[scale=0.5]{6-2-chess-png.png} \textbf{Duel} starts and manage duels (see chapter  \textbf{\ref{EngineDuel}  \nameref{EngineDuel}} on page \pageref{EngineDuel} ).
 	
 	\item \includegraphics[scale=0.5]{cup_gold.png} \textbf{Engine tournament} starts and manage engine tournaments (see chapter  \textbf{\ref{EngineTournamentl}  \nameref{EngineTournamentl}} on page \pageref{EngineTournamentl} ).
 	
 	\item \includegraphics[scale=0.03]{Chess_Board.png} see chapter \textbf{\ref{SetupPosition}  \nameref{SetupPosition}} on page \pageref{SetupPosition}.
+	
+	\item \includegraphics[scale=0.1]{FicsLogo.png} connects you with Free Internet Chess Server (FICS). See chapter \textbf{\ref{FICS}  \nameref{FICS}} on page \pageref{FICS}.	
 	
 	\item \textbf{Run startup game on start} immediately starts a new game when you start BearChess. For more information read chapter \textbf{\ref{startupgame}  \nameref{startupgame}} on page \pageref{startupgame}.
 	
@@ -263,6 +270,8 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
  	   \label{fig:Player}
 	\end{figure}	
 	\item  \includegraphics[scale=0.5]{sound.png}  \textbf{Sounds} opens a dialog where you can configure some tones that sound when the engine makes a move.
+	
+    \item \includegraphics[scale=0.1]{FicsLogo.png} configure your connection parameters for Free Internet Chess Server (FICS). See chapter \textbf{\ref{FICS}  \nameref{FICS}} on page \pageref{FICS}.		
 \end{itemize}
 
 \subsection{Electronic Boards}
@@ -275,8 +284,9 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 \begin{itemize}
 	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
-	\item  \includegraphics[scale=0.05]{Pegasus.png} \textbf{DGT Pegasus} connect to DGT Pegasus chessboard.	
+	\item  \includegraphics[scale=0.3]{dgt48.png} \textbf{DGT} connect to DGT e-Boards, DGT Revelation or DGT Pegasus chessboard.	
 	\item  \includegraphics[scale=0.05]{squareoff.png} \textbf{Square Off Pro} connect to Square Off Pro chessboard.		
+	\item  \includegraphics[scale=0.1]{chessnut.png} \textbf{Chessnut Air} connect to Chessnut Air chessboard.		
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
 	\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
@@ -454,14 +464,25 @@ If you don't find the right avatar, click on the small folder icon and you can s
 
 \subsubsection{Install MessChess engine}
 Franz Huber provides emulator software to play against old chess computers as UCI engine (look at \url{https://fhub.jimdofree.com/}).\\
-If you have downloaded und unzipped the latest version of CB-Emu, select the MessChess.exe file from the MessChess subfolder as the new engine. BearChess reads the Engines.lst file and ask you to select a chess computer emulation.
+If you have downloaded und unzipped the latest version of CB-Emu, select the MessChess.exe file from the MessChess subfolder as the new engine. BearChess reads the Engines.lst file and ask you to select one or more chess computer emulations.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.9]{MessChess1.png}
+	\includegraphics[scale=0.8]{MessChess1.png}
 	\caption{Select an emulation}
 	\label{fig:MessChess1}
 \end{figure}
+
+You can select more than one engine to facilitate the installation of multiple emulations in one step. The filter input field allows you to reduce the list.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{MessChess5.png}
+	\caption{Filter the list}
+	\label{fig:MessChess5}
+\end{figure}
+
+If you check the option "Skip error....", BearChess will not show an error if you try to install an already installed emulation.
 
 \begin{figure}[H]
 	\centering
@@ -499,7 +520,7 @@ The same configuration dialog box as during installation is shown where you can 
 
 \subsection{Additional configuration for an installed engine}
 
-If you want to save the same program with a different configuration, e.g. an additional configuration with adjusted Elo strength, you can save the configuration under a different name.
+If you want to save the same engine with a different configuration, e.g. an additional configuration with adjusted Elo strength, you can save the configuration under a different name.
 
 \begin{figure}[H]
 	\centering
@@ -731,9 +752,11 @@ BearChess can display moves in different ways.
 	\centering
 	\includegraphics[scale=1.0]{NotationAndMoves2.png}
 	\caption{Configure notation and moves }
-	\label{fig:NotationAndMoves}
+	\label{fig:NotationAndMoves2}
 \end{figure}
 In long and short notation and with symbols or letters for the chessmen.
+You can change the language for the letters by clicking on the country flag.
+This has an effect on the move list and the output on the DGT chess clocks and Revelation respectively.
 
 \section{Configure clock style}
 \begin{figure}[H]
@@ -847,7 +870,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports many electronic chessboards: \textbf{Certabo} boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus} and \textbf{Square Off Pro}. Certabo, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer.\\
+BearChess supports many electronic chessboards: \textbf{Certabo} boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro} and \textbf{Chessnut Air}. Certabo, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
 For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
 In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
@@ -988,7 +1011,7 @@ Read chapter \textbf{\ref{Bluetooth}  \nameref{Bluetooth}} on page \pageref{Blue
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.9]{MillenniumChessLink2.png}
-	\caption{Configure Millennium ChessLink }
+	\caption{Configure Millennium ChessLink}
 	\label{fig:MillenniumChessLink2}
 \end{figure}
 
@@ -997,16 +1020,16 @@ Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.9]{MillenniumChessLink3.png}
+	\includegraphics[scale=1.0]{MillenniumChessLink3.png}
 	\caption{COM port successful detected }
 	\label{fig:MillenniumChessLink3}
 \end{figure}
 
-If you select an invalid COM port, you will see the following error message:
+If you select an invalid COM port,e.G. COM7, you will see the following error message:
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.9]{MillenniumChessLink4.png}
+	\includegraphics[scale=1.0]{MillenniumChessLink4.png}
 	\caption{Invalid COM port }
 	\label{fig:MillenniumChessLink4}
 \end{figure}
@@ -1015,7 +1038,7 @@ If you select <auto> and no board is found, you will receive the following error
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.9]{MillenniumChessLink5.png}
+	\includegraphics[scale=1.0]{MillenniumChessLink5.png}
 	\caption{No board found }
 	\label{fig:MillenniumChessLink5}
 \end{figure}
@@ -1026,6 +1049,28 @@ If you select <auto> and no board is found, you will receive the following error
 You can change the brightness of the LEDs and whether they should or synchronously when indicating moves.\\
 Use the slider to change the brightness from dim to light.\\
 A click on \includegraphics[scale=0.4]{eye.png} connects to the board and you can see the changes live.
+
+\subsubsection{Delay}
+You can define a delay how fast the board, after detecting a change, reports this to BearChess. A delay supports the possibility to move pieces slower across the board before BearChess recognizes the change as a move. \\
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MillenniumChessLink11.png}
+	\caption{Delay}
+	\label{fig:MillenniumChessLink11}
+\end{figure}
+Valid values ranges from 0 (no delay) to 4. Default value is 0.
+
+
+\subsubsection{Scans}
+You can specify how often internally within a second the board is checked for changes.\\
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MillenniumChessLink12.png}
+	\caption{Scan}
+	\label{fig:MillenniumChessLink12}
+\end{figure}
+Valid values ranges from 32.6 to 1.9 per second. Default ist 16.3 per second.
+Changing the scan rate allows a finer adjustment of how fast a board change is reported to BearChess. But the influence is less than the delay setting.
 
 \subsubsection{Configure Bluetooth} \label{Bluetooth}
 
@@ -1075,7 +1120,7 @@ In the lower right corner appears a new button, which allows you to easily conne
 	\label{fig:DGTEBoard1}
 \end{figure}
 
-For your DGT e-Board you may need to configure if you want to use a COM port or Bluetooth. 
+For your DGT e-Board or Revelation you may need to configure if you want to use a COM port or Bluetooth. 
 If your PC \textbf{and} your e-Board supports Bluetooth, you can also connect to the e-Board via Bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration windows.\\
 Read chapter \textbf{\ref{BluetoothDGT}  \nameref{BluetoothDGT}} on page \pageref{BluetoothDGT} for more information.
 
@@ -1165,7 +1210,7 @@ Each pawn represents a piece on a field. Especially at the beginning, a review i
 
 No configuration is required for your Chessnut Air chessboard.\\
 Chessnut Air supports USB and Bluetooth LE connections. You cannot use Bluetooth LE when the board is connected to your computer with an USB cable.\\
-For a USB connection, the connection is not simulated as a COM port, but as a human interface device (HID).
+For a USB connection, the connection is not simulated as a COM port, but as a Human Interface Device (HID).
 
 \begin{figure}[H]
 	\centering
@@ -1253,7 +1298,7 @@ BearChess automatically recognizes whether you are playing with the white or bla
 	\label{fig:NewGame1}
 \end{figure}
 
-If you start a new game you can select the opponents and the time control.
+If you start a new game you can select the opponents and the time control. For playing a game on FICS, see chapter on page.
 
 \subsection{Select opponent} \label{SelectOpponent}
 
@@ -1629,7 +1674,7 @@ Make your moves. The engine immediately starts to analyze the current position. 
 	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Start a new duel.
 	\item \includegraphics[scale=0.5]{chart_line.png} Estimate ELO by a duel.	
 	\item \includegraphics[scale=0.5]{file_manager.png} Manage or continue a duel. 
-	\item \includegraphics[scale=0.5]{tick.png} If it is activated, wait before starting a new game.	
+	\item \includegraphics[scale=0.5]{tick.png} If it is activated, wait before starting a new game.	 
 \end{itemize}
 
 \subsection{Start a new duel}
@@ -1882,11 +1927,11 @@ Setup a new position is very easy. You can do it with or without the support of 
 
 \textbf{First connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.
 The small board starts with the current position.\\
-\textbf{{\color{red}*}} When a DGT Pegasus or Square Off Pro board is connected, the behavior is as if no board is connected.
+\textbf{{\color{red}*}} When a DGT Pegasus, Millennium eOne or Square Off Pro board is connected, the behavior is as if no board is connected.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{SetupPosition4.png}
+	\includegraphics[scale=0.5]{SetupPosition4.png}
 	\caption{Setup a new position with an electronic chessboard}
 	\label{fig:SetupPosition4}
 \end{figure}
@@ -1917,7 +1962,7 @@ The small board starts with the current position.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.55]{SetupPosition2.png}
+	\includegraphics[scale=0.5]{SetupPosition2.png}
 	\caption{Setup a new position without an electronic chessboard}
 	\label{fig:SetupPosition2}
 \end{figure}
@@ -1966,6 +2011,182 @@ If a Millennium eOne, DGT Pegasus or Square Off Pro board ist connected you must
 \end{figure}
 
 \textbf{{\color{red}*}} It is not completely checked whether the position is valid. This also applies to castling rights.
+
+\section{Free Internet Chess Server (FICS)}  \label{FICS}
+With BearChess you can play on FICS with your own account or as a guest. To get a better understanding of the individual options and commands, you should visit the FICS homepage on \url{https://www.freechess.org} and \url{https://www.freechess.org/Help/AllFiles.html} for all possible commands. This document is not a replacement for that.\\
+A technical information: The communication between BearChess and the FICS server based only on the exchange of simple text via telnet. 
+
+\subsection{Configure FICS connection}
+
+First you need to configure the connection parameters.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{fics0.png}
+	\caption{Open FICS connection dialog}
+	\label{fig:fics0}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{fics1.png}
+	\caption{Connection parameters}
+	\label{fig:fics1}
+\end{figure}
+If you have a FICS account, enter your username and password. The server parameters are already preset. If you have no account or want to log in as a guest, activate "As guest:".
+
+\subsection{Connect to FICS}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{fics2.png}
+	\caption{Connect to FICS}
+	\label{fig:fics2}
+\end{figure}
+
+\subsection{FICS window}
+
+After successful connection you will see the following window.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{fics3.png}
+	\caption{Initial window}
+	\label{fig:fics3}
+\end{figure}
+
+Above you can see your username. In this example, your username is GuestCRCK and you are connected as a guest. The username for guests are randomly generated by FICS.\\
+The window is devided into four tabs. 
+\begin{itemize}
+	\item \textbf{Main} wich shows you game information and where you can send commands.
+	\item \textbf{Advertisements} which shows you game offers from other users and where you can accept them.
+	\item \textbf{Users} which shows you all the logged in users you can ask for a game.
+	\item \textbf{Log} shows all communications between BearChess and FICS.
+\end{itemize}
+At the bottom are four buttons for game-related commands.
+
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{lightning_go.png} Send a "getgame" command to start a blitz game against any opponent.
+	\item \includegraphics[scale=0.5]{6-2-chess-png.png} Resign the game.
+	\item \includegraphics[scale=0.02]{handshake.png} Offer a draw.
+	\item \includegraphics[scale=0.5]{cancel.png} Cancel the game.
+\end{itemize}
+
+
+\subsubsection{Main}
+The main tab is devided in four sections.
+\begin{itemize}
+	\item Information about the current game (grey).
+    \item A separate "seek" area which allows you to send your game advertisements (yellow).
+	\item A command area where you can define your own commands or simply send one (yellow).
+	\item A message area where you can send and receive message to channels or an user (light blue).
+\end{itemize}
+
+\paragraph{Offer a game}
+There are three "seek" commands buttons that are predefined for different time controls for unrated games. The "seek" command allows you to post an advertisement for a chess 
+game of the specified time control.
+
+\begin{itemize}
+	\item 5 minutes per game.
+	\item 5 minutes per game and 5 seconds increment per move.
+	\item 10 minutes per game and 5 seconds increment per move.
+\end{itemize}
+To send one of the seek commands, simply press the corresponding button.
+Click on the related \includegraphics[scale=0.3]{cog.png} button below to redefine the command.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{fics4.png}
+	\caption{Time control}
+	\label{fig:ficsTimecontrol}
+\end{figure}
+Enter the time control and the color you want to play with. As a guest you can only play unrated games.\\
+It may take a few seconds for a user to accept your advertisement. Or there may be no opponent at all. If you do not want to wait any longer, you can click the "Cancel search" button.\\
+When a user accepts your offer, the game starts immediately and the information area will display the game information.
+
+\paragraph{Send a message to your opponent}
+If you play a game you can send messages to your opponent if you type the message into the "\textbf{Say:}" field and click on \includegraphics[scale=0.5]{bullet_go.png} to send the message.\\
+
+
+\paragraph{Send and definde your commands}
+It is almost impossible to provide buttons for all possible commands. For this you can define four your favorite commands or send any command manually.
+Click on the related \includegraphics[scale=0.3]{cog.png} button to define the command.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{fics5.png}
+	\caption{Define a command}
+	\label{fig:ficsDefimeCpommand}
+\end{figure}
+
+Or you enter a command into the input field below the buttons and click on \includegraphics[scale=0.5]{bullet_go.png} to send the command.
+
+\paragraph{Send and receive messages}
+You can send messages to a channel or to a user. Select the channel or user you want to.
+You need to request the user list before you can select one.\\
+Enter the message into the related input field and click on \includegraphics[scale=0.5]{bullet_go.png} to send the message.\\
+The \textbf{Messages} field shows you all the messages that have been sent to you. For better differentiation the background colors change per message.
+
+\subsubsection{Advertisements}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{fics6.png}
+	\caption{Advertisements}
+	\label{fig:ficsAds}
+\end{figure}
+
+\includegraphics[scale=0.5]{table_refresh.png} Updates the list of current advertisements. Only lightning, blitz or standard games are displayed.\\
+Simply double-click on the line to accept the offer.\\
+\textbf{Hint:} The list is not updated automatically. The game offer may therefore no longer be valid at the moment you select it.\\\\
+You can filter the games by usernames. Simply type some letters into the input field.
+You can restrict the list to show only rated/unrated games and/or offers from/non computers.\\
+The checkboxes can run into three different states. E.g. for computers:
+\begin{itemize}
+	\item It does not matter (black).
+	\item No computers (white).
+	\item Only computers (checked).
+\end{itemize}
+
+\subsubsection{Users}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{fics7.png}
+	\caption{Users}
+	\label{fig:ficsUsers}
+\end{figure}
+
+\includegraphics[scale=0.5]{table_refresh.png} Updates the list of current users.\\
+You can filter the user by usernames. Simply type some letters into the input field.
+You can restrict the list to show only users who accept games, and/or are computers or guests.\\
+The checkboxes can run into three different states. E.g. for computers:
+\begin{itemize}
+	\item It does not matter (black).
+	\item No computers (white).
+	\item Only computers (checked).
+\end{itemize}
+
+Simply double-click on the line to offer an user a game.\\
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{fics4.png}
+	\caption{Time control}
+	\label{fig:ficsTimecontrol2}
+\end{figure}
+\textbf{Hint:} The list is not updated automatically. The user may therefore no longer be valid at the moment you select it.
+
+\subsubsection{Log}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{fics8.png}
+	\caption{Log}
+	\label{fig:ficsLog}
+\end{figure}
+The log window shows you almost all information exchanged between BearChess and FICS.
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{control_pause_blue.png} Stop the logging and allows you to scroll for old messages.
+	\item \includegraphics[scale=0.5]{clear_formatting.png} Clears the log list.
+    \item \includegraphics[scale=0.7]{bullet_go.png} Send a command.
+	\item \includegraphics[scale=0.5]{clipboard_sign.png} Copy log to clipboard.
+\end{itemize}
+
 
 \section{Run startup game on start} \label{runstartupgame}
 
@@ -2067,7 +2288,7 @@ If you have configured that currently the best move should be displayed, the ana
 
 \section{Extended engine support}  \label{ExtendedSupport}
 
-Another outstanding feature compared to other GUIs is the extended engine support. You can load one or more engines at any time to assist you in a game against another engine or another player.
+Another outstanding feature compared to other GUIs is the extended engine support. You can load one or more engines at any time (except your are connected to FICS) to assist you in a game against another engine or another player.
 \begin{enumerate}
 	\item Start a new game against an engine.
 	\item Load a second engine for assistent.
@@ -2113,6 +2334,14 @@ The Square Off Pro board has no chess piece detection but only detects if a piec
 \subsection{Electronic chessboard and engine duels}
 When two engines play against each other, all moves are ignored by the electronic chess board.
 
+
+\subsection{FICS and game types}
+BearChess supports only lightning, blitz and standard games. Bughouse, Crazyhouse, Wild and Suicide chess is not supported.
+
+\subsection{FICS and engines}
+When you are connected to FICS, you cannot load any engines for support. Play fair against others.
+
+
 \section{Trouble shooting}
 
 \subsection{The chess moves are not or not correctly displayed}
@@ -2139,7 +2368,6 @@ When two engines play against each other, all moves are ignored by the electroni
 These are some ideas what will come in one of the next versions.
 
 \begin{itemize}
-		\item Play on Free Internet Chess Server (FICS).
 		\item Extend the game analysis.
 		\item Improve eletronic chess board handling.
   	    \item Improve the performance of the opening book.
@@ -2150,19 +2378,29 @@ These are some ideas what will come in one of the next versions.
 
 \section{Changelog}
 
+\subsection*{Version 0.8.0.3 $\Rightarrow$  0.9.0.0}
+\begin{itemize}
+	\item New: FICS support.
+	\item New: Set scan sequence and move detection delay for Millennium ChessLink.
+	\item New: Code framework changed from .NET 4.7.1 to .NET 4.8.0.
+	\item New: Improved installation for MessChess emulations.
+	\item Fix: LED setting for Millennium ChessLink.
+	\item Fix: Board name shown on information window.	
+\end{itemize}
+
 \subsection*{Version 0.8.0.2 $\Rightarrow$  0.8.0.3}
 \begin{itemize}
-	\item Fix: Synchronize with database and connected eletronic chessboard
+	\item Fix: Synchronize with database and connected eletronic chessboard.
 \end{itemize}
 
 \subsection*{Version 0.8.0.1 $\Rightarrow$  0.8.0.2}
 \begin{itemize}
-	\item Fix: PGN import
+	\item Fix: PGN import.
 \end{itemize}
 
 \subsection*{Version 0.8.0.0 $\Rightarrow$  0.8.0.1}
 \begin{itemize}
-	\item Fix: Duel: Extra time for human players 
+	\item Fix: Duel: Extra time for human players.
 \end{itemize}
 
 \subsection*{Version 0.7.0.0 $\Rightarrow$  0.8.0.0}
@@ -2170,7 +2408,7 @@ These are some ideas what will come in one of the next versions.
 	\item New: Support for Chessnut Air.
 	\item Improve the selection of MessChess chess computers.
 	\item Fix: PGN notation (date format and ambiguous moves).
-	\item Fix: Minor changes.	
+	\item Fix: Minor changes.
 \end{itemize}
 
 \subsection*{Version 0.6.2.1 $\Rightarrow$  0.7.0.0}

@@ -28,7 +28,7 @@
                             <Image Source="Assets/Icons/bearchess.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Analyse" Name="menuItemAnalyseMode">
+                    <MenuItem Header="Analysis" Name="menuItemAnalyseMode">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
@@ -51,7 +51,7 @@
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Duel">
+                    <MenuItem Header="Duel" Name="menuItemDuel">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/6-2-chess-png.png" />
                         </MenuItem.Icon>
@@ -80,7 +80,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="Engine tournament">
+                    <MenuItem Header="Engine tournament" Name="menuItemTournament">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/cup_gold.png" />
                         </MenuItem.Icon>
@@ -105,7 +105,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="Connect to FICS" Name="menuItemConnectFics" Visibility="Collapsed"
+                    <MenuItem Header="Connect to FICS" Name="menuItemConnectFics" 
                               Click="MenuItemConnectFics_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/FicsLogo.png" />
@@ -322,7 +322,7 @@
                             <Image Source="Assets/Icons/sound.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemFICS" Header="FICS..." Click="MenuItemFICS_OnClick" Visibility="Collapsed"
+                    <MenuItem Name="menuItemFICS" Header="FICS..." Click="MenuItemFICS_OnClick" 
                               ToolTip="Configure you Free Internet Chess Server connection">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/FicsLogo.png" />
@@ -460,7 +460,18 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <MenuItem Header="UCB" Name="menuItemUCBBoard" Visibility="Collapsed">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/chessnut.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToUCBBoard" Header="Connect"
+                                  Click="MenuItemConnectUCBBoard_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/connect.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
 
+                    </MenuItem>
                     <Separator />
                     <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup"
                               Click="MenuItemConnectOnStartup_OnClick">
