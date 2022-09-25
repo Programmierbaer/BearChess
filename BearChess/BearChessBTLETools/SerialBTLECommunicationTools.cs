@@ -75,6 +75,10 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
         public static string GetBTComPort(string boardName)
         {
+            if (DeviceIdList == null)
+            {
+                DeviceIdList = new List<string>();
+            }
             DeviceIdList.Clear();
             string portName = string.Empty;
             foreach (var device in allDevices.Values)
