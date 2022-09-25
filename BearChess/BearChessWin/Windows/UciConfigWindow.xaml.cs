@@ -8,9 +8,7 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
-using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -64,14 +62,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBoxName.Text = uciInfo.Name;
             textBoxName.IsEnabled = canChangeName;
             buttonSaveAs.Visibility = canSaveAs ? Visibility.Visible : Visibility.Hidden;
-            if (!canChangeName)
-            {
-                textBoxName.ToolTip = uciInfo.Name;
-            }
-            else
-            {
-                textBoxName.ToolTip = "Name of the configuration";
-            }
+            textBoxName.ToolTip = !canChangeName ? uciInfo.Name : "Name of the configuration";
             textBlockFileName.Text = uciInfo.FileName;
             textBlockFileName.ToolTip = uciInfo.FileName;
             textBlockFileParameter.Text = uciInfo.CommandParameter;
@@ -199,7 +190,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return uciInfo;
         }
 
-        public UciConfigValue[] GetValues()
+        private UciConfigValue[] GetValues()
         {
             List<UciConfigValue> result = new List<UciConfigValue>();
             foreach (UIElement gridMainChild in gridMain.Children)
@@ -270,8 +261,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 {
                                     break;
                                 }
-
-                                //i++;
                             }
                             else if (uciConfigValue.OptionType.Equals("string", StringComparison.OrdinalIgnoreCase))
                             {
@@ -682,7 +671,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var showDialog = parameterSelectionWindow.ShowDialog();
                 if (showDialog.HasValue && showDialog.Value)
                 {
-                    textBlockFileParameter.Text = parameterSelectionWindow.SelectedEngine;
+                    textBlockFileParameter.Text = parameterSelectionWindow.SelectedEngine.ParameterName;
                 }
             }
             if (textBlockFileName.Text.EndsWith("avatar.exe",StringComparison.OrdinalIgnoreCase))
@@ -712,7 +701,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         
                         if (string.IsNullOrWhiteSpace(parameterSelectionWindow.SelectedFile))
                         {
-                            string avatarName = parameterSelectionWindow.SelectedEngine;
+                            string avatarName = parameterSelectionWindow.SelectedEngine.ParameterName;
                             textBlockFileParameter.Text = $"--weights \"{Path.Combine(avatars, avatarName)}\"";
                         }
                         else

@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace www.SoLaNoSoft.com.BearChessWin
+﻿namespace www.SoLaNoSoft.com.BearChessWin
 {
     public class SplashProgressControlContent
     {

@@ -4,13 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using www.SoLaNoSoft.com.BearChess.CertaboLoader;
 using www.SoLaNoSoft.com.BearChess.DGTLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
-using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessBTLETools;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 

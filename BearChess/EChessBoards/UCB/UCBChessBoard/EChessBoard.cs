@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using www.SoLaNoSoft.com.BearChess.EChessBoard;
-using www.SoLaNoSoft.com.BearChessBase.Definitions;
-using www.SoLaNoSoft.com.BearChessBase.Implementations;
+﻿using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard

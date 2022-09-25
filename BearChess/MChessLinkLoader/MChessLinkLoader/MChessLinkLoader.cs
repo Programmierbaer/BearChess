@@ -1,5 +1,4 @@
-﻿using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
-using www.SoLaNoSoft.com.BearChess.EChessBoard;
+﻿using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 

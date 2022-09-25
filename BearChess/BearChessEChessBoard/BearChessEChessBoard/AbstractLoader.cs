@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Xml.Serialization;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
-using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {

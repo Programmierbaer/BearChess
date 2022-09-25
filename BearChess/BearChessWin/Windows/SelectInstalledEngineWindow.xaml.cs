@@ -5,13 +5,12 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
-using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
-using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -139,6 +138,55 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
+            if (dataGridEngine.SelectedItems.Count > 1)
+            {
+                if (MessageBox.Show($"Uninstall all {dataGridEngine.SelectedItems.Count} selected engines?",
+                                    "Uninstall Engine",
+                                    MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) !=
+                    MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
+                List<UciInfo> enginesToDelete = new List<UciInfo>();
+                foreach (var selectedItem in dataGridEngine.SelectedItems)
+                {
+                    if (selectedItem is UciInfo uciInfo)
+                    {
+                        enginesToDelete.Add(uciInfo);
+                    }
+                }
+
+                foreach (var uciInfo in enginesToDelete)
+                {
+
+                    try
+                    {
+                        var uciId = uciInfo.Id;
+                        var uciPath = Path.Combine(_uciPath, uciId);
+                        if (Directory.Exists(uciPath))
+                        {
+                            var fileNames = Directory.GetFiles(uciPath);
+                            foreach (var fileName in fileNames)
+                            {
+                                File.Delete(fileName);
+                            }
+
+                            Directory.Delete(uciPath);
+                        }
+
+                        _installedEngines.Remove(uciInfo.Name);
+                        _uciInfos.Remove(uciInfo);
+                    }
+                    catch
+                    {
+                        //
+                    }
+
+                }
+                return;
+            }
+
             var engineName = SelectedEngine.Name;
             var engineId = SelectedEngine.Id;
             if (MessageBox.Show($"Uninstall engine '{engineName}'?", "Uninstall Engine",
@@ -209,7 +257,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            string[] multiParameters = null;
+            ParameterSelection[] multiParameters = null;
             bool multiSelection = false;
             bool skipWarnings = false;
             try
@@ -241,7 +289,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (showDialog.HasValue && showDialog.Value)
                     {
                         multiParameters = parameterSelectionWindow.SelectedEngines;
-                        parameters = multiParameters.First();
+                        parameters = multiParameters.First().ParameterName;
                         skipWarnings = parameterSelectionWindow.SkipWarnings;
                     }
                     else
@@ -272,7 +320,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         var showDialog = parameterSelectionWindow.ShowDialog();
                         if (showDialog.HasValue && showDialog.Value)
                         {
-                            avatarName = parameterSelectionWindow.SelectedEngine;
+                            avatarName = parameterSelectionWindow.SelectedEngine.ParameterName;
                             parameters = $"--weights \"{Path.Combine(avatars, avatarName)}\"";
                             skipWarnings = parameterSelectionWindow.SkipWarnings;
                         }
@@ -297,17 +345,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 UciInstaller uciInstaller = null;
                 UciInfo uciInfo = null;
                 bool isAdded = false;
-                if (multiSelection && multiParameters.Length>1)
+                if (multiSelection && multiParameters.Length>0)
                 {
                     foreach (var multiParameter in multiParameters)
                     {
                         uciInstaller = new UciInstaller();
-                        uciInfo = uciInstaller.Install(fileName, multiParameter);
+                        uciInfo = uciInstaller.Install(fileName, multiParameter.ParameterName);
                        
                         if (!uciInfo.Valid)
                         {
                             throw new Exception($"{uciInfo.FileName} is not a valid UCI engine");
                         }
+
+                        uciInfo.Name = multiParameter.ParameterDisplay;
                         if ( _installedEngines.Contains(uciInfo.Name))
                         {
                             if (!skipWarnings)
@@ -501,6 +551,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Configuration.Instance.SetDoubleValue("InstalledEngineWindowTop", Top);
             Configuration.Instance.SetDoubleValue("InstalledEngineWindowWidth", Width);
             Configuration.Instance.SetDoubleValue("InstalledEngineWindowHeight", Height);
+        }
+
+        private void DataGridEngine_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            buttonAddConfigure.IsEnabled = dataGridEngine.SelectedItems.Count < 2;
+            buttonConfigure.IsEnabled = dataGridEngine.SelectedItems.Count == 1;
+            buttonInstall.IsEnabled = dataGridEngine.SelectedItems.Count < 2;
+            buttonOk.IsEnabled = dataGridEngine.SelectedItems.Count == 1;
         }
     }
 }

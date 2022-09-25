@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Xml.Serialization;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;

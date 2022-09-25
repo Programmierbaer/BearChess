@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Microsoft.Win32;
 
-namespace www.SoLaNoSoft.com.BearChessWin.Windows
+namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
     ///     Interaktionslogik für ParameterSelectionWindow.xaml
@@ -23,9 +23,9 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             buttonParameterFile.Visibility = Visibility.Collapsed;
         }
 
-        public string SelectedEngine => _parameterSelections.First().ParameterName;
+        public ParameterSelection SelectedEngine => _parameterSelections.First();
 
-        public string[] SelectedEngines => _parameterSelections.Select(x => x.ParameterName).ToArray();
+        public ParameterSelection[] SelectedEngines => _parameterSelections.ToArray();
 
         public bool SkipWarnings => checkBoxSkipWarning.IsChecked.HasValue && checkBoxSkipWarning.IsChecked.Value;
 
@@ -96,17 +96,6 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             {
                 _parameterSelections.Add((ParameterSelection)selectedItem);
             }
-            /*
-            foreach (var eAddedItem in e.AddedItems)
-            {
-                _parameterSelections.Add((ParameterSelection)eAddedItem);
-            }
-            foreach (var eRemovedItem in e.RemovedItems)
-            {
-                _parameterSelections.Remove((ParameterSelection)eRemovedItem);
-            }
-
-            */
 
             textBoxText.Text = _parameterSelections.Count>0 ?  _parameterSelections.First().ParameterDisplay : string.Empty;
             SelectedFile = string.Empty;
@@ -128,35 +117,16 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             }
         }
 
-        private class ParameterSelection
-        {
-            public ParameterSelection(string parameter)
-            {
-                var strings = parameter.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (strings.Length == 3)
-                {
-                    ParameterName = strings[1];
-                    ParameterDisplay = strings[2];
-                }
-                else
-                {
-                    ParameterName = parameter;
-                    ParameterDisplay = parameter;
-                }
-            }
-
-            public string ParameterName { get; }
-            public string ParameterDisplay { get; }
-
-            public override string ToString()
-            {
-                return ParameterDisplay;
-            }
-        }
+      
 
         private void TextBoxFilter_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             BuildFilter();
+        }
+
+        private void ListBoxEngines_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DialogResult = true;
         }
     }
 }

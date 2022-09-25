@@ -233,6 +233,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var assemblyName = Assembly.GetExecutingAssembly().GetName();
             var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
             var productVersion = FileVersionInfo.GetVersionInfo(Application.ResourceAssembly.Location).ProductVersion;
+            string[] args = Environment.GetCommandLineArgs();
+            string startEngineByName = string.Empty;
+            if (args.Length > 2)
+            {
+                if (args[1].Equals("-engine", StringComparison.OrdinalIgnoreCase))
+                {
+                    startEngineByName = args[2];
+                }
+            }
             Title =  $"{Title} v{assemblyName.Version}  - {fileInfo.LastWriteTimeUtc:dd MMMM yyyy  HH:mm:ss}  -  {productVersion}";
             _configuration = Configuration.Instance;
             Top = _configuration.GetWinDoubleValue("MainWinTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
@@ -501,9 +510,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
             imageEngineShowForWhite.Visibility = _showForWhite ? Visibility.Visible : Visibility.Hidden;
 
-            if (_loadLastEngine && !_runLastGame)
+            if ((_loadLastEngine || !string.IsNullOrWhiteSpace(startEngineByName))  && !_runLastGame)
             {
-                LoadLastEngine();
+                LoadLastEngine(startEngineByName);
             }
 
             _currentAction =  _runLastGame ? CurrentAction.InRunningGame :  CurrentAction.InEasyPlayingMode;
@@ -2984,16 +2993,30 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void LoadLastEngine()
+        private void LoadLastEngine(string lastEngineByName)
         {
-            var lastEngineId = _configuration.GetConfigValue("LastEngine", string.Empty);
-            if (!string.IsNullOrWhiteSpace(lastEngineId))
+            if (!string.IsNullOrWhiteSpace(lastEngineByName))
             {
-                var firstOrDefault = _installedEngines.Values.FirstOrDefault(u => u.Id.Equals(lastEngineId));
+                var firstOrDefault = _installedEngines.Values.FirstOrDefault(u => u.Name.Equals(lastEngineByName,StringComparison.OrdinalIgnoreCase));
                 if (firstOrDefault != null)
                 {
                     _usedEngines[firstOrDefault.Name] = firstOrDefault;
                     LoadEngine(firstOrDefault, false);
+                    return;
+                }
+            }
+
+            if (_loadLastEngine)
+            {
+                var lastEngineId = _configuration.GetConfigValue("LastEngine", string.Empty);
+                if (!string.IsNullOrWhiteSpace(lastEngineId))
+                {
+                    var firstOrDefault = _installedEngines.Values.FirstOrDefault(u => u.Id.Equals(lastEngineId));
+                    if (firstOrDefault != null)
+                    {
+                        _usedEngines[firstOrDefault.Name] = firstOrDefault;
+                        LoadEngine(firstOrDefault, false);
+                    }
                 }
             }
         }
@@ -4088,7 +4111,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageLoadLastEngine.Visibility = _loadLastEngine ? Visibility.Visible : Visibility.Hidden;
             if (_loadLastEngine)
             {
-                LoadLastEngine();
+                LoadLastEngine(string.Empty);
             }
         }
 

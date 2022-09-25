@@ -294,6 +294,7 @@
     <Compile Include="UserControls\NumericUpDownUserControl.xaml.cs">
       <DependentUpon>NumericUpDownUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ParameterSelection.cs" />
     <Compile Include="Windows\ParameterSelectionWindow.xaml.cs">
       <DependentUpon>ParameterSelectionWindow.xaml</DependentUpon>
     </Compile>

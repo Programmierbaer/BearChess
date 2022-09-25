@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace www.SoLaNoSoft.com.BearChess.FicsClient
+﻿namespace www.SoLaNoSoft.com.BearChess.FicsClient
 {
     public class FicsUser
     {

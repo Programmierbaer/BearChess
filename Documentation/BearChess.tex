@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.0.0}
+\fancyhead[R]{Version 0.9.1.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{24.09.2022} 
+\date{25.09.2022} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -542,6 +542,7 @@ To load an installed engine, select an engine and click on \includegraphics[scal
 	\label{fig:LoadEngine2}
 \end{figure}
 
+
 \subsubsection{Load a MessChess engine}
 
 When you load a MessChess engine the emulation window will appear too.
@@ -553,6 +554,13 @@ When you load a MessChess engine the emulation window will appear too.
 \end{figure}
 Use only BearChess or your electronic chessboard to make any moves. You can use the emulaton window to set options, e.g. levels or time control.\\
 {\color{red}\textbf{*}} When you play a game against a MessChess engine, the selected time control for the game cannot be transferred to the emulation. To avoid, that BearChess ends the game too early by timeout, you should select here only an average time per move.
+
+\subsubsection{Load an engine by command line}
+If you like to load an engine at startup, you can add a command line parameter \textbf{-engine} folllowed by the engine name:
+\begin{verbatim}
+ BearChessWin.exe -engine "Stockfish 12"
+\end{verbatim}
+{\color{red}\textbf{*}} The engine name must match the name in the list of installed engines.
 
 \section{Load and Manage Opening Books} \label{OpeningBooks}
 
@@ -2107,7 +2115,7 @@ When a user accepts your offer, the game starts immediately and the information 
 If you play a game you can send messages to your opponent if you type the message into the "\textbf{Say:}" field and click on \includegraphics[scale=0.5]{bullet_go.png} to send the message.\\
 
 
-\paragraph{Send and definde your commands}
+\paragraph{Send and define your commands}
 It is almost impossible to provide buttons for all possible commands. For this you can define four your favorite commands or send any command manually.
 Click on the related \includegraphics[scale=0.3]{cog.png} button to define the command.
 \begin{figure}[H]
@@ -2377,6 +2385,13 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Changelog}
+
+\subsection*{Version 0.9.0.0 $\Rightarrow$  0.9.1.0}
+\begin{itemize}
+	\item New: Add command line parameter to load an engine at startup.
+	\item New: Allow multi select on uninstall engines.
+	\item Fix: MessChess engines now installed by name.
+\end{itemize}
 
 \subsection*{Version 0.8.0.3 $\Rightarrow$  0.9.0.0}
 \begin{itemize}

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO.Ports;
 
 namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication

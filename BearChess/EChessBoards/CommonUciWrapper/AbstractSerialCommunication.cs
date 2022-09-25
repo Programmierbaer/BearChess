@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChess.BearChessBTTools;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;

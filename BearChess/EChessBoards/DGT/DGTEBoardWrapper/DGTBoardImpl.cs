@@ -1,5 +1,4 @@
-﻿using System;
-using www.SoLaNoSoft.com.BearChess.EChessBoard;
+﻿using www.SoLaNoSoft.com.BearChess.EChessBoard;
 
 namespace www.SoLaNoSoft.com.BearChess.DGTEBoardWrapper
 {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace www.SoLaNoSoft.com.BearChessBase.Definitions
+﻿namespace www.SoLaNoSoft.com.BearChessBase.Definitions
 {
     public static class Constants
     {

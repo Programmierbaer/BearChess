@@ -10,8 +10,8 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <DataGrid Name="dataGridEngine" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False" 
-                  SelectionMode="Single" IsReadOnly="True" AllowDrop="True" Drop="DataGridEngine_OnDrop" DragOver="DataGridEngine_OnDragOver" >
+        <DataGrid Name="dataGridEngine" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False" SelectionChanged="DataGridEngine_OnSelectionChanged"
+                  SelectionMode="Extended" IsReadOnly="True" AllowDrop="True" Drop="DataGridEngine_OnDrop" DragOver="DataGridEngine_OnDragOver" >
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <EventSetter Event="MouseDoubleClick" Handler="DataGridEngine_OnMouseDoubleClick"/>

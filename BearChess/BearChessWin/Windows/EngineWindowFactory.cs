@@ -1,8 +1,4 @@
-﻿using System.IO;
-using www.SoLaNoSoft.com.BearChess.FicsClient;
-using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessTools;
+﻿using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {

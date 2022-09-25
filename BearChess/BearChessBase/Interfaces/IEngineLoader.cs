@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
+﻿namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
 {
     public interface IEngineLoader
     {

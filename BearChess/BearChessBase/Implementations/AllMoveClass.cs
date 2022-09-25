@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
-using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {

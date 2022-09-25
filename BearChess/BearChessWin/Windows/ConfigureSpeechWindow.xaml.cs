@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessTools;
-using www.SoLaNoSoft.com.BearChessWin.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {

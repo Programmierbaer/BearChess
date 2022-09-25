@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
-using www.SoLaNoSoft.com.BearChessTools;
 
 namespace UnitTestsBearChessBase
 {

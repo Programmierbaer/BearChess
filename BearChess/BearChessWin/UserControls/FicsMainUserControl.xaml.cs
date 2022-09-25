@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,7 +6,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessTools;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {

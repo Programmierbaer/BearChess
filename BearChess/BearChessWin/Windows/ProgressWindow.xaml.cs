@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Threading;
 
 namespace www.SoLaNoSoft.com.BearChessWin

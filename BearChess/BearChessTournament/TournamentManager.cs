@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessDatabase;
-using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessTournament
 {
