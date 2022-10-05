@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 
 namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
@@ -14,6 +15,12 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             PortName = comport;
             _serialPort = new SerialPort(comport, baud, parity);
             _serialPort.ReadTimeout = 500;
+            //_serialPort.DataReceived += _serialPort_DataReceived;
+        }
+
+        private void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            var readByte = _serialPort.ReadByte();
         }
 
         public SerialComPort(string comport, int baud, Parity parity, int dataBits, StopBits stopBits)
@@ -21,9 +28,14 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             PortName = comport;
             _serialPort = new SerialPort(comport, baud, parity, dataBits, stopBits);
             _serialPort.ReadTimeout = 500;
+            //_serialPort.DataReceived += _serialPort_DataReceived;
+            //_serialPort.ErrorReceived += _serialPort_ErrorReceived;
         }
 
-
+        private void _serialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        {
+            var readByte = _serialPort.ReadByte();
+        }
 
         public void Open()
         {
@@ -64,8 +76,14 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
         public byte[] ReadByteArray()
         {
-            return Array.Empty<byte>();
-
+            List<byte> byteList = new List<byte>();
+            int aByte = ReadByte();
+            while (aByte> -1)
+            {
+                byteList.Add((byte)aByte);
+                aByte = ReadByte();
+            }
+            return byteList.ToArray(); ;
         }
 
 

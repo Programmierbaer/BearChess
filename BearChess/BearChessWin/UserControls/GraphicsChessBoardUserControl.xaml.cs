@@ -104,6 +104,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _isConnected;
         private string _whitePlayer = string.Empty;
         private string _blackPlayer = string.Empty;
+        private string _fieldId;
 
 
         public GraphicsChessBoardUserControl()
@@ -120,6 +121,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockWhiteClock.Visibility = Visibility.Hidden;
             textBlockWhitePlayer.Text = string.Empty;
             textBlockBlackPlayer.Text = string.Empty;
+            _fieldId = string.Empty;
             _piecesBitmaps.Clear();
             HideRobot();
         }
@@ -146,10 +148,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             set => SetValue(ControlButtonSizeProperty, value);
         }
 
-        public void SetBoardMaterial(string whiteFileName, string blackFileName)
+
+        public void SetBoardMaterial(string fieldId,string whiteFileName, string blackFileName)
         {
             _whiteFileName = whiteFileName;
             _blackFileName = blackFileName;
+            _fieldId = fieldId;
             if (string.IsNullOrWhiteSpace(whiteFileName))
             {
                 return;
@@ -159,6 +163,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
+            _fieldId = string.Empty;
             _whiteFieldBitmap = new BitmapImage(new Uri(_whiteFileName));
             _blackFieldBitmap = new BitmapImage(new Uri(_blackFileName));
         }
@@ -358,8 +364,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetPiecesMaterial(BoardPiecesSetup piecesSetup)
         {
+            if (piecesSetup.Id==Constants.BryanWhitbyDali)
+            {
+                SetPiecesMaterial(piecesSetup.Id);
+                return;
+            }
+            if (piecesSetup.Id == Constants.BryanWhitbyItalian)
+            {
+                SetPiecesMaterial(piecesSetup.Id);
+                return;
+            }
+            if (piecesSetup.Id == Constants.BryanWhitbyRoyalGold)
+            {
+                SetPiecesMaterial(piecesSetup.Id);
+                return;
+            }
+            if (piecesSetup.Id == Constants.BryanWhitbyRoyalBrown)
+            {
+                SetPiecesMaterial(piecesSetup.Id);
+                return;
+            }
+            if (piecesSetup.Id == Constants.BryanWhitbyModernGold)
+            {
+                SetPiecesMaterial(piecesSetup.Id);
+                return;
+            }
+            if (piecesSetup.Id == Constants.BryanWhitbyModernBrown)
+            {
+                SetPiecesMaterial(piecesSetup.Id);
+                return;
+            }
+            if (piecesSetup.Id == Constants.Certabo)
+            {
+                SetPiecesMaterial(piecesSetup.Id);
+                return;
+            }
+            if (piecesSetup.Id == Constants.BearChess)
+            {
+                SetPiecesMaterial();
+                return;
+            }
             try
             {
+
                 if (string.IsNullOrWhiteSpace(piecesSetup.WhiteQueenFileName))
                 {
 
@@ -386,6 +433,141 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 SetPiecesMaterial();
             }
+        }
+
+        public void SetPiecesMaterial(string id)
+        {
+            if (id.Equals(Constants.BryanWhitbyDali))
+            {
+                _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyDaliKingW") as BitmapImage;
+                _piecesBitmaps["Q"] = FindResource("bitmapBryanWhitbyDaliQueenW") as BitmapImage;
+                _piecesBitmaps["R"] = FindResource("bitmapBryanWhitbyDaliRookW") as BitmapImage;
+                _piecesBitmaps["B"] = FindResource("bitmapBryanWhitbyDaliBishopW") as BitmapImage;
+                _piecesBitmaps["N"] = FindResource("bitmapBryanWhitbyDaliKnightW") as BitmapImage;
+                _piecesBitmaps["P"] = FindResource("bitmapBryanWhitbyDaliPawnW") as BitmapImage;
+                _piecesBitmaps["k"] = FindResource("bitmapBryanWhitbyDaliKingB") as BitmapImage;
+                _piecesBitmaps["q"] = FindResource("bitmapBryanWhitbyDaliQueenB") as BitmapImage;
+                _piecesBitmaps["r"] = FindResource("bitmapBryanWhitbyDaliRookB") as BitmapImage;
+                _piecesBitmaps["b"] = FindResource("bitmapBryanWhitbyDaliBishopB") as BitmapImage;
+                _piecesBitmaps["n"] = FindResource("bitmapBryanWhitbyDaliKnightB") as BitmapImage;
+                _piecesBitmaps["p"] = FindResource("bitmapBryanWhitbyDaliPawnB") as BitmapImage;
+                _piecesBitmaps[""] = null;
+                _piecesBitmaps[" "] = null;
+                return;
+            }
+            if (id.Equals(Constants.BryanWhitbyItalian))
+            {
+                _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyItalianKingW") as BitmapImage;
+                _piecesBitmaps["Q"] = FindResource("bitmapBryanWhitbyItalianQueenW") as BitmapImage;
+                _piecesBitmaps["R"] = FindResource("bitmapBryanWhitbyItalianRookW") as BitmapImage;
+                _piecesBitmaps["B"] = FindResource("bitmapBryanWhitbyItalianBishopW") as BitmapImage;
+                _piecesBitmaps["N"] = FindResource("bitmapBryanWhitbyItalianKnightW") as BitmapImage;
+                _piecesBitmaps["P"] = FindResource("bitmapBryanWhitbyItalianPawnW") as BitmapImage;
+                _piecesBitmaps["k"] = FindResource("bitmapBryanWhitbyItalianKingB") as BitmapImage;
+                _piecesBitmaps["q"] = FindResource("bitmapBryanWhitbyItalianQueenB") as BitmapImage;
+                _piecesBitmaps["r"] = FindResource("bitmapBryanWhitbyItalianRookB") as BitmapImage;
+                _piecesBitmaps["b"] = FindResource("bitmapBryanWhitbyItalianBishopB") as BitmapImage;
+                _piecesBitmaps["n"] = FindResource("bitmapBryanWhitbyItalianKnightB") as BitmapImage;
+                _piecesBitmaps["p"] = FindResource("bitmapBryanWhitbyItalianPawnB") as BitmapImage;
+                _piecesBitmaps[""] = null;
+                _piecesBitmaps[" "] = null;
+                return;
+            }
+            if (id.Equals(Constants.BryanWhitbyRoyalGold))
+            {
+                _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyRoyalGoldKingW") as BitmapImage;
+                _piecesBitmaps["Q"] = FindResource("bitmapBryanWhitbyRoyalGoldQueenW") as BitmapImage;
+                _piecesBitmaps["R"] = FindResource("bitmapBryanWhitbyRoyalGoldRookW") as BitmapImage;
+                _piecesBitmaps["B"] = FindResource("bitmapBryanWhitbyRoyalGoldBishopW") as BitmapImage;
+                _piecesBitmaps["N"] = FindResource("bitmapBryanWhitbyRoyalGoldKnightW") as BitmapImage;
+                _piecesBitmaps["P"] = FindResource("bitmapBryanWhitbyRoyalGoldPawnW") as BitmapImage;
+                _piecesBitmaps["k"] = FindResource("bitmapBryanWhitbyRoyalGoldKingB") as BitmapImage;
+                _piecesBitmaps["q"] = FindResource("bitmapBryanWhitbyRoyalGoldQueenB") as BitmapImage;
+                _piecesBitmaps["r"] = FindResource("bitmapBryanWhitbyRoyalGoldRookB") as BitmapImage;
+                _piecesBitmaps["b"] = FindResource("bitmapBryanWhitbyRoyalGoldBishopB") as BitmapImage;
+                _piecesBitmaps["n"] = FindResource("bitmapBryanWhitbyRoyalGoldKnightB") as BitmapImage;
+                _piecesBitmaps["p"] = FindResource("bitmapBryanWhitbyRoyalGoldPawnB") as BitmapImage;
+                _piecesBitmaps[""] = null;
+                _piecesBitmaps[" "] = null;
+                return;
+            }
+            if (id.Equals(Constants.BryanWhitbyRoyalBrown))
+            {
+                _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyRoyalBrownKingW") as BitmapImage;
+                _piecesBitmaps["Q"] = FindResource("bitmapBryanWhitbyRoyalBrownQueenW") as BitmapImage;
+                _piecesBitmaps["R"] = FindResource("bitmapBryanWhitbyRoyalBrownRookW") as BitmapImage;
+                _piecesBitmaps["B"] = FindResource("bitmapBryanWhitbyRoyalBrownBishopW") as BitmapImage;
+                _piecesBitmaps["N"] = FindResource("bitmapBryanWhitbyRoyalBrownKnightW") as BitmapImage;
+                _piecesBitmaps["P"] = FindResource("bitmapBryanWhitbyRoyalBrownPawnW") as BitmapImage;
+                _piecesBitmaps["k"] = FindResource("bitmapBryanWhitbyRoyalGoldKingB") as BitmapImage;
+                _piecesBitmaps["q"] = FindResource("bitmapBryanWhitbyRoyalGoldQueenB") as BitmapImage;
+                _piecesBitmaps["r"] = FindResource("bitmapBryanWhitbyRoyalGoldRookB") as BitmapImage;
+                _piecesBitmaps["b"] = FindResource("bitmapBryanWhitbyRoyalGoldBishopB") as BitmapImage;
+                _piecesBitmaps["n"] = FindResource("bitmapBryanWhitbyRoyalGoldKnightB") as BitmapImage;
+                _piecesBitmaps["p"] = FindResource("bitmapBryanWhitbyRoyalGoldPawnB") as BitmapImage;
+                _piecesBitmaps[""] = null;
+                _piecesBitmaps[" "] = null;
+                return;
+            }
+
+            if (id.Equals(Constants.BryanWhitbyModernGold))
+            {
+                _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyModernGoldKingW") as BitmapImage;
+                _piecesBitmaps["Q"] = FindResource("bitmapBryanWhitbyModernGoldQueenW") as BitmapImage;
+                _piecesBitmaps["R"] = FindResource("bitmapBryanWhitbyModernGoldRookW") as BitmapImage;
+                _piecesBitmaps["B"] = FindResource("bitmapBryanWhitbyModernGoldBishopW") as BitmapImage;
+                _piecesBitmaps["N"] = FindResource("bitmapBryanWhitbyModernGoldKnightW") as BitmapImage;
+                _piecesBitmaps["P"] = FindResource("bitmapBryanWhitbyModernGoldPawnW") as BitmapImage;
+                _piecesBitmaps["k"] = FindResource("bitmapBryanWhitbyModernGoldKingB") as BitmapImage;
+                _piecesBitmaps["q"] = FindResource("bitmapBryanWhitbyModernGoldQueenB") as BitmapImage;
+                _piecesBitmaps["r"] = FindResource("bitmapBryanWhitbyModernGoldRookB") as BitmapImage;
+                _piecesBitmaps["b"] = FindResource("bitmapBryanWhitbyModernGoldBishopB") as BitmapImage;
+                _piecesBitmaps["n"] = FindResource("bitmapBryanWhitbyModernGoldKnightB") as BitmapImage;
+                _piecesBitmaps["p"] = FindResource("bitmapBryanWhitbyModernGoldPawnB") as BitmapImage;
+                _piecesBitmaps[""] = null;
+                _piecesBitmaps[" "] = null;
+                return;
+            }
+            if (id.Equals(Constants.BryanWhitbyModernBrown))
+            {
+                _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyModernBrownKingW") as BitmapImage;
+                _piecesBitmaps["Q"] = FindResource("bitmapBryanWhitbyModernBrownQueenW") as BitmapImage;
+                _piecesBitmaps["R"] = FindResource("bitmapBryanWhitbyModernBrownRookW") as BitmapImage;
+                _piecesBitmaps["B"] = FindResource("bitmapBryanWhitbyModernBrownBishopW") as BitmapImage;
+                _piecesBitmaps["N"] = FindResource("bitmapBryanWhitbyModernBrownKnightW") as BitmapImage;
+                _piecesBitmaps["P"] = FindResource("bitmapBryanWhitbyModernBrownPawnW") as BitmapImage;
+                _piecesBitmaps["k"] = FindResource("bitmapBryanWhitbyModernGoldKingB") as BitmapImage;
+                _piecesBitmaps["q"] = FindResource("bitmapBryanWhitbyModernGoldQueenB") as BitmapImage;
+                _piecesBitmaps["r"] = FindResource("bitmapBryanWhitbyModernGoldRookB") as BitmapImage;
+                _piecesBitmaps["b"] = FindResource("bitmapBryanWhitbyModernGoldBishopB") as BitmapImage;
+                _piecesBitmaps["n"] = FindResource("bitmapBryanWhitbyModernGoldKnightB") as BitmapImage;
+                _piecesBitmaps["p"] = FindResource("bitmapBryanWhitbyModernGoldPawnB") as BitmapImage;
+                _piecesBitmaps[""] = null;
+                _piecesBitmaps[" "] = null;
+                return;
+            }
+
+            if (id.Equals(Constants.Certabo))
+            {
+                _piecesBitmaps["K"] = FindResource("bitmapCertaboKingW") as BitmapImage;
+                _piecesBitmaps["Q"] = FindResource("bitmapCertaboQueenW") as BitmapImage;
+                _piecesBitmaps["R"] = FindResource("bitmapCertaboRookW") as BitmapImage;
+                _piecesBitmaps["B"] = FindResource("bitmapCertaboBishopW") as BitmapImage;
+                _piecesBitmaps["N"] = FindResource("bitmapCertaboKnightW") as BitmapImage;
+                _piecesBitmaps["P"] = FindResource("bitmapCertaboPawnW") as BitmapImage;
+                _piecesBitmaps["k"] = FindResource("bitmapCertaboKingB") as BitmapImage;
+                _piecesBitmaps["q"] = FindResource("bitmapCertaboQueenB") as BitmapImage;
+                _piecesBitmaps["r"] = FindResource("bitmapCertaboRookB") as BitmapImage;
+                _piecesBitmaps["b"] = FindResource("bitmapCertaboBishopB") as BitmapImage;
+                _piecesBitmaps["n"] = FindResource("bitmapCertaboKnightB") as BitmapImage;
+                _piecesBitmaps["p"] = FindResource("bitmapCertaboPawnB") as BitmapImage;
+                _piecesBitmaps[""] = null;
+                _piecesBitmaps[" "] = null;
+                return;
+            }
+
+
+            SetPiecesMaterial();
         }
 
         public void SetPiecesMaterial()
@@ -1041,7 +1223,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return _whiteFields.Contains(convert) ? _whiteFieldBitmap : _blackFieldBitmap;
 
             var fieldName = Fields.GetFieldName(convert);
-            var name = $"bitmapStone{fieldName}";
+            var name =  _fieldId.Equals(Constants.Certabo) ? $"bitmapCertabo{fieldName}" : $"bitmapStone{fieldName}";
 
             return FindResource(name) as BitmapImage;
         }

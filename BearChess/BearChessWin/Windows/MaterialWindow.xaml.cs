@@ -4,11 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
-using www.SoLaNoSoft.com.BearChessWin.Assets.Fonts;
 using Configuration = www.SoLaNoSoft.com.BearChessTools.Configuration;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -18,8 +18,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class MaterialWindow : Window
     {
-        private readonly FontConverter _fontConverter;
-
+        
         private bool _showDifference;
         private bool _small;
         private readonly Configuration _configuration;
@@ -39,7 +38,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockTopLine.FontFamily = fontFamily; 
             textBlockBottomLine.FontFamily = fontFamily;
 
-            _fontConverter = new FontConverter();
             Top = _configuration.GetWinDoubleValue("MaterialWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("MaterialWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             //Width = _configuration.GetDoubleValue("MaterialWindowWidth", "300");
@@ -277,8 +275,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            textBlockTopLine.Text = _fontConverter.ConvertFont(topLine, "Chess Merida");
-            textBlockBottomLine.Text = _fontConverter.ConvertFont(bottomLine, "Chess Merida");
+            textBlockTopLine.Text = FontConverter.ConvertFont(topLine, "Chess Merida");
+            textBlockBottomLine.Text = FontConverter.ConvertFont(bottomLine, "Chess Merida");
 
         }
 

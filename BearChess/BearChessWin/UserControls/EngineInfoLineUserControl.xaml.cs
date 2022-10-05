@@ -41,9 +41,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (!string.IsNullOrWhiteSpace(moveLine))
             {
                 var strings = moveLine.Split(" ".ToCharArray());
-                if (strings.Length > 20)
+                if (strings.Length > 10)
                 {
-                   moveLine=  string.Join(" ", strings.Take(20));
+                   moveLine =  string.Join(" ", strings.Take(10));
                 }
                 textBlockMvLine.Text = moveLine;
             }

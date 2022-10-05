@@ -28,6 +28,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly string _piecesPath;
         private readonly Dictionary<string, BoardFieldsSetup> _installedFields;
         private readonly Dictionary<string, BoardPiecesSetup> _installedPieces;
+        private readonly List<string> _undeleteablePieces = new List<string>();
+        private readonly List<string> _undeleteableFields = new List<string>();
 
         public BoardFieldsSetup BoardFieldsSetup { get; private set; }
         public BoardPiecesSetup BoardPiecesSetup { get; private set; }
@@ -54,11 +56,40 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxShowBestMove.IsChecked = showBestMove;
             checkBoxShowLastMove.IsChecked = showLastMove;
             installedFields[Constants.BearChess] = new BoardFieldsSetup()
-                                                   {
-                                                       Name = Constants.BearChess,
-                WhiteFileName = string.Empty, BlackFileName = string.Empty,Id = Constants.BearChess
+            {
+                Name = Constants.BearChess,
+                WhiteFileName = string.Empty,
+                BlackFileName = string.Empty,
+                Id = Constants.BearChess
             };
+
+            installedFields[Constants.Certabo] = new BoardFieldsSetup()
+            {
+                Name = Constants.Certabo,
+                WhiteFileName = string.Empty,
+                BlackFileName = string.Empty,
+                Id = Constants.Certabo
+            };
+
             installedPieces[Constants.BearChess] = new BoardPiecesSetup() {Name = Constants.BearChess, Id = Constants.BearChess };
+            installedPieces[Constants.Certabo] = new BoardPiecesSetup() {Name = Constants.Certabo, Id = Constants.Certabo };
+            installedPieces[Constants.BryanWhitbyDali] = new BoardPiecesSetup() { Name = "Dali by Bryan Whitby", Id = Constants.BryanWhitbyDali };
+            installedPieces[Constants.BryanWhitbyItalian] = new BoardPiecesSetup() { Name = "Italian by Bryan Whitby", Id = Constants.BryanWhitbyItalian };
+            installedPieces[Constants.BryanWhitbyRoyalGold] = new BoardPiecesSetup() { Name = "Royal Gold by Bryan Whitby", Id = Constants.BryanWhitbyRoyalGold };
+            installedPieces[Constants.BryanWhitbyRoyalBrown] = new BoardPiecesSetup() { Name = "Royal Brown by Bryan Whitby", Id = Constants.BryanWhitbyRoyalBrown };
+            installedPieces[Constants.BryanWhitbyModernGold] = new BoardPiecesSetup() { Name = "Modern Gold by Bryan Whitby", Id = Constants.BryanWhitbyModernGold };
+            installedPieces[Constants.BryanWhitbyModernBrown] = new BoardPiecesSetup() { Name = "Modern Brown by Bryan Whitby", Id = Constants.BryanWhitbyModernBrown };
+            _undeleteablePieces.Add(Constants.BearChess);
+            _undeleteablePieces.Add(Constants.Certabo);
+            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyDali].Name);
+            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyItalian].Name);
+            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyRoyalGold].Name);
+            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyRoyalBrown].Name);
+            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyModernGold].Name);
+            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyModernBrown].Name);
+            _undeleteableFields.Add(Constants.BearChess);
+            _undeleteableFields.Add(Constants.Certabo);
+
             _boardPath = boardPath;
             _piecesPath = piecesPath;
             _installedFields = installedFields;
@@ -82,7 +113,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonOpenBoard_OnClick(object sender, RoutedEventArgs e)
         {
-
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
@@ -101,7 +131,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         comboBoxBoards.ItemsSource = null;
                         comboBoxBoards.ItemsSource = _installedFields.Values.OrderBy(f => f.Name);
                         comboBoxBoards.SelectedItem = _installedFields[boardFieldsSetup.Id];
-                        //BoardSetupChangedEvent?.Invoke(this, new EventArgs());
                     }
                   
                 }
@@ -138,8 +167,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         _installedPieces[boardPiecesSetup.Id] = boardPiecesSetup;
                         comboBoxPieces.ItemsSource = null;
                         comboBoxPieces.ItemsSource = _installedPieces.Values.OrderBy(f => f.Name);
-                        comboBoxPieces.SelectedItem = _installedPieces[boardPiecesSetup.Id];
-                       // PiecesSetupChangedEvent?.Invoke(this, new EventArgs());
+                        comboBoxPieces.SelectedItem = _installedPieces[boardPiecesSetup.Id];                      
                     }
                 }
             }
@@ -156,8 +184,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 BoardFieldsSetup = _installedFields.First(f => f.Value.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase)).Value;
                 BoardSetupChangedEvent?.Invoke(this, new EventArgs());
-                File.Delete(Path.Combine(_boardPath, ((BoardFieldsSetup)e.RemovedItems[0]).Id+".cfg"));
-                
+                File.Delete(Path.Combine(_boardPath, ((BoardFieldsSetup)e.RemovedItems[0]).Id+".cfg"));                
             }
         }
 
@@ -178,12 +205,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDeleteBoard_OnClick(object sender, RoutedEventArgs e)
         {
-            if (BoardFieldsSetup.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase))
+            if (_undeleteableFields.Contains(BoardFieldsSetup.Name))
             {
-                MessageBox.Show("You cannot delete board 'BearChess'", "Information", MessageBoxButton.OK,
-                                MessageBoxImage.Hand);
+                MessageBox.Show($"You cannot delete pre-installed board '{BoardFieldsSetup.Name}'", "Information", MessageBoxButton.OK,
+                          MessageBoxImage.Hand);
                 return;
             }
+            
             if (MessageBox.Show($"Delete board '{BoardFieldsSetup.Name}'?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning,
                                 MessageBoxResult.No) == MessageBoxResult.Yes)
             {
@@ -196,12 +224,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDeletePieces_OnClick(object sender, RoutedEventArgs e)
         {
-            if (BoardPiecesSetup.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase))
+            if (_undeleteablePieces.Contains(BoardPiecesSetup.Name))
             {
-                MessageBox.Show("You cannot delete pieces 'BearChess'", "Information", MessageBoxButton.OK,
-                                MessageBoxImage.Hand);
+                MessageBox.Show($"You cannot delete pre-installed pieces '{BoardPiecesSetup.Name}'", "Information", MessageBoxButton.OK,
+                            MessageBoxImage.Hand);
                 return;
             }
+
             if (MessageBox.Show($"Delete pieces '{BoardPiecesSetup.Name}'?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning,
                                 MessageBoxResult.No) == MessageBoxResult.Yes)
             {
@@ -234,7 +263,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         comboBoxPieces.ItemsSource = null;
                         comboBoxPieces.ItemsSource = _installedPieces.Values.OrderBy(f => f.Name);
                         comboBoxPieces.SelectedItem = _installedPieces[boardPiecesSetup.Id];
-                        // PiecesSetupChangedEvent?.Invoke(this, new EventArgs());
                     }
                 }
             }

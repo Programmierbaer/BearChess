@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using www.SoLaNoSoft.com.BearChessWin.Assets.Fonts;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -15,7 +15,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class ExtendedMoveUserControl : UserControl, IMoveUserControl
     {
-        private readonly FontConverter _fontConverter;
+      
         private readonly Brush _background;
         private string _isInCheck;
         private int _color;
@@ -40,7 +40,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockMoveList.Text = string.Empty;
             textBlockFigureSymbol.FontFamily = fontFamily;
             textBlockFigureSymbolBlack.FontFamily = fontFamily;
-            _fontConverter = new FontConverter();
             SetDisplayTypes();
             _background = Background;
             _markBackground = new SolidColorBrush(Colors.LightBlue);
@@ -230,7 +229,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (!s.ToUpper().Equals("P"))
                     {
                         textBlockFigure.Text = s.ToUpper();
-                        textBlockFigureSymbol.Text = _fontConverter.ConvertFont(s, "Chess Merida");
+                        textBlockFigureSymbol.Text = FontConverter.ConvertFont(s, "Chess Merida");
                     }
 
                     if (_moveType == DisplayMoveType.ToField)
@@ -254,7 +253,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (!s.ToUpper().Equals("P"))
                     {
                         textBlockFigureBlack.Text = s.ToUpper();
-                        textBlockFigureSymbolBlack.Text = _fontConverter.ConvertFont(s, "Chess Merida");
+                        textBlockFigureSymbolBlack.Text = FontConverter.ConvertFont(s, "Chess Merida");
                     }
 
                     if (_moveType == DisplayMoveType.ToField)

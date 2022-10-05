@@ -4,7 +4,7 @@
     {
         public const string BearChess = "BearChess";
         public const string Certabo = "Certabo";
-        public static string Pegasus = "Pegasus";
+        public const string Pegasus = "Pegasus";
         public const string MChessLink = "MChessLink";
         public const string SquareOff = "Square Off";
         public const string SquareOffPro = "Square Off Pro";
@@ -18,5 +18,11 @@
         public const string Player = "Player";
         public const string FICS = "FICS";
         public const string Guest = "guest";
+        public const string BryanWhitbyDali = "BryanWhitbyDali";
+        public const string BryanWhitbyItalian = "BryanWhitbyItalian";
+        public const string BryanWhitbyRoyalGold = "BryanWhitbyRoyalGold";
+        public const string BryanWhitbyRoyalBrown = "BryanWhitbyRoyalBrown";
+        public const string BryanWhitbyModernGold = "BryanWhitbyModernGold";
+        public const string BryanWhitbyModernBrown = "BryanWhitbyModernBrown";       
     }
 }

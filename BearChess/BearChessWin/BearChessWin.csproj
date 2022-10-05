@@ -359,6 +359,9 @@
     <Compile Include="Windows\WinConfigureMChessLink.xaml.cs">
       <DependentUpon>WinConfigureMChessLink.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\WinConfigureUCB.xaml.cs">
+      <DependentUpon>WinConfigureUCB.xaml</DependentUpon>
+    </Compile>
     <Page Include="BearChessMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -547,7 +550,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Assets\Fonts\FontConverter.cs" />
     <Compile Include="BearChessMainWindow.xaml.cs">
       <DependentUpon>BearChessMainWindow.xaml</DependentUpon>
     </Compile>
@@ -669,6 +671,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\WinConfigureUCB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -720,70 +726,6 @@
     <Resource Include="Assets\bullet_arrow_right_2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Stone\a1.png" />
-    <Resource Include="Assets\Stone\a2.png" />
-    <Resource Include="Assets\Stone\a3.png" />
-    <Resource Include="Assets\Stone\a4.png" />
-    <Resource Include="Assets\Stone\a5.png" />
-    <Resource Include="Assets\Stone\a6.png" />
-    <Resource Include="Assets\Stone\a7.png" />
-    <Resource Include="Assets\Stone\a8.png" />
-    <Resource Include="Assets\Stone\b1.png" />
-    <Resource Include="Assets\Stone\b2.png" />
-    <Resource Include="Assets\Stone\b3.png" />
-    <Resource Include="Assets\Stone\b4.png" />
-    <Resource Include="Assets\Stone\b5.png" />
-    <Resource Include="Assets\Stone\b6.png" />
-    <Resource Include="Assets\Stone\b7.png" />
-    <Resource Include="Assets\Stone\b8.png" />
-    <Resource Include="Assets\Stone\c1.png" />
-    <Resource Include="Assets\Stone\c2.png" />
-    <Resource Include="Assets\Stone\c3.png" />
-    <Resource Include="Assets\Stone\c4.png" />
-    <Resource Include="Assets\Stone\c5.png" />
-    <Resource Include="Assets\Stone\c6.png" />
-    <Resource Include="Assets\Stone\c7.png" />
-    <Resource Include="Assets\Stone\c8.png" />
-    <Resource Include="Assets\Stone\d1.png" />
-    <Resource Include="Assets\Stone\d2.png" />
-    <Resource Include="Assets\Stone\d3.png" />
-    <Resource Include="Assets\Stone\d4.png" />
-    <Resource Include="Assets\Stone\d5.png" />
-    <Resource Include="Assets\Stone\d6.png" />
-    <Resource Include="Assets\Stone\d7.png" />
-    <Resource Include="Assets\Stone\d8.png" />
-    <Resource Include="Assets\Stone\e1.png" />
-    <Resource Include="Assets\Stone\e2.png" />
-    <Resource Include="Assets\Stone\e3.png" />
-    <Resource Include="Assets\Stone\e4.png" />
-    <Resource Include="Assets\Stone\e5.png" />
-    <Resource Include="Assets\Stone\e6.png" />
-    <Resource Include="Assets\Stone\e7.png" />
-    <Resource Include="Assets\Stone\e8.png" />
-    <Resource Include="Assets\Stone\f1.png" />
-    <Resource Include="Assets\Stone\f2.png" />
-    <Resource Include="Assets\Stone\f3.png" />
-    <Resource Include="Assets\Stone\f4.png" />
-    <Resource Include="Assets\Stone\f5.png" />
-    <Resource Include="Assets\Stone\f6.png" />
-    <Resource Include="Assets\Stone\f7.png" />
-    <Resource Include="Assets\Stone\f8.png" />
-    <Resource Include="Assets\Stone\g1.png" />
-    <Resource Include="Assets\Stone\g2.png" />
-    <Resource Include="Assets\Stone\g3.png" />
-    <Resource Include="Assets\Stone\g4.png" />
-    <Resource Include="Assets\Stone\g5.png" />
-    <Resource Include="Assets\Stone\g6.png" />
-    <Resource Include="Assets\Stone\g7.png" />
-    <Resource Include="Assets\Stone\g8.png" />
-    <Resource Include="Assets\Stone\h1.png" />
-    <Resource Include="Assets\Stone\h2.png" />
-    <Resource Include="Assets\Stone\h3.png" />
-    <Resource Include="Assets\Stone\h4.png" />
-    <Resource Include="Assets\Stone\h5.png" />
-    <Resource Include="Assets\Stone\h6.png" />
-    <Resource Include="Assets\Stone\h7.png" />
-    <Resource Include="Assets\Stone\h8.png" />
     <Resource Include="Assets\Stone\Symbol\BishopB.png" />
     <Resource Include="Assets\Stone\Symbol\BishopW.png" />
     <Resource Include="Assets\Stone\Symbol\KingB.png" />
@@ -1369,6 +1311,105 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\flag_denmark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\novag48.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\BryanWhitby\RoyalGold\BishopB.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\KingB.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\KnightB.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\PawnB.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\QueenB.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\RookB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\BryanWhitby\Dali\BishopB.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\BishopW.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\KingB.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\KingW.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\KnightB.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\KnightW.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\PawnB.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\PawnW.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\QueenB.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\QueenW.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\RookB.png" />
+    <Resource Include="Assets\BryanWhitby\Dali\RookW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\BryanWhitby\Italian\BishopB.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\BishopW.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\KingB.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\KingW.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\KnightB.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\KnightW.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\PawnB.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\PawnW.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\QueenB.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\QueenW.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\RookB.png" />
+    <Resource Include="Assets\BryanWhitby\Italian\RookW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\BryanWhitby\RoyalGold\BishopW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\KingW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\KnightW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\PawnW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\QueenW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalGold\RookW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Certabo\black.png" />
+    <Resource Include="Assets\Certabo\white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\BryanWhitby\RoyalBrown\BishopW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalBrown\KingW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalBrown\KnightW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalBrown\PawnW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalBrown\QueenW.png" />
+    <Resource Include="Assets\BryanWhitby\RoyalBrown\RookW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\BryanWhitby\Modern\bb.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\bk.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\Black Bishop.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\Black King.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\Black Knight.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\Black Pawn.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\Black Queen.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\Black Rook.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\bn.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\bp.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\bq.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\br.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\wb.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\wk.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\wn.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\wp.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\wq.png" />
+    <Resource Include="Assets\BryanWhitby\Modern\wr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Certabo\bishopB.png" />
+    <Resource Include="Assets\Certabo\bishopW.png" />
+    <Resource Include="Assets\Certabo\kingB.png" />
+    <Resource Include="Assets\Certabo\kingW.png" />
+    <Resource Include="Assets\Certabo\knightB.png" />
+    <Resource Include="Assets\Certabo\knightW.png" />
+    <Resource Include="Assets\Certabo\pawnB.png" />
+    <Resource Include="Assets\Certabo\pawnW.png" />
+    <Resource Include="Assets\Certabo\queenB.png" />
+    <Resource Include="Assets\Certabo\queenW.png" />
+    <Resource Include="Assets\Certabo\rookB.png" />
+    <Resource Include="Assets\Certabo\rookW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Stone\white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Stone\black.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

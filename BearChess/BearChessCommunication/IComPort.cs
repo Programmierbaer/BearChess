@@ -12,7 +12,6 @@
         byte[] ReadByteArray();
         void Write(byte[] buffer, int offset, int count);
         int ReadTimeout { get; set; }
-
         void ClearBuffer();
     }
 }

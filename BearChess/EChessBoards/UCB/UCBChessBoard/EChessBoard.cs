@@ -1,4 +1,6 @@
-﻿using www.SoLaNoSoft.com.BearChess.EChessBoard;
+﻿using System;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
@@ -13,6 +15,9 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
             BatteryStatus = "";
             PieceRecognition = false;
             Information = boardName;
+            _serialCommunication = new SerialCommunication(logger, portName, false);
+            IsConnected = EnsureConnection();
+            Information = Constants.UCB;
         }
 
         public EChessBoard(ILogging logger)
@@ -31,7 +36,21 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 
         public override bool CheckComPort(string portName)
         {
-            return true;
+            lock (_locker)
+            {
+                _serialCommunication = new SerialCommunication(_logger, portName, false);
+                if (_serialCommunication.CheckConnect(portName))
+                {
+                   
+                     _serialCommunication.SendRawToBoard("X ON");
+                     _serialCommunication.SendRawToBoard("I");
+                    var readLine = _serialCommunication.GetRawFromBoard(string.Empty);
+                    _serialCommunication.DisConnectFromCheck();
+                    return readLine.Length > 0;
+                }
+            }
+
+            return false;
         }
 
         public override void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString)
@@ -40,7 +59,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
             {
                 if (fieldNames.Length > 1)
                 {
-                    _serialCommunication.Send($"M{fieldNames[0]}-{fieldNames[1]}");
+                    _serialCommunication.Send($"M{fieldNames[0]}{fieldNames[1]}");
                 }
             }
         }
@@ -92,7 +111,10 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 
         public override void Calibrate()
         {
-            //
+            lock (_locker)
+            {
+                _serialCommunication.SendRawToBoard("X ON");
+            }
         }
 
         public override void SendInformation(string message)
@@ -131,7 +153,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
         {
             lock (_locker)
             {
-                _serialCommunication.Send("New Game");
+                _serialCommunication.Send("N");
             }
         }
 

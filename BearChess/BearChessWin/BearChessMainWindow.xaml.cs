@@ -330,11 +330,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_installedFieldsSetup.ContainsKey(_currentBoardFieldsSetupId))
             {
                 var boardFieldsSetup = _installedFieldsSetup[_currentBoardFieldsSetupId];
-                chessBoardUcGraphics.SetBoardMaterial(boardFieldsSetup.WhiteFileName, boardFieldsSetup.BlackFileName);
+                chessBoardUcGraphics.SetBoardMaterial(_currentBoardFieldsSetupId,boardFieldsSetup.WhiteFileName, boardFieldsSetup.BlackFileName);
             }
             else
             {
-                chessBoardUcGraphics.SetBoardMaterial(string.Empty, string.Empty);
+                chessBoardUcGraphics.SetBoardMaterial(_currentBoardFieldsSetupId, string.Empty, string.Empty);
             }
 
             if (_installedPiecesSetup.ContainsKey(_currentBoardPiecesSetupId))
@@ -344,8 +344,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                chessBoardUcGraphics.SetPiecesMaterial();
+
+                chessBoardUcGraphics.SetPiecesMaterial(_currentBoardPiecesSetupId);
             }
+
             chessBoardUcGraphics.HidePauseGame();
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
             _usedEngines.Clear();
@@ -2263,7 +2265,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
                 var boardFieldsSetup = _installedFieldsSetup[_currentBoardFieldsSetupId];
-                chessBoardUcGraphics.SetBoardMaterial(boardFieldsSetup.WhiteFileName, boardFieldsSetup.BlackFileName);
+                chessBoardUcGraphics.SetBoardMaterial(boardFieldsSetup.Id, boardFieldsSetup.WhiteFileName, boardFieldsSetup.BlackFileName);
 
                 chessBoardUcGraphics.SetPiecesMaterial(_installedPiecesSetup[_currentBoardPiecesSetupId]);
                 chessBoardUcGraphics.RepaintBoard(_chessBoard);
@@ -2276,7 +2278,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ChessBoardPiecesSetupChangedEvent(object sender, EventArgs e)
         {
-            chessBoardUcGraphics.SetBoardMaterial(_chessBoardSetupWindow.BoardFieldsSetup.WhiteFileName,
+            chessBoardUcGraphics.SetBoardMaterial(_chessBoardSetupWindow.BoardFieldsSetup.Id,_chessBoardSetupWindow.BoardFieldsSetup.WhiteFileName,
                 _chessBoardSetupWindow.BoardFieldsSetup.BlackFileName);
             if (_chessBoardSetupWindow.BoardPiecesSetup.Id.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase))
             {
@@ -4198,7 +4200,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 if (!_installedFieldsSetup.ContainsKey(_currentBoardFieldsSetupId))
                 {
-                    _currentBoardFieldsSetupId = Constants.BearChess;
+                    if (!_currentBoardFieldsSetupId.Equals(Constants.Certabo))
+                    {
+                        _currentBoardFieldsSetupId = Constants.BearChess;
+                    }
                 }
 
                 _currentBoardPiecesSetupId = _configuration.GetConfigValue("CurrentBoardPiecesSetupId", Constants.BearChess);
@@ -4214,7 +4219,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 if (!_installedPiecesSetup.ContainsKey(_currentBoardPiecesSetupId))
                 {
-                    _currentBoardPiecesSetupId = Constants.BearChess;
+                    if (!_currentBoardPiecesSetupId.Equals(Constants.BryanWhitbyDali)
+                        && !_currentBoardPiecesSetupId.Equals(Constants.BryanWhitbyItalian)
+                        && !_currentBoardPiecesSetupId.Equals(Constants.BryanWhitbyRoyalGold)
+                        && !_currentBoardPiecesSetupId.Equals(Constants.BryanWhitbyRoyalBrown)
+                        && !_currentBoardPiecesSetupId.Equals(Constants.BryanWhitbyModernGold)
+                        && !_currentBoardPiecesSetupId.Equals(Constants.BryanWhitbyModernBrown)
+                        && !_currentBoardPiecesSetupId.Equals(Constants.Certabo)
+                        )
+                    {
+                        _currentBoardPiecesSetupId = Constants.BearChess;
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -6052,7 +6068,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ChessBoardBoardSetupChangedEvent(object sender, EventArgs e)
         {
-            chessBoardUcGraphics.SetBoardMaterial(_chessBoardSetupWindow.BoardFieldsSetup.WhiteFileName,
+            chessBoardUcGraphics.SetBoardMaterial(_chessBoardSetupWindow.BoardFieldsSetup.Id,_chessBoardSetupWindow.BoardFieldsSetup.WhiteFileName,
                                                   _chessBoardSetupWindow.BoardFieldsSetup.BlackFileName);
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
         }
@@ -6195,7 +6211,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
         #endregion
-
 
         private void MenuItemPlayer_OnClick(object sender, RoutedEventArgs e)
         {
@@ -7618,6 +7633,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 buttonRotate.Visibility = Visibility.Visible;
                 menuItemAnalyseAGame.IsEnabled = false;
             }
+        }
+
+        private void MenuItemConfigureUCB_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_currentAction == CurrentAction.InRunningGame)
+            {
+                return;
+            }
+            var winConfigureUCB = new WinConfigureUCB(_configuration) { Owner = this };
+            winConfigureUCB.ShowDialog();
         }
     }
 }

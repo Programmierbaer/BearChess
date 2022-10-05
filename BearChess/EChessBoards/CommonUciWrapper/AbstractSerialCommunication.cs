@@ -134,18 +134,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public void Send(string data)
         {
-
-            //if (_lastSend.Equals(data))
-            //{
-            //    _logger.LogDebug($"SC: Skip duplicate Send {data}");
-            //    return;
-            //}
-            //if (_stringDataToBoard.Any(s => s.Equals(data)))
-            //{
-            //    _logger.LogDebug($"SC: Ignore queue Send {data}");
-            //    return;
-            //}
-            //_lastSend = data;
             _logger.LogDebug($"S: Send {data}");
             if (data.Equals("X"))
             {
@@ -302,9 +290,10 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         _comPort = new BTComPort(null);
                         if (!((BTComPort)_comPort).EndPointFound)
                         {
-                            SerialCommunicationTools.GetBTComPort(_boardName, BearChessTools.Configuration.Instance, _logger, true, false);
+                            SerialCommunicationTools.GetBTComPort(_boardName, Configuration.Instance, _logger, true,
+                                                                  false);
+                            _comPort = new BTComPort(null);
                         }
-                        _comPort = new BTComPort(null);
 
                     }
                     else if (comPort.StartsWith("C"))
@@ -319,7 +308,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                    
                     if (comPort.StartsWith("C"))
                     {
-                        _comPort = new SerialComPort(comPort, 9600, Parity.None,8,StopBits.One)
+                        _comPort = new SerialComportForByteArray(comPort, 57600, Parity.None,8,StopBits.One)
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
                     }
                 }

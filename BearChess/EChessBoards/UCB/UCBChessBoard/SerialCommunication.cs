@@ -27,6 +27,11 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
         {
             try
             {
+                var readByte = _comPort.ReadByte();
+                while (readByte != -1)
+                {
+                    readByte = _comPort.ReadByte();
+                }
                 return _comPort.ReadLine();
             }
             catch (Exception ex)
@@ -38,7 +43,8 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 
         public override void SendRawToBoard(string param)
         {
-            _comPort.Write(ConvertToSend(param), 0, 0);
+            var convertToSend = ConvertToSend(param);
+            _comPort.Write(convertToSend, 0, convertToSend.Length);
         }
 
         public override void SendRawToBoard(byte[] param)
@@ -109,15 +115,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 
         private byte[] ConvertToSend(string data)
         {
-
-            List<byte> allBytes = new List<byte>();
-            var strings = data.Split(" ".ToCharArray());
-            foreach (var s in strings)
-            {
-                allBytes.Add(byte.Parse(s));
-            }
-
-            return allBytes.ToArray();
+            return Encoding.ASCII.GetBytes(data);
         }
 
         private void ReadingFromBoard()
@@ -136,9 +134,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 
                     if (withConnection && !_pauseReading)
                     {
-
-
-                            int readByte = int.MaxValue;
+                        int readByte = int.MaxValue;
                             readLine = string.Empty;
                             try
                             {

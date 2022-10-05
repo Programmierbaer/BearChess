@@ -10,61 +10,33 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
-    /// Interaktionslogik für EngineInfoUserControl.xaml
+    ///     Interaktionslogik für EngineInfoUserControl.xaml
     /// </summary>
     public partial class EngineInfoUserControl : UserControl
     {
-        private readonly UciInfo _uciInfo;
-        private int _currentMultiPvCount = 1;
-        private bool _stopVisible = true;
-        private bool _stopInfo = false;
-        
-        public class MultiPvEventArgs : EventArgs
-        {
-            public string Name { get; }
-            public int MultiPvValue { get; }
-
-            public MultiPvEventArgs(string name, int multiPvValue)
-            {
-                Name = name;
-                MultiPvValue = multiPvValue;
-            }
-        }
-
-        public class StartStopEventArgs : EventArgs
-        {
-            public string Name { get; }
-            public bool Stop { get; }
-
-            public StartStopEventArgs(string name, bool stop)
-            {
-                Name = name;
-                Stop = stop;
-            }
-        }
-
-        public event EventHandler<MultiPvEventArgs> MultiPvEvent;
-        public event EventHandler<string> CloseEvent;
-        public event EventHandler<StartStopEventArgs> StartStopEvent;
-        public event EventHandler<string> ConfigEvent;
+        private readonly List<EngineInfoLineUserControl> _engineInfoLineUserControls =
+            new List<EngineInfoLineUserControl>();
 
         private readonly ConcurrentQueue<string> _infoLine = new ConcurrentQueue<string>();
-        private readonly List<EngineInfoLineUserControl> _engineInfoLineUserControls = new List<EngineInfoLineUserControl>();
-        private bool _showNodes;
-        private bool _showNodesPerSec;
-        private bool _showHash;
-        private bool _tournamentMode;
-        private bool _showTeddy;
+        private readonly UciInfo _uciInfo;
+        private readonly List<string> _allMoves = new List<string>();
+        private int _currentColor;
+        private int _currentMultiPvCount = 1;
+        private string _fenPosition = string.Empty;
         private int _hideInfo;
         private bool _showForWhite;
-        private int _currentColor;
-
-        public int Color { get; }
-        public string HideInfo => _hideInfo.ToString();
+        private bool _showHash;
+        private bool _showNodes;
+        private bool _showNodesPerSec;
+        private bool _showTeddy;
+        private bool _stopInfo;
+        private bool _stopVisible = true;
+        private bool _tournamentMode;
 
         public EngineInfoUserControl()
         {
@@ -72,6 +44,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showTeddy = false;
             _hideInfo = 0;
             _currentColor = Fields.COLOR_WHITE;
+            _allMoves.Clear();
+            _fenPosition = string.Empty;
         }
 
         public EngineInfoUserControl(UciInfo uciInfo, int color, string hideInfo) : this()
@@ -81,10 +55,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Color = color;
             EngineName = uciInfo.Name;
             textBlockName.ToolTip = uciInfo.OriginName;
+            _allMoves.Clear();
+            _fenPosition = string.Empty;
             var uciElo = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
             if (uciElo != null)
             {
-                var uciEloLimit = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
+                var uciEloLimit =
+                    uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
                 if (uciEloLimit != null)
                 {
                     if (uciEloLimit.Contains("true"))
@@ -98,7 +75,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (uciInfo.IsChessServer)
             {
                 imageEngine.Visibility = Visibility.Visible;
-                imageEngine.Source = new BitmapImage(new Uri($"pack://application:,,,/BearChessWin;component/Assets/Icons/{uciInfo.LogoFileName}", UriKind.RelativeOrAbsolute));
+                imageEngine.Source =
+                    new BitmapImage(
+                        new Uri($"pack://application:,,,/BearChessWin;component/Assets/Icons/{uciInfo.LogoFileName}",
+                                UriKind.RelativeOrAbsolute));
             }
 
             if (!uciInfo.IsChessServer && !string.IsNullOrWhiteSpace(uciInfo.LogoFileName))
@@ -109,6 +89,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     imageEngine.Source = new BitmapImage(new Uri(uciInfo.LogoFileName));
                 }
             }
+
             if (color == Fields.COLOR_WHITE)
             {
                 imageColorWhite.Visibility = Visibility.Visible;
@@ -116,6 +97,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 buttonClose.Visibility = Visibility.Hidden;
                 buttonPlayStop.Visibility = Visibility.Hidden;
             }
+
             if (color == Fields.COLOR_BLACK)
             {
                 imageColorWhite.Visibility = Visibility.Collapsed;
@@ -129,10 +111,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 imageColorWhite.Visibility = Visibility.Collapsed;
                 imageColorBlack.Visibility = Visibility.Collapsed;
             }
+
             engineInfoLineUserControl1.FillLine(string.Empty, string.Empty);
             var thread = new Thread(ShowInfoLine) { IsBackground = true };
             thread.Start();
         }
+
+        public int Color { get; }
+        public string HideInfo => _hideInfo.ToString();
 
         public string EngineName
         {
@@ -140,16 +126,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
             set => textBlockName.Text = value;
         }
 
+        public event EventHandler<MultiPvEventArgs> MultiPvEvent;
+        public event EventHandler<string> CloseEvent;
+        public event EventHandler<StartStopEventArgs> StartStopEvent;
+        public event EventHandler<string> ConfigEvent;
+
         public void ShowInfo(bool showNodes, bool showNodesPerSec, bool showHash, bool showForWhite)
         {
             if (_showTeddy)
             {
                 return;
             }
+
             _showNodes = showNodes;
             _showNodesPerSec = showNodesPerSec;
             _showHash = showHash;
-            _showForWhite =  showForWhite;
+            _showForWhite = showForWhite;
         }
 
         public void CurrentColor(int currentColor)
@@ -157,9 +149,32 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _currentColor = currentColor;
         }
 
+        public void SetFenPosition(string fenPosition, string moves)
+        {
+            _fenPosition = fenPosition;
+            _allMoves.Clear();
+            foreach (var s in moves.Split(" ".ToCharArray()))
+            {
+                _allMoves.Add(s);
+            }
+        }
+
+        public void AddMove(string move)
+        {
+            while (_infoLine.TryDequeue(out _))
+            {
+            }
+            _allMoves.Add(move);
+        }
+
+        public void ClearMoves()
+        {
+            _allMoves.Clear();
+            _fenPosition = string.Empty;
+        }
+
         public void ShowInfo(string infoLine, bool tournamentMode)
         {
-           
             if (!_stopVisible)
             {
                 return;
@@ -168,7 +183,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_stopInfo)
             {
                 while (_infoLine.TryDequeue(out _))
-                { };
+                {
+                }              
                 _stopInfo = false;
             }
 
@@ -196,7 +212,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var uciElo = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
             if (uciElo != null)
             {
-                var uciEloLimit = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
+                var uciEloLimit =
+                    uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
                 if (uciEloLimit != null)
                 {
                     if (uciEloLimit.Contains("true"))
@@ -221,7 +238,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                     imagePlay.Visibility = Visibility.Collapsed;
                     imagePause.Visibility = Visibility.Visible;
-
                 }
                 else
                 {
@@ -238,25 +254,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ShowInfoLine()
         {
-
+            var fastChessBoard = new FastChessBoard();
             while (true)
             {
-                if (_infoLine.TryDequeue(out string infoLine))
+                if (_infoLine.TryDequeue(out var infoLine))
                 {
-
-                    string depthString = string.Empty;
-                    string selDepthString = string.Empty;
-                    string scoreString = string.Empty;
-                    string moveLine = string.Empty;
-                    bool readingMoveLine = false;
-                    string currentMove = string.Empty;
-                    string currentNodes = string.Empty;
-                    string currentNodesPerSec = string.Empty;
-                    string currentHash = string.Empty;
-                    int currentMultiPv = 1;
+                    var depthString = string.Empty;
+                    var selDepthString = string.Empty;
+                    var scoreString = string.Empty;
+                    var moveLine = string.Empty;
+                    var readingMoveLine = false;
+                    var currentMove = string.Empty;
+                    var currentNodes = string.Empty;
+                    var currentNodesPerSec = string.Empty;
+                    var currentHash = string.Empty;
+                    var currentMultiPv = 1;
                     var infoLineParts = infoLine.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-                    for (int i = 0; i < infoLineParts.Length; i++)
+                    for (var i = 0; i < infoLineParts.Length; i++)
                     {
                         if (infoLineParts[i].Equals("depth", StringComparison.OrdinalIgnoreCase))
                         {
@@ -272,7 +287,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                         if (infoLineParts[i].Equals("multipv", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (infoLineParts.Length > (i + 1))
+                            if (infoLineParts.Length > i + 1)
                             {
                                 int.TryParse(infoLineParts[i + 1], out currentMultiPv);
                             }
@@ -298,22 +313,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 continue;
                             }
 
-                            string scoreType = infoLineParts[i + 1];
+                            var scoreType = infoLineParts[i + 1];
                             if (scoreType.Equals("cp", StringComparison.OrdinalIgnoreCase))
                             {
                                 scoreString = infoLineParts[i + 2];
                                 if (decimal.TryParse(scoreString, NumberStyles.Any, CultureInfo.CurrentCulture,
-                                    out decimal score))
+                                                     out var score))
                                 {
                                     score = score / 100;
-                                    if (_showForWhite && Color==Fields.COLOR_BLACK)
+                                    if (_showForWhite && Color == Fields.COLOR_BLACK)
                                     {
                                         score = score * -1;
                                     }
-                                    if (_showForWhite && Color == Fields.COLOR_EMPTY && _currentColor == Fields.COLOR_BLACK)
+
+                                    if (_showForWhite && Color == Fields.COLOR_EMPTY &&
+                                        _currentColor == Fields.COLOR_BLACK)
                                     {
                                         score = score * -1;
                                     }
+
                                     scoreString = score.ToString(CultureInfo.InvariantCulture);
                                 }
 
@@ -322,11 +340,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                             if (scoreType.Equals("mate", StringComparison.OrdinalIgnoreCase))
                             {
-                                string infoLinePart = infoLineParts[i + 2];
+                                var infoLinePart = infoLineParts[i + 2];
                                 if (!infoLinePart.Equals("0"))
                                 {
                                     scoreString = $"Mate in {infoLinePart}";
-                                    continue;
                                 }
                             }
 
@@ -369,7 +386,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                         if (_showHash && infoLineParts[i].Equals("hashfull", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (int.TryParse(infoLineParts[i + 1], out int hashValue))
+                            if (int.TryParse(infoLineParts[i + 1], out var hashValue))
                             {
                                 currentHash = $" Hash: {hashValue / 10}%";
                             }
@@ -401,8 +418,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         Dispatcher?.Invoke(() =>
                         {
-
-
                             if (_hideInfo > 0)
                             {
                                 engineInfoLineUserControl1.ClearLine();
@@ -415,7 +430,31 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             {
                                 if (currentMultiPv == 1)
                                 {
-                                    engineInfoLineUserControl1.FillLine(scoreString, moveLine);
+                                    try
+                                    {
+                                        if (string.IsNullOrWhiteSpace(_fenPosition))
+                                        {
+                                            fastChessBoard.Init(_allMoves.ToArray());
+                                        }
+                                        else
+                                        {
+                                            fastChessBoard.Init(_fenPosition, _allMoves.ToArray());
+                                        }
+
+                                        var ml = string.Empty;
+                                        var strings = moveLine.Split(" ".ToCharArray());
+                                        foreach (var s in strings)
+                                        {
+                                            ml = ml + " " + fastChessBoard.GetMove(s);
+                                        }
+
+
+                                        engineInfoLineUserControl1.FillLine(scoreString, ml);
+                                    }
+                                    catch
+                                    {
+                                        engineInfoLineUserControl1.FillLine(scoreString, moveLine);
+                                    }
                                 }
                                 else
                                 {
@@ -423,7 +462,30 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     if (_engineInfoLineUserControls.Count > 0 &&
                                         _engineInfoLineUserControls.Count >= multiPv && multiPv >= 0)
                                     {
-                                        _engineInfoLineUserControls[multiPv].FillLine(scoreString, moveLine);
+                                        if (string.IsNullOrWhiteSpace(_fenPosition))
+                                        {
+                                            fastChessBoard.Init(_allMoves.ToArray());
+                                        }
+                                        else
+                                        {
+                                            fastChessBoard.Init(_fenPosition, _allMoves.ToArray());
+                                        }
+
+                                        try
+                                        {
+                                            var ml = string.Empty;
+                                            var strings = moveLine.Split(" ".ToCharArray());
+                                            foreach (var s in strings)
+                                            {
+                                                ml = ml + " " + fastChessBoard.GetMove(s);
+                                            }
+
+                                            _engineInfoLineUserControls[multiPv].FillLine(scoreString, ml);
+                                        }
+                                        catch
+                                        {
+                                            _engineInfoLineUserControls[multiPv].FillLine(scoreString, moveLine);
+                                        }
                                     }
                                 }
                             }
@@ -436,6 +498,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 textBlockCurrentNodesPerSec.Text = string.Empty;
                                 textBlockCurrentHash.Text = string.Empty;
                             }
+
                             if (_hideInfo < 2)
                             {
                                 if (!string.IsNullOrWhiteSpace(depthString))
@@ -475,6 +538,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         //
                     }
                 }
+
                 Thread.Sleep(10);
             }
         }
@@ -482,15 +546,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonPlus_OnClick(object sender, RoutedEventArgs e)
         {
             _currentMultiPvCount++;
-            EngineInfoLineUserControl engineInfoLineUserControl = new EngineInfoLineUserControl(_currentMultiPvCount);
+            var engineInfoLineUserControl = new EngineInfoLineUserControl(_currentMultiPvCount);
             _engineInfoLineUserControls.Add(engineInfoLineUserControl);
             stackPanelMain.Children.Add(engineInfoLineUserControl);
-            OnMultiPvEvent(new MultiPvEventArgs(_uciInfo.Name,_currentMultiPvCount));
+            OnMultiPvEvent(new MultiPvEventArgs(_uciInfo.Name, _currentMultiPvCount));
         }
 
         protected virtual void OnMultiPvEvent(MultiPvEventArgs e)
         {
-            MultiPvEvent?.Invoke(this, e);  
+            MultiPvEvent?.Invoke(this, e);
         }
 
         private void ButtonMinus_OnClick(object sender, RoutedEventArgs e)
@@ -502,7 +566,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             try
             {
-                EngineInfoLineUserControl engineInfoLineUserControl =
+                var engineInfoLineUserControl =
                     _engineInfoLineUserControls[_currentMultiPvCount - 2];
                 _engineInfoLineUserControls.Remove(engineInfoLineUserControl);
                 stackPanelMain.Children.Remove(engineInfoLineUserControl);
@@ -511,6 +575,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 //
             }
+
             _currentMultiPvCount--;
             OnMultiPvEvent(new MultiPvEventArgs(_uciInfo.Name, _currentMultiPvCount));
         }
@@ -524,12 +589,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             StartStopEvent?.Invoke(this, new StartStopEventArgs(_uciInfo.Name, _stopVisible));
             _stopVisible = !_stopVisible;
-         
         }
 
         private void ButtonConfig_OnClick(object sender, RoutedEventArgs e)
         {
-            ConfigEvent?.Invoke(this,_uciInfo.Name);
+            ConfigEvent?.Invoke(this, _uciInfo.Name);
         }
 
         private void ButtonHide_OnClick(object sender, RoutedEventArgs e)
@@ -539,16 +603,48 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _hideInfo = 0;
             }
+
             buttonHide.Visibility = Visibility.Collapsed;
             buttonHide1.Visibility = Visibility.Collapsed;
             buttonHide2.Visibility = Visibility.Collapsed;
-            if (_hideInfo==0)
+            if (_hideInfo == 0)
+            {
                 buttonHide.Visibility = Visibility.Visible;
-            if (_hideInfo == 1)
-                buttonHide1.Visibility = Visibility.Visible;
-            if (_hideInfo == 2)
-                buttonHide2.Visibility = Visibility.Visible;
+            }
 
+            if (_hideInfo == 1)
+            {
+                buttonHide1.Visibility = Visibility.Visible;
+            }
+
+            if (_hideInfo == 2)
+            {
+                buttonHide2.Visibility = Visibility.Visible;
+            }
+        }
+
+        public class MultiPvEventArgs : EventArgs
+        {
+            public MultiPvEventArgs(string name, int multiPvValue)
+            {
+                Name = name;
+                MultiPvValue = multiPvValue;
+            }
+
+            public string Name { get; }
+            public int MultiPvValue { get; }
+        }
+
+        public class StartStopEventArgs : EventArgs
+        {
+            public StartStopEventArgs(string name, bool stop)
+            {
+                Name = name;
+                Stop = stop;
+            }
+
+            public string Name { get; }
+            public bool Stop { get; }
         }
     }
 }

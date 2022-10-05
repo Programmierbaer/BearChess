@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Speech.Synthesis;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.FicsClient;
@@ -231,12 +232,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             _lastCommand = string.Empty;
             CurrentColor(Fields.COLOR_WHITE);
+            foreach (var engineInfoUserControl in _loadedEnginesControls)
+            {
+                engineInfoUserControl.Value.ClearMoves();
+            }
+
         }
 
         public void AddMove(string fromField, string toField, string promote, string engineName = "")
         {
             _fileLogger?.LogInfo($"Send AddMove {fromField}-{toField}{promote}");
             _lastCommand = string.Empty;
+            foreach (var engineInfoUserControl in _loadedEnginesControls)
+            {
+             //   engineInfoUserControl.Value.AddMove($"{fromField}{toField}{promote}");
+            }
             if (string.IsNullOrEmpty(engineName))
             {
                 foreach (var engine in _loadedEngines)
@@ -257,6 +267,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void AddMoveForCoaches(string fromField, string toField, string promote)
         {
             _fileLogger?.LogInfo($"Send AddMove for coaches {fromField}-{toField}{promote}");
+            foreach (var engineInfoUserControl in _loadedEnginesControls)
+            {
+                if (engineInfoUserControl.Value.Color == Fields.COLOR_EMPTY)
+                {
+                    engineInfoUserControl.Value.AddMove($"{fromField}{toField}{promote}");
+                }
+            }
             foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {
                 engine.Value.UciEngine.AddMove(fromField, toField, promote);
@@ -267,6 +284,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _fileLogger?.LogInfo($"Send MakePgnMove {fromField}-{toField}{promote}");
             _lastCommand = string.Empty;
+            foreach (var engineInfoUserControl in _loadedEnginesControls)
+            {
+              
+               engineInfoUserControl.Value.AddMove($"{fromField}{toField}{promote}");
+            }
+
             if (string.IsNullOrEmpty(engineName))
             {
                 foreach (var engine in _loadedEngines)
@@ -287,6 +310,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetFen(string fen, string moves, string engineName = "")
         {
             _fileLogger?.LogInfo($"Send fen: {fen} moves: {moves} ");
+            foreach (var engineInfoUserControl in _loadedEnginesControls)
+            {
+                engineInfoUserControl.Value.SetFenPosition(fen, moves);
+            }
             foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
             {
                 engine.Value.UciEngine.SetFen(fen, moves);

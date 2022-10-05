@@ -462,7 +462,7 @@
                     </MenuItem>
                     <MenuItem Header="UCB" Name="menuItemUCBBoard" Visibility="Collapsed">
                         <MenuItem.Icon>
-                            <Image Source="Assets/Icons/chessnut.png" />
+                            <Image Source="Assets/Icons/novag48.PNG" />
                         </MenuItem.Icon>
                         <MenuItem Name="menuItemConnectToUCBBoard" Header="Connect"
                                   Click="MenuItemConnectUCBBoard_OnClick">
@@ -470,7 +470,12 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-
+                        <MenuItem Name="menuItemConfigureUCB" Header="Configure"
+                                  Click="MenuItemConfigureUCB_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/cog.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                     <Separator />
                     <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup"

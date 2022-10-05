@@ -4,9 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using www.SoLaNoSoft.com.BearChessWin.Assets.Fonts;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -16,7 +16,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class MovePlainUserControl : UserControl
     {
         private readonly Window _parent;
-        private readonly FontConverter _fontConverter;
         private readonly FontFamily _fontFamily;
         private DisplayFigureType _figureType = DisplayFigureType.Symbol;
         private DisplayMoveType _moveType = DisplayMoveType.FromToField;
@@ -32,7 +31,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _parent = parent;
             InitializeComponent();
             _fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
-            _fontConverter = new FontConverter();
             _showOnlyMoves = false;
             _showFullInformation = true;
         }
@@ -162,7 +160,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (_figureType == DisplayFigureType.Symbol)
                     {
                         textBlockFigureSymbol.FontFamily = _fontFamily;
-                        textBlockFigureSymbol.Text = _fontConverter.ConvertFont(s, "Chess Merida");
+                        textBlockFigureSymbol.Text = FontConverter.ConvertFont(s, "Chess Merida");
                     }
                     else
                     {
