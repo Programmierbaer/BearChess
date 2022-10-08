@@ -632,7 +632,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void MakeMoveForCoaches(string fenPosition)
         {
-            _fileLogger?.LogInfo("Send fen position for coaches");
+            _fileLogger?.LogInfo($"Send fen position for coaches: {fenPosition} ");
+            foreach (var engineInfoUserControl in _loadedEnginesControls.Where(e => e.Value.Color==Fields.COLOR_EMPTY))
+            {
+                engineInfoUserControl.Value.SetFenPosition(fenPosition,string.Empty);
+            }
             foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {
                 engine.Value.UciEngine.SetFen(fenPosition, string.Empty);
