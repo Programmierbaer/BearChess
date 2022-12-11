@@ -45,6 +45,7 @@
     <Compile Include="IComPort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialComPort.cs" />
+    <Compile Include="SerialComPortEventBased.cs" />
     <Compile Include="SerialComportForByteArray.cs" />
     <Compile Include="Telnet.cs" />
   </ItemGroup>

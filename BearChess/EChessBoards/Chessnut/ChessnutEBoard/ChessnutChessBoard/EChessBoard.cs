@@ -130,7 +130,12 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             return true;
         }
 
-        public override void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString)
+        public override bool CheckComPort(string portName, string baud)
+        {
+            return true;
+        }
+
+        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
         {
             if (!EnsureConnection())
             {
@@ -431,7 +436,8 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             //
         }
 
-        protected override void Release()
+     
+        public override void Release()
         {
             _release = true;
         }
@@ -460,6 +466,9 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         {
             //
         }
+
+        public override event EventHandler BasePositionEvent;
+        public override event EventHandler<string> DataEvent;
 
         public override void SpeedLeds(int level)
         {

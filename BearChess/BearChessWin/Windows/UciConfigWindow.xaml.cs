@@ -133,7 +133,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
                 count++;
-                int colIndex = count > optionsLength ? 0 : 2;
+                int colIndex = (count > optionsLength || optionsLength == 1) ? 0 : 2;
                 AddControl(option, currentValue, colIndex, rowIndex);
                 rowIndex++;
                 if (rowIndex > optionsLength)
@@ -172,7 +172,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 CommandParameter = textBlockFileParameter.Text,
                 LogoFileName = textBlockLogoFileName.Text,
                 WaitForStart = checkBoxWaitForStart.IsChecked.HasValue && checkBoxWaitForStart.IsChecked.Value,
-                WaitSeconds = numericUpDownUserControlWait.Value
+                WaitSeconds = numericUpDownUserControlWait.Value,
+                IsChessComputer = _uciInfo.IsChessComputer,
+                IsChessServer = _uciInfo.IsChessServer
             };
             foreach (var uciInfoOption in _uciInfo.Options)
             {

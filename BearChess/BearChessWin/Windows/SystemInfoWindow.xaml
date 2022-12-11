@@ -38,6 +38,8 @@
         <Image DockPanel.Dock="Top" Source="../Assets/dgt.jpg" Width="150" Name="imageDGT" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/chessnutair.jpg" Width="150" Name="imageChessnutAir" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/squareoffpro.jpeg" Width="150" Name="imageSquareOffPro" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/novag-citrine.jpeg" Width="150" Name="imageCitrine" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/novag-ucb.jpeg" Width="150" Name="imageUCB" Visibility="Collapsed"></Image>
         <Button DockPanel.Dock="Bottom" Margin="5" HorizontalAlignment="Left" Width="32"
                 Height="32" 
                 Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">

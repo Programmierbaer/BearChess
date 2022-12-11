@@ -3,10 +3,14 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.FicsClient;
+using www.SoLaNoSoft.com.BearChess.SaitekOSA;
 using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
@@ -15,6 +19,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 {
     public sealed class UciLoader
     {
+        
 
         public class EngineEventArgs : EventArgs
         {
@@ -42,12 +47,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly object _locker = new object();
         private readonly OpeningBook _openingBook;
         private BookMove _bookMove;
-        private UciWrapper _uciWrapper = null;
+        private IUciWrapper _uciWrapper = null;
         public bool IsTeddy => _uciInfo.AdjustStrength;
         public bool isLoaded { get; private set; }
 
         public event EventHandler<EngineEventArgs> EngineReadingEvent;
 
+     
 
         public UciLoader(UciInfo uciInfo, ILogging logger, IFICSClient ficsClient, string gameNumber)
         {
@@ -57,7 +63,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lookForBookMoves = false;
             _openingBook = null;
             _bookMove = null;
-            _uciWrapper = new UciWrapper(gameNumber, ficsClient);
+            _uciWrapper = new BearChess.FicsClient.UciWrapper(gameNumber, ficsClient);
+            var threadReadGui = new Thread(_uciWrapper.Run) { IsBackground = true };
+            threadReadGui.Start();
+            var threadReading = new Thread(ReadFromEngine) { IsBackground = true };
+            threadReading.Start();
+            var threadSending = new Thread(SendToEngine) { IsBackground = true };
+            threadSending.Start();
+            isLoaded = true;
+        }
+
+        public UciLoader(UciInfo uciInfo, ILogging logger, IElectronicChessBoard eChessBoard, string boardName)
+        {
+            isLoaded = false;
+            _uciInfo = uciInfo;
+            _logger = logger;
+            _lookForBookMoves = false;
+            _openingBook = null;
+            _bookMove = null;
+            if (boardName.Equals(Constants.OSA))
+                _uciWrapper = new BearChess.SaitekOSA.UciWrapper(eChessBoard);
+            if (boardName.Equals(Constants.Citrine))
+                _uciWrapper = new BearChess.NOVAGCitrine.UciWrapper(eChessBoard);
             var threadReadGui = new Thread(_uciWrapper.Run) { IsBackground = true };
             threadReadGui.Start();
             var threadReading = new Thread(ReadFromEngine) { IsBackground = true };
@@ -354,7 +381,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     string readToEnd = string.Empty;
                     try
                     {
-                        if (_uciInfo.IsChessServer)
+                        if (_uciInfo.IsChessServer || _uciInfo.IsChessComputer)
                         {
                             readToEnd = _uciWrapper?.ToGui();
                         }
@@ -434,7 +461,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         _logger?.LogDebug($">> {commandToEngine}");
                         try
                         {
-                            if (_uciInfo.IsChessServer)
+                            if (_uciInfo.IsChessServer || _uciInfo.IsChessComputer)
                             {
                                 _uciWrapper?.FromGui(commandToEngine);
                             }
@@ -468,7 +495,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             try
             {
                 _logger?.LogDebug(">> uci");
-                if (_uciInfo.IsChessServer)
+                if (_uciInfo.IsChessServer || _uciInfo.IsChessComputer)
                 {
                     _uciWrapper.FromGui("uci");
                 }
@@ -482,7 +509,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 while (true)
                 {
 
-                    var readToEnd = _uciInfo.IsChessServer ? _uciWrapper?.ToGui() : _engineProcess?.StandardOutput.ReadLine();
+                    var readToEnd = _uciInfo.IsChessServer ? _uciWrapper?.ToGui() : _uciInfo.IsChessComputer ? _uciWrapper?.ToGui() :  _engineProcess?.StandardOutput.ReadLine();
                     _logger?.LogDebug($"<< {readToEnd}");
                     if (!string.IsNullOrWhiteSpace(readToEnd) && readToEnd.Equals(waitingFor))
                     {
@@ -490,7 +517,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             waitingFor = "readyok";
                             _logger?.LogDebug(">> isready");
-                            if (_uciInfo.IsChessServer)
+                            if (_uciInfo.IsChessServer || _uciInfo.IsChessComputer)
                             {
                                 _uciWrapper?.FromGui("isready");
                             }

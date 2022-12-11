@@ -10,6 +10,7 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
+
     public class FileLogger : ILogger, ILogging
     {
         private readonly string _fileName;

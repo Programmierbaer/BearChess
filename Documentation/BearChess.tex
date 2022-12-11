@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.2.1}
+\fancyhead[R]{Version 0.9.3.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{08.10.2022} 
+\date{10.12.2022} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -43,7 +43,8 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports \textbf{Certabo} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro} and \textbf{Chessnut Air}.\\
+BearChess supports \textbf{Certabo} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} Citrine/UCB,
+and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
 
 As you can see from the version number, this software is still under development. There are still some functions that are not fully implemented and there are certainly still many bugs. But BearChess has now reached a level where it can be used and feedback from other users is welcome.\\
 
@@ -80,7 +81,10 @@ BearChess offers among others the following functions:
 	  \item Play with \textbf{DGT Pegasus} chessboard.	  
 	  \item Play with \textbf{Square Off Pro} chessboard.	  	  
 	  \item Play with \textbf{Chessnut Air} chessboard.	  	  	  
+	  \item Play with \textbf{NOVAG Citrine/UCB} chessboard.
+	  \item Play with \textbf{Saitek OSA} chessboard.	  
   	  \item Play against human beings or UCI engines.
+  	  \item Play with separate time controls for white and black.
   	  \item Play online on Free Internet Chess Server (\textbf{FICS})
   	  \item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs. Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
   	  \item Use \textbf{Certabo Avatar} UCI engines.  	  
@@ -1308,10 +1312,146 @@ Square off Pro has no real piece recognition and can only give the information p
 
 Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
 
+\subsection{Configure NOVAG Citrine} \label{ConfigureNovagCitrine}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{NovagCitrine1.png}
+	\caption{Open a window to configure NOVAG Citrine }
+	\label{fig:NovagCtrine1}
+\end{figure}
+
+NOVAG Citrine supports only a serial COM port connection.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{NovagCitrine2.png}
+	\caption{Select COM port}
+	\label{fig:NovagCtrine2}
+\end{figure}
+
+Select the COM port if you know it or use the <auto> selection. 
+Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
+
+\subsubsection{Connect}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{NovagCitrine3.png}
+	\caption{Connect to NOVAG Citrine}
+	\label{fig:NovagCitrine3}
+\end{figure}
+When the configuration is complete, you can connect your chessboard.
+In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
+
+\subsubsection{Important information and restrictions} \label{InformationNovagCitrine}
+The boards allow only limited control from the outside. Also they have a built-in control of the current position. Therefore, the figures can also only move according to the rules.\\
+The following restriction applies to the Citrine board.
+
+\begin{itemize}
+	\item An error message always appears on the display after a chess move has been transmitted.
+	\item When an engine captures a piece, the target field is not displayed (the LEDs do not light up).
+	\item Always remove the moving piece from the board first when you capture a figure.
+	\item The board always allows you to take back a move.
+\end{itemize}
+
+When connected to the board, they can also select Citrine as the engine opponent.
+However, they cannot select another engine as another opponent. Only Player is possible.
+
+\subsection{Configure NOVAG UCB} \label{ConfigureNovagUCB}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{NovagUCB1.png}
+	\caption{Open a window to configure NOVAG UCB}
+	\label{fig:NovagUCB1}
+\end{figure}
+
+NOVAG UCB supports only a serial COM port connection.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{NovagUCB2.png}
+	\caption{Select COM port}
+	\label{fig:NovagUCB2}
+\end{figure}
+
+Select the COM port. Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.\\
+{\color{red}*} \textbf{Automatic detection of the correct COM port is not possbile. It can only be checked if the COM port can be opened.}
+
+\subsubsection{Connect}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{NovagUCB3.png}
+	\caption{Connect to NOVAG UCB}
+	\label{fig:NovagUCB3}
+\end{figure}
+When the configuration is complete, you can connect your chessboard.
+In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
+
+\subsubsection{Important information and restrictions} \label{InformationNovagUCB}
+The board allow only limited control from the outside. Also they have a built-in control of the current position. Therefore, the figures can also only move according to the rules.\\
+The following restriction applies to the UCB board.
+
+\begin{itemize}
+	\item BearChess cannot send commands to rotate the board.
+	\item There is no command with which BearChess can determine if they are really connected to a UCB. 
+	\item The board always allows you to take back a move.
+\end{itemize}
+
+\subsection{Configure Saitek OSA} \label{ConfigureSaitekOSA}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Saitek1.png}
+	\caption{Open a window to configure Saitek OSA }
+	\label{fig:Saitek1}
+\end{figure}
+
+Saitek boards supports only a serial COM port connection.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{Saitek2.png}
+	\caption{Select COM port and baud rate}
+	\label{fig:Saitek2}
+\end{figure}
+
+Select the COM port and baud rate if you know it or use the <auto> selection. 
+Click on \includegraphics[scale=0.5]{connect.png} to verify your selection. \textbf{The auto detection is very slow. Try to prevent this.}
+
+{\color{red}*} \textbf{The default baud rate of the boards is 1200. It is highly recommended to switch to 9600 baud.} Change the speed to 9600 by pressing the following keys on the board:
+
+\begin{enumerate}
+	\item {\color{blue}Setup}
+ 	\item {\color{blue}Function}
+	\item {\color{blue}King}
+	\item {\color{blue}Normal}
+\end{enumerate}
+
+\subsubsection{Connect}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Saitek3.png}
+	\caption{Connect to Saitek board}
+	\label{fig:Saitek3}
+\end{figure}
+When the configuration is complete, you can connect your chessboard.
+In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
+
+\subsubsection{Important information and restrictions} \label{InformationOSA}
+The boards allow only limited control from the outside. Also they have a built-in control of the current position. Therefore, the figures can also only move according to the rules.\\
+The following restriction applies to the OSA boards.
+
+\begin{itemize}
+	\item When an engine captures a piece, the target field is not displayed (the LEDs do not light up). 
+	\item The board always allows you to take back a move.
+\end{itemize}
+
+When connected to the board, they can also select Saitek OSA as the engine opponent.
+However, they cannot select another engine as another opponent. Only Player is possible.
 
 \subsection{Switch side}
-BearChess automatically recognizes whether you are playing with the white or black pieces, depending on how you set up the pieces in the base position (except for DGT Pegasus or Square Off Pro).
+BearChess automatically recognizes whether you are playing with the white or black pieces, depending on how you set up the pieces in the base position (except for DGT Pegasus,Square Off Pro, NOVAG and Saitek boards).
 
 \section{Play a game}
 
@@ -1322,22 +1462,22 @@ BearChess automatically recognizes whether you are playing with the white or bla
 	\label{fig:NewGame1}
 \end{figure}
 
-If you start a new game you can select the opponents and the time control. For playing a game on FICS, see chapter on page.
+If you start a new game you can select the opponents and the time control. For playing a game on FICS, \nameref{FICS} on page \pageref{FICS}.  	
 
 \subsection{Select opponent} \label{SelectOpponent}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{NewGame2.png}
+	\includegraphics[scale=0.7]{NewGame2.png}
 	\caption{Play a new game}
 	\label{fig:NewGame2}
 \end{figure}
 
 Select the opponents for white \includegraphics[scale=0.4]{KingW.png} and black \includegraphics[scale=0.4]{KingB.png}. "Player" means a human opponent. You can select "Player" for white and black if you want to play a game against another human opponent on your chessboard. You can select an engine for white and black if you want to play a pure engine match.\\
 \includegraphics[scale=0.4]{user_silhouette.png} is a shortcut to select "Player".\\
-
-
 \textbf{Hint:} You cannot use an electronic chessboard for a pure engine match.\\
+
+If you are connected to a NOVAG Citrine or Saitek OSA chessboard, you can select them as opponents and set the playing strength. Saitek OSA boards can be expanded with various modules that also expand the available game levels. BearChess cannot recognize whether or which module is installed. That's why it provides all possible levels, but they may not be applicable for your board.\\
 
 \includegraphics[scale=0.4]{cog.png} opens the engine configuration dialog. This is the same dialog as for load and manage engines. \textbf{However, all changes are only valid until you close BearChess or you explicitly  reload the engine.}\\
 Below the engine selection, there are up to three informations which give you a quick overview of the current engine configuration.
@@ -1353,11 +1493,17 @@ Below the engine selection, there are up to three informations which give you a 
 \includegraphics[scale=0.8]{BearChessIcon.png} If you play against one engine (not available if two engines play against each other) you can check 'Relaxed'.  Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.
 
 
-\subsection{Start from}
-Select your start position. The default is the base position, but you can start from any position on the board.
-
-
 \subsection{Time control}
+
+Normally white and black have the same time control. With BearChess, you can define different time controls for each color.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{NewGame3.png}
+	\caption{Separate time control}
+	\label{fig:NewGame3}
+\end{figure}
+
 
 \begin{figure}[H]
 	\centering
@@ -1380,6 +1526,7 @@ If you play in tournament mode, no auxiliary information (score, best line) is d
 
 \subsection{Allow to take a move back}
 It is worth activating this option for a training session or when playing against a strong engine. If you are using an electronic chessboard, just take back the last move. The LEDs show you the next previous move. Follow them until you make the right move.\\
+{\color{red}\textbf{*}} For Saitek or NOVAG boards, BearChess cannot prevent a move back.\\
 If you are not using an electronic chessboard, you can use the move controls below the board.
 
 \begin{figure}[H]
@@ -1395,6 +1542,12 @@ Add extra minutes for human opponents.
 
 \subsection{Start the clock after the move is executed on the electronic board}
 Avoids a time gap to execute the moves of the engines on the board.
+
+
+\subsection{Start from}
+Select your start position. The default is the base position, but you can start from any position on the board or continue a game.
+
+
 
 \subsection{Configuration for startup game} \label{startupgame}
 
@@ -1563,13 +1716,13 @@ Or you are more of a beginner and want to practice a typical endgame, e.g. king 
 You can achieve all this with the analysis mode.\\
 
 
-{\color{red}*} It may happen that not all engines are suitable for analysis. Problems have occurred so far with Arasan 20.3 (not with Arasan 22.2) or with Komodo (the reason with Komodo is still under investigation). You cannot use MessChess computer emulation engines.
+{\color{red}*} It may happen that not all engines are suitable for analysis. Problems have occurred so far with Arasan 20.3. You cannot use MessChess computer emulation engines.
 
 \subsection{Free analyse} \label{AnalyzeMode1}
 
 \subsection{With electronic chessboard}
 
-You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. Millennium eOne, DGT Pegasus and Square Off Pro has not. Connect your electronic chessboard before you start the analysis mode.\\ 
+You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. Millennium eOne, DGT Pegasus, Square Off Pro, NOVAG boards and Saitke bords has not. Connect your electronic chessboard before you start the analysis mode.\\ 
 When you start the analysis mode, you will be asked to select a supporting analysis engine.
 
 \begin{figure}[H]
@@ -2365,6 +2518,14 @@ BearChess supports only lightning, blitz and standard games. Bughouse, Crazyhous
 \subsection{FICS and engines}
 When you are connected to FICS, you cannot load any engines for support. Play fair against others.
 
+\subsection{NOVAG and Saitek boards}
+The boards are already older, the manufacturers no longer exist and errors can no longer be corrected or the behavior improved.\\
+All these boards have no piece detection, but check if the piece makes a legal move. Invalid moves are not even transmitted to BearChess.
+\begin{itemize}
+	\item The LEDs cannot be controlled directly. Only chess moves or incorrectly positioned pieces are displayed.
+	\item The NOVAG Citrine board must be sent an engine's moves twice in order for them to be displayed. However, this causes an error message to appear on the display.
+	\item With NOVAG Citrine and Saitek OSA, the LEDs do not show the target field when a piece is captured.
+\end{itemize}
 
 \section{Trouble shooting}
 
@@ -2380,11 +2541,11 @@ When you are connected to FICS, you cannot load any engines for support. Play fa
 
 \section{Known Issues}
 \begin{itemize}
-	\item Start from a predefined position with black is not fully tested.
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
 	\item Some windows may overlap for the first time.
 	\item Sometimes showing incorrect material balance for "All".
 	\item Opening books may not work if the game is not started from the base position.	
+	\item Take back moves does not work if the engine is still in the BearChess opening library.
 \end{itemize}
 
 \section{Next Steps}
@@ -2401,6 +2562,16 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Changelog}
+
+\subsection*{Version 0.9.2.1 $\Rightarrow$  0.9.3.0}
+\begin{itemize}
+	\item New: Support from NOVAG Citrine and NOVAG UCB board.
+	\item New: Play against NOVAG Citrine as UCI engine.
+	\item New: Support from Saitek Galileo/Leonardo/Renaissance boards.
+	\item New: Play against Saitek boards as UCI engine.
+	\item New: Separate time control for white and black.
+	\item New: Continue a game from a given position.
+\end{itemize}
 
 \subsection*{Version 0.9.2.0 $\Rightarrow$  0.9.2.1}
 \begin{itemize}

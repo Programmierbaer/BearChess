@@ -10,6 +10,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
     public class SerialComportForByteArray : IComPort
     {
         public string PortName { get; }
+        public string Baud { get; }
 
         private readonly SerialPort _serialPort;
 
@@ -21,6 +22,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         public SerialComportForByteArray(string comport, int baud, Parity parity)
         {
             PortName = comport;
+            Baud = baud.ToString();
             _serialPort = new SerialPort(comport, baud, parity);
             _serialPort.ReadTimeout = 500;
 
@@ -29,6 +31,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         public SerialComportForByteArray(string comport, int baud, Parity parity, int dataBits, StopBits stopBits)
         {
             PortName = comport;
+            Baud = baud.ToString();
             _serialPort = new SerialPort(comport, baud, parity, dataBits, stopBits);
             _serialPort.ReadTimeout = 500;
 
@@ -37,6 +40,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         public SerialComportForByteArray(string comport, int baud, Parity parity, int dataBits, StopBits stopBits, ILogging logger)
         {
             PortName = comport;
+            Baud = baud.ToString();
             _serialPort = new SerialPort(comport, baud, parity, dataBits, stopBits);
             _serialPort.ReadTimeout = 500;
             _logger = logger;
@@ -140,6 +144,17 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         public void Write(byte[] buffer, int offset, int count)
         {
             _serialPort.Write(buffer, offset, count);
+        }
+
+
+        public void Write(string message)
+        {
+            _serialPort.Write(message);
+        }
+
+        public void WriteLine(string command)
+        {
+            _serialPort.WriteLine(command);
         }
 
         public int ReadTimeout

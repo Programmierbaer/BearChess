@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -358,6 +359,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _uciInfosPlayer.Insert(indexOf,uciConfigWindow.GetUciInfo());
                 }
             }
+        }
+
+        private void textBoxFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var strings = textBoxFilter.Text.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            if (strings.Length > 0)
+            {
+                List<UciInfo> uciInfos = new List<UciInfo>(_uciInfos);
+                foreach (var s in strings)
+                {
+                    uciInfos.RemoveAll(r => !r.Name.ContainsCaseInsensitive(s));
+                }
+
+                dataGridEngine.ItemsSource = uciInfos.Distinct().OrderBy(u => u.Name);
+                return;
+            }
+            dataGridEngine.ItemsSource = _uciInfos.OrderBy(u => u.Name);
         }
     }
 }

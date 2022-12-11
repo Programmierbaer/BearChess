@@ -10,7 +10,8 @@ namespace www.SoLaNoSoft.com.BearChessBase
     {
         [XmlArray("Players")]
         public UciInfo[] Players;
-        public TimeControl TimeControl { get; set; }
+        public TimeControl TimeControlWhite { get; set; }
+        public TimeControl TimeControlBlack { get; set; }
         public bool DuelSwitchColor { get; set; }
         public bool DuelSaveGames { get; set; }
         public string GameEvent { get; set; }
@@ -23,11 +24,12 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public int CurrentMinElo { get; set; }
 
 
-        public CurrentDuel(List<UciInfo> players, TimeControl timeControl,  int cycles, 
+        public CurrentDuel(List<UciInfo> players, TimeControl timeControlWhite, TimeControl timeControlBlack, int cycles, 
                            bool duelSwitchColor, string gameEvent, bool startFromBasePosition, bool adjustEloWhite, bool adjustEloBlack,
                            int adjustEloStep)
         {
-            TimeControl = timeControl;
+            TimeControlWhite = timeControlWhite;
+            TimeControlBlack = timeControlBlack ?? timeControlWhite;
             Cycles = cycles;
             DuelSwitchColor = duelSwitchColor;
             GameEvent = gameEvent;

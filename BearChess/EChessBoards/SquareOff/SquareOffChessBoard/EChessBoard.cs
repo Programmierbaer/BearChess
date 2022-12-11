@@ -66,6 +66,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            SelfControlled = false;
             Information = boardName;
             IsConnected = EnsureConnection();
             _serialCommunication.Send("14#1*");
@@ -95,6 +96,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            SelfControlled = false;
             Information = string.Empty;
             _fromField[0] = string.Empty;
             _fromField[1] = string.Empty;
@@ -114,7 +116,12 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             return true;
         }
 
-        public override void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString)
+        public override bool CheckComPort(string portName, string baud)
+        {
+            return true;
+        }
+
+        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
         {
             
             if (fieldNames == null || fieldNames.Length == 0)
@@ -140,8 +147,8 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             }
             if (thinking && fieldNamesLength > 1)
             {
-                SetLedForFields(new[] { fieldNames[0] }, true, isMove, string.Empty);
-                SetLedForFields(new[] { fieldNames[1] }, true, isMove, string.Empty);
+                SetLedForFields(new[] { fieldNames[0] }, string.Empty, true, isMove, string.Empty);
+                SetLedForFields(new[] { fieldNames[1] }, string.Empty, true, isMove, string.Empty);
                 return;
             }
             
@@ -389,7 +396,9 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             _serialCommunication.Send("4#*");
         }
 
-        protected override void Release()
+     
+
+        public override void Release()
         {
             //
         }
@@ -422,7 +431,10 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             //
         }
 
-        public override void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack)
+        public override event EventHandler BasePositionEvent;
+        public override event EventHandler<string> DataEvent;
+
+        public override void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
         {
             //
         }

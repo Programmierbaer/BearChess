@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.FicsClient
 {
-    public class UciWrapper
+
+    public class UciWrapper : IUciWrapper
     {
         private readonly ChessBoard _chessBoard;
         private readonly string _gameNumber;

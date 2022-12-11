@@ -3,6 +3,7 @@
     public interface ISerialCommunication
     {
         string CurrentComPort { get; }
+        string CurrentBaud { get; }
 
         /// <summary>
         /// Indicates if the communication is active to send and receive data

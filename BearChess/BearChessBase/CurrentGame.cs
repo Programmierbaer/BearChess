@@ -12,12 +12,14 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public UciInfo BlackConfig { get; set; }
 
         public TimeControl TimeControl { get; set; }
+        public TimeControl TimeControlBlack { get; set; }
 
         public string PlayerWhite { get; set; }
         
         public string PlayerBlack { get; set; }
         
         public bool StartFromBasePosition { get; set; }
+        public bool ContinueGame { get; set; }
         public bool DuelEngine { get; set; }
         public bool DuelEnginePlayer { get; set; }
         public int CurrentDuelGame { get; set; }
@@ -30,28 +32,35 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool RepeatedGame { get; set; }
      
         public CurrentGame(UciInfo whiteConfig, UciInfo blackConfig, string gameEvent, TimeControl timeControl,
-                           string playerWhite, string playerBlack, bool startFromBasePosition)
-        : this (whiteConfig, blackConfig,gameEvent, timeControl,playerWhite,playerBlack,startFromBasePosition,false,1, false)
+                           string playerWhite, string playerBlack, bool startFromBasePosition, bool continueGame)
+        : this (whiteConfig, blackConfig,gameEvent, timeControl,null,playerWhite,playerBlack,startFromBasePosition,false,1, continueGame)
         {
         
         }
-
-        public CurrentGame(UciInfo whiteConfig, UciInfo blackConfig, string gameEvent, TimeControl timeControl,
-                           string playerWhite, string playerBlack, bool startFromBasePosition, bool duelEngine, int duelGames, bool duelEnginePlayer)
+        public CurrentGame(UciInfo whiteConfig, UciInfo blackConfig, string gameEvent, TimeControl timeControlWhite, TimeControl timeControlBlack,
+                           string playerWhite, string playerBlack, bool startFromBasePosition, bool continueGame)
+            : this(whiteConfig, blackConfig, gameEvent, timeControlWhite, timeControlBlack, playerWhite, playerBlack, startFromBasePosition, false, 1, false, continueGame)
         {
-            //if (whiteConfig.IsChessServer)
-            //{
-            //    whiteConfig.Name = playerWhite;
-            //}
 
-            //if (blackConfig.IsChessServer)
-            //{
-            //    blackConfig.Name = playerBlack;
-            //}
+        }
+
+        public CurrentGame(UciInfo whiteConfig, UciInfo blackConfig, string gameEvent, TimeControl timeControlWhite, TimeControl timeControlBlack,
+                           string playerWhite, string playerBlack, bool startFromBasePosition, bool duelEngine,
+                           int duelGames, bool duelEnginePlayer): this(whiteConfig, blackConfig, gameEvent, timeControlWhite,timeControlBlack, playerWhite, playerBlack, startFromBasePosition, duelEngine,duelGames,duelEnginePlayer, false)
+        {
+           
+           
+        }
+
+        public CurrentGame(UciInfo whiteConfig, UciInfo blackConfig, string gameEvent, TimeControl timeControlWhite, TimeControl timeControlBlack,
+                           string playerWhite, string playerBlack, bool startFromBasePosition, bool duelEngine, int duelGames, bool duelEnginePlayer, bool continueGame)
+        {
+
             WhiteConfig = whiteConfig;
             BlackConfig = blackConfig;
             GameEvent = gameEvent;
-            TimeControl = timeControl;
+            TimeControl = timeControlWhite;
+            TimeControlBlack = timeControlBlack ?? timeControlWhite;
             PlayerWhite = playerWhite;
             PlayerBlack = playerBlack;
             StartFromBasePosition = startFromBasePosition;
@@ -62,6 +71,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             DuelEnginePlayer = duelEnginePlayer;
             SwitchedColor = false;
             RepeatedGame = false;
+            ContinueGame = continueGame;
         }
 
         public CurrentGame()

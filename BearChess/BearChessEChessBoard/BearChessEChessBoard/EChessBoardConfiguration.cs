@@ -6,6 +6,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     public class EChessBoardConfiguration
     {
         public string PortName { get; set; }
+        public string Baud { get; set; }
         public bool DimLeds { get; set; }
         public int DimLevel { get; set; }
         public bool FlashInSync { get; set; }
@@ -27,6 +28,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             LongMoveFormat = true;
             ScanTime = 30; // Default for ChessLink
             Debounce = 0; // Default for ChessLink
+            Baud = "1200";
         }
 
         public static EChessBoardConfiguration Load(string fileName)
@@ -41,6 +43,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     var savedConfig = (EChessBoardConfiguration)serializer.Deserialize(textReader);
                     textReader.Close();
                     configuration.PortName = savedConfig.PortName;
+                    configuration.Baud = savedConfig.Baud;
                     configuration.DimLeds = savedConfig.DimLeds;
                     configuration.DimLevel = savedConfig.DimLevel;
                     configuration.FlashInSync = savedConfig.FlashInSync;
@@ -55,6 +58,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     {
                         configuration.DimLevel = configuration.DimLeds ? 0 : 14;
                     }
+
+                 
                 }
                 else
                 {

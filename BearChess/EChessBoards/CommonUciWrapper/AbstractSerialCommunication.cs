@@ -17,6 +17,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
     public abstract class AbstractSerialCommunication : ISerialCommunication
     {
         private readonly string _boardName;
+        private readonly int _baud;
         protected readonly ConcurrentQueue<byte[]> _byteDataToBoard = new ConcurrentQueue<byte[]>();
      
 
@@ -41,14 +42,20 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         protected byte[] _forcedSendValue;
 
         public string CurrentComPort { get; private set; }
+        public string CurrentBaud { get; private set; }
         public bool IsCommunicating { get; protected set; }
 
         public string BoardInformation { get; private set; }
 
 
-        protected AbstractSerialCommunication(ILogging logger, string portName, string boardName)
+        protected AbstractSerialCommunication(ILogging logger, string portName, string boardName) : this(logger, portName, string.Empty, boardName)
         {
-        
+
+        }
+
+        protected AbstractSerialCommunication(ILogging logger, string portName, string baud, string boardName)
+        {
+
             if (!string.IsNullOrWhiteSpace(portName))
             {
                 _setPortName = portName;
@@ -57,7 +64,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             BoardInformation = string.Empty;
             _logger = logger;
             _boardName = boardName;
-           
+            _baud = 1200;
+            if (!string.IsNullOrWhiteSpace(baud))
+            {
+                int.TryParse(baud, out _baud);
+            }
+
         }
 
         public DataFromBoard GetFromBoard()
@@ -68,20 +80,21 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (!line.Equals(_lastLine))
                     {
-                        _logger?.LogDebug($"SC: Read from board {line}");
+                        _logger?.LogDebug($"S: Dequeue from board {line}");
                     }
                     
                     if (line.Trim().Length > 1)
                     {
+                        if (line.StartsWith("Take"))
+                        {
+                            _lastLine = string.Empty;
+                        }
                         if (_lastLine.Equals(line))
                         {
-                            //                            _logger?.LogDebug("S: line equals lastline");
                             _repeated++;
                         }
                         else
                         {
-                            //_logger?.LogDebug($"SC: Read from board {line}");
-                            //                          _logger?.LogDebug($"S: line {line} not equals lastline {_lastLine}");
                             _repeated = 0;
                             _lastLine = line;
                         }
@@ -134,7 +147,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public void Send(string data)
         {
-            _logger.LogDebug($"S: Send {data}");
+            _logger.LogDebug($"S: Enqueue to board {data}");
             if (data.Equals("X"))
             {
                 while (_stringDataToBoard.TryDequeue(out _))
@@ -218,7 +231,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 if (_comPort != null && _comPort.IsOpen)
                 {
-                    _logger?.LogDebug($"S:CheckConnect: Try to close port {_comPort.PortName}");
+                    _logger?.LogDebug($"S: CheckConnect: Try to close port {_comPort.PortName}");
                     _comPort.Close();
                 }
 
@@ -280,7 +293,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             }
                         }
                     }
-                    // _comPort = new SerialComPort(comPort, 38400, Parity.Odd, 7, StopBits.One) {ReadTimeout = 1000, WriteTimeout = 1000};
                 }
 
                 if (_boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase))
@@ -308,11 +320,28 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                    
                     if (comPort.StartsWith("C"))
                     {
-                        _comPort = new SerialComportForByteArray(comPort, 57600, Parity.None,8,StopBits.One)
-                                   { ReadTimeout = 1000, WriteTimeout = 1000 };
+                        _comPort = new SerialComPortEventBased(comPort, 9600, Parity.None,8,StopBits.One)
+                                   { ReadTimeout = 2000, WriteTimeout = 2000 };
                     }
                 }
+                if (_boardName.Equals(Constants.Citrine, StringComparison.OrdinalIgnoreCase))
+                {
 
+                    if (comPort.StartsWith("C"))
+                    {
+                        _comPort = new SerialComPortEventBased(comPort, 57600, Parity.None, 8, StopBits.One)
+                                   { ReadTimeout = 2000, WriteTimeout = 2000 };
+                    }
+                }
+                if (_boardName.Equals(Constants.OSA, StringComparison.OrdinalIgnoreCase))
+                {
+
+                    if (comPort.StartsWith("C"))
+                    {
+                        _comPort = new SerialComPortEventBased(comPort, _baud, Parity.None, 8, StopBits.One)
+                                   { ReadTimeout = 2000, WriteTimeout = 2000 };
+                    }
+                }
 
                 if (_boardName.Equals(Constants.DGT, StringComparison.OrdinalIgnoreCase))
                 {
@@ -460,7 +489,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     return false;
                 }
 
-                _logger?.LogError("S: CheckConnect: Try to open  ");
+                _logger?.LogError("S: CheckConnect: Try to open ");
                 _comPort.Open();
                 if (_comPort.IsOpen)
                 {
@@ -482,7 +511,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public bool Connect()
         {
-           
+            CurrentBaud = string.Empty;
             var portNames = GetComPortNames();
             if (portNames.Length == 0)
             {
@@ -519,8 +548,29 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             BoardInformation = Constants.UCB;
                             if (_comPort.IsOpen)
                             {
-                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                _logger?.LogInfo($"S: COM-Port {portName} with {_comPort.Baud} baud opened");
                                 CurrentComPort = portName;
+                                return true;
+                            }
+                        }
+                        if (_boardName.Equals(Constants.Citrine, StringComparison.OrdinalIgnoreCase))
+                        {
+                            BoardInformation = Constants.Citrine;
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: COM-Port {portName} with {_comPort.Baud} baud opened");
+                                CurrentComPort = portName;
+                                return true;
+                            }
+                        }
+                        if (_boardName.Equals(Constants.OSA, StringComparison.OrdinalIgnoreCase))
+                        {
+                            BoardInformation = Constants.OSA;
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: COM-Port {portName} with {_comPort.Baud} baud opened");
+                                CurrentComPort = portName;
+                                CurrentBaud = _comPort.Baud;
                                 return true;
                             }
                         }
@@ -605,7 +655,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             _comPort.Open();
                             if (_comPort.IsOpen)
                             {
-                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                _logger?.LogInfo($"S: COM-Port {portName} with {_comPort.Baud} baud opened");
                                 CurrentComPort = portName;
                                 return true;
                             }
@@ -621,11 +671,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
             _logger?.LogError("S: No COM-Port available");
             CurrentComPort = string.Empty;
+            CurrentBaud = string.Empty;
             return false;
         }
 
         
-
         public bool SetComPort(string portName)
         {
             if (portName.Equals(_setPortName, StringComparison.OrdinalIgnoreCase))
@@ -688,17 +738,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         protected abstract void Communicate();
 
-        private void ClientPipe_PipeClosed(object sender, EventArgs e)
-        {
-            _logger?.LogDebug("S: Connection to pipe server closed");
-            _logger?.LogDebug("S: Switch to first instance");
-            _logger?.LogDebug("S: Create server pipe");
-        
-            StopCommunication();
-            Thread.Sleep(500);
-            _stopReading = false;
-            Connect();
-            StartCommunication();
-        }
+      
     }
 }

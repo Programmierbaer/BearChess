@@ -86,7 +86,7 @@ namespace www.SoLaNoSoft.com.BearChessTournament
                 currentGame = new CurrentGame(_currentTournament.Players[pair[0]],
                                               _currentTournament.Players[pair[1]],
                                               _currentTournament.GameEvent,
-                                              _currentTournament.TimeControl,
+                                              _currentTournament.TimeControl, _currentTournament.TimeControl,
                                               _currentTournament.Players[pair[0]].Name,
                                               _currentTournament.Players[pair[1]].Name,
                                               startFromBasePosition: true, duelEngine: true, duelGames: 1,false)

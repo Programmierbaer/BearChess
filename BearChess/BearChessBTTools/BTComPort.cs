@@ -16,6 +16,12 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
         public bool EndPointFound => _bluetoothEndPoint!= null;
 
         public string PortName => "BT";
+        public string Baud => string.Empty;
+
+        public void WriteLine(string command)
+        {
+            
+        }
 
         public int ReadTimeout { get; set; }
         public void ClearBuffer()
@@ -76,6 +82,10 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
             _client.Client.Send(buffer, offset,count,SocketFlags.None);
         }
 
+        public void Write(string message)
+        {
+
+        }
         
     }
 }

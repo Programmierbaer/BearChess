@@ -2,17 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using www.SoLaNoSoft.com.BearChess.DGTLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.UCBLoader;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -20,7 +10,7 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using Path = System.IO.Path;
 
-namespace www.SoLaNoSoft.com.BearChessWin.Windows
+namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
     /// Interaktionslogik für WinConfigureUCB.xaml
@@ -65,12 +55,8 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                 _fileLogger = null;
             }
 
-            _allPortNames = new List<string> { "<auto>" };
-           
-            
-                _portNames = SerialCommunicationTools.GetPortNames().ToList();
-            
-
+            _allPortNames = new List<string>();
+            _portNames = SerialCommunicationTools.GetPortNames().ToList();
             _portNames.ForEach(f => _allPortNames.Add(f));
             comboBoxComPorts.ItemsSource = _allPortNames;
             comboBoxComPorts.SelectedIndex = 0;
@@ -98,32 +84,6 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                 };
                 var ucbLoader = new UCBLoader(true, UCBLoader.EBoardName);
                 var portName = comboBoxComPorts.SelectionBoxItem.ToString();
-                if (portName.Contains("auto"))
-                {
-                    infoWindow.SetMaxValue(_portNames.Count);
-                    infoWindow.Show();
-                    var i = 0;
-                    foreach (var name in _portNames)
-                    {
-                        infoWindow.SetCurrentValue(i, name);
-                        infoWindow.SetCurrentValue(i);
-                        i++;
-                        if (ucbLoader.CheckComPort(name))
-                        {
-                            infoWindow.Close();
-                            MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK,
-                                            MessageBoxImage.Information);
-                            comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
-                            return;
-                        }
-                    }
-
-                    infoWindow.Close();
-                    MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
-                    return;
-
-                }
 
                 infoWindow.SetMaxValue(1);
                 infoWindow.Show();

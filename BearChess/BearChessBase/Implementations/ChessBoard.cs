@@ -30,6 +30,22 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public bool DrawBy50Moves => _drawBy50MoveCounter > 49;
 
         public int RemainingMovesFor50MovesDraw => 50 - _drawBy50MoveCounter;
+        public void TakeBack()
+        {
+            var playedMoveList = GetPlayedMoveList();
+            string initPosition =  GetInitialFenPosition();
+            Init();
+            NewGame();
+            if (!string.IsNullOrWhiteSpace(initPosition))
+            {
+                SetPosition(initPosition);
+            }
+            for (int i=0; i<playedMoveList.Length-1; i++)
+            {
+                MakeMove(playedMoveList[i]);
+            }
+        }
+
         public bool DrawByMaterial { get; private set; }
 
         public bool IsDraw => DrawBy50Moves || DrawByMaterial || DrawByRepetition;

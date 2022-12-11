@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" SizeToContent="Height"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" Icon="../Assets/Icons/6-2-chess-png.png"
-        Title="New Duel" Height="680" Width="660">
+        Title="New Duel" Height="680" Width="670">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -26,6 +26,9 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Border Grid.Column="0" Grid.Row="0" BorderBrush="Gray" BorderThickness="0"
@@ -33,10 +36,9 @@
                         Visibility="Visible" HorizontalAlignment="Left">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
-                            <Label Width="110" VerticalAlignment="Center">Event:</Label>
+                            <Label Width="90" VerticalAlignment="Center">Event:</Label>
                             <TextBox Name="textBoxEvent" Width="200" VerticalAlignment="Center" TextAlignment="Left"
                                      VerticalContentAlignment="Center" Text="Duel" Height="30" />
-
                         </StackPanel>
 
                     </StackPanel>
@@ -55,13 +57,13 @@
                     <StackPanel Grid.Column="0" Grid.Row="0" Margin="5">
                         <StackPanel Orientation="Horizontal">
                             <Image Margin="0,0,58,0" Source="../Assets/Stone/Symbol/KingW.png" Width="32" Height="32" />
-                            <ComboBox Margin="20,0,0,0" Name="comboBoxPlayerWhite" Width="200" Height="30"
-                                      VerticalContentAlignment="Center"
-                                      SelectionChanged="ComboBoxPlayerWhite_OnSelectionChanged" />
+                            <Button Name="buttonPlayerWhiteEngine"  HorizontalContentAlignment="Left" Width="370" Click="ButtonPlayerWhiteEngine_OnClick" >
+                                <TextBlock Margin="5" Name="textBlockPlayerWhiteEngine"></TextBlock>
+                            </Button>
 
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Name="textBlockPonderWhite" Margin="110,0,5,0" VerticalAlignment="Center">Ponder:</TextBlock>
+                            <TextBlock Name="textBlockPonderWhite" Margin="90,0,5,0" VerticalAlignment="Center">Ponder:</TextBlock>
                             <Image Margin="5,0,10,0" Name="imagePonderWhite" Width="16" Height="16"
                                    Source="../Assets/Icons/tick.png" Visibility="Visible" />
                             <Image Margin="5,0,10,0" Name="imagePonderWhite2" Width="16" Height="16"
@@ -92,12 +94,12 @@
                     <StackPanel Grid.Column="0" Grid.Row="1" Margin="5">
                         <StackPanel Orientation="Horizontal">
                             <Image Margin="0,0,58,0" Source="../Assets/Stone/Symbol/KingB.png" Width="32" Height="32" />
-                            <ComboBox Margin="20,0,0,0" Name="comboBoxPlayerBlack" Width="200" Height="30"
-                                      VerticalContentAlignment="Center"
-                                      SelectionChanged="ComboBoxPlayerBlack_OnSelectionChanged" />
+                            <Button Name="buttonPlayerBlackEngine"  HorizontalContentAlignment="Left" Width="370" Click="ButtonPlayerBlackEngine_OnClick" >
+                                <TextBlock Margin="5" Name="textBlockPlayerBlackEngine"></TextBlock>
+                            </Button>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Name="textBlockPonderBlack" Margin="110,0,5,0" VerticalAlignment="Center">Ponder:</TextBlock>
+                            <TextBlock Name="textBlockPonderBlack" Margin="90,0,5,0" VerticalAlignment="Center">Ponder:</TextBlock>
                             <Image Margin="5,0,10,0" Name="imagePonderBlack2" Width="16" Height="16"
                                    Source="../Assets/Icons/delete.png" Visibility="Collapsed" />
                             <Image Margin="5,0,10,0" Name="imagePonderBlack" Width="16" Height="16"
@@ -124,28 +126,15 @@
 
                     </Button>
                 </Grid>
-                <Grid Grid.Column="0" Grid.Row="2" Margin="5">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="110" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock VerticalAlignment="Center" Margin="10,5" Grid.Column="0">Start from:</TextBlock>
-                        <StackPanel VerticalAlignment="Center" Margin="5" Grid.Column="1" Orientation="Horizontal">
-                            <RadioButton Name="radioButtonStartPosition" Margin="0,5" GroupName="start"
-                                         IsChecked="True">
-                                Base position
-                            </RadioButton>
-                            <RadioButton Name="radioButtonCurrentPosition" Margin="5" GroupName="start">Current position</RadioButton>
-                        </StackPanel>
-                    </Grid>
-                </Grid>
-
-                <Grid Grid.Column="0" Grid.Row="3" Margin="5">
+             
+                <CheckBox Name="checkBox2TimeControls" VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="3"
+                                  Margin="100,5,5,5" Checked="CheckBox2TimeControls_OnChecked" Unchecked="CheckBox2TimeControls_OnUnchecked">
+                    Separate time control for white and black
+                </CheckBox>
+                <Grid Grid.Column="0" Grid.Row="4" Margin="5">
 
                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <Label VerticalAlignment="Center" Width="110">Time control:</Label>
+                        <TextBlock Name="textBlockTimeControl1" VerticalAlignment="Center" Width="90">Time control:</TextBlock>
                         <ComboBox Name="comboBoxTimeControl" Width="200" Height="30" VerticalContentAlignment="Center"
                                   SelectionChanged="ComboBoxTimeControl_OnSelectionChanged">
                             <ComboBoxItem IsSelected="True">Time per game</ComboBoxItem>
@@ -157,7 +146,8 @@
                     </StackPanel>
 
                 </Grid>
-                <Border Name="borderTimePerGame" Grid.Column="1" Grid.Row="3" BorderBrush="Gray" BorderThickness="0"
+            
+                <Border Name="borderTimePerGame" Grid.Column="1" Grid.Row="4" BorderBrush="Gray" BorderThickness="0"
                         Margin="5"
                         Visibility="Visible" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -166,7 +156,7 @@
                         <Label VerticalAlignment="Center">min.</Label>
                     </StackPanel>
                 </Border>
-                <Border Name="borderTimePerGameWithIncrement" Grid.Column="1" Grid.Row="3" BorderBrush="Gray"
+                <Border Name="borderTimePerGameWithIncrement" Grid.Column="1" Grid.Row="4" BorderBrush="Gray"
                         Margin="5"
                         BorderThickness="0" Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
@@ -180,7 +170,7 @@
                         <Label VerticalAlignment="Center">sec. per move</Label>
                     </StackPanel>
                 </Border>
-                <Border Name="borderTimePerGivenMoves" Grid.Column="1" Grid.Row="3" BorderBrush="Gray"
+                <Border Name="borderTimePerGivenMoves" Grid.Column="1" Grid.Row="4" BorderBrush="Gray"
                         BorderThickness="0" Margin="5"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
@@ -194,7 +184,7 @@
                         <Label VerticalAlignment="Center">min.</Label>
                     </StackPanel>
                 </Border>
-                <Border Name="borderAverageTimePerMove" Grid.Column="1" Grid.Row="3" BorderBrush="Gray"
+                <Border Name="borderAverageTimePerMove" Grid.Column="1" Grid.Row="4" BorderBrush="Gray"
                         BorderThickness="0" Margin="5"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
@@ -206,7 +196,71 @@
                                      GroupName="averageTime" Content="min." />
                     </StackPanel>
                 </Border>
-                <StackPanel Grid.Row="4" Grid.Column="1">
+
+                <Grid Name="gridTimeControl2" Grid.Column="0" Grid.Row="5" Visibility="Hidden" Margin="5">
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <TextBlock VerticalAlignment="Center" Text="Time control &#x265A;:" Width="90"></TextBlock>
+                        <ComboBox Name="comboBoxTimeControl2" Width="200" Height="30" VerticalContentAlignment="Center"
+                                  SelectionChanged="ComboBoxTimeControl2_OnSelectionChanged">
+                            <ComboBoxItem IsSelected="True">Time per game</ComboBoxItem>
+                            <ComboBoxItem>Time per game with increment</ComboBoxItem>
+                            <ComboBoxItem>Time per given moves</ComboBoxItem>
+                            <ComboBoxItem>Average time per move</ComboBoxItem>
+                            <ComboBoxItem>Adapted time</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+                <Border Name="borderTimePerGame2" Grid.Column="1" Grid.Row="5" BorderBrush="Gray" BorderThickness="0"
+                        Margin="5"
+                        Visibility="Collapsed" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGame2" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">min.</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderTimePerGameWithIncrement2" Grid.Column="1" Grid.Row="5" BorderBrush="Gray"
+                        Margin="5"
+                        BorderThickness="0" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameWith2" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">min.</Label>
+                        <Label VerticalAlignment="Center">plus</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameIncrement2"
+                                                        Height="40"
+                                                        MinValue="1" MaxValue="60" Value="1" />
+                        <Label VerticalAlignment="Center">sec. per move</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderTimePerGivenMoves2" Grid.Column="1" Grid.Row="5" BorderBrush="Gray"
+                        BorderThickness="0" Margin="5"
+                        Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivenMoves2" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">moves</Label>
+                        <Label VerticalAlignment="Center">in</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivensMovesMin2"
+                                                        Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">min.</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderAverageTimePerMove2" Grid.Column="1" Grid.Row="5" BorderBrush="Gray"
+                        BorderThickness="0" Margin="5"
+                        Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlAverageTime2" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <RadioButton Name="radioButtonSecond2" Margin="10,0,0,0" IsChecked="True"
+                                     VerticalAlignment="Center" GroupName="averageTime" Content="sec." />
+                        <RadioButton Name="radioButtonMinute2" Margin="10,0,0,0" VerticalAlignment="Center"
+                                     GroupName="averageTime" Content="min." />
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Grid.Row="6" Grid.Column="1">
                     <CheckBox Name="checkBoxTournamentMode" Margin="5,5,5,5" VerticalAlignment="Center"
                               Unchecked="CheckBoxAllowTournament_OnUnchecked"
                               Checked="CheckBoxAllowTournament_OnChecked">
@@ -214,7 +268,7 @@
                     </CheckBox>
                     <CheckBox Name="checkBoxAllowTakeMoveBack" Margin="5,5,5,5" VerticalAlignment="Center">Allow to take a move back</CheckBox>
                 </StackPanel>
-                <StackPanel Name="stackPanelExtraTime" Orientation="Horizontal" Grid.Column="0" Grid.Row="4"
+                <StackPanel Name="stackPanelExtraTime" Orientation="Horizontal" Grid.Column="0" Grid.Row="6"
                             Margin="10,5,5,5" VerticalAlignment="Top">
                     <Label VerticalAlignment="Center">Extra time for human player:</Label>
                     <local:NumericUpDownUserControl x:Name="numericUpDownUserExtraTime" Height="40" MinValue="0"
@@ -222,10 +276,25 @@
                     <Label VerticalAlignment="Center">min.</Label>
                 </StackPanel>
                 <CheckBox Name="checkBoxStartAfterMoveOnBoard" VerticalAlignment="Center" Margin="5" Grid.Column="1"
-                          Grid.Row="5">
+                          Grid.Row="7">
                     <TextBlock TextWrapping="Wrap">Start the clock after the move is executed on the electronic board.</TextBlock>
                 </CheckBox>
-                <Border Grid.Column="0" Grid.Row="6" BorderBrush="Gray" BorderThickness="0"
+                <Grid Grid.Column="0" Grid.Row="8" Margin="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock VerticalAlignment="Center" Margin="10,5" Grid.Column="0">Start from:</TextBlock>
+                        <StackPanel Name="stackPanelStartFrom" VerticalAlignment="Center" Margin="5" Grid.Column="1" >
+                            <RadioButton Name="radioButtonStartPosition" Margin="0" GroupName="start" IsChecked="True">Base position</RadioButton>
+                            <RadioButton Name="radioButtonCurrentPosition" Margin="0,5,0,0" GroupName="start">Current position</RadioButton>
+                            <RadioButton Name="radioButtonContinueGame" Margin="0,5,0,0" GroupName="start">Continue the game</RadioButton>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Border Grid.Column="0" Grid.Row="9" BorderBrush="Gray" BorderThickness="0"
                         Margin="5" Grid.ColumnSpan="2"
                         Visibility="Visible" HorizontalAlignment="Left">
                     <StackPanel>
@@ -272,7 +341,7 @@
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="0" Grid.Row="7" BorderBrush="Gray" BorderThickness="0"
+                <Border Grid.Column="0" Grid.Row="10" BorderBrush="Gray" BorderThickness="0"
                         Margin="5" Grid.ColumnSpan="2"
                         Visibility="Visible" HorizontalAlignment="Left">
 

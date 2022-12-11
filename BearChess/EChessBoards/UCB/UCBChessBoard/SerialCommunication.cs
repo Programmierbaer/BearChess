@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-
 
 namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 
@@ -13,12 +10,13 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 {
     public class SerialCommunication : AbstractSerialCommunication
     {
-        private string _currentPosition = string.Empty;
         private readonly object _locker = new object();
+        private string _currentPosition = string.Empty;
         private string _lastLine = string.Empty;
         private Thread _readingThread;
 
-        public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.UCB)
+        public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(
+            logger, portName, Constants.UCB)
         {
             _useBluetooth = useBluetooth;
         }
@@ -27,12 +25,38 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
         {
             try
             {
-                var readByte = _comPort.ReadByte();
-                while (readByte != -1)
+                if (!string.IsNullOrWhiteSpace(param))
                 {
-                    readByte = _comPort.ReadByte();
+                    SendRawToBoard(param);
+
+
+                    if (param.Equals("XON"))
+                    {
+                        string readLine = string.Empty;
+                        while (!readLine.StartsWith("Xmit"))
+                        {
+                            readLine = _comPort.ReadLine();
+                        }
+
+                        return readLine;
+                    }
+                    if (param.Equals("UON"))
+                    {
+                        string readLine = string.Empty;
+                        while (!readLine.StartsWith(".Referee"))
+                        {
+                            readLine = _comPort.ReadLine();
+                        }
+
+                        return readLine;
+                    }
+
+                    return _comPort.ReadLine();
                 }
-                return _comPort.ReadLine();
+                else
+                {
+                    return _comPort.ReadLine();
+                }
             }
             catch (Exception ex)
             {
@@ -43,8 +67,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 
         public override void SendRawToBoard(string param)
         {
-            var convertToSend = ConvertToSend(param);
-            _comPort.Write(convertToSend, 0, convertToSend.Length);
+            _comPort.Write($"{param}{Environment.NewLine}");
         }
 
         public override void SendRawToBoard(byte[] param)
@@ -54,16 +77,16 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 
         public override string GetCalibrateData()
         {
-           return string.Empty;
+            return string.Empty;
         }
 
         protected override void Communicate()
         {
             _logger?.LogDebug("SC: Communicate");
             IsCommunicating = true;
-            bool withConnection = true;
-            string readLine = string.Empty;
-            string lastReadToSend = string.Empty;
+            var withConnection = false;
+            var readLine = string.Empty;
+            var lastReadToSend = string.Empty;
             _readingThread = new Thread(ReadingFromBoard) { IsBackground = true };
             _readingThread.Start();
             while (!_stopReading)
@@ -74,25 +97,23 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
                     {
                         withConnection = Connect();
                     }
+
                     if (withConnection && !_pauseReading)
                     {
-                        if (_stringDataToBoard.TryDequeue(out string data))
+                        if (_stringDataToBoard.TryDequeue(out var data))
                         {
-                            if (!data.Equals("X") && !data.Equals("G") && lastReadToSend.Equals(data))
+                            if (lastReadToSend.Equals(data))
                             {
                                 // _logger?.LogDebug($"SC: Skip last send {data}");
                                 continue;
                             }
-                            
-                                _logger?.LogDebug($"SC: Send {data}");
-                                lastReadToSend = data;
-                                var convertToSend = ConvertToSend(data);
-                                _comPort.Write(convertToSend, 0, convertToSend.Length);
-                            
+
+                            _logger?.LogDebug($"SC: Send {data}");
+                            lastReadToSend = data;
+                            _comPort.Write($"{data}{Environment.NewLine}");
                         }
-
-
                     }
+
                     Thread.Sleep(5);
                 }
                 catch (Exception ex)
@@ -103,28 +124,20 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
                     //break;
                 }
             }
+
             IsCommunicating = false;
             _logger?.LogDebug("SC: Exit Communicate");
         }
 
-        private string ConvertFromRead(int data)
-        {
-            var i = data & 127;
-            return Encoding.ASCII.GetString(new[] { (byte)i });
-        }
-
-        private byte[] ConvertToSend(string data)
-        {
-            return Encoding.ASCII.GetBytes(data);
-        }
 
         private void ReadingFromBoard()
         {
-            bool withConnection = true;
-            string readLine = string.Empty;
+            var withConnection = true;
+            var readLine = string.Empty;
 
             while (!_stopReading)
             {
+                Thread.Sleep(5);
                 try
                 {
                     if (!withConnection)
@@ -134,123 +147,34 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
 
                     if (withConnection && !_pauseReading)
                     {
-                        int readByte = int.MaxValue;
-                            readLine = string.Empty;
-                            try
-                            {
-                                while (readByte > 0)
-                                {
-                                    readByte = _comPort.ReadByte();
-                                    if (readByte > 0)
-                                    {
-                                        var convertFromRead = ConvertFromRead(readByte);
-                                        // _logger?.LogDebug($"SC: Read:  {convertFromRead}");
-                                        readLine += convertFromRead;
-                                    }
-
-                                }
-                            }
-                            catch
-                            {
-                                // _logger?.LogDebug("SC: Catch");
-                            }
+                        readLine = "----------------------";
+                        try
+                        {
+                            readLine = _comPort.ReadLine();
+                        }
+                        catch
+                        {
+                            // _logger?.LogDebug("SC: Catch");
+                        }
 
 
-                            if (string.IsNullOrWhiteSpace(readLine))
-                            {
-                                continue;
-                            }
+                        if (string.IsNullOrWhiteSpace(readLine))
+                        {
+                            continue;
+                        }
 
-                            if (readLine.Length == 1)
-                            {
-                                continue;
-                            }
+                        if (readLine.StartsWith("T"))
+                        {
+                            readLine = "Take Back";
+                        }
+                        if (readLine.StartsWith("N"))
+                        {
+                            readLine = "New Game";
+                        }
+                        _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
+                        _dataFromBoard.Enqueue(readLine);
 
-                            _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
-                            if (readLine.Contains("s"))
-                            {
-
-                                lock (_locker)
-                                {
-                                    string tmpLine =
-                                        readLine.Substring(readLine.IndexOf("s", StringComparison.Ordinal));
-
-                                    while (true)
-                                    {
-                                        var startIndex = tmpLine.IndexOf("s", StringComparison.Ordinal);
-                                        if (tmpLine.Length < startIndex + 67)
-                                        {
-                                            break;
-                                        }
-
-                                        string currentPosition = tmpLine.Substring(startIndex, 67);
-                                        //if (!_currentPosition.Equals(currentPosition))
-                                        //{
-                                        //    _logger?.LogDebug($"SC: Current position: {_currentPosition}");
-                                        //}
-                                        _currentPosition = currentPosition;
-                                        _dataFromBoard.Enqueue(_currentPosition);
-                                        if (tmpLine.Length > 67)
-                                        {
-                                            tmpLine = tmpLine.Substring(67);
-                                            //_logger?.LogDebug($"SC: new tmp line: {tmpLine}");
-                                            if (!tmpLine.StartsWith("s"))
-                                            {
-                                                break;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-
-                                }
-
-                            }
-                            if (readLine.Contains("g"))
-                            {
-
-                                lock (_locker)
-                                {
-                                    string tmpLine =
-                                        readLine.Substring(readLine.IndexOf("g", StringComparison.Ordinal));
-
-                                    while (true)
-                                    {
-                                        var startIndex = tmpLine.IndexOf("g", StringComparison.Ordinal);
-                                        if (tmpLine.Length < startIndex + 67)
-                                        {
-                                            break;
-                                        }
-
-                                        string currentPosition = tmpLine.Substring(startIndex, 67);
-                                        _currentPosition = currentPosition;
-                                        _dataFromBoard.Enqueue(_currentPosition);
-                                        if (tmpLine.Length > 67)
-                                        {
-                                            tmpLine = tmpLine.Substring(67);
-                                            //_logger?.LogDebug($"SC: new tmp line: {tmpLine}");
-                                            if (!tmpLine.StartsWith("s"))
-                                            {
-                                                break;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-
-                                }
-
-                            }
-
-                          
-                        
                     }
-
-                    Thread.Sleep(5);
                 }
                 catch (Exception ex)
                 {

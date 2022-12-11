@@ -35,7 +35,8 @@
             <Button Margin="5" DockPanel.Dock="Left" Name="buttonOk" Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Load selected engine">
                 <Image Source="../Assets/Icons/robot.png" Width="32" Height="32"></Image>
             </Button>
-
+            <TextBlock VerticalAlignment="Center" Margin="5">Filter:</TextBlock>
+            <TextBox VerticalAlignment="Center" Margin="5" DockPanel.Dock="Left" Name="textBoxFilter" TextChanged="TextBoxFilter_OnTextChanged" Height="25" Width="130"></TextBox>
             <Button Margin="25,5,5,5" DockPanel.Dock="Right" Name="buttonCancel" Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
                 <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
             </Button>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" ResizeMode="NoResize" Icon="../Assets/Icons/cup_gold.png"
-        Title="New Engine Tournament" Height="430" Width="1200">
+        Title="New Engine Tournament" Height="470" Width="1200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -229,7 +229,11 @@
                             </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-
+                    <StackPanel Margin="5" Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+                        <TextBlock>Filter:</TextBlock>
+                        <TextBox Name="textBoxFilter" Margin="5,0" Grid.Row="2"  Width="189" TextChanged="textBoxFilter_TextChanged" Grid.Column="2"></TextBox>
+                    </StackPanel>
+                    
                 </Grid>
             </Grid>
         </Border>

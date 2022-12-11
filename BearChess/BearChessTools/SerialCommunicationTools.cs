@@ -55,6 +55,20 @@ namespace www.SoLaNoSoft.com.BearChessTools
             return result.ToArray();
         }
 
+        public static string[] GetBaudRates()
+        {
+            var result = new List<string>
+                         {
+                             "110",
+                             "300",
+                             "1200",
+                             "2400",
+                             "4800",
+                             "9600"
+                         };
+            return result.ToArray();
+        }
+
         public static string[] GetBTComPort(string boardName, Configuration configuration, ILogging fileLogger, bool btClassic, bool btLE)
         {
             fileLogger?.LogInfo($"Get BT com ports for {boardName}");

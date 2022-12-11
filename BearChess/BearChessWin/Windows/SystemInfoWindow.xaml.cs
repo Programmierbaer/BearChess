@@ -59,6 +59,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     imageSquareOffPro.Visibility = Visibility.Visible;
                 }
+                if (chessBoardInfo.Equals(Constants.Citrine))
+                {
+                    imageCitrine.Visibility = Visibility.Visible;
+                }
+                if (chessBoardInfo.Equals(Constants.UCB))
+                {
+                    imageUCB.Visibility = Visibility.Visible;
+                }
             }
         }
 

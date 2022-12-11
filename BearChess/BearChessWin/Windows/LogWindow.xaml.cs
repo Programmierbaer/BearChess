@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Xml.Linq;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.UserControls;
 
@@ -15,6 +18,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class LogWindow : Window
     {
         private readonly Configuration _configuration;
+
+        private const int GWL_STYLE = -16;
+        private const int WS_SYSMENU = 0x00080000;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int GetWindowLongPtr(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLongPtr(IntPtr hWnd, int nIndex, int dwNewLong);
+
 
         public class SendEventArgs : EventArgs
         {
@@ -51,11 +64,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _configuration = configuration;
             InitializeComponent();
+            this.Loaded += new RoutedEventHandler(Window_Loaded);
             Top = _configuration.GetWinDoubleValue("LogWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("LogWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Height = _configuration.GetWinDoubleValue("LogWindowHeight", Configuration.WinScreenInfo.Height, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, "325");
             var thread = new Thread(showInfo) {IsBackground = true};
             thread.Start();
+        }
+
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            SetWindowLongPtr(hwnd, GWL_STYLE, GetWindowLongPtr(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
         public void AddFor(string name)
@@ -92,6 +113,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+
         private void UciLogInfoUserControl_SendEvent(object sender, UciLogInfoUserControl.SendEventArgs e)
         {
             if (sender is UciLogInfoUserControl userControl)
@@ -114,8 +136,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     Grid.SetRow(gridUciLogInfos.Children[i], i);
                 }
-                // gridUciLogInfos.Children.Remove(control);
-                
             }
         }
 

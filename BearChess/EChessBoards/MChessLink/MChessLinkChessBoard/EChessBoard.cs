@@ -156,6 +156,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             IsConnected = EnsureConnection();
             Information = "Millennium "+_serialCommunication.BoardInformation;
             PieceRecognition = _serialCommunication.BoardInformation != Constants.MeOne;
+            SelfControlled = false;
         }
 
         public EChessBoard(ILogging logger)
@@ -259,7 +260,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
         }
 
-        public override void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString)
+        public override bool CheckComPort(string portName, string baud)
+        {
+            return CheckComPort(portName);
+        }
+
+        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
         {
             if (!EnsureConnection())
             {
@@ -463,7 +469,9 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             //
         }
 
-        protected override void Release()
+      
+
+        public override void Release()
         {
             //
         }
@@ -495,7 +503,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             //
         }
 
-        public override void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack)
+        public override event EventHandler BasePositionEvent;
+        public override event EventHandler<string> DataEvent;
+
+        public override void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
         {
             //
         }

@@ -13,6 +13,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected bool Check { get; }
 
         public event EventHandler<string> MoveEvent;
+        public event EventHandler<string> DataEvent;
         public event EventHandler<string> FenEvent;
         public event EventHandler AwaitedPosition;
         public event EventHandler BasePositionEvent;
@@ -26,7 +27,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool IsInDemoMode => _eChessBoard.IsInDemoMode;
         public bool IsInReplayMode => _eChessBoard.IsInReplayMode;
         public bool IsConnected => _eChessBoard.IsConnected;
-
 
 
         protected AbstractLoader(bool check, string name)
@@ -82,15 +82,25 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.AwaitedPosition += EChessBoard_AwaitedPosition;
             _eChessBoard.BasePositionEvent += EChessBoard_BasePositionEvent;
             _eChessBoard.BatteryChangedEvent += EChessBoard_BatteryChangedEvent;
+            _eChessBoard.DataEvent += EChessBoard_DataEvent;
 
         }
 
+        private void EChessBoard_DataEvent(object sender, string e)
+        {
+           DataEvent?.Invoke(this,e);
+        }
 
         protected abstract IEBoardWrapper GetEBoardImpl(string basePath, EChessBoardConfiguration configuration);
 
         public void Reset()
         {
             _eChessBoard.Reset();
+        }
+
+        public void Release()
+        {
+            _eChessBoard.Release();
         }
 
         /// <inheritdoc />
@@ -188,6 +198,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.SendInformation(message);
         }
 
+        public void SendCommand(string command)
+        {
+            _eChessBoard.SendCommand(command);
+        }
+
         public void RequestDump()
         {
             _eChessBoard.RequestDump();
@@ -220,10 +235,20 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             
             return _eChessBoard.CheckCOMPort(portName);
         }
+        public bool CheckComPort(string portName, string baud)
+        {
+
+            return _eChessBoard.CheckCOMPort(portName, baud);
+        }
 
         public string GetCurrentComPort()
         {
             return _eChessBoard.GetCurrentCOMPort();
+        }
+
+        public string GetCurrentBaud()
+        {
+            return _eChessBoard.GetCurrentBaud();
         }
 
         /// <inheritdoc />
@@ -270,6 +295,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string BatteryLevel => _eChessBoard.BatteryLevel;
         public string BatteryStatus => _eChessBoard.BatteryStatus;
         public string Information => _eChessBoard.Information;
+        public string Level => _eChessBoard.Level;
 
         public void AllowTakeBack(bool allowTakeBack)
         {
@@ -282,9 +308,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.Ignore(ignore);
         }
 
-        public void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack)
+        public void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
         {
-            _eChessBoard.SetClock(hourWhite, minuteWhite, minuteSec, hourBlack, minuteBlack, secondBlack);
+            _eChessBoard.SetClock(hourWhite, minuteWhite, secWhite, hourBlack, minuteBlack, secondBlack);
         }
 
         public void StopClock()

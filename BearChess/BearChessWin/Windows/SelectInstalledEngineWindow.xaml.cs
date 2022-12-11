@@ -560,5 +560,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonInstall.IsEnabled = dataGridEngine.SelectedItems.Count < 2;
             buttonOk.IsEnabled = dataGridEngine.SelectedItems.Count == 1;
         }
+
+        private void TextBoxFilter_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var strings = textBoxFilter.Text.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            if (strings.Length > 0)
+            {
+                List<UciInfo> uciInfos = new List<UciInfo>(_uciInfos);
+                foreach (var s in strings)
+                {
+                    uciInfos.RemoveAll(r => !r.Name.ContainsCaseInsensitive(s));
+                }
+
+                dataGridEngine.ItemsSource = uciInfos.Distinct().OrderBy(u => u.Name);
+                return;
+            }
+            dataGridEngine.ItemsSource = _uciInfos.OrderBy(u => u.Name);
+        }
     }
 }

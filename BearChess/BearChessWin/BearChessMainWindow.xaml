@@ -105,7 +105,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem Header="Connect to FICS" Name="menuItemConnectFics" 
+                    <MenuItem Header="Connect to FICS" Name="menuItemConnectFics"
                               Click="MenuItemConnectFics_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/FicsLogo.png" />
@@ -322,7 +322,7 @@
                             <Image Source="Assets/Icons/sound.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemFICS" Header="FICS..." Click="MenuItemFICS_OnClick" 
+                    <MenuItem Name="menuItemFICS" Header="FICS..." Click="MenuItemFICS_OnClick"
                               ToolTip="Configure you Free Internet Chess Server connection">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/FicsLogo.png" />
@@ -460,22 +460,64 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="UCB" Name="menuItemUCBBoard" Visibility="Collapsed">
+                    <MenuItem Header="NOVAG" Name="menuItemNovagBoard" Visibility="Visible">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/novag48.PNG" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemConnectToUCBBoard" Header="Connect"
-                                  Click="MenuItemConnectUCBBoard_OnClick">
+                        <MenuItem Header="Citrine" Name="menuItemCitrineBoard" Visibility="Visible">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/novag48.PNG" />
+                            </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToCitrineBoard" Header="Connect"
+                                      Click="MenuItemConnectCitrineBoard_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureCitrine" Header="Configure"
+                                      Click="MenuItemConfigureCitrine_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="UCB" Name="menuItemUCBBoard" Visibility="Visible">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/novag48.PNG" />
+                            </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToUCBBoard" Header="Connect"
+                                      Click="MenuItemConnectUCBBoard_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureUCB" Header="Configure"
+                                      Click="MenuItemConfigureUCB_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                    </MenuItem>
+                    <MenuItem Name="menuItemSaitek" Header="Saitek OSA">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/Saitek_logo.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToOSA" Header="Connect"
+                                  Click="MenuItemConnectToOSA_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemConfigureUCB" Header="Configure"
-                                  Click="MenuItemConfigureUCB_OnClick">
+                        <MenuItem Name="menuItemConfigureOSA" Header="Configure"
+                                  Click="MenuItemConfigureOSA_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/cog.png" />
                             </MenuItem.Icon>
                         </MenuItem>
+                    </MenuItem>
+                    <MenuItem Visibility="Collapsed" Header="Test COM" Name="menuItemTestComPort" Click="MenuItemTestComPort_OnClick" >
+
                     </MenuItem>
                     <Separator />
                     <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup"
@@ -508,7 +550,7 @@
                             <Image Name="imageShowBestMoveOnGame" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  -->
+                 <!--   <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  -->
                 </MenuItem>
                 <MenuItem Header="Windows">
                     <MenuItem Header="Show">

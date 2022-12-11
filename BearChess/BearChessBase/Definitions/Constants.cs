@@ -10,6 +10,8 @@
         public const string SquareOffPro = "Square Off Pro";
         public const string ChessnutAir = "Chessnut Air";
         public const string UCB = "UCB";
+        public const string OSA = "Saitek OSA";
+        public const string Citrine = "Citrine";
         public const string Teddy = "Teddy";
         public const string MeOne = "eOne";
         public const string KingPerformance = "King Performance";

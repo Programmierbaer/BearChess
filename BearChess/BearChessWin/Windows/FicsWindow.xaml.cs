@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
@@ -300,6 +301,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _loadedEngine = new LoadedUciEngine(uciLoader, color);
         }
 
+        public void LoadUciEngine(UciInfo uciInfo, IElectronicChessBoard chessBoard, Move[] playedMoves, bool lookForBookMoves,
+                                  int color)
+        {
+            //
+        }
+
         public void ShowTeddy(bool showTeddy)
         {
             //
@@ -321,11 +328,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _loadedEngine.UciEngine.SendToEngine(command);
         }
 
-        public void NewGame(TimeControl timeControl = null)
+        public void NewGame()
+        {
+            NewGame(null, null);
+        }
+
+
+        public void NewGame(TimeControl timeControl, TimeControl timeControlBlack)
         {
             _logger?.LogInfo("New game");
             _loadedEngine.UciEngine.NewGame(this);
         }
+
 
         public void AddMove(string fromField, string toField, string promote, string engineName = "")
         {

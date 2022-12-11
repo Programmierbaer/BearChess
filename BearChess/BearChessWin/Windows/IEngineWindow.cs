@@ -1,4 +1,5 @@
 ﻿using System;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
@@ -26,11 +27,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY);
         void LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves, int color = Fields.COLOR_EMPTY);
         void LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, Move[] playedMoves, bool lookForBookMoves, int color, string gameNumber);
+        void LoadUciEngine(UciInfo uciInfo, IElectronicChessBoard chessBoard, Move[] playedMoves, bool lookForBookMoves, int color);
         void ShowTeddy(bool showTeddy);
         void SetOptions();
         void IsReady();
         void SendToEngine(string command, string engineName = "");
-        void NewGame(TimeControl timeControl = null);
+        void NewGame();
+        void NewGame(TimeControl timeControl, TimeControl timeControlBlack);
         void AddMove(string fromField, string toField, string promote, string engineName = "");
         void AddMoveForCoaches(string fromField, string toField, string promote);
         void MakeMove(string fromField, string toField, string promote, string engineName = "");

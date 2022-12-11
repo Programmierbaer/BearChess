@@ -8,6 +8,7 @@ using System.Linq;
 using System.Speech.Synthesis;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
@@ -41,6 +42,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showNodes;
         private bool _showNodesPerSec;
         private TimeControl _timeControl;
+        private TimeControl _timeControlBlack;
 
 
         private bool _whiteOnTop;
@@ -167,20 +169,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves,
                                   int color = Fields.COLOR_EMPTY)
         {
-            LoadUciEngine(uciInfo, null, fenPosition, playedMoves, lookForBookMoves, color, string.Empty);
+            LoadUciEngine(uciInfo, null, null, fenPosition, playedMoves, lookForBookMoves, color, string.Empty);
         }
 
         public void LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves,
                                   int color = Fields.COLOR_EMPTY)
         {
-            LoadUciEngine(uciInfo, null, string.Empty, playedMoves, lookForBookMoves, color, string.Empty);
+            LoadUciEngine(uciInfo, null, null, string.Empty, playedMoves, lookForBookMoves, color, string.Empty);
         }
 
         public void LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, Move[] playedMoves, bool lookForBookMoves,
                                   int color, string gameNumber)
         {
-            LoadUciEngine(uciInfo, ficsClient, string.Empty, playedMoves, lookForBookMoves, color, gameNumber);
+            LoadUciEngine(uciInfo, ficsClient, null, string.Empty, playedMoves, lookForBookMoves, color, gameNumber);
         }
+
+        public void LoadUciEngine(UciInfo uciInfo, IElectronicChessBoard chessBoard, Move[] playedMoves, bool lookForBookMoves,
+                                  int color)
+        {
+            LoadUciEngine(uciInfo, null, chessBoard, string.Empty, playedMoves, lookForBookMoves, color, string.Empty);
+        }
+
+       
 
         public void ShowTeddy(bool showTeddy)
         {
@@ -221,9 +231,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        public void NewGame(TimeControl timeControl = null)
+        public void NewGame()
+        {
+            NewGame(null, null);
+        }
+
+
+        public void NewGame(TimeControl timeControl, TimeControl timeControlBlack)
         {
             _timeControl = timeControl;
+            _timeControlBlack = timeControlBlack ?? timeControl;
             _fileLogger?.LogInfo("New game");
             foreach (var engine in _loadedEngines)
             {
@@ -236,7 +253,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 engineInfoUserControl.Value.ClearMoves();
             }
-
         }
 
         public void AddMove(string fromField, string toField, string promote, string engineName = "")
@@ -325,10 +341,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void ClearTimeControl()
         {
             _timeControl = null;
+            _timeControlBlack = null;
         }
 
         public void StopForCoaches()
         {
+            if (_loadedEngines.All(e => e.Value.Color != Fields.COLOR_EMPTY))
+            {
+                return;
+            }
             _fileLogger?.LogInfo("Send Stop for coaches");
             foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {
@@ -381,22 +402,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _fileLogger?.LogInfo(
                 $"Send Go wTime:{wTime}  bTime:{bTime} wInc:{wInc}  bInc:{bInc} for all {_loadedEngines.Count} engines");
-            var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
-            foreach (var engine in _loadedEngines.Where(e => e.Key.StartsWith(engineName)))
+            //var anyWithColor = _loadedEngines.Values.Any(e => e.Color != Fields.COLOR_EMPTY);
+            foreach (var engine in _loadedEngines.Where(
+                         e => e.Value.Color != Fields.COLOR_EMPTY && e.Key.StartsWith(engineName)))
             {
                 if (_pausedEngines.ContainsKey(engine.Key))
                 {
                     continue;
                 }
 
-                if (anyWithColor && engine.Value.Color == Fields.COLOR_EMPTY)
-                {
-                    //                    engine.Value.UciEngine.GoInfinite();
-                }
-                else
-                {
-                    engine.Value.UciEngine.Go(wTime, bTime, wInc, bInc);
-                }
+
+                engine.Value.UciEngine.Go(wTime, bTime, wInc, bInc);
+
             }
 
             _lastCommand = string.Empty;
@@ -480,6 +497,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void GoInfiniteForCoach(string fenPosition)
         {
+            if (_loadedEngines.All(e => e.Value.Color != Fields.COLOR_EMPTY))
+            {
+                return;
+            }
             StopForCoaches();
             MakeMoveForCoaches(fenPosition);
             _fileLogger?.LogInfo("Send Go infinite for coaches");
@@ -526,7 +547,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, string fenPosition, Move[] playedMoves,
+        private void LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, IElectronicChessBoard chessBoard, string fenPosition, Move[] playedMoves,
                                    bool lookForBookMoves,
                                    int color, string gameNumber)
         {
@@ -546,7 +567,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     uciLoader = uciInfo.IsChessServer
                                     ? new UciLoader(uciInfo, fileLogger, ficsClient, gameNumber)
-                                    : new UciLoader(uciInfo, fileLogger, lookForBookMoves);
+                                    : uciInfo.IsChessComputer 
+                                        ? new UciLoader(uciInfo,fileLogger, chessBoard, uciInfo.Name)
+                                        : new UciLoader(uciInfo, fileLogger, lookForBookMoves);
                     if (uciLoader.isLoaded)
                     {
                         break;
@@ -633,9 +656,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MakeMoveForCoaches(string fenPosition)
         {
             _fileLogger?.LogInfo($"Send fen position for coaches: {fenPosition} ");
-            foreach (var engineInfoUserControl in _loadedEnginesControls.Where(e => e.Value.Color==Fields.COLOR_EMPTY))
+            foreach (var engineInfoUserControl in _loadedEnginesControls.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {
-                engineInfoUserControl.Value.SetFenPosition(fenPosition,string.Empty);
+                engineInfoUserControl.Value.SetFenPosition(fenPosition, string.Empty);
             }
             foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {

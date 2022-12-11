@@ -1,4 +1,5 @@
-﻿using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+﻿using System;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
@@ -25,15 +26,17 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string UnknownPieceCode => "unknown";
 
         public abstract void Reset();
-
-        public void SetLedForFields(string fromFieldName, string toFieldName, bool thinking, bool isMove, string displayString)
+        
+        
+        public void SetLedForFields(string fromFieldName, string toFieldName, string promote, bool thinking, bool isMove, string displayString)
         {
-            SetLedForFields(new[] { fromFieldName, toFieldName }, thinking, isMove, displayString);
+            SetLedForFields(new[] { fromFieldName, toFieldName }, promote, thinking, isMove, displayString);
         }
 
         public abstract bool CheckComPort(string portName);
-
-        public abstract void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString);
+        public abstract bool CheckComPort(string portName, string baud);
+        
+        public abstract void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString);
 
         public abstract void SetLastLeds();
 
@@ -64,7 +67,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         protected abstract void SetToNewGame();
 
-        protected abstract void Release();
+        public abstract void Release();
 
         public abstract void SetFen(string fen);
 
@@ -73,6 +76,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             get => _pieceRecognition;
             set => _pieceRecognition = value;
         }
+
+        public bool SelfControlled { get; set; }
 
         public void Stop(bool stop)
         {
@@ -87,13 +92,20 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public  string BatteryLevel { get; protected set; }
         public  string BatteryStatus { get; protected set; }
         public  string Information { get; protected set; }
+        public  string Level { get; protected set; }
 
-        public abstract void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack,
+
+
+        public abstract void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack,
                                       int secondBlack);
 
         public abstract void StopClock();
         public abstract void StartClock(bool white);
         public abstract void DisplayOnClock(string display);
+        
+        public abstract event EventHandler BasePositionEvent;
+
+        public abstract event EventHandler<string> DataEvent;
 
         public void SetDemoMode(bool inDemoMode)
         {
@@ -105,14 +117,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _allowTakeBack = allowTakeBack;
         }
 
-
         public void PlayWithWhite()
         {
             _playWithWhite = true;
         }
 
         public void PlayWithBlack()
-        {
+        { 
             _playWithWhite = false;
         }
 
@@ -138,6 +149,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string GetCurrentCOMPort()
         {
             return _serialCommunication.CurrentComPort;
+        }
+
+        public string GetCurrentBaud()
+        {
+            return _serialCommunication.CurrentBaud;
         }
 
         public void SendCommand(string anyCommand)
@@ -169,7 +185,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             _stopAll = true;
             _serialCommunication.DisConnect();
-            Release();
         }
     }
 }

@@ -67,6 +67,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _logger = logger;
             BatteryLevel = "100";
             BatteryStatus = "Full";
+            PieceRecognition = true;
+            SelfControlled = false;
             var calibrationData = _calibrateStorage.GetCalibrationData();
             if (!string.IsNullOrWhiteSpace(calibrationData.BasePositionCodes))
             {
@@ -104,8 +106,13 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             return false;
         }
 
+        public override bool CheckComPort(string portName, string baud)
+        {
+            return CheckComPort(portName);
+        }
 
-        public override void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString)
+
+        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
         {
             if (!EnsureConnection())
             {
@@ -235,7 +242,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
 
             _logger?.LogDebug("B: start calibrate ");
-            SetLedForFields(new[] { "A1", "B1", "C1","D1","E1","F1","G1","H1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7","D3","D6" }, false, false, string.Empty);
+            SetLedForFields(new[] { "A1", "B1", "C1","D1","E1","F1","G1","H1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7","D3","D6" }, string.Empty, false, false, string.Empty);
             var boardData = _serialCommunication.GetCalibrateData();
             _logger?.LogDebug($"B: calibrate data: {boardData}");
             if (!Calibrate(boardData))
@@ -636,7 +643,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             //
         }
 
-        protected override void Release()
+       
+        public override void Release()
         {
             //
         }
@@ -661,7 +669,10 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             //
         }
 
-        public override void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack)
+        public override event EventHandler BasePositionEvent;
+        public override event EventHandler<string> DataEvent;
+
+        public override void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
         {
             //
         }

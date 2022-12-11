@@ -9,6 +9,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         EChessBoardConfiguration Configuration { get; }
 
         void Reset();
+        void Release();
 
         /// <summary>
         /// If demo mode is true, all position changes are possible.
@@ -112,6 +113,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <param name="message"></param>
         void SendInformation(string message);
 
+        void SendCommand(string command);
+
         void RequestDump();
 
 
@@ -126,6 +129,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// Move made on board by user
         /// </summary>
         event EventHandler<string> MoveEvent;
+        
+        event EventHandler<string> DataEvent;
 
         /// <summary>
         /// New FEN position on board by user
@@ -164,6 +169,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         /// <returns></returns>
         string GetCurrentComPort();
+        string GetCurrentBaud();
 
         /// <summary>
         /// Dim all LEDs
@@ -199,11 +205,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         string BatteryLevel { get; }
         string BatteryStatus { get; }
         string Information { get; }
+
+        string Level { get; }
         void AllowTakeBack(bool allowTakeBack);
         bool PieceRecognition { get; }
         void Ignore(bool ignore);
 
-        void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack);
+        void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack);
 
         void StopClock();
         void StartClock(bool white);

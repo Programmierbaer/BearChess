@@ -49,6 +49,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         private List<string> _allWriteCharServices;
 
         public string PortName => "BTLE";
+        public string Baud => string.Empty;
 
         public BTLEComPort(string deviceId)
         {
@@ -222,6 +223,15 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             if (_byteQueue.TryDequeue(out byte b))
               return b;
             return 0;
+        }
+        public void Write(string message)
+        {
+
+        }
+
+        public void WriteLine(string command)
+        {
+            
         }
 
         public void Write(byte[] buffer, int offset, int count)

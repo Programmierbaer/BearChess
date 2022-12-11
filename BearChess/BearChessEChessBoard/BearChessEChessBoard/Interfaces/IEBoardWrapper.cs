@@ -5,6 +5,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     public interface IEBoardWrapper
     {
         void Reset();
+        void Release();
 
         /// <summary>
         /// If demo mode is true, all position changes are possible.
@@ -112,6 +113,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// New FEN position on board by user
         /// </summary>
         event EventHandler<string> FenEvent;
+        event EventHandler<string> DataEvent;
 
         event EventHandler AwaitedPosition;
         event EventHandler BasePositionEvent;
@@ -133,12 +135,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         /// <param name="portName">Name of the COM-Port</param>
         bool CheckCOMPort(string portName);
+        bool CheckCOMPort(string portName, string baud);
 
         /// <summary>
         /// Returns the current COM-Port
         /// </summary>
         /// <returns></returns>
         string GetCurrentCOMPort();
+        string GetCurrentBaud();
 
         bool IsOnBasePosition();
 
@@ -159,11 +163,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         string BatteryLevel { get; }
         string BatteryStatus { get; }
         string Information { get; }
+        string Level { get; }
         void AllowTakeBack(bool allowTakeBack);
         bool PieceRecognition { get; }
         void Ignore(bool ignore);
 
-        void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack);
+        void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack);
 
         void StopClock();
         void StartClock(bool white);

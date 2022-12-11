@@ -42,11 +42,11 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool WaitForStart { get; set; }
         public int WaitSeconds { get; set; }
         public bool ValidForAnalysis { get; set; }
-
         public DateTime ChangeDateTime { get; set; }
-
         public bool IsPlayer { get; set; }
         public bool IsChessServer { get; set; }
+        public bool IsChessComputer { get; set; }
+        public bool IsActive { get; set; }
 
         public UciInfo()
         {
@@ -62,6 +62,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             ChangeDateTime = DateTime.MinValue;
             IsPlayer = false;
             IsChessServer = false;
+            IsActive = true;
             _playerElo = 0;
         }
 
@@ -205,6 +206,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         private void CheckIsValidForAnalysis()
         {
             ValidForAnalysis = true;
+          
             if (FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase))
             {
                 ValidForAnalysis = false;

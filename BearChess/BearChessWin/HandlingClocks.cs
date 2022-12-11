@@ -1,4 +1,5 @@
-﻿using www.SoLaNoSoft.com.BearChess.EChessBoard;
+﻿using System.Windows.Input;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
@@ -6,7 +7,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 {
     public class HandlingClocks
     {
-        public static void SetClocks(TimeControl timeControl, IChessClocksWindow chessClocksWindowWhite,
+        public static void SetClocks(TimeControl timeControl, TimeControl timeControlBlack, IChessClocksWindow chessClocksWindowWhite,
                                      IChessClocksWindow chessClocksWindowBlack, bool whiteIsPlayer, bool blackIsPlayer,
                                      IElectronicChessBoard eChessBoard)
 
@@ -15,7 +16,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-
+            int hourWhite = 0;
+            int minuteWhite = 0;
+            int secWhite = 0;
+            int hourBlack = 0;
+            int minuteBlack = 0;
+            int secBlack = 0;
             chessClocksWindowWhite.CountDown = true;
             chessClocksWindowBlack.CountDown = true;
 
@@ -23,18 +29,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 var hour = timeControl.Value1 / 60;
                 var hourH = (timeControl.Value1 + timeControl.HumanValue) / 60;
-                if (timeControl.HumanValue > 0 && blackIsPlayer)
-                {
-                    chessClocksWindowBlack.SetTime(hourH, timeControl.Value1 + timeControl.HumanValue - hourH * 60,
-                                                   0);
-                    chessClocksWindowBlack.SetTooltip(
-                        $"{timeControl.Value1} minutes per game with {timeControl.HumanValue} extra minutes");
-                }
-                else
-                {
-                    chessClocksWindowBlack.SetTime(hour, timeControl.Value1 - hour * 60, 0);
-                    chessClocksWindowBlack.SetTooltip($"{timeControl.Value1} minutes per game");
-                }
+              
 
                 if (timeControl.HumanValue > 0 && whiteIsPlayer)
                 {
@@ -48,27 +43,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     chessClocksWindowWhite.SetTime(hour, timeControl.Value1 - hour * 60, 0);
                     chessClocksWindowWhite.SetTooltip($"{timeControl.Value1} minutes per game");
                 }
-                eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60,0,hourH, timeControl.Value1 - hour * 60,0);
+
+                hourWhite = hour;
+                minuteWhite = timeControl.Value1 - hour * 60;
+                secWhite = 0;
+              //  eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60,0,hourH, timeControl.Value1 - hour * 60,0);
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGameIncrement)
             {
                 var hour = timeControl.Value1 / 60;
                 var hourH = (timeControl.Value1 + timeControl.HumanValue) / 60;
-                if (timeControl.HumanValue > 0 && blackIsPlayer)
-                {
-                    chessClocksWindowBlack.SetTime(hourH, timeControl.Value1 + timeControl.HumanValue - hourH * 60,
-                                                   0, timeControl.Value2);
-                    chessClocksWindowBlack.SetTooltip(
-                        $"{timeControl.Value1} minutes per game with {timeControl.Value2} sec. increment and {timeControl.HumanValue} extra minutes ");
-                }
-                else
-                {
-                    chessClocksWindowBlack.SetTime(hour, timeControl.Value1 - hour * 60, 0, timeControl.Value2);
-                    chessClocksWindowBlack.SetTooltip(
-                        $"{timeControl.Value1} minutes per game with {timeControl.Value2} sec. increment ");
-                }
-
+              
                 if (timeControl.HumanValue > 0 && whiteIsPlayer)
                 {
                     chessClocksWindowWhite.SetTime(hourH, timeControl.Value1 + timeControl.HumanValue - hourH * 60,
@@ -82,25 +68,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     chessClocksWindowWhite.SetTooltip(
                         $"{timeControl.Value1} minutes per game with {timeControl.Value2} sec. increment ");
                 }
-                eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60, 0, hourH, timeControl.Value1 - hour * 60, 0);
+                hourWhite = hour;
+                minuteWhite = timeControl.Value1 - hour * 60;
+                secWhite = 0;
+               // eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60, 0, hourH, timeControl.Value1 - hour * 60, 0);
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerMoves)
             {
                 var hour = timeControl.Value2 / 60;
                 var hourH = (timeControl.Value2 + timeControl.HumanValue) / 60;
-                if (timeControl.HumanValue > 0 && blackIsPlayer)
-                {
-                    chessClocksWindowBlack.SetTime(hourH, timeControl.Value2 + timeControl.HumanValue - hourH * 60,
-                                                   0);
-                    chessClocksWindowBlack.SetTooltip(
-                        $"{timeControl.Value1} moves in {timeControl.Value2} minutes with {timeControl.HumanValue} extra minutes ");
-                }
-                else
-                {
-                    chessClocksWindowBlack.SetTime(hour, timeControl.Value2 - hour * 60, 0);
-                    chessClocksWindowBlack.SetTooltip($"{timeControl.Value1} moves in {timeControl.Value2} minutes ");
-                }
+             
 
                 if (timeControl.HumanValue > 0 && whiteIsPlayer)
                 {
@@ -114,29 +92,112 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     chessClocksWindowWhite.SetTime(hour, timeControl.Value2 - hour * 60, 0);
                     chessClocksWindowWhite.SetTooltip($"{timeControl.Value1} moves in {timeControl.Value2} minutes ");
                 }
-                eChessBoard?.SetClock(hour, timeControl.Value2 - hour * 60, 0, hourH, timeControl.Value2 - hour * 60, 0);
+                hourWhite = hour;
+                minuteWhite = timeControl.Value1 - hour * 60;
+                secWhite = 0;
+                //eChessBoard?.SetClock(hour, timeControl.Value2 - hour * 60, 0, hourH, timeControl.Value2 - hour * 60, 0);
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.AverageTimePerMove)
             {
-                chessClocksWindowBlack.SetTime(0, 0, 0);
                 chessClocksWindowWhite.SetTime(0, 0, 0);
                 chessClocksWindowWhite.CountDown = false;
-                chessClocksWindowBlack.CountDown = false;
                 var secOrMin = timeControl.AverageTimInSec ? "sec." : "min.";
                 chessClocksWindowWhite.SetTooltip($"Average {timeControl.Value1} {secOrMin} per move ");
-                chessClocksWindowBlack.SetTooltip($"Average {timeControl.Value1} {secOrMin} per move");
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.Adapted)
             {
-                chessClocksWindowBlack.SetTime(0, 0, 0);
                 chessClocksWindowWhite.SetTime(0, 0, 0);
                 chessClocksWindowWhite.CountDown = false;
-                chessClocksWindowBlack.CountDown = false;
                 chessClocksWindowWhite.SetTooltip("Adapted time ");
+            }
+
+
+            if (timeControlBlack.TimeControlType == TimeControlEnum.TimePerGame)
+            {
+                var hour = timeControlBlack.Value1 / 60;
+                var hourH = (timeControlBlack.Value1 + timeControlBlack.HumanValue) / 60;
+                if (timeControl.HumanValue > 0 && blackIsPlayer)
+                {
+                    chessClocksWindowBlack.SetTime(hourH, timeControlBlack.Value1 + timeControl.HumanValue - hourH * 60,
+                                                   0);
+                    chessClocksWindowBlack.SetTooltip(
+                        $"{timeControlBlack.Value1} minutes per game with {timeControl.HumanValue} extra minutes");
+                }
+                else
+                {
+                    chessClocksWindowBlack.SetTime(hour, timeControlBlack.Value1 - hour * 60, 0);
+                    chessClocksWindowBlack.SetTooltip($"{timeControlBlack.Value1} minutes per game");
+                }
+
+                hourBlack = hourH;
+                minuteBlack = timeControlBlack.Value1 - hour * 60;
+                secBlack = 0;
+                //eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60, 0, hourH, timeControlBlack.Value1 - hour * 60, 0);
+            }
+
+            if (timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
+            {
+                var hour = timeControlBlack.Value1 / 60;
+                var hourH = (timeControlBlack.Value1 + timeControl.HumanValue) / 60;
+                if (timeControl.HumanValue > 0 && blackIsPlayer)
+                {
+                    chessClocksWindowBlack.SetTime(hourH, timeControlBlack.Value1 + timeControlBlack.HumanValue - hourH * 60,
+                                                   0, timeControlBlack.Value2);
+                    chessClocksWindowBlack.SetTooltip(
+                        $"{timeControl.Value1} minutes per game with {timeControlBlack.Value2} sec. increment and {timeControl.HumanValue} extra minutes ");
+                }
+                else
+                {
+                    chessClocksWindowBlack.SetTime(hour, timeControlBlack.Value1 - hour * 60, 0, timeControlBlack.Value2);
+                    chessClocksWindowBlack.SetTooltip(
+                        $"{timeControl.Value1} minutes per game with {timeControlBlack.Value2} sec. increment ");
+                }
+                hourBlack = hourH;
+                minuteBlack = timeControlBlack.Value1 - hour * 60;
+                secBlack = 0;
+
+               // eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60, 0, hourH, timeControl.Value1 - hour * 60, 0);
+            }
+
+            if (timeControlBlack.TimeControlType == TimeControlEnum.TimePerMoves)
+            {
+                var hour = timeControlBlack.Value2 / 60;
+                var hourH = (timeControlBlack.Value2 + timeControlBlack.HumanValue) / 60;
+                if (timeControl.HumanValue > 0 && blackIsPlayer)
+                {
+                    chessClocksWindowBlack.SetTime(hourH, timeControlBlack.Value2 + timeControlBlack.HumanValue - hourH * 60,
+                                                   0);
+                    chessClocksWindowBlack.SetTooltip(
+                        $"{timeControlBlack.Value1} moves in {timeControlBlack.Value2} minutes with {timeControlBlack.HumanValue} extra minutes ");
+                }
+                else
+                {
+                    chessClocksWindowBlack.SetTime(hour, timeControlBlack.Value2 - hour * 60, 0);
+                    chessClocksWindowBlack.SetTooltip($"{timeControlBlack.Value1} moves in {timeControlBlack.Value2} minutes ");
+                }
+
+                hourBlack = hourH;
+                minuteBlack = timeControlBlack.Value2 - hour * 60;
+                secBlack = 0;
+              //  eChessBoard?.SetClock(hour, timeControl.Value2 - hour * 60, 0, hourH, timeControl.Value2 - hour * 60, 0);
+            }
+
+            if (timeControlBlack.TimeControlType == TimeControlEnum.AverageTimePerMove)
+            {
+                chessClocksWindowBlack.SetTime(0, 0, 0);
+                chessClocksWindowBlack.CountDown = false;
+                var secOrMin = timeControlBlack.AverageTimInSec ? "sec." : "min.";
+                chessClocksWindowBlack.SetTooltip($"Average {timeControlBlack.Value1} {secOrMin} per move");
+            } else if (timeControlBlack.TimeControlType == TimeControlEnum.Adapted)
+            {
+                chessClocksWindowBlack.SetTime(0, 0, 0);
+                chessClocksWindowBlack.CountDown = false;
                 chessClocksWindowBlack.SetTooltip("Adapted time ");
             }
+            else
+                eChessBoard?.SetClock(hourWhite, minuteWhite, secWhite, hourBlack, minuteBlack, secBlack);
         }
     }
 }

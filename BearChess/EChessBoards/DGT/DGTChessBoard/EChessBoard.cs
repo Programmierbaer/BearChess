@@ -168,6 +168,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = true;
+            SelfControlled = false;
             Information = string.Empty;
             IsConnected = EnsureConnection();
             _serialCommunication.Send(_startReadingNice);
@@ -217,6 +218,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = true;
+            SelfControlled = false;
             Information = Constants.DGT;
         }
 
@@ -241,7 +243,12 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             return false;
         }
 
-        public override void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString)
+        public override bool CheckComPort(string portName, string baud)
+        {
+            return CheckComPort(portName);
+        }
+
+        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
         {
 
             if (fieldNames == null || fieldNames.Length == 0)
@@ -312,8 +319,8 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
 
         public override void SetAllLedsOn()
         {
-            SetLedForFields("A1","H8",false,false, string.Empty);
-            SetLedForFields("A8","H1",false,false, string.Empty);
+            SetLedForFields("A1","H8",string.Empty, false,false, string.Empty);
+            SetLedForFields("A8","H1",string.Empty, false,false, string.Empty);
         }
 
         public override void DimLeds(bool dimLeds)
@@ -595,7 +602,8 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
            //
         }
 
-        protected override void Release()
+    
+        public override void Release()
         {
             //
         }
@@ -667,6 +675,9 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         {
             SendDisplayToClock(display);
         }
+
+        public override event EventHandler BasePositionEvent;
+        public override event EventHandler<string> DataEvent;
 
         public override void SetClock(int hourWhite, int minuteWhite, int secondWhite, int hourBlack, int minuteBlack, int secondBlack)
         {

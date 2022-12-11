@@ -90,6 +90,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            SelfControlled = false;
             Information = string.Empty;
             IsConnected = EnsureConnection();
             _serialCommunication.Send(_initialize);
@@ -119,6 +120,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            SelfControlled = false;
             Information = string.Empty;
         }
 
@@ -133,7 +135,12 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             return true;
         }
 
-        public override void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString)
+        public override bool CheckComPort(string portName, string baud)
+        {
+            return true;
+        }
+
+        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
         {
 
             if (fieldNames == null || fieldNames.Length == 0)
@@ -153,8 +160,8 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             
             if (thinking && fieldNamesLength > 1)
             {
-                SetLedForFields(new string[] {fieldNames[0]},thinking, isMove, string.Empty);
-                SetLedForFields(new string[] {fieldNames[1]},thinking, isMove, string.Empty);
+                SetLedForFields(new string[] {fieldNames[0]},string.Empty, thinking, isMove, string.Empty);
+                SetLedForFields(new string[] {fieldNames[1]},string.Empty, thinking, isMove, string.Empty);
                 return;
             }
             byte anzahl = byte.Parse((fieldNamesLength + 5).ToString());
@@ -209,7 +216,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             SetLedForFields(new[]
                             {
                                 "A1","H1","H8","A8"
-                            }, false, false, string.Empty);
+                            },string.Empty, false, false, string.Empty);
             Thread.Sleep(3000);
             _currentSpeed = currentSpeed;
             _currentTimes = currentTimes; 
@@ -583,7 +590,9 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             _serialCommunication.Send(_batteryState);
         }
 
-        protected override void Release()
+      
+
+        public override void Release()
         {
             //
         }
@@ -609,7 +618,10 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             //
         }
 
-        public override void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack)
+        public override event EventHandler BasePositionEvent;
+        public override event EventHandler<string> DataEvent;
+
+        public override void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
         {
             //
         }

@@ -243,5 +243,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         bool DrawBy50Moves { get; }
 
         int RemainingMovesFor50MovesDraw { get; }
+
+        /// <summary>
+        /// Take back the last move
+        /// </summary>
+        void TakeBack();
     }
 }

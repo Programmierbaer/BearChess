@@ -10,6 +10,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
     public class HIDComPort : IComPort
     {
         public string PortName => "HID";
+        public string Baud => string.Empty;
         private readonly DeviceHandling _device = null;
 
 
@@ -109,6 +110,16 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         public void Write(byte[] buffer, int offset, int count)
         {
             _device?.Write(buffer);
+        }
+
+        public void Write(string message)
+        {
+
+        }
+
+        public void WriteLine(string command)
+        {
+            
         }
 
         public int ReadTimeout { get; set; }

@@ -6,23 +6,29 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     {
 
         void Reset();
+        
+        void Release();
 
         /// <summary>
         /// Set the leds on for the given fields <paramref name="fromFieldName"/> and <paramref name="toFieldName"/>-
         /// </summary>
         /// <param name="fromFieldName">Field name e.g. E2</param>
         /// <param name="toFieldName">Field name e.g. E4</param>
+        /// <param name="promote"></param>
         /// <param name="thinking"></param>
         /// <param name="isMove"></param>
-        void SetLedForFields(string fromFieldName, string toFieldName, bool thinking, bool isMove, string displayString);
+        /// <param name="displayString"></param>
+        void SetLedForFields(string fromFieldName, string toFieldName, string promote, bool thinking, bool isMove, string displayString);
 
         /// <summary>
         /// Set the leds on for the given fields <paramref name="fieldNames"/>-
         /// </summary>
         /// <param name="fieldNames">Field names e.g. E2</param>
+        /// <param name="promote"></param>
         /// <param name="thinking"></param>
         /// <param name="isMove"></param>
-        void SetLedForFields(string[] fieldNames, bool thinking, bool isMove, string displayString);
+        /// <param name="displayString"></param>
+        void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString);
 
         void SetLastLeds();
 
@@ -96,42 +102,35 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <param name="portName">COM port to check</param>
         /// <returns>Returns true if the board is connected</returns>
         bool CheckComPort(string portName);
+        bool CheckComPort(string portName, string baud);
 
         string GetCurrentCOMPort();
-
+        string GetCurrentBaud();
         string UnknownPieceCode { get; }
-
         void DimLeds(bool dimLeds);
         void DimLeds(int  level);
-
         void SetScanTime(int scanTime);
-
         void SetDebounce(int debounce);
-
         void FlashSync(bool flashSync);
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
         void SendCommand(string anyCommand);
-
         string BatteryLevel { get; }
         string BatteryStatus { get; }
-
+        string Level { get; }
         void SetDemoMode(bool inDemoMode);
         void AllowTakeBack(bool allowTakeBack);
-
         void SetFen(string fen);
         bool PieceRecognition { get; }
-
+        bool SelfControlled { get; }
         void Stop(bool stop);
         void Ignore(bool ignore);
-
         string Information { get; }
-
-        void SetClock(int hourWhite, int minuteWhite, int minuteSec, int hourBlack, int minuteBlack, int secondBlack);
-
+        void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack);
         void StopClock();
-
         void StartClock(bool white);
-
         void DisplayOnClock(string display);
+
+        event EventHandler BasePositionEvent;
+        event EventHandler<string> DataEvent;
     }
 }

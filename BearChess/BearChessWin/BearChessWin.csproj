@@ -127,6 +127,7 @@
     <Compile Include="Helper\BoardPiecesSetup.cs" />
     <Compile Include="Helper\EgineEventArgs.cs" />
     <Compile Include="Helper\ExportGames.cs" />
+    <Compile Include="Helper\ExtensionMethods.cs" />
     <Compile Include="Helper\ProgressWorker.cs" />
     <Compile Include="Helper\SpeechWrapper.cs" />
     <Compile Include="Helper\SplashProgressControlContent.cs" />
@@ -322,8 +323,14 @@
     <Compile Include="Windows\SelectInstalledBookWindow.xaml.cs">
       <DependentUpon>SelectInstalledBookWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\SelectInstalledEngineForGameWindow.xaml.cs">
+      <DependentUpon>SelectInstalledEngineForGameWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SelectInstalledEngineWindow.xaml.cs">
       <DependentUpon>SelectInstalledEngineWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SerialPortTestWindow.xaml.cs">
+      <DependentUpon>SerialPortTestWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SplashWindow.xaml.cs">
       <DependentUpon>SplashWindow.xaml</DependentUpon>
@@ -353,11 +360,17 @@
     <Compile Include="Windows\WinConfigureCertabo.xaml.cs">
       <DependentUpon>WinConfigureCertabo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\WinConfigureCitrine.xaml.cs">
+      <DependentUpon>WinConfigureCitrine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\WinConfigureDGT.xaml.cs">
       <DependentUpon>WinConfigureDGT.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\WinConfigureMChessLink.xaml.cs">
       <DependentUpon>WinConfigureMChessLink.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WinConfigureOSA.xaml.cs">
+      <DependentUpon>WinConfigureOSA.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\WinConfigureUCB.xaml.cs">
       <DependentUpon>WinConfigureUCB.xaml</DependentUpon>
@@ -627,7 +640,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\SelectInstalledEngineForGameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\SelectInstalledEngineWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SerialPortTestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -663,11 +684,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\WinConfigureCitrine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\WinConfigureDGT.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\WinConfigureMChessLink.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WinConfigureOSA.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -749,6 +778,10 @@
       <Project>{C7F82597-F6CA-4B6C-8749-3CF04F1AA9BC}</Project>
       <Name>BearChessBTLETools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BearChessCommunication\BearChessCommunication.csproj">
+      <Project>{A8118CC3-827D-4635-8613-345B190EE763}</Project>
+      <Name>BearChessCommunication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BearChessDatabase\BearChessDatabase.csproj">
       <Project>{fbc89b8a-e40d-4464-8aeb-ca963f7554ad}</Project>
       <Name>BearChessDatabase</Name>
@@ -773,6 +806,10 @@
       <Project>{95124641-45A1-4C23-ACA7-ED7525718656}</Project>
       <Name>ChessnutAirLoader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CitrineLoader\CitrineLoader.csproj">
+      <Project>{65b5681a-ad3b-4a35-8e96-65351167606e}</Project>
+      <Name>CitrineLoader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DGTLoader\DGTLoader.csproj">
       <Project>{32ea5f2d-ae7b-4364-823e-8f0eaaf6d6ec}</Project>
       <Name>DGTLoader</Name>
@@ -781,6 +818,14 @@
       <Project>{66AB214E-2281-4D97-99C7-B54B0E31DF1A}</Project>
       <Name>CommonUciWrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Engines\NOVAGCitrine\NOVAGCitrine.csproj">
+      <Project>{d202681f-09b9-422e-b9a7-75e7b7175374}</Project>
+      <Name>NOVAGCitrine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engines\SaitekOSA\SaitekOSA.csproj">
+      <Project>{faa0af21-c37d-4ad7-afaf-f5e9eb30cb7a}</Project>
+      <Name>SaitekOSA</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FICS\FicsClient\FicsClient.csproj">
       <Project>{e5679ec7-d909-447b-bc28-2a158779db23}</Project>
       <Name>FicsClient</Name>
@@ -788,6 +833,10 @@
     <ProjectReference Include="..\MChessLinkLoader\MChessLinkLoader\MChessLinkLoader.csproj">
       <Project>{FEE3096B-8A9C-496B-B7F5-03E733614DD2}</Project>
       <Name>MChessLinkLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OSALoader\OSALoader.csproj">
+      <Project>{3f21eae5-cacc-42ef-9fc0-af3d8c37d44d}</Project>
+      <Name>OSALoader</Name>
     </ProjectReference>
     <ProjectReference Include="..\PegasusLoader\PegasusLoader.csproj">
       <Project>{C9E9E3B5-A30C-448D-A595-FC3E893AAA3F}</Project>
@@ -1237,12 +1286,12 @@
   <ItemGroup>
     <PublishFile Include="Teddy">
       <Visible>False</Visible>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
   </ItemGroup>
@@ -1410,6 +1459,22 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Stone\black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\novag-citrine.jpeg" />
+    <Resource Include="Assets\novag-ucb.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Saitek_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\arrow_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\arrow_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\Novag_logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

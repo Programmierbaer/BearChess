@@ -27,8 +27,10 @@ namespace www.SoLaNoSoft.com.BearChessTools
         private string ConfigFileName { get; }
         private string BtConfigFileName { get; }
         private string TimeControlFileName { get; }
+        private string TimeControlBlackFileName { get; }
         private string FicTimeControlFileName { get; }
         private string StartupTimeControlFileName { get; }
+        private string StartupTimeControlBlackFileName { get; }
         private string DatabaseFilterFileName { get; }
 
         static byte[] _additionalEntropy = { 9, 8, 7, 6, 5 };
@@ -64,8 +66,10 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 }
             }
             TimeControlFileName = Path.Combine(FolderPath, "bearchess_tc.xml");
+            TimeControlBlackFileName = Path.Combine(FolderPath, "bearchess_tc2.xml");
             FicTimeControlFileName = Path.Combine(FolderPath, "bearchess_ficstc.xml");
             StartupTimeControlFileName = Path.Combine(FolderPath, "bearchess_start_tc.xml");
+            StartupTimeControlBlackFileName = Path.Combine(FolderPath, "bearchess_start_tc2.xml");
             ConfigFileName = Path.Combine(FolderPath, "bearchess.xml");
             BtConfigFileName = Path.Combine(FolderPath, "bearchess_bt.xml");
             DatabaseFilterFileName = Path.Combine(FolderPath, "bearchess_dbfilter.xml");
@@ -213,16 +217,28 @@ namespace www.SoLaNoSoft.com.BearChessTools
         /// Save the <paramref name="timeControl"/> as <paramref name="asStartup"/> or just as last configured time control
         /// </summary>
         /// <param name="timeControl"></param>
+        /// <param name="white"></param>
         /// <param name="asStartup"></param>
-        public void Save(TimeControl timeControl, bool asStartup)
+        public void Save(TimeControl timeControl,bool white, bool asStartup)
         {
             try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
-                TextWriter textWriter =
-                    new StreamWriter(asStartup ? StartupTimeControlFileName : TimeControlFileName, false);
-                serializer.Serialize(textWriter, timeControl);
-                textWriter.Close();
+                if (white)
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
+                    TextWriter textWriter =
+                        new StreamWriter(asStartup ? StartupTimeControlFileName : TimeControlFileName, false);
+                    serializer.Serialize(textWriter, timeControl);
+                    textWriter.Close();
+                }
+                else
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
+                    TextWriter textWriter =
+                        new StreamWriter(asStartup ? StartupTimeControlBlackFileName : TimeControlBlackFileName, false);
+                    serializer.Serialize(textWriter, timeControl);
+                    textWriter.Close();
+                }
             }
             catch
             {
@@ -230,7 +246,15 @@ namespace www.SoLaNoSoft.com.BearChessTools
             }
         }
 
-        public TimeControl LoadTimeControl(bool asStartup)
+
+
+
+        public TimeControl LoadTimeControl(bool white, bool asStartup)
+        {
+            return white ? LoadWhiteTimeControl(asStartup) : LoadBlackTimeControl(asStartup);
+        }
+
+        private TimeControl LoadWhiteTimeControl(bool asStartup)
         {
             if (!File.Exists(asStartup ? StartupTimeControlFileName : TimeControlFileName))
             {
@@ -238,6 +262,19 @@ namespace www.SoLaNoSoft.com.BearChessTools
             }
             XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
             TextReader textReader = new StreamReader(asStartup ? StartupTimeControlFileName : TimeControlFileName);
+            TimeControl timeControl = (TimeControl)serializer.Deserialize(textReader);
+            textReader.Close();
+            return timeControl;
+        }
+
+        private TimeControl LoadBlackTimeControl(bool asStartup)
+        {
+            if (!File.Exists(asStartup ? StartupTimeControlBlackFileName : TimeControlBlackFileName))
+            {
+                return LoadWhiteTimeControl(asStartup);
+            }
+            XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
+            TextReader textReader = new StreamReader(asStartup ? StartupTimeControlBlackFileName : TimeControlBlackFileName);
             TimeControl timeControl = (TimeControl)serializer.Deserialize(textReader);
             textReader.Close();
             return timeControl;

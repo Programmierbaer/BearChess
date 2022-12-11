@@ -72,7 +72,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
-            if (uciInfo.IsChessServer)
+            if (uciInfo.IsChessServer || uciInfo.IsChessComputer)
             {
                 imageEngine.Visibility = Visibility.Visible;
                 imageEngine.Source =
