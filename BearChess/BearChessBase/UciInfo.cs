@@ -109,10 +109,12 @@ namespace www.SoLaNoSoft.com.BearChessBase
             {
                 return _playerElo;
             }
-            var uciElo = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
+            var uciElo = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo") ||
+                                                          f.StartsWith("setoption name UCI Elo"));
             if (uciElo != null)
             {
-                var uciEloLimit = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
+                var uciEloLimit = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength") ||
+                                                                   f.StartsWith("setoption name UCI LimitStrength"));
                 if (uciEloLimit != null)
                 {
                     if (uciEloLimit.Contains("true"))
@@ -134,7 +136,8 @@ namespace www.SoLaNoSoft.com.BearChessBase
             int minValue = -1;
             if (CanConfigureElo())
             {
-                var uciElo = Options.FirstOrDefault(f => f.StartsWith("option name UCI_Elo"));
+                var uciElo = Options.FirstOrDefault(f => f.StartsWith("option name UCI_Elo" )||
+                                                         f.StartsWith("option name UCI Elo"));
                 if (uciElo != null)
                 {
                     var optionSplit = uciElo.Split(" ".ToCharArray());
@@ -157,7 +160,8 @@ namespace www.SoLaNoSoft.com.BearChessBase
             int maxValue = -1;
             if (CanConfigureElo())
             {
-                var uciElo = Options.FirstOrDefault(f => f.StartsWith("option name UCI_Elo"));
+                var uciElo = Options.FirstOrDefault(f => f.StartsWith("option name UCI_Elo") ||
+                                                         f.StartsWith("option name UCI Elo"));
                 if (uciElo != null)
                 {
                     var optionSplit = uciElo.Split(" ".ToCharArray());
@@ -190,10 +194,18 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 {
                     optionValue = $"setoption name UCI_Elo value {elo}";
                 }
+                if (optionValue.StartsWith("setoption name UCI Elo"))
+                {
+                    optionValue = $"setoption name UCI Elo value {elo}";
+                }
 
                 if (optionValue.StartsWith("setoption name UCI_LimitStrength"))
                 {
                     optionValue = "setoption name UCI_LimitStrength value true";
+                }
+                if (optionValue.StartsWith("setoption name UCI LimitStrength"))
+                {
+                    optionValue = "setoption name UCI LimitStrength value true";
                 }
                 newOptionValues.Add(optionValue);
             }

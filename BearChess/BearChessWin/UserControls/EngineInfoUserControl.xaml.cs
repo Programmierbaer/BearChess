@@ -57,11 +57,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockName.ToolTip = uciInfo.OriginName;
             _allMoves.Clear();
             _fenPosition = string.Empty;
-            var uciElo = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
+            var uciElo = uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo") ||
+                                                                  f.StartsWith("setoption name UCI Elo"));
             if (uciElo != null)
             {
                 var uciEloLimit =
-                    uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength"));
+                    uciInfo.OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_LimitStrength") ||
+                                                             f.StartsWith("setoption name UCI LimitStrength"));
                 if (uciEloLimit != null)
                 {
                     if (uciEloLimit.Contains("true"))
