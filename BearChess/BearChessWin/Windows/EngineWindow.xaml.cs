@@ -190,7 +190,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             LoadUciEngine(uciInfo, null, chessBoard, string.Empty, playedMoves, lookForBookMoves, color, string.Empty);
         }
 
-       
 
         public void ShowTeddy(bool showTeddy)
         {
@@ -211,6 +210,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 engine.Value.SetConfigValues();
             }
         }
+
+        public void BringToTop()
+        {
+            foreach (var engine in _loadedEngines)
+            {
+                engine.Value.UciEngine.BringToOp();
+            }
+        }
+
+     
 
         public void IsReady()
         {
@@ -234,8 +243,81 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void NewGame()
         {
             NewGame(null, null);
+         
         }
 
+        public void SetWindowPositions(double newLeft, double newTop)
+        {
+            foreach (var loadedUciEngine in _loadedEngines)
+            {
+                var rect = loadedUciEngine.Value.UciEngine.GetWindowRect();
+                if (rect.Right > 0)
+                {
+                    _fileLogger.LogDebug($"Top: {rect.Top} Bottom: {rect.Bottom} Left: {rect.Left} Right: {rect.Right} ");
+                    rect.Left += (int)newLeft;
+                    rect.Right += (int)newLeft;
+                    rect.Top += (int)newTop;
+                    rect.Bottom += (int)newTop;
+                    loadedUciEngine.Value.UciEngine.SetNewPosition(rect);
+                }
+            }
+        }
+
+        private void SwitchWindowPosition()
+        {
+            var switchPos = bool.Parse(_configuration.GetConfigValue("switchWindowPosition", "false"));
+            if (!switchPos)
+            {
+                return;
+            }
+            LoadedUciEngine wEngine = null;
+            LoadedUciEngine bEngine = null;
+            UciLoader.RECT whiteRect = new UciLoader.RECT() { Top = 0, Bottom = 0, Right = 0, Left = 0 };
+            UciLoader.RECT blackRect = new UciLoader.RECT() { Top = 0, Bottom = 0, Right = 0, Left = 0 };
+            foreach (var loadedUciEngine in _loadedEngines)
+            {
+             
+                if (loadedUciEngine.Value.Color == Fields.COLOR_WHITE)
+                {
+                    whiteRect = loadedUciEngine.Value.UciEngine.GetWindowRect();
+                    wEngine = loadedUciEngine.Value;
+                }
+                if (loadedUciEngine.Value.Color == Fields.COLOR_BLACK)
+                {
+                    blackRect = loadedUciEngine.Value.UciEngine.GetWindowRect();
+                    bEngine = loadedUciEngine.Value;
+                }
+
+                if (whiteRect.Right > 0 && blackRect.Right > 0)
+                {
+                    if (whiteRect.Top < blackRect.Top)
+                    {
+                        UciLoader.RECT whiteRectNew = new UciLoader.RECT();
+                        UciLoader.RECT blackRectNew = new UciLoader.RECT();
+                        whiteRectNew.Top = blackRect.Top;
+                        whiteRectNew.Bottom = whiteRect.Bottom - whiteRect.Top + whiteRectNew.Top;
+                        whiteRectNew.Left = whiteRect.Left;
+                        whiteRectNew.Right = whiteRect.Right;
+                      
+                        blackRectNew.Top = whiteRect.Top;
+                        blackRectNew.Bottom = blackRect.Bottom - blackRect.Top + blackRectNew.Top;
+                        blackRectNew.Left = blackRect.Left;
+                        blackRectNew.Right = blackRect.Right;
+                        if (whiteRectNew.Top<blackRectNew.Top &&  whiteRectNew.Bottom > blackRectNew.Top)
+                        {
+                            blackRectNew.Top = whiteRectNew.Bottom + 10;
+                        }
+                        if (blackRectNew.Top < whiteRectNew.Top && blackRectNew.Bottom > whiteRectNew.Top)
+                        {
+                            whiteRectNew.Top = blackRectNew.Bottom + 10;
+                        }
+                        wEngine?.UciEngine.SetNewPosition(whiteRectNew);
+                        bEngine?.UciEngine.SetNewPosition(blackRectNew);
+                    }
+                    break;
+                }
+            }
+        }
 
         public void NewGame(TimeControl timeControl, TimeControl timeControlBlack)
         {
@@ -253,6 +335,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 engineInfoUserControl.Value.ClearMoves();
             }
+            SwitchWindowPosition();
+        }
+
+        public void SetTimeControl(TimeControl timeControl, TimeControl timeControlBlack)
+        {
+            _timeControl = timeControl;
+            _timeControlBlack = timeControlBlack ?? timeControl;
         }
 
         public void AddMove(string fromField, string toField, string promote, string engineName = "")
@@ -261,7 +350,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastCommand = string.Empty;
             foreach (var engineInfoUserControl in _loadedEnginesControls)
             {
-             //   engineInfoUserControl.Value.AddMove($"{fromField}{toField}{promote}");
+               engineInfoUserControl.Value.AddMove($"{fromField}{toField}{promote}");
             }
             if (string.IsNullOrEmpty(engineName))
             {
@@ -298,12 +387,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void MakeMove(string fromField, string toField, string promote, string engineName = "")
         {
-            _fileLogger?.LogInfo($"Send MakePgnMove {fromField}-{toField}{promote}");
+            _fileLogger?.LogInfo($"Send MakeMove {fromField}-{toField}{promote}");
             _lastCommand = string.Empty;
             foreach (var engineInfoUserControl in _loadedEnginesControls)
             {
-              
-               engineInfoUserControl.Value.AddMove($"{fromField}{toField}{promote}");
+                engineInfoUserControl.Value.AddMove($"{fromField}{toField}{promote}");
             }
 
             if (string.IsNullOrEmpty(engineName))
@@ -502,7 +590,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
             StopForCoaches();
-            MakeMoveForCoaches(fenPosition);
+            SetFenForCoaches(fenPosition);
             _fileLogger?.LogInfo("Send Go infinite for coaches");
             foreach (var engine in _loadedEngines.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
             {
@@ -567,9 +655,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     uciLoader = uciInfo.IsChessServer
                                     ? new UciLoader(uciInfo, fileLogger, ficsClient, gameNumber)
-                                    : uciInfo.IsChessComputer 
-                                        ? new UciLoader(uciInfo,fileLogger, chessBoard, uciInfo.Name)
-                                        : new UciLoader(uciInfo, fileLogger, lookForBookMoves);
+                                    : uciInfo.IsChessComputer
+                                        ? new UciLoader(uciInfo, fileLogger, chessBoard, uciInfo.Name)
+                                        : new UciLoader(uciInfo, fileLogger, _configuration, lookForBookMoves);
                     if (uciLoader.isLoaded)
                     {
                         break;
@@ -578,6 +666,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _fileLogger?.LogError($"Could not load engine {uciInfo.Name}. Try again {i} of 3 ");
                 }
 
+                if (uciLoader == null || !uciLoader.isLoaded)
+                {
+                    _fileLogger?.LogError($"Could not load engine {uciInfo.Name}. Give up ");
+                    return;
+                }
                 _loadedUciInfos[uciInfo.Name] = uciInfo;
                 var showInfo = bool.Parse(_configuration.GetConfigValue("showucilog", "false")) &&
                                !uciInfo.IsChessServer;
@@ -613,7 +706,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 engineInfoUserControl.StartStopEvent += EngineInfoUserControl_StartStopEvent;
                 engineInfoUserControl.ConfigEvent += EngineInfoUserControl_ConfigEvent;
 
-
                 uciLoader.EngineReadingEvent += UciLoader_EngineReadingEvent;
 
                 _loadedEnginesControls[uciInfo.Name] = engineInfoUserControl;
@@ -624,13 +716,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _loadedEngines[uciInfo.Name].UciEngine.SetFen(fenPosition, string.Empty);
                 }
 
-                foreach (var playedMove in playedMoves)
-                {
-                    _loadedEngines[uciInfo.Name].UciEngine.MakeMove(playedMove.FromFieldName.ToLower(),
-                                                                    playedMove.ToFieldName.ToLower(),
-                                                                    FigureId.FigureIdToFenCharacter[
-                                                                        playedMove.PromotedFigure]);
-                }
+                //foreach (var playedMove in playedMoves)
+                //{
+                //    _loadedEngines[uciInfo.Name].UciEngine.MakeMove(playedMove.FromFieldName.ToLower(),
+                //                                                    playedMove.ToFieldName.ToLower(),
+                //                                                    FigureId.FigureIdToFenCharacter[
+                //                                                        playedMove.PromotedFigure]);
+                //}
 
                 stackPanelEngines.Children.Add(engineInfoUserControl);
                 if (!string.IsNullOrWhiteSpace(_lastCommand))
@@ -653,7 +745,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void MakeMoveForCoaches(string fenPosition)
+        private void SetFenForCoaches(string fenPosition)
         {
             _fileLogger?.LogInfo($"Send fen position for coaches: {fenPosition} ");
             foreach (var engineInfoUserControl in _loadedEnginesControls.Where(e => e.Value.Color == Fields.COLOR_EMPTY))
@@ -681,7 +773,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            _fileLogger?.LogInfo($"Read from engine {e.Name}: {e.FromEngine}");
+            _fileLogger?.LogDebug($"Read from engine {e.Name}: {e.FromEngine}");
             if (e.FromEngine.StartsWith(Constants.Teddy, StringComparison.OrdinalIgnoreCase))
             {
                 EngineEvent?.Invoke(

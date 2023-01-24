@@ -463,6 +463,45 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
         }
+
+        private void MenuItemContinue_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+            {
+                var databaseGame = _database.LoadGame(pgnGame.Id);
+                if (_database.IsDuelGame(pgnGame.Id))
+                {
+                    MessageBox.Show("Game is part of a duel. Use duel manager to continue duel games", "Cannot continue selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    return;
+
+                }
+                if (_database.IsTournamentGame(pgnGame.Id))
+                {
+                    MessageBox.Show("Game is part of a tournament. Use tournament manager to continue tournament games", "Cannot continue selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    return;
+
+                }
+                databaseGame.Continue = true;
+                OnSelectedGamedChanged(databaseGame);
+            }
+        }
+
+        private void DataGridGames_OnSelected(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+            {
+                menuItemContinue.Visibility = pgnGame.Result.Equals("*") ? Visibility.Visible : Visibility.Collapsed;
+                buttonContinue.Visibility = pgnGame.Result.Equals("*") ? Visibility.Visible : Visibility.Hidden;
+            }
+            
+        }
+
+        private void ButtonContinue_OnClick(object sender, RoutedEventArgs e)
+        {
+            MenuItemContinue_OnClick(sender, e);
+        }
     }
 
     public class GamesValueToBrushConverter : IValueConverter

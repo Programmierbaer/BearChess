@@ -51,10 +51,11 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
 
         public void Close()
         {
-            _client.Client.Close();
+            _client.Client.Close(1000);
             _client.Close();
             _client.Dispose();
             
+
         }
 
         public bool IsOpen =>  _client != null && _client.Connected;

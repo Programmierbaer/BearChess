@@ -174,7 +174,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                             Directory.Delete(uciPath);
                         }
-
+                        Configuration.Instance.DeleteConfigValue($"{uciInfo.Id}_top");
+                        Configuration.Instance.DeleteConfigValue($"{uciInfo.Id}_left");
+                        Configuration.Instance.DeleteConfigValue($"{uciInfo.Id}_bottom");
+                        Configuration.Instance.DeleteConfigValue($"{uciInfo.Id}_right");
                         _installedEngines.Remove(uciInfo.Name);
                         _uciInfos.Remove(uciInfo);
                     }

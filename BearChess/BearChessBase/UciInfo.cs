@@ -213,8 +213,6 @@ namespace www.SoLaNoSoft.com.BearChessBase
         }
 
 
-
-
         private void CheckIsValidForAnalysis()
         {
             ValidForAnalysis = true;

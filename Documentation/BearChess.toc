@@ -29,7 +29,7 @@
 \contentsline {section}{\numberline {5}Load and Manage Opening Books}{33}{section.5}%
 \contentsline {section}{\numberline {6}Configure Board and Pieces}{36}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Install new board colors and pieces}{39}{subsection.6.1}%
-\contentsline {subsubsection}{\numberline {6.1.1}New board colors}{40}{subsubsection.6.1.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}New board colors}{39}{subsubsection.6.1.1}%
 \contentsline {subsubsection}{\numberline {6.1.2}New pieces}{40}{subsubsection.6.1.2}%
 \contentsline {section}{\numberline {7}Configure Notation and Moves}{44}{section.7}%
 \contentsline {section}{\numberline {8}Configure clock style}{45}{section.8}%

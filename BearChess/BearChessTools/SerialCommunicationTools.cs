@@ -80,6 +80,10 @@ namespace www.SoLaNoSoft.com.BearChessTools
                     boardDevice = "raspberrypi";
                     boardDevice2 = "raspberrypi";
                     break;
+                case Constants.Tabutronic:
+                    boardDevice = "raspberrypi";
+                    boardDevice2 = "raspberrypi";
+                    break;
                 case Constants.MChessLink:
                     boardDevice = "MILLENNIUM CHESS";
                     boardDevice2 = "MILLENNIUM CHESS";
@@ -105,6 +109,39 @@ namespace www.SoLaNoSoft.com.BearChessTools
                         fileLogger?.LogInfo($"Check {bluetoothDeviceInfo.DeviceName}");
                         var deviceName = bluetoothDeviceInfo.DeviceName;
                         if (boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase) &&
+                            deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Certabo
+                            try
+                            {
+                                fileLogger?.LogInfo("Open Certabo BT endpoint");
+                                var bluetoothEndPoint =
+                                    new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress,
+                                                          BluetoothService.SerialPort,
+                                                          10);
+                                if (!cli.Connected)
+                                {
+                                    cli.Connect(bluetoothEndPoint);
+                                    if (cli.Connected)
+                                    {
+                                        fileLogger?.LogInfo("Connected");
+                                        cli.Close();
+                                        configuration.Save(bluetoothDeviceInfo.DeviceAddress);
+                                        var list = new List<string>(GetPortNames());
+                                        list.Add("BT");
+                                        return list.ToArray();
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                fileLogger?.LogError(ex);
+                            }
+
+                            break;
+
+                        }
+                        if (boardName.Equals(Constants.Tabutronic, StringComparison.OrdinalIgnoreCase) &&
                             deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
                         {
                             // Certabo

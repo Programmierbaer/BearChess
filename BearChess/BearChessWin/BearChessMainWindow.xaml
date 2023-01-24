@@ -209,6 +209,14 @@
                                        Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
+                        <Separator />
+                        <MenuItem Name="menuItemEngineSwitchPosition" Header="Switch MessChess window position"
+                                  Click="MenuItemEngineSwitchPosition_OnClick" ToolTip="Tries to match the positions of MessChess engines to the current color.">
+                            <MenuItem.Icon>
+                                <Image Name="imageEngineSwitchPosition" Source="Assets/Icons/tick.png"
+                                       Visibility="Visible" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Books">
@@ -550,7 +558,7 @@
                             <Image Name="imageShowBestMoveOnGame" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                 <!--   <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  -->
+                   <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />   -->
                 </MenuItem>
                 <MenuItem Header="Windows">
                     <MenuItem Header="Show">
@@ -585,6 +593,7 @@
             </Menu>
             <local:GraphicsChessBoardUserControl Margin="5,5,5,0" Grid.Column="0" Grid.Row="1"
                                                  x:Name="chessBoardUcGraphics" Visibility="Visible" />
+            <Canvas Name="canvasBoard" Grid.Row="1"/>
 
         </Grid>
         <DockPanel Margin="5" Grid.Row="1">

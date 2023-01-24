@@ -99,6 +99,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                 _serialPort.DiscardInBuffer();
                 _serialPort.DiscardOutBuffer();
                 _serialPort.Close();
+                _serialPort.Dispose();
             }
             catch
             {
@@ -106,7 +107,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             }
         }
 
-        public bool IsOpen => _serialPort.IsOpen;
+        public bool IsOpen => _serialPort != null &&  _serialPort.IsOpen;
 
         public string ReadLine()
         {

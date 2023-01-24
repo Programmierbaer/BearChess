@@ -123,6 +123,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="HandlingClocks.cs" />
+    <Compile Include="Helper\ArrowEnds.cs" />
+    <Compile Include="Helper\ArrowLine.cs" />
+    <Compile Include="Helper\ArrowLineBase.cs" />
+    <Compile Include="Helper\ArrowPolyLine.cs" />
     <Compile Include="Helper\BoardFieldsSetup.cs" />
     <Compile Include="Helper\BoardPiecesSetup.cs" />
     <Compile Include="Helper\EgineEventArgs.cs" />
@@ -737,8 +741,17 @@
     <Resource Include="Assets\Fonts\MISCHESS.TTF" />
     <Resource Include="Assets\Fonts\MVALFONT.TTF" />
     <None Include="BearChessWin_TemporaryKey.pfx" />
-    <None Include="Connected Services\lichess\ConnectedService.json" />
-    <None Include="Connected Services\lichess\OpenAPI.nswag" />
+    <None Include="OpenAPIs\api.json">
+      <Namespace>www.SoLaNoSoft.com.BearChess.BearChessCommunication</Namespace>
+      <ClassName>lichess</ClassName>
+      <CodeGenerator>NSwagCSharp</CodeGenerator>
+      <SourceUri>https://lichess.org/api</SourceUri>
+    </None>
+    <None Include="OpenAPIs\openapi.json">
+      <Namespace> www.SoLaNoSoft.com.BearChess.BearChessCommunication</Namespace>
+      <ClassName>lichess</ClassName>
+      <CodeGenerator>NSwagCSharp</CodeGenerator>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -1286,12 +1299,12 @@
   <ItemGroup>
     <PublishFile Include="Teddy">
       <Visible>False</Visible>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
   </ItemGroup>

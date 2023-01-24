@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
@@ -37,6 +38,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _stopInfo;
         private bool _stopVisible = true;
         private bool _tournamentMode;
+        private bool _moveAdded;
 
         public EngineInfoUserControl()
         {
@@ -163,9 +165,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void AddMove(string move)
         {
-            while (_infoLine.TryDequeue(out _))
-            {
-            }
+            _moveAdded = true;
             _allMoves.Add(move);
         }
 
@@ -182,12 +182,41 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            if (_stopInfo)
+            try
             {
-                while (_infoLine.TryDequeue(out _))
+                if (_stopInfo || infoLine.Contains("bestmove"))
                 {
-                }              
-                _stopInfo = false;
+                    var pvLine = string.Empty;
+                    string line;
+                    while (_infoLine.TryDequeue(out line))
+                    {
+                        if (string.IsNullOrEmpty(line))
+                        {
+                            line = string.Empty;
+                        }
+
+                        if (line.Contains("pv"))
+                        {
+                            pvLine = line;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(pvLine))
+                    {
+                        _infoLine.Enqueue(pvLine);
+                    }
+
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        _infoLine.Enqueue(line);
+                    }
+
+                    _stopInfo = false;
+                }
+            }
+            catch
+            {
+                //
             }
 
             _tournamentMode = tournamentMode;
@@ -197,8 +226,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void StopInfo()
         {
-            //while (_infoLine.TryDequeue(out _))
-            //{ };
             _stopInfo = true;
             ShowHidePlay(false);
         }
@@ -259,8 +286,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var fastChessBoard = new FastChessBoard();
             while (true)
             {
-                if (_infoLine.TryDequeue(out var infoLine))
+                if (!_stopInfo && _infoLine.TryDequeue(out var infoLine))
                 {
+                    if (string.IsNullOrWhiteSpace(infoLine))
+                    {
+                        continue;
+                    }
                     var depthString = string.Empty;
                     var selDepthString = string.Empty;
                     var scoreString = string.Empty;
@@ -434,24 +465,33 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 {
                                     try
                                     {
-                                        if (string.IsNullOrWhiteSpace(_fenPosition))
+                                        if (_moveAdded)
                                         {
-                                            fastChessBoard.Init(_allMoves.ToArray());
+                                            engineInfoLineUserControl1.FillLine(scoreString, string.Empty);
+                                            _moveAdded = false;
                                         }
                                         else
                                         {
-                                            fastChessBoard.Init(_fenPosition, _allMoves.ToArray());
+
+                                            if (string.IsNullOrWhiteSpace(_fenPosition))
+                                            {
+                                                fastChessBoard.Init(_allMoves.ToArray());
+                                            }
+                                            else
+                                            {
+                                                fastChessBoard.Init(_fenPosition, _allMoves.ToArray());
+                                            }
+
+                                            var ml = string.Empty;
+                                            var strings = moveLine.Split(" ".ToCharArray());
+                                            foreach (var s in strings)
+                                            {
+                                                ml = ml + " " + fastChessBoard.GetMove(s);
+                                            }
+
+                                            engineInfoLineUserControl1.FillLine(scoreString, ml);
                                         }
 
-                                        var ml = string.Empty;
-                                        var strings = moveLine.Split(" ".ToCharArray());
-                                        foreach (var s in strings)
-                                        {
-                                            ml = ml + " " + fastChessBoard.GetMove(s);
-                                        }
-
-
-                                        engineInfoLineUserControl1.FillLine(scoreString, ml);
                                     }
                                     catch
                                     {
@@ -464,29 +504,37 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     if (_engineInfoLineUserControls.Count > 0 &&
                                         _engineInfoLineUserControls.Count >= multiPv && multiPv >= 0)
                                     {
-                                        if (string.IsNullOrWhiteSpace(_fenPosition))
+                                        if (_moveAdded)
                                         {
-                                            fastChessBoard.Init(_allMoves.ToArray());
+                                            engineInfoLineUserControl1.FillLine(scoreString, string.Empty);
+                                            _moveAdded = false;
                                         }
                                         else
                                         {
-                                            fastChessBoard.Init(_fenPosition, _allMoves.ToArray());
-                                        }
-
-                                        try
-                                        {
-                                            var ml = string.Empty;
-                                            var strings = moveLine.Split(" ".ToCharArray());
-                                            foreach (var s in strings)
+                                            if (string.IsNullOrWhiteSpace(_fenPosition))
                                             {
-                                                ml = ml + " " + fastChessBoard.GetMove(s);
+                                                fastChessBoard.Init(_allMoves.ToArray());
+                                            }
+                                            else
+                                            {
+                                                fastChessBoard.Init(_fenPosition, _allMoves.ToArray());
                                             }
 
-                                            _engineInfoLineUserControls[multiPv].FillLine(scoreString, ml);
-                                        }
-                                        catch
-                                        {
-                                            _engineInfoLineUserControls[multiPv].FillLine(scoreString, moveLine);
+                                            try
+                                            {
+                                                var ml = string.Empty;
+                                                var strings = moveLine.Split(" ".ToCharArray());
+                                                foreach (var s in strings)
+                                                {
+                                                    ml = ml + " " + fastChessBoard.GetMove(s);
+                                                }
+
+                                                _engineInfoLineUserControls[multiPv].FillLine(scoreString, ml);
+                                            }
+                                            catch
+                                            {
+                                                _engineInfoLineUserControls[multiPv].FillLine(scoreString, moveLine);
+                                            }
                                         }
                                     }
                                 }

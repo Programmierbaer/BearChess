@@ -25,6 +25,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <ComboBox Name="comboBoxBoards" SelectionChanged="ComboBoxBoards_OnSelectionChanged" Width="200"
                           Height="25" VerticalContentAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="2"
@@ -39,12 +40,15 @@
                         Background="Transparent" BorderBrush="Transparent" Click="ButtonDeleteBoard_OnClick">
                     <Image Margin="5" Source="../Assets/Icons/bin.png" Width="32" Height="32" />
                 </Button>
-                <CheckBox Name="checkBoxShowLastMove" Margin="5" Grid.Column="0" Grid.Row="2" >
+                <CheckBox Name="checkBoxAsArrow" Margin="5" Grid.Column="0" Grid.Row="2" >
+                    <TextBlock Margin="1" Text="As arrow"></TextBlock>
+                </CheckBox>
+                <CheckBox Name="checkBoxShowLastMove" Margin="5" Grid.Column="0" Grid.Row="3" >
                     <Border BorderThickness="1" BorderBrush="Green" Width="100">
                         <TextBlock Margin="1" Text="Show last move"></TextBlock>
                     </Border>
                 </CheckBox>
-                <CheckBox Name="checkBoxShowBestMove" Margin="5" Grid.Column="0" Grid.Row="3" >
+                <CheckBox Name="checkBoxShowBestMove" Margin="5" Grid.Column="0" Grid.Row="4" >
                     <Border BorderThickness="1" BorderBrush="Orange" Width="100">
                         <TextBlock Margin="1" Text="Show best move"></TextBlock>
                     </Border>

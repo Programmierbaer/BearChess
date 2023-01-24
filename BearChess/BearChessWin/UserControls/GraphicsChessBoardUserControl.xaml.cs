@@ -20,7 +20,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class GraphicsChessBoardUserControl : UserControl
     {
-
+        private class ArrowDescription
+        {
+            public int FromField;
+            public int ToField;
+            public SolidColorBrush Color;
+        }
         public class MoveEventArgs : EventArgs
         {
             public MoveEventArgs(int fromField, int toField)
@@ -105,6 +110,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _whitePlayer = string.Empty;
         private string _blackPlayer = string.Empty;
         private string _fieldId;
+        private readonly List<ArrowDescription> _arrowList = new List<ArrowDescription>();
+        private Canvas _canvas;
 
 
         public GraphicsChessBoardUserControl()
@@ -126,6 +133,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             HideRobot();
         }
 
+        public void SetCanvas(Canvas canvas)
+        {
+            _canvas = canvas;
+        }
         public bool WhiteOnTop { get; private set; } = true;
 
         public bool Symbol { get; set; }
@@ -1081,10 +1092,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        public void MarkFields(int[] fields, bool green)
+        public void MarkFields(int[] fields, bool green, bool asArrow)
         {
             if (green)
             {
+                if (fields.Length > 1 && asArrow)
+                {
+                    _canvas?.Children.Clear();
+                    _arrowList.Clear();
+                    var arrowDescription = new ArrowDescription()
+                                           {
+                                               FromField = fields[0],
+                                               ToField = fields[1],
+                                               Color = Brushes.Green
+                                           };
+                    DrawArrow(arrowDescription);
+                    return;
+                }
+
                 foreach (var field in fields)
                 {
                     if (!_markedGreenFields.ContainsKey(field))
@@ -1142,6 +1167,31 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         _markedGreenFields[field] = false;
                     }
+                    if (fields.Length > 1 && asArrow)
+                    {
+                        for (int i = 0; i < _canvas.Children.Count; i++)
+                        {
+                            if (_canvas.Children[i] is ArrowLine)
+                            {
+                                var canvasChild = _canvas.Children[i] as ArrowLine;
+                                if (canvasChild.Stroke.Equals(Brushes.Orange))
+                                {
+                                    _canvas.Children.RemoveAt(i);
+                                    break;
+                                }
+                            }
+                         
+                        }
+                        
+                        var arrowDescription = new ArrowDescription()
+                                               {
+                                                   FromField = fields[0],
+                                                   ToField = fields[1],
+                                                   Color = Brushes.Orange
+                                               };
+                        DrawArrow(arrowDescription);
+                        return;
+                    }
                     _markedNonGreenFields.Add(field);
                         _piecesBorderBitmaps[field].Source = FindResource("bitmapYellowFrame") as BitmapImage;
                 }
@@ -1156,6 +1206,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void UnMarkAllFields()
         {
+            _canvas?.Children.Clear();
+            _arrowList.Clear();
+
             _markedNonGreenFields.Clear();
             _markedGreenFields.Clear();
             foreach (var boardField in Fields.BoardFields)
@@ -1163,6 +1216,69 @@ namespace www.SoLaNoSoft.com.BearChessWin
               UnMarkField(boardField);    
             }
         }
+
+        private void DrawArrow(ArrowDescription arrowDescription)
+        {
+            if (_canvas == null)
+            {
+                return;
+            }
+
+
+            var gridWidth = (ChessFieldSize+10) / 2;
+            var gridWidth2 = gridWidth / 2;
+            var gridWidth3 = gridWidth - gridWidth2;
+            var gridWidth4 = gridWidth + gridWidth2;
+            var dx1 = gridWidth;
+            var dx2 = gridWidth;
+            var dy1 = gridWidth;
+            var dy2 = gridWidth;
+            var pointToScreen1 = _piecesBorderBitmaps[arrowDescription.FromField].TranslatePoint(new Point(0, 0), _canvas);
+            var pointToScreen2 = _piecesBorderBitmaps[arrowDescription.ToField].TranslatePoint(new Point(0, 0), _canvas);
+            var aline2 = new ArrowLine
+                         {
+                             ArrowEnds = ArrowEnds.End,
+                             Stroke = arrowDescription.Color,
+                             StrokeThickness = 2
+                         };
+
+            if (!pointToScreen1.X.Equals(pointToScreen2.X))
+            {
+                if (pointToScreen1.X < pointToScreen2.X)
+                {
+                    dx1 = gridWidth4;
+                    dx2 = gridWidth2;
+                }
+                else
+                {
+                    dx1 = gridWidth2;
+                    dx2 = gridWidth4;
+                }
+                
+            }
+            if (!pointToScreen1.Y.Equals(pointToScreen2.Y))
+            {
+                if (pointToScreen1.Y < pointToScreen2.Y)
+                {
+                    dy1 = gridWidth4;
+                    dy2 = gridWidth3;
+                }
+                else
+                {
+                    dy1 = gridWidth3;
+                    dy2 = gridWidth4;
+                }
+                
+            }
+            aline2.X1 = pointToScreen1.X + dx1;
+            aline2.Y1 = pointToScreen1.Y + dy1;
+            aline2.X2 = pointToScreen2.X + dx2;
+            aline2.Y2 = pointToScreen2.Y + dy2;
+            aline2.IsArrowClosed = true;
+            aline2.Fill = arrowDescription.Color;
+            _canvas.Children.Add(aline2);
+        }
+
         public void ShowPauseGame(bool show)
         {
             if (show)

@@ -16,9 +16,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             _bookPath = bookPath;
             _installedBooks = new Dictionary<string, BookInfo>();
-            fileLogger?.LogInfo("Read installed books...");
             ReadInstalledBooks(fileLogger);
-            fileLogger?.LogInfo("---Read installed books");
         }
 
         public static OpeningBook LoadBook(string bookName, bool checkFile)
@@ -47,22 +45,38 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             try
             {
+                fileLogger?.LogInfo("Read installed books...");
                 _installedBooks.Clear();
                 var fileNames = Directory.GetFiles(_bookPath, "*.book", SearchOption.TopDirectoryOnly);
                 foreach (var fileName in fileNames)
                 {
-                    fileLogger?.LogInfo($"Reading {fileName}");
-                    var serializer = new XmlSerializer(typeof(BookInfo));
-                    TextReader textReader = new StreamReader(fileName);
-                    var savedBook = (BookInfo)serializer.Deserialize(textReader);
-                    if (File.Exists(savedBook.FileName) && !_installedBooks.ContainsKey(savedBook.Name))
+                    try
                     {
-                        fileLogger?.LogInfo($"Add book {savedBook.Name}");
+                        fileLogger?.LogInfo($"  Reading {fileName}");
+                        var serializer = new XmlSerializer(typeof(BookInfo));
+                        TextReader textReader = new StreamReader(fileName);
+                        var savedBook = (BookInfo)serializer.Deserialize(textReader);
+                        if (!File.Exists(savedBook.FileName))
+                        {
+                            fileLogger?.LogWarning($"  Book file {savedBook.FileName} not found");
+                        }
+
+                        if (_installedBooks.ContainsKey(savedBook.Name))
+                        {
+                            fileLogger?.LogWarning($" Book file {savedBook.Name} already installed");
+                            continue;
+                        }
+
+                        fileLogger?.LogInfo($"  Add book {savedBook.FileName} as {savedBook.Name}");
                         _installedBooks.Add(savedBook.Name, savedBook);
                     }
+                    catch (Exception ex)
+                    {
+                        fileLogger?.LogError(ex);
+                    }
                 }
-                fileLogger?.LogInfo($" {_installedBooks.Count} books read");
 
+                fileLogger?.LogInfo($"{_installedBooks.Count} books read");
             }
             catch (Exception ex)
             {

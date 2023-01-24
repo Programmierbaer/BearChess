@@ -34,6 +34,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void SendToEngine(string command, string engineName = "");
         void NewGame();
         void NewGame(TimeControl timeControl, TimeControl timeControlBlack);
+        void SetTimeControl(TimeControl timeControl, TimeControl timeControlBlack);
         void AddMove(string fromField, string toField, string promote, string engineName = "");
         void AddMoveForCoaches(string fromField, string toField, string promote);
         void MakeMove(string fromField, string toField, string promote, string engineName = "");
@@ -49,6 +50,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void GoInfiniteForCoach(string fenPosition);
         void GoInfinite(int color = Fields.COLOR_EMPTY, string engineName = "");
         void CurrentColor(int color);
+
+        void BringToTop();
+        void SetWindowPositions(double newLeft, double newTop);
     }
 
     public abstract class AbstractEngineWindow

@@ -219,8 +219,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             PlayerWhiteConfigValues = _allUciInfos.ContainsKey(textBlockPlayerWhiteEngine.Text)
                                           ? _allUciInfos[textBlockPlayerWhiteEngine.Text]
                                           : null;
-            PlayerBlackConfigValues = _allUciInfos.ContainsKey(textBlockPlayerWhiteEngine.Text)
-                                          ? _allUciInfos[textBlockPlayerWhiteEngine.Text]
+            PlayerBlackConfigValues = _allUciInfos.ContainsKey(textBlockPlayerBlackEngine.Text)
+                                          ? _allUciInfos[textBlockPlayerBlackEngine.Text]
                                           : null;
             SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
                                   textBlockEloWhite, imageBookWhite, imageBookWhite2);

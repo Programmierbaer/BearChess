@@ -57,6 +57,9 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         [XmlIgnore]
         public int Id { get; set; }
 
+        [XmlIgnore]
+        public bool Continue { get; set; }
+
         public DatabaseGame(PgnGame pgnGame, Move[] moveList, CurrentGame currentGame)
         {
             CurrentGame = currentGame;
@@ -75,6 +78,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             if (currentGame!=null)
               Round = currentGame.Round;
             Id = 0;
+            Continue = false;
         }
 
         public DatabaseGame()

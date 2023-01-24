@@ -28,8 +28,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly string _piecesPath;
         private readonly Dictionary<string, BoardFieldsSetup> _installedFields;
         private readonly Dictionary<string, BoardPiecesSetup> _installedPieces;
-        private readonly List<string> _undeleteablePieces = new List<string>();
-        private readonly List<string> _undeleteableFields = new List<string>();
+        private readonly List<string> _unDeleteablePieces = new List<string>();
+        private readonly List<string> _unDeleteableFields = new List<string>();
 
         public BoardFieldsSetup BoardFieldsSetup { get; private set; }
         public BoardPiecesSetup BoardPiecesSetup { get; private set; }
@@ -45,16 +45,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             // ReSharper disable once PossibleInvalidOperationException
             checkBoxShowBestMove.IsChecked.Value;
 
+        public bool ShowAsArrow =>
+            // ReSharper disable once PossibleInvalidOperationException
+            checkBoxAsArrow.IsChecked.Value;
+
 
         public ChessBoardSetupWindow(string boardPath, string piecesPath, Dictionary<string, BoardFieldsSetup> installedFields,
                                      Dictionary<string, BoardPiecesSetup> installedPieces,
-                                     string currentBoardFieldsSetupId, string currentBoardPiecesSetupId, bool showLastMove, bool showBestMove)
+                                     string currentBoardFieldsSetupId, string currentBoardPiecesSetupId, bool showLastMove, bool showBestMove, bool asArrow)
         {
 
             InitializeComponent();
 
             checkBoxShowBestMove.IsChecked = showBestMove;
             checkBoxShowLastMove.IsChecked = showLastMove;
+            checkBoxAsArrow.IsChecked = asArrow;
             installedFields[Constants.BearChess] = new BoardFieldsSetup()
             {
                 Name = Constants.BearChess,
@@ -79,16 +84,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             installedPieces[Constants.BryanWhitbyRoyalBrown] = new BoardPiecesSetup() { Name = "Royal Brown by Bryan Whitby", Id = Constants.BryanWhitbyRoyalBrown };
             installedPieces[Constants.BryanWhitbyModernGold] = new BoardPiecesSetup() { Name = "Modern Gold by Bryan Whitby", Id = Constants.BryanWhitbyModernGold };
             installedPieces[Constants.BryanWhitbyModernBrown] = new BoardPiecesSetup() { Name = "Modern Brown by Bryan Whitby", Id = Constants.BryanWhitbyModernBrown };
-            _undeleteablePieces.Add(Constants.BearChess);
-            _undeleteablePieces.Add(Constants.Certabo);
-            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyDali].Name);
-            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyItalian].Name);
-            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyRoyalGold].Name);
-            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyRoyalBrown].Name);
-            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyModernGold].Name);
-            _undeleteablePieces.Add(installedPieces[Constants.BryanWhitbyModernBrown].Name);
-            _undeleteableFields.Add(Constants.BearChess);
-            _undeleteableFields.Add(Constants.Certabo);
+            _unDeleteablePieces.Add(Constants.BearChess);
+            _unDeleteablePieces.Add(Constants.Certabo);
+            _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyDali].Name);
+            _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyItalian].Name);
+            _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyRoyalGold].Name);
+            _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyRoyalBrown].Name);
+            _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyModernGold].Name);
+            _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyModernBrown].Name);
+            _unDeleteableFields.Add(Constants.BearChess);
+            _unDeleteableFields.Add(Constants.Certabo);
 
             _boardPath = boardPath;
             _piecesPath = piecesPath;
@@ -205,7 +210,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDeleteBoard_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_undeleteableFields.Contains(BoardFieldsSetup.Name))
+            if (_unDeleteableFields.Contains(BoardFieldsSetup.Name))
             {
                 MessageBox.Show($"You cannot delete pre-installed board '{BoardFieldsSetup.Name}'", "Information", MessageBoxButton.OK,
                           MessageBoxImage.Hand);
@@ -224,7 +229,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDeletePieces_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_undeleteablePieces.Contains(BoardPiecesSetup.Name))
+            if (_unDeleteablePieces.Contains(BoardPiecesSetup.Name))
             {
                 MessageBox.Show($"You cannot delete pre-installed pieces '{BoardPiecesSetup.Name}'", "Information", MessageBoxButton.OK,
                             MessageBoxImage.Hand);

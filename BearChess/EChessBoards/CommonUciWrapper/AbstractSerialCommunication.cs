@@ -314,6 +314,25 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
                     }
                 }
+                if (_boardName.Equals(Constants.Tabutronic, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (comPort.Equals("BT"))
+                    {
+                        _comPort = new BTComPort(null);
+                        if (!((BTComPort)_comPort).EndPointFound)
+                        {
+                            SerialCommunicationTools.GetBTComPort(_boardName, Configuration.Instance, _logger, true,
+                                                                  false);
+                            _comPort = new BTComPort(null);
+                        }
+
+                    }
+                    else if (comPort.StartsWith("C"))
+                    {
+                        _comPort = new SerialComPort(comPort, 38400, Parity.None)
+                                   { ReadTimeout = 1000, WriteTimeout = 1000 };
+                    }
+                }
 
                 if (_boardName.Equals(Constants.UCB, StringComparison.OrdinalIgnoreCase))
                 {
@@ -362,6 +381,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
                     }
                 }
+
 
                 if (_boardName.Equals(Constants.Pegasus, StringComparison.OrdinalIgnoreCase))
                 {
@@ -542,6 +562,10 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         if (_boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase))
                         {
                             BoardInformation = Constants.Certabo;
+                        }
+                        if (_boardName.Equals(Constants.Tabutronic, StringComparison.OrdinalIgnoreCase))
+                        {
+                            BoardInformation = Constants.Tabutronic;
                         }
                         if (_boardName.Equals(Constants.UCB, StringComparison.OrdinalIgnoreCase))
                         {

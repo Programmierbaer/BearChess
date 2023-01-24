@@ -46,9 +46,11 @@
     <Compile Include="CalibrateDataCreator.cs" />
     <Compile Include="CalibrateStorage.cs" />
     <Compile Include="EChessBoard.cs" />
+    <Compile Include="EChessBoardT.cs" />
     <Compile Include="Interfaces\ICalibrateStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialCommunication.cs" />
+    <Compile Include="SerialCommunicationT.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\BearChessBase\BearChessBase.csproj">

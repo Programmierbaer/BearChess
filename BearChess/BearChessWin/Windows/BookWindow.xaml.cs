@@ -1,10 +1,12 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -15,10 +17,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class BookWindow : Window
     {
         private readonly Configuration _configuration;
-        private readonly BookInfo _bookInfo;
         private  OpeningBook _openingBook;
         private readonly List<string> _allMoves = new List<string>();
         private readonly ConcurrentQueue<string> _concurrentFenPositions = new ConcurrentQueue<string>();
+
+        public event EventHandler<BookMove> SelectedMoveChanged;
 
         public BookWindow()
         {
@@ -28,12 +31,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public BookWindow(Configuration configuration,BookInfo bookInfo) : this()
         {
             _configuration = configuration;
-            _bookInfo = bookInfo;
-            Title += $" {_bookInfo.Name}";
+            var bookInfo1 = bookInfo;
+            Title += $" {bookInfo1.Name}";
             Top = _configuration.GetWinDoubleValue("BookWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight,SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("BookWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             _openingBook = new OpeningBook();
-            _openingBook.LoadBook(_bookInfo.FileName, false);
+            _openingBook.LoadBook(bookInfo1.FileName, false);
             SetMoves(_openingBook.GetMoveList());
             var thread = new Thread(ReadFenPositions)
                          {
@@ -95,7 +98,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DataGridMoves_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
+            if (dataGridMoves.SelectedItem is BookMove)
+            {
+                OnSelectedMoveChanged(dataGridMoves.SelectedItem as BookMove);
+            }
         }
 
         private void BookWindow_OnClosing(object sender, CancelEventArgs e)
@@ -103,6 +109,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _openingBook = null;
             _configuration.SetDoubleValue("BookWindowTop", Top);
             _configuration.SetDoubleValue("BookWindowLeft", Left);
+        }
+
+        protected virtual void OnSelectedMoveChanged(BookMove e)
+        {
+            SelectedMoveChanged?.Invoke(this, e);
         }
     }
 }

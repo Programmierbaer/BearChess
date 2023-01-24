@@ -340,6 +340,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _loadedEngine.UciEngine.NewGame(this);
         }
 
+        public void SetTimeControl(TimeControl timeControl, TimeControl timeControlBlack)
+        {
+            //
+        }
+
 
         public void AddMove(string fromField, string toField, string promote, string engineName = "")
         {
@@ -431,6 +436,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void CurrentColor(int color)
         {
+            //
+        }
+
+        public void BringToTop()
+        {
+            //
+        }
+
+        public void SetWindowPositions(double newLeft, double newTop)
+        {
+            //
         }
 
         #endregion

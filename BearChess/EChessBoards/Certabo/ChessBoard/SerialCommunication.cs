@@ -55,7 +55,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override void SendRawToBoard(string param)
         {
-             //  Ignored for Certabo
+            //  Ignored for Certabo
         }
 
         public override void SendRawToBoard(byte[] param)
@@ -128,34 +128,34 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         if (_byteDataToBoard.TryDequeue(out var data))
                         {
 
-                                var s = BitConverter.ToString(data);
-                                _logger?.LogDebug($"SC: Send byte array: {s}");
-                                _comPort.Write(data, 0, data.Length);
-                                //_logger?.LogDebug($"SC: bytes send");
-                                //  Thread.Sleep(15);
-                            
+                            var s = BitConverter.ToString(data);
+                            _logger?.LogDebug($"SC: Send byte array: {s}");
+                            _comPort.Write(data, 0, data.Length);
+                            //_logger?.LogDebug($"SC: bytes send");
+                            //  Thread.Sleep(15);
+
                         }
 
-                        
-                            try
-                            {
-                                //_logger?.LogDebug($"SC: Readline.... ");
-                                var readLine = _comPort.ReadLine();
 
-                                //_logger?.LogDebug($"SC: Read: {readLine} ");
-                                if (_dataFromBoard.Count > 20)
-                                {
-                                    _dataFromBoard.TryDequeue(out _);
-                                }
+                        try
+                        {
+                            //_logger?.LogDebug($"SC: Readline.... ");
+                            var readLine = _comPort.ReadLine();
 
-                                _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
-                              
-                            }
-                            catch (TimeoutException )
+                            //_logger?.LogDebug($"SC: Read: {readLine} ");
+                            if (_dataFromBoard.Count > 20)
                             {
-                                continue;
+                                _dataFromBoard.TryDequeue(out _);
                             }
-                        
+
+                            _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
+
+                        }
+                        catch (TimeoutException)
+                        {
+                            continue;
+                        }
+
                     }
 
                     Thread.Sleep(10);

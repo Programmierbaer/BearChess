@@ -2,24 +2,57 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
-using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.FicsClient;
-using www.SoLaNoSoft.com.BearChess.SaitekOSA;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
+
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
     public sealed class UciLoader
     {
+        public struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        const short SWP_NOMOVE = 0X2;
+        const short SWP_NOSIZE = 1;
+        const short SWP_NOZORDER = 0X4;
+        const int SWP_NOACTIVATE = 0x0010;
+        const int SWP_SHOWWINDOW = 0x0040;
         
+        private const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
+
+        private int HWND_TOP = 0;
+        
+        
+
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
+        public static extern IntPtr SetWindowPos(IntPtr hWnd, int hWndInsertAfter, int x, int Y, int cx, int cy, int wFlags);
+
+        [DllImport("user32.dll", EntryPoint = "BringWindowToTop")]
+        public static extern IntPtr BringWindowToTop(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern int GetWindowRect(IntPtr hwnd, out RECT rect);
+
+        [DllImport("dwmapi.dll")]
+        static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
 
         public class EngineEventArgs : EventArgs
         {
@@ -38,6 +71,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Process _engineProcess;
         private readonly UciInfo _uciInfo;
         private readonly ILogging _logger;
+        private readonly Configuration _configuration;
         private bool _lookForBookMoves;
         private readonly ConcurrentQueue<string> _waitForFromEngine = new ConcurrentQueue<string>();
         private readonly ConcurrentQueue<string> _sendToUciEngine = new ConcurrentQueue<string>();
@@ -48,12 +82,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly OpeningBook _openingBook;
         private BookMove _bookMove;
         private IUciWrapper _uciWrapper = null;
+        private string _initFen;
+        private  RECT _rect;
+        private int _windowPosDelta = 0;
         public bool IsTeddy => _uciInfo.AdjustStrength;
         public bool isLoaded { get; private set; }
 
         public event EventHandler<EngineEventArgs> EngineReadingEvent;
 
-     
+        
 
         public UciLoader(UciInfo uciInfo, ILogging logger, IFICSClient ficsClient, string gameNumber)
         {
@@ -71,6 +108,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var threadSending = new Thread(SendToEngine) { IsBackground = true };
             threadSending.Start();
             isLoaded = true;
+            _initFen = string.Empty;
+            _rect = new RECT
+                    {
+                        Top = 0,
+                        Left = 0,
+                        Bottom = 0,
+                        Right = 0
+                    };
         }
 
         public UciLoader(UciInfo uciInfo, ILogging logger, IElectronicChessBoard eChessBoard, string boardName)
@@ -82,9 +127,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _openingBook = null;
             _bookMove = null;
             if (boardName.Equals(Constants.OSA))
+            {
                 _uciWrapper = new BearChess.SaitekOSA.UciWrapper(eChessBoard);
+            }
+
             if (boardName.Equals(Constants.Citrine))
+            {
                 _uciWrapper = new BearChess.NOVAGCitrine.UciWrapper(eChessBoard);
+            }
+
+            if (_uciWrapper == null)
+            {
+                return;
+            }
             var threadReadGui = new Thread(_uciWrapper.Run) { IsBackground = true };
             threadReadGui.Start();
             var threadReading = new Thread(ReadFromEngine) { IsBackground = true };
@@ -92,12 +147,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var threadSending = new Thread(SendToEngine) { IsBackground = true };
             threadSending.Start();
             isLoaded = true;
+            _initFen = string.Empty;
+            _rect = new RECT
+                    {
+                        Top = 0,
+                        Left = 0,
+                        Bottom = 0,
+                        Right = 0
+                    };
         }
-        public UciLoader(UciInfo uciInfo, ILogging logger,  bool lookForBookMoves)
+        public UciLoader(UciInfo uciInfo, ILogging logger, Configuration configuration, bool lookForBookMoves)
         {
             isLoaded = false;
             _uciInfo = uciInfo;
             _logger = logger;
+            _configuration = configuration;
             _lookForBookMoves = lookForBookMoves;
             _logger?.LogInfo($"Load engine {uciInfo.Name} with id {uciInfo.Id}");
             _openingBook = null;
@@ -130,13 +194,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     WorkingDirectory = Path.GetDirectoryName(fileName),
                     Arguments = _uciInfo.AdjustStrength ? _uciInfo.FileName.Replace(" ","$") : uciInfo.CommandParameter
                 }
+               
 
             };
             _engineProcess.Start();
-            _engineProcess.Exited += EngineProcess_Exited;
-            _engineProcess.Disposed += EngineProcess_Disposed;
             var thread = new Thread(InitEngine) { IsBackground = true };
             thread.Start();
+         
             if (!thread.Join(10000))
             {
                 try
@@ -150,21 +214,55 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 return;
             }
+            if (_configuration != null)
+            {
+                _rect = new RECT
+                        {
+                            Top = int.Parse(_configuration.GetConfigValue($"{_uciInfo.Id}_top", "0")),
+                            Left = int.Parse(_configuration.GetConfigValue($"{_uciInfo.Id}_left", "0")),
+                            Bottom = int.Parse(_configuration.GetConfigValue($"{_uciInfo.Id}_bottom", "0")),
+                            Right = int.Parse(_configuration.GetConfigValue($"{_uciInfo.Id}_right", "0"))
+                        };
+                if (_rect.Right != 0)
+                {
+                    if (_rect.Top > SystemParameters.VirtualScreenTop && _rect.Left > SystemParameters.VirtualScreenLeft
+                                                                      && (_rect.Bottom - _rect.Top) <
+                                                                      SystemParameters.VirtualScreenHeight &&
+                                                                      (_rect.Right - _rect.Left) <
+                                                                      SystemParameters.VirtualScreenWidth)
+                    {
+
+
+                        SetWindowPos(_engineProcess.MainWindowHandle, 0, _rect.Left, _rect.Top,
+                                     _rect.Right - _rect.Left,
+                                     _rect.Bottom - _rect.Top, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_NOACTIVATE);
+                        var windowRect = GetWindowRect(0);
+                        _windowPosDelta = windowRect.Left - _rect.Left;
+                        _logger?.LogDebug($"WindowPosDelta: {_windowPosDelta}");
+                        _rect.Left -= _windowPosDelta;
+                        _rect.Bottom += _windowPosDelta;
+                        _rect.Right += _windowPosDelta;
+                        SetWindowPos(_engineProcess.MainWindowHandle, 0, _rect.Left, _rect.Top,
+                                     _rect.Right - _rect.Left,
+                                     _rect.Bottom - _rect.Top, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_NOACTIVATE);
+                    }
+                }
+            }
             var threadReading = new Thread(ReadFromEngine) { IsBackground = true };
             threadReading.Start();
             var threadSending = new Thread(SendToEngine) { IsBackground = true };
             threadSending.Start();
             isLoaded = true;
+            _initFen = string.Empty;
+          
         }
 
-        private void EngineProcess_Disposed(object sender, EventArgs e)
+        public void SetNewPosition(RECT rect)
         {
-            _logger?.LogWarning("process disposed");
-        }
-
-        private void EngineProcess_Exited(object sender, EventArgs e)
-        {
-            _logger?.LogWarning("process exited");
+            _rect = rect;
+            SetWindowPos(_engineProcess.MainWindowHandle, 0, _rect.Left, _rect.Top,
+                         _rect.Right - _rect.Left,
+                         _rect.Bottom - _rect.Top, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_NOACTIVATE);
         }
 
         public void StopProcess()
@@ -181,6 +279,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void NewGame(Window ownerWindow)
         {
+            _initFen = string.Empty;
             _allMoves.Clear();
             _allMoves.Add("position startpos moves");
             SendToEngine("ucinewgame");
@@ -204,6 +303,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
+            _initFen = fen;
             SendToEngine(string.IsNullOrWhiteSpace(moves)
                              ? $"position fen {fen}"
                              : $"position fen {fen} moves {moves}");
@@ -228,7 +328,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_allMoves.Count == 0)
             {
-                _allMoves.Add("position startpos moves");
+                if (string.IsNullOrEmpty(_initFen))
+                {
+                    _allMoves.Add("position startpos moves");
+                }
+                else
+                {
+                    _allMoves.Add($"position fen {_initFen} moves");
+                }
                 SendToEngine("ucinewgame");
             }
             
@@ -249,7 +356,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_allMoves.Count == 0)
             {
-                _allMoves.Add("position startpos moves");
+                if (string.IsNullOrEmpty(_initFen))
+                {
+                    _allMoves.Add("position startpos moves");
+                }
+                else
+                {
+                    _allMoves.Add($"position fen {_initFen} moves");
+                }
+
                 SendToEngine("ucinewgame");
             }
 
@@ -268,7 +383,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_allMoves.Count == 0)
             {
-                _allMoves.Add("position startpos moves");
+                if (string.IsNullOrEmpty(_initFen))
+                {
+                    _allMoves.Add("position startpos moves");
+                }
+                else
+                {
+                    _allMoves.Add($"position fen {_initFen} moves");
+                }
+
                 SendToEngine("ucinewgame");
             }
             _logger?.LogDebug($"Make move with time: {fromField}{toField}{promote}");
@@ -341,7 +464,58 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void Quit()
         {
+            if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase))
+            {
+                _rect = new RECT();
+                if (DwmGetWindowAttribute(_engineProcess.MainWindowHandle, DWMWA_EXTENDED_FRAME_BOUNDS, out _rect, Marshal.SizeOf(typeof(RECT))) != 0)
+                {
+                    GetWindowRect(_engineProcess.MainWindowHandle, out _rect);
+                }
+
+                if (_rect.Right != 0)
+                {
+                    _configuration?.SetConfigValue($"{_uciInfo.Id}_top", _rect.Top.ToString());
+                    _configuration?.SetConfigValue($"{_uciInfo.Id}_left", _rect.Left.ToString());
+                    _configuration?.SetConfigValue($"{_uciInfo.Id}_bottom", _rect.Bottom.ToString());
+                    _configuration?.SetConfigValue($"{_uciInfo.Id}_right", _rect.Right.ToString());
+                }
+            }
+
             SendToEngine("quit");
+        }
+
+        public RECT GetWindowRect()
+        {
+            return GetWindowRect(_windowPosDelta);
+        }
+
+        private RECT GetWindowRect(int delta)
+        {
+            if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase))
+            {
+                RECT rect = new RECT();
+                if (DwmGetWindowAttribute(_engineProcess.MainWindowHandle, DWMWA_EXTENDED_FRAME_BOUNDS, out rect, Marshal.SizeOf(typeof(RECT))) == 0)
+                {
+                    rect.Left -= delta;
+                    rect.Bottom += delta;
+                    rect.Right += delta;
+                }
+                else
+                {
+                    GetWindowRect(_engineProcess.MainWindowHandle, out rect);
+                }
+                return rect;
+            }
+
+            return _rect;
+        }
+
+        public void BringToOp()
+        {
+            if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase))
+            {
+                BringWindowToTop(_engineProcess.MainWindowHandle);
+            }
         }
 
         public void SetOption(string name, string value)

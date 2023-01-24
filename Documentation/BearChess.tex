@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.3.1}
+\fancyhead[R]{Version 0.9.4.}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{27.12.2022} 
+\date{24.01.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -68,7 +68,7 @@ Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@
 	\item Configure the electronic chessboard connection (\textbf{\ref{ElectronicChessBoard}  \nameref{ElectronicChessBoard}} on page \pageref{ElectronicChessBoard}).
 	\item Connect to the electronic chessboard.
 	\item Load a chess engine (\textbf{\ref{InstallEngine}  \nameref{InstallEngine}} on page \pageref{InstallEngine})
-	\item Start a game and make your first move on the eletronic chessboard.
+	\item Start a game and make your first move on the electronic chessboard.
 \end{itemize}
 
 
@@ -89,8 +89,8 @@ BearChess offers among others the following functions:
   	  \item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs. Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
   	  \item Use \textbf{Certabo Avatar} UCI engines.  	  
   	  \item Use \textbf{MessChess} chess computer emulation by Franz Huber.  	    	  
-  	  \item \textbf{Analyze} your games or trainings with the help of electronic chessboards.
-  	  \item Use multiple chess engines at the same time for playing and analyzing.
+  	  \item \textbf{Analyse} your games or trainings with the help of electronic chessboards.
+  	  \item Use multiple chess engines at the same time for playing and analysing.
   	  \item Engine \textbf{duels} and \textbf{tournaments}.
   	  \item Support for Polyglot and Arena opening books.
   	  \item Save and load your games.
@@ -107,7 +107,7 @@ Currently the \textit{major release} is still 0 and will only become a 1 when al
 BearChess is running in different modes. The current mode is displayed in the lower left corner.
 \begin{itemize}
 	
-	\item \textbf{Easy playing} This is the mode in the beginning. You just can simply start making your moves on the screen or on your electronic chessboard, almost without regard to the chess rules. In addition to support you can start chess programs or load opening books. But these only give hints, but do not play as opponents. This mode is automatically set if you are not playing in another mode. It is similar to the analyze mode but let you more easily start a new game from any position.
+	\item \textbf{Easy playing} This is the mode in the beginning. You just can simply start making your moves on the screen or on your electronic chessboard, almost without regard to the chess rules. In addition to support you can start chess programs or load opening books. But these only give hints, but do not play as opponents. This mode is automatically set if you are not playing in another mode. It is similar to the analyse mode but let you more easily start a new game from any position.
 	\begin{figure}[H]
 		\centering
 		\includegraphics[scale=1.0]{ModeEasyPlaying.png}
@@ -121,18 +121,18 @@ BearChess is running in different modes. The current mode is displayed in the lo
 		\caption{Playing a game}
 		\label{fig:ModePlayingAGame}
 	\end{figure}
-	\item \textbf{Analyzing} If you select this mode you can make any chess moves or place the pieces as you like, almost without regard to the chess rules. This mode is recommended to analyze a game or positions. Try different variants on the board and let several chess programs analyze the positions simultaneously. 
+	\item \textbf{Analysing} If you select this mode you can make any chess moves or place the pieces as you like, almost without regard to the chess rules. This mode is recommended to analyse a game or positions. Try different variants on the board and let several chess programs analyse the positions simultaneously. 
 	\begin{figure}[H]
 		\centering
 		\includegraphics[scale=1.0]{ModeAnalyzing.png}
-		\caption{Analyzing}
+		\caption{Analysing}
 		\label{fig:ModeAnalyzing}
 	\end{figure}
-	\item \textbf{Analyzing a game} If you have loaded a played game and connected to an electronic chessboard, you can analyze the game. Follow the played moves or make some variants and let them be analyzed by different chess programs.
+	\item \textbf{Analysing a game} If you have loaded a played game and connected to an electronic chessboard, you can analyze the game. Follow the played moves or make some variants and let them be analysed by different chess programs.
     \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{ModeAnalyzing.png}
-	\caption{Analyzing}
+	\caption{Analysing}
 	\label{fig:ModeAnalyzingGame}
 \end{figure}
 	\item \textbf{Setup Position} Build up a new starting position on the chessboard. It is easiest to set it up on the electronic chessboard.
@@ -233,10 +233,11 @@ All games are saved in a database file. Read more on chapter \textbf{\ref{games}
 \end{figure}
 
 \begin{itemize}
-	\item  \textbf{Show nodes (N)} How many nodes in the search tree were calculated
-	\item \textbf{Show nodes per seconds (Nps)} How many nodes are calculated per second
-	\item \textbf{Show hash} Utilization of the hash memory in percent
-	\item \textbf{From the point of view of White} Always shows the evaluation value from white's point of view..
+	\item  \textbf{Show nodes (N)} How many nodes in the search tree were calculated.
+	\item \textbf{Show nodes per seconds (Nps)} How many nodes are calculated per second.
+	\item \textbf{Show hash} Utilization of the hash memory in percent.
+	\item \textbf{From the point of view of White} Always shows the evaluation value from white's point of view.
+	\item \textbf{Switch MessChess window position} If you let \textbf{two} MessChess engines play against each other and the color changes, BearChess will also swap the window position so that the engines for black and white are in the correct order.
 \end{itemize}
 
 Read more on chapter \textbf{\ref{loadEngines}  \nameref{loadEngines}} on page \pageref{loadEngines}.
@@ -663,22 +664,23 @@ BearChess comes with several set of pieces and board colors. \textbf{Many thanks
 	\item \includegraphics[scale=0.5]{cancel.png} Cancel
 \end{itemize}
 
-If the options "Show last move" and "Show best move" are activated, the last move and the currently best analysis move of an engine are marked on the board.
+
+If the options "Show last move" and "Show best move" are activated, the last move and the currently best analysis move of an engine are marked on the board (in boxes or as arrow).
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{LastMove.png}
-	\caption{Last move }
+	\caption{Last/best move }
 	\label{fig:LastMove}
 \end{figure}
 
-
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{BestMove.png}
-	\caption{Currently best move }
-	\label{fig:BestMove}
+	\includegraphics[scale=0.8]{LastMoveArrow.png}
+	\caption{Last/best move as arrow}
+	\label{fig:LastMove2}
 \end{figure}
+
 
 \subsection{Install new board colors and pieces}
 BearChess uses png files for board colors and pieces.
@@ -2563,6 +2565,16 @@ These are some ideas what will come in one of the next versions.
 
 \section{Changelog}
 
+\subsection*{Version 0.9.3.1 $\Rightarrow$  0.9.4.0}
+\begin{itemize}
+	\item {\color{blue}New}: Show last/best moves as arrow.
+	\item {\color{blue}New}: Save size and position of MessChess engines window.	
+	\item {\color{blue}New}: Easily continue a game from games manager window.		
+	\item {\color{red}Fix}: Continue a game using MessChess engines.
+    \item {\color{red}Fix}: Engine move output.
+    \item {\color{red}Fix}: Stabilisation of loading boards and pieces.
+\end{itemize}
+
 \subsection*{Version 0.9.3.0 $\Rightarrow$  0.9.3.1}
 \begin{itemize}
 	\item Fix: UCI configuration values for Komodo Dragon.
@@ -2580,7 +2592,7 @@ These are some ideas what will come in one of the next versions.
 
 \subsection*{Version 0.9.2.0 $\Rightarrow$  0.9.2.1}
 \begin{itemize}
-	\item Fix: engine move output for analysing engines
+	\item Fix: Engine move output for analysing engines
 \end{itemize}
 
 \subsection*{Version 0.9.1.0 $\Rightarrow$  0.9.2.0}

@@ -50,6 +50,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             try
             {
                 _serialPort.Close();
+                _serialPort.Dispose();
             }
             catch
             {

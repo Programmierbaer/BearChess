@@ -39,6 +39,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     imageCertabo.Visibility = Visibility.Visible;
                 }
+                if (chessBoardInfo.Equals(Constants.Tabutronic))
+                {
+                    imageCertabo.Visibility = Visibility.Visible;
+                }
 
                 if (chessBoardInfo.StartsWith(Constants.Pegasus))
                 {
