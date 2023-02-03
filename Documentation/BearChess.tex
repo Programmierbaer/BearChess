@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.4.}
+\fancyhead[R]{Version 0.9.5.}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{24.01.2023} 
+\date{03.02.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -43,12 +43,11 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports \textbf{Certabo} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} Citrine/UCB,
-and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
+BearChess supports \textbf{Certabo} and \textbf{Tabutronic} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
 
 As you can see from the version number, this software is still under development. There are still some functions that are not fully implemented and there are certainly still many bugs. But BearChess has now reached a level where it can be used and feedback from other users is welcome.\\
 
-I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo) or Millennium 2000 GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc. If something does not work, the companies are not responsible for it.\\
+I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, Tabutronic) or Millennium 2000 GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc. If something does not work, the companies are not responsible for it.\\
 
 Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 
@@ -76,6 +75,7 @@ Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@
 BearChess offers among others the following functions:
 \begin{enumerate}
 	  \item Play with \textbf{Certabo} chessboards.
+	  \item Play with \textbf{Tabutronics} chessboards.	  
 	  \item Play with \textbf{Millennium} chessboards via \textbf{ChessLink} modul or \textbf{eOne}.
  	  \item Play with \textbf{DGT e-Board} or \textbf{Revelation}.	  
 	  \item Play with \textbf{DGT Pegasus} chessboard.	  
@@ -288,10 +288,13 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 \end{figure}
 \begin{itemize}
 	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
+\item  \includegraphics[scale=0.05]{tabutronic_logo_def.png} \textbf{Tabutronic} opens a window where you can configure and connect to Tabutronic chessboards (Sentio and Cerno).  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.	
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
 	\item  \includegraphics[scale=0.3]{dgt48.png} \textbf{DGT} connect to DGT e-Boards, DGT Revelation or DGT Pegasus chessboard.	
 	\item  \includegraphics[scale=0.05]{squareoff.png} \textbf{Square Off Pro} connect to Square Off Pro chessboard.		
 	\item  \includegraphics[scale=0.1]{chessnut.png} \textbf{Chessnut Air} connect to Chessnut Air chessboard.		
+	\item  \includegraphics[scale=0.3]{novag48.PNG} \textbf{NOVAG} connect to NOVAG Citrine or NOVAG UCB chessboard.			
+\item  \includegraphics[scale=0.4]{Saitek_logo.PNG} \textbf{Saitek OSA} connect to Saitek chessboards with supports OSA protocol.		
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
 	\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
@@ -900,7 +903,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports many electronic chessboards: \textbf{Certabo} boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro} and \textbf{Chessnut Air}. Certabo, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
+BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{Tabutronic}  boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, Tabutronic, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
 For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
 In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
@@ -1017,6 +1020,52 @@ In the lower right corner appears a new button, which allows you to easily conne
 	\caption{Disconnected}
 	\label{fig:Certabo5}
 \end{figure}
+
+\subsection{Configure TabuTronic Sentio} \label{ConfigureTabuTronicSentio}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Sentio1.png}
+	\caption{Open a window to configure TabuTronic Sentio }
+	\label{fig:Sentio1}
+\end{figure}
+
+TabuTronic Sentio currently supports USB as COM-Port connection only.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Sentio2.png}
+	\caption{Select COM port}
+	\label{fig:Sentio2}
+\end{figure}
+
+Select the COM port if you know it or use the <auto> selection. 
+Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
+
+\subsubsection{Connect}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Sentio3.png}
+	\caption{Connect to TabuTronic Sentio}
+	\label{fig:Sentio3}
+\end{figure}
+When the configuration is complete, you can connect your chessboard.
+In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
+\\TabuTronic Sentio has no real piece recognition and can only give the information per field whether there is a piece or not.
+
+\subsection{Configure TabuTronic Cerno} \label{ConfigureTabuTronicCerno}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Cerno1.png}
+	\caption{Comming soon }
+	\label{fig:Cerno1}
+\end{figure}
+
+Currently, I did not have a board available.
+If you already have one, try to include it as a Certabo board. 
+
+
 
 \subsection{Configure Millennium ChessLink} \label{ConfigureChessLink}
 \begin{figure}[H]
@@ -1453,7 +1502,35 @@ When connected to the board, they can also select Saitek OSA as the engine oppon
 However, they cannot select another engine as another opponent. Only Player is possible.
 
 \subsection{Switch side}
-BearChess automatically recognizes whether you are playing with the white or black pieces, depending on how you set up the pieces in the base position (except for DGT Pegasus,Square Off Pro, NOVAG and Saitek boards).
+BearChess automatically recognizes whether you are playing with the white or black pieces, depending on how you set up the pieces in the base position.\\
+
+For TabuTronic Sentio, DGT Pegasus, Square Off Pro, NOVAG and Saitek boards, you have
+to click on the small rotate button.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.75]{rotate1.png}
+	\caption{Rotate the board}
+	\label{fig:Rotate1}
+\end{figure}
+
+The small king symbol shows whether the white or black pieces are in front of you.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{rotate2.png}
+	\caption{Rotated board}
+	\label{fig:Rotate2}
+\end{figure}
+
+The alignment of the graphic chessboard is independent of this.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{rotate3.png}
+	\caption{Rotate graphic board}
+	\label{fig:Rotate3}
+\end{figure}
 
 \section{Play a game}
 
@@ -1724,7 +1801,7 @@ You can achieve all this with the analysis mode.\\
 
 \subsection{With electronic chessboard}
 
-You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. Millennium eOne, DGT Pegasus, Square Off Pro, NOVAG boards and Saitke bords has not. Connect your electronic chessboard before you start the analysis mode.\\ 
+You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. TabuTronic Sentio, Millennium eOne, DGT Pegasus, Square Off Pro, NOVAG boards and Saitke bords has not. Connect your electronic chessboard before you start the analysis mode.\\ 
 When you start the analysis mode, you will be asked to select a supporting analysis engine.
 
 \begin{figure}[H]
@@ -2106,7 +2183,7 @@ Setup a new position is very easy. You can do it with or without the support of 
 
 \textbf{First connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.
 The small board starts with the current position.\\
-\textbf{{\color{red}*}} When a DGT Pegasus, Millennium eOne or Square Off Pro board is connected, the behavior is as if no board is connected.
+\textbf{{\color{red}*}} When a TabuTronic Sentio, DGT Pegasus, Millennium eOne or Square Off Pro board is connected, the behavior is as if no board is connected.
 
 \begin{figure}[H]
 	\centering
@@ -2136,7 +2213,7 @@ Don't forget to set the castling rights and current color.
 \subsection{Without support of an electronic chessboard}
 
 \textbf{First} ensure you are \textbf{not connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.\\
-If a DGT Pegasus, Square Off Pro or Millennium eOne is connected, they do not need to disconnect. You will be prompted at the end to place the figures correctly. \\
+If a TabuTronic Sentio, DGT Pegasus, Square Off Pro or Millennium eOne is connected, they do not need to disconnect. You will be prompted at the end to place the figures correctly. \\
 The small board starts with the current position.
 
 \begin{figure}[H]
@@ -2501,6 +2578,10 @@ For the first time, the engine assumes that all chessmen are on their initial po
 \subsection{Certabo: Pawn conversion to a queen}
 If you have performed the calibration without extra queens and are performing a pawn conversion with a extra queen on your board for the first time, the program needs a few seconds to identify the new piece. Please wait until the LEDs are off. The new piece code is stored. There is no delay next time.
 
+
+\subsection{TabuTronic Sentio: Piece recognition}
+The TabuTronic Sentio board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible.
+
 \subsection{Millennium ChessLink (not eOne): board orientation}
 Figure recognition assumes that the board is oriented so that the company sign faces the front.
 
@@ -2563,7 +2644,18 @@ These are some ideas what will come in one of the next versions.
 
 \pagebreak
 
-\section{Changelog}
+\section{Change log}
+
+\subsection*{Version 0.9.4.0 $\Rightarrow$  0.9.5.0}
+\begin{itemize}
+	\item {\color{blue}New}: Support for TabuTronic Sentio board.
+	\item {\color{blue}New}: Improved rendering of the figures.
+    \item {\color{red}Fix}: Rotate for DGT Pegasus board.
+    \item {\color{red}Fix}: Rotate for Square Off Pro board.    
+    \item {\color{red}Fix}: Recognize base position for Square Off Pro board.        
+	\item {\color{red}Fix}: Install MessChess engines.
+	\item {\color{red}Fix}: Several bug fixes.
+\end{itemize}
 
 \subsection*{Version 0.9.3.1 $\Rightarrow$  0.9.4.0}
 \begin{itemize}
@@ -2577,173 +2669,173 @@ These are some ideas what will come in one of the next versions.
 
 \subsection*{Version 0.9.3.0 $\Rightarrow$  0.9.3.1}
 \begin{itemize}
-	\item Fix: UCI configuration values for Komodo Dragon.
+	\item {\color{red}Fix}: UCI configuration values for Komodo Dragon.
 \end{itemize}
 
 \subsection*{Version 0.9.2.1 $\Rightarrow$  0.9.3.0}
 \begin{itemize}
-	\item New: Support from NOVAG Citrine and NOVAG UCB board.
-	\item New: Play against NOVAG Citrine as UCI engine.
-	\item New: Support from Saitek Galileo/Leonardo/Renaissance boards.
-	\item New: Play against Saitek boards as UCI engine.
-	\item New: Separate time control for white and black.
-	\item New: Continue a game from a given position.
+	\item {\color{blue}New}: Support from NOVAG Citrine and NOVAG UCB board.
+	\item {\color{blue}New}: Play against NOVAG Citrine as UCI engine.
+	\item {\color{blue}New}: Support from Saitek Galileo/Leonardo/Renaissance boards.
+	\item {\color{blue}New}: Play against Saitek boards as UCI engine.
+	\item {\color{blue}New}: Separate time control for white and black.
+	\item {\color{blue}New}: Continue a game from a given position.
 \end{itemize}
 
 \subsection*{Version 0.9.2.0 $\Rightarrow$  0.9.2.1}
 \begin{itemize}
-	\item Fix: Engine move output for analysing engines
+	\item {\color{red}Fix}: Engine move output for analysing engines
 \end{itemize}
 
 \subsection*{Version 0.9.1.0 $\Rightarrow$  0.9.2.0}
 \begin{itemize}
-	\item New: Improved engine move output
-	\item New: Chessmen included designed by \textbf{Bryan Whitby}
-	\item New: Chessmen and fields included designed by \textbf{Certabo}
+	\item {\color{blue}New}: Improved engine move output
+	\item {\color{blue}New}: Chessmen included designed by \textbf{Bryan Whitby}
+	\item {\color{blue}New}: Chessmen and fields included designed by \textbf{Certabo}
 \end{itemize}
 
 \subsection*{Version 0.9.1.0 $\Rightarrow$  0.9.1.1}
 \begin{itemize}
-	\item Fix: Error on connection via bluetooth 
+	\item {\color{red}Fix}: Error on connection via bluetooth 
 \end{itemize}
 
 \subsection*{Version 0.9.0.0 $\Rightarrow$  0.9.1.0}
 \begin{itemize}
-	\item New: Add command line parameter to load an engine at startup.
-	\item New: Allow multi select on uninstall engines.
-	\item Fix: MessChess engines now installed by name.
+	\item {\color{blue}New}: Add command line parameter to load an engine at startup.
+	\item {\color{blue}New}: Allow multi select on uninstall engines.
+	\item {\color{red}Fix}: MessChess engines now installed by name.
 \end{itemize}
 
 \subsection*{Version 0.8.0.3 $\Rightarrow$  0.9.0.0}
 \begin{itemize}
-	\item New: FICS support.
-	\item New: Set scan sequence and move detection delay for Millennium ChessLink.
-	\item New: Code framework changed from .NET 4.7.1 to .NET 4.8.0.
-	\item New: Improved installation for MessChess emulations.
-	\item Fix: LED setting for Millennium ChessLink.
-	\item Fix: Board name shown on information window.	
+	\item {\color{blue}New}: FICS support.
+	\item {\color{blue}New}: Set scan sequence and move detection delay for Millennium ChessLink.
+	\item {\color{blue}New}: Code framework changed from .NET 4.7.1 to .NET 4.8.0.
+	\item {\color{blue}New}: Improved installation for MessChess emulations.
+	\item {\color{red}Fix}: LED setting for Millennium ChessLink.
+	\item {\color{red}Fix}: Board name shown on information window.	
 \end{itemize}
 
 \subsection*{Version 0.8.0.2 $\Rightarrow$  0.8.0.3}
 \begin{itemize}
-	\item Fix: Synchronize with database and connected eletronic chessboard.
+	\item {\color{red}Fix}: Synchronize with database and connected eletronic chessboard.
 \end{itemize}
 
 \subsection*{Version 0.8.0.1 $\Rightarrow$  0.8.0.2}
 \begin{itemize}
-	\item Fix: PGN import.
+	\item {\color{red}Fix}: PGN import.
 \end{itemize}
 
 \subsection*{Version 0.8.0.0 $\Rightarrow$  0.8.0.1}
 \begin{itemize}
-	\item Fix: Duel: Extra time for human players.
+	\item {\color{red}Fix}: Duel: Extra time for human players.
 \end{itemize}
 
 \subsection*{Version 0.7.0.0 $\Rightarrow$  0.8.0.0}
 \begin{itemize}
-	\item New: Support for Chessnut Air.
+	\item {\color{blue}New}: Support for Chessnut Air.
 	\item Improve the selection of MessChess chess computers.
-	\item Fix: PGN notation (date format and ambiguous moves).
-	\item Fix: Minor changes.
+	\item {\color{red}Fix}: PGN notation (date format and ambiguous moves).
+	\item {\color{red}Fix}: Minor changes.
 \end{itemize}
 
 \subsection*{Version 0.6.2.1 $\Rightarrow$  0.7.0.0}
 \begin{itemize}
-	\item New: Support for DGT e-Boards and Revelation.
-	\item New: Speech output in your language.
-	\item Fix: Create PGN notation.
-    \item Fix: Reading UCI options.
-	\item Fix: Recognize base position with Square Off Pro and DGT Pegasus.
-	\item Fix: Take back if the game is not started from base position.
+	\item {\color{blue}New}: Support for DGT e-Boards and Revelation.
+	\item {\color{blue}New}: Speech output in your language.
+	\item {\color{red}Fix}: Create PGN notation.
+    \item {\color{red}Fix}: Reading UCI options.
+	\item {\color{red}Fix}: Recognize base position with Square Off Pro and DGT Pegasus.
+	\item {\color{red}Fix}: Take back if the game is not started from base position.
 \end{itemize}
 
 \subsection*{Version 0.6.2.0 $\Rightarrow$  0.6.2.1}
 \begin{itemize}
-	\item Fix: Take back functionality was broken.
+	\item {\color{red}Fix}: Take back functionality was broken.
 \end{itemize}
 
 \subsection*{Version 0.6.1.0 $\Rightarrow$  0.6.2.0}
 \begin{itemize}
-	\item New: Display duplicate games.
-	\item New: Analysis of a previously unsaved game.
-	\item Fix: Correction in move list when black starts.
-	\item Fix: Correction in position setups
-	\item Fix: Corrections when the electronic chessboard is rotated (for Certabo and Millennium)
+	\item {\color{blue}New}: Display duplicate games.
+	\item {\color{blue}New}: Analysis of a previously unsaved game.
+	\item {\color{red}Fix}: Correction in move list when black starts.
+	\item {\color{red}Fix}: Correction in position setups
+	\item {\color{red}Fix}: Corrections when the electronic chessboard is rotated (for Certabo and Millennium)
 \end{itemize}
 
 \subsection*{Version 0.6.0.1 $\Rightarrow$  0.6.1.0}
 \begin{itemize}
-    \item New: Redesign of move list window.
-    \item New: Add move symbols and comments.
-	\item New: Premature termination of duel or tournament game.
-	\item New: Square Off Pro support.	
-	\item Fix: Continue an Elo Duel
-	\item Fix: Setup positions on Millennium eOne
+    \item {\color{blue}New}: Redesign of move list window.
+    \item {\color{blue}New}: Add move symbols and comments.
+	\item {\color{blue}New}: Premature termination of duel or tournament game.
+	\item {\color{blue}New}: Square Off Pro support.	
+	\item {\color{red}Fix}: Continue an Elo Duel
+	\item {\color{red}Fix}: Setup positions on Millennium eOne
 \end{itemize}
 
 \subsection*{Version 0.6.0.0 $\Rightarrow$  0.6.0.1}
 \begin{itemize}
-	\item Fix: Tournament information.		
+	\item {\color{red}Fix}: Tournament information.		
 \end{itemize}
 
 \subsection*{Version 0.5.9.0 $\Rightarrow$  0.6.0.0}
 \begin{itemize}
-		\item New: Estimate ELO (engine and/or player).
-		\item New: Players can now also participate in duels		
-		\item New: Repeat a single game (duel or tournament)
-		\item New: Show remaining moves to Fifty-move rule.		
-		\item New: Improve position setup dialog		
-		\item Fix: Show best line and value on move list.
-		\item Fix: Mark current best move.
-		\item Fix: Duel information.		
+		\item {\color{blue}New}: Estimate ELO (engine and/or player).
+		\item {\color{blue}New}: Players can now also participate in duels		
+		\item {\color{blue}New}: Repeat a single game (duel or tournament)
+		\item {\color{blue}New}: Show remaining moves to Fifty-move rule.		
+		\item {\color{blue}New}: Improve position setup dialog		
+		\item {\color{red}Fix}: Show best line and value on move list.
+		\item {\color{red}Fix}: Mark current best move.
+		\item {\color{red}Fix}: Duel information.		
 \end{itemize}
 
 \subsection*{Version 0.5.8.1 $\Rightarrow$  0.5.9.0}
 \begin{itemize}
-	\item New: Bluetooth LE for Millennium ChessLink.
-	\item New: Keeping the temporarily changed engine configurations.
-	\item New: Pause and continue a game.	
-	\item New: Show player names.	
-	\item Fix: Handling MessChess engines (not suitable for take back, starting not from base position or pause a game).
-	\item Fix: Handling of time control after losing by timeout.
-	\item Fix: Check COM-Ports takes a long time.
+	\item {\color{blue}New}: Bluetooth LE for Millennium ChessLink.
+	\item {\color{blue}New}: Keeping the temporarily changed engine configurations.
+	\item {\color{blue}New}: Pause and continue a game.	
+	\item {\color{blue}New}: Show player names.	
+	\item {\color{red}Fix}: Handling MessChess engines (not suitable for take back, starting not from base position or pause a game).
+	\item {\color{red}Fix}: Handling of time control after losing by timeout.
+	\item {\color{red}Fix}: Check COM-Ports takes a long time.
 \end{itemize}
 
 \subsection*{Version 0.5.8.0 $\Rightarrow$  0.5.8.1}
 \begin{itemize}
-	\item Fix: When two engines play against each other with almost the same name
+	\item {\color{red}Fix}: When two engines play against each other with almost the same name
 \end{itemize}
 
 \subsection*{Version 0.5.7.0 $\Rightarrow$  0.5.8.0}
 \begin{itemize}
-	\item New: Support for DGT Pegasus chessboard.
-    \item New: Improved engine configuration.	
-    \item New: "Help" opens this document.
-	\item New: Move all windows synchron.	
-	\item New: Improvements for MessChess engines
-	\item New: Increase the number of games in a duel
-	\item Fix: Communication with UCI engine HIARCS 15.0
-	\item Fix: Duel manager saved all games as "Round 1"
-	\item Fix: Handling en passent move in PGN
-	\item Fix: Improvement in the calibration of Certabo boards
+	\item {\color{blue}New}: Support for DGT Pegasus chessboard.
+    \item {\color{blue}New}: Improved engine configuration.	
+    \item {\color{blue}New}: "Help" opens this document.
+	\item {\color{blue}New}: Move all windows synchron.	
+	\item {\color{blue}New}: Improvements for MessChess engines
+	\item {\color{blue}New}: Increase the number of games in a duel
+	\item {\color{red}Fix}: Communication with UCI engine HIARCS 15.0
+	\item {\color{red}Fix}: Duel manager saved all games as "Round 1"
+	\item {\color{red}Fix}: Handling en passent move in PGN
+	\item {\color{red}Fix}: Improvement in the calibration of Certabo boards
 \end{itemize}
 
 \subsection*{Version 0.5.6.2 $\Rightarrow$  0.5.7.0}
 \begin{itemize}
-	\item New: Export games into a PGN file.
-	\item New: Option to always display the evaluation value from the point of view of white.
-	\item New: Duel manager can show duel information.
-	\item New: Tournament manager can show tournament information.	
-	\item New: Click on main window brings other windows into front.
-	\item New: Optional pause after each engine duel game
-	\item New: Use cursor and pageUp/down keys in movelist window
-	\item Fix: Running coach engine from current position.
-	\item Fix: Unhandled exception on switch from engine duel into analyse mode.	
-	\item Fix: Showing duel information after continue a paused duel.
-	\item Fix: Frozen BearChess on COM-port check.	
-	\item Fix: Show captured pieces in "Analyze mode".
-	\item Fix: Interpreting PGN moves.
-	\item Fix: Handling 50 moves draw rule.
+	\item {\color{blue}New}: Export games into a PGN file.
+	\item {\color{blue}New}: Option to always display the evaluation value from the point of view of white.
+	\item {\color{blue}New}: Duel manager can show duel information.
+	\item {\color{blue}New}: Tournament manager can show tournament information.	
+	\item {\color{blue}New}: Click on main window brings other windows into front.
+	\item {\color{blue}New}: Optional pause after each engine duel game
+	\item {\color{blue}New}: Use cursor and pageUp/down keys in movelist window
+	\item {\color{red}Fix}: Running coach engine from current position.
+	\item {\color{red}Fix}: Unhandled exception on switch from engine duel into analyse mode.	
+	\item {\color{red}Fix}: Showing duel information after continue a paused duel.
+	\item {\color{red}Fix}: Frozen BearChess on COM-port check.	
+	\item {\color{red}Fix}: Show captured pieces in "Analyze mode".
+	\item {\color{red}Fix}: Interpreting PGN moves.
+	\item {\color{red}Fix}: Handling 50 moves draw rule.
 \end{itemize}
 
 \subsection*{Version 0.5.6.1  $\Rightarrow$  0.5.6.2}
@@ -2754,8 +2846,8 @@ These are some ideas what will come in one of the next versions.
 
 \subsection*{Version 0.5.6.0  $\Rightarrow$  0.5.6.1}
 \begin{itemize}
-	\item Fix broken "Analyze mode".
-	\item Fix "Arange windows". 
+	\item {\color{red}Fix}: broken "Analyze mode".
+	\item {\color{red}Fix}: "Arange windows". 
 \end{itemize}
 
 \subsection*{Version 0.5.5.3  $\Rightarrow$  0.5.6.0}

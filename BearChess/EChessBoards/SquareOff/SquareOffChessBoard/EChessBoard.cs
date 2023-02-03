@@ -23,7 +23,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
       
         private readonly string _basePosition = "1100001111000011110000111100001111000011110000111100001111000011";
 
-        private readonly Dictionary<byte, string> _fielByte2FieldName = new Dictionary<byte, string>()
+        private readonly Dictionary<byte, string> _fieldByte2FieldName = new Dictionary<byte, string>()
                                                                         { { 0, "A1" }, { 1, "A2" }, { 2, "A3" }, { 3, "A4" }, { 4, "A5" }, { 5, "A6" }, { 6, "A7" }, { 7, "A8" },
                                                                             { 8, "B1" }, { 9, "B2" }, {10, "B3" }, {11, "B4" }, {12, "B5" }, {13, "B6" }, {14, "B7" }, {15, "B8" },
                                                                             {16, "C1" }, {17, "C2" }, {18, "C3" }, {19, "C4" }, {20, "C5" }, {21, "C6" }, {22, "C7" }, {23, "C8" },
@@ -33,6 +33,28 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                                                                             {48, "G1" }, {49, "G2" }, {50, "G3" }, {51, "G4" }, {52, "G5" }, {53, "G6" }, {54, "G7" }, {55, "G8" },
                                                                             {56, "H1" }, {57, "H2" }, {58, "H3" }, {59, "H4" }, {60, "H5" }, {61, "H6" }, {62, "H7" }, {63, "H8" }
                                                                         };
+
+        private readonly Dictionary<byte, string> _invertedFieldByte2FieldName = new Dictionary<byte, string>()
+            { { 0, "H1" }, { 1, "G1" }, { 2, "F1" }, { 3, "E1" }, { 4, "D1" }, { 5, "C1" }, { 6, "B1" }, { 7, "A1" },
+                { 8, "H2" }, { 9, "G2" }, {10, "F2" }, {11, "E2" }, {12, "D2" }, {13, "C2" }, {14, "B2" }, {15, "A2" },
+                {16, "H3" }, {17, "G3" }, {18, "F3" }, {19, "E3" }, {20, "D3" }, {21, "C3" }, {22, "B3" }, {23, "A3" },
+                {24, "H4" }, {25, "G4" }, {26, "F4" }, {27, "E4" }, {28, "D4" }, {29, "C4" }, {30, "B4" }, {31, "A4" },
+                {32, "H5" }, {33, "G5" }, {34, "F5" }, {35, "E5" }, {36, "D5" }, {37, "C5" }, {38, "B5" }, {39, "A5" },
+                {40, "H6" }, {41, "G6" }, {42, "F6" }, {43, "E6" }, {44, "D6" }, {45, "C6" }, {46, "B6" }, {47, "A6" },
+                {48, "H7" }, {49, "G7" }, {50, "F7" }, {51, "E7" }, {52, "D7" }, {53, "C7" }, {54, "B7" }, {55, "A7" },
+                {56, "H8" }, {57, "G8" }, {58, "F8" }, {59, "E8" }, {60, "D8" }, {61, "C8" }, {62, "B8" }, {63, "A8" }
+            };
+
+        private readonly Dictionary<string, string> _invertedFieldName = new Dictionary<string, string>()
+            { { "A1", "H8" }, { "B1", "G8" }, { "C1", "F8" }, { "D1", "E8" }, { "E1", "D8" }, {"F1", "C8" }, { "G1", "B8" }, { "H1", "A8" }, 
+              { "A2", "H7" }, { "B2", "G7" }, { "C2", "F7" }, { "D2", "E7" }, { "E2", "D7" }, {"F2", "C7" }, { "G2", "B7" }, { "H2", "A7" },
+              { "A3", "H6" }, { "B3", "G6" }, { "C3", "F6" }, { "D3", "E6" }, { "E3", "D6" }, {"F3", "C6" }, { "G3", "B6" }, { "H3", "A6" },
+              { "A4", "H5" }, { "B4", "G5" }, { "C4", "F5" }, { "D4", "E5" }, { "E4", "D5" }, {"F4", "C5" }, { "G4", "B5" }, { "H4", "A5" },
+              { "A5", "H4" }, { "B5", "G4" }, { "C5", "F4" }, { "D5", "E4" }, { "E5", "D4" }, {"F5", "C4" }, { "G5", "B4" }, { "H5", "A4" },
+              { "A6", "H3" }, { "B6", "G3" }, { "C6", "F3" }, { "D6", "E3" }, { "E6", "D3" }, {"F6", "C3" }, { "G6", "B3" }, { "H6", "A3" },
+              { "A7", "H2" }, { "B7", "G2" }, { "C7", "F2" }, { "D7", "E2" }, { "E7", "D2" }, {"F7", "C2" }, { "G7", "B2" }, { "H7", "A2" },
+              { "A8", "H1" }, { "B8", "G1" }, { "C8", "F1" }, { "D8", "E1" }, { "E8", "D1" }, {"F8", "C1" }, { "G8", "B1" }, { "H8", "A1" },
+            };
 
         private readonly int[] _fieldOrders =
         {
@@ -251,6 +273,10 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 if (dataFromBoard.FromBoard.StartsWith("0#"))
                 {
                     var fieldName = dataFromBoard.FromBoard.Substring(2, 2);
+                    if (!PlayingWithWhite)
+                    {
+                        fieldName = _invertedFieldName[fieldName.ToUpper()];
+                    }
                     if (dataFromBoard.FromBoard.EndsWith("u*"))
                     {
                         if (string.IsNullOrWhiteSpace(_fromField[0]))
@@ -278,6 +304,10 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 if (dataFromBoard.FromBoard.StartsWith("22#"))
                 {
                     var fieldName = dataFromBoard.FromBoard.Substring(5, dataFromBoard.FromBoard.Length-5);
+                    if (!PlayingWithWhite)
+                    {
+                        fieldName = _invertedFieldName[fieldName.ToUpper()];
+                    }
                     if (int.TryParse(fieldName.Replace("*", string.Empty), out int battery))
                     {
                         BatteryLevel = battery.ToString();
@@ -297,9 +327,14 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                         var key = fieldName.Substring(i, 1);
                         if (key == "1")
                         {
-                            dumpFields.Add(_fielByte2FieldName[i]);
+                            dumpFields.Add(_fieldByte2FieldName[i]);
                         }
 
+                    }
+
+                    if (isBasePosition)
+                    {
+                        BasePositionEvent?.Invoke(this, null);
                     }
                     return new DataFromBoard(string.Join(",", dumpFields), 3)
                            { IsFieldDump = true, BasePosition = isBasePosition };
@@ -386,6 +421,11 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 }
             }
             return new DataFromBoard(_chessBoard.GetFenPosition(), 3);
+        }
+
+        public override DataFromBoard GetDumpPiecesFen()
+        {
+            return GetPiecesFen();
         }
 
         protected override void SetToNewGame()

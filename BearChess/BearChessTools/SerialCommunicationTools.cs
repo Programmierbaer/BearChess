@@ -80,10 +80,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
                     boardDevice = "raspberrypi";
                     boardDevice2 = "raspberrypi";
                     break;
-                case Constants.Tabutronic:
-                    boardDevice = "raspberrypi";
-                    boardDevice2 = "raspberrypi";
-                    break;
+               
                 case Constants.MChessLink:
                     boardDevice = "MILLENNIUM CHESS";
                     boardDevice2 = "MILLENNIUM CHESS";
@@ -91,6 +88,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 case Constants.DGT:
                     boardDevice = "DGT_BT_";
                     boardDevice2 = "PCS-REVII";
+                    break;
+                case Constants.TabutronicCerno:
+                    boardDevice = "raspberrypi";
+                    boardDevice2 = "raspberrypi";
+                    break;
+                case Constants.TabutronicSentio:
+                    boardDevice = "raspberrypi";
+                    boardDevice2 = "raspberrypi";
                     break;
                 default: boardDevice = string.Empty;
                     break;
@@ -141,13 +146,47 @@ namespace www.SoLaNoSoft.com.BearChessTools
                             break;
 
                         }
-                        if (boardName.Equals(Constants.Tabutronic, StringComparison.OrdinalIgnoreCase) &&
+                        if (boardName.Equals(Constants.TabutronicCerno, StringComparison.OrdinalIgnoreCase) &&
                             deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
                         {
                             // Certabo
                             try
                             {
-                                fileLogger?.LogInfo("Open Certabo BT endpoint");
+                                fileLogger?.LogInfo("Open TabuTronic Cerno BT endpoint");
+                                var bluetoothEndPoint =
+                                    new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress,
+                                                          BluetoothService.SerialPort,
+                                                          10);
+                                if (!cli.Connected)
+                                {
+                                    cli.Connect(bluetoothEndPoint);
+                                    if (cli.Connected)
+                                    {
+                                        fileLogger?.LogInfo("Connected");
+                                        cli.Close();
+                                        configuration.Save(bluetoothDeviceInfo.DeviceAddress);
+                                        var list = new List<string>(GetPortNames());
+                                        list.Add("BT");
+                                        return list.ToArray();
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                fileLogger?.LogError(ex);
+                            }
+
+                            break;
+
+                        }
+
+                        if (boardName.Equals(Constants.TabutronicSentio, StringComparison.OrdinalIgnoreCase) &&
+                            deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Certabo
+                            try
+                            {
+                                fileLogger?.LogInfo("Open TabuTronic Sentio BT endpoint");
                                 var bluetoothEndPoint =
                                     new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress,
                                                           BluetoothService.SerialPort,

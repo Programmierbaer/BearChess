@@ -115,7 +115,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 imageColorWhite.Visibility = Visibility.Collapsed;
                 imageColorBlack.Visibility = Visibility.Collapsed;
             }
+            var book = uciInfo.OptionValues.FirstOrDefault(o => o.Contains("OwnBook"));
+            if (string.IsNullOrEmpty(book))
+            {
+                book = uciInfo.OptionValues.FirstOrDefault(o => o.Contains("UseBook"));
+            }
 
+            if (!string.IsNullOrEmpty(uciInfo.OpeningBook) || (!string.IsNullOrEmpty(book) && book.EndsWith("true")))
+            {
+                imageBookOpen.Visibility = Visibility.Visible;
+                imageBookClosed.Visibility = Visibility.Collapsed;
+               
+            }
             engineInfoLineUserControl1.FillLine(string.Empty, string.Empty);
             var thread = new Thread(ShowInfoLine) { IsBackground = true };
             thread.Start();

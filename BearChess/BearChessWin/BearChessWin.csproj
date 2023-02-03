@@ -376,6 +376,9 @@
     <Compile Include="Windows\WinConfigureOSA.xaml.cs">
       <DependentUpon>WinConfigureOSA.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\WinConfigureSentio.xaml.cs">
+      <DependentUpon>WinConfigureSentio.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\WinConfigureUCB.xaml.cs">
       <DependentUpon>WinConfigureUCB.xaml</DependentUpon>
     </Compile>
@@ -704,6 +707,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\WinConfigureSentio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\WinConfigureUCB.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -858,6 +865,10 @@
     <ProjectReference Include="..\SquareOffProLoader\SquareOffProLoader.csproj">
       <Project>{519d9a7a-b72f-4922-9341-445cd2fc9a85}</Project>
       <Name>SquareOffProLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TabutronicLoader\TabutronicSentioLoader.csproj">
+      <Project>{14CCA0FE-80D5-402B-81AC-E544854B994C}</Project>
+      <Name>TabutronicSentioLoader</Name>
     </ProjectReference>
     <ProjectReference Include="..\Teddy\Teddy.csproj">
       <Project>{a05313c6-91fe-4b82-8fad-6f6f66cf812a}</Project>
@@ -1488,6 +1499,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\Novag_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\tabutronic_logo_def.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Tabutronic.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

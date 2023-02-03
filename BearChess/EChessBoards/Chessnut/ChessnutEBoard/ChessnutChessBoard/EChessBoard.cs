@@ -375,6 +375,11 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             return new DataFromBoard(_lastResult, dataFromBoard.Repeated);
         }
 
+        public override DataFromBoard GetDumpPiecesFen()
+        {
+            return GetPiecesFen();
+        }
+
         private static string GetPiecesFen(string boardFen, bool playWithWhite)
         {
             string result = string.Empty;

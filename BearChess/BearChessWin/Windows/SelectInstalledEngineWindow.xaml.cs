@@ -45,15 +45,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             dataGridEngine.ItemsSource = _uciInfos;
             if (firstOrDefault != null)
             {
-                dataGridEngine.SelectedIndex = _uciInfos.IndexOf(firstOrDefault);
+                SelectEngine(firstOrDefault);
             }
 
+            _installedEngines = new HashSet<string>(_uciInfos.Select(u => u.Name));
+        }
+
+        private void SelectEngine(UciInfo uciInfo)
+        {
+            dataGridEngine.SelectedIndex = _uciInfos.IndexOf(uciInfo);
             if (dataGridEngine.SelectedItem != null)
             {
                 dataGridEngine.ScrollIntoView(dataGridEngine.SelectedItem);
             }
-
-            _installedEngines = new HashSet<string>(_uciInfos.Select(u => u.Name));
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -83,52 +87,54 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             var uciConfigWindow = new UciConfigWindow(SelectedEngine, true, false, true) { Owner = this };
             var showDialog = uciConfigWindow.ShowDialog();
-            if (showDialog.HasValue && showDialog.Value)
+            if (!showDialog.HasValue || !showDialog.Value)
             {
-                var uciInfo = uciConfigWindow.GetUciInfo();
-                uciInfo.ChangeDateTime = DateTime.UtcNow;
-                if (uciConfigWindow.SaveAsNew)
-                {
-                    if (SelectedEngine.Name.Equals(uciInfo.Name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        uciInfo.Name = SelectedEngine.Name + " (Copy)";
-                    }
-                    var uciPath = Path.Combine(_uciPath, uciInfo.Id);
-                    if (!Directory.Exists(uciPath))
-                    {
-                        Directory.CreateDirectory(uciPath);
-                    }
-                    XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
-                    TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
-                    serializer.Serialize(textWriter, uciInfo);
-                    textWriter.Close();
-                    _uciInfos.Add(uciInfo);
-                }
-                else
-                {
-                    SelectedEngine.Name = uciInfo.Name;
-                    SelectedEngine.ClearOptionValues();
-                    SelectedEngine.OpeningBook = uciInfo.OpeningBook;
-                    SelectedEngine.OpeningBookVariation = uciInfo.OpeningBookVariation;
-                    SelectedEngine.AdjustStrength = uciInfo.AdjustStrength;
-                    SelectedEngine.CommandParameter = uciInfo.CommandParameter;
-                    SelectedEngine.LogoFileName = uciInfo.LogoFileName;
-                    SelectedEngine.WaitForStart = uciInfo.WaitForStart;
-                    SelectedEngine.WaitSeconds = uciInfo.WaitSeconds;
-                    SelectedEngine.ChangeDateTime = uciInfo.ChangeDateTime;
-                    foreach (var uciInfoOptionValue in uciInfo.OptionValues)
-                    {
-                        SelectedEngine.AddOptionValue(uciInfoOptionValue);
-                    }
-                    var uciPath = Path.Combine(_uciPath, SelectedEngine.Id);
-                    XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
-                    TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, SelectedEngine.Id + ".uci"), false);
-                    serializer.Serialize(textWriter, SelectedEngine);
-                    textWriter.Close();
-                }
-
-                NameChanged();
+                return;
             }
+
+            var uciInfo = uciConfigWindow.GetUciInfo();
+            uciInfo.ChangeDateTime = DateTime.UtcNow;
+            if (uciConfigWindow.SaveAsNew)
+            {
+                if (SelectedEngine.Name.Equals(uciInfo.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    uciInfo.Name = SelectedEngine.Name + " (Copy)";
+                }
+                var uciPath = Path.Combine(_uciPath, uciInfo.Id);
+                if (!Directory.Exists(uciPath))
+                {
+                    Directory.CreateDirectory(uciPath);
+                }
+                XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
+                TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
+                serializer.Serialize(textWriter, uciInfo);
+                textWriter.Close();
+                _uciInfos.Add(uciInfo);
+            }
+            else
+            {
+                SelectedEngine.Name = uciInfo.Name;
+                SelectedEngine.ClearOptionValues();
+                SelectedEngine.OpeningBook = uciInfo.OpeningBook;
+                SelectedEngine.OpeningBookVariation = uciInfo.OpeningBookVariation;
+                SelectedEngine.AdjustStrength = uciInfo.AdjustStrength;
+                SelectedEngine.CommandParameter = uciInfo.CommandParameter;
+                SelectedEngine.LogoFileName = uciInfo.LogoFileName;
+                SelectedEngine.WaitForStart = uciInfo.WaitForStart;
+                SelectedEngine.WaitSeconds = uciInfo.WaitSeconds;
+                SelectedEngine.ChangeDateTime = uciInfo.ChangeDateTime;
+                foreach (var uciInfoOptionValue in uciInfo.OptionValues)
+                {
+                    SelectedEngine.AddOptionValue(uciInfoOptionValue);
+                }
+                var uciPath = Path.Combine(_uciPath, SelectedEngine.Id);
+                XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
+                TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, SelectedEngine.Id + ".uci"), false);
+                serializer.Serialize(textWriter, SelectedEngine);
+                textWriter.Close();
+            }
+
+            NameChanged();
         }
 
         private void ButtonDelete_OnClick(object sender, RoutedEventArgs e)
@@ -261,16 +267,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             ParameterSelection[] multiParameters = null;
-            bool multiSelection = false;
-            bool skipWarnings = false;
+            var multiSelection = false;
+            var skipWarnings = false;
             try
             {
                 //string parameters = string.Empty;
-                string avatarName = string.Empty;
+                var avatarName = string.Empty;
                 if (fileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase) && string.IsNullOrWhiteSpace(parameters))
                 {
                     var fileInfo = new FileInfo(fileName);
-                    string enginesList = Path.Combine(fileInfo.DirectoryName,"Hiarcs","MessChess.lst");
+                    var enginesList = Path.Combine(fileInfo.DirectoryName,"Hiarcs","MessChess.lst");
                     var parameterSelectionWindow = new ParameterSelectionWindow() { Owner = this };
                     if (!File.Exists(enginesList))
                     {
@@ -303,12 +309,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (fileName.EndsWith("avatar.exe", StringComparison.InvariantCultureIgnoreCase) && string.IsNullOrWhiteSpace(parameters))
                 {
                     var fileInfo = new FileInfo(fileName);
-                    string avatars = Path.Combine(fileInfo.DirectoryName, "avatar_weights");
+                    var avatars = Path.Combine(fileInfo.DirectoryName, "avatar_weights");
                     var parameterSelectionWindow = new ParameterSelectionWindow() { Owner = this };
                     if (Directory.Exists(avatars))
                     {
                         var avatarList = Directory.GetFiles(avatars,"*.zip",SearchOption.TopDirectoryOnly);
-                        List<string> avList = new List<string>();
+                        var avList = new List<string>();
                         foreach (var s in avatarList)
                         {
                             if (s.Contains(@"\"))
@@ -347,7 +353,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 UciInstaller uciInstaller = null;
                 UciInfo uciInfo = null;
-                bool isAdded = false;
+                var isAdded = false;
                 if (multiSelection && multiParameters.Length>0)
                 {
                     foreach (var multiParameter in multiParameters)
@@ -381,7 +387,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             Directory.CreateDirectory(uciPath);
                         }
 
-                        XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
+                        var serializer = new XmlSerializer(typeof(UciInfo));
                         TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
                         serializer.Serialize(textWriter, uciInfo);
                         textWriter.Close();
@@ -402,6 +408,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             _uciInfos.Add(uciInfo);
                         }
+
+                        SelectEngine(uciInfo);
                     }
                     return;
                 }
@@ -445,11 +453,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         Directory.CreateDirectory(uciPath);
                     }
 
-                    XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
+                    var serializer = new XmlSerializer(typeof(UciInfo));
                     TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
                     serializer.Serialize(textWriter, uciInfo);
                     textWriter.Close();
-                    UciConfigWindow uciConfigWindow = new UciConfigWindow(uciInfo, true, false, false) { Owner = this };
+                    var uciConfigWindow = new UciConfigWindow(uciInfo, true, false, false) { Owner = this };
                     var dialog = uciConfigWindow.ShowDialog();
 
                     if (dialog.HasValue && dialog.Value)
@@ -472,6 +480,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             _uciInfos.Add(info);
                         }
+                        SelectEngine(info);
                         //_uciInfos.Add(info);
                         serializer = new XmlSerializer(typeof(UciInfo));
                         textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
@@ -495,6 +504,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             _uciInfos.Add(uciInfo);
                         }
+                        SelectEngine(uciInfo);
                     }
                 }
             }
@@ -569,7 +579,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var strings = textBoxFilter.Text.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             if (strings.Length > 0)
             {
-                List<UciInfo> uciInfos = new List<UciInfo>(_uciInfos);
+                var uciInfos = new List<UciInfo>(_uciInfos);
                 foreach (var s in strings)
                 {
                     uciInfos.RemoveAll(r => !r.Name.ContainsCaseInsensitive(s));

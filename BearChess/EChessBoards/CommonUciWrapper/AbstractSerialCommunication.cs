@@ -78,12 +78,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
             {
                 if (_dataFromBoard.TryDequeue(out var line))
                 {
-                    if (!line.Equals(_lastLine))
+                    if (!string.IsNullOrWhiteSpace(line) && !line.Equals(_lastLine))
                     {
                         _logger?.LogDebug($"S: Dequeue from board {line}");
                     }
                     
-                    if (line.Trim().Length > 1)
+                    if (line.Trim().Length > 1 || line.Equals("L"))
                     {
                         if (line.StartsWith("Take"))
                         {
@@ -314,7 +314,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
                     }
                 }
-                if (_boardName.Equals(Constants.Tabutronic, StringComparison.OrdinalIgnoreCase))
+                if (_boardName.Equals(Constants.TabutronicCerno, StringComparison.OrdinalIgnoreCase))
                 {
                     if (comPort.Equals("BT"))
                     {
@@ -330,6 +330,25 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     else if (comPort.StartsWith("C"))
                     {
                         _comPort = new SerialComPort(comPort, 38400, Parity.None)
+                                   { ReadTimeout = 1000, WriteTimeout = 1000 };
+                    }
+                }
+                if (_boardName.Equals(Constants.TabutronicSentio, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (comPort.Equals("BT"))
+                    {
+                        _comPort = new BTComPort(null);
+                        if (!((BTComPort)_comPort).EndPointFound)
+                        {
+                            SerialCommunicationTools.GetBTComPort(_boardName, Configuration.Instance, _logger, true,
+                                                                  false);
+                            _comPort = new BTComPort(null);
+                        }
+
+                    }
+                    else if (comPort.StartsWith("C"))
+                    {
+                        _comPort = new SerialComPortEventBased(comPort, 38400, Parity.None)
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
                     }
                 }
@@ -563,9 +582,19 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         {
                             BoardInformation = Constants.Certabo;
                         }
-                        if (_boardName.Equals(Constants.Tabutronic, StringComparison.OrdinalIgnoreCase))
+                        if (_boardName.Equals(Constants.TabutronicCerno, StringComparison.OrdinalIgnoreCase))
                         {
-                            BoardInformation = Constants.Tabutronic;
+                            BoardInformation = Constants.TabutronicCerno;
+                        }
+                        if (_boardName.Equals(Constants.TabutronicSentio, StringComparison.OrdinalIgnoreCase))
+                        {
+                            BoardInformation = Constants.TabutronicSentio;
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: COM-Port {portName} with {_comPort.Baud} baud opened");
+                                CurrentComPort = portName;
+                                return true;
+                            }
                         }
                         if (_boardName.Equals(Constants.UCB, StringComparison.OrdinalIgnoreCase))
                         {

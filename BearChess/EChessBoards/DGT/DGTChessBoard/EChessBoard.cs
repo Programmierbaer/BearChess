@@ -597,6 +597,11 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             return new DataFromBoard(_currentFen ?? string.Empty, 3);
         }
 
+        public override DataFromBoard GetDumpPiecesFen()
+        {
+            return GetPiecesFen();
+        }
+
         protected override void SetToNewGame()
         {
            //

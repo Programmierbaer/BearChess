@@ -32,6 +32,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             chessBoardUcGraphics.SetInPositionMode(true, string.Empty, false);
             chessBoardUcGraphics.ClearPosition();
             chessBoardUcGraphics.ShowMultiButton(false);
+            chessBoardUcGraphics.ShowRotateButton(false);
             _eChessBoard = eChessBoard;
             _thread = new Thread(ReadFromBoard)
                       {
@@ -60,7 +61,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             int count = 0;
             while (!_stopRunning)
             {
-                var dataFromBoard = _eChessBoard.GetPiecesFen();
+                var dataFromBoard = _eChessBoard.GetDumpPiecesFen();
                 if (!dataFromBoard.IsFieldDump)
                 {
                     count++;
@@ -115,7 +116,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonReset_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Sen a reset command to the board?", "Reset board", MessageBoxButton.YesNo,
+            if (MessageBox.Show("Send a reset command to the board?", "Reset board", MessageBoxButton.YesNo,
                                 MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 _eChessBoard.Reset();

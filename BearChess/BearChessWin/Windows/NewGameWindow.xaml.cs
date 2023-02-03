@@ -475,12 +475,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (!ValidForAnalysis())
                 {
-                    stackPanelRelaxed.Visibility = Visibility.Hidden;
+                    imageTeddy.Visibility = Visibility.Hidden;
+                    checkBoxRelaxed.Visibility = Visibility.Hidden;
+
                     CheckBoxRelaxed_OnUnchecked(this, null);
                     return;
                 }
 
-                stackPanelRelaxed.Visibility = Visibility.Visible;
+                imageTeddy.Visibility = Visibility.Visible;
+                checkBoxRelaxed.Visibility = Visibility.Visible;
                 if (checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value)
                 {
                     CheckBoxRelaxed_OnChecked(this, null);
@@ -493,7 +496,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            stackPanelRelaxed.Visibility = Visibility.Hidden;
+            imageTeddy.Visibility = Visibility.Hidden;
+            checkBoxRelaxed.Visibility = Visibility.Hidden;
             CheckBoxRelaxed_OnUnchecked(this, null);
 
         }
@@ -532,6 +536,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonConfigureBlack.Visibility = Visibility.Hidden;
             PlayerBlackConfigValues = _allUciInfos[Constants.Player];
             SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
+            SetRelaxedVisibility();
         }
 
         private void ButtonPlayerWhite_OnClick(object sender, RoutedEventArgs e)
@@ -541,6 +546,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonConfigureWhite.Visibility = Visibility.Hidden;
             PlayerWhiteConfigValues = _allUciInfos[Constants.Player];
             SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2, textBlockEloWhite, imageBookWhite, imageBookWhite2);
+            SetRelaxedVisibility();
         }
 
         private void ButtonSave_OnClick(object sender, RoutedEventArgs e)
@@ -729,6 +735,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     ButtonPlayerBlack_OnClick(this,e);
                 }
+                SetRelaxedVisibility();
             }
         }
 
@@ -748,6 +755,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     ButtonPlayerWhite_OnClick(this, e);
                 }
+                SetRelaxedVisibility();
             }
         }
 

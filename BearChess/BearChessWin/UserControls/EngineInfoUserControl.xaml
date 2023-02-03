@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
              mc:Ignorable="d" Background="AliceBlue"
-             d:DesignHeight="150" d:DesignWidth="660">
+             d:DesignHeight="150" d:DesignWidth="670">
     <Border BorderThickness="1" BorderBrush="Gray">
         <StackPanel Name="stackPanelMain">
             <DockPanel LastChildFill="False">
@@ -41,7 +41,10 @@
                 <Button DockPanel.Dock="Left" Name="buttonConfig" Width="32" Margin="5" Click="ButtonConfig_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Configure engine">
                     <Image Source="../Assets/Icons/cog.png"></Image>
                 </Button>
-
+                <Image Margin="5" Name="imageBookOpen" DockPanel.Dock="Left" Width="24"
+                       Height="24" Source="../Assets/Icons/book_open.png" Visibility="Collapsed" ToolTip="Engine is using an opening book" />
+                <Image Margin="5" Name="imageBookClosed" DockPanel.Dock="Left" Width="24" ToolTip="Engine is not using an opening book"
+                       Height="24" Source="../Assets/Icons/book.png" Visibility="Visible" />
                 <Image Margin="5" Name="imageEngine" DockPanel.Dock="Right" Width="64"
                        Height="32" Source="../Assets/Icons/bearchess.png" Visibility="Hidden" />
                 <Image Margin="5" Name="imageTeddy" DockPanel.Dock="Right" Width="32"

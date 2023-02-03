@@ -74,6 +74,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         DataFromBoard GetPiecesFen();
 
+        DataFromBoard GetDumpPiecesFen();
+
         /// <summary>
         /// Reset to a new game. Pieces are on base position.
         /// </summary>
@@ -122,6 +124,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetFen(string fen);
         bool PieceRecognition { get; }
         bool SelfControlled { get; }
+
         void Stop(bool stop);
         void Ignore(bool ignore);
         string Information { get; }

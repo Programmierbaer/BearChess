@@ -180,8 +180,122 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _blackFieldBitmap = new BitmapImage(new Uri(_blackFileName));
         }
 
+        private void LoadBigWideImage(string fileName)
+        {
+
+
+            var bitmapImage = new BitmapImage(new Uri(fileName));
+
+            var bitmapImageWidth = bitmapImage.PixelWidth / 12;
+            var bitmapImageHeight = bitmapImage.PixelHeight;
+
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect(0, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["P"] = image;
+            
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["N"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 2, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["B"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 3, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["R"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 4, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["Q"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 5, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["K"] = image;
+
+
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 6, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["p"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 7, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["n"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 8, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["b"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 9, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["r"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 10, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["q"] = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 11, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            _piecesBitmaps["k"] = image;
+
+        }
+
         private void LoadBigImage(string fileName)
         {
+            //LoadBigWideImage(fileName);
+            //_piecesBitmaps[""] = null;
+            //_piecesBitmaps[" "] = null;
+            //return;
             var bitmapImage = new BitmapImage(new Uri(fileName));
 
             var bitmapImageWidth = bitmapImage.PixelWidth / 6;
@@ -635,6 +749,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void ShowMultiButton(bool showButton)
         {
             multiButton.Visibility = showButton ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        public void ShowRotateButton(bool showButton)
+        {
+            buttonRotate.Visibility = showButton ? Visibility.Visible : Visibility.Hidden;
         }
 
         public void SetInPositionMode(bool inPositionMode, string fenPosition, bool acceptMouse)

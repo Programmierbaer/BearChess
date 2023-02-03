@@ -115,7 +115,7 @@
                     </Button>
                 </Grid>
                 <StackPanel Name="stackPanelRelaxed" Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                    <Image Margin="15,0,0,0" Width="32" Height="32"
+                    <Image Margin="15,0,0,0" Width="32" Height="32" Name="imageTeddy"
                            Source="../Assets/Icons/BearChess.ico" Visibility="Visible" />
                     <StackPanel>
                         <CheckBox Name="checkBoxRelaxed" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="55,5,5,5" 

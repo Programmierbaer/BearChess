@@ -638,6 +638,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
         }
 
+        public override DataFromBoard GetDumpPiecesFen()
+        {
+            return GetPiecesFen();
+        }
+
         protected override void SetToNewGame()
         {
             //

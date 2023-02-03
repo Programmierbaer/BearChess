@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C33A8A6D-CE21-4574-8F44-D2BC6A2DEF3C}</ProjectGuid>
+    <ProjectGuid>{14CCA0FE-80D5-402B-81AC-E544854B994C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>www.SoLaNoSoft.com.BearChess.TabotronicEBoardWrapper</RootNamespace>
-    <AssemblyName>TabotronicEBoardWrapper</AssemblyName>
+    <RootNamespace>www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.Loader</RootNamespace>
+    <AssemblyName>TabutronicLoader</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="TabutronicSentioLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -57,9 +57,13 @@
       <Project>{66ab214e-2281-4d97-99c7-b54b0e31df1a}</Project>
       <Name>CommonUciWrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TabutronicChessBoard\TabutronicChessBoard.csproj">
+    <ProjectReference Include="..\TabotronicEBoardWrapper\TabutronicSentioEBoardWrapper.csproj">
+      <Project>{c33a8a6d-ce21-4574-8f44-d2bc6a2def3c}</Project>
+      <Name>TabutronicSentioEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TabutronicChessBoard\TabutronicSentioChessBoard.csproj">
       <Project>{19d16aaa-ffe7-4ee5-bc3c-20b6f1d205c2}</Project>
-      <Name>TabutronicChessBoard</Name>
+      <Name>TabutronicSentioChessBoard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

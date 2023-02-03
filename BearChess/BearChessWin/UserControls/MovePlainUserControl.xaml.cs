@@ -74,7 +74,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (newPanelAdded)
                 {
-                    textBlockMoveNumber.Text = $"{moveNumber}. ...";
+                    textBlockMoveNumber.Text = $"{moveNumber}. ... ";
                 }
                 else
                 {
@@ -247,22 +247,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private string CountryLetter(string letter, DisplayCountryType countryType)
         {
-            switch (countryType)
+            try
             {
-                case DisplayCountryType.GB:
-                    return letter;                    
-                case DisplayCountryType.DE:
-                    return FigureId.FigureGBtoDE[letter];
-                case DisplayCountryType.FR:
-                    return FigureId.FigureGBtoFR[letter];
-                case DisplayCountryType.IT:
-                    return FigureId.FigureGBtoIT[letter];
-                case DisplayCountryType.SP:
-                    return FigureId.FigureGBtoSP[letter];
-                case DisplayCountryType.DA:
-                    return FigureId.FigureGBtoDA[letter];
-                default:
-                    break;
+                switch (countryType)
+                {
+                    case DisplayCountryType.GB:
+                        return letter;
+                    case DisplayCountryType.DE:
+                        return FigureId.FigureGBtoDE[letter];
+                    case DisplayCountryType.FR:
+                        return FigureId.FigureGBtoFR[letter];
+                    case DisplayCountryType.IT:
+                        return FigureId.FigureGBtoIT[letter];
+                    case DisplayCountryType.SP:
+                        return FigureId.FigureGBtoSP[letter];
+                    case DisplayCountryType.DA:
+                        return FigureId.FigureGBtoDA[letter];
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+                //
             }
             return  letter;
         }

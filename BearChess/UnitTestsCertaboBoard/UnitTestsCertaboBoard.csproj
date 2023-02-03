@@ -52,14 +52,23 @@
   <ItemGroup>
     <Compile Include="UnitTestCalibrate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestSentioCodes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BearChessBase\BearChessBase.csproj">
+      <Project>{72BAD856-2F5E-45DB-9FF1-42D68A4998F5}</Project>
+      <Name>BearChessBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EChessBoards\Certabo\ChessBoard\CertaboChessBoard.csproj">
       <Project>{9cc15609-f971-4954-a978-9c4a7412173d}</Project>
       <Name>CertaboChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TabutronicChessBoard\TabutronicSentioChessBoard.csproj">
+      <Project>{19d16aaa-ffe7-4ee5-bc3c-20b6f1d205c2}</Project>
+      <Name>TabutronicSentioChessBoard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

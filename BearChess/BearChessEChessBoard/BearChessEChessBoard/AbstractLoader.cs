@@ -146,6 +146,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _eChessBoard.GetPiecesFen();
         }
 
+        public DataFromBoard GetDumpPiecesFen()
+        {
+            return _eChessBoard.GetDumpPiecesFen();
+        }
+
         /// <inheritdoc />
         public string GetFen()
         {

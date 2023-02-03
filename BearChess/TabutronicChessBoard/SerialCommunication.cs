@@ -5,9 +5,9 @@ using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
-namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
+namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 {
-    public class SerialCommunicationT : AbstractSerialCommunication
+    public class SerialCommunication : AbstractSerialCommunication
     {
         private const string _allEmpty =
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
@@ -15,30 +15,12 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         private const string _withQueensEmpty =
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
 
-        public SerialCommunicationT(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.Tabutronic)
+        public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.TabutronicSentio)
         {
             _useBluetooth = useBluetooth;
         }
 
-        private DataFromBoard GetFromCertaboBoard()
-        {
-            while (true)
-            {
-                if (_dataFromBoard.TryDequeue(out var line))
-                {
-                    return new DataFromBoard(line);
-                }
-
-                if (!IsCommunicating)
-                {
-                    break;
-                }
-
-                Thread.Sleep(5);
-            }
-
-            return new DataFromBoard(string.Empty, 999);
-        }
+       
 
         public override string GetRawFromBoard(string param)
         {
@@ -72,36 +54,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override string GetCalibrateData()
         {
-            var calibrateDataCreator = new CalibrateDataCreator();
-            var result = string.Empty;
-
-            var count = 0;
-            while (true)
-            {
-                var fromBoard = GetFromCertaboBoard();
-                count++;
-                // _logger.LogDebug($"{count}.{fromBoard.Repeated} from board: {fromBoard.FromBoard}");
-                if (string.IsNullOrWhiteSpace(fromBoard.FromBoard))
-                {
-                    Thread.Sleep(100);
-                    continue;
-                }
-
-                if (!ValidCalibrateCodes(fromBoard.FromBoard))
-                {
-                    Thread.Sleep(100);
-                    continue;
-                }
-
-                if (calibrateDataCreator.NewDataFromBoard(fromBoard.FromBoard) || calibrateDataCreator.LimitExceeds)
-                {
-                    result = calibrateDataCreator.CalibrateCodes;
-                    break;
-                }
-            }
-
-            Clear();
-            return result;
+            return string.Empty;
         }
 
         protected override void Communicate()
@@ -155,7 +108,6 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         {
                             continue;
                         }
-
                     }
 
                     Thread.Sleep(10);
@@ -173,35 +125,6 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _logger?.LogDebug("SC: Exit Communicate");
         }
 
-        private bool ValidCalibrateCodes(string codes)
-        {
-            //if (!codes.Contains(_allEmpty) && !codes.Contains(_withQueensEmpty))
-            //{
-            //    return false;
-            //}
-
-            var dataArray = codes.Replace('\0', ' ').Trim()
-                                 .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            if (dataArray.Length < 320)
-            {
-                return false;
-            }
-
-            var code = new string[80];
-            Array.Copy(dataArray, 0, code, 0, 80);
-            if (string.Join(" ", code).Contains("0 0 0 0 0"))
-            {
-                return false;
-            }
-
-            Array.Copy(dataArray, 240, code, 0, 80);
-            if (string.Join(" ", code).Contains("0 0 0 0 0"))
-            {
-                return false;
-            }
-
-
-            return true;
-        }
+    
     }
 }

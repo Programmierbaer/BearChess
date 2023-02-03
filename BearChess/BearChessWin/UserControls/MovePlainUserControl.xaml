@@ -137,7 +137,7 @@
                        HorizontalAlignment="Left">
                 1
             </TextBlock>
-            <TextBlock Margin="1,2,1,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockBestLine"
+            <TextBlock Margin="3,2,1,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockBestLine"
                        Foreground="Blue"
                        TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Left"
                        HorizontalAlignment="Left">

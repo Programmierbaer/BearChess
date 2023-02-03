@@ -13,7 +13,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected bool _playWithWhite = true;
         protected bool _inDemoMode = false;
         protected bool _allowTakeBack;
-        private bool _pieceRecognition = true;
         protected bool _stopReading = false;
         protected bool _stopAll = false;
         protected bool _ignoreReading = false;
@@ -65,17 +64,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract DataFromBoard GetPiecesFen();
 
+        public abstract DataFromBoard GetDumpPiecesFen();
+
         protected abstract void SetToNewGame();
 
         public abstract void Release();
 
         public abstract void SetFen(string fen);
 
-        public bool PieceRecognition
-        {
-            get => _pieceRecognition;
-            set => _pieceRecognition = value;
-        }
+        public bool PieceRecognition { get; set; } = true;
 
         public bool SelfControlled { get; set; }
 

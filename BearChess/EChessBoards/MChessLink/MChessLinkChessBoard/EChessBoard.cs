@@ -464,6 +464,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         }
 
+        public override DataFromBoard GetDumpPiecesFen()
+        {
+            return GetPiecesFen();
+        }
+
         protected override void SetToNewGame()
         {
             //

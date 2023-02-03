@@ -199,6 +199,11 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
             }
         }
 
+        public override DataFromBoard GetDumpPiecesFen()
+        {
+            return GetPiecesFen();
+        }
+
         protected override void SetToNewGame()
         {
             lock (_locker)

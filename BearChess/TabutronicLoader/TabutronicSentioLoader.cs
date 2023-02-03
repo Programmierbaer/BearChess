@@ -1,24 +1,24 @@
-﻿using www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper;
-using www.SoLaNoSoft.com.BearChess.EChessBoard;
+﻿using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.EBoardWrapper;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
-namespace www.SoLaNoSoft.com.BearChess.CertaboLoader
+namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.Loader
 {
-    public class CertaboTLoader : AbstractLoader
+    public class TabutronicSentioLoader : AbstractLoader
     {
 
-        public static string EBoardName = Constants.Tabutronic;
+        public static string EBoardName = Constants.TabutronicSentio;
 
-        public CertaboTLoader(bool check, string name) : base(check, name)
+        public TabutronicSentioLoader(bool check, string name) : base(check, name)
         {
 
         }
 
-        public CertaboTLoader() : base(EBoardName)
+        public TabutronicSentioLoader() : base(EBoardName)
         {
         }
 
-        public CertaboTLoader(string folderPath) : base(folderPath, EBoardName)
+        public TabutronicSentioLoader(string folderPath) : base(folderPath, EBoardName)
         {
         }
 

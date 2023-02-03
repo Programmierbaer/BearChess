@@ -139,11 +139,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 11, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
-            imageKingB.Source = image;
-
-
-            
-
+            imageKingB.Source = image;            
         }
 
         private void LoadBigImage(string fileName)
@@ -371,6 +367,114 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonCancel_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+        }
+
+        private void LoadBigWideImage(string fileName)
+        {
+
+
+            var bitmapImage = new BitmapImage(new Uri(fileName));
+
+            var bitmapImageWidth = bitmapImage.PixelWidth / 12;
+            var bitmapImageHeight = bitmapImage.PixelHeight;
+
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect(0, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imagePawnW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageKnightW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 2, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageBishopW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 3, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageRookW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 4, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageQueenW.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 5, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageKingW.Source = image;
+
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 6, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imagePawnB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 7, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageKnightB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 8, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageBishopB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 9, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageRookB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 10, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageQueenB.Source = image;
+
+            image = new BitmapImage();
+            image.BeginInit();
+            image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 11, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.UriSource = new Uri(fileName);
+            image.EndInit();
+            imageKingB.Source = image;
+
         }
     }
 }

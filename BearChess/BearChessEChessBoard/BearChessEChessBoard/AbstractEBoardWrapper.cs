@@ -326,6 +326,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _board?.GetPiecesFen();
         }
 
+        public DataFromBoard GetDumpPiecesFen()
+        {
+            return _board?.GetDumpPiecesFen();
+        }
+
         public string GetFen()
         {
             return _internalChessBoard.GetPosition();
@@ -744,7 +749,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 {
                     if (!_internalChessBoard.GetFigureOnField(f).Equals(internalChessBoard.GetFigureOnField(f)))
                     {
-                        //_fileLogger?.LogDebug($"C: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
+                        _fileLogger?.LogDebug($"C: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
                         invalidFields.Add(InternalChessBoard.GetFieldName(f));
                     }
                 }
@@ -759,7 +764,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             }
             else
             {
-                if (_waitForFen.IsEmpty && !_stop)
+                if (_waitForFen.IsEmpty && !_stop )
                 {
                     if (!_allLedOff && !fenPosition.IsFieldDump)
                     {

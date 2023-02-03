@@ -56,6 +56,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         DataFromBoard GetPiecesFen();
 
+        DataFromBoard GetDumpPiecesFen();
+
         /// <summary>
         /// Returns the current (awaited) position as fen 
         /// </summary>

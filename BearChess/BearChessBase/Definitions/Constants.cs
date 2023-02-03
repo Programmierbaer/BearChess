@@ -4,7 +4,8 @@
     {
         public const string BearChess = "BearChess";
         public const string Certabo = "Certabo";
-        public const string Tabutronic = "Tabutronic";
+        public const string TabutronicCerno = "TabuTronic Cerno";
+        public const string TabutronicSentio = "TabuTronic Sentio";
         public const string Pegasus = "Pegasus";
         public const string MChessLink = "MChessLink";
         public const string SquareOff = "Square Off";

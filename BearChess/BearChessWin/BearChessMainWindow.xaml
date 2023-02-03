@@ -361,6 +361,57 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <MenuItem Name="menuItemTabutronic" Header="TabuTronic">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/tabutronic_logo_def.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemSentio" Header="Sentio" >
+                            <MenuItem.Icon>
+                                <Image Source="Assets/tabutronic_logo_def.png" />
+                            </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToSentio" Header="Connect"
+                                      Click="MenuItemConnectToSentio_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureSentio" Header="Configure"
+                                      Click="MenuItemConfigureSentio_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemBluetoothSentio" Header="Bluetooth" Visibility="Collapsed"
+                                      Click="MenuItemBluetoothSentio_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageSentioBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Name="menuItemCerno" ToolTip="Coming soon! Please use Certabo instead." Header="Cerno">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/tabutronic_logo_def.png" />
+                            </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToCerno" Header="Connect"  IsEnabled="False"
+                                      Click="MenuItemConnectCertabo_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureCerno" Header="Configure"  IsEnabled="False"
+                                      Click="MenuItemConfigureCertabo_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemBluetoothCerno" Header="Bluetooth"  IsEnabled="False"
+                                      Click="MenuItemBluetoothCertabo_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageCernoBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                    </MenuItem>
                     <MenuItem Header="Millennium ChessLink" Name="menuItemMChessLink">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/Millennium ChessLink.png" />
@@ -399,7 +450,7 @@
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Header="DGT">
+                    <MenuItem Name="menuItemDGT" Header="DGT">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/dgt48.PNG" />
                         </MenuItem.Icon>

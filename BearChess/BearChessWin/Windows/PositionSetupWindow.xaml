@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"  WindowStartupLocation="CenterOwner"
-        mc:Ignorable="d" ResizeMode="NoResize" SizeToContent="WidthAndHeight" Icon="../Assets/Icons/Chess_Board.png"
+        mc:Ignorable="d" ResizeMode="NoResize" 
+        SizeToContent="WidthAndHeight"
         Title="Setup Position" Height="500" Width="860">
     <Grid>
         <Grid.RowDefinitions>

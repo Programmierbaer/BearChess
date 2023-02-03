@@ -39,11 +39,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     imageCertabo.Visibility = Visibility.Visible;
                 }
-                if (chessBoardInfo.Equals(Constants.Tabutronic))
-                {
-                    imageCertabo.Visibility = Visibility.Visible;
-                }
-
+             
                 if (chessBoardInfo.StartsWith(Constants.Pegasus))
                 {
                     imagePegasus.Visibility = Visibility.Visible;
@@ -70,6 +66,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (chessBoardInfo.Equals(Constants.UCB))
                 {
                     imageUCB.Visibility = Visibility.Visible;
+                }
+                if (chessBoardInfo.Equals(Constants.TabutronicSentio))
+                {
+                    imageTabutronic.Visibility = Visibility.Visible;
+                }
+                if (chessBoardInfo.Equals(Constants.TabutronicCerno))
+                {
+                    imageTabutronic.Visibility = Visibility.Visible;
                 }
             }
         }

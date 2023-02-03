@@ -41,7 +41,18 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                                                   { "A1", 56 }, { "B1", 57 }, { "C1", 58 }, { "D1", 59 }, { "E1", 60 }, { "F1", 61 }, { "G1", 62 }, { "H1", 63 }
                                                  };
 
-        private readonly Dictionary<byte, string> _fielByte2FieldName = new Dictionary<byte, string>()
+        private readonly Dictionary<string, byte> _invertedFieldName2FieldByte = new Dictionary<string, byte>()
+                                                { { "H1",  0 }, { "G1",  1 }, { "F1",  2 }, { "E1",  3 }, { "D1",  4 }, { "C1",  5 }, { "B1",  6 }, { "A1",  7 },
+                                                  { "H2",  8 }, { "G2",  9 }, { "F2", 10 }, { "E2", 11 }, { "D2", 12 }, { "C2", 13 }, { "B2", 14 }, { "A2", 15 },
+                                                  { "H3", 16 }, { "G3", 17 }, { "F3", 18 }, { "E3", 19 }, { "D3", 20 }, { "C3", 21 }, { "B3", 22 }, { "A3", 23 },
+                                                  { "H4", 24 }, { "G4", 25 }, { "F4", 26 }, { "E4", 27 }, { "D4", 28 }, { "C4", 29 }, { "B4", 30 }, { "A4", 31 },
+                                                  { "H5", 32 }, { "G5", 33 }, { "F5", 34 }, { "E5", 35 }, { "D5", 36 }, { "C5", 37 }, { "B5", 38 }, { "A5", 39 },
+                                                  { "H6", 40 }, { "G6", 41 }, { "F6", 42 }, { "E6", 43 }, { "D6", 44 }, { "C6", 45 }, { "B6", 46 }, { "A6", 47 },
+                                                  { "H7", 48 }, { "G7", 49 }, { "F7", 50 }, { "E7", 51 }, { "D7", 52 }, { "C7", 53 }, { "B7", 54 }, { "A7", 55 },
+                                                  { "H8", 56 }, { "G8", 57 }, { "F8", 58 }, { "E8", 59 }, { "D8", 60 }, { "C8", 61 }, { "B8", 62 }, { "A8", 63 }
+                                                };
+
+        private readonly Dictionary<byte, string> _fieldByte2FieldName = new Dictionary<byte, string>()
                                               { { 0, "A8" }, { 1, "B8" }, { 2, "C8" }, { 3, "D8" }, { 4, "E8" }, { 5, "F8" }, { 6, "G8" }, { 7, "H8" },
                                                 { 8, "A7" }, { 9, "B7" }, {10, "C7" }, {11, "D7" }, {12, "E7" }, {13, "F7" }, {14, "G7" }, {15, "H7" },
                                                 {16, "A6" }, {17, "B6" }, {18, "C6" }, {19, "D6" }, {20, "E6" }, {21, "F6" }, {22, "G6" }, {23, "H6" },
@@ -51,6 +62,17 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                                                 {48, "A2" }, {49, "B2" }, {50, "C2" }, {51, "D2" }, {52, "E2" }, {53, "F2" }, {54, "G2" }, {55, "H2" },
                                                 {56, "A1" }, {57, "B1" }, {58, "C1" }, {59, "D1" }, {60, "E1" }, {61, "F1" }, {62, "G1" }, {63, "H1" }
                                                };
+
+        private readonly Dictionary<byte, string> _invertedFieldByte2FieldName = new Dictionary<byte, string>()
+                                                { { 0, "H1" }, { 1, "G1" }, { 2, "F1" }, { 3, "E1" }, { 4, "D1" }, { 5, "C1" }, { 6, "B1" }, { 7, "A1" },
+                                                  { 8, "H2" }, { 9, "G2" }, {10, "F2" }, {11, "E2" }, {12, "D2" }, {13, "C2" }, {14, "B2" }, {15, "A2" },
+                                                  {16, "H3" }, {17, "G3" }, {18, "F3" }, {19, "E3" }, {20, "D3" }, {21, "C3" }, {22, "B3" }, {23, "A3" },
+                                                  {24, "H4" }, {25, "G4" }, {26, "F4" }, {27, "E4" }, {28, "D4" }, {29, "C4" }, {30, "B4" }, {31, "A4" },
+                                                  {32, "H5" }, {33, "G5" }, {34, "F5" }, {35, "E5" }, {36, "D5" }, {37, "C5" }, {38, "B5" }, {39, "A5" },
+                                                  {40, "H6" }, {41, "G6" }, {42, "F6" }, {43, "E6" }, {44, "D6" }, {45, "C6" }, {46, "B6" }, {47, "A6" },
+                                                  {48, "H7" }, {49, "G7" }, {50, "F7" }, {51, "E7" }, {52, "D7" }, {53, "C7" }, {54, "B7" }, {55, "A7" },
+                                                  {56, "H8" }, {57, "G8" }, {58, "F8" }, {59, "E8" }, {60, "D8" }, {61, "C8" }, {62, "B8" }, {63, "A8" }
+                                                 };
 
         private readonly IChessBoard _chessBoard;
 
@@ -173,13 +195,27 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             allBytes.Add(thinking ? (byte)1 : _currentIntensity); // Intensity
             foreach (var fieldName in fieldNames)
             {
-                if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
+                if (PlayingWithWhite)
                 {
-                    allBytes.Add(_fieldName2FieldByte[fieldName.ToUpper()]);
+                    if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
+                    {
+                        allBytes.Add(_fieldName2FieldByte[fieldName.ToUpper()]);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 else
                 {
-                    break;
+                    if (_invertedFieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
+                    {
+                        allBytes.Add(_invertedFieldName2FieldByte[fieldName.ToUpper()]);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
             allBytes.Add(0);
@@ -331,7 +367,14 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                         var key = byte.Parse(strings[3 + i]);
                         if (key == 1)
                         {
-                            dumpFields.Add(_fielByte2FieldName[i]);
+                            if (PlayingWithWhite)
+                            {
+                                dumpFields.Add(_fieldByte2FieldName[i]);
+                            }
+                            else
+                            {
+                                dumpFields.Add(_invertedFieldByte2FieldName[i]);
+                            }
                         }
 
                     }
@@ -354,15 +397,15 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
                 if (!string.IsNullOrWhiteSpace(dataFromBoard.FromBoard) && dataFromBoard.Repeated == 0)
                 {
-
-
                     if (strings.Length == 5)
                     {
                         if (strings[0] == "142" && strings[1] == "0" && strings[2] == "5")
                         {
                             if (strings[4] == "0")
                             {
-                                var fromField = _fielByte2FieldName[byte.Parse(strings[3])];
+                                var fromField = PlayingWithWhite
+                                                    ? _fieldByte2FieldName[byte.Parse(strings[3])]
+                                                    : _invertedFieldByte2FieldName[byte.Parse(strings[3])];
                                 _logger?.LogDebug($"PS: Read Fromfield: {fromField}");
                                 if (fromField.Equals(_lastToField))
                                 {
@@ -385,7 +428,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                             }
                             else
                             {
-                                _toField = _fielByte2FieldName[byte.Parse(strings[3])];
+                                _toField = PlayingWithWhite ? _fieldByte2FieldName[byte.Parse(strings[3])] : _invertedFieldByte2FieldName[byte.Parse(strings[3])];
                                 _logger?.LogDebug($"PS: Read ToField: {_toField}");
                                 if (_toField.Equals(_lastFromField))
                                 {
@@ -433,7 +476,10 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                                 var key = byte.Parse(strings[3 + i]);
                                 if (key == 1)
                                 {
-                                    dumpFields.Add(_fielByte2FieldName[i]);
+                                    if (PlayingWithWhite)
+                                        dumpFields.Add(_fieldByte2FieldName[i]);
+                                    else
+                                        dumpFields.Add(_invertedFieldByte2FieldName[i]);
                                 }
 
                             }
@@ -578,6 +624,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             }
 
             return new DataFromBoard(_chessBoard.GetFenPosition(), 3);
+        }
+
+        public override DataFromBoard GetDumpPiecesFen()
+        {
+            return GetPiecesFen();
         }
 
         protected override void SetToNewGame()

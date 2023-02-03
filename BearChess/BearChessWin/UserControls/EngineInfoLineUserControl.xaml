@@ -8,9 +8,36 @@
              d:DesignHeight="100" d:DesignWidth="500">
 
     <StackPanel  Margin="0,0,0,5" Orientation="Horizontal" >
-        <TextBlock DockPanel.Dock="Left" Name="textBlockMV" Width="20" Margin="5" HorizontalAlignment="Right" TextAlignment="Right" >1.</TextBlock>
-        <TextBlock DockPanel.Dock="Left" Name="textBlockMVValue"  Margin="5" MinWidth="60" Width="Auto" HorizontalAlignment="Right" TextAlignment="Right" FontWeight="DemiBold"/>
-        <TextBlock DockPanel.Dock="Left" Name="textBlockMvLine" Margin="5" TextWrapping="Wrap" Width="500" />
+        <TextBlock  Name="textBlockMV" Width="20" Margin="5" HorizontalAlignment="Right" TextAlignment="Right" >1.</TextBlock>
+        <TextBlock  Name="textBlockMVValue"  Margin="5" MinWidth="60" Width="Auto" HorizontalAlignment="Right" TextAlignment="Right" FontWeight="DemiBold"/>
+        <Grid Name="gridMVLine" Margin="5" Width="490">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock TextAlignment="Right" Grid.Row="0" Grid.Column="0" Name="textBlockMvLine1" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="0" Grid.Column="1" Name="textBlockMvLine2" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="0" Grid.Column="2" Name="textBlockMvLine3" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="0" Grid.Column="3" Name="textBlockMvLine4" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="0" Grid.Column="4" Name="textBlockMvLine5" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="0" Grid.Column="5" Name="textBlockMvLine6" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="1" Grid.Column="0" Name="textBlockMvLine7" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="1" Grid.Column="1" Name="textBlockMvLine8" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="1" Grid.Column="2" Name="textBlockMvLine9" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="1" Grid.Column="3" Name="textBlockMvLine10" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="1" Grid.Column="4" Name="textBlockMvLine11" Margin="3,0,3,0"/>
+            <TextBlock TextAlignment="Right" Grid.Row="1" Grid.Column="5" Name="textBlockMvLine12" Margin="3,0,3,0"/>
+        </Grid>
+        <!-- <TextBlock  Name="textBlockMvLine" Margin="5" TextWrapping="WrapWithOverflow" Width="490" /> -->
         <!--<ScrollViewer Name="scrollViewer" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
             <TextBlock DockPanel.Dock="Left" Name="textBlockMvLine" Margin="5" />
         </ScrollViewer>-->

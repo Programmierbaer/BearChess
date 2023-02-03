@@ -285,6 +285,11 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
             }
         }
 
+        public override DataFromBoard GetDumpPiecesFen()
+        {
+            return GetPiecesFen();
+        }
+
         protected override void SetToNewGame()
         {
             lock (_locker)

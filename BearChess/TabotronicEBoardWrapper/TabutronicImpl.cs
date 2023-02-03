@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 
-namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
+namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.EBoardWrapper
 {
     public class TabutronicImpl : AbstractEBoardWrapper
     {
@@ -34,13 +34,13 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new CertaboChessBoard.EChessBoardT(basePath: _basePath, logger: _fileLogger,
+            return new ChessBoard.EChessBoard(basePath: _basePath, logger: _fileLogger,
                                                      portName: _comPortName, _useBluetooth);
         }
 
         protected override IEBoard GetEBoard(bool check)
         {
-            return new CertaboChessBoard.EChessBoardT(logger: _fileLogger);
+            return new ChessBoard.EChessBoard(logger: _fileLogger);
         }
 
         public override void Calibrate()

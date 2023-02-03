@@ -126,7 +126,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ListBoxEngines_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            DialogResult = true;
+            if (SelectedEngines.Length>0)
+            {
+                DialogResult = true;
+            }
         }
     }
 }
