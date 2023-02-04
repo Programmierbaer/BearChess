@@ -252,25 +252,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _loadedEngine = null;
         }
 
-        public void LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves,
+        public bool LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves,
                                   int color = Fields.COLOR_EMPTY)
         {
-            //
+            return true;
         }
 
-        public void LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves,
+        public bool LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves,
                                   int color = Fields.COLOR_EMPTY)
         {
-            //
+            return true;
         }
 
-        public void LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, Move[] playedMoves, bool lookForBookMoves,
+        public bool LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, Move[] playedMoves, bool lookForBookMoves,
                                   int color,
                                   string gameNumber)
         {
             if (!uciInfo.IsChessServer)
             {
-                return;
+                return false;
             }
 
             if (_loadedEngine != null)
@@ -295,16 +295,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (uciLoader == null || !uciLoader.isLoaded)
             {
-                return;
+                return false;
             }
             uciLoader.EngineReadingEvent += UciLoader_EngineReadingEvent;
             _loadedEngine = new LoadedUciEngine(uciLoader, color);
+            return true;
         }
 
-        public void LoadUciEngine(UciInfo uciInfo, IElectronicChessBoard chessBoard, Move[] playedMoves, bool lookForBookMoves,
+        public bool LoadUciEngine(UciInfo uciInfo, IElectronicChessBoard chessBoard, Move[] playedMoves, bool lookForBookMoves,
                                   int color)
         {
-            //
+            return true;
         }
 
         public void ShowTeddy(bool showTeddy)

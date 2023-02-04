@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -177,41 +178,59 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 string exeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
                 string workPath = Path.GetDirectoryName(exeFilePath);
                 fileName = Path.Combine(workPath ?? string.Empty, "Teddy.exe");
-                if (!File.Exists(fileName))
+               
+            }
+            if (!File.Exists(fileName))
+            {
+                throw new FileNotFoundException(fileName);
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                _engineProcess = new Process
+                                 {
+                                     StartInfo =
+                                     {
+                                         UseShellExecute = false,
+                                         RedirectStandardOutput = true,
+                                         RedirectStandardInput = true,
+                                         FileName = fileName,
+                                         CreateNoWindow = true,
+                                         WorkingDirectory = Path.GetDirectoryName(fileName),
+                                         Arguments = _uciInfo.AdjustStrength
+                                                         ? _uciInfo.FileName.Replace(" ", "$")
+                                                         : uciInfo.CommandParameter
+                                     }
+
+
+                                 };
+                _engineProcess.Start();
+                var thread = new Thread(InitEngine) { IsBackground = true };
+                thread.Start();
+
+
+                if (!thread.Join(60000 + (i * 10000)))
                 {
-                    throw new FileNotFoundException(fileName);
+                    try
+                    {
+                        _engineProcess.Kill();
+                        _engineProcess.Dispose();
+                        _engineProcess = null;
+                    }
+                    catch
+                    {
+                        //
+                    }
+
+                   
+                }
+                else
+                {
+                    break;
                 }
             }
-            _engineProcess = new Process
-            {
-                StartInfo =
-                {
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardInput = true,
-                    FileName = fileName,
-                    CreateNoWindow = true,
-                    WorkingDirectory = Path.GetDirectoryName(fileName),
-                    Arguments = _uciInfo.AdjustStrength ? _uciInfo.FileName.Replace(" ","$") : uciInfo.CommandParameter
-                }
-               
 
-            };
-            _engineProcess.Start();
-            var thread = new Thread(InitEngine) { IsBackground = true };
-            thread.Start();
-         
-            if (!thread.Join(10000))
+            if (_engineProcess == null)
             {
-                try
-                {
-                    _engineProcess.Kill();
-                    _engineProcess.Dispose();
-                }
-                catch
-                {
-                    //
-                }
                 return;
             }
             if (_configuration != null)
@@ -682,7 +701,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 string waitingFor = "uciok";
                 while (true)
                 {
-
                     var readToEnd = _uciInfo.IsChessServer ? _uciWrapper?.ToGui() : _uciInfo.IsChessComputer ? _uciWrapper?.ToGui() :  _engineProcess?.StandardOutput.ReadLine();
                     _logger?.LogDebug($"<< {readToEnd}");
                     if (!string.IsNullOrWhiteSpace(readToEnd) && readToEnd.Equals(waitingFor))

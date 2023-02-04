@@ -240,6 +240,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                              textBlockEloWhite, imageBookWhite, imageBookWhite2);
             SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2,
                              textBlockEloBlack, imageBookBlack, imageBookBlack2);
+            SetRelaxedVisibility();
         }
 
        
@@ -464,7 +465,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             
         }
 
-      
 
         private void SetRelaxedVisibility()
         {
@@ -475,15 +475,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (!ValidForAnalysis())
                 {
-                    imageTeddy.Visibility = Visibility.Hidden;
-                    checkBoxRelaxed.Visibility = Visibility.Hidden;
-
-                    CheckBoxRelaxed_OnUnchecked(this, null);
+                    //imageTeddy.Visibility = Visibility.Hidden;
+                    //checkBoxRelaxed.Visibility = Visibility.Hidden;
+                    checkBoxRelaxed.IsChecked = false;
+                    imageTeddy.IsEnabled = false;
+                    if (checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value)
+                    {
+                        checkBoxRelaxed.IsEnabled = false;
+                    }
+                    else
+                    {
+                        CheckBoxRelaxed_OnUnchecked(this, null);
+                    }
                     return;
                 }
 
+                imageTeddy.IsEnabled = true;
                 imageTeddy.Visibility = Visibility.Visible;
                 checkBoxRelaxed.Visibility = Visibility.Visible;
+                checkBoxRelaxed.IsEnabled = true;
                 if (checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value)
                 {
                     CheckBoxRelaxed_OnChecked(this, null);
@@ -496,10 +506,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            imageTeddy.Visibility = Visibility.Hidden;
-            checkBoxRelaxed.Visibility = Visibility.Hidden;
-            CheckBoxRelaxed_OnUnchecked(this, null);
-
+            if (checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value)
+            {
+                checkBoxRelaxed.IsChecked = false;
+            }
+            else
+            {
+                CheckBoxRelaxed_OnUnchecked(this, null);
+            }
+            imageTeddy.IsEnabled = false;
+            checkBoxRelaxed.IsEnabled = false;
+            // imageTeddy.Visibility = Visibility.Hidden;
+            // checkBoxRelaxed.Visibility = Visibility.Hidden;
         }
 
         private void ButtonConfigureWhite_OnClick(object sender, RoutedEventArgs e)
@@ -768,8 +786,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderAverageTimePerMove2.Visibility = Visibility.Collapsed;
             comboBoxTimeControl2.SelectedIndex = 0;
             checkBoxRelaxed.IsChecked = false;
-            checkBoxRelaxed.IsEnabled = false;
             textBlockTimeControl1.Text = "Time control ♔:";
+            SetRelaxedVisibility();
         }
 
         private void CheckBox2TimeControls_OnUnchecked(object sender, RoutedEventArgs e)
@@ -779,9 +797,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderTimePerGameWithIncrement2.Visibility = Visibility.Collapsed;
             borderTimePerGivenMoves2.Visibility = Visibility.Collapsed;
             borderAverageTimePerMove2.Visibility = Visibility.Collapsed;
-
-            checkBoxRelaxed.IsEnabled = true;
             textBlockTimeControl1.Text = "Time control:";
+            SetRelaxedVisibility();
         }
 
         private void ComboBoxTimeControl2_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

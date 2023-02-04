@@ -166,28 +166,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
             stackPanelEngines.Children.Clear();
         }
 
-        public void LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves,
+        public bool LoadUciEngine(UciInfo uciInfo, string fenPosition, Move[] playedMoves, bool lookForBookMoves,
                                   int color = Fields.COLOR_EMPTY)
         {
-            LoadUciEngine(uciInfo, null, null, fenPosition, playedMoves, lookForBookMoves, color, string.Empty);
+            return LoadUciEngine(uciInfo, null, null, fenPosition, playedMoves, lookForBookMoves, color, string.Empty);
         }
 
-        public void LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves,
+        public bool LoadUciEngine(UciInfo uciInfo, Move[] playedMoves, bool lookForBookMoves,
                                   int color = Fields.COLOR_EMPTY)
         {
-            LoadUciEngine(uciInfo, null, null, string.Empty, playedMoves, lookForBookMoves, color, string.Empty);
+            return LoadUciEngine(uciInfo, null, null, string.Empty, playedMoves, lookForBookMoves, color, string.Empty);
         }
 
-        public void LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, Move[] playedMoves, bool lookForBookMoves,
+        public bool LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, Move[] playedMoves, bool lookForBookMoves,
                                   int color, string gameNumber)
         {
-            LoadUciEngine(uciInfo, ficsClient, null, string.Empty, playedMoves, lookForBookMoves, color, gameNumber);
+            return LoadUciEngine(uciInfo, ficsClient, null, string.Empty, playedMoves, lookForBookMoves, color, gameNumber);
         }
 
-        public void LoadUciEngine(UciInfo uciInfo, IElectronicChessBoard chessBoard, Move[] playedMoves, bool lookForBookMoves,
+        public bool LoadUciEngine(UciInfo uciInfo, IElectronicChessBoard chessBoard, Move[] playedMoves, bool lookForBookMoves,
                                   int color)
         {
-            LoadUciEngine(uciInfo, null, chessBoard, string.Empty, playedMoves, lookForBookMoves, color, string.Empty);
+            return LoadUciEngine(uciInfo, null, chessBoard, string.Empty, playedMoves, lookForBookMoves, color, string.Empty);
         }
 
 
@@ -635,7 +635,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, IElectronicChessBoard chessBoard, string fenPosition, Move[] playedMoves,
+        private bool LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, IElectronicChessBoard chessBoard, string fenPosition, Move[] playedMoves,
                                    bool lookForBookMoves,
                                    int color, string gameNumber)
         {
@@ -643,7 +643,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (_loadedEngines.ContainsKey(uciInfo.Name))
                 {
-                    return;
+                    return false;
                 }
 
 
@@ -669,7 +669,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (uciLoader == null || !uciLoader.isLoaded)
                 {
                     _fileLogger?.LogError($"Could not load engine {uciInfo.Name}. Give up ");
-                    return;
+                    return false;
                 }
                 _loadedUciInfos[uciInfo.Name] = uciInfo;
                 var showInfo = bool.Parse(_configuration.GetConfigValue("showucilog", "false")) &&
@@ -742,7 +742,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error on load engine", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
+
+            return true;
         }
 
         private void SetFenForCoaches(string fenPosition)

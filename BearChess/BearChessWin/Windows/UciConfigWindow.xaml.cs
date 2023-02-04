@@ -98,6 +98,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             int optionsLength = uciInfo.Options.Length / 2;
             int count = 0;
             int rowIndex = 0;
+            int colIndex = 0;
+            int prevColIndex = 0;
+            if ((uciInfo.Options.Length % 2) != 0)
+            {
+                optionsLength++;
+            }
             foreach (var option in uciInfo.Options)
             {
                 if (option.StartsWith("option name UCI_EngineAbout", StringComparison.OrdinalIgnoreCase))
@@ -133,13 +139,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
                 count++;
-                int colIndex = (count > optionsLength || optionsLength == 1) ? 0 : 2;
-                AddControl(option, currentValue, colIndex, rowIndex);
-                rowIndex++;
-                if (rowIndex > optionsLength)
+                colIndex = (count <= optionsLength || optionsLength == 1) ? 0 : 2;
+                if (prevColIndex!=colIndex)
                 {
+                    prevColIndex = colIndex;
                     rowIndex = 0;
                 }
+                AddControl(option, currentValue, colIndex, rowIndex);
+                rowIndex++;
             }
         }
 

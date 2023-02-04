@@ -2141,24 +2141,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (!blackIsPlayer)
             {
-                if (_currentGame.BlackConfig.IsChessServer)
+                if (_engineWindow != null)
                 {
-                    _engineWindow?.LoadUciEngine(_currentGame.BlackConfig, _ficsClient, _chessBoard.GetPlayedMoveList(), true,
-                                                 Fields.COLOR_BLACK,_currentGame.GameNumber );
-                }
-                else if (_currentGame.BlackConfig.IsChessComputer)
-                {
-                    _engineWindow?.LoadUciEngine(_currentGame.BlackConfig, _eChessBoard, _chessBoard.GetPlayedMoveList(), true,
-                                                 Fields.COLOR_BLACK);
-                }
-                else
-                {
-                    _engineWindow?.LoadUciEngine(_currentGame.BlackConfig, _chessBoard.GetPlayedMoveList(), true, Fields.COLOR_BLACK);
-                }
+                    if (_currentGame.BlackConfig.IsChessServer)
+                    {
+                        if (!_engineWindow.LoadUciEngine(_currentGame.BlackConfig, _ficsClient,
+                                                          _chessBoard.GetPlayedMoveList(), true,
+                                                          Fields.COLOR_BLACK, _currentGame.GameNumber))
+                        {
+                            MessageBox.Show($"Could not load {_currentGame.BlackConfig.Name}", "Error on loading",
+                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                            StopGame();
+                            return;
+                        }
+                    }
+                    else if (_currentGame.BlackConfig.IsChessComputer)
+                    {
+                        if (!_engineWindow.LoadUciEngine(_currentGame.BlackConfig, _eChessBoard,
+                                                          _chessBoard.GetPlayedMoveList(), true,
+                                                          Fields.COLOR_BLACK))
+                        {
+                            MessageBox.Show($"Could not load {_currentGame.BlackConfig.Name}", "Error on loading ",
+                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                            StopGame();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (!_engineWindow.LoadUciEngine(_currentGame.BlackConfig, _chessBoard.GetPlayedMoveList(),
+                                                          true,
+                                                          Fields.COLOR_BLACK))
+                        {
+                            MessageBox.Show($"Could not load {_currentGame.BlackConfig.Name}", "Error on loading",
+                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                            StopGame();
+                            return;
+                        }
+                    }
 
-                if (!_currentGame.DuelEngine && !_currentGame.BlackConfig.IsChessServer)
-                {
-                    _configuration.SetConfigValue("LastBlackEngine", _usedEngines[_currentBlackPlayer].Id);
+                    if (!_currentGame.DuelEngine && !_currentGame.BlackConfig.IsChessServer)
+                    {
+                        _configuration.SetConfigValue("LastBlackEngine", _usedEngines[_currentBlackPlayer].Id);
+                    }
                 }
             }
             else
@@ -2172,25 +2197,50 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (!whiteIsPlayer)
             {
-                if (_currentGame.WhiteConfig.IsChessServer)
+                if (_engineWindow != null)
                 {
-                    _engineWindow?.LoadUciEngine(_currentGame.WhiteConfig, _ficsClient, _chessBoard.GetPlayedMoveList(), true,
-                                                 Fields.COLOR_WHITE,_currentGame.GameNumber);
-                }
-                else if (_currentGame.WhiteConfig.IsChessComputer)
-                {
-                    _engineWindow?.LoadUciEngine(_currentGame.WhiteConfig, _eChessBoard, _chessBoard.GetPlayedMoveList(), true,
-                                                 Fields.COLOR_WHITE);
-                }
-                else
-                {
-                    _engineWindow?.LoadUciEngine(_currentGame.WhiteConfig, _chessBoard.GetPlayedMoveList(), true,
-                                                 Fields.COLOR_WHITE);
-                }
+                    if (_currentGame.WhiteConfig.IsChessServer)
+                    {
+                        if (!_engineWindow.LoadUciEngine(_currentGame.WhiteConfig, _ficsClient,
+                                                          _chessBoard.GetPlayedMoveList(), true,
+                                                          Fields.COLOR_WHITE, _currentGame.GameNumber))
+                        {
+                            MessageBox.Show($"Could not load {_currentGame.WhiteConfig.Name}", "Error on loading",
+                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                            StopGame();
+                            return;
+                        }
+                    }
+                    else if (_currentGame.WhiteConfig.IsChessComputer)
+                    {
+                        if (!_engineWindow.LoadUciEngine(_currentGame.WhiteConfig, _eChessBoard,
+                                                          _chessBoard.GetPlayedMoveList(), true,
+                                                          Fields.COLOR_WHITE))
+                        {
+                            MessageBox.Show($"Could not load {_currentGame.WhiteConfig.Name}", "Error on loading",
+                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                            StopGame();
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (!_engineWindow.LoadUciEngine(_currentGame.WhiteConfig, _chessBoard.GetPlayedMoveList(),
+                                                          true,
+                                                          Fields.COLOR_WHITE))
+                        {
+                            MessageBox.Show($"Could not load {_currentGame.WhiteConfig.Name}", "Error on loading",
+                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                            StopGame();
+                            return;
+                        }
+                    }
 
-                if (!_currentGame.DuelEngine && !_currentGame.WhiteConfig.IsChessServer)
-                {
-                    _configuration.SetConfigValue("LastWhiteEngine", _usedEngines[_currentWhitePlayer].Id);
+
+                    if (!_currentGame.DuelEngine && !_currentGame.WhiteConfig.IsChessServer)
+                    {
+                        _configuration.SetConfigValue("LastWhiteEngine", _usedEngines[_currentWhitePlayer].Id);
+                    }
                 }
             }
             else
