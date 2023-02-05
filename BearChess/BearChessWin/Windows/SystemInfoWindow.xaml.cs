@@ -29,6 +29,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     imageExclusive.Visibility = Visibility.Visible;
                 }
+                
+                if (chessBoardInfo.Equals("Millennium " + Constants.Supreme))
+                {
+                    imageSupreme.Visibility = Visibility.Visible;
+                }
 
                 if (chessBoardInfo.Equals("Millennium " + Constants.KingPerformance))
                 {

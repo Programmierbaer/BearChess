@@ -475,22 +475,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (!ValidForAnalysis())
                 {
-                    //imageTeddy.Visibility = Visibility.Hidden;
-                    //checkBoxRelaxed.Visibility = Visibility.Hidden;
                     checkBoxRelaxed.IsChecked = false;
-                    imageTeddy.IsEnabled = false;
-                    if (checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value)
-                    {
-                        checkBoxRelaxed.IsEnabled = false;
-                    }
-                    else
-                    {
-                        CheckBoxRelaxed_OnUnchecked(this, null);
-                    }
+                    imageTeddy.Visibility = Visibility.Hidden;
+                    checkBoxRelaxed.IsEnabled = false;
+                    CheckBoxRelaxed_OnUnchecked(this, null);
                     return;
                 }
 
-                imageTeddy.IsEnabled = true;
                 imageTeddy.Visibility = Visibility.Visible;
                 checkBoxRelaxed.Visibility = Visibility.Visible;
                 checkBoxRelaxed.IsEnabled = true;
@@ -514,10 +505,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 CheckBoxRelaxed_OnUnchecked(this, null);
             }
-            imageTeddy.IsEnabled = false;
+            imageTeddy.Visibility = Visibility.Hidden;
             checkBoxRelaxed.IsEnabled = false;
-            // imageTeddy.Visibility = Visibility.Hidden;
-            // checkBoxRelaxed.Visibility = Visibility.Hidden;
         }
 
         private void ButtonConfigureWhite_OnClick(object sender, RoutedEventArgs e)

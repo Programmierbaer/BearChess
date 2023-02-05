@@ -55,13 +55,24 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                     var convertFromRead = ConvertFromRead(readByte);
                     readLine += convertFromRead;
-                    if (readLine.Contains(param.ToLower()))
+                    if (readLine.Contains(param.ToLower()) && param.Equals("V"))
                     {
                         var startIndex = readLine.IndexOf(param.ToLower());
                         if (readLine.Length - startIndex >= 5)
                         {
                             _logger?.LogDebug($"SC: readline {readLine}");
                             result = readLine.Substring(startIndex, 5);
+                            _comPort.ClearBuffer();
+                            break;
+                        }
+                    }
+                    if (readLine.Contains(param.ToLower()) && param.Equals("I00"))
+                    {
+                        var startIndex = readLine.IndexOf(param.ToLower());
+                        if (convertFromRead=="\n")
+                        {
+                            _logger?.LogDebug($"SC: readline {readLine}");
+                            result = readLine.Substring(startIndex+3);
                             _comPort.ClearBuffer();
                             break;
                         }

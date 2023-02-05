@@ -18,6 +18,7 @@
         public const string MeOne = "eOne";
         public const string KingPerformance = "King Performance";
         public const string Exclusive = "Exclusive";
+        public const string Supreme = "Supreme Tournament";
         public const string DGT = "DGT";
         public const string Player = "Player";
         public const string FICS = "FICS";

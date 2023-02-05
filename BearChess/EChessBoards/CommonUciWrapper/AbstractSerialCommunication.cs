@@ -693,7 +693,21 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 {
                                     BoardInformation = Constants.Exclusive;
                                 }
+
+                                if (BoardInformation.Equals(Constants.MeOne))
+                                {
+                                    readLine = GetRawFromBoard("I00");
+                                    if (readLine.StartsWith("i"))
+                                    {
+                                        if (!readLine.StartsWith("e-one"))
+                                        {
+                                            BoardInformation = Constants.Supreme;
+                                        }
+                                    }
+                                }
+                          
                             }
+                           
                         }
                         else
                         {

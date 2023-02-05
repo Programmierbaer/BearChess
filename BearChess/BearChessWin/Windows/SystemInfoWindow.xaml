@@ -41,6 +41,7 @@
         <Image DockPanel.Dock="Top" Source="../Assets/novag-citrine.jpeg" Width="150" Name="imageCitrine" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/novag-ucb.jpeg" Width="150" Name="imageUCB" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/Tabutronic.png" Width="150" Name="imageTabutronic" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/Supreme.png" Width="150" Name="imageSupreme" Visibility="Collapsed"></Image>
         <Button DockPanel.Dock="Bottom" Margin="5" HorizontalAlignment="Left" Width="32"
                 Height="32" 
                 Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">
