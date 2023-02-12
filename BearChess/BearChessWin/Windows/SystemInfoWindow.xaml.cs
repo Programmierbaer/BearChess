@@ -74,11 +74,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 if (chessBoardInfo.Equals(Constants.TabutronicSentio))
                 {
-                    imageTabutronic.Visibility = Visibility.Visible;
+                    imageTabutronicSentio.Visibility = Visibility.Visible;
                 }
                 if (chessBoardInfo.Equals(Constants.TabutronicCerno))
                 {
-                    imageTabutronic.Visibility = Visibility.Visible;
+                    imageTabutronicCerno.Visibility = Visibility.Visible;
                 }
             }
         }

@@ -105,7 +105,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// Make a move in PGN notation
         /// </summary>
         /// <param name="pgnMove">PGN notation</param>
-        void MakePgnMove(string pgnMove, string comment);
+        void MakePgnMove(string pgnMove, string comment, string emt);
         
 
         /// <summary>

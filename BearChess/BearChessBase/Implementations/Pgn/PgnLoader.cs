@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Text;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
@@ -27,7 +28,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                         while ((allLine = sr.ReadLine()) != null)
                         {
                             var line = allLine.Trim();
-                            if (!startNewGame && line.StartsWith("[", StringComparison.OrdinalIgnoreCase))
+                            if (string.IsNullOrWhiteSpace(line))
+                            {
+                                continue;
+                            }
+                            if (!startNewGame && line.StartsWith("[Event", StringComparison.OrdinalIgnoreCase))
                             {
                                 startNewGame = true;
                                 if (sb.Length> 0)
@@ -106,11 +111,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             string newLine = string.Empty;
             string prevLine = string.Empty;
             string comment = string.Empty;
-
+            string emt = string.Empty;
             string currentSign = string.Empty;
             for (int i = ji; i < line.Length; i++)
             {
-                var c = line[i];
                 if (line[i] == '{' || line[i] == '(')
                 {
                     insideComment++;
@@ -131,6 +135,26 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                     continue;
                 }
 
+                if (comment.Contains("[%emt"))
+                {
+                    var indexOf = comment.IndexOf("[%emt");
+                    emt = string.Empty;
+                    string dummy = string.Empty;
+                    while (!comment[indexOf].Equals(']'))
+                    {
+                        if (comment[indexOf].Equals(' ') || emt.Length>0)
+                        {
+                            emt += comment[indexOf];
+                        }
+                        dummy += comment[indexOf];
+                        indexOf++;
+                    }
+
+                    emt = emt.Trim();
+                    dummy += "]";
+                    comment = comment.Replace(dummy, string.Empty);
+
+                }
                 if (line[i] == '$')
                 {
                     if (!string.IsNullOrWhiteSpace(currentSign))
@@ -192,6 +216,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                             prevLine = newLine.Substring(newLine.LastIndexOf(".", StringComparison.Ordinal) + 1);
                             newLine = string.Empty;
                             comment = string.Empty;
+                            emt = string.Empty;
                             currentSign = string.Empty;
                             continue;
                         }
@@ -199,6 +224,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                         prevLine = newLine.Substring(newLine.LastIndexOf(".", StringComparison.Ordinal) + 1);
                         newLine = string.Empty;
                         comment = string.Empty;
+                        emt = string.Empty;
                         currentSign = string.Empty;
                         continue;
                     }
@@ -208,10 +234,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                         prevLine = newLine;
                         newLine = string.Empty;
                         comment = string.Empty;
+                        emt = string.Empty;
                         currentSign = string.Empty;
                         continue;
                     }
-                    currentGame?.AddMove(prevLine,  comment);
+                    currentGame?.AddMove(prevLine, comment, emt);
                     prevLine = newLine;
                     newLine = string.Empty;
                     comment = string.Empty;

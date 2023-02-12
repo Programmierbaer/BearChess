@@ -39,6 +39,19 @@
         <BitmapImage x:Key="bitmapCertaboPawnB" UriSource="../Assets/Certabo/pawnB.png" />
         <BitmapImage x:Key="bitmapCertaboPawnW" UriSource="../Assets/Certabo/pawnW.png" />
 
+        <BitmapImage x:Key="bitmapTabuTronicKingB" UriSource="../Assets/TabuTronic/kingB.png" />
+        <BitmapImage x:Key="bitmapTabuTronicKingW" UriSource="../Assets/TabuTronic/kingW.png" />
+        <BitmapImage x:Key="bitmapTabuTronicQueenB" UriSource="../Assets/TabuTronic/queenB.png" />
+        <BitmapImage x:Key="bitmapTabuTronicQueenW" UriSource="../Assets/TabuTronic/queenW.png" />
+        <BitmapImage x:Key="bitmapTabuTronicRookB" UriSource="../Assets/TabuTronic/rookB.png" />
+        <BitmapImage x:Key="bitmapTabuTronicRookW" UriSource="../Assets/TabuTronic/rookW.png" />
+        <BitmapImage x:Key="bitmapTabuTronicBishopB" UriSource="../Assets/TabuTronic/bishopB.png" />
+        <BitmapImage x:Key="bitmapTabuTronicBishopW" UriSource="../Assets/TabuTronic/bishopW.png" />
+        <BitmapImage x:Key="bitmapTabuTronicKnightB" UriSource="../Assets/TabuTronic/knightB.png" />
+        <BitmapImage x:Key="bitmapTabuTronicKnightW" UriSource="../Assets/TabuTronic/knightW.png" />
+        <BitmapImage x:Key="bitmapTabuTronicPawnB" UriSource="../Assets/TabuTronic/pawnB.png" />
+        <BitmapImage x:Key="bitmapTabuTronicPawnW" UriSource="../Assets/TabuTronic/pawnW.png" />
+
 
         <BitmapImage x:Key="bitmapBryanWhitbyDaliKingB" UriSource="../Assets/BryanWhitby/Dali/KingB.png" />
         <BitmapImage x:Key="bitmapBryanWhitbyDaliKingW" UriSource="../Assets/BryanWhitby/Dali/KingW.png" />
@@ -237,6 +250,71 @@
         <BitmapImage x:Key="bitmapCertaboH6" UriSource="../Assets/Certabo/black.png" />
         <BitmapImage x:Key="bitmapCertaboH7" UriSource="../Assets/Certabo/white.png" />
         <BitmapImage x:Key="bitmapCertaboH8" UriSource="../Assets/Certabo/black.png" />
+
+        <BitmapImage x:Key="bitmapTabuTronicA1" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicA2" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicA3" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicA4" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicA5" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicA6" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicA7" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicA8" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicB1" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicB2" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicB3" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicB4" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicB5" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicB6" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicB7" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicB8" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicC1" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicC2" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicC3" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicC4" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicC5" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicC6" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicC7" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicC8" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicD1" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicD2" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicD3" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicD4" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicD5" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicD6" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicD7" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicD8" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicE1" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicE2" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicE3" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicE4" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicE5" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicE6" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicE7" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicE8" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicF1" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicF2" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicF3" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicF4" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicF5" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicF6" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicF7" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicF8" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicG1" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicG2" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicG3" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicG4" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicG5" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicG6" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicG7" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicG8" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicH1" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicH2" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicH3" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicH4" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicH5" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicH6" UriSource="../Assets/TabuTronic/black.png" />
+        <BitmapImage x:Key="bitmapTabuTronicH7" UriSource="../Assets/TabuTronic/white.png" />
+        <BitmapImage x:Key="bitmapTabuTronicH8" UriSource="../Assets/TabuTronic/black.png" />
 
 
 
@@ -835,6 +913,13 @@
             <StackPanel>
               <Image Margin="1" Name="imageRobot" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/robot.png" />
               <Image Margin="1" Name="imageRobotPause" Visibility="Collapsed" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/robotPause.png" />
+            </StackPanel>
+        </Button>
+        <Button Name="buttonSwap" ToolTip="Switch color" Grid.Column="8" Grid.Row="9" Width="30" Height="30" BorderBrush="Transparent" 
+                Background="Transparent" Click="ButtonSwap_OnClick" Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal">
+                <Image Margin="0,0,0,0"  Width="14" Source="../Assets/Icons/arrow_up.png" />
+                <Image Margin="-5,0,0,0"  Width="14" Source="../Assets/Icons/arrow_down.png" />
             </StackPanel>
         </Button>
         <TextBlock FontSize="30" Margin="10,0,0,0"  Name="textBlockBlackClock" Grid.Column="9" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Left" ToolTip="Black's move" >C</TextBlock>

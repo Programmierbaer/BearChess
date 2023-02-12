@@ -32,6 +32,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public string OwnSymbol { get; set; }
         public string ShortMoveIdentifier { get; set; }
 
+        public string ElapsedMoveTime { get; set; }
+
         [XmlIgnore]
         public string PGNMove
         {
@@ -65,6 +67,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             MoveSymbol = string.Empty;
             OwnSymbol = string.Empty;
             ShortMoveIdentifier = string.Empty;
+            ElapsedMoveTime = string.Empty;
            
         }
 
@@ -116,6 +119,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             IsEngineMove = true;
         }
 
+     
         public Move(Move move)
         {
             FigureColor = move.FigureColor;
@@ -136,6 +140,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             MoveSymbol = move.MoveSymbol;
             OwnSymbol = move.OwnSymbol;
             ShortMoveIdentifier = move.ShortMoveIdentifier;
+            ElapsedMoveTime = move.ElapsedMoveTime;
         }
 
         private string GetPGNMove()

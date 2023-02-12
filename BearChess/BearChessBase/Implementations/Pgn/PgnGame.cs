@@ -10,6 +10,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
         public Guid Id { get; set; }
         private readonly List<string> _moveList = new List<string>();
         private readonly List<string> _commentList = new List<string>();
+        private readonly List<string> _emtList = new List<string>();
         private readonly Dictionary<string, string> _userDefined = new Dictionary<string, string>();
         private readonly string[] _order = {"Event", "Site", "Date", "Round", "White", "Black", "Result"};
 
@@ -76,6 +77,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             return _commentList[index];
         }
 
+        public string GetEMT(int index)
+        {
+            return _emtList[index];
+        }
+
         public PgnGame()
         {
             Id = Guid.NewGuid();
@@ -101,8 +107,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
         }
         public void AddMove(string move, string comment)
         {
+            AddMove(move,comment,string.Empty);
+        }
+
+        public void AddMove(string move, string comment, string emt)
+        {
             _moveList.Add(move);
             _commentList.Add(comment);
+            _emtList.Add(emt);
         }
 
         public string GetMoveList()
@@ -131,6 +143,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
         {
             _moveList.Clear();
             _commentList.Clear();
+            _emtList.Clear();
         }
 
 

@@ -4,6 +4,7 @@
     {
         public const string BearChess = "BearChess";
         public const string Certabo = "Certabo";
+        public const string Tabutronic = "TabuTronic";
         public const string TabutronicCerno = "TabuTronic Cerno";
         public const string TabutronicSentio = "TabuTronic Sentio";
         public const string Pegasus = "Pegasus";

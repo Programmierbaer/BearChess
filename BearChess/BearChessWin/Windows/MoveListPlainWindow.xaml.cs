@@ -71,12 +71,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showFullInfo = bool.Parse(_configuration.GetConfigValue("extendFull", "false"));
             _showComments = bool.Parse(_configuration.GetConfigValue("extendComments", "false"));
             _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
+            textBlockWhitePlayer.Text = string.Empty;
+            textBlockBlackPlayer.Text = string.Empty;
+            textBlockResult.Text = string.Empty;
             SetContentInfo();
+        }
+
+        public void SetPlayerAndResult(string playerWhite, string playerBlack, string result)
+        {
+            textBlockWhitePlayer.Text = playerWhite;
+            textBlockBlackPlayer.Text = playerBlack;
+            if (result.Contains("/"))
+                result = "1/2";
+            textBlockResult.Text = result;
         }
 
         public MoveListPlainWindow(Configuration configuration, double top, double left, double width, double height) : this(configuration)
         {
             SetSizes(top, left, width, height);
+
         }
 
 
@@ -97,6 +110,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             stackPanelMoves.Children.Clear();
             _moveList.Clear();
             _lastMoveNumber = 0;
+            textBlockWhitePlayer.Text = string.Empty;
+            textBlockBlackPlayer.Text = string.Empty;
+            textBlockResult.Text = string.Empty;
         }
 
         public void SetDisplayTypes(DisplayFigureType displayFigureType, DisplayMoveType displayMoveType, DisplayCountryType displayCountryType)

@@ -75,6 +75,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler PauseGameEvent;
         public event EventHandler ResetBasePositionEvent;
         public event EventHandler RotateBoardEvent;
+        public event EventHandler SwitchColorEvent;
 
 
         private readonly HashSet<int> _whiteFields = new HashSet<int>(new[]
@@ -524,6 +525,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 SetPiecesMaterial(piecesSetup.Id);
                 return;
             }
+            if (piecesSetup.Id == Constants.Tabutronic)
+            {
+                SetPiecesMaterial(piecesSetup.Id);
+                return;
+            }
             if (piecesSetup.Id == Constants.BearChess)
             {
                 SetPiecesMaterial();
@@ -686,6 +692,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _piecesBitmaps["b"] = FindResource("bitmapCertaboBishopB") as BitmapImage;
                 _piecesBitmaps["n"] = FindResource("bitmapCertaboKnightB") as BitmapImage;
                 _piecesBitmaps["p"] = FindResource("bitmapCertaboPawnB") as BitmapImage;
+                _piecesBitmaps[""] = null;
+                _piecesBitmaps[" "] = null;
+                return;
+            }
+
+            if (id.Equals(Constants.Tabutronic))
+            {
+                _piecesBitmaps["K"] = FindResource("bitmapTabuTronicKingW") as BitmapImage;
+                _piecesBitmaps["Q"] = FindResource("bitmapTabuTronicQueenW") as BitmapImage;
+                _piecesBitmaps["R"] = FindResource("bitmapTabuTronicRookW") as BitmapImage;
+                _piecesBitmaps["B"] = FindResource("bitmapTabuTronicBishopW") as BitmapImage;
+                _piecesBitmaps["N"] = FindResource("bitmapTabuTronicKnightW") as BitmapImage;
+                _piecesBitmaps["P"] = FindResource("bitmapTabuTronicPawnW") as BitmapImage;
+                _piecesBitmaps["k"] = FindResource("bitmapTabuTronicKingB") as BitmapImage;
+                _piecesBitmaps["q"] = FindResource("bitmapTabuTronicQueenB") as BitmapImage;
+                _piecesBitmaps["r"] = FindResource("bitmapTabuTronicRookB") as BitmapImage;
+                _piecesBitmaps["b"] = FindResource("bitmapTabuTronicBishopB") as BitmapImage;
+                _piecesBitmaps["n"] = FindResource("bitmapTabuTronicKnightB") as BitmapImage;
+                _piecesBitmaps["p"] = FindResource("bitmapTabuTronicPawnB") as BitmapImage;
                 _piecesBitmaps[""] = null;
                 _piecesBitmaps[" "] = null;
                 return;
@@ -1458,7 +1483,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return _whiteFields.Contains(convert) ? _whiteFieldBitmap : _blackFieldBitmap;
 
             var fieldName = Fields.GetFieldName(convert);
-            var name =  _fieldId.Equals(Constants.Certabo) ? $"bitmapCertabo{fieldName}" : $"bitmapStone{fieldName}";
+            var name =  _fieldId.Equals(Constants.Certabo) ? $"bitmapCertabo{fieldName}" :
+                        _fieldId.StartsWith(Constants.Tabutronic) ? $"bitmapTabuTronic{fieldName}" : $"bitmapStone{fieldName}";
 
             return FindResource(name) as BitmapImage;
         }
@@ -1935,6 +1961,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MovePauseGame_OnClick(object sender, RoutedEventArgs e)
         {
           PauseGameEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ButtonSwap_OnClick(object sender, RoutedEventArgs e)
+        {
+            SwitchColorEvent?.Invoke(this, EventArgs.Empty);
         }
     }
 }

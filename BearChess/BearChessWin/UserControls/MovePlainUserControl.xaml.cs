@@ -138,7 +138,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 if (_showComments)
                 {
-                    textBlockCommentInternal.Text =  string.IsNullOrWhiteSpace(move.Comment) ? string.Empty :  move.Comment.Replace("(", " ").Replace(")", " ").Replace("{", " ").Replace("}", " ");
+                    string comment = move.Comment.Replace("(", " ").Replace(")", " ").Replace("{", " ").Replace("}", " ");
+                    textBlockCommentInternal.Text =  string.IsNullOrWhiteSpace(comment) ? string.Empty : comment;
+                    textBlockCommentInternal.Text +=  string.IsNullOrWhiteSpace(move.ElapsedMoveTime) ? string.Empty : ConvertEMT(move.ElapsedMoveTime);
                     textBlockCommentInternal.Visibility = textBlockCommentInternal.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
                 }
             }
@@ -146,7 +148,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (_showComments)
                 {
-                    textBlockCommentInternal.Text = string.IsNullOrWhiteSpace(move.Comment) ? string.Empty : move.Comment.Replace("(", " ").Replace(")", " ").Replace("{", " ").Replace("}", " ");
+                    string comment = move.Comment.Replace("(", " ").Replace(")", " ").Replace("{", " ").Replace("}", " ");
+                    textBlockCommentInternal.Text = string.IsNullOrWhiteSpace(comment) ? string.Empty : comment;
+                    textBlockCommentInternal.Text += string.IsNullOrWhiteSpace(move.ElapsedMoveTime) ? string.Empty : ConvertEMT(move.ElapsedMoveTime);
                     textBlockCommentInternal.Visibility = textBlockCommentInternal
                         .Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
                 }
@@ -187,6 +191,35 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        private string ConvertEMT(string emt)
+        {
+            string result = string.Empty;
+            var strings = emt.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            if (strings.Length != 3)
+            {
+                return emt;
+            }
+
+            if (!strings[0].Equals("0") && !strings[0].Equals("00"))
+            {
+                result += strings[0] + "h ";
+            }
+            if (!strings[1].Equals("0") && !strings[1].Equals("00"))
+            {
+                result += strings[1] + "m ";
+            }
+            if (!strings[2].Equals("0") && !strings[2].Equals("00"))
+            {
+                result += strings[2] + "s";
+            }
+
+            if (string.IsNullOrWhiteSpace(result))
+            {
+                return "0s";
+            }
+
+            return result;
+        }
 
         private string GetMoveDisplay(string move, int figureId, int capturedFigureId, int promotedFigureId, string shortMoveIdentifier)
         {

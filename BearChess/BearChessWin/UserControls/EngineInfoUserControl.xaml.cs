@@ -132,7 +132,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             thread.Start();
         }
 
-        public int Color { get; }
+        public int Color { get; private set; }
+
+       
         public string HideInfo => _hideInfo.ToString();
 
         public string EngineName
@@ -162,6 +164,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void CurrentColor(int currentColor)
         {
             _currentColor = currentColor;
+            if (_currentColor == Fields.COLOR_WHITE)
+            {
+                imageColorWhite.Visibility = Visibility.Visible;
+                imageColorBlack.Visibility = Visibility.Collapsed;
+                buttonClose.Visibility = Visibility.Hidden;
+                buttonPlayStop.Visibility = Visibility.Hidden;
+            }
+
+            if (_currentColor == Fields.COLOR_BLACK)
+            {
+                imageColorWhite.Visibility = Visibility.Collapsed;
+                imageColorBlack.Visibility = Visibility.Visible;
+                buttonClose.Visibility = Visibility.Hidden;
+                buttonPlayStop.Visibility = Visibility.Hidden;
+            }
+            Color = _currentColor;
         }
 
         public void SetFenPosition(string fenPosition, string moves)

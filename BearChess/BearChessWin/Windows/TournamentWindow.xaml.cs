@@ -248,6 +248,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 _tournamentFinished = !databaseGameSimples.Any(g => g.Result.Contains("*"));
                 dataGridGames.ItemsSource = databaseGameSimples;
+                labelGamesCount.Content = databaseGameSimples.Length;
                 if (_tournamentInfoWindow != null)
                 {
                     ShowInfoWindow();

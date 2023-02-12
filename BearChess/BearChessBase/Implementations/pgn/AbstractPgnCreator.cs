@@ -137,7 +137,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             }
             string mComment = string.IsNullOrWhiteSpace(move.Comment) ? string.Empty : "{" + ReplaceNagInComment(move.Comment) + "}";
             string mBestLine = string.IsNullOrWhiteSpace(move.BestLine) ? string.Empty : "{" + move.Score.ToString(CultureInfo.InvariantCulture) + "} (" + AddMoveNumberToBestLine(move.BestLine, moveCnt, move.FigureColor) + ")";
-            return $"{pgnMove} {GetNAG(move.MoveSymbol)} {GetNAG(move.EvaluationSymbol)} {mComment} {mBestLine}".Trim();
+            string emt = string.IsNullOrEmpty(move.ElapsedMoveTime)
+                             ? string.Empty
+                             : "{[%emt " + move.ElapsedMoveTime + "]}";
+            return $"{pgnMove} {GetNAG(move.MoveSymbol)} {GetNAG(move.EvaluationSymbol)} {mComment} {mBestLine} {emt}".Trim();
         }
 
         private string AddMoveNumberToBestLine(string bestLine, int moveCnt, int currentColor)

@@ -365,12 +365,35 @@
                         <MenuItem.Icon>
                             <Image Source="Assets/tabutronic_logo_def.png" />
                         </MenuItem.Icon>
+                        <MenuItem Name="menuItemCerno"  Header="Cerno">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/tabutronic_logo_def.png" />
+                            </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToCerno" Header="Connect" 
+                                      Click="MenuItemConnectCerno_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureCerno" Header="Configure"
+                                      Click="MenuItemConfigureCerno_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemBluetoothCerno" Header="Bluetooth"
+                                      Click="MenuItemBluetoothCerno_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageCernoBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
                         <MenuItem Name="menuItemSentio" Header="Sentio" >
                             <MenuItem.Icon>
                                 <Image Source="Assets/tabutronic_logo_def.png" />
                             </MenuItem.Icon>
                             <MenuItem Name="menuItemConnectToSentio" Header="Connect"
-                                      Click="MenuItemConnectToSentio_OnClick">
+                                      Click="MenuItemConnectSentio_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="Assets/Icons/connect.png" />
                                 </MenuItem.Icon>
@@ -388,29 +411,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Name="menuItemCerno" ToolTip="Coming soon! Please use Certabo instead." Header="Cerno">
-                            <MenuItem.Icon>
-                                <Image Source="Assets/tabutronic_logo_def.png" />
-                            </MenuItem.Icon>
-                            <MenuItem Name="menuItemConnectToCerno" Header="Connect"  IsEnabled="False"
-                                      Click="MenuItemConnectCertabo_OnClick">
-                                <MenuItem.Icon>
-                                    <Image Source="Assets/Icons/connect.png" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="menuItemConfigureCerno" Header="Configure"  IsEnabled="False"
-                                      Click="MenuItemConfigureCertabo_OnClick">
-                                <MenuItem.Icon>
-                                    <Image Source="Assets/Icons/cog.png" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Name="menuItemBluetoothCerno" Header="Bluetooth"  IsEnabled="False"
-                                      Click="MenuItemBluetoothCertabo_OnClick">
-                                <MenuItem.Icon>
-                                    <Image Name="imageCernoBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </MenuItem>
+                      
                     </MenuItem>
                     <MenuItem Header="Millennium ChessLink" Name="menuItemMChessLink">
                         <MenuItem.Icon>

@@ -696,8 +696,10 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
                                 if (BoardInformation.Equals(Constants.MeOne))
                                 {
+                                    _logger?.LogInfo($"S: e-one? Check information ");
                                     readLine = GetRawFromBoard("I00");
-                                    if (readLine.StartsWith("i"))
+                                    _logger?.LogInfo($"S: Information: {readLine}");
+                                    if (!string.IsNullOrWhiteSpace(readLine))
                                     {
                                         if (!readLine.StartsWith("e-one"))
                                         {

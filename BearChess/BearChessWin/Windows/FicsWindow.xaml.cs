@@ -450,6 +450,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             //
         }
 
+        public void SwitchColor()
+        {
+            //
+        }
+
         #endregion
 
         public event EventHandler<FicsNewGameInfo> NewGameEvent;

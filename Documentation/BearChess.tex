@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.5.2}
+\fancyhead[R]{Version 0.9.6.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{05.02.2023} 
+\date{10.02.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -43,11 +43,9 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports \textbf{Certabo} and \textbf{Tabutronic} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
+BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
 
-As you can see from the version number, this software is still under development. There are still some functions that are not fully implemented and there are certainly still many bugs. But BearChess has now reached a level where it can be used and feedback from other users is welcome.\\
-
-I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, Tabutronic) or Millennium 2000 GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc. If something does not work, the companies are not responsible for it.\\
+I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc. If something does not work, the companies are not responsible for it.\\
 
 Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 
@@ -75,7 +73,7 @@ Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@
 BearChess offers among others the following functions:
 \begin{enumerate}
 	  \item Play with \textbf{Certabo} chessboards.
-	  \item Play with \textbf{Tabutronics} chessboards.	  
+	  \item Play with \textbf{TabuTronics} chessboards.	  
 	  \item Play with \textbf{Millennium} chessboards via \textbf{ChessLink} modul or \textbf{eOne}.
  	  \item Play with \textbf{DGT e-Board} or \textbf{Revelation}.	  
 	  \item Play with \textbf{DGT Pegasus} chessboard.	  
@@ -288,7 +286,9 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 \end{figure}
 \begin{itemize}
 	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
-\item  \includegraphics[scale=0.05]{tabutronic_logo_def.png} \textbf{Tabutronic} opens a window where you can configure and connect to Tabutronic chessboards (Sentio and Cerno).  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.	
+\item  \includegraphics[scale=0.05]{tabutronic_logo_def.png} \textbf{TabuTronic} opens a window where you can configure and connect to TabuTronic chessboards (Cerno and Sentio).
+Read more on chapter \textbf{\ref{ConfigureTabuTronicCerno}  \nameref{ConfigureTabuTronicCerno}} on page \pageref{ConfigureTabuTronicCerno}.	
+or on chapter \textbf{\ref{ConfigureTabuTronicSentio}  \nameref{ConfigureTabuTronicSentio}} on page \pageref{ConfigureTabuTronicSentio}.	
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
 	\item  \includegraphics[scale=0.3]{dgt48.png} \textbf{DGT} connect to DGT e-Boards, DGT Revelation or DGT Pegasus chessboard.	
 	\item  \includegraphics[scale=0.05]{squareoff.png} \textbf{Square Off Pro} connect to Square Off Pro chessboard.		
@@ -903,7 +903,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{Tabutronic}  boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, Tabutronic, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
+BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
 For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
 In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
@@ -1021,6 +1021,18 @@ In the lower right corner appears a new button, which allows you to easily conne
 	\label{fig:Certabo5}
 \end{figure}
 
+\subsection{Configure TabuTronic Cerno} \label{ConfigureTabuTronicCerno}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Cerno1.png}
+	\caption{Open a window to configure TabuTronic Cerno}
+	\label{fig:Cerno1}
+\end{figure}
+
+The configuration is exactly as it is for the Certabo boards.
+Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
+
 \subsection{Configure TabuTronic Sentio} \label{ConfigureTabuTronicSentio}
 
 \begin{figure}[H]
@@ -1052,19 +1064,6 @@ Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
 When the configuration is complete, you can connect your chessboard.
 In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
 \\TabuTronic Sentio has no real piece recognition and can only give the information per field whether there is a piece or not.
-
-\subsection{Configure TabuTronic Cerno} \label{ConfigureTabuTronicCerno}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{Cerno1.png}
-	\caption{Comming soon }
-	\label{fig:Cerno1}
-\end{figure}
-
-Currently, I did not have a board available.
-If you already have one, try to include it as a Certabo board. 
-
 
 
 \subsection{Configure Millennium ChessLink} \label{ConfigureChessLink}
@@ -2637,7 +2636,7 @@ These are some ideas what will come in one of the next versions.
 
 \begin{itemize}
 		\item Extend the game analysis.
-		\item Improve eletronic chess board handling.
+		\item Improve electronic chess board handling.
   	    \item Improve the performance of the opening book.
    		\item GUI redesign.
 	\end{itemize} 
@@ -2645,6 +2644,17 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+
+\subsection*{Version 0.9.5.2 $\Rightarrow$  0.9.6.0}
+\begin{itemize}
+	\item {\color{blue}New}: Support for TabuTronic Cerno board.
+	\item {\color{blue}New}: Show game information on move list.	
+	\item {\color{blue}New}: Record and show elapsed move time.		
+	\item {\color{red}Fix}: Import and loading PGN games.
+	\item {\color{red}Fix}: Start/Stop clocks on Player vs. Player.	
+\end{itemize}
+
 
 \subsection*{Version 0.9.5.1 $\Rightarrow$  0.9.5.2}
 \begin{itemize}

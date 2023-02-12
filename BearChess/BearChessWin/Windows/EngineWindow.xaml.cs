@@ -263,6 +263,33 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        public void SwitchColor()
+        {
+            _firstEngineName = string.Empty;
+            
+            EngineInfoUserControl whiteEngineInfoUserControl = stackPanelEngines.Children.Cast<EngineInfoUserControl>().FirstOrDefault(c => c.Color==Fields.COLOR_WHITE);
+            EngineInfoUserControl blackEngineInfoUserControl = stackPanelEngines.Children.Cast<EngineInfoUserControl>().FirstOrDefault(c => c.Color==Fields.COLOR_BLACK);
+            if (whiteEngineInfoUserControl != null)
+            {
+                whiteEngineInfoUserControl.CurrentColor(Fields.COLOR_BLACK);
+            }
+            if (blackEngineInfoUserControl != null)
+            {
+                blackEngineInfoUserControl.CurrentColor(Fields.COLOR_WHITE);
+            }
+
+            var whiteLoadedUciEngine = _loadedEngines.Values.FirstOrDefault(v => v.Color == Fields.COLOR_WHITE);
+            var backLoadedUciEngine = _loadedEngines.Values.FirstOrDefault(v => v.Color == Fields.COLOR_BLACK);
+            if (whiteLoadedUciEngine != null)
+            {
+                whiteLoadedUciEngine.Color = Fields.COLOR_BLACK;
+            }
+            if (backLoadedUciEngine != null)
+            {
+                backLoadedUciEngine.Color = Fields.COLOR_WHITE;
+            }
+        }
+
         private void SwitchWindowPosition()
         {
             var switchPos = bool.Parse(_configuration.GetConfigValue("switchWindowPosition", "false"));
@@ -1015,7 +1042,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             public UciLoader UciEngine { get; }
-            public int Color { get; }
+            public int Color { get; set; }
 
 
             public void SetConfigValues()

@@ -57,7 +57,7 @@
                                    Source="../Assets/Icons/book_open.png" />
                             <Image Margin="5,0,0,0" Name="imageBookWhite2" Width="24" Height="24"
                                    Source="../Assets/Icons/book.png" Visibility="Collapsed" />
-                            <Button Name="buttonSwap" ToolTip="Swap" Margin="100,1,0,0" Height="24" BorderBrush="Transparent" 
+                            <Button Name="buttonSwap" ToolTip="Switch color" Margin="100,1,0,0" Height="24" BorderBrush="Transparent" 
                                     Background="Transparent" Click="ButtonSwap_OnClick">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Margin="5,0,0,0"  Source="../Assets/Icons/arrow_up.png" />

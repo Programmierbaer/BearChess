@@ -523,7 +523,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         /// <inheritdoc />
-        public void MakePgnMove(string pgnMove, string comment)
+        public void MakePgnMove(string pgnMove, string comment, string emt)
         {
             if (string.IsNullOrWhiteSpace(pgnMove) || pgnMove.Equals("*") || pgnMove.Equals("1-0") || pgnMove.Equals("0-1") || pgnMove.Equals("1/2-1/2"))
             {
@@ -672,6 +672,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 MakeMove(moves[0].FromField, moves[0].ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
                 var lastMove = _allPlayedMoves.Last().Value.GetMove(EnemyColor);
                 lastMove.Comment = comment;
+                lastMove.ElapsedMoveTime = emt;
                 lastMove.EvaluationSymbol = firstPositionSign;
                 lastMove.MoveSymbol = firstMoveSign;
             }
@@ -691,6 +692,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                                 MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
                                 var lastMove = _allPlayedMoves.Last().Value.GetMove(EnemyColor);
                                 lastMove.Comment = comment;
+                                lastMove.ElapsedMoveTime = emt;
                                 lastMove.EvaluationSymbol = firstPositionSign;
                                 lastMove.MoveSymbol = firstMoveSign;
                                 return;
@@ -701,6 +703,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                             MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
                             var lastMove = _allPlayedMoves.Last().Value.GetMove(EnemyColor);
                             lastMove.Comment = comment;
+                            lastMove.ElapsedMoveTime = emt;
                             lastMove.EvaluationSymbol = firstPositionSign;
                             lastMove.MoveSymbol = firstMoveSign;
                             return;
@@ -747,6 +750,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             MakeMove(Fields.GetFieldNumber(fromField), Fields.GetFieldNumber(toField), FigureId.FenCharacterToFigureId[promotionFigure]);
         }
+
+    
 
         public void MakeMove(int fromField, int toField, int promotionFigureId)
         {

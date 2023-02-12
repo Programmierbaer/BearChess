@@ -76,8 +76,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 Id = Constants.Certabo
             };
 
+            installedFields[Constants.Tabutronic] = new BoardFieldsSetup()
+                                                 {
+                                                     Name = Constants.Tabutronic,
+                                                     WhiteFileName = string.Empty,
+                                                     BlackFileName = string.Empty,
+                                                     Id = Constants.Tabutronic
+                                                 };
+
             installedPieces[Constants.BearChess] = new BoardPiecesSetup() {Name = Constants.BearChess, Id = Constants.BearChess };
             installedPieces[Constants.Certabo] = new BoardPiecesSetup() {Name = Constants.Certabo, Id = Constants.Certabo };
+            installedPieces[Constants.Tabutronic] = new BoardPiecesSetup() { Name = Constants.Tabutronic, Id = Constants.Tabutronic };
             installedPieces[Constants.BryanWhitbyDali] = new BoardPiecesSetup() { Name = "Dali by Bryan Whitby", Id = Constants.BryanWhitbyDali };
             installedPieces[Constants.BryanWhitbyItalian] = new BoardPiecesSetup() { Name = "Italian by Bryan Whitby", Id = Constants.BryanWhitbyItalian };
             installedPieces[Constants.BryanWhitbyRoyalGold] = new BoardPiecesSetup() { Name = "Royal Gold by Bryan Whitby", Id = Constants.BryanWhitbyRoyalGold };
@@ -86,6 +95,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             installedPieces[Constants.BryanWhitbyModernBrown] = new BoardPiecesSetup() { Name = "Modern Brown by Bryan Whitby", Id = Constants.BryanWhitbyModernBrown };
             _unDeleteablePieces.Add(Constants.BearChess);
             _unDeleteablePieces.Add(Constants.Certabo);
+            _unDeleteablePieces.Add(Constants.Tabutronic);
             _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyDali].Name);
             _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyItalian].Name);
             _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyRoyalGold].Name);
@@ -94,6 +104,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _unDeleteablePieces.Add(installedPieces[Constants.BryanWhitbyModernBrown].Name);
             _unDeleteableFields.Add(Constants.BearChess);
             _unDeleteableFields.Add(Constants.Certabo);
+            _unDeleteableFields.Add(Constants.Tabutronic);
 
             _boardPath = boardPath;
             _piecesPath = piecesPath;

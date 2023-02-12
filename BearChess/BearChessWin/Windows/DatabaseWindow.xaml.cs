@@ -280,7 +280,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     for (int i = 0; i < pgnGame.MoveCount; i++)
                     {
-                        chessBoard.MakePgnMove(pgnGame.GetMove(i), pgnGame.GetComment(i));
+                        chessBoard.MakePgnMove(pgnGame.GetMove(i), pgnGame.GetComment(i), pgnGame.GetEMT(i));
                     }
 
                     count++;

@@ -53,6 +53,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         void BringToTop();
         void SetWindowPositions(double newLeft, double newTop);
+
+        void SwitchColor();
     }
 
     public abstract class AbstractEngineWindow

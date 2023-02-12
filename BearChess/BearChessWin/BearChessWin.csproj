@@ -361,6 +361,9 @@
     </Compile>
     <Compile Include="Helper\UciInstaller.cs" />
     <Compile Include="Helper\UciLoader.cs" />
+    <Compile Include="Windows\WinConfigureCerno.xaml.cs">
+      <DependentUpon>WinConfigureCerno.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\WinConfigureCertabo.xaml.cs">
       <DependentUpon>WinConfigureCertabo.xaml</DependentUpon>
     </Compile>
@@ -687,6 +690,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\WinConfigureCerno.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\WinConfigureCertabo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -866,8 +873,12 @@
       <Project>{519d9a7a-b72f-4922-9341-445cd2fc9a85}</Project>
       <Name>SquareOffProLoader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TabutronicLoader\TabutronicSentioLoader.csproj">
-      <Project>{14CCA0FE-80D5-402B-81AC-E544854B994C}</Project>
+    <ProjectReference Include="..\TabuTronicCernoLoader\TabuTronicCernoLoader.csproj">
+      <Project>{89b1ef07-b67a-4750-a4bc-5a25bd0dd225}</Project>
+      <Name>TabuTronicCernoLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TabutronicSentioLoader\TabutronicSentioLoader.csproj">
+      <Project>{14cca0fe-80d5-402b-81ac-e544854b994c}</Project>
       <Name>TabutronicSentioLoader</Name>
     </ProjectReference>
     <ProjectReference Include="..\Teddy\Teddy.csproj">
@@ -1504,10 +1515,29 @@
     <Resource Include="Assets\tabutronic_logo_def.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Tabutronic.png" />
+    <Resource Include="Assets\Supreme.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Supreme.png" />
+    <Resource Include="Assets\TabuTronic\bishopB.png" />
+    <Resource Include="Assets\TabuTronic\bishopW.png" />
+    <Resource Include="Assets\TabuTronic\kingB.png" />
+    <Resource Include="Assets\TabuTronic\kingW.png" />
+    <Resource Include="Assets\TabuTronic\knightB.png" />
+    <Resource Include="Assets\TabuTronic\knightW.png" />
+    <Resource Include="Assets\TabuTronic\pawnB.png" />
+    <Resource Include="Assets\TabuTronic\pawnW.png" />
+    <Resource Include="Assets\TabuTronic\queenB.png" />
+    <Resource Include="Assets\TabuTronic\queenW.png" />
+    <Resource Include="Assets\TabuTronic\rookB.png" />
+    <Resource Include="Assets\TabuTronic\rookW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\TabuTronic\black.png" />
+    <Resource Include="Assets\TabuTronic\white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\TabutronicCerno.png" />
+    <Resource Include="Assets\TabutronicSentio.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
