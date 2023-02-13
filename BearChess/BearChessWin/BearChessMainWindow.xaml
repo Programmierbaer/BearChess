@@ -8,6 +8,11 @@
         mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke"
         LocationChanged="BearChessMainWindow_OnLocationChanged"
         Title="BearChess" MinHeight="660" MinWidth="600">
+    <Window.CommandBindings>
+        <CommandBinding Command="Copy" Executed="MenuItemGamesCopy_OnClick" CanExecute="CommandBinding_OnCanExecute"></CommandBinding>
+        <CommandBinding Command="Paste" Executed="MenuItemGamesPaste_OnClick" CanExecute="CommandBinding_OnCanExecuteTrue"></CommandBinding>
+        <CommandBinding Command="Save" Executed="MenuItemGamesSave_OnClick" CanExecute="CommandBinding_OnCanExecute"></CommandBinding>
+    </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -126,7 +131,7 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Games" Name="menuItemGames">
-                    <MenuItem Name="menuItemGamesSave" Header="Save" Click="MenuItemGamesSave_OnClick">
+                    <MenuItem Name="menuItemGamesSave" Command="Save"  Header="Save" >
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/diskette.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
@@ -136,13 +141,12 @@
                             <Image Source="Assets/Icons/file_manager.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemGamesCopy" Header="Copy to clipboard" Click="MenuItemGamesCopy_OnClick">
+                    <MenuItem Name="menuItemGamesCopy" Command="Copy"  Header="Copy to clipboard" >
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/clipboard_sign_out.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemGamesPaste" Header="Paste from clipboard"
-                              Click="MenuItemGamesPaste_OnClick">
+                    <MenuItem Name="menuItemGamesPaste" Command="Paste" Header="Paste from clipboard">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/clipboard_sign.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>

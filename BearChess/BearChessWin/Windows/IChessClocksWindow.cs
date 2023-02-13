@@ -10,6 +10,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         ClockTime GetClockTime();
         ClockTime GetCurrentTime();
         ClockTime GetElapsedTime();
+        ClockTime GetDuration();
         void SetTime(ClockTime clockTime, int extraSeconds = 0);
         void SetTime(int hh, int mm, int ss, int extraSeconds = 0);
         void CorrectTime(int hh, int mm, int ss);

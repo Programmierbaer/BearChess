@@ -77,6 +77,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return new ClockTime(_stopwatch.Elapsed);
         }
 
+        public ClockTime GetDuration()
+        {
+            return new ClockTime(_duration);
+        }
+
 
         public void SetContinueTime(ClockTime clockTime, int extraSeconds = 0)
         {

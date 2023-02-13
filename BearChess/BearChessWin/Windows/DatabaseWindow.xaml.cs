@@ -502,6 +502,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             MenuItemContinue_OnClick(sender, e);
         }
+
+        private void CommandBinding_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = dataGridGames.SelectedItem is DatabaseGameSimple pgnGame;
+        }
     }
 
     public class GamesValueToBrushConverter : IValueConverter

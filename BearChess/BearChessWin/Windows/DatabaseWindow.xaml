@@ -11,6 +11,9 @@
     <Window.Resources>
         <bearChessWin:GamesValueToBrushConverter x:Key="ValueToBrushConverter" />
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="Copy" Executed="MenuItemCopy_OnClick" CanExecute="CommandBinding_OnCanExecute"></CommandBinding>
+    </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -37,7 +40,7 @@
                             <Image Source="../Assets/Icons/bin.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Copy to clipboard" Name="menuItemCopy" Click="MenuItemCopy_OnClick">
+                    <MenuItem Command="Copy"  Header="Copy to clipboard" Name="menuItemCopy" >
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/clipboard_sign_out.png" />
                         </MenuItem.Icon>
@@ -119,7 +122,7 @@
                 <Image Source="../Assets/Icons/saved_imports.png" Width="32" Height="32" />
             </Button>
 
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonCopy" Click="ButtonCopy_OnClick"
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonCopy" Command="Copy" 
                     Background="Transparent" BorderBrush="Transparent" ToolTip="Copy to clipboard">
                 <Image Source="../Assets/Icons/clipboard_sign_out.png" Width="32" Height="32" />
             </Button>
