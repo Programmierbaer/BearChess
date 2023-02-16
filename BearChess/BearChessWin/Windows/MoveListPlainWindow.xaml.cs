@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Globalization;
+using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
@@ -47,6 +49,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _lastMarkedMoveNumber;
         private int _lastMarkedColor;
         private bool _showForWhite;
+        private readonly FontFamily _fontFamily;
 
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
         public event EventHandler<SelectedMoveOfMoveList> ContentChanged;
@@ -55,6 +58,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _configuration = configuration;
             InitializeComponent();
+            _fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
             _lastMoveNumber = 0;
 
             _figureType = (DisplayFigureType)Enum.Parse(typeof(DisplayFigureType),
@@ -71,6 +75,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showFullInfo = bool.Parse(_configuration.GetConfigValue("extendFull", "false"));
             _showComments = bool.Parse(_configuration.GetConfigValue("extendComments", "false"));
             _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
+            textBlockBlack.FontFamily = _fontFamily;
+            textBlockBlack.Text = FontConverter.ConvertFont("k", "Chess Merida");
+            textBlockWhite.FontFamily = _fontFamily;
+            textBlockWhite.Text = FontConverter.ConvertFont("K", "Chess Merida");
             textBlockWhitePlayer.Text = string.Empty;
             textBlockBlackPlayer.Text = string.Empty;
             textBlockResult.Text = string.Empty;
@@ -81,6 +89,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             textBlockWhitePlayer.Text = playerWhite;
             textBlockBlackPlayer.Text = playerBlack;
+            if (result.Contains("/"))
+                result = "1/2";
+            textBlockResult.Text = result;
+        }
+
+        public void SetResult(string result)
+        {
             if (result.Contains("/"))
                 result = "1/2";
             textBlockResult.Text = result;

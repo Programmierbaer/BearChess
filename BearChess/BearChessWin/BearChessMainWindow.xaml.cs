@@ -235,6 +235,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DisplayCountryType _displayCountryType = DisplayCountryType.GB;
         private bool _flipBoardOSA;
         private bool _switchWindowPosition;
+        private bool _duelTournamentIsRunning = false;
+        private bool _ficsMode = false;
 
         public BearChessMainWindow()
         {
@@ -1481,6 +1483,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     _synthesizer.SpeakAsync(SpeechTranslator.GetMate(_speechLanguageTag, _configuration));
                 }
+                _moveListWindow?.SetResult(_lastResult);
                 MessageBox.Show($"Mate {_lastResult}", "Game finished", MessageBoxButton.OK, MessageBoxImage.Stop);
 
                 //_ficsWindow?.StopGame();
@@ -1540,7 +1543,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         _synthesizer.SpeakAsync(SpeechTranslator.GetDraw(_speechLanguageTag, _configuration));
                     }
-
+                    _moveListWindow?.SetResult(_lastResult);
                     MessageBox.Show(drawReason, "Game finished", MessageBoxButton.OK,
                                     MessageBoxImage.Stop);
 
@@ -3154,7 +3157,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_databaseWindow == null)
             {
-                _databaseWindow = new DatabaseWindow(_configuration,  _database, _chessBoard.GetFenPosition(), !menuItemGamesSave.IsEnabled);
+                _databaseWindow = new DatabaseWindow(_configuration,  _database, _chessBoard.GetFenPosition(), _duelTournamentIsRunning);
                 _databaseWindow.SelectedGameChanged += DatabaseWindow_SelectedGameChanged;
                 _databaseWindow.Closed += DatabaseWindow_Closed;
                 _databaseWindow.Show();
@@ -3645,14 +3648,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void EngineWinsByBearChess(string engineName, bool byScore, bool byMate)
         {
+            _lastResult = _currentWhitePlayer.Equals(engineName, StringComparison.OrdinalIgnoreCase) ? "1-0" : "0-1";
             Dispatcher?.Invoke(() =>
             {
                 _engineWindow?.Stop();
                 _chessClocksWindowBlack?.Stop();
                 _chessClocksWindowWhite?.Stop();
                 _eChessBoard?.StopClock();
+                _moveListWindow?.SetResult(_lastResult);
             });
-            _lastResult = _currentWhitePlayer.Equals(engineName, StringComparison.OrdinalIgnoreCase) ? "1-0" : "0-1";
 
             if (_currentGame.DuelEngine && !_currentGame.DuelEnginePlayer)
             {
@@ -3666,6 +3670,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 else
                     _synthesizer.Speak($"{engineName} {SpeechTranslator.GetWinsByScore(_speechLanguageTag, _configuration)}");
             }
+          
             MessageBox.Show(byMate ? $"{engineName} wins by mate " : $"{engineName} wins by score", "Game finished",
                             MessageBoxButton.OK,
                             MessageBoxImage.Stop);
@@ -3876,9 +3881,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _moveListWindow?.AddMove(engineMove, _gameAgainstEngine && _timeControlWhite.TournamentMode);
                     _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
                     _ficsWindow?.StopGame();
+                    _lastResult = _chessBoard.CurrentColor == Fields.COLOR_WHITE ? "0-1" : "1-0";
+                    _moveListWindow?.SetResult(_lastResult);
 
                 });
-                _lastResult = _chessBoard.CurrentColor == Fields.COLOR_WHITE ? "0-1" : "1-0";
+               
                 if (!_currentGame.DuelEngine || _currentGame.DuelEnginePlayer)
                 {
                     MessageBox.Show($"Mate {_lastResult} ", "Game finished", MessageBoxButton.OK,
@@ -3930,6 +3937,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
                         _moveListWindow?.AddMove(engineMove, _gameAgainstEngine && _timeControlWhite.TournamentMode);
                         _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
+                        _moveListWindow?.SetResult(_lastResult);
                     });
 
 
@@ -3937,7 +3945,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         _synthesizer.Speak(SpeechTranslator.GetDraw(_speechLanguageTag, _configuration));
                     }
-
+             
                     if (!_currentGame.DuelEngine || _currentGame.DuelEnginePlayer)
                     {
                         MessageBox.Show($"Draw by {draw} ", "Game finished", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -6552,6 +6560,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 });
                 _lastResult = _chessBoard.CurrentColor == Fields.COLOR_WHITE ? "0-1" : "1-0";
+                Dispatcher?.Invoke(() => { _moveListWindow?.SetResult(_lastResult); });
                 if (!_currentGame.DuelEngine || _currentGame.DuelEnginePlayer)
                     MessageBox.Show($"Mate {_lastResult} ", "Game finished", MessageBoxButton.OK,
                                     MessageBoxImage.Stop);
@@ -6586,6 +6595,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _lastResult = "1/2";
                     Dispatcher?.Invoke(() =>
                     {
+                        _moveListWindow?.SetResult(_lastResult);
                         _engineWindow?.Stop();
                         _chessClocksWindowBlack?.Stop();
                         _chessClocksWindowWhite?.Stop();
@@ -7173,6 +7183,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         "Timeout", MessageBoxButton.YesNo, MessageBoxImage.Stop);
                 Dispatcher?.Invoke(() =>
                 {
+                    _moveListWindow?.SetResult(_lastResult);
                     if (messageBoxResult == MessageBoxResult.Yes)
                     {
                         _chessClocksWindowBlack.Stop();
@@ -8436,6 +8447,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void SwitchIntoFICSMode(bool ficsMode)
         {
+            _ficsMode = ficsMode;
             if (ficsMode)
             {
                 if (_engineWindow != null)
@@ -8613,6 +8625,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void SetButtonsForDuelTournament(bool duelTournamentIsRunning)
         {
+            _duelTournamentIsRunning = duelTournamentIsRunning;
             menuItemActions.IsEnabled = !duelTournamentIsRunning;
             menuItemGamesCopy.IsEnabled = !duelTournamentIsRunning;
             menuItemGamesPaste.IsEnabled = !duelTournamentIsRunning;
@@ -8990,6 +9003,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void CommandBinding_OnCanExecuteTrue(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
+        }
+
+        private void CommandBinding_OnCanLoadEngineExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !_ficsMode;
         }
     }
 }
