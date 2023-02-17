@@ -44,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     _logger?.LogDebug($"SC: Read {readByte}");
                     if (readByte < 0)
                     {
-                        return string.Empty;
+                        return readLine;
                     }
 
                     if (readByte == 0)
@@ -55,6 +55,17 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                     var convertFromRead = ConvertFromRead(readByte);
                     readLine += convertFromRead;
+                    if (readLine.Contains(param.ToLower()) && param.StartsWith("R"))
+                    {
+                        var startIndex = readLine.IndexOf(param.ToLower());
+                        if (readLine.Length - startIndex >= 5)
+                        {
+                            _logger?.LogDebug($"SC: readline {readLine}");
+                            result = readLine.Substring(startIndex, 5);
+                            _comPort.ClearBuffer();
+                            break;
+                        }
+                    }
                     if (readLine.Contains(param.ToLower()) && param.Equals("V"))
                     {
                         var startIndex = readLine.IndexOf(param.ToLower());
@@ -84,7 +95,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 _logger?.LogDebug($"SC: Catch {ex.Message}");
             }
             _logger?.LogDebug($"SC: {result}");
-            return result;
+            return string.IsNullOrWhiteSpace(result) ? readLine : result;
         }
 
         public override void SendRawToBoard(string param)
