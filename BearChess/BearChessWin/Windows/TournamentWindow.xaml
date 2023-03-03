@@ -41,6 +41,11 @@
                             <Image Source="../Assets/Icons/cup_gold.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Rename tournament" Name="menuItemRename" Click="ButtonRename_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/Icons/text_replace.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
@@ -169,7 +174,7 @@
             <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonExport" Click="ButtonExport_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Export tournament games">
                 <Image Source="../Assets/Icons/text_exports.png" Width="32" Height="32"></Image>
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonInfo" Click="ButtonInfo_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Duel information">
+            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonInfo" Click="ButtonInfo_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Tournament information">
                 <Image Source="../Assets/Icons/information.png" Width="32" Height="32"></Image>
             </Button>
             <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">

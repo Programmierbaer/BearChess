@@ -50,6 +50,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _lastMarkedColor;
         private bool _showForWhite;
         private readonly FontFamily _fontFamily;
+        private CurrentGame _currentGame;
 
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
         public event EventHandler<SelectedMoveOfMoveList> ContentChanged;
@@ -83,12 +84,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockBlackPlayer.Text = string.Empty;
             textBlockResult.Text = string.Empty;
             SetContentInfo();
+            _currentGame = null;
         }
 
-        public void SetPlayerAndResult(string playerWhite, string playerBlack, string result)
+        public void SetPlayerAndResult(CurrentGame currentGame, string result)
         {
-            textBlockWhitePlayer.Text = playerWhite;
-            textBlockBlackPlayer.Text = playerBlack;
+            _currentGame = currentGame;
+            textBlockWhitePlayer.Text = currentGame.PlayerWhite;
+            textBlockBlackPlayer.Text = currentGame.PlayerBlack;
             if (result.Contains("/"))
                 result = "1/2";
             textBlockResult.Text = result;
@@ -521,11 +524,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             var pgnGame = new PgnGame
                           {
-                              GameEvent = "BearChess",
-                              PlayerWhite = "Lars",
-                              PlayerBlack = "Teddy",
-                              Result = "0-1",
-                              GameDate = DateTime.Now.ToString("dd.MM.yyyy")
+                              GameEvent = _currentGame?.GameEvent,
+                              PlayerWhite = textBlockWhitePlayer.Text,
+                              PlayerBlack = textBlockBlackPlayer.Text,
+                              Result = textBlockResult.Text,
+                              GameDate =  DateTime.Now.ToString("dd.MM.yyyy")
                           };
             foreach (var move in pgnCreator.GetAllMoves())
             {
@@ -659,6 +662,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _showComments = !_showComments;
             Refresh();
+        }
+
+        private void CommandBinding_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void MenuItemCopy_OnClick(object sender, ExecutedRoutedEventArgs e)
+        {
+            ButtonCopy_OnClick(sender, e);
         }
     }
 }

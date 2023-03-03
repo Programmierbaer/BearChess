@@ -428,6 +428,39 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
         }
+
+        private void ButtonRename_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridDuel.SelectedItems.Count == 0)
+            {
+                return;
+            }
+            if (dataGridDuel.SelectedItems.Count > 1)
+            {
+                MessageBox.Show("Please select only one duel", "Cannot rename",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var selectedItem = dataGridDuel.SelectedItems[0];
+            if (selectedItem is DatabaseDuel duel)
+            {
+                var editWindow = new EditWindow
+                                 {
+                                     Owner = this
+                                 };
+                editWindow.SetTitle("Rename Duel");
+                editWindow.SetComment(duel.CurrentDuel.GameEvent);
+                var showDialog = editWindow.ShowDialog();
+                if (showDialog.HasValue && showDialog.Value && !string.IsNullOrWhiteSpace(editWindow.Comment))
+                {
+                    duel.CurrentDuel.GameEvent = editWindow.Comment;
+                    _database.UpdateDuel(duel.DuelId, duel.CurrentDuel);
+                    dataGridDuel.ItemsSource = _database.LoadDuel();
+                    dataGridGames.ItemsSource = null;
+                }
+            }
+        }
     }
 
     public class DuelValueToBrushConverter : IValueConverter

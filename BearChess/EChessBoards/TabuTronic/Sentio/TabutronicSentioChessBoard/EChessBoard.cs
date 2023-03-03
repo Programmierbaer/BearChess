@@ -162,7 +162,6 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                 {
                     if (_thinkingLeds.Count > 1)
                     {
-
                         string fieldName = _thinkingLeds[0];
                         byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
                         Array.Copy(AllOff, result, AllOff.Length);
@@ -330,12 +329,9 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             {
                 return;
             }
-
-            {
-                _logger?.LogDebug("B: Send all off");
-                _serialCommunication.ClearToBoard();
-                _serialCommunication.Send(AllOff);
-            }
+            _logger?.LogDebug("B: Send all off");
+            _serialCommunication.ClearToBoard();
+            _serialCommunication.Send(AllOff);
         }
 
         public override void SetAllLedsOn()
@@ -344,12 +340,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             {
                 return;
             }
-
-        
-            {
-                _logger?.LogDebug("B: Send all on");
-                _serialCommunication.Send(AllOn);
-            }
+            _logger?.LogDebug("B: Send all on");
+            _serialCommunication.Send(AllOn);
         }
 
         public override void DimLeds(bool dimLeds)
@@ -445,10 +437,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                 {
                     if (_fromBoard.TryDequeue(out DataFromBoard dataFromBoard))
                     {
+                       
                         if (!dataFromBoard.FromBoard.Equals(_prevRead))
                         {
                             _logger?.LogDebug($"TC: Read from board: {dataFromBoard.FromBoard}");
                         }
+                       
 
                         _prevRead = dataFromBoard.FromBoard;
 
@@ -458,8 +452,6 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                         {
                             break;
                         }
-
-
 
                         if (dataFromBoard.FromBoard.StartsWith(_basePosition))
                         {

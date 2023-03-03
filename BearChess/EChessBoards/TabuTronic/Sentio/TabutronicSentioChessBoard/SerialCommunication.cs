@@ -94,14 +94,18 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                         {
                             //_logger?.LogDebug($"SC: Readline.... ");
                             var readLine = _comPort.ReadLine();
-
+                            var strings = readLine.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                            if (strings.Length > 0)
+                            {
+                                readLine = strings[0];
+                            }
                             //_logger?.LogDebug($"SC: Read: {readLine} ");
                             if (_dataFromBoard.Count > 20)
                             {
                                 _dataFromBoard.TryDequeue(out _);
                             }
 
-                            _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
+                            _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty).Replace("\0",string.Empty));
 
                         }
                         catch (TimeoutException)

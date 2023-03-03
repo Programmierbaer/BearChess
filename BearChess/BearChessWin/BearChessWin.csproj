@@ -173,6 +173,9 @@
     <Compile Include="Windows\EditCommentWindow.xaml.cs">
       <DependentUpon>EditCommentWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\EditWindow.xaml.cs">
+      <DependentUpon>EditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EngineWaitWindow.xaml.cs">
       <DependentUpon>EngineWaitWindow.xaml</DependentUpon>
     </Compile>
@@ -434,6 +437,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\EditCommentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1538,6 +1545,12 @@
   <ItemGroup>
     <Resource Include="Assets\TabutronicCerno.png" />
     <Resource Include="Assets\TabutronicSentio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\text_replace.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\database_repeat_delete.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

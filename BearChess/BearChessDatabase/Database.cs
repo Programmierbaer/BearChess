@@ -1090,6 +1090,55 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             }
         }
 
+        public void UpdateDuel(int id, CurrentDuel duel)
+        {
+            if (_inError)
+            {
+                return;
+            }
+
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return;
+                }
+            }
+            _connection.Open();
+
+            try
+            {
+
+                var aSerializer = new XmlSerializer(typeof(CurrentDuel));
+                var sb = new StringBuilder();
+                var sw = new StringWriter(sb);
+                aSerializer.Serialize(sw, duel);
+                var xmlResult = sw.GetStringBuilder().ToString();
+                var sql = @"UPDATE duel SET event=@event, configXML=@configXML
+                           WHERE id=@id; ";
+                using (var command2 = new SQLiteCommand(sql, _connection))
+                {
+                    command2.Parameters.Add("@event", DbType.String).Value = duel.GameEvent;
+                    command2.Parameters.Add("@configXML", DbType.String).Value = xmlResult;
+                    command2.Parameters.Add("@id", DbType.Int32).Value = id;
+                    command2.ExecuteNonQuery();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                _logging?.LogError(ex);
+
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+        }
+
         public void DeleteDuel(int id)
         {
             try
@@ -1537,6 +1586,55 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             }
         }
 
+        public void UpdateTournament(int id, CurrentTournament tournament)
+        {
+            if (_inError)
+            {
+                return;
+            }
+
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return;
+                }
+            }
+            _connection.Open();
+
+            try
+            {
+
+                var aSerializer = new XmlSerializer(typeof(CurrentTournament));
+                var sb = new StringBuilder();
+                var sw = new StringWriter(sb);
+                aSerializer.Serialize(sw, tournament);
+                var xmlResult = sw.GetStringBuilder().ToString();
+                var sql = @"UPDATE tournament SET event=@event, configXML=@configXML
+                           WHERE id=@id; ";
+                using (var command2 = new SQLiteCommand(sql, _connection))
+                {
+                    command2.Parameters.Add("@event", DbType.String).Value = tournament.GameEvent;
+                    command2.Parameters.Add("@configXML", DbType.String).Value = xmlResult;
+                    command2.Parameters.Add("@id",DbType.Int32).Value = id;
+                    command2.ExecuteNonQuery();
+                }
+
+               
+            }
+            catch (Exception ex)
+            {
+
+                _logging?.LogError(ex);
+                
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+        }
+
         public int SaveTournament(CurrentTournament tournament, int gamesToPlay)
         {
             if (_inError)
@@ -1596,7 +1694,6 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
         public void DeleteAllTournament()
         {
-
             _connection.Open();
             var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
             try

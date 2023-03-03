@@ -681,6 +681,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _eChessBoard?.SetFen(_gameStartFenPosition, string.Empty);
             }
             chessBoardUcGraphics.RepaintBoard(chessBoard);
+            chessBoardUcGraphics.UnMarkAllFields();
             _moveListWindow?.ClearMark();
             _moveListWindow?.MarkMove(1, Fields.COLOR_WHITE);
             _bookWindows.ForEach(b => b.ClearMoves());
@@ -741,7 +742,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 chessBoardCurrentColor = playedMove.FigureColor;
                 chessBoard.MakeMove(playedMove);
             }
-
+            if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+            {
+                var allMoveClass = chessBoard.GetPrevMove();
+                var move = allMoveClass.GetMove(chessBoard.EnemyColor);
+                if (move != null)
+                {
+                    chessBoardUcGraphics.MarkFields(new[]
+                                                    {
+                                                        move.FromField,
+                                                        move.ToField
+                                                    }, true,
+                                                    bool.Parse(
+                                                        _configuration.GetConfigValue("ShowAsArrow", "true")));
+                }
+            }
             chessBoardUcGraphics.RepaintBoard(chessBoard);
             _moveListWindow?.ClearMark();
             _materialWindow?.ShowMaterial(chessBoard.GetFigures(Fields.COLOR_WHITE), chessBoard.GetFigures(Fields.COLOR_BLACK),chessBoard.GetPlayedMoveList());
@@ -803,6 +818,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         currentMoveIndex++;
                     }
                 }
+
+                if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+                {
+                    var allMoveClass = chessBoard.GetPrevMove();
+                    var move = allMoveClass.GetMove(chessBoard.EnemyColor);
+                    if (move != null)
+                    {
+                        chessBoardUcGraphics.MarkFields(new[]
+                                                        {
+                                                            move.FromField,
+                                                            move.ToField
+                                                        }, true,
+                                                        bool.Parse(
+                                                            _configuration.GetConfigValue("ShowAsArrow", "true")));
+                    }
+                }
+
                 _materialWindow?.ShowMaterial(chessBoard.GetFigures(Fields.COLOR_WHITE), chessBoard.GetFigures(Fields.COLOR_BLACK),chessBoard.GetPlayedMoveList());
                 chessBoardUcGraphics.RepaintBoard(chessBoard);
                 _bookWindows.ForEach(b => b.SetMoves(chessBoard.GetFenPosition()));
@@ -868,6 +900,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (playedMove.FigureColor == Fields.COLOR_WHITE)
                 {
                     currentMoveIndex++;
+                }
+            }
+            if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+            {
+                var allMoveClass = chessBoard.GetPrevMove();
+                var move = allMoveClass.GetMove(chessBoard.EnemyColor);
+                if (move != null)
+                {
+                    chessBoardUcGraphics.MarkFields(new[]
+                                                    {
+                                                        move.FromField,
+                                                        move.ToField
+                                                    }, true,
+                                                    bool.Parse(_configuration.GetConfigValue("ShowAsArrow", "true")));
                 }
             }
             _materialWindow?.ShowMaterial(chessBoard.GetFigures(Fields.COLOR_WHITE), chessBoard.GetFigures(Fields.COLOR_BLACK),chessBoard.GetPlayedMoveList());
@@ -1312,7 +1358,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _materialWindow?.ShowMaterial(_chessBoard.GetFigures(Fields.COLOR_WHITE), _chessBoard.GetFigures(Fields.COLOR_BLACK),_chessBoard.GetPlayedMoveList());
                 if (_currentGame != null)
                 {
-                    _moveListWindow?.SetPlayerAndResult(_currentGame.PlayerWhite, _currentGame.PlayerBlack, "*");
+                    _moveListWindow?.SetPlayerAndResult(_currentGame, "*");
                 }
             }
 
@@ -1915,7 +1961,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _moveListWindow.Show();
             }
             _moveListWindow?.Clear();
-            _moveListWindow?.SetPlayerAndResult(_currentGame.PlayerWhite,_currentGame.PlayerBlack,"*");
+            _moveListWindow?.SetPlayerAndResult(_currentGame,"*");
             foreach (var move in _chessBoard.GetPlayedMoveList())
             {
                 _moveListWindow?.AddMove(move, _gameAgainstEngine && _timeControlWhite.TournamentMode);
@@ -2173,7 +2219,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _moveListWindow.Show();
             }
             _moveListWindow?.Clear();
-            _moveListWindow?.SetPlayerAndResult(_currentGame.PlayerWhite, _currentGame.PlayerBlack, "*");
+            _moveListWindow?.SetPlayerAndResult(_currentGame, "*");
             if (_currentGame.ContinueGame)
             {
             
@@ -2858,7 +2904,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                     if (_currentGame != null)
                     {
-                        _moveListWindow?.SetPlayerAndResult(_currentGame.PlayerWhite, _currentGame.PlayerBlack, _databaseGame.Result);
+                        _moveListWindow?.SetPlayerAndResult(_currentGame, _databaseGame.Result);
                     }
                 }
                 else
@@ -2866,7 +2912,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _moveListWindow?.Clear();
                     if (_currentGame != null)
                     {
-                        _moveListWindow?.SetPlayerAndResult(_currentGame.PlayerWhite, _currentGame.PlayerBlack,"*");
+                        _moveListWindow?.SetPlayerAndResult(_currentGame,"*");
                     }
                 }
 
@@ -3295,7 +3341,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _moveListWindow.Show();
             if (_currentGame != null)
             {
-                _moveListWindow?.SetPlayerAndResult(_currentGame.PlayerWhite, _currentGame.PlayerBlack, "*");
+                _moveListWindow?.SetPlayerAndResult(_currentGame, "*");
             }
 
             var board = new ChessBoard();
@@ -6173,7 +6219,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     chessBoardUcGraphics.RepaintBoard(_chessBoard);
                     if (_currentGame != null)
                     {
-                        _moveListWindow?.SetPlayerAndResult(_currentGame.PlayerWhite, _currentGame.PlayerBlack,"*");
+                        _moveListWindow?.SetPlayerAndResult(_currentGame,"*");
                     }
                     return;
                 }
@@ -6256,7 +6302,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             break;
                         }
                     }
-
+                    if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+                    {
+                        var allMoveClass = _chessBoard.GetPrevMove();
+                        var move = allMoveClass.GetMove(_chessBoard.EnemyColor);
+                        if (move != null)
+                        {
+                            chessBoardUcGraphics.MarkFields(new[]
+                                                            {
+                                                                move.FromField,
+                                                                move.ToField
+                                                            }, true,
+                                                            bool.Parse(
+                                                                _configuration.GetConfigValue("ShowAsArrow", "true")));
+                        }
+                    }
                     //_chessBoard.CurrentColor = databaseGameFenIndex.Move.FigureColor == Fields.COLOR_WHITE ? Fields.COLOR_BLACK : Fields.COLOR_WHITE;
                     chessBoardUcGraphics.RepaintBoard(_chessBoard);
                     _moveListWindow?.ClearMark();
@@ -6416,7 +6476,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
                     if (_currentGame != null)
                     {
-                        _moveListWindow?.SetPlayerAndResult(_currentGame.PlayerWhite, _currentGame.PlayerBlack, "*");
+                        _moveListWindow?.SetPlayerAndResult(_currentGame, "*");
                     }
                 });
                 _playedMoveList = Array.Empty<Move>();
@@ -6436,9 +6496,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _pausedGame = false;
             Dispatcher?.Invoke(() =>
             {
-                chessBoardUcGraphics.UnMarkAllFields();
-                chessBoardUcGraphics.MarkFields(new[] { fromField, toField }, true,
-                                                bool.Parse(_configuration.GetConfigValue("ShowAsArrow", "true")));
+              
                 if (_currentGame != null && _currentGame.WhiteConfig != null && _currentGame.BlackConfig != null)
                 {
                     if (EnginesValidForPause(_currentGame.WhiteConfig, _currentGame.BlackConfig))
@@ -6480,6 +6538,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                   move.Substring(2, 2).ToUpper(), FigureId.NO_PIECE, allMoveClass.GetMove(_chessBoard.EnemyColor).ShortMoveIdentifier);
                 }
                 _engineWindow?.CurrentColor(_chessBoard.CurrentColor);
+                if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+                {
+                  
+                        chessBoardUcGraphics.MarkFields(new[]
+                                                        {
+                                                            fromField,
+                                                            toField
+                                                        }, true,
+                                                        bool.Parse(
+                                                            _configuration.GetConfigValue("ShowAsArrow", "true")));
+                    
+                }
             });
 
             var fromFieldFieldName = Fields.GetFieldName(fromField);
@@ -6979,7 +7049,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
       
             _moveListWindow?.Clear();
             
-            _moveListWindow?.SetPlayerAndResult(_currentGame.PlayerWhite, _currentGame.PlayerBlack, databaseGame.Result);
+            _moveListWindow?.SetPlayerAndResult(_currentGame, databaseGame.Result);
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
             _databaseWindow?.FilterByFen(_chessBoard.GetFenPosition());
             var chessBoard = new ChessBoard();

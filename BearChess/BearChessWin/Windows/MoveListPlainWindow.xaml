@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" Closing="Window_Closing"
         Title="Moves" Height="450" Width="800">
-    
+    <Window.CommandBindings>
+        <CommandBinding Command="Copy" Executed="MenuItemCopy_OnClick" CanExecute="CommandBinding_OnCanExecute"></CommandBinding>
+    </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -53,7 +55,7 @@
                     HorizontalAlignment="Left" ToolTip="Decrease font size">
                 <Image Source="../Assets/Icons/font_size_increase.png" />
             </Button>
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonCopy" Click="ButtonCopy_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Copy to clipboard">
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonCopy"   Command="Copy"    Background="Transparent" BorderBrush="Transparent" ToolTip="Copy to clipboard">
                 <Image Source="../Assets/Icons/clipboard_sign_out.png" Width="32" Height="32"></Image>
             </Button>
 

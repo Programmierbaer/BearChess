@@ -388,7 +388,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         _comPort = new BTComPort(null);
                         if (!((BTComPort)_comPort).EndPointFound)
                         {
-                            SerialCommunicationTools.GetBTComPort(_boardName, BearChessTools.Configuration.Instance, _logger, true, false);
+                            SerialCommunicationTools.GetBTComPort(_boardName, Configuration.Instance, _logger, true, false);
                         }
                         _comPort = new BTComPort(null);
 

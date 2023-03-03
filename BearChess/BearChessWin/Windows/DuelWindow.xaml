@@ -41,6 +41,11 @@
                             <Image Source="../Assets/Icons/6-2-chess-png.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Rename duel" Name="menuItemRename" Click="ButtonRename_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/Icons/text_replace.png"></Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>

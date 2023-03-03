@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Ports;
 using System.Net.Sockets;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
@@ -15,15 +16,18 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
 
         public bool EndPointFound => _bluetoothEndPoint!= null;
 
+        public bool IsOpen => _client != null && _client.Connected;
+
         public string PortName => "BT";
         public string Baud => string.Empty;
 
+        public int ReadTimeout { get; set; }
+
         public void WriteLine(string command)
         {
-            
+            _client.Client.Send(System.Text.Encoding.UTF8.GetBytes(command+Environment.NewLine));
         }
 
-        public int ReadTimeout { get; set; }
         public void ClearBuffer()
         {
             //
@@ -54,11 +58,9 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
             _client.Client.Close(1000);
             _client.Close();
             _client.Dispose();
-            
-
         }
 
-        public bool IsOpen =>  _client != null && _client.Connected;
+        
         public string ReadLine()
         {
             byte[] buffer = new byte[1024];
@@ -75,17 +77,19 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
 
         public byte[] ReadByteArray()
         {
-            return Array.Empty<byte>();
+            byte[] buffer = new byte[1024];
+            var received = _client.Client.Receive(buffer);
+            return buffer;
         }
 
         public void Write(byte[] buffer, int offset, int count)
         {
-            _client.Client.Send(buffer, offset,count,SocketFlags.None);
+            _client.Client.Send(buffer, offset, count, SocketFlags.None);
         }
 
         public void Write(string message)
         {
-
+            _client.Client.Send(System.Text.Encoding.UTF8.GetBytes(message));
         }
         
     }

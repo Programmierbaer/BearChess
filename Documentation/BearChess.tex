@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.6.3}
+\fancyhead[R]{Version 0.9.7.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{17.02.2023} 
+\date{03.03.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -1042,7 +1042,6 @@ Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}}
 	\label{fig:Sentio1}
 \end{figure}
 
-TabuTronic Sentio currently supports USB as COM-Port connection only.
 
 \begin{figure}[H]
 	\centering
@@ -1053,6 +1052,19 @@ TabuTronic Sentio currently supports USB as COM-Port connection only.
 
 Select the COM port if you know it or use the <auto> selection. 
 Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
+
+\subsubsection{Configure Bluetooth} \label{SentioBluetooth}
+
+If the "Bluetooth" option is set, the following window will be displayed for a short time if you open the configuration dialog.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{MillenniumChessLink10.png}
+	\caption{Search for Bluetooth}
+	\label{fig:SentioBT10}
+\end{figure}
+
+During this time or if you connect for the first time, Windows may ask you to connect to the module. In this case, confirm this.
 
 \subsubsection{Connect}
 \begin{figure}[H]
@@ -2030,6 +2042,17 @@ Shows an overview of all duels. The top list shows duel information and below it
     \item \includegraphics[scale=0.5]{database_delete.png} Deletes all duels and all associated games.
 \end{itemize}
 
+\subsubsection{Rename a duel}
+If you want to rename a duel, you can do this by clicking the right mouse button on a duel.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{EngineDuel8.png}
+	\caption{Rename a duel}
+	\label{fig:EngineDuel8}
+\end{figure}
+
+
 \subsubsection{Repeat a game}
 If you want to repeat a single game, you can do this by clicking the right mouse button on a game.
 
@@ -2155,6 +2178,17 @@ Shows an overview of all tournaments. The top list shows tournament information 
 	\item \includegraphics[scale=0.5]{information.png} Display information window for the selected tournament.    		
 	\item \includegraphics[scale=0.5]{database_delete.png} Deletes all tournaments and all associated games.
 \end{itemize}
+
+\subsubsection{Rename a tournament}
+If you want rename a tournament, you can do this by clicking the right mouse button on a tournament.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{EngineTournament9.png}
+	\caption{Rename a tournament}
+	\label{fig:EngineTournament9}
+\end{figure}
+
 
 \subsubsection{Repeat a game}
 If you want to repeat a single game, you can do this by clicking the right mouse button on a game.
@@ -2482,7 +2516,7 @@ The save dialog is prefilled with the known data. But you can correct them befor
 
 \subsection{Show and load}
 
-BearChess stores all games in one PGN file. The current name is shown in the title bar.
+BearChess stores all games in one database file. The current name is shown in the title bar.
 
 \begin{figure}[H]
 	\centering
@@ -2499,12 +2533,22 @@ If you double click on a row, the game is displayed on the board.
 	\item \includegraphics[scale=0.5]{bin.png} Delete selected game. You cannot delete a game witch is a participant of a duel or tournament. Use the duel or tournament manager instead.
 	\item \includegraphics[scale=0.5]{saved_imports.png} Import games from a PGN file {\color{red}*}.	
 	\item \includegraphics[scale=0.5]{clipboard_sign_out.png} Copy selected game into clipboard.		
+	\item \includegraphics[scale=0.5]{database_repeat_delete.png} Delete all duplicate games. Duel and tournament games will be ignored.	
 	\item \includegraphics[scale=0.5]{link.png} Filter games that correspond to the current board position.	
 	\item \includegraphics[scale=0.5]{table_filter.png} Opens a window for further filter options.		
 	\item \includegraphics[scale=0.5]{text_exports.png} Exports all or the selected games into a PGN file.
 	\item \includegraphics[scale=0.5]{database_delete.png} Delete all games from the database, including duel and tournament information.
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
+
+You also can delete all duplicates of a specific game:
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{Games7.png}
+	\caption{Delete single duplicate game}
+	\label{fig:Games7}
+\end{figure}
+
 
 {\color{red}*} The import is very slow. It will be improved in the next version.
 
@@ -2630,6 +2674,8 @@ All these boards have no piece detection, but check if the piece makes a legal m
 	\item Take back moves does not work if the engine is still in the BearChess opening library.
 \end{itemize}
 
+
+
 \section{Next Steps}
 
 These are some ideas what will come in one of the next versions.
@@ -2643,7 +2689,21 @@ These are some ideas what will come in one of the next versions.
 
 \pagebreak
 
+\listoffigures
+
+\pagebreak
+
 \section{Change log}
+
+
+\subsection*{Version 0.9.6.3 $\Rightarrow$  0.9.7.0}
+\begin{itemize}
+	\item {\color{blue}New}: Bluetooth for TabuTronic Sentio boards.
+	\item {\color{blue}New}: Separate configuration for TabuTronic Cerno boards.
+	\item {\color{blue}New}: Rename tournaments and duels.
+	\item {\color{blue}New}: Delete duplicate games.
+    \item {\color{red}Fix}: Show last move.
+\end{itemize}
 
 
 \subsection*{Version 0.9.6.2 $\Rightarrow$  0.9.6.3}
@@ -2667,7 +2727,7 @@ These are some ideas what will come in one of the next versions.
 
 \subsection*{Version 0.9.5.2 $\Rightarrow$  0.9.6.0}
 \begin{itemize}
-	\item {\color{blue}New}: Support for TabuTronic Cerno board.
+	\item {\color{blue}New}: Support for TabuTronic Sentio board.
 	\item {\color{blue}New}: Show game information on move list.	
 	\item {\color{blue}New}: Record and show elapsed move time.		
 	\item {\color{red}Fix}: Import and loading PGN games.

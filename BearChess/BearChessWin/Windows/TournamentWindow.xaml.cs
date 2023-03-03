@@ -368,6 +368,38 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        private void ButtonRename_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridTournament.SelectedItems.Count == 0)
+            {
+                return;
+            }
+            if (dataGridTournament.SelectedItems.Count > 1)
+            {
+                MessageBox.Show("Please select only one tournament", "Cannot rename",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var selectedItem = dataGridTournament.SelectedItems[0];
+            if (selectedItem is DatabaseTournament tournament)
+            {
+                var editWindow = new EditWindow
+                                 {
+                                     Owner = this
+                                 };
+                editWindow.SetTitle("Rename Tournament");
+                editWindow.SetComment(tournament.CurrentTournament.GameEvent);
+                var showDialog = editWindow.ShowDialog();
+                if (showDialog.HasValue && showDialog.Value && !string.IsNullOrWhiteSpace(editWindow.Comment))
+                {
+                    tournament.CurrentTournament.GameEvent = editWindow.Comment;
+                    _database.UpdateTournament(tournament.TournamentId, tournament.CurrentTournament);
+                    dataGridTournament.ItemsSource = _database.LoadTournament();
+                    dataGridGames.ItemsSource = null;
+                }
+            }
+        }
     }
     public class TournamentValueToBrushConverter : IValueConverter
     {

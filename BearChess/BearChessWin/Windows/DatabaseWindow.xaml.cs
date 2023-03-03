@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq.Expressions;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -54,9 +56,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             UpdateTitle();
         }
 
-        private void SetItemsSource()
+        private void SetItemsSource(bool deleteDuplicates = false)
         {
             Dictionary<int, int> pgnHashCounter = new Dictionary<int, int>();
+            Dictionary<int, List<int>> pgnHashCounterFirst = new Dictionary<int, List<int>>();
             colorMap.Clear();
             int ci = 0;
             DatabaseGameSimple[] databaseGameSimples = _database.GetGames(_gamesFilter);
@@ -65,16 +68,35 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (pgnHashCounter.ContainsKey(databaseGameSimple.PgnHash))
                 {
                     pgnHashCounter[databaseGameSimple.PgnHash]++;
+                    pgnHashCounterFirst[databaseGameSimple.PgnHash].Add(databaseGameSimple.Id);
                 }
                 else
                 {
                     pgnHashCounter[databaseGameSimple.PgnHash] = 1;
+                    pgnHashCounterFirst[databaseGameSimple.PgnHash] = new List<int>();
                 }
             }
             foreach (var idCounterKey in pgnHashCounter.Keys)
             {
                 if (pgnHashCounter[idCounterKey] > 1)
                 {
+                    if (deleteDuplicates)
+                    {
+
+                        foreach (var game in pgnHashCounterFirst[idCounterKey])
+                        {
+                            if (_database.IsDuelGame(game) ||
+                                _database.IsTournamentGame(game))
+                            {
+                                continue;
+                            }
+
+                            _database.DeleteGame(game);
+                        }
+
+                        continue;
+                    }
+
                     if (ci >= DoublettenColorIndex.colorIndex.Keys.Count)
                     {
                         ci = 0;
@@ -82,6 +104,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     colorMap[idCounterKey] = DoublettenColorIndex.GetColorOfIndex(ci);
                     ci++;
                 }
+            }
+
+            if (deleteDuplicates)
+            {
+                databaseGameSimples = _database.GetGames(_gamesFilter);
             }
             dataGridGames.ItemsSource = databaseGameSimples;
         }
@@ -337,19 +364,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCopy_OnClick(object sender, RoutedEventArgs e)
         {
-            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
-            {
-                Clipboard.SetText(_database.LoadGame(pgnGame.Id).PgnGame.GetGame());
-            }
+            MenuItemCopy_OnClick(sender, e);
         }
 
      
 
         private void MenuItemCopy_OnClick(object sender, RoutedEventArgs e)
         {
-            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+            try
             {
-                Clipboard.SetText(_database.LoadGame(pgnGame.Id).PgnGame.GetGame());
+                if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+                {
+                    Clipboard.SetText(_database.LoadGame(pgnGame.Id).PgnGame.GetGame());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error on copy", MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show(ex.StackTrace, "Error on copy", MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
 
@@ -506,6 +538,98 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void CommandBinding_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = dataGridGames.SelectedItem is DatabaseGameSimple pgnGame;
+        }
+
+        private void DataGridGames_OnCopyingRowClipboardContent(object sender, DataGridRowClipboardEventArgs e)
+        {
+            e.ClipboardRowContent.Clear();
+            try
+            {
+                if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
+                {
+                    var game = _database.LoadGame(pgnGame.Id).PgnGame.GetGame();
+                    e.ClipboardRowContent.Add(
+                        new DataGridClipboardCellContent(e.Item, (sender as DataGrid).Columns[0], game));
+                    // Clipboard.SetText(_database.LoadGame(pgnGame.Id).PgnGame.GetGame());
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error on copy", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.StackTrace, "Error on copy", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ButtonDeleteDuplicates_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (dataGridGames.SelectedItems.Count == 0)
+            {
+                return;
+            }
+            foreach (var selectedItem in dataGridGames.SelectedItems)
+            {
+                if (selectedItem is DatabaseGameSimple pgnGame)
+                {
+                    if (_database.IsDuelGame(pgnGame.Id))
+                    {
+                        MessageBox.Show("Game is part of a duel. Use duel manager to repeat duel games", "Cannot delete duplicate games", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                        return;
+
+                    }
+                    if (_database.IsTournamentGame(pgnGame.Id))
+                    {
+                        MessageBox.Show("Game is part of a tournament. Use tournament manager to repeat tournament games", "Cannot delete duplicate games", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                        return;
+
+                    }
+
+                }
+            }
+            if (dataGridGames.SelectedItems.Count > 1)
+            {
+                MessageBox.Show("Please select only one game", "Cannot delete duplicate games", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (MessageBox.Show("Delete duplicates from selected game?", "Delete duplicate games", MessageBoxButton.YesNo,
+                                MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame2)
+            {
+                var pgnGame2Id = pgnGame2.Id;
+                var pgnGame2PgnHash = pgnGame2.PgnHash;
+                DatabaseGameSimple[] databaseGameSimples = _database.GetGames(_gamesFilter);
+                foreach (var databaseGameSimple in databaseGameSimples)
+                { 
+                    if (databaseGameSimple.PgnHash==pgnGame2PgnHash && databaseGameSimple.Id!=pgnGame2Id)
+                    {
+                        if (_database.IsDuelGame(databaseGameSimple.Id) ||
+                            _database.IsTournamentGame(databaseGameSimple.Id))
+                        {
+                            continue;
+                        }
+                        _database.DeleteGame(databaseGameSimple.Id);
+                    }
+                   
+                }
+                Reload();
+            }
+        }
+
+        private void ButtonDeleteAllDuplicates_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Delete all duplicates games in the database ?", "Delete all duplicates", MessageBoxButton.YesNo,
+                                MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            SetItemsSource(true);
+            UpdateTitle();
         }
     }
 
