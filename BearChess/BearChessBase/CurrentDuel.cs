@@ -16,6 +16,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool DuelSaveGames { get; set; }
         public string GameEvent { get; set; }
         public bool StartFromBasePosition { get; set; }
+        public string StartPosition { get; set; }
         public int Cycles { get; set; }
         public bool AdjustEloWhite { get; set; }
         public bool AdjustEloBlack { get; set; }
@@ -25,7 +26,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
 
 
         public CurrentDuel(List<UciInfo> players, TimeControl timeControlWhite, TimeControl timeControlBlack, int cycles, 
-                           bool duelSwitchColor, string gameEvent, bool startFromBasePosition, bool adjustEloWhite, bool adjustEloBlack,
+                           bool duelSwitchColor, string gameEvent, bool startFromBasePosition, string startPosition, bool adjustEloWhite, bool adjustEloBlack,
                            int adjustEloStep)
         {
             TimeControlWhite = timeControlWhite;
@@ -34,6 +35,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             DuelSwitchColor = duelSwitchColor;
             GameEvent = gameEvent;
             StartFromBasePosition = startFromBasePosition;
+            StartPosition = startPosition;
             AdjustEloWhite = adjustEloWhite;
             AdjustEloBlack = adjustEloBlack;
             AdjustEloStep = adjustEloStep;

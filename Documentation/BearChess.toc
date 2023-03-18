@@ -124,7 +124,7 @@
 \contentsline {section}{\numberline {22}Run startup game on start}{120}{section.22}%
 \contentsline {section}{\numberline {23}Games}{121}{section.23}%
 \contentsline {subsection}{\numberline {23.1}Save}{121}{subsection.23.1}%
-\contentsline {subsection}{\numberline {23.2}Show and load}{122}{subsection.23.2}%
+\contentsline {subsection}{\numberline {23.2}Games manager}{122}{subsection.23.2}%
 \contentsline {section}{\numberline {24}Engine window}{123}{section.24}%
 \contentsline {section}{\numberline {25}Extended engine support}{126}{section.25}%
 \contentsline {section}{\numberline {26}Important To Know}{128}{section.26}%

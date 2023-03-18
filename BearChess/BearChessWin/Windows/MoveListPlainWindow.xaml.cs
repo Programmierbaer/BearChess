@@ -507,7 +507,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCopy_OnClick(object sender, RoutedEventArgs e)
         {
-            var pgnCreator = new PgnCreator();
+            var pgnCreator = new PgnCreator(bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false")));
             for (int w = 0; w < stackPanelMoves.Children.Count; w++)
             {
                 if (stackPanelMoves.Children[w] is WrapPanel wrapPanel1)

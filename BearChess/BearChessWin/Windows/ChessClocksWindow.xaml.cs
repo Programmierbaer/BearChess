@@ -247,6 +247,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (!CountDown)
                     {
                         var stopwatchElapsed = _stopwatch.Elapsed;
+                        _duration = DateTime.Now - _goTime;
                         if (!_stop)
                         {
                             SetDigitalNumbers(stopwatchElapsed.Hours, stopwatchElapsed.Minutes,

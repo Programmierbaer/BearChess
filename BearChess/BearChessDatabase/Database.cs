@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -372,7 +373,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     var databaseGameSimples = GetGames(new GamesFilter() { FilterIsActive = false });
                     foreach (var databaseGameSimple in databaseGameSimples)
                     {
-                        Save(LoadGame(databaseGameSimple.Id), true);
+                        Save(LoadGame(databaseGameSimple.Id, false), true);
                     }
 
                     Open();
@@ -442,6 +443,10 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 string moveList = string.Empty;
                 foreach (var gameAllMove in game.AllMoves)
                 {
+                    if (gameAllMove == null)
+                    {
+                        continue;
+                    }
                     moveList += gameAllMove.FromFieldName + gameAllMove.ToFieldName;
                 }
                 var deterministicHashCode = moveList.GetDeterministicHashCode();
@@ -520,6 +525,10 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
                 foreach (var move in game.MoveList)
                 {
+                    if (move == null)
+                    {
+                        continue;
+                    }
                     chessBoard.MakeMove(move);
                     var fen = chessBoard.GetFenPosition();
                     var fenId = 0;
@@ -633,7 +642,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             }
         }
 
-        public DatabaseGame LoadGame(int id)
+        public DatabaseGame LoadGame(int id, bool purePGN)
         {
             if (!_dbExists)
             {
@@ -644,7 +653,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             }
 
             DatabaseGame databaseGame = null;
-            var pgnCreator = new PgnCreator();
+            var pgnCreator = new PgnCreator(purePGN);
             try
             {
                 _connection.Open();

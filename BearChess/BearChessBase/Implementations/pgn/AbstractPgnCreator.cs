@@ -12,6 +12,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
         protected  List<Move> _allMoves;
         protected  List<string> _allPgnMoves;
         protected IChessBoard _chessBoard;
+        protected bool _purePGN;
+
         private bool GetCastle(Move move, out string castle)
         {
             castle = string.Empty;
@@ -36,6 +38,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
 
         protected string ConvertToPgnMove(Move move, int moveCnt)
         {
+            
             var pgnMove = string.Empty;
             if (move == null)
             {
@@ -135,9 +138,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
 
                 pgnMove += isMate ? "#" : "+";
             }
-            string mComment = string.IsNullOrWhiteSpace(move.Comment) ? string.Empty : "{" + ReplaceNagInComment(move.Comment) + "}";
-            string mBestLine = string.IsNullOrWhiteSpace(move.BestLine) ? string.Empty : "{" + move.Score.ToString(CultureInfo.InvariantCulture) + "} (" + AddMoveNumberToBestLine(move.BestLine, moveCnt, move.FigureColor) + ")";
-            string emt = string.IsNullOrEmpty(move.ElapsedMoveTime)
+            string mComment = _purePGN || string.IsNullOrWhiteSpace(move.Comment) ? string.Empty : "{" + ReplaceNagInComment(move.Comment) + "}";
+            string mBestLine = _purePGN || string.IsNullOrWhiteSpace(move.BestLine) ? string.Empty : "{" + move.Score.ToString(CultureInfo.InvariantCulture) + "} (" + AddMoveNumberToBestLine(move.BestLine, moveCnt, move.FigureColor) + ")";
+            string emt = _purePGN || string.IsNullOrEmpty(move.ElapsedMoveTime)
                              ? string.Empty
                              : "{[%emt " + move.ElapsedMoveTime + "]}";
             return $"{pgnMove} {GetNAG(move.MoveSymbol)} {GetNAG(move.EvaluationSymbol)} {mComment} {mBestLine} {emt}".Trim();

@@ -6,8 +6,8 @@
         xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" Closing="DatabaseWindow_OnClosing" WindowStyle="SingleBorderWindow"
-        Icon="../Assets/Icons/database.png"
-        Title="Games" Height="450" Width="800">
+        Icon="../Assets/Icons/database.png" MinWidth="820"
+        Title="Games" Height="450" Width="820">
     <Window.Resources>
         <bearChessWin:GamesValueToBrushConverter x:Key="ValueToBrushConverter" />
     </Window.Resources>

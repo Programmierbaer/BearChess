@@ -10,7 +10,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 {
     public static class ExportGames
     {
-        public static void Export(IList selectedItems, Database database, Window owner)
+        public static void Export(IList selectedItems, Database database,bool purePGN, Window owner)
         {
             if (selectedItems.Count == 0)
             {
@@ -44,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         if (selectedItem is DatabaseGameSimple pgnGame)
                         {
-                            sb.AppendLine(database.LoadGame(pgnGame.Id).PgnGame.GetGame());
+                            sb.AppendLine(database.LoadGame(pgnGame.Id, purePGN).PgnGame.GetGame());
                             sb.AppendLine(string.Empty);
                             i++;
                             infoWindow.SetCurrentValue(i);

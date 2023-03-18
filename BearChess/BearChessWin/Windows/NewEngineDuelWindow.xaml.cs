@@ -30,7 +30,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool? _isCheckedAllowTakeBack;
         private Brush _foreground;
 
-        public NewEngineDuelWindow(Configuration configuration, Database database, bool estimateElo)
+        public NewEngineDuelWindow(Configuration configuration, Database database, bool estimateElo, bool startFromBasePosition)
         {
             _configuration = configuration;
             _database = database;
@@ -45,6 +45,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             labelNumberOfGames2.Visibility = estimateElo ? Visibility.Visible : Visibility.Collapsed;
             numericUpDownUserControlNumberOfGames.Value = estimateElo ? 10 : 2;
             _playerIndex = 0;
+            radioButtonStartPosition.IsChecked = startFromBasePosition;
+            radioButtonCurrentPosition.IsChecked = !startFromBasePosition;
         }
 
         public string PlayerWhite => textBlockPlayerWhiteEngine.Text;

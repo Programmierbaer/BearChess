@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.7.0}
+\fancyhead[R]{Version 0.9.8.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{03.03.2023} 
+\date{19.03.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -2514,7 +2514,7 @@ The save dialog is prefilled with the known data. But you can correct them befor
 \end{figure}
 
 
-\subsection{Show and load}
+\subsection{Games manager}
 
 BearChess stores all games in one database file. The current name is shown in the title bar.
 
@@ -2537,6 +2537,8 @@ If you double click on a row, the game is displayed on the board.
 	\item \includegraphics[scale=0.5]{link.png} Filter games that correspond to the current board position.	
 	\item \includegraphics[scale=0.5]{table_filter.png} Opens a window for further filter options.		
 	\item \includegraphics[scale=0.5]{text_exports.png} Exports all or the selected games into a PGN file.
+	\item \includegraphics[scale=0.5]{database_save.png} Create a backup file of the database.
+	\item \includegraphics[scale=0.5]{database_refresh.png} Restore the database from a backup file.
 	\item \includegraphics[scale=0.5]{database_delete.png} Delete all games from the database, including duel and tournament information.
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
@@ -2694,6 +2696,15 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+
+
+\subsection*{Version 0.9.7.0 $\Rightarrow$  0.9.8.0}
+\begin{itemize}
+	\item {\color{blue}New}: Optional export pure PGN.
+	\item {\color{red}Fix}: Start from positions in duels.
+	\item {\color{red}Fix}: Record move time.
+\end{itemize}
 
 
 \subsection*{Version 0.9.6.3 $\Rightarrow$  0.9.7.0}

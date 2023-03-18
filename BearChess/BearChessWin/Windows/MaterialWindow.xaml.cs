@@ -181,6 +181,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 foreach (var move in playedMoveList)
                 {
+                    if (move == null)
+                    {
+                        continue;
+                    }
                     if (move.CapturedFigure != FigureId.NO_PIECE)
                     {
                         string key = FigureId.FigureIdToFenCharacter[move.CapturedFigure];

@@ -162,6 +162,13 @@
                                        Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
+                        <MenuItem Name="menuItemGamesPurePGNExport" Header="Pure PGN export"
+                                  Click="MenuItemGamesPurePGNExport_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageGamesPurePGNExport" Source="Assets/Icons/tick.png"
+                                       Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Engines">

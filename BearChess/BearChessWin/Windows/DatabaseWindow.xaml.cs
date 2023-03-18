@@ -219,7 +219,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id));
+                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id, false));
             }
         }
 
@@ -367,15 +367,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             MenuItemCopy_OnClick(sender, e);
         }
 
-     
-
         private void MenuItemCopy_OnClick(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
                 {
-                    Clipboard.SetText(_database.LoadGame(pgnGame.Id).PgnGame.GetGame());
+                    Clipboard.SetText(_database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame());
                 }
             }
             catch (Exception ex)
@@ -427,7 +425,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 selectedItems = dataGridGames.Items;
             }
-            ExportGames.Export(selectedItems,_database, this);
+            ExportGames.Export(selectedItems,_database, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false")),this);
         }
 
         private void ButtonSaveDb_OnClick(object sender, RoutedEventArgs e)
@@ -500,7 +498,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                var databaseGame = _database.LoadGame(pgnGame.Id);
+                var databaseGame = _database.LoadGame(pgnGame.Id, false);
                 if (_database.IsDuelGame(pgnGame.Id))
                 {
                     MessageBox.Show("Game is part of a duel. Use duel manager to continue duel games", "Cannot continue selected game", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -547,7 +545,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
                 {
-                    var game = _database.LoadGame(pgnGame.Id).PgnGame.GetGame();
+                    var game = _database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame();
                     e.ClipboardRowContent.Add(
                         new DataGridClipboardCellContent(e.Item, (sender as DataGrid).Columns[0], game));
                     // Clipboard.SetText(_database.LoadGame(pgnGame.Id).PgnGame.GetGame());

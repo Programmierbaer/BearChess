@@ -5,14 +5,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
 {
     public class PgnCreator : AbstractPgnCreator
     {
-    
-        public PgnCreator()
+       
+
+        public PgnCreator(bool purePGN)
         {
+            _purePGN = purePGN;
             _allPgnMoves = new List<string>();
             _allMoves = new List<Move>();
         }
 
-        public PgnCreator(string fenStartPosition) : this()
+        public PgnCreator(string fenStartPosition, bool purePGN) : this(purePGN)
         {
             _fenStartPosition = fenStartPosition;
         }

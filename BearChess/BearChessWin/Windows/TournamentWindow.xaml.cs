@@ -180,7 +180,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id));
+                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id,false));
             }
         }
 
@@ -209,7 +209,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                Clipboard.SetText(_database.LoadGame(pgnGame.Id).PgnGame.GetGame());
+                Clipboard.SetText(_database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame());
             }
         }
 
@@ -300,7 +300,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 selectedItems = dataGridGames.Items;
             }
 
-            ExportGames.Export(selectedItems, _database, this);
+            ExportGames.Export(selectedItems, _database, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false")), this);
         
         }
 
