@@ -96,6 +96,10 @@ namespace www.SoLaNoSoft.com.BearChessTournament
                     {
                         configuredElo = maximumElo;
                     }
+                    if (_currentDuel.CurrentElo <= 0)
+                    {
+                        _currentDuel.CurrentElo = configuredElo;
+                    }
 
                     if (!lastResult.Equals("1/2"))
                     {
@@ -106,24 +110,24 @@ namespace www.SoLaNoSoft.com.BearChessTournament
                         }
                         if (pIndex == 0 && lastResult.StartsWith("1"))
                         {
-                            _currentDuel.CurrentMaxElo = configuredElo;
+                            _currentDuel.CurrentMaxElo = _currentDuel.CurrentElo;
                             
                         }
 
                         if (pIndex == 0 && lastResult.StartsWith("0"))
                         {
-                            _currentDuel.CurrentMinElo = configuredElo;
+                            _currentDuel.CurrentMinElo = _currentDuel.CurrentElo;
                          
                         }
 
                         if (pIndex == 1 && lastResult.StartsWith("1"))
                         {
-                            _currentDuel.CurrentMinElo = configuredElo;
+                            _currentDuel.CurrentMinElo = _currentDuel.CurrentElo;
                         }
 
                         if (pIndex == 1 && lastResult.StartsWith("0"))
                         {
-                            _currentDuel.CurrentMaxElo = configuredElo;
+                            _currentDuel.CurrentMaxElo = _currentDuel.CurrentElo;
                         }
                         var newElo = (_currentDuel.CurrentMaxElo + _currentDuel.CurrentMinElo) / 2;
                         if (newElo < minimumElo)
@@ -136,6 +140,7 @@ namespace www.SoLaNoSoft.com.BearChessTournament
                             newElo = maximumElo;
                         }
 
+                        _currentDuel.CurrentElo = newElo;
                         currentDuelPlayer.SetElo(newElo);
                     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,50 +21,108 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class GraphicsChessBoardUserControl : UserControl
     {
-        private class ArrowDescription
-        {
-            public int FromField;
-            public int ToField;
-            public SolidColorBrush Color;
-        }
-        public class MoveEventArgs : EventArgs
-        {
-            public MoveEventArgs(int fromField, int toField)
-            {
-                FromField = fromField;
-                ToField = toField;
-            }
-
-            public int FromField { get; }
-            public int ToField { get; }
-        }
-
-        public class AnalyzeModeEventArgs : EventArgs
-        {
-            public AnalyzeModeEventArgs(int fromField, int figureId, bool removeFigure, int currentColor)
-            {
-                FromField = fromField;
-                FigureId = figureId;
-                RemoveFigure = removeFigure;
-                CurrentColor = currentColor;
-            }
-
-            public int FromField { get; }
-            public int FigureId { get; }
-            public bool RemoveFigure { get; }
-            public int CurrentColor { get; }
-        }
-
         public static readonly DependencyProperty ChessFieldSizeProperty = DependencyProperty.Register(
-            "ChessFieldSize", typeof(double), typeof(GraphicsChessBoardUserControl), new PropertyMetadata((double) 38));
+            "ChessFieldSize", typeof(double), typeof(GraphicsChessBoardUserControl), new PropertyMetadata((double)38));
 
         public static readonly DependencyProperty ChessBackgroundFieldSizeProperty = DependencyProperty.Register(
             "ChessBackgroundFieldSize", typeof(double), typeof(GraphicsChessBoardUserControl),
-            new PropertyMetadata((double) 45));
+            new PropertyMetadata((double)45));
 
         public static readonly DependencyProperty ControlButtonSizeProperty = DependencyProperty.Register(
             "ControlButtonSize", typeof(double), typeof(GraphicsChessBoardUserControl),
-            new PropertyMetadata((double) 35));
+            new PropertyMetadata((double)35));
+
+        private readonly List<ArrowDescription> _arrowList = new List<ArrowDescription>();
+        private readonly ConcurrentDictionary<int, bool> _markedGreenFields = new ConcurrentDictionary<int, bool>();
+        private readonly HashSet<int> _markedNonGreenFields = new HashSet<int>();
+
+        private readonly Dictionary<string, BitmapImage> _piecesBitmaps = new Dictionary<string, BitmapImage>();
+        private readonly Dictionary<int, Image> _piecesBorderBitmaps = new Dictionary<int, Image>();
+
+
+        private readonly HashSet<int> _whiteFields = new HashSet<int>(new[]
+                                                                      {
+                                                                          Fields.FA8, Fields.FA6, Fields.FA4,
+                                                                          Fields.FA2,
+                                                                          Fields.FB7, Fields.FB5, Fields.FB3,
+                                                                          Fields.FB1,
+                                                                          Fields.FC8, Fields.FC6, Fields.FC4,
+                                                                          Fields.FC2,
+                                                                          Fields.FD7, Fields.FD5, Fields.FD3,
+                                                                          Fields.FD1,
+                                                                          Fields.FE8, Fields.FE6, Fields.FE4,
+                                                                          Fields.FE2,
+                                                                          Fields.FF7, Fields.FF5, Fields.FF3,
+                                                                          Fields.FF1,
+                                                                          Fields.FG8, Fields.FG6, Fields.FG4,
+                                                                          Fields.FG2,
+                                                                          Fields.FH7, Fields.FH5, Fields.FH3, Fields.FH1
+                                                                      });
+
+        private bool _acceptMouse = true;
+
+        private BitmapImage _blackFieldBitmap;
+        private string _blackFileName;
+        private string _blackPlayer = string.Empty;
+        private Canvas _canvas;
+        private ChessBoard _chessBoard;
+        private string _fieldId;
+        private int _fromFieldTag;
+
+        private bool _inAnalyzeMode;
+        private bool _inPositionMode;
+        private bool _isConnected;
+        private int _positionFigureId;
+        private bool _showPossibleMoves;
+        private bool _fastMoveSelection;
+        private int _toFieldTag;
+        private BitmapImage _whiteFieldBitmap;
+        private string _whiteFileName;
+        private string _whitePlayer = string.Empty;
+        private SolidColorBrush _hintArrowColor;
+
+
+        public GraphicsChessBoardUserControl()
+        {
+            InitializeComponent();
+            Symbol = true;
+            TagFields();
+            var fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Miscel");
+            textBlockBlackClock.FontFamily = fontFamily;
+            textBlockWhiteClock.FontFamily = fontFamily;
+            textBlockBlackClock.Visibility = Visibility.Hidden;
+            textBlockWhiteClock.Visibility = Visibility.Hidden;
+            textBlockWhitePlayer.Text = string.Empty;
+            textBlockBlackPlayer.Text = string.Empty;
+            _fieldId = string.Empty;
+            _piecesBitmaps.Clear();
+            HideRobot();
+            _showPossibleMoves = false;
+            _fastMoveSelection = false;
+            _hintArrowColor = Brushes.Khaki;
+        }
+
+        public bool WhiteOnTop { get; private set; } = true;
+
+        public bool Symbol { get; set; }
+
+        public double ChessFieldSize
+        {
+            get => (double)GetValue(ChessFieldSizeProperty);
+            set => SetValue(ChessFieldSizeProperty, value);
+        }
+
+        public double ChessBackgroundFieldSize
+        {
+            get => (double)GetValue(ChessBackgroundFieldSizeProperty);
+            set => SetValue(ChessBackgroundFieldSizeProperty, value);
+        }
+
+        public double ControlButtonSize
+        {
+            get => (double)GetValue(ControlButtonSizeProperty);
+            set => SetValue(ControlButtonSizeProperty, value);
+        }
 
         public event EventHandler<MoveEventArgs> MakeMoveEvent;
         public event EventHandler<AnalyzeModeEventArgs> AnalyzeModeEvent;
@@ -76,92 +135,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler ResetBasePositionEvent;
         public event EventHandler RotateBoardEvent;
         public event EventHandler SwitchColorEvent;
-
-
-        private readonly HashSet<int> _whiteFields = new HashSet<int>(new[]
-        {
-            Fields.FA8, Fields.FA6, Fields.FA4, Fields.FA2,
-            Fields.FB7, Fields.FB5, Fields.FB3, Fields.FB1,
-            Fields.FC8, Fields.FC6, Fields.FC4, Fields.FC2,
-            Fields.FD7, Fields.FD5, Fields.FD3, Fields.FD1,
-            Fields.FE8, Fields.FE6, Fields.FE4, Fields.FE2,
-            Fields.FF7, Fields.FF5, Fields.FF3, Fields.FF1,
-            Fields.FG8, Fields.FG6, Fields.FG4, Fields.FG2,
-            Fields.FH7, Fields.FH5, Fields.FH3, Fields.FH1
-        });
-
-        private BitmapImage _blackFieldBitmap;
-        private string _blackFileName;
-        private ChessBoard _chessBoard;
-        private int _fromFieldTag;
-
-        private bool _inAnalyzeMode;
-        private bool _inPositionMode;
-
-        private readonly Dictionary<string, BitmapImage> _piecesBitmaps = new Dictionary<string, BitmapImage>();
-        private readonly Dictionary<int, Image> _piecesBorderBitmaps = new Dictionary<int, Image>();
-        private int _positionFigureId;
-        private int _toFieldTag;
-        private BitmapImage _whiteFieldBitmap;
-        private string _whiteFileName;
-        private readonly ConcurrentDictionary<int,bool>  _markedGreenFields = new  ConcurrentDictionary<int, bool>();
-        private readonly HashSet<int> _markedNonGreenFields = new HashSet<int>();
-        private bool _acceptMouse = true;
-        private bool _isConnected;
-        private string _whitePlayer = string.Empty;
-        private string _blackPlayer = string.Empty;
-        private string _fieldId;
-        private readonly List<ArrowDescription> _arrowList = new List<ArrowDescription>();
-        private Canvas _canvas;
-
-
-        public GraphicsChessBoardUserControl()
-        {
-            InitializeComponent();
-
-            Symbol = true;
-
-            TagFields();
-            var fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Miscel");
-            textBlockBlackClock.FontFamily = fontFamily;
-            textBlockWhiteClock.FontFamily = fontFamily;
-            textBlockBlackClock.Visibility = Visibility.Hidden;
-            textBlockWhiteClock.Visibility = Visibility.Hidden;
-            textBlockWhitePlayer.Text = string.Empty;
-            textBlockBlackPlayer.Text = string.Empty;
-            _fieldId = string.Empty;
-            _piecesBitmaps.Clear();
-            HideRobot();
-        }
+        public event EventHandler<int> RequestForHint;
 
         public void SetCanvas(Canvas canvas)
         {
             _canvas = canvas;
         }
-        public bool WhiteOnTop { get; private set; } = true;
-
-        public bool Symbol { get; set; }
-
-        public double ChessFieldSize
-        {
-            get => (double) GetValue(ChessFieldSizeProperty);
-            set => SetValue(ChessFieldSizeProperty, value);
-        }
-
-        public double ChessBackgroundFieldSize
-        {
-            get => (double) GetValue(ChessBackgroundFieldSizeProperty);
-            set => SetValue(ChessBackgroundFieldSizeProperty, value);
-        }
-
-        public double ControlButtonSize
-        {
-            get => (double) GetValue(ControlButtonSizeProperty);
-            set => SetValue(ControlButtonSizeProperty, value);
-        }
 
 
-        public void SetBoardMaterial(string fieldId,string whiteFileName, string blackFileName)
+        public void SetBoardMaterial(string fieldId, string whiteFileName, string blackFileName)
         {
             _whiteFileName = whiteFileName;
             _blackFileName = blackFileName;
@@ -183,8 +165,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void LoadBigWideImage(string fileName)
         {
-
-
             var bitmapImage = new BitmapImage(new Uri(fileName));
 
             var bitmapImageWidth = bitmapImage.PixelWidth / 12;
@@ -197,7 +177,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["P"] = image;
-            
+
 
             image = new BitmapImage();
             image.BeginInit();
@@ -210,7 +190,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 2, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 2, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["B"] = image;
@@ -218,7 +199,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 3, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 3, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["R"] = image;
@@ -226,7 +208,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 4, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 4, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["Q"] = image;
@@ -234,17 +217,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 5, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 5, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["K"] = image;
 
 
-
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 6, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 6, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["p"] = image;
@@ -252,7 +236,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 7, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 7, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["n"] = image;
@@ -260,7 +245,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 8, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 8, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["b"] = image;
@@ -268,7 +254,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 9, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 9, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["r"] = image;
@@ -276,7 +263,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 10, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 10, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["q"] = image;
@@ -284,11 +272,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             image = new BitmapImage();
             image.BeginInit();
             image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 11, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth * 11, 0, (int)bitmapImageWidth, (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["k"] = image;
-
         }
 
         private void LoadBigImage(string fileName)
@@ -311,35 +299,40 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageWidth, 0, (int)bitmapImageWidth , (int)bitmapImageHeight - 1);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["N"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 2, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 2, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["B"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 3, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 3, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["Q"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 4, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 4, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["K"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 5, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 5, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["P"] = image;
@@ -354,35 +347,40 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageWidth, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth, (int)bitmapImageHeight, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["n"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 2, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 2, (int)bitmapImageHeight, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["b"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 3, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 3, (int)bitmapImageHeight, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["q"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 4, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 4, (int)bitmapImageHeight, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["k"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 5, (int)bitmapImageHeight, (int)bitmapImageWidth, (int)bitmapImageHeight);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 5, (int)bitmapImageHeight, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["p"] = image;
@@ -408,35 +406,40 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageWidth, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect =
+                new Int32Rect((int)bitmapImageWidth, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["N"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 2, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 2, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["B"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 3, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 3, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["R"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 4, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 4, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["Q"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 5, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 5, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["K"] = image;
@@ -444,42 +447,48 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)(bitmapImageWidth) * 6, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageWidth * 6, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["p"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int) bitmapImageHeight * 7, 0, (int) bitmapImageWidth,(int) bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 7, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["n"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 8, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 8, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["b"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 9, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 9, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["r"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 10, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 10, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["q"] = image;
 
             image = new BitmapImage();
             image.BeginInit();
-            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 11, 0, (int)bitmapImageWidth, (int)bitmapImageHeight - 1);
+            image.SourceRect = new Int32Rect((int)bitmapImageHeight * 11, 0, (int)bitmapImageWidth,
+                                             (int)bitmapImageHeight - 1);
             image.UriSource = new Uri(fileName);
             image.EndInit();
             _piecesBitmaps["k"] = image;
@@ -490,57 +499,64 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetPiecesMaterial(BoardPiecesSetup piecesSetup)
         {
-            if (piecesSetup.Id==Constants.BryanWhitbyDali)
+            if (piecesSetup.Id == Constants.BryanWhitbyDali)
             {
                 SetPiecesMaterial(piecesSetup.Id);
                 return;
             }
+
             if (piecesSetup.Id == Constants.BryanWhitbyItalian)
             {
                 SetPiecesMaterial(piecesSetup.Id);
                 return;
             }
+
             if (piecesSetup.Id == Constants.BryanWhitbyRoyalGold)
             {
                 SetPiecesMaterial(piecesSetup.Id);
                 return;
             }
+
             if (piecesSetup.Id == Constants.BryanWhitbyRoyalBrown)
             {
                 SetPiecesMaterial(piecesSetup.Id);
                 return;
             }
+
             if (piecesSetup.Id == Constants.BryanWhitbyModernGold)
             {
                 SetPiecesMaterial(piecesSetup.Id);
                 return;
             }
+
             if (piecesSetup.Id == Constants.BryanWhitbyModernBrown)
             {
                 SetPiecesMaterial(piecesSetup.Id);
                 return;
             }
+
             if (piecesSetup.Id == Constants.Certabo)
             {
                 SetPiecesMaterial(piecesSetup.Id);
                 return;
             }
+
             if (piecesSetup.Id == Constants.Tabutronic)
             {
                 SetPiecesMaterial(piecesSetup.Id);
                 return;
             }
+
             if (piecesSetup.Id == Constants.BearChess)
             {
                 SetPiecesMaterial();
                 return;
             }
+
             try
             {
-
                 if (string.IsNullOrWhiteSpace(piecesSetup.WhiteQueenFileName))
                 {
-
                     LoadBigImage(piecesSetup.WhiteKingFileName);
                     return;
                 }
@@ -586,6 +602,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _piecesBitmaps[" "] = null;
                 return;
             }
+
             if (id.Equals(Constants.BryanWhitbyItalian))
             {
                 _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyItalianKingW") as BitmapImage;
@@ -604,6 +621,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _piecesBitmaps[" "] = null;
                 return;
             }
+
             if (id.Equals(Constants.BryanWhitbyRoyalGold))
             {
                 _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyRoyalGoldKingW") as BitmapImage;
@@ -622,6 +640,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _piecesBitmaps[" "] = null;
                 return;
             }
+
             if (id.Equals(Constants.BryanWhitbyRoyalBrown))
             {
                 _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyRoyalBrownKingW") as BitmapImage;
@@ -659,6 +678,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _piecesBitmaps[" "] = null;
                 return;
             }
+
             if (id.Equals(Constants.BryanWhitbyModernBrown))
             {
                 _piecesBitmaps["K"] = FindResource("bitmapBryanWhitbyModernBrownKingW") as BitmapImage;
@@ -798,6 +818,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 //buttonRotate.Visibility = Visibility.Visible;
                 _chessBoard = null;
             }
+
             ShowControlButtons(false);
         }
 
@@ -809,15 +830,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _chessBoard.SetPosition(string.Empty);
-            _chessBoard.SetFigureOnPosition(FigureId.WHITE_KING,Fields.FE1);
-            _chessBoard.SetFigureOnPosition(FigureId.BLACK_KING,Fields.FE8);
+            _chessBoard.SetFigureOnPosition(FigureId.WHITE_KING, Fields.FE1);
+            _chessBoard.SetFigureOnPosition(FigureId.BLACK_KING, Fields.FE8);
             RepaintBoard(_chessBoard);
         }
 
         public void ShowFiguresOnField(string[] fields, string figureCharacter)
         {
-            multiButton.Visibility =  Visibility.Hidden;
-            HashSet<string> allFields = new HashSet<string>(fields);
+            multiButton.Visibility = Visibility.Hidden;
+            var allFields = new HashSet<string>(fields);
             imageFA1.Source = GetImageResource(Fields.FA1) as BitmapImage;
             imageFA2.Source = GetImageResource(Fields.FA2) as BitmapImage;
             imageFA3.Source = GetImageResource(Fields.FA3) as BitmapImage;
@@ -1149,30 +1170,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     imageH7.Source = _piecesBitmaps[chessBoard.GetFigureOn(Fields.FA2).FigureCharacter];
                     imageH8.Source = _piecesBitmaps[chessBoard.GetFigureOn(Fields.FA1).FigureCharacter];
                 }
-
             }
 
             if (WhiteOnTop)
             {
-                textBlockWhiteKing.Visibility =  Visibility.Visible;
-                textBlockBlackKing.Visibility =  Visibility.Collapsed;
+                textBlockWhiteKing.Visibility = Visibility.Visible;
+                textBlockBlackKing.Visibility = Visibility.Collapsed;
                 textBlockWhiteClock.Visibility = chessBoard.CurrentColor == Fields.COLOR_WHITE
-                    ? Visibility.Visible
-                    : Visibility.Hidden;
+                                                     ? Visibility.Visible
+                                                     : Visibility.Hidden;
                 textBlockBlackClock.Visibility = chessBoard.CurrentColor == Fields.COLOR_BLACK
-                    ? Visibility.Visible
-                    : Visibility.Hidden;
+                                                     ? Visibility.Visible
+                                                     : Visibility.Hidden;
             }
             else
             {
                 textBlockWhiteKing.Visibility = Visibility.Collapsed;
                 textBlockBlackKing.Visibility = Visibility.Visible;
                 textBlockWhiteClock.Visibility = chessBoard.CurrentColor == Fields.COLOR_BLACK
-                    ? Visibility.Visible
-                    : Visibility.Hidden;
+                                                     ? Visibility.Visible
+                                                     : Visibility.Hidden;
                 textBlockBlackClock.Visibility = chessBoard.CurrentColor == Fields.COLOR_WHITE
-                    ? Visibility.Visible
-                    : Visibility.Hidden;
+                                                     ? Visibility.Visible
+                                                     : Visibility.Hidden;
             }
         }
 
@@ -1213,62 +1233,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockBlackPlayer.Text = WhiteOnTop ? _blackPlayer : _whitePlayer;
         }
 
-        public void RemarkFields()
-        {
-            foreach (var boardField in Fields.BoardFields)
-            {
-                UnMarkField(boardField);
-            }
 
-            foreach (var key in _markedGreenFields.Keys)
-            {
-                if (_markedGreenFields[key])
-                {
-                    _piecesBorderBitmaps[key].Source = FindResource("bitmapGreenFrame") as BitmapImage;
-                }
-            }
-
-            foreach (var key in _markedNonGreenFields)
-            {
-                {
-                    _piecesBorderBitmaps[key].Source = FindResource("bitmapYellowFrame") as BitmapImage;
-                }
-            }
-        }
-
-        public void MarkFields(int[] fields, bool green, bool asArrow)
+        public void MarkFields(int[] fields, bool green)
         {
             if (green)
             {
-                if (fields.Length > 1 && asArrow)
+                if (fields.Length > 1)
                 {
                     _canvas?.Children.Clear();
                     _arrowList.Clear();
-                    var arrowDescription = new ArrowDescription()
+                    var arrowDescription = new ArrowDescription
                                            {
                                                FromField = fields[0],
                                                ToField = fields[1],
                                                Color = Brushes.Green
                                            };
+                    _arrowList.Add(arrowDescription);
                     DrawArrow(arrowDescription);
                     return;
                 }
-
-                foreach (var field in fields)
-                {
-                    if (!_markedGreenFields.ContainsKey(field))
-                    {
-                        break;
-                    }
-
-                    return;
-                }
-
-                foreach (var markedField in _markedGreenFields)
-                {
-                    UnMarkField(markedField.Key);
-                }
-                _markedGreenFields.Clear();
             }
             else
             {
@@ -1281,84 +1264,113 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                     return;
                 }
-                foreach (var markedField in _markedNonGreenFields)
-                {
-                    if (_markedGreenFields.ContainsKey(markedField))
-                    {
-                        _piecesBorderBitmaps[markedField].Source = FindResource("bitmapGreenFrame") as BitmapImage;
-                    }
-                    else
-                    {
-                        UnMarkField(markedField);
-                    }
-                }
+
                 _markedNonGreenFields.Clear();
             }
+
             foreach (var field in fields)
             {
                 if (field < 0)
                 {
                     continue;
                 }
-                if (green)
+
+
+                if (_markedGreenFields.ContainsKey(field))
                 {
-                    _markedGreenFields[field] = true;
-                    _piecesBorderBitmaps[field].Source = FindResource("bitmapGreenFrame") as BitmapImage;
+                    _markedGreenFields[field] = false;
                 }
-                else
+
+                if (fields.Length > 1)
                 {
-                    if (_markedGreenFields.ContainsKey(field))
+                    for (var i = 0; i < _canvas.Children.Count; i++)
                     {
-                        _markedGreenFields[field] = false;
-                    }
-                    if (fields.Length > 1 && asArrow)
-                    {
-                        for (int i = 0; i < _canvas.Children.Count; i++)
+                        if (_canvas.Children[i] is ArrowLine)
                         {
-                            if (_canvas.Children[i] is ArrowLine)
+                            var canvasChild = _canvas.Children[i] as ArrowLine;
+                            if (canvasChild.Stroke.Equals(Brushes.Orange))
                             {
-                                var canvasChild = _canvas.Children[i] as ArrowLine;
-                                if (canvasChild.Stroke.Equals(Brushes.Orange))
-                                {
-                                    _canvas.Children.RemoveAt(i);
-                                    break;
-                                }
+                                _canvas.Children.RemoveAt(i);
+                                break;
                             }
-                         
                         }
-                        
-                        var arrowDescription = new ArrowDescription()
-                                               {
-                                                   FromField = fields[0],
-                                                   ToField = fields[1],
-                                                   Color = Brushes.Orange
-                                               };
-                        DrawArrow(arrowDescription);
-                        return;
                     }
-                    _markedNonGreenFields.Add(field);
-                        _piecesBorderBitmaps[field].Source = FindResource("bitmapYellowFrame") as BitmapImage;
+
+                    var firstOrDefault = _arrowList.FirstOrDefault(a => a.Color.Equals(Brushes.Orange));
+                    if (firstOrDefault != null)
+                    {
+                        _arrowList.Remove(firstOrDefault);
+                    }
+
+                    var arrowDescription = new ArrowDescription
+                                           {
+                                               FromField = fields[0],
+                                               ToField = fields[1],
+                                               Color = Brushes.Orange
+                                           };
+                    _arrowList.Add(arrowDescription);
+                    DrawArrow(arrowDescription);
+                    return;
                 }
             }
-
         }
 
-        public void UnMarkField(int field)
-        {
-            _piecesBorderBitmaps[field].Source = FindResource("bitmapEmpty") as BitmapImage;
-        }
 
-        public void UnMarkAllFields()
+        public void UnMarkAllFields(bool clearFieldTags = false)
         {
+            RemoveHintArrows();
             _canvas?.Children.Clear();
             _arrowList.Clear();
-
             _markedNonGreenFields.Clear();
             _markedGreenFields.Clear();
-            foreach (var boardField in Fields.BoardFields)
+            if (clearFieldTags)
             {
-              UnMarkField(boardField);    
+                if (_fromFieldTag != 0)
+                {
+                    _piecesBorderBitmaps[_fromFieldTag].Source = FindResource("bitmapEmpty") as BitmapImage;
+                }
+
+                if (_toFieldTag != 0)
+                {
+                    _piecesBorderBitmaps[_toFieldTag].Source = FindResource("bitmapEmpty") as BitmapImage;
+                }
+
+                _fromFieldTag = 0;
+                _toFieldTag = 0;
             }
+        }
+
+        public void MarkFields(int[] fields, SolidColorBrush color)
+        {
+            _hintArrowColor = color;
+            if (fields.Length > 1)
+            {
+                var arrowDescription = new ArrowDescription
+                                       {
+                                           FromField = fields[0],
+                                           ToField = fields[1],
+                                           Color = color
+                                       };
+
+                _arrowList.Add(arrowDescription);
+                DrawArrow(arrowDescription);
+            }
+        }
+
+        public void RedrawArrows()
+        {
+            _canvas?.Children.Clear();
+            foreach (var arrowDescription in _arrowList)
+            {
+                DrawArrow(arrowDescription);
+            }
+        }
+
+        private void RemoveHintArrows()
+        {
+           
+            _arrowList.RemoveAll(f => f.Color.Equals(_hintArrowColor));
+            RedrawArrows();
         }
 
         private void DrawArrow(ArrowDescription arrowDescription)
@@ -1369,7 +1381,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
 
-            var gridWidth = (ChessFieldSize+10) / 2;
+            var gridWidth = (ChessFieldSize + 10) / 2;
             var gridWidth2 = gridWidth / 2;
             var gridWidth3 = gridWidth - gridWidth2;
             var gridWidth4 = gridWidth + gridWidth2;
@@ -1377,8 +1389,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var dx2 = gridWidth;
             var dy1 = gridWidth;
             var dy2 = gridWidth;
-            var pointToScreen1 = _piecesBorderBitmaps[arrowDescription.FromField].TranslatePoint(new Point(0, 0), _canvas);
-            var pointToScreen2 = _piecesBorderBitmaps[arrowDescription.ToField].TranslatePoint(new Point(0, 0), _canvas);
+            var pointToScreen1 = _piecesBorderBitmaps[arrowDescription.FromField]
+                .TranslatePoint(new Point(0, 0), _canvas);
+            var pointToScreen2 =
+                _piecesBorderBitmaps[arrowDescription.ToField].TranslatePoint(new Point(0, 0), _canvas);
             var aline2 = new ArrowLine
                          {
                              ArrowEnds = ArrowEnds.End,
@@ -1398,8 +1412,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     dx1 = gridWidth2;
                     dx2 = gridWidth4;
                 }
-                
             }
+
             if (!pointToScreen1.Y.Equals(pointToScreen2.Y))
             {
                 if (pointToScreen1.Y < pointToScreen2.Y)
@@ -1412,8 +1426,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     dy1 = gridWidth3;
                     dy2 = gridWidth4;
                 }
-                
             }
+
             aline2.X1 = pointToScreen1.X + dx1;
             aline2.Y1 = pointToScreen1.Y + dy1;
             aline2.X2 = pointToScreen2.X + dx2;
@@ -1435,6 +1449,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 imageClockPlay.Visibility = Visibility.Visible;
                 imageClockPause.Visibility = Visibility.Collapsed;
             }
+
             buttonPauseGame.Visibility = Visibility.Visible;
         }
 
@@ -1457,6 +1472,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 imageRobot.Visibility = Visibility.Collapsed;
                 imageRobotPause.Visibility = Visibility.Visible;
             }
+
             buttonPauseEngine.Visibility = Visibility.Visible;
         }
 
@@ -1475,52 +1491,211 @@ namespace www.SoLaNoSoft.com.BearChessWin
             moveStepForward.Visibility = allow && !_isConnected ? Visibility.Visible : Visibility.Hidden;
         }
 
+        //protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        //{
+        //    base.OnRenderSizeChanged(sizeInfo);
+        //    Size sizeInfoPreviousSize = sizeInfo.PreviousSize;
+        //    Size sizeInfoNewSize = sizeInfo.NewSize;
+        //    // ReSharper disable once CompareOfFloatsByEqualityOperator
+        //    if (_firstSize.Width == 0)
+        //    {
+        //        _firstSize = sizeInfoPreviousSize;
+        //    }
+
+        //    if (_firstSize.Width > 0)
+        //    {
+        //        if (sizeInfoNewSize.Width > _firstSize.Width || sizeInfoNewSize.Height > _firstSize.Height)
+        //        {
+        //            double d = Math.Round(sizeInfoNewSize.Width - _firstSize.Width) / 10;
+        //            double d2 = Math.Round(sizeInfoNewSize.Height - _firstSize.Height) / 10;
+        //            ChessBackgroundFieldSize = 45 + Math.Min(d, d2);
+        //            ChessFieldSize = 38 + Math.Min(d, d2);
+        //            ControlButtonSize = 35 + Math.Min(d, d2);
+        //        }
+        //        else
+        //        {
+        //            double d = Math.Round(_firstSize.Width - sizeInfoNewSize.Width) / 5;
+        //            double d2 = Math.Round(_firstSize.Height - sizeInfoNewSize.Height) / 5;
+        //            double chessFieldSize = 38 - Math.Min(d, d2);
+        //            double hessBackgroundFieldSize = 45 - Math.Min(d, d2);
+        //            double buttonFieldSize = 30 - Math.Min(d, d2);
+        //            ChessBackgroundFieldSize = hessBackgroundFieldSize > 45 ? hessBackgroundFieldSize : 45;
+        //            ChessFieldSize = chessFieldSize > 38 ? chessFieldSize : 38;
+        //            ControlButtonSize = buttonFieldSize > 35 ? buttonFieldSize : 35;
+        //        }
+        //    }
+        //}
+
+
+        private void MovePauseGame_OnClick(object sender, RoutedEventArgs e)
+        {
+            PauseGameEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ButtonSwap_OnClick(object sender, RoutedEventArgs e)
+        {
+            SwitchColorEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void ShowPossibleMoves(bool showPossibleMoves)
+        {
+            if (_showPossibleMoves && !showPossibleMoves)
+            {
+                RemoveHintArrows();
+            }
+
+            _showPossibleMoves = showPossibleMoves;
+        }
+
+        public void FastMoveSelection(bool fastMove)
+        {
+            _fastMoveSelection = fastMove;
+        }
+
+        private void Image_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (!_showPossibleMoves)
+            {
+                return;
+            }
+
+            if (!_acceptMouse)
+            {
+                return;
+            }
+
+            if (_inPositionMode)
+            {
+                return;
+            }
+
+            if (_markedGreenFields.Count > 0)
+            {
+                return;
+            }
+
+            if (sender is Image image && image.Tag != null)
+            {
+                var imageTag = image.Tag;
+                var fieldTag = (int)imageTag;
+                OnRequestForHintEvent(fieldTag);
+            }
+        }
+
+        private void Image_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (!_showPossibleMoves)
+            {
+                return;
+            }
+
+            if (_markedGreenFields.Count > 0)
+            {
+                return;
+            }
+
+            RemoveHintArrows();
+        }
+
+        private class ArrowDescription
+        {
+            public SolidColorBrush Color;
+            public int FromField;
+            public int ToField;
+        }
+
+        public class MoveEventArgs : EventArgs
+        {
+            public MoveEventArgs(int fromField, int toField)
+            {
+                FromField = fromField;
+                ToField = toField;
+            }
+
+            public int FromField { get; }
+            public int ToField { get; }
+        }
+
+        public class AnalyzeModeEventArgs : EventArgs
+        {
+            public AnalyzeModeEventArgs(int fromField, int figureId, bool removeFigure, int currentColor)
+            {
+                FromField = fromField;
+                FigureId = figureId;
+                RemoveFigure = removeFigure;
+                CurrentColor = currentColor;
+            }
+
+            public int FromField { get; }
+            public int FigureId { get; }
+            public bool RemoveFigure { get; }
+            public int CurrentColor { get; }
+        }
+
         #region private
 
         private BitmapImage GetImageResource(int convert)
         {
             if (!string.IsNullOrWhiteSpace(_whiteFileName))
+            {
                 return _whiteFields.Contains(convert) ? _whiteFieldBitmap : _blackFieldBitmap;
+            }
 
             var fieldName = Fields.GetFieldName(convert);
-            var name =  _fieldId.Equals(Constants.Certabo) ? $"bitmapCertabo{fieldName}" :
-                        _fieldId.StartsWith(Constants.Tabutronic) ? $"bitmapTabuTronic{fieldName}" : $"bitmapStone{fieldName}";
+            var name = _fieldId.Equals(Constants.Certabo) ? $"bitmapCertabo{fieldName}" :
+                       _fieldId.StartsWith(Constants.Tabutronic) ? $"bitmapTabuTronic{fieldName}" :
+                       $"bitmapStone{fieldName}";
 
             return FindResource(name) as BitmapImage;
         }
 
         private void HandlePositionMode(object sender, MouseButtonEventArgs e)
         {
-            if (!(sender is Image image)) return;
-            var textBlockTag = image.Tag;
-            var fieldTag = (int) textBlockTag;
-            var figureId = e.RightButton == MouseButtonState.Pressed
-                ? _positionFigureId + 6
-                : _positionFigureId;
-
-            var id = _chessBoard.GetFigureOn(fieldTag).FigureId;
-            if (id == FigureId.WHITE_KING || id==FigureId.BLACK_KING)
+            if (!(sender is Image image))
             {
                 return;
             }
+
+            var textBlockTag = image.Tag;
+            var fieldTag = (int)textBlockTag;
+            var figureId = e.RightButton == MouseButtonState.Pressed
+                               ? _positionFigureId + 6
+                               : _positionFigureId;
+
+            var id = _chessBoard.GetFigureOn(fieldTag).FigureId;
+            if (id == FigureId.WHITE_KING || id == FigureId.BLACK_KING)
+            {
+                return;
+            }
+
             _chessBoard.RemoveFigureFromField(fieldTag);
-            if (id != figureId) _chessBoard.SetFigureOnPosition(figureId, fieldTag);
+            if (id != figureId)
+            {
+                _chessBoard.SetFigureOnPosition(figureId, fieldTag);
+            }
 
             RepaintBoard(_chessBoard);
         }
 
         private void HandleAnalyzeMode(object sender, MouseButtonEventArgs e)
         {
-            if (!(sender is Image image)) return;
+            if (!(sender is Image image))
+            {
+                return;
+            }
+
             var textBlockTag = image.Tag;
-            var fieldTag = (int) textBlockTag;
+            var fieldTag = (int)textBlockTag;
             var figureId = e.RightButton == MouseButtonState.Pressed
-                ? _positionFigureId + 6
-                : _positionFigureId;
+                               ? _positionFigureId + 6
+                               : _positionFigureId;
 
             var id = _chessBoard.GetFigureOn(fieldTag).FigureId;
             _chessBoard.RemoveFigureFromField(fieldTag);
-            if (id != figureId) _chessBoard.SetFigureOnPosition(figureId, fieldTag);
+            if (id != figureId)
+            {
+                _chessBoard.SetFigureOnPosition(figureId, fieldTag);
+            }
 
             RepaintBoard(_chessBoard);
         }
@@ -1538,9 +1713,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public string GetFenPosition()
         {
             if (_chessBoard != null)
+            {
                 if (_chessBoard.GetKingFigure(Fields.COLOR_WHITE).FigureId == FigureId.WHITE_KING &&
                     _chessBoard.GetKingFigure(Fields.COLOR_BLACK).FigureId == FigureId.BLACK_KING)
+                {
                     return _chessBoard.GetFenPosition();
+                }
+            }
 
             return string.Empty;
         }
@@ -1591,6 +1770,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
             if (_inPositionMode)
             {
                 HandlePositionMode(sender, e);
@@ -1601,7 +1781,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (sender is Image image2 && image2.Tag != null)
                 {
-                    var selectWindow = new SelectFigureWindow {CurrentColor = _chessBoard.CurrentColor};
+                    var selectWindow = new SelectFigureWindow { CurrentColor = _chessBoard.CurrentColor };
                     var pointToWindow = Mouse.GetPosition(this);
                     var pointToScreen = PointToScreen(pointToWindow);
                     selectWindow.Left = pointToScreen.X;
@@ -1612,33 +1792,48 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         var imageTag = image2.Tag;
                         _chessBoard.CurrentColor = selectWindow.CurrentColor;
-                        OnAnalyzeModeEvent(new AnalyzeModeEventArgs((int) imageTag, selectWindow.SelectedFigure,
-                            selectWindow.RemoveFigure, selectWindow.CurrentColor));
+                        OnAnalyzeModeEvent(new AnalyzeModeEventArgs((int)imageTag, selectWindow.SelectedFigure,
+                                                                    selectWindow.RemoveFigure,
+                                                                    selectWindow.CurrentColor));
                     }
                 }
 
                 return;
             }
 
-          
+
             if (sender is Image image && image.Tag != null)
             {
                 var imageTag = image.Tag;
                 if (_fromFieldTag == 0)
                 {
-                    _fromFieldTag = (int) imageTag;
+                    _fromFieldTag = (int)imageTag;
                     _markedGreenFields[_fromFieldTag] = true;
                     _piecesBorderBitmaps[_fromFieldTag].Source = FindResource("bitmapGreenFrame") as BitmapImage;
+                    if (_showPossibleMoves)
+                    {
+                        OnRequestForHintEvent(_fromFieldTag);
+                    }
+
+                    if (_fastMoveSelection)
+                    {
+                        OnMakeMoveEvent(new MoveEventArgs(_fromFieldTag, _fromFieldTag));
+                    }
                     return;
                 }
 
-                _toFieldTag = (int) imageTag;
+                _toFieldTag = (int)imageTag;
+                _markedGreenFields.TryRemove(_fromFieldTag, out _);
                 if (_fromFieldTag != _toFieldTag)
                 {
-                    _markedGreenFields.TryRemove(_fromFieldTag, out _);
                     UnMarkAllFields();
                     OnMakeMoveEvent(new MoveEventArgs(_fromFieldTag, _toFieldTag));
                 }
+                else
+                {
+                    RemoveHintArrows();
+                }
+
                 _piecesBorderBitmaps[_fromFieldTag].Source = FindResource("bitmapEmpty") as BitmapImage;
                 _fromFieldTag = 0;
                 _toFieldTag = 0;
@@ -1655,10 +1850,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             AnalyzeModeEvent?.Invoke(this, e);
         }
 
+        protected virtual void OnRequestForHintEvent(int e)
+        {
+            RequestForHint?.Invoke(this, e);
+        }
+
 
         private void TagFields()
         {
-
             imageA1.Tag = WhiteOnTop ? Fields.FA1 : Fields.FH8;
             imageA2.Tag = WhiteOnTop ? Fields.FA2 : Fields.FH7;
             imageA3.Tag = WhiteOnTop ? Fields.FA3 : Fields.FH6;
@@ -1921,51 +2120,5 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
         #endregion
-
-        //protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        //{
-        //    base.OnRenderSizeChanged(sizeInfo);
-        //    Size sizeInfoPreviousSize = sizeInfo.PreviousSize;
-        //    Size sizeInfoNewSize = sizeInfo.NewSize;
-        //    // ReSharper disable once CompareOfFloatsByEqualityOperator
-        //    if (_firstSize.Width == 0)
-        //    {
-        //        _firstSize = sizeInfoPreviousSize;
-        //    }
-
-        //    if (_firstSize.Width > 0)
-        //    {
-        //        if (sizeInfoNewSize.Width > _firstSize.Width || sizeInfoNewSize.Height > _firstSize.Height)
-        //        {
-        //            double d = Math.Round(sizeInfoNewSize.Width - _firstSize.Width) / 10;
-        //            double d2 = Math.Round(sizeInfoNewSize.Height - _firstSize.Height) / 10;
-        //            ChessBackgroundFieldSize = 45 + Math.Min(d, d2);
-        //            ChessFieldSize = 38 + Math.Min(d, d2);
-        //            ControlButtonSize = 35 + Math.Min(d, d2);
-        //        }
-        //        else
-        //        {
-        //            double d = Math.Round(_firstSize.Width - sizeInfoNewSize.Width) / 5;
-        //            double d2 = Math.Round(_firstSize.Height - sizeInfoNewSize.Height) / 5;
-        //            double chessFieldSize = 38 - Math.Min(d, d2);
-        //            double hessBackgroundFieldSize = 45 - Math.Min(d, d2);
-        //            double buttonFieldSize = 30 - Math.Min(d, d2);
-        //            ChessBackgroundFieldSize = hessBackgroundFieldSize > 45 ? hessBackgroundFieldSize : 45;
-        //            ChessFieldSize = chessFieldSize > 38 ? chessFieldSize : 38;
-        //            ControlButtonSize = buttonFieldSize > 35 ? buttonFieldSize : 35;
-        //        }
-        //    }
-        //}
-
-
-        private void MovePauseGame_OnClick(object sender, RoutedEventArgs e)
-        {
-          PauseGameEvent?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void ButtonSwap_OnClick(object sender, RoutedEventArgs e)
-        {
-            SwitchColorEvent?.Invoke(this, EventArgs.Empty);
-        }
     }
 }

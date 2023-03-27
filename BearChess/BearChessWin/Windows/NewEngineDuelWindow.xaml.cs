@@ -47,6 +47,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _playerIndex = 0;
             radioButtonStartPosition.IsChecked = startFromBasePosition;
             radioButtonCurrentPosition.IsChecked = !startFromBasePosition;
+            CheckForEstimateElo();
         }
 
         public string PlayerWhite => textBlockPlayerWhiteEngine.Text;
@@ -228,6 +229,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                   textBlockEloWhite, imageBookWhite, imageBookWhite2);
             SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2,
                              textBlockEloBlack, imageBookBlack, imageBookBlack2);
+           
         }
 
         public void SetTimeControlWhite(TimeControl timeControl)

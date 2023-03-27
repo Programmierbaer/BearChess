@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,9 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+//using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Xml.Serialization;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChess.CertaboLoader;
@@ -35,6 +38,7 @@ using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessTournament;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
+using Color = System.Drawing.Color;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -238,6 +242,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _duelTournamentIsRunning = false;
         private bool _ficsMode = false;
         private bool _gamesPurePGNExport;
+        private bool _showPossibleMoves;
+        private bool _fastMoveInput;
+        private bool _showLastMove;
+        private bool _showBestMove;
+        private SolidColorBrush _arrowColor;
 
         public BearChessMainWindow()
         {
@@ -339,6 +348,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             chessBoardUcGraphics.ResetBasePositionEvent += ChessBoardUcGraphics_ResetBasePositionEvent;
             chessBoardUcGraphics.RotateBoardEvent       += ChessBoardUcGraphics_RotateBoardEvent;
             chessBoardUcGraphics.SwitchColorEvent       += ChessBoardUcGraphics_SwitchColorEvent;
+            chessBoardUcGraphics.RequestForHint         += ChessBoardUcGraphics_RequestForHintEvent;
 
             if (_installedFieldsSetup.ContainsKey(_currentBoardFieldsSetupId))
             {
@@ -617,6 +627,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _synthesizer.SpeakAsync(SpeechTranslator.GetWelcome(_speechLanguageTag, _configuration));
             }
+            _showPossibleMoves = bool.Parse(_configuration.GetConfigValue("showPossibleMoves", "false"));
+            chessBoardUcGraphics.ShowPossibleMoves(_showPossibleMoves);
+            imageShowPossibleMoves.Visibility = _showPossibleMoves ? Visibility.Visible : Visibility.Hidden;
+
+            _fastMoveInput = bool.Parse(_configuration.GetConfigValue("fastMoveInput", "false"));
+            chessBoardUcGraphics.FastMoveSelection(_fastMoveInput);
+            imageFastMoveInput.Visibility = _fastMoveInput ? Visibility.Visible : Visibility.Hidden;
+
+            _showLastMove = bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false"));
+            imageShowLastMove.Visibility = _showLastMove ? Visibility.Visible : Visibility.Hidden;
+            
+            _showBestMove = bool.Parse(_configuration.GetConfigValue("ShowBestMove", "false"));
+            imageShowBestMove.Visibility = _showBestMove ? Visibility.Visible : Visibility.Hidden;
+            _arrowColor = System.Windows.Media.Brushes.Khaki;
+            var aRGB = int.Parse(_configuration.GetConfigValue("ArrowColor", "0"));
+            if (aRGB != 0)
+            { 
+                Color color = Color.FromArgb(aRGB);
+                _arrowColor = new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A,color.R,color.G,color.B));
+            }
+            textBlockHintArrowColor.Background = _arrowColor;
+        }
+
+        private void ChessBoardUcGraphics_RequestForHintEvent(object sender, int e)
+        {
+            List<Move> moves = null;
+            var chessFigure = _chessBoard.GetFigureOn(e);
+            if (chessFigure.Color == Fields.COLOR_EMPTY)
+            {
+               moves = _chessBoard.GenerateMoveList().Where(m => m.ToField == e && m.FigureColor==_chessBoard.CurrentColor).ToList();
+                
+            }
+            else
+            {
+                if (chessFigure.Color==_chessBoard.CurrentColor)
+                  moves = _chessBoard.GenerateMoveList().Where(m => m.FromField == e).ToList();
+                else
+                  moves = _chessBoard.GenerateMoveList().Where(m => m.ToField == e).ToList();
+            }
+            foreach (var move in moves)
+            {
+                chessBoardUcGraphics.MarkFields(new int[] {move.FromField,move.ToField}, _arrowColor);
+            }
         }
 
         private void ChessBoardUcGraphics_SwitchColorEvent(object sender, EventArgs e)
@@ -644,7 +697,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             chessBoardUcGraphics.RotateBoard();
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
             _engineWindow?.Reorder(chessBoardUcGraphics.WhiteOnTop);
-            chessBoardUcGraphics.RemarkFields();
+      
         }
 
 
@@ -745,7 +798,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 chessBoardCurrentColor = playedMove.FigureColor;
                 chessBoard.MakeMove(playedMove);
             }
-            if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+            if (_showLastMove)
             {
                 var allMoveClass = chessBoard.GetPrevMove();
                 var move = allMoveClass.GetMove(chessBoard.EnemyColor);
@@ -755,9 +808,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                     {
                                                         move.FromField,
                                                         move.ToField
-                                                    }, true,
-                                                    bool.Parse(
-                                                        _configuration.GetConfigValue("ShowAsArrow", "true")));
+                                                    }, true);
                 }
             }
             chessBoardUcGraphics.RepaintBoard(chessBoard);
@@ -822,7 +873,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                 }
 
-                if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+                if (_showLastMove)
                 {
                     var allMoveClass = chessBoard.GetPrevMove();
                     var move = allMoveClass.GetMove(chessBoard.EnemyColor);
@@ -832,9 +883,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                         {
                                                             move.FromField,
                                                             move.ToField
-                                                        }, true,
-                                                        bool.Parse(
-                                                            _configuration.GetConfigValue("ShowAsArrow", "true")));
+                                                        }, true);
                     }
                 }
 
@@ -905,7 +954,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     currentMoveIndex++;
                 }
             }
-            if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+            if (_showLastMove)
             {
                 var allMoveClass = chessBoard.GetPrevMove();
                 var move = allMoveClass.GetMove(chessBoard.EnemyColor);
@@ -915,8 +964,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                     {
                                                         move.FromField,
                                                         move.ToField
-                                                    }, true,
-                                                    bool.Parse(_configuration.GetConfigValue("ShowAsArrow", "true")));
+                                                    }, true);
                 }
             }
             _materialWindow?.ShowMaterial(chessBoard.GetFigures(Fields.COLOR_WHITE), chessBoard.GetFigures(Fields.COLOR_BLACK),chessBoard.GetPlayedMoveList());
@@ -1367,6 +1415,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (_currentAction == CurrentAction.InAnalyseMode || _currentAction == CurrentAction.InEasyPlayingMode || _currentAction == CurrentAction.InGameAnalyseMode)
             {
+                if (fromField.Equals(toField))
+                {
+                    return;
+                }
                 _currentGame = null;
                 var chessFigure = _chessBoard.GetFigureOn(toField);
                 if (chessFigure.GeneralFigureId == FigureId.KING)
@@ -1403,10 +1455,45 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
+            if (fromField.Equals(toField))
+            {
+                var chessFigure = _chessBoard.GetFigureOn(fromField);
+                if (chessFigure.Color == Fields.COLOR_EMPTY || chessFigure.Color==_chessBoard.EnemyColor)
+                {
+                    var moves = _chessBoard.GenerateMoveList().Where(f => f.FigureColor==_chessBoard.CurrentColor && f.ToField.Equals(fromField)).ToList();
+                    if (moves.Count == 1)
+                    {
+                        fromField = moves[0].FromField;
+                        toField = moves[0].ToField;
+                    }
+                }
+                else
+                {
+                    var moves = _chessBoard.GenerateMoveList().Where(f => f.FigureColor == _chessBoard.CurrentColor && f.FromField.Equals(fromField)).ToList();
+                    if (moves.Count == 1)
+                    {
+                        fromField = moves[0].FromField;
+                        toField = moves[0].ToField;
+                    }
+                }
+
+                if (fromField.Equals(toField))
+                {
+                    return;
+                }
+                chessBoardUcGraphics.UnMarkAllFields(true);
+            }
             if (!_chessBoard.MoveIsValid(fromField, toField))
             {
-                chessBoardUcGraphics.RepaintBoard(_chessBoard);
-                return;
+                if (!_chessBoard.MoveIsValid(toField, fromField))
+                {
+                    chessBoardUcGraphics.RepaintBoard(_chessBoard);
+                    return;
+                }
+
+                int saveFromField = fromField;
+                fromField = toField;
+                toField = saveFromField;
             }
 
             var promoteFigureId = FigureId.NO_PIECE;
@@ -2694,12 +2781,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void MenuItemSettingsBoard_OnClick(object sender, RoutedEventArgs e)
         {
-            var showLastMove = bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false"));
-            var showBestMove = bool.Parse(_configuration.GetConfigValue("ShowBestMove", "false"));
-            var showAsArrow = bool.Parse(_configuration.GetConfigValue("ShowAsArrow", "true"));
+            
             _chessBoardSetupWindow = new ChessBoardSetupWindow(_boardPath, _piecesPath, _installedFieldsSetup,
                                                                _installedPiecesSetup, _currentBoardFieldsSetupId,
-                                                               _currentBoardPiecesSetupId, showLastMove, showBestMove, showAsArrow);
+                                                               _currentBoardPiecesSetupId);
             _chessBoardSetupWindow.BoardSetupChangedEvent += ChessBoardBoardSetupChangedEvent;
             _chessBoardSetupWindow.PiecesSetupChangedEvent += ChessBoardPiecesSetupChangedEvent;
 
@@ -2715,9 +2800,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     : _chessBoardSetupWindow.BoardPiecesSetup.Id;
                 _configuration.SetConfigValue("CurrentBoardFieldsSetupId", _currentBoardFieldsSetupId);
                 _configuration.SetConfigValue("CurrentBoardPiecesSetupId", _currentBoardPiecesSetupId);
-                _configuration.SetConfigValue("ShowBestMove", _chessBoardSetupWindow.ShowBestMove.ToString());
-                _configuration.SetConfigValue("ShowLastMove", _chessBoardSetupWindow.ShowLastMove.ToString());
-                _configuration.SetConfigValue("ShowAsArrow", _chessBoardSetupWindow.ShowAsArrow.ToString());
+             
             }
             else
             {
@@ -4415,6 +4498,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _currentGame.SwitchedColor);
             });
             _duelManager.Update(_currentDuel, _currentDuelId);
+            _currentDuel = _duelManager.Load(_currentDuelId);
             _currentGame = _duelManager.GetNextGame(_lastResult);
             _databaseGame = null;
             if (_currentGame != null)
@@ -4516,7 +4600,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         Fields.GetFieldNumber(split[2].Substring(0, 2)),
                         Fields.GetFieldNumber(split[2].Substring(2, 2))
-                    }, true, bool.Parse(_configuration.GetConfigValue("ShowAsArrow", "true")));
+                    }, true);
                 });
                 return;
                
@@ -4555,7 +4639,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                         //if (_currentAction != CurrentAction.InGameAnalyseMode && 
                                         //(_eChessBoard == null || !_eChessBoard.IsConnected))
                                     {
-                                        if (bool.Parse(_configuration.GetConfigValue("ShowBestMove", "false")))
+                                        if (_showBestMove)
                                         {
                                             chessBoardUcGraphics.MarkFields(new[]
                                                                             {
@@ -4564,7 +4648,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                                                 Fields.GetFieldNumber(
                                                                                     strings[i + 1].Substring(2, 2))
                                                                             },
-                                                                            false, bool.Parse(_configuration.GetConfigValue("ShowAsArrow", "true")));
+                                                                            false);
                                         }
                                     }
 
@@ -4616,7 +4700,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     promote = strings[1].Substring(4);
                 }
 
-                if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+                if (_showLastMove)
                 {
                     Dispatcher?.Invoke(() =>
                     {
@@ -4624,7 +4708,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                         {
                                                             Fields.GetFieldNumber(strings[1].Substring(0, 2)),
                                                             Fields.GetFieldNumber(strings[1].Substring(2, 2))
-                                                        }, true, bool.Parse(_configuration.GetConfigValue("ShowAsArrow", "true")));
+                                                        }, true);
                     });
                 }
 
@@ -6315,7 +6399,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             break;
                         }
                     }
-                    if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+                    if (_showLastMove)
                     {
                         var allMoveClass = _chessBoard.GetPrevMove();
                         var move = allMoveClass.GetMove(_chessBoard.EnemyColor);
@@ -6325,9 +6409,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                             {
                                                                 move.FromField,
                                                                 move.ToField
-                                                            }, true,
-                                                            bool.Parse(
-                                                                _configuration.GetConfigValue("ShowAsArrow", "true")));
+                                                            }, true);
                         }
                     }
                     //_chessBoard.CurrentColor = databaseGameFenIndex.Move.FigureColor == Fields.COLOR_WHITE ? Fields.COLOR_BLACK : Fields.COLOR_WHITE;
@@ -6551,16 +6633,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                   move.Substring(2, 2).ToUpper(), FigureId.NO_PIECE, allMoveClass.GetMove(_chessBoard.EnemyColor).ShortMoveIdentifier);
                 }
                 _engineWindow?.CurrentColor(_chessBoard.CurrentColor);
-                if (bool.Parse(_configuration.GetConfigValue("ShowLastMove", "false")))
+                if (_showLastMove)
                 {
                   
                         chessBoardUcGraphics.MarkFields(new[]
                                                         {
                                                             fromField,
                                                             toField
-                                                        }, true,
-                                                        bool.Parse(
-                                                            _configuration.GetConfigValue("ShowAsArrow", "true")));
+                                                        }, true);
                     
                 }
             });
@@ -9116,6 +9196,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _gamesPurePGNExport = !_gamesPurePGNExport;
             _configuration.SetConfigValue("gamesPurePGNExport", _gamesPurePGNExport.ToString());
             imageGamesPurePGNExport.Visibility = _gamesPurePGNExport ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        private void MenuItemShowPossibleMoves_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showPossibleMoves = !_showPossibleMoves;
+            _configuration.SetConfigValue("showPossibleMoves", _showPossibleMoves.ToString());
+            imageShowPossibleMoves.Visibility = _showPossibleMoves ? Visibility.Visible : Visibility.Hidden;
+            chessBoardUcGraphics.ShowPossibleMoves(_showPossibleMoves);
+        }
+
+        private void MenuItemFastMoveInput_OnClick(object sender, RoutedEventArgs e)
+        {
+            _fastMoveInput = !_fastMoveInput;
+            _configuration.SetConfigValue("fastMoveInput", _fastMoveInput.ToString());
+            imageFastMoveInput.Visibility = _fastMoveInput ? Visibility.Visible : Visibility.Hidden;
+            chessBoardUcGraphics.FastMoveSelection(_fastMoveInput);
+        }
+
+        private void MenuItemShowLast_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showLastMove = !_showLastMove;
+            _configuration.SetConfigValue("ShowLastMove", _showLastMove.ToString());
+            imageShowLastMove.Visibility = _showLastMove ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        private void MenuItemShowBest_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showBestMove = !_showBestMove;
+            _configuration.SetConfigValue("ShowBestMove", _showBestMove.ToString());
+            imageShowBestMove.Visibility = _showBestMove ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        private void MenuItemPossibleMoveArrowColor_OnClick(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+            colorDialog.Color = Color.FromArgb(_arrowColor.Color.A, _arrowColor.Color.R, _arrowColor.Color.G, _arrowColor.Color.B);
+            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var argb = colorDialog.Color.ToArgb();
+                _configuration.SetConfigValue("ArrowColor", argb.ToString());
+                _arrowColor = new SolidColorBrush(System.Windows.Media.Color.FromArgb(colorDialog.Color.A, colorDialog.Color.R, colorDialog.Color.G, colorDialog.Color.B));
+                textBlockHintArrowColor.Background = _arrowColor;
+            }
         }
     }
 }

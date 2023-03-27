@@ -37,29 +37,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler BoardSetupChangedEvent;
         public event EventHandler PiecesSetupChangedEvent;
       
-        public bool ShowLastMove =>
-            // ReSharper disable once PossibleInvalidOperationException
-            checkBoxShowLastMove.IsChecked.Value;
-
-        public bool ShowBestMove =>
-            // ReSharper disable once PossibleInvalidOperationException
-            checkBoxShowBestMove.IsChecked.Value;
-
-        public bool ShowAsArrow =>
-            // ReSharper disable once PossibleInvalidOperationException
-            checkBoxAsArrow.IsChecked.Value;
-
+    
 
         public ChessBoardSetupWindow(string boardPath, string piecesPath, Dictionary<string, BoardFieldsSetup> installedFields,
                                      Dictionary<string, BoardPiecesSetup> installedPieces,
-                                     string currentBoardFieldsSetupId, string currentBoardPiecesSetupId, bool showLastMove, bool showBestMove, bool asArrow)
+                                     string currentBoardFieldsSetupId, string currentBoardPiecesSetupId)
         {
 
             InitializeComponent();
 
-            checkBoxShowBestMove.IsChecked = showBestMove;
-            checkBoxShowLastMove.IsChecked = showLastMove;
-            checkBoxAsArrow.IsChecked = asArrow;
+          
             installedFields[Constants.BearChess] = new BoardFieldsSetup()
             {
                 Name = Constants.BearChess,

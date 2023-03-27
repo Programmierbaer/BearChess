@@ -240,11 +240,53 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Settings">
-                    <MenuItem Name="menuItemSettingsBoard" Header="Board &amp; Pieces..."
-                              Click="MenuItemSettingsBoard_OnClick">
+                    <MenuItem Name="menuItemSettingsBoard" Header="Board &amp; Pieces...">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/Board2DPieces32.png" />
                         </MenuItem.Icon>
+                        <MenuItem Name="menuItemConfigurePieces" Header="Configure board &amp; pieces"
+                                  Click="MenuItemSettingsBoard_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/Board2DPieces32.png"  />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem Name="menuItemShowLastMove" Header="Show last move" ToolTip="Shows last move as green arrow"
+                                  Click="MenuItemShowLast_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageShowLastMove" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemShowBestMove" Header="Show best move" ToolTip="Shows best move by engine as orange arrow"
+                                  Click="MenuItemShowBest_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageShowBestMove" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem >
+                        <MenuItem Header="Possible moves">
+                            <MenuItem Name="menuItemShowPossibleMoves" Header="Show possible moves" ToolTip="Show all possible moves on mouse over"
+                                      Click="MenuItemShowPossibleMoves_OnClick">
+                               <MenuItem.Icon>
+                                    <Image Name="imageShowPossibleMoves" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem  Header="Color" ToolTip="Color for the arrow"
+                                      Click="MenuItemPossibleMoveArrowColor_OnClick">
+                                <MenuItem.Icon>
+                                  <TextBlock Name="textBlockHintArrowColor" Text=" "></TextBlock>    
+                                </MenuItem.Icon>
+                            </MenuItem>
+
+                        </MenuItem>
+
+                        <MenuItem Name="menuItemFastMoveInput" Header="Fast move input" ToolTip="Make move if selected field allows only one move"
+                                  Click="MenuItemFastMoveInput_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageFastMoveInput" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+
                     </MenuItem>
                     <MenuItem Name="menuItemRotateBoard" Header="Rotate board">
                         <MenuItem.Icon>

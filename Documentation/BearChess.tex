@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.8.0}
+\fancyhead[R]{Version 0.9.9.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{19.03.2023} 
+\date{27.03.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -668,21 +668,6 @@ BearChess comes with several set of pieces and board colors. \textbf{Many thanks
 \end{itemize}
 
 
-If the options "Show last move" and "Show best move" are activated, the last move and the currently best analysis move of an engine are marked on the board (in boxes or as arrow).
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{LastMove.png}
-	\caption{Last/best move }
-	\label{fig:LastMove}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{LastMoveArrow.png}
-	\caption{Last/best move as arrow}
-	\label{fig:LastMove2}
-\end{figure}
 
 
 \subsection{Install new board colors and pieces}
@@ -771,6 +756,39 @@ Now you can combine your boards with your pieces.
 	\caption{Combine board and pieces }
 	\label{fig:CombineBoardPieces}
 \end{figure}
+
+\subsection{Show last/best move}
+If the options "Show last move" and "Show best move" are activated, the last move and the currently best analysis move of an engine are marked on the board.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{LastMoveArrow.png}
+	\caption{Last/best move as arrow}
+	\label{fig:LastMove2}
+\end{figure}
+
+\subsection{Possible moves}
+If the option "Show possible moves" activated, all possible moves are indicated by an arrow.
+Either when the mouse pointer hovers over a target field or over a piece.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{SettingsBoardAndPieces5.png}
+	\caption{Show possible moves for target field}
+	\label{fig:ShowPossibleMoves}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{SettingsBoardAndPieces6.png}
+	\caption{Show possible moves for pieces}
+	\label{fig:ShowPossibleMoves2}
+\end{figure}
+
+You can define the arrow color.
 
 
 \section{Configure Notation and Moves}
@@ -2556,6 +2574,23 @@ You also can delete all duplicates of a specific game:
 
 {\color{red}**} Currently BearChess does not support a search function, only filter.
 
+\subsection{Copy \& Paste from clipboard}
+
+\begin{itemize}
+	\item \includegraphics[scale=0.5]{clipboard_sign_out.png} Copy the current game as PGN notation into clipboard.
+	\item \includegraphics[scale=0.5]{clipboard_sign.png} Paste a PGN game from clipboard.
+	
+\end{itemize}
+
+\subsection{PGN export}
+By default, BearChess write all information into the PGN output, e.g. move time, ratings and comments. If you like to have only the pure move information, you can check it on the settings area.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Games8.png}
+	\caption{Only pure PGN information}
+	\label{fig:Games8}
+\end{figure}
+
 \section{Engine window}
 
 Each loaded engine is listed in the engine window.
@@ -2697,7 +2732,14 @@ These are some ideas what will come in one of the next versions.
 
 \section{Change log}
 
-
+\subsection*{Version 0.9.8.0 $\Rightarrow$  0.9.9.0}
+\begin{itemize}
+	\item {\color{blue}New}: Show possible moves.
+	\item {\color{blue}New}: Fast move selection.
+	\item {\color{teal}Changes}: Redesign Configure Board and Pieces.
+	\item {\color{teal}Changes}: Only arrows for move indications.
+	\item {\color{red}Fix}: Estimate ELO duel
+\end{itemize}
 
 \subsection*{Version 0.9.7.0 $\Rightarrow$  0.9.8.0}
 \begin{itemize}

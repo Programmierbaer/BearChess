@@ -23,6 +23,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public int AdjustEloStep { get; set; }
         public int CurrentMaxElo { get; set; }
         public int CurrentMinElo { get; set; }
+        public int CurrentElo { get; set; }
 
 
         public CurrentDuel(List<UciInfo> players, TimeControl timeControlWhite, TimeControl timeControlBlack, int cycles, 
@@ -43,6 +44,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             DuelSaveGames = true;
             CurrentMaxElo = -1;
             CurrentMinElo = -1;
+            CurrentElo = -1;
         }
 
         public CurrentDuel()

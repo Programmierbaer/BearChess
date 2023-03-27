@@ -366,452 +366,452 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFA8" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Style="{StaticResource backgroundField}" Name="imageFA8" Source="../Assets/Stone/white.png"  MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="0" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBA8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Style="{StaticResource backgroundField}" Name="imageBA8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="0" />
-        <Image Name="imageA8" Source="../Assets/Stone/Symbol/RookB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0" 
+        <Image Name="imageA8" Source="../Assets/Stone/Symbol/RookB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0" 
                Grid.Column="0" />
-      
-        <Image Style="{StaticResource backgroundField}" Name="imageFB8" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+
+        <Image Style="{StaticResource backgroundField}" Name="imageFB8" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="1" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBB8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Style="{StaticResource backgroundField}" Name="imageBB8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="1" />
-        <Image Name="imageB8" Source="../Assets/Stone/Symbol/KnightB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Name="imageB8" Source="../Assets/Stone/Symbol/KnightB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="1" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFC8" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Style="{StaticResource backgroundField}" Name="imageFC8" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="2" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBC8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Style="{StaticResource backgroundField}" Name="imageBC8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="2" />
-        <Image Name="imageC8" Source="../Assets/Stone/Symbol/BishopB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Name="imageC8" Source="../Assets/Stone/Symbol/BishopB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="2" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFD8" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Style="{StaticResource backgroundField}" Name="imageFD8" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="3" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBD8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Style="{StaticResource backgroundField}" Name="imageBD8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="3" />
-        <Image Name="imageD8" Source="../Assets/Stone/Symbol/QueenB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Name="imageD8" Source="../Assets/Stone/Symbol/QueenB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="3" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFE8" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Style="{StaticResource backgroundField}" Name="imageFE8" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="4" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBE8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
+        <Image Style="{StaticResource backgroundField}" Name="imageBE8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="4" />
-        <Image Name="imageE8" Source="../Assets/Stone/Symbol/KingB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="4" />
-
-        <Image Style="{StaticResource backgroundField}" Name="imageFF8" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="5" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBF8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="5" />
-        <Image Name="imageF8" Source="../Assets/Stone/Symbol/BishopB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="5" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFG8" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="6" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBG8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="6" />
-        <Image Name="imageG8" Source="../Assets/Stone/Symbol/KnightB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="6" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFH8" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="7" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBH8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="7" />
-        <Image Name="imageH8" Source="../Assets/Stone/Symbol/RookB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
-               Grid.Column="7" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFA7" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="0" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBA7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="0" />
-        <Image Name="imageA7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="0" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFB7" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="1" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBB7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="1" />
-        <Image Name="imageB7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="1" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFC7" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="2" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBC7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="2" />
-        <Image Name="imageC7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="2" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFD7" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="3" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBD7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="3" />
-        <Image Name="imageD7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="3" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFE7" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="4" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBE7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
-               Grid.Column="4" />
-        <Image Name="imageE7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Name="imageE8" Source="../Assets/Stone/Symbol/KingB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="4" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFF7" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Style="{StaticResource backgroundField}" Name="imageFF8" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="5" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBF7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Style="{StaticResource backgroundField}" Name="imageBF8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="5" />
-        <Image Name="imageF7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Name="imageF8" Source="../Assets/Stone/Symbol/BishopB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="5" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFG7" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFG8" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="6" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBG7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBG8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="6" />
-        <Image Name="imageG7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Name="imageG8" Source="../Assets/Stone/Symbol/KnightB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="6" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFH7" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFH8" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="7" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBH7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBH8" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="7" />
-        <Image Name="imageH7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+        <Image Name="imageH8" Source="../Assets/Stone/Symbol/RookB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="0"
                Grid.Column="7" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFA6" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFA7" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="0" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBA6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBA7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="0" />
-        <Image Name="imageA6" Source="../Assets/Stone/a6.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Name="imageA7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="0" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFB6" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFB7" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="1" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBB6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBB7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="1" />
-        <Image Name="imageB6" Source="../Assets/Stone/b6.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Name="imageB7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="1" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFC6" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFC7" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="2" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBC6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBC7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="2" />
-        <Image Name="imageC6" Source="../Assets/Stone/c6.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Name="imageC7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="2" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFD6" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFD7" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="3" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBD6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBD7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
                Grid.Column="3" />
-        <Image  Name="imageD6" Source="../Assets/Stone/d6.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Name="imageD7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="3" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFE7" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="4" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBE7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="4" />
+        <Image Name="imageE7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="4" />
+
+        <Image Style="{StaticResource backgroundField}" Name="imageFF7" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="5" />
+        <Image Style="{StaticResource backgroundField}" Name="imageBF7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="5" />
+        <Image Name="imageF7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="5" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFG7" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="6" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBG7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="6" />
+        <Image Name="imageG7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="6" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFH7" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="7" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBH7" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="7" />
+        <Image Name="imageH7" Source="../Assets/Stone/Symbol/PawnB.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="1"
+               Grid.Column="7" />
+
+        <Image Style="{StaticResource backgroundField}" Name="imageFA6" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="0" />
+        <Image Style="{StaticResource backgroundField}" Name="imageBA6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="0" />
+        <Image Name="imageA6" Source="../Assets/Stone/a6.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="0" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFB6" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="1" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBB6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="1" />
+        <Image Name="imageB6" Source="../Assets/Stone/b6.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="1" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFC6" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="2" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBC6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="2" />
+        <Image Name="imageC6" Source="../Assets/Stone/c6.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="2" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFD6" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="3" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBD6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+               Grid.Column="3" />
+        <Image  Name="imageD6" Source="../Assets/Stone/d6.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                 Grid.Column="3" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFE6" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFE6" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="4" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBE6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBE6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="4" />
-        <Image Name="imageE6" Source="../Assets/Stone/e6.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Name="imageE6" Source="../Assets/Stone/e6.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="4" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFF6" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}" Name="imageFF6" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="5" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBF6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
+        <Image Style="{StaticResource backgroundField}" Name="imageBF6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="5" />
-        <Image Name="imageF6" Source="../Assets/Stone/f6.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
-               Grid.Column="5" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFG6" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
-               Grid.Column="6" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBG6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
-               Grid.Column="6" />
-        <Image Name="imageG6" Source="../Assets/Stone/g6.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
-               Grid.Column="6" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFH6" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
-               Grid.Column="7" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBH6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
-               Grid.Column="7" />
-        <Image Name="imageH6" Source="../Assets/Stone/h6.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
-               Grid.Column="7" />
-
-        <Image Style="{StaticResource backgroundField}" Name="imageFA5" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="0" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBA5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="0" />
-        <Image Name="imageA5" Source="../Assets/Stone/a5.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="0" />
-
-        <Image Style="{StaticResource backgroundField}" Name="imageFB5" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="1" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBB5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="1" />
-        <Image Name="imageB5" Source="../Assets/Stone/b5.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="1" />
-
-        <Image Style="{StaticResource backgroundField}" Name="imageFC5" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="2" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBC5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="2" />
-        <Image Name="imageC5" Source="../Assets/Stone/c5.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="2" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFD5" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="3" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBD5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="3" />
-        <Image Name="imageD5" Source="../Assets/Stone/d5.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="3" />
-
-        <Image Style="{StaticResource backgroundField}" Name="imageFE5" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="4" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBE5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="4" />
-        <Image Name="imageE5" Source="../Assets/Stone/e5.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="4" />
-
-        <Image Style="{StaticResource backgroundField}" Name="imageFF5" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="5" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBF5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
-               Grid.Column="5" />
-        <Image Name="imageF5" Source="../Assets/Stone/f5.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
+        <Image Name="imageF6" Source="../Assets/Stone/f6.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="5" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFG5" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFG6" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="6" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBG5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBG6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="6" />
-        <Image Name="imageG5" Source="../Assets/Stone/g5.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
+        <Image Name="imageG6" Source="../Assets/Stone/g6.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="6" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFH5" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFH6" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="7" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBH5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBH6" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="7" />
-        <Image Name="imageH5" Source="../Assets/Stone/h5.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
+        <Image Name="imageH6" Source="../Assets/Stone/h6.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="2"
                Grid.Column="7" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFA4" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageFA5" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="0" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBA4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageBA5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="0" />
-        <Image Name="imageA4" Source="../Assets/Stone/a4.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Name="imageA5" Source="../Assets/Stone/a5.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="0" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFB4" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageFB5" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="1" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBB4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageBB5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="1" />
-        <Image Name="imageB4" Source="../Assets/Stone/b4.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Name="imageB5" Source="../Assets/Stone/b5.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="1" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFC4" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageFC5" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="2" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBC4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageBC5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="2" />
-        <Image Name="imageC4" Source="../Assets/Stone/c4.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Name="imageC5" Source="../Assets/Stone/c5.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="2" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFD4" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFD5" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="3" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBD4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBD5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="3" />
-        <Image Name="imageD4" Source="../Assets/Stone/d4.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Name="imageD5" Source="../Assets/Stone/d5.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="3" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFE4" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageFE5" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="4" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBE4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageBE5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="4" />
-        <Image Name="imageE4" Source="../Assets/Stone/e4.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Name="imageE5" Source="../Assets/Stone/e5.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="4" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFF4" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageFF5" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="5" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBF4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
+        <Image Style="{StaticResource backgroundField}" Name="imageBF5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="5" />
-        <Image Name="imageF4" Source="../Assets/Stone/f4.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
-               Grid.Column="5" />
-
-        <Image Style="{StaticResource backgroundField}" Name="imageFG4" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
-               Grid.Column="6" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBG4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
-               Grid.Column="6" />
-        <Image Name="imageG4" Source="../Assets/Stone/g4.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
-               Grid.Column="6" />
-
-        <Image Style="{StaticResource backgroundField}" Name="imageFH4" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
-               Grid.Column="7" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBH4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
-               Grid.Column="7" />
-        <Image Name="imageH4" Source="../Assets/Stone/h4.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
-               Grid.Column="7" />
-
-        <Image Style="{StaticResource backgroundField}" Name="imageFA3" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="0" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBA3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="0" />
-        <Image Name="imageA3" Source="../Assets/Stone/a3.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="0" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFB3" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="1" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBB3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="1" />
-        <Image Name="imageB3" Source="../Assets/Stone/b3.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="1" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFC3" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="2" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBC3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="2" />
-        <Image Name="imageC3" Source="../Assets/Stone/c3.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="2" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFD3" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="3" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBD3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="3" />
-        <Image Name="imageD3" Source="../Assets/Stone/d3.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="3" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFE3" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="4" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBE3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="4" />
-        <Image Name="imageE3" Source="../Assets/Stone/e3.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="4" />
-
-        <Image Style="{StaticResource backgroundField}"  Name="imageFF3" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="5" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBF3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
-               Grid.Column="5" />
-        <Image Name="imageF3" Source="../Assets/Stone/f3.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+        <Image Name="imageF5" Source="../Assets/Stone/f5.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="5" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFG3" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+        <Image Style="{StaticResource backgroundField}" Name="imageFG5" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="6" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBG3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+        <Image Style="{StaticResource backgroundField}" Name="imageBG5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="6" />
-        <Image Name="imageG3" Source="../Assets/Stone/g3.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+        <Image Name="imageG5" Source="../Assets/Stone/g5.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="6" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFH3" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+        <Image Style="{StaticResource backgroundField}" Name="imageFH5" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="7" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBH3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+        <Image Style="{StaticResource backgroundField}" Name="imageBH5" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="7" />
-        <Image Name="imageH3" Source="../Assets/Stone/h3.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+        <Image Name="imageH5" Source="../Assets/Stone/h5.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="3"
                Grid.Column="7" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFA2" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageFA4" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="0" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBA2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageBA4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="0" />
-        <Image Name="imageA2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Name="imageA4" Source="../Assets/Stone/a4.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="0" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFB2" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFB4" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="1" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBB2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBB4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="1" />
-        <Image Name="imageB2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Name="imageB4" Source="../Assets/Stone/b4.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="1" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFC2" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageFC4" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="2" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBC2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageBC4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="2" />
-        <Image Name="imageC2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Name="imageC4" Source="../Assets/Stone/c4.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="2" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFD2" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageFD4" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="3" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBD2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageBD4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="3" />
-        <Image Name="imageD2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Name="imageD4" Source="../Assets/Stone/d4.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="3" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFE2" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageFE4"  Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="4" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBE2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageBE4"  Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="4" />
-        <Image Name="imageE2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Name="imageE4" Source="../Assets/Stone/e4.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave"  RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="4" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFF2" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageFF4" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="5" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBF2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageBF4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="5" />
-        <Image Name="imageF2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Name="imageF4" Source="../Assets/Stone/f4.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="5" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFG2" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageFG4" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="6" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBG2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageBG4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="6" />
-        <Image Name="imageG2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Name="imageG4" Source="../Assets/Stone/g4.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="6" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFH2" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageFH4" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="7" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBH2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Style="{StaticResource backgroundField}" Name="imageBH4" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="7" />
-        <Image Name="imageH2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+        <Image Name="imageH4" Source="../Assets/Stone/h4.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="4"
                Grid.Column="7" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFA1" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}" Name="imageFA3" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="0" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBA1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}" Name="imageBA3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="0" />
-        <Image Name="imageA1" Source="../Assets/Stone/Symbol/RookW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Name="imageA3" Source="../Assets/Stone/a3.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="0" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFB1" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFB3" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="1" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBB1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBB3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="1" />
-        <Image Name="imageB1" Source="../Assets/Stone/Symbol/KnightW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Name="imageB3" Source="../Assets/Stone/b3.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="1" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFC1" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFC3" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="2" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBC1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBC3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="2" />
-        <Image Name="imageC1" Source="../Assets/Stone/Symbol/BishopW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Name="imageC3" Source="../Assets/Stone/c3.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="2" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFD1" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFD3" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="3" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBD1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBD3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="3" />
-        <Image Name="imageD1" Source="../Assets/Stone/Symbol/QueenW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Name="imageD3" Source="../Assets/Stone/d3.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="3" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFE1" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFE3" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="4" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBE1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBE3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
                Grid.Column="4" />
-        <Image Name="imageE1" Source="../Assets/Stone/Symbol/KingW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Name="imageE3" Source="../Assets/Stone/e3.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="4" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFF3" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="5" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBF3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="5" />
+        <Image Name="imageF3" Source="../Assets/Stone/f3.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="5" />
+
+        <Image Style="{StaticResource backgroundField}" Name="imageFG3" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="6" />
+        <Image Style="{StaticResource backgroundField}" Name="imageBG3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="6" />
+        <Image Name="imageG3" Source="../Assets/Stone/g3.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="6" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFH3" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="7" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBH3" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="7" />
+        <Image Name="imageH3" Source="../Assets/Stone/h3.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="5"
+               Grid.Column="7" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFA2" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="0" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBA2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="0" />
+        <Image Name="imageA2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="0" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFB2" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="1" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBB2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="1" />
+        <Image Name="imageB2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="1" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFC2" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="2" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBC2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="2" />
+        <Image Name="imageC2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="2" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFD2" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="3" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBD2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="3" />
+        <Image Name="imageD2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="3" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFE2" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="4" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBE2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="4" />
+        <Image Name="imageE2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="4" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFF2" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="5" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBF2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="5" />
+        <Image Name="imageF2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="5" />
+
+        <Image Style="{StaticResource backgroundField}" Name="imageFG2" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="6" />
+        <Image Style="{StaticResource backgroundField}" Name="imageBG2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="6" />
+        <Image Name="imageG2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="6" />
+
+        <Image Style="{StaticResource backgroundField}" Name="imageFH2" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="7" />
+        <Image Style="{StaticResource backgroundField}" Name="imageBH2" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="7" />
+        <Image Name="imageH2" Source="../Assets/Stone/Symbol/PawnW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="6"
+               Grid.Column="7" />
+
+        <Image Style="{StaticResource backgroundField}" Name="imageFA1" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="0" />
+        <Image Style="{StaticResource backgroundField}" Name="imageBA1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="0" />
+        <Image Name="imageA1" Source="../Assets/Stone/Symbol/RookW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="0" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFB1" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="1" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBB1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="1" />
+        <Image Name="imageB1" Source="../Assets/Stone/Symbol/KnightW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="1" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFC1" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="2" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBC1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="2" />
+        <Image Name="imageC1" Source="../Assets/Stone/Symbol/BishopW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="2" />
+
+        <Image Style="{StaticResource backgroundField}" Name="imageFD1" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="3" />
+        <Image Style="{StaticResource backgroundField}" Name="imageBD1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="3" />
+        <Image Name="imageD1" Source="../Assets/Stone/Symbol/QueenW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="3" />
+
+        <Image Style="{StaticResource backgroundField}"  Name="imageFE1" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="4" />
+        <Image Style="{StaticResource backgroundField}"  Name="imageBE1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+               Grid.Column="4" />
+        <Image Name="imageE1" Source="../Assets/Stone/Symbol/KingW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="4"/>
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFF1" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFF1" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="5" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBF1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBF1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="5" />
-        <Image Name="imageF1" Source="../Assets/Stone/Symbol/BishopW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Name="imageF1" Source="../Assets/Stone/Symbol/BishopW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="5" />
 
-        <Image Style="{StaticResource backgroundField}"  Name="imageFG1" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageFG1" Source="../Assets/Stone/black.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="6" />
-        <Image Style="{StaticResource backgroundField}"  Name="imageBG1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}"  Name="imageBG1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="6" />
-        <Image Name="imageG1" Source="../Assets/Stone/Symbol/KnightW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Name="imageG1" Source="../Assets/Stone/Symbol/KnightW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="6" />
 
-        <Image Style="{StaticResource backgroundField}" Name="imageFH1" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}" Name="imageFH1" Source="../Assets/Stone/white.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="7" />
-        <Image Style="{StaticResource backgroundField}" Name="imageBH1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Style="{StaticResource backgroundField}" Name="imageBH1" Source="../Assets/Icons/Empty.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="7" />
-        <Image Name="imageH1" Source="../Assets/Stone/Symbol/RookW.png" MouseDown="UIElement_OnMouseDown" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
+        <Image Name="imageH1" Source="../Assets/Stone/Symbol/RookW.png" MouseDown="UIElement_OnMouseDown" MouseEnter="Image_OnMouseEnter" MouseLeave="Image_OnMouseLeave" RenderOptions.BitmapScalingMode="HighQuality"  Grid.Row="7"
                Grid.Column="7" />
 
 
