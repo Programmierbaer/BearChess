@@ -191,6 +191,7 @@ namespace www.SoLaNoSoft.com.BearChess.NOVAGCitrine
                         {
                             _eChessBoard.ShowMove(_lastMoveCommand.Substring(0, 2),
                                                   _lastMoveCommand.Substring(3, 2),
+                                                  string.Empty,
                                                   string.Empty);
                             _lastMoveCommand = _lastMoveCommand.Replace("-", string.Empty);
                         }

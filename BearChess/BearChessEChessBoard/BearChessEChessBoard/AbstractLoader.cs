@@ -110,15 +110,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         /// <inheritdoc />
-        public void ShowMove(string allMoves, string startFenPosition, bool waitFor)
+        public void ShowMove(string allMoves, string startFenPosition, string promote, bool waitFor)
         {
-            _eChessBoard.ShowMove(allMoves, startFenPosition, waitFor);
+            _eChessBoard.ShowMove(allMoves, startFenPosition, promote, waitFor);
         }
 
         /// <inheritdoc />
-        public void ShowMove(string fromField, string toField, string displayString)
+        public void ShowMove(string fromField, string toField, string promote, string displayString)
         {
-            _eChessBoard.ShowMove(fromField, toField, displayString);
+            _eChessBoard.ShowMove(fromField, toField, promote, displayString);
         }
 
         /// <inheritdoc />

@@ -248,6 +248,7 @@ namespace www.SoLaNoSoft.com.BearChess.SaitekOSA
                         {
                             _eChessBoard.ShowMove(_lastMoveCommand.Substring(0, 2),
                                                   _lastMoveCommand.Substring(3, 2),
+                                                  string.Empty,
                                                   string.Empty);
                             _eChessBoard.SendInformation("NORMAL");
                             _lastMoveCommand = _lastMoveCommand.Replace("-", string.Empty);

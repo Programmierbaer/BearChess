@@ -234,7 +234,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public bool IsConnected => _board?.IsConnected ?? false;
 
-        public void ShowMove(string allMoves, string startFenPosition, bool waitFor)
+        public void ShowMove(string allMoves, string startFenPosition, string promote, bool waitFor)
         {
             if (string.IsNullOrWhiteSpace(allMoves))
             {
@@ -242,7 +242,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 return;
             }
 
-            string promote = string.Empty;
+         
             _fileLogger?.LogDebug($"C: Show Move for: {allMoves}");
             var moveList = allMoves.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             _internalChessBoard = new InternalChessBoard();
@@ -281,12 +281,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _stop = false;
         }
 
-        public void ShowMove(string fromField, string toField, string displayString)
+        public void ShowMove(string fromField, string toField, string promote, string displayString)
         {
-            _internalChessBoard.MakeMove(fromField, toField, string.Empty);
+            _internalChessBoard.MakeMove(fromField, toField, promote);
             var position = _internalChessBoard.GetPosition();
             _waitForFen.Enqueue(position);
-            _board?.SetLedForFields(fromField, toField, string.Empty, false, true, displayString);
+            _board?.SetLedForFields(fromField, toField, promote, false, true, displayString);
             _stop = false;
         }
 

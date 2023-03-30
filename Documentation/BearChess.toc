@@ -33,6 +33,7 @@
 \contentsline {subsubsection}{\numberline {6.1.2}New pieces}{39}{subsubsection.6.1.2}%
 \contentsline {subsection}{\numberline {6.2}Show last/best move}{42}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Possible moves}{43}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Fast move input}{45}{subsection.6.4}%
 \contentsline {section}{\numberline {7}Configure Notation and Moves}{46}{section.7}%
 \contentsline {section}{\numberline {8}Configure clock style}{47}{section.8}%
 \contentsline {section}{\numberline {9}Configure speech and sounds}{48}{section.9}%

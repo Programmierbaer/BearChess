@@ -1577,7 +1577,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 chessBoardUcGraphics.RepaintBoard(_chessBoard);
                 _eChessBoard?.SetAllLedsOff();
                 _eChessBoard?.StopClock();
-                _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName, prevMove?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
+                _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName, promoteFigure,  prevMove?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
                 _engineWindow?.MakeMove(fromFieldFieldName, toFieldFieldName, promoteFigure);
                 if (_currentGame != null)
                 {
@@ -1630,7 +1630,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (!_pureEngineMatch)
             {
                 _eChessBoard?.SetAllLedsOff();
-                _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName, prevMove?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
+                _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName, promoteFigure, prevMove?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
             }
 
             if (_chessBoard.IsDraw)
@@ -1671,7 +1671,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                     _moveListWindow?.AddMove(move1, _gameAgainstEngine && _timeControlWhite.TournamentMode);
                     _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
-                    _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName,
+                    _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName, promoteFigure,
                                            prevMove?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
                     chessBoardUcGraphics.RepaintBoard(_chessBoard);
                     _lastResult = "1/2";
@@ -4011,7 +4011,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StopClock();
                     chessBoardUcGraphics.RepaintBoard(_chessBoard);
                     _eChessBoard?.SetAllLedsOff();
-                    _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName,
+                    _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName,promote,
                                            _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
                     _moveListWindow?.AddMove(engineMove, _gameAgainstEngine && _timeControlWhite.TournamentMode);
                     _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
@@ -4068,7 +4068,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         _eChessBoard?.StopClock();
                         chessBoardUcGraphics.RepaintBoard(_chessBoard);
                         _eChessBoard?.SetAllLedsOff();
-                        _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName,
+                        _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName, promote,
                                                _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
                         _moveListWindow?.AddMove(engineMove, _gameAgainstEngine && _timeControlWhite.TournamentMode);
                         _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
@@ -4146,7 +4146,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (!_pureEngineMatch)
                 {
                     _eChessBoard?.SetAllLedsOff();
-                    _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName, _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
+                    _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName,promote, _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
                 }
                 _materialWindow?.ShowMaterial(_chessBoard.GetFigures(Fields.COLOR_WHITE), _chessBoard.GetFigures(Fields.COLOR_BLACK), _chessBoard.GetPlayedMoveList());
                 if (_currentAction != CurrentAction.InRunningGame)
@@ -6006,7 +6006,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         
                     });
                     _fileLogger?.LogDebug($"New prev fen: {_prevFenPosition.Split(" ".ToCharArray())[0]}");
-                    _eChessBoard?.ShowMove(allMoves, _gameStartFenPosition, false);
+                    _eChessBoard?.ShowMove(allMoves, _gameStartFenPosition,string.Empty, false);
                     return;
                 }
             }
@@ -6700,7 +6700,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 $"{elapsedTime.Hour}:{elapsedTime.Minute}:{elapsedTime.Second}";
                         }
                     }
-                    _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName,
+                    _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName,promoteFigure,
                                            _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
                     _moveListWindow?.AddMove(move1, _gameAgainstEngine && _timeControlWhite.TournamentMode);
                     _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
@@ -6783,7 +6783,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         }
                         chessBoardUcGraphics.RepaintBoard(_chessBoard);
                         _eChessBoard?.SetAllLedsOff();
-                        _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName,
+                        _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName,promoteFigure,
                                                _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
                         _moveListWindow?.AddMove(move1, _gameAgainstEngine && _timeControlWhite.TournamentMode);
                         _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);

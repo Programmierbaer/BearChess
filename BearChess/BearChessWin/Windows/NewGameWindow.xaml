@@ -245,9 +245,9 @@
                         <local:NumericUpDownUserControl x:Name="numericUpDownUserControlAverageTime2" Height="40"
                                                         MinValue="1" MaxValue="999" Value="1" />
                         <RadioButton Name="radioButtonSecond2" Margin="10,0,0,0" IsChecked="True"
-                                     VerticalAlignment="Center" GroupName="averageTime" Content="sec." />
+                                     VerticalAlignment="Center" GroupName="averageTime2" Content="sec." />
                         <RadioButton Name="radioButtonMinute2" Margin="10,0,0,0" VerticalAlignment="Center"
-                                     GroupName="averageTime" Content="min." />
+                                     GroupName="averageTime2" Content="min." />
                     </StackPanel>
                 </Border>
                 <StackPanel Grid.Row="4" Grid.Column="1">

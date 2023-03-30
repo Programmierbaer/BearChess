@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.9.0}
+\fancyhead[R]{Version 0.9.9.1}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{27.03.2023} 
+\date{29.03.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -789,6 +789,9 @@ Either when the mouse pointer hovers over a target field or over a piece.
 \end{figure}
 
 You can define the arrow color.
+
+\subsection{Fast move input}
+If the "Fast move input" option is activated, a move is selected when you click on a target field that is only valid for one piece, or you click on a piece that can only make one move.
 
 
 \section{Configure Notation and Moves}
@@ -2731,6 +2734,12 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 0.9.9.0 $\Rightarrow$  0.9.9.1}
+\begin{itemize}
+	\item {\color{red}Fix}: Under promotion
+\end{itemize}
+
 
 \subsection*{Version 0.9.8.0 $\Rightarrow$  0.9.9.0}
 \begin{itemize}
