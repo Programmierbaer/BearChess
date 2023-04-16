@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -10,6 +11,7 @@ using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessTournament;
 
+
 namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
@@ -20,13 +22,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Configuration _configuration;
         private readonly CurrentTournament _currentTournament;
         private readonly decimal[] _results;
+        private readonly decimal[] _numbers;
+        private readonly  string[,] _resultsDetails;
         private readonly int _totalGames;
         private int _currentGameNumber;
         private bool _isFinished;
         private bool _canClose;
+        private readonly IComparer _revComparer = new ReverseComparer();
 
         public event EventHandler StopTournament;
         public event EventHandler<string> SaveGame;
+
+        private class ReverseComparer  : IComparer
+        {
+            public int Compare(object x, object y)
+            {
+                return x.Equals(y) ? 0 : (decimal)y < (decimal)x ? -1 : 1;
+            }
+
+        }
 
         public TournamentInfoRoundRobinWindow(Configuration configuration)
         {
@@ -45,10 +59,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             configuration)
         {
             _currentTournament = currentTournament;
-            _results = new decimal[_currentTournament.Players.Length]; 
+            _results = new decimal[_currentTournament.Players.Length];
+            _numbers = new decimal[_currentTournament.Players.Length]; 
+            _resultsDetails = new string[_currentTournament.Players.Length, _currentTournament.Players.Length]; 
             for (var i = 0; i < _currentTournament.Players.Length; i++)
             {
                 _results[i] = 0;
+                _numbers[i] = i;
+              
                 gridDuel.RowDefinitions.Add(new RowDefinition());
                 var textBlockEngine = new TextBlock
                 {
@@ -74,6 +92,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     Text = (i + 1).ToString(),
                     Margin = new Thickness(5)
                 };
+              
 
                 for (var j = 0; j < _currentTournament.Players.Length; j++)
                 {
@@ -91,12 +110,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                          Margin = new Thickness(5),
                                          TextAlignment = TextAlignment.Center
                     };
+                    _resultsDetails[i, j] =
+                        i == j ? "".PadLeft(_currentTournament.Cycles, '*').Replace("*", "* ") : string.Empty;
                     Grid.SetColumn(textBlockResult, i + 3);
                     Grid.SetRow(textBlockResult, j + 1);
                     gridDuel.Children.Add(textBlockResult);
                 }
-
-                gridDuel.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(20*_currentTournament.Cycles)});
+              
+                gridDuel.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(20 *_currentTournament.Cycles)});
 
                 Grid.SetColumn(textBlockEngine, 1);
                 Grid.SetRow(textBlockEngine, i + 1);
@@ -104,6 +125,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 Grid.SetRow(textBlockSumme, i + 1);
                 Grid.SetColumn(textBlock3, 0);
                 Grid.SetRow(textBlock3, i + 1);
+                
                 gridDuel.Children.Add(textBlockEngine);
                 gridDuel.Children.Add(textBlockSumme);
                 gridDuel.Children.Add(textBlock3);
@@ -111,6 +133,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 Grid.SetColumn(textBlock, i + 3);
                 Grid.SetRow(textBlock, 0);
                 gridDuel.Children.Add(textBlock);
+                gridDuel.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20 * _currentTournament.Cycles) });
             }
 
             _totalGames = TournamentManager.GetNumberOfTotalGames(_currentTournament.TournamentType,
@@ -133,6 +156,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             buttonPause.Visibility = Visibility.Collapsed;
             buttonClose.Visibility = Visibility.Visible;
+            buttonDraw.Visibility = Visibility.Collapsed;
+            buttonWin.Visibility = Visibility.Collapsed;
+            buttonLose.Visibility = Visibility.Collapsed;
             _isFinished = true;
             _canClose = true;
         }
@@ -147,23 +173,26 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void AddResult(string result, int[] pairing)
         {
-            TextBlock textBlock1 = (TextBlock) gridDuel.Children.Cast<UIElement>()
-                                                       .Where(r => Grid.GetRow(r) == pairing[0] + 1)
-                                                       .Where(c => Grid.GetColumn(c) == pairing[1] + 3)
-                                                       .First(t => t is TextBlock);
+           
+            var textBlock1 = (TextBlock) gridDuel.Children.Cast<UIElement>()
+                                                 .Where(r => Grid.GetRow(r) == pairing[0] + 1)
+                                                 .Where(c => Grid.GetColumn(c) == pairing[1] + 3)
+                                                 .First(t => t is TextBlock);
 
-            TextBlock textBlock2 = (TextBlock) gridDuel.Children.Cast<UIElement>()
-                                                       .Where(r => Grid.GetRow(r) == pairing[1] + 1)
-                                                       .Where(c => Grid.GetColumn(c) == pairing[0] + 3)
-                                                       .First(t => t is TextBlock);
+            var textBlock2 = (TextBlock) gridDuel.Children.Cast<UIElement>()
+                                                 .Where(r => Grid.GetRow(r) == pairing[1] + 1)
+                                                 .Where(c => Grid.GetColumn(c) == pairing[0] + 3)
+                                                 .First(t => t is TextBlock);
 
 
             if (result.Contains("/"))
             {
                 textBlock1.Text += " ½";
                 textBlock2.Text += " ½";
-                _results[pairing[0]] = _results[pairing[0]] + (decimal) 0.5;
-                _results[pairing[1]] = _results[pairing[1]] + (decimal) 0.5;
+                _results[pairing[0]] += (decimal) 0.5;
+                _results[pairing[1]] += (decimal) 0.5;
+                _resultsDetails[pairing[0], pairing[1]] += " ½";
+                _resultsDetails[pairing[1], pairing[0]] += " ½";
             }
             else
             {
@@ -172,7 +201,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                     textBlock1.Text += " 1";
                     textBlock2.Text += " 0";
-                    _results[pairing[0]] = _results[pairing[0]] + (decimal) 1;
+                    _results[pairing[0]] += 1;
+                    _resultsDetails[pairing[0], pairing[1]] += " 1";
+                    _resultsDetails[pairing[1], pairing[0]] += " 0";
                 }
 
                 if (result.StartsWith("0"))
@@ -180,7 +211,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                     textBlock1.Text += " 0";
                     textBlock2.Text += " 1";
-                    _results[pairing[1]] = _results[pairing[1]] + (decimal) 1;
+                    _results[pairing[1]] += 1;
+                    _resultsDetails[pairing[0], pairing[1]] += " 0";
+                    _resultsDetails[pairing[1], pairing[0]] += " 1";
                 }
             }
 
@@ -194,8 +227,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockStatus.Text = "Tournament finished";
                 buttonPause.Visibility = Visibility.Collapsed;
                 buttonClose.Visibility = Visibility.Visible;
+                buttonDraw.Visibility = Visibility.Collapsed;
+                buttonWin.Visibility = Visibility.Collapsed;
+                buttonLose.Visibility = Visibility.Collapsed;
                 _isFinished = true;
                 _canClose = true;
+                //
             }
 
             textBlock1 = (TextBlock) gridDuel.Children.Cast<UIElement>()
@@ -209,6 +246,32 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                              .First(t => t is TextBlock);
             textBlock1.Text = $"{_results[pairing[0]]}";
             textBlock2.Text = $"{_results[pairing[1]]}";
+            if (_isFinished)
+            {
+                Array.Sort(_results, _numbers, _revComparer);
+                for (var i = 0; i < _numbers.Length; i++)
+                {
+                    var textBlock = (TextBlock)gridDuel.Children.Cast<UIElement>()
+                                                       .Where(r => Grid.GetRow(r) == i + 1)
+                                                       .Where(c => Grid.GetColumn(c) == 1)
+                                                       .First(t => t is TextBlock);
+
+                    textBlock.Text = _currentTournament.Players[(int) _numbers[i]].Name;
+                    textBlock = (TextBlock)gridDuel.Children.Cast<UIElement>()
+                                                    .Where(r => Grid.GetRow(r) == i + 1)
+                                                    .Where(c => Grid.GetColumn(c) == 2)
+                                                    .First(t => t is TextBlock);
+                    textBlock.Text = $"{_results[i]}";
+                    for (var j = 0; j < _results.Length; j++)
+                    {
+                        textBlock = (TextBlock)gridDuel.Children.Cast<UIElement>()
+                                                       .Where(r => Grid.GetRow(r) == i + 1)
+                                                       .Where(c => Grid.GetColumn(c) == j+3)
+                                                       .First(t => t is TextBlock);
+                        textBlock.Text = _resultsDetails[(int)_numbers[i], j];
+                    }
+                }
+            }
 
         }
 
@@ -225,7 +288,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     _canClose = true;
-                    StopTournament?.Invoke(this, new EventArgs());
+                    StopTournament?.Invoke(this, EventArgs.Empty);
                 }
             }
         }

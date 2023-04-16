@@ -653,7 +653,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             }
 
             DatabaseGame databaseGame = null;
-            var pgnCreator = new PgnCreator(purePGN);
+           
             try
             {
                 _connection.Open();
@@ -670,7 +670,9 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                             using (TextReader reader = new StringReader(rdr.GetString(8)))
                             {
                                 databaseGame = (DatabaseGame)xmlSerializer.Deserialize(reader);
+                                
                                 databaseGame.Id = id;
+                                var pgnCreator = new PgnCreator(databaseGame.CurrentGame.StartPosition, purePGN);
                                 foreach (var databaseGameAllMove in databaseGame.AllMoves)
                                 {
                                     pgnCreator.AddMove(databaseGameAllMove);

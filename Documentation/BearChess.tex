@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.9.1}
+\fancyhead[R]{Version 0.9.10.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{29.03.2023} 
+\date{16.04.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -43,7 +43,7 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
+BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
 
 I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc. If something does not work, the companies are not responsible for it.\\
 
@@ -292,7 +292,7 @@ or on chapter \textbf{\ref{ConfigureTabuTronicSentio}  \nameref{ConfigureTabuTro
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
 	\item  \includegraphics[scale=0.3]{dgt48.png} \textbf{DGT} connect to DGT e-Boards, DGT Revelation or DGT Pegasus chessboard.	
 	\item  \includegraphics[scale=0.05]{squareoff.png} \textbf{Square Off Pro} connect to Square Off Pro chessboard.		
-	\item  \includegraphics[scale=0.1]{chessnut.png} \textbf{Chessnut Air} connect to Chessnut Air chessboard.		
+	\item  \includegraphics[scale=0.1]{chessnut.png} \textbf{Chessnut Air/Pro} connect to Chessnut Air/Pro chessboard.		
 	\item  \includegraphics[scale=0.3]{novag48.PNG} \textbf{NOVAG} connect to NOVAG Citrine or NOVAG UCB chessboard.			
 \item  \includegraphics[scale=0.4]{Saitek_logo.PNG} \textbf{Saitek OSA} connect to Saitek chessboards with supports OSA protocol.		
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
@@ -924,7 +924,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
+BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Pro communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
 For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
 In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
@@ -1311,17 +1311,18 @@ DGT Pegasus has no real piece recognition and can only give the information per 
 
 Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
 
-\subsection{Connect Chessnut Air} \label{ConnectChessnutAir}
+\subsection{Connect Chessnut Air/Pro} \label{ConnectChessnutAir}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{ChessnutAir1.png}
-	\caption{Connect to Chessnut Air }
+	\caption{Connect to Chessnut Air/Pro) }
 	\label{fig:ChessnutAir1}
 \end{figure}
 
-No configuration is required for your Chessnut Air chessboard.\\
-Chessnut Air supports USB and Bluetooth LE connections. You cannot use Bluetooth LE when the board is connected to your computer with an USB cable.\\
-For a USB connection, the connection is not simulated as a COM port, but as a Human Interface Device (HID).
+No configuration is required for your Chessnut Air/Pro chessboard.\\
+Chessnut Air/Pro supports USB and Bluetooth LE connections. You cannot use Bluetooth LE when the board is connected to your computer with an USB cable.\\
+For a USB connection, the connection is not simulated as a COM port, but as a Human Interface Device (HID).\\
+{\color{red}*} BearChess cannot distinguish whether they are connected to an Air or Pro.
 
 \begin{figure}[H]
 	\centering
@@ -1656,7 +1657,7 @@ Avoids a time gap to execute the moves of the engines on the board.
 
 
 \subsection{Start from}
-Select your start position. The default is the base position, but you can start from any position on the board or continue a game.
+Select your start position. The default is the "Base position" or "Current position" if the current position on the board is not the base position, but you can start from any position on the board or continue a game.
 
 
 
@@ -2163,6 +2164,7 @@ When you have started the tournament, the following information window appears:
 	\caption{Engine tournament information roundrobin}
 	\label{fig:EngineTournameent5}
 \end{figure}
+{\color{red}*}: If the tournament is finshed, the order of the participants will change according to the ranking.
 
 \begin{figure}[H]
 	\centering
@@ -2725,6 +2727,7 @@ These are some ideas what will come in one of the next versions.
 		\item Improve electronic chess board handling.
   	    \item Improve the performance of the opening book.
    		\item GUI redesign.
+   		\item Support for \textbf{iChessOne} board.
 	\end{itemize} 
 
 \pagebreak
@@ -2735,9 +2738,19 @@ These are some ideas what will come in one of the next versions.
 
 \section{Change log}
 
+\subsection*{Version 0.9.9.1 $\Rightarrow$  0.9.10.0}
+\begin{itemize}
+	\item {\color{teal}Changes}: Improved tournament information.
+	\item {\color{teal}Changes}: New game: Preselected start from given position is current position not base position.
+	\item {\color{teal}Changes}: Adaptions for Chessnut Pro.
+	\item {\color{red}Fix}: Moves list for moves where under promotion and check or mate are in one step.
+	\item {\color{red}Fix}: PGN notation for games that do not not starts from base position.
+\end{itemize}
+
+
 \subsection*{Version 0.9.9.0 $\Rightarrow$  0.9.9.1}
 \begin{itemize}
-	\item {\color{red}Fix}: Under promotion
+	\item {\color{red}Fix}: Under promotion.
 \end{itemize}
 
 

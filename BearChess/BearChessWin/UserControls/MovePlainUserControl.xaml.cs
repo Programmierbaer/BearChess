@@ -83,18 +83,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             textBlockMove.Text = GetMoveDisplay(
-                $"{move.FromFieldName}{move.ToFieldName}{move.CheckOrMateSign}".ToLower(),
-                move.Figure, move.CapturedFigure, move.PromotedFigure, move.ShortMoveIdentifier);
+                $"{move.FromFieldName}{move.ToFieldName}".ToLower(),
+                move.Figure, move.CapturedFigure, FigureId.NO_PIECE, move.ShortMoveIdentifier);
             if (!string.IsNullOrWhiteSpace(move.EvaluationSymbol))
             {
                 textBlockMoveEvaluation.Text = move.EvaluationSymbol;
                 textBlockMoveEvaluation.Visibility = Visibility.Visible;
             }
+           
 
             if (!string.IsNullOrWhiteSpace(move.MoveSymbol))
             {
                 textBlockMoveSymbol.Text = move.MoveSymbol;
                 textBlockMoveSymbol.Visibility = Visibility.Visible;
+            }
+            if (!string.IsNullOrWhiteSpace(move.CheckOrMateSign))
+            {
+                textBlockCheckMateSymbol.Text = move.CheckOrMateSign;
+                textBlockCheckMateSymbol.Visibility = Visibility.Visible;
             }
 
             if (!string.IsNullOrWhiteSpace(move.OwnSymbol))
@@ -174,6 +180,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 else
                 {
                     textBlockFigureSymbol.Visibility = Visibility.Collapsed;
+                }
+
+                if (move.PromotedFigure != FigureId.NO_PIECE)
+                {
+
+                    var fenCharacter = FigureId.FigureIdToFenCharacter[move.PromotedFigure];
+                    if (_figureType == DisplayFigureType.Symbol)
+                    {
+                        textBlockPromotionSymbol.FontFamily = _fontFamily;
+                        textBlockPromotionSymbol.Text = FontConverter.ConvertFont(fenCharacter, "Chess Merida");
+                    }
+                    else
+                    {
+                        textBlockPromotionSymbol.Text = CountryLetter(fenCharacter.ToUpper(), _countryType);
+                    }
+                    textBlockPromotionSymbol.Visibility = Visibility.Visible;
                 }
 
                 if (_moveType == DisplayMoveType.ToField)

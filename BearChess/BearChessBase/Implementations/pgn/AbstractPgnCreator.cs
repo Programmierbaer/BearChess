@@ -80,6 +80,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                                                                m.FromField != move.FromField &&
                                                                _chessBoard.GetFigureOn(m.FromField).GeneralFigureId ==
                                                                figureFromField.GeneralFigureId);
+                    var capSign = move.CapturedFigure != FigureId.NO_PIECE ? "x" : string.Empty;
                     if (tmpMove != null)
                     {
                         var tmpFigure = _chessBoard.GetFigureOn(tmpMove.FromField);
@@ -88,30 +89,26 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                         {
                             var fieldToLineFrom = Fields.FieldToLines[figureFromField.Field];
                             var fieldToLineTmp = Fields.FieldToLines[tmpFigure.Field];
+                            
                             if (fieldToLineTmp != fieldToLineFrom)
                             {
                                 pgnMove =
-                                    $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(0, 1).ToLower()}{move.ToFieldName.ToLower()}".Trim();
+                                    $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(0, 1).ToLower()}{capSign}{move.ToFieldName.ToLower()}".Trim();
                             }
                             else
                             {
                                 pgnMove =
-                                    $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(1, 1).ToLower()}{move.ToFieldName.ToLower()}".Trim();
+                                    $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.FromFieldName.Substring(1, 1).ToLower()}{capSign}{move.ToFieldName.ToLower()}".Trim();
                             }
                         }
                     }
                     else
                     {
-                        if (move.CapturedFigure != FigureId.NO_PIECE)
-                        {
-                            pgnMove =
-                                $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}x{move.ToFieldName.ToLower()}".Trim();
-                        }
-                        else
-                        {
-                            pgnMove =
-                                $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{move.ToFieldName.ToLower()}".Trim();
-                        }
+
+                        pgnMove =
+                            $"{FigureId.FigureIdToFenCharacter[figureFromField.FigureId].ToUpper()}{capSign}{move.ToFieldName.ToLower()}"
+                                .Trim();
+
                     }
                 }
             }

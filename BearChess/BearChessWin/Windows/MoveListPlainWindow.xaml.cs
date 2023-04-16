@@ -51,6 +51,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showForWhite;
         private readonly FontFamily _fontFamily;
         private CurrentGame _currentGame;
+        private string _gameStartPosition;
 
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
         public event EventHandler<SelectedMoveOfMoveList> ContentChanged;
@@ -85,16 +86,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockResult.Text = string.Empty;
             SetContentInfo();
             _currentGame = null;
+            _gameStartPosition = string.Empty;
         }
 
-        public void SetPlayerAndResult(CurrentGame currentGame, string result)
+        public void SetPlayerAndResult(CurrentGame currentGame, string gameStartPosition, string result)
         {
             _currentGame = currentGame;
+            _gameStartPosition = gameStartPosition;
             textBlockWhitePlayer.Text = currentGame.PlayerWhite;
             textBlockBlackPlayer.Text = currentGame.PlayerBlack;
             if (result.Contains("/"))
                 result = "1/2";
             textBlockResult.Text = result;
+        }
+
+        public void SetStartPosition(string gameStartPosition)
+        {
+            _gameStartPosition = gameStartPosition;
         }
 
         public void SetResult(string result)
@@ -507,7 +515,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCopy_OnClick(object sender, RoutedEventArgs e)
         {
-            var pgnCreator = new PgnCreator(bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false")));
+            var pgnCreator = new PgnCreator(_gameStartPosition, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false")));
             for (int w = 0; w < stackPanelMoves.Children.Count; w++)
             {
                 if (stackPanelMoves.Children[w] is WrapPanel wrapPanel1)
@@ -517,7 +525,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (wrapPanel1.Children[c] is MovePlainUserControl movePlainUserControl)
                         {
                             pgnCreator.AddMove(movePlainUserControl.CurrentMove);
-
                         }
                     }
                 }
@@ -530,6 +537,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                               Result = textBlockResult.Text,
                               GameDate =  DateTime.Now.ToString("dd.MM.yyyy")
                           };
+            if (!string.IsNullOrWhiteSpace(_gameStartPosition))
+            {
+                pgnGame.AddValue("FEN", _gameStartPosition);
+                pgnGame.AddValue("SetUp", "1");
+            }
             foreach (var move in pgnCreator.GetAllMoves())
             {
                 pgnGame.AddMove(move);

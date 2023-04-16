@@ -59,7 +59,7 @@
 \contentsline {subsubsection}{\numberline {11.5.1}Configure Bluetooth}{66}{subsubsection.11.5.1}%
 \contentsline {subsection}{\numberline {11.6}Connect DGT Pegasus}{66}{subsection.11.6}%
 \contentsline {subsubsection}{\numberline {11.6.1}Verify position}{67}{subsubsection.11.6.1}%
-\contentsline {subsection}{\numberline {11.7}Connect Chessnut Air}{68}{subsection.11.7}%
+\contentsline {subsection}{\numberline {11.7}Connect Chessnut Air/Pro}{68}{subsection.11.7}%
 \contentsline {subsection}{\numberline {11.8}Connect Square Off Pro}{69}{subsection.11.8}%
 \contentsline {subsubsection}{\numberline {11.8.1}Verify position}{70}{subsubsection.11.8.1}%
 \contentsline {subsection}{\numberline {11.9}Configure NOVAG Citrine}{71}{subsection.11.9}%
@@ -83,16 +83,16 @@
 \contentsline {subsection}{\numberline {12.8}Start from}{82}{subsection.12.8}%
 \contentsline {subsection}{\numberline {12.9}Configuration for startup game}{82}{subsection.12.9}%
 \contentsline {section}{\numberline {13}Move list}{83}{section.13}%
-\contentsline {section}{\numberline {14}Pause and continue a game}{84}{section.14}%
+\contentsline {section}{\numberline {14}Pause and continue a game}{85}{section.14}%
 \contentsline {section}{\numberline {15}Easy start or restart of a game}{85}{section.15}%
 \contentsline {subsubsection}{\numberline {15.0.1}Continue a game}{86}{subsubsection.15.0.1}%
 \contentsline {subsubsection}{\numberline {15.0.2}Electronic chessboard}{86}{subsubsection.15.0.2}%
-\contentsline {subsection}{\numberline {15.1}Influence of BearChess in engine games}{86}{subsection.15.1}%
-\contentsline {section}{\numberline {16}Relaxed mode}{87}{section.16}%
+\contentsline {subsection}{\numberline {15.1}Influence of BearChess in engine games}{87}{subsection.15.1}%
+\contentsline {section}{\numberline {16}Relaxed mode}{88}{section.16}%
 \contentsline {section}{\numberline {17}Analysis mode}{89}{section.17}%
-\contentsline {subsection}{\numberline {17.1}Free analyse}{89}{subsection.17.1}%
-\contentsline {subsection}{\numberline {17.2}With electronic chessboard}{89}{subsection.17.2}%
-\contentsline {subsection}{\numberline {17.3}Without electronic chessboard}{90}{subsection.17.3}%
+\contentsline {subsection}{\numberline {17.1}Free analyse}{90}{subsection.17.1}%
+\contentsline {subsection}{\numberline {17.2}With electronic chessboard}{90}{subsection.17.2}%
+\contentsline {subsection}{\numberline {17.3}Without electronic chessboard}{91}{subsection.17.3}%
 \contentsline {subsection}{\numberline {17.4}Analyse a game}{92}{subsection.17.4}%
 \contentsline {subsubsection}{\numberline {17.4.1}Analyse a loaded game}{92}{subsubsection.17.4.1}%
 \contentsline {subsubsection}{\numberline {17.4.2}Analyse a new game}{95}{subsubsection.17.4.2}%

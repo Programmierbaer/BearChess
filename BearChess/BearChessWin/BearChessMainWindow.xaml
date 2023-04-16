@@ -555,7 +555,7 @@
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Header="Chessnut Air" Name="menuItemChessnutAirBoard">
+                    <MenuItem Header="Chessnut Air/Pro" Name="menuItemChessnutAirBoard">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/chessnut.png" />
                         </MenuItem.Icon>

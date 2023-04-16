@@ -134,6 +134,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             buttonPause.Visibility = Visibility.Collapsed;
             buttonClose.Visibility = Visibility.Visible;
+            buttonDraw.Visibility = Visibility.Collapsed;
+            buttonWin.Visibility = Visibility.Collapsed;
+            buttonLose.Visibility = Visibility.Collapsed;
             _isFinished = true;
             _canClose = true;
         }
@@ -212,6 +215,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockStatus.Text = "Tournament finished";
                 buttonPause.Visibility = Visibility.Collapsed;
                 buttonClose.Visibility = Visibility.Visible;
+                buttonDraw.Visibility = Visibility.Collapsed;
+                buttonWin.Visibility = Visibility.Collapsed;
+                buttonLose.Visibility = Visibility.Collapsed;
                 _isFinished = true;
                 _canClose = true;
             }

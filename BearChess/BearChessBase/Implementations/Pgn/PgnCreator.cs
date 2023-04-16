@@ -12,6 +12,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             _purePGN = purePGN;
             _allPgnMoves = new List<string>();
             _allMoves = new List<Move>();
+            _fenStartPosition = string.Empty;
         }
 
         public PgnCreator(string fenStartPosition, bool purePGN) : this(purePGN)
@@ -28,7 +29,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             _chessBoard.NewGame();
             if (!string.IsNullOrEmpty(_fenStartPosition))
             {
-                _chessBoard.SetPosition(_fenStartPosition,false);
+                _chessBoard.SetPosition(_fenStartPosition, false);
             }
             _allPgnMoves.Clear();
             var moveCnt = 0;

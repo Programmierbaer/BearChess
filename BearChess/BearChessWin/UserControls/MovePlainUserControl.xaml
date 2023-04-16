@@ -75,7 +75,18 @@
                     </TextBlock>
                     <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockMove"
                                VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left">
-                        e2-e4Q
+                        e2-e4
+                    </TextBlock>
+                   
+                    <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockPromotionSymbol"
+                               Visibility="Collapsed" VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left"
+                              >
+                        Q
+                    </TextBlock>
+                    <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockCheckMateSymbol"
+                               Visibility="Collapsed" VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left"
+                    >
+                        +
                     </TextBlock>
                     <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal" Name="textBlockMoveSymbol"
                                Visibility="Collapsed" FontWeight="DemiBold"
@@ -83,6 +94,8 @@
                                Foreground="Red">
                         !
                     </TextBlock>
+                  
+                    
                     <TextBlock Margin="0,1,0,1" FontFamily="Calibri" FontStretch="Normal"
                                Name="textBlockMoveEvaluation" Visibility="Collapsed" FontWeight="DemiBold"
                                VerticalAlignment="Center" TextAlignment="Left" HorizontalAlignment="Left"

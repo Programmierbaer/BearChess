@@ -19,6 +19,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public string PlayerBlack { get; set; }
         
         public bool StartFromBasePosition { get; set; }
+        public string StartPosition { get; set; }
         public bool ContinueGame { get; set; }
         public bool DuelEngine { get; set; }
         public bool DuelEnginePlayer { get; set; }
@@ -72,6 +73,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             SwitchedColor = false;
             RepeatedGame = false;
             ContinueGame = continueGame;
+            StartPosition = string.Empty;
         }
 
         public CurrentGame()
