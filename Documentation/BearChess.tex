@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.10.0}
+\fancyhead[R]{Version 0.9.11.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{16.04.2023} 
+\date{01.05.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -299,6 +299,7 @@ or on chapter \textbf{\ref{ConfigureTabuTronicSentio}  \nameref{ConfigureTabuTro
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
 	\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
 	\item \textbf{Show best move in game} displays the current best move of the engine on your electronic chessboard.	
+	\item \textbf{Show move when help is requested} displays the current best move of the analysis engine on your electronic chessboard when help is requested. To request help, raise your king for a short time and set it down again. To do this, you must be on the move and have an additional engine loaded for assistent (read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}).
 \end{itemize}
 
 \subsection{Windows}
@@ -2644,6 +2645,10 @@ The following figure gives you an example. You play a game against Stockfish and
 	\label{fig:Extended1}
 \end{figure}
 
+{\color{red}*}: This works only for engines that report their analysis. For this also no opening book should be activated.\\
+
+If you have "Show move when help is request" activated. raise your king for a short time and set it down again to see the best move on the board.\\
+
 Even if you are not playing a game and are on mode "Easy playing", just load some engines and make your moves.
 
 \section{Important To Know}
@@ -2737,6 +2742,18 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+
+\subsection*{Version 0.9.10.0 $\Rightarrow$  0.9.11.0}
+\begin{itemize}
+    \item {\color{blue}New}: Define a buddy engine for help.
+	\item {\color{blue}New}: Lift up your king on board for help.
+	\item {\color{teal}Changes}: Improved LED handling for Certabo and TabuTronic Cerno.
+	\item {\color{red}Fix}: Handling analyse engine.
+	\item {\color{red}Fix}: High CPU utilization on ChessLink.
+	\item {\color{red}Fix}: Reduced log output on reading installed engines.
+\end{itemize}
+
 
 \subsection*{Version 0.9.9.1 $\Rightarrow$  0.9.10.0}
 \begin{itemize}

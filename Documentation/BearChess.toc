@@ -9,7 +9,7 @@
 \contentsline {subsection}{\numberline {3.4}Books}{14}{subsection.3.4}%
 \contentsline {subsection}{\numberline {3.5}Settings}{15}{subsection.3.5}%
 \contentsline {subsection}{\numberline {3.6}Electronic Boards}{16}{subsection.3.6}%
-\contentsline {subsection}{\numberline {3.7}Windows}{17}{subsection.3.7}%
+\contentsline {subsection}{\numberline {3.7}Windows}{18}{subsection.3.7}%
 \contentsline {subsection}{\numberline {3.8}Info}{18}{subsection.3.8}%
 \contentsline {subsection}{\numberline {3.9}Help}{18}{subsection.3.9}%
 \contentsline {section}{\numberline {4}Install, Configure and Load a chess engine}{18}{section.4}%
@@ -139,7 +139,7 @@
 \contentsline {subsection}{\numberline {26.4}Certabo: Calibration}{130}{subsection.26.4}%
 \contentsline {subsection}{\numberline {26.5}Certabo: Pawn conversion to a queen}{130}{subsection.26.5}%
 \contentsline {subsection}{\numberline {26.6}TabuTronic Sentio: Piece recognition}{130}{subsection.26.6}%
-\contentsline {subsection}{\numberline {26.7}Millennium ChessLink (not eOne): board orientation}{130}{subsection.26.7}%
+\contentsline {subsection}{\numberline {26.7}Millennium ChessLink (not eOne): board orientation}{131}{subsection.26.7}%
 \contentsline {subsection}{\numberline {26.8}DGT Pegasus: Piece recognition}{131}{subsection.26.8}%
 \contentsline {subsection}{\numberline {26.9}Square Off Pro: Piece recognition}{131}{subsection.26.9}%
 \contentsline {subsection}{\numberline {26.10}Electronic chessboard and engine duels}{131}{subsection.26.10}%
