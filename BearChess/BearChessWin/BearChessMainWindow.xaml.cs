@@ -7114,7 +7114,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _currentMoveIndex = 0;
             _chessBoard.NewGame();
             _gameStartFenPosition = string.Empty;
-            if (!databaseGame.CurrentGame.StartFromBasePosition)
+            if (databaseGame.CurrentGame != null && !databaseGame.CurrentGame.StartFromBasePosition)
             {
                 _chessBoard.SetPosition(databaseGame.CurrentGame.StartPosition, false);
                 _gameStartFenPosition = databaseGame.CurrentGame.StartPosition;
