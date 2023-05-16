@@ -14,6 +14,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         private const string _withQueensEmpty =
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
+        
+        private Thread _sendingThread;
 
         public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.Certabo)
         {
@@ -74,12 +76,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         {
             var calibrateDataCreator = new CalibrateDataCreator();
             var result = string.Empty;
-
-            var count = 0;
-            while (true)
+            int count = 0;
+            while (count<100)
             {
-                var fromBoard = GetFromCertaboBoard();
                 count++;
+                var fromBoard = GetFromCertaboBoard();
                 // _logger.LogDebug($"{count}.{fromBoard.Repeated} from board: {fromBoard.FromBoard}");
                 if (string.IsNullOrWhiteSpace(fromBoard.FromBoard))
                 {
@@ -109,7 +110,9 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _logger?.LogDebug("SC: Communicate");
             IsCommunicating = true;
             var withConnection = true;
-            while (!_stopReading || _byteDataToBoard.Count > 0)
+            _sendingThread = new Thread(SendingToBoard) { IsBackground = true };
+            _sendingThread.Start();
+            while (!_stopReading)
             {
                 try
                 {
@@ -120,21 +123,6 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
                     if (withConnection && !_pauseReading)
                     {
-                        while (_byteDataToBoard.Count > 1)
-                        {
-                            _byteDataToBoard.TryDequeue(out _);
-                        }
-
-                        if (_byteDataToBoard.TryDequeue(out var data))
-                        {
-
-                            var s = BitConverter.ToString(data);
-                            _logger?.LogDebug($"SC: Send byte array: {s}");
-                            _comPort.Write(data, 0, data.Length);
-                            //_logger?.LogDebug($"SC: bytes send");
-                            //  Thread.Sleep(15);
-
-                        }
 
 
                         try
@@ -143,12 +131,14 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                             var readLine = _comPort.ReadLine();
 
                             //_logger?.LogDebug($"SC: Read: {readLine} ");
-                            if (_dataFromBoard.Count > 20)
+                            //if (_dataFromBoard.Count > 20)
+                            //{
+                            //    _dataFromBoard.TryDequeue(out _);
+                            //}
+                            if (!string.IsNullOrWhiteSpace(readLine))
                             {
-                                _dataFromBoard.TryDequeue(out _);
+                                _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
                             }
-
-                            _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
 
                         }
                         catch (TimeoutException)
@@ -171,6 +161,54 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
             IsCommunicating = false;
             _logger?.LogDebug("SC: Exit Communicate");
+        }
+
+        private void SendingToBoard()
+        {
+            var prevDataToBoard = string.Empty;
+            var prevDataArrayToBoard = Array.Empty<byte>();
+            try
+            {
+                while (!_stopReading || _byteDataToBoard.Count > 0)
+                {
+                    if (_byteDataToBoard.TryDequeue(out var data))
+                    {
+                        var s = BitConverter.ToString(data);
+                        prevDataArrayToBoard = new byte[data.Length];
+                        Array.Copy(data, prevDataArrayToBoard, data.Length);
+                        if (!s.Equals(prevDataToBoard))
+                        {
+                            _logger?.LogDebug($"SC: Send byte array: {s}");
+                            Thread.Sleep(250);
+                            prevDataToBoard = s;
+                            _comPort.Write(data, 0, data.Length);
+                            Thread.Sleep(250);
+                        }
+                        else
+                        {
+                            //Thread.Sleep(250);
+                            //  _comPort.Write(prevDataArrayToBoard, 0, prevDataArrayToBoard.Length);
+                            Thread.Sleep(250);
+
+                        }
+                        //_logger?.LogDebug($"SC: bytes send");
+
+                    }
+                    else
+                    {
+                        if (prevDataArrayToBoard.Length > 0)
+                        {
+                            //_comPort.Write(prevDataArrayToBoard, 0, prevDataArrayToBoard.Length);
+                            //Thread.Sleep(250);
+                        }
+                    }
+                    Thread.Sleep(10);
+                }
+            }
+            catch
+            {
+                //
+            }
         }
 
         private bool ValidCalibrateCodes(string codes)

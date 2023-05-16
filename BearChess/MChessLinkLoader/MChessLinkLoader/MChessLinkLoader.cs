@@ -29,11 +29,22 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkLoader
             {
                 return new MChessLinkImpl(name: Name, basePath: basePath);
             }
-            var mChessLinkImpl = new MChessLinkImpl(name: Name, basePath: basePath,  comPortName: configuration.PortName);
-            mChessLinkImpl.FlashInSync(configuration.FlashInSync);
+            var mChessLinkImpl = new MChessLinkImpl(name: Name, basePath: basePath,  comPortName: configuration.PortName, configuration.UseChesstimation);
+            if (configuration.NoFlash)
+            {
+                mChessLinkImpl.FlashMode(EnumFlashMode.NoFlash);
+            }
+            else
+            {
+                mChessLinkImpl.FlashMode(configuration.FlashInSync
+                                             ? EnumFlashMode.FlashSync
+                                             : EnumFlashMode.FlashAsync);
+            }
+
             mChessLinkImpl.DimLEDs(configuration.DimLevel);
             mChessLinkImpl.SetScanTime(configuration.ScanTime);
             mChessLinkImpl.SetDebounce(configuration.Debounce);
+         
             return mChessLinkImpl;
         }
 

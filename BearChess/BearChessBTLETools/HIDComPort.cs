@@ -123,9 +123,13 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         }
 
         public int ReadTimeout { get; set; }
+        public int WriteTimeout { get; set; }
         public void ClearBuffer()
         {
          //
         }
+
+        public bool RTS { get; set; }
+        public bool DTR { get; set; }
     }
 }

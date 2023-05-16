@@ -85,7 +85,7 @@
                     <Image Source="../Assets/Icons/eye_close.png"></Image>
                 </Button>
             </DockPanel>
-            <local:EngineInfoLineUserControl x:Name="engineInfoLineUserControl1" HorizontalAlignment="Left" Height="60" Margin="0,0,0,-1"/>
+            <local:EngineInfoLineUserControl  x:Name="engineInfoLineUserControl1" HorizontalAlignment="Left" Height="60" Margin="0,0,0,-1"/>
         </StackPanel>
     </Border>
 </UserControl>

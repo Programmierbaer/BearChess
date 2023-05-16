@@ -62,7 +62,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
         public bool IsFigureOn(string fieldName)
         {
-            return IsFigureOn( Fields.GetFieldNumber(fieldName));
+            return IsFigureOn(Fields.GetFieldNumber(fieldName));
         }
     }
 }

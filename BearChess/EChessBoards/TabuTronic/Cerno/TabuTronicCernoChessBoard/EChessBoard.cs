@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -57,6 +58,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
         public static byte[] AllOff = { 0, 0, 0, 0, 0, 0, 0, 0 };
         public static byte[] AllOn = { 255, 255, 255, 255, 255, 255, 255, 255 };
         private bool _flashLeds;
+        private ConcurrentQueue<string[]> _flashFields = new ConcurrentQueue<string[]>();
+        private bool _release = false;
 
 
         public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth)
@@ -77,6 +80,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             }
             IsConnected = EnsureConnection();
             Information = Constants.TabutronicCerno;
+            var thread = new Thread(FlashLeds) { IsBackground = true };
+            thread.Start();
         }
 
         public EChessBoard(ILogging logger)
@@ -111,6 +116,34 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             return CheckComPort(portName);
         }
 
+        private void FlashLeds()
+        {
+            bool switchSide = false;
+            while (!_release)
+            {
+                if (_flashFields.TryPeek(out string[] fields))
+                {
+                    byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    if (switchSide)
+                    {
+                        result = UpdateLedsForField(fields[1], result);
+                        result = UpdateLedsForField(fields[1], result);
+                    }
+                    else
+                    {
+                        result = UpdateLedsForField(fields[0], result);
+                        result = UpdateLedsForField(fields[0], result);
+                    }
+                    switchSide = !switchSide;
+                    _serialCommunication.Send(result);
+                    Thread.Sleep(500);
+
+                }
+
+                Thread.Sleep(10);
+            }
+        }
+
 
         public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
         {
@@ -118,11 +151,15 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             {
                 return;
             }
-
+            _flashFields.TryDequeue(out _);
+            if (fieldNames.Length < 2)
+            {
+                return;
+            }
             lock (_locker)
             {
                 var joinedString = string.Join(" ", fieldNames);
-                if (thinking && fieldNames.Length == 2)
+                if (thinking)
                 {
                     _prevLedField = _prevLedField == 1 ? 0 : 1;
                 }
@@ -133,8 +170,13 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                         return;
                     }
                 }
-
                 _logger?.LogDebug($"B: set leds for {joinedString}");
+                if (thinking && fieldNames.Length > 1)
+                {
+                    _flashFields.Enqueue(fieldNames);
+                    return;
+                }
+                
                 _prevJoinedString = joinedString;
 
                 byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -224,11 +266,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             //
         }
 
-        public override void FlashSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
-            _flashLeds = flashSync;
+            _flashLeds = flashMode==EnumFlashMode.FlashSync;
         }
 
+     
         public override void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
             // ignore
@@ -247,6 +290,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             _logger?.LogDebug($"B: calibrate data: {boardData}");
             if (!Calibrate(boardData))
             {
+                IsCalibrated = false;
                 return;
             }
 
@@ -651,7 +695,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
         public override void Release()
         {
-            //
+            _release = true;
         }
 
         public override void SetFen(string fen)
@@ -676,6 +720,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
+        public override event EventHandler HelpRequestedEvent;
 
         public override void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
         {
@@ -684,6 +729,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
 
         #region private
+
+      
 
         private bool Calibrate(CalibrateData codes)
         {

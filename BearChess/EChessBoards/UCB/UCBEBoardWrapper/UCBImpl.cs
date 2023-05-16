@@ -16,7 +16,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBEBoardWrapper
 
         }
 
-        public override void Calibrate()
+        public override bool Calibrate()
         {
             _stop = true;
             SetAllLedsOn();
@@ -24,6 +24,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBEBoardWrapper
             _board.Calibrate();
             SetAllLedsOff();
             _stop = false;
+            return true;
         }
 
         public override void SendInformation(string message)
@@ -51,10 +52,12 @@ namespace www.SoLaNoSoft.com.BearChess.UCBEBoardWrapper
            //
         }
 
-        public override void FlashInSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
-            _board.FlashSync(flashSync);
+            _board.FlashMode(flashMode);
         }
+
+      
 
         protected override IEBoard GetEBoard()
         {

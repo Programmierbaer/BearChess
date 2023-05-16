@@ -590,5 +590,46 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             dataGridEngine.ItemsSource = _uciInfos.OrderBy(u => u.Name);
         }
+
+        private void MenuItemSetAsBuddy_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (SelectedEngine == null)
+            {
+                return;
+            }
+            if (!SelectedEngine.ValidForAnalysis)
+            {
+                MessageBox.Show("This kind of engine is not suitable for a buddy", "Not suitable", MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return;
+            }
+            string uciPath;
+            XmlSerializer serializer;
+            TextWriter textWriter;
+            SelectedEngine.IsBuddy = !SelectedEngine.IsBuddy;
+            foreach (var uciInfo in _uciInfos)
+            {
+                if (!uciInfo.Id.Equals(SelectedEngine.Id))
+                {
+                    if (uciInfo.IsBuddy)
+                    {
+                        uciInfo.IsBuddy = false;
+                        uciPath = Path.Combine(_uciPath, uciInfo.Id);
+                        serializer = new XmlSerializer(typeof(UciInfo));
+                        textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
+                        serializer.Serialize(textWriter, uciInfo);
+                        textWriter.Close();
+                        break;
+                    }
+                    
+                }
+            }
+            uciPath = Path.Combine(_uciPath, SelectedEngine.Id);
+            serializer = new XmlSerializer(typeof(UciInfo));
+            textWriter = new StreamWriter(Path.Combine(uciPath, SelectedEngine.Id + ".uci"), false);
+            serializer.Serialize(textWriter, SelectedEngine);
+            textWriter.Close();
+            NameChanged();
+        }
     }
 }

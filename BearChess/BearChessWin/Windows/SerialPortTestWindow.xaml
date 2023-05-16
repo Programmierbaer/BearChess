@@ -14,9 +14,9 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal">
             <TextBlock  Margin="5" >COM:</TextBlock>
-            <TextBox Name="textBoxPort" Width="50" Margin="5" >COM4</TextBox>
+            <TextBox Name="textBoxPort" Width="50" Margin="5" >COM12</TextBox>
             <TextBlock  Margin="5" >BAUD:</TextBlock>
-            <TextBox Name="textBoxBaud" Width="80" Margin="5" >1200</TextBox>
+            <TextBox Name="textBoxBaud" Width="80" Margin="5" >115200</TextBox>
             <Button Name="buttonConnect" Width="100" Margin="5" Click="buttonConnect_Click">Connect</Button>
         </StackPanel>
         <ListBox Margin="5" Grid.Row="1" Name="listBoxLog"></ListBox>
@@ -24,6 +24,9 @@
             <Button Margin="5" Width="50" Click="ButtonSend_OnClick" IsDefault="True" Name="buttonSend">Send</Button>
             <TextBox Name="textBoxSend" Margin="5" Width="400"></TextBox>
             <Button Margin="15,5" Width="50" Click="ButtonClear_OnClick" Name="buttonClear">Clear</Button>
+            <Button Margin="15,5" Width="50" Click="ButtonCopy_OnClick" Name="buttonCopy">Copy</Button>
+            <CheckBox Margin="15,5" Width="50"  Unchecked="CheckBoxRTS_OnUnchecked" Checked="CheckBoxRTS_OnChecked" Name="checkBoxRTS">RTS</CheckBox>
+            <CheckBox Margin="5,5" Width="50"  Checked="CheckBoxDTR_OnChecked" Unchecked="CheckBoxDTR_OnUnchecked" Name="checkBoxDTR">DTR</CheckBox>
         </StackPanel>
     </Grid>
 </Window>

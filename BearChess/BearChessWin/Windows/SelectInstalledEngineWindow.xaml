@@ -2,9 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Icon="../Assets/Icons/robot.png"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        Icon="../Assets/Icons/robot.png"
         mc:Ignorable="d" Closing="SelectInstalledEngineWindow_OnClosing" 
-        Title="Load and Manage UCI Engines" Height="390" Width="500"  MinWidth="500" >
+        Title="Load and Manage UCI Engines" Height="390" Width="550"  MinWidth="500" >
+    <Window.Resources>
+        <bearChessWin:BoolToContentConverter x:Key="BoolToContentConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -12,6 +17,16 @@
         </Grid.RowDefinitions>
         <DataGrid Name="dataGridEngine" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False" SelectionChanged="DataGridEngine_OnSelectionChanged"
                   SelectionMode="Extended" IsReadOnly="True" AllowDrop="True" Drop="DataGridEngine_OnDrop" DragOver="DataGridEngine_OnDragOver" >
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Set as buddy"  Name="menuItemContinue" Click="MenuItemSetAsBuddy_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/Icons/user_comment.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                   
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <EventSetter Event="MouseDoubleClick" Handler="DataGridEngine_OnMouseDoubleClick"/>
@@ -28,6 +43,9 @@
                 <DataGridTextColumn Binding="{Binding Author}" Width="Auto">
                       <DataGridTextColumn.Header>Author</DataGridTextColumn.Header>
                   </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding IsBuddy, Converter={StaticResource BoolToContentConverter}}"  Width="Auto">
+                    <DataGridTextColumn.Header>Buddy</DataGridTextColumn.Header>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
         <!-- <ListBox Margin="5" Grid.Row="0" Name="listBoxEngines" MouseDoubleClick="ListBoxEngines_OnMouseDoubleClick"></ListBox> -->
@@ -55,7 +73,9 @@
             <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonConfigure" Click="ButtonConfigure_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Configure selected engine">
                 <Image Source="../Assets/Icons/cog_edit.png" Width="32" Height="32"></Image>
             </Button>
-
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonBuddy" Click="MenuItemSetAsBuddy_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Set selected engine as buddy">
+                <Image Source="../Assets/Icons/user_comment.png" Width="32" Height="32"></Image>
+            </Button>
 
         </DockPanel>
     </Grid>

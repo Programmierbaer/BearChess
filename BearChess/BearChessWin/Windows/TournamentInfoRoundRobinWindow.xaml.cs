@@ -10,7 +10,10 @@ using System.Windows.Shapes;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessTournament;
-
+using Microsoft.Win32;
+using System.IO;
+using System.Text;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -97,7 +100,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 for (var j = 0; j < _currentTournament.Players.Length; j++)
                 {
                     var rectangle = new Rectangle
-                    {
+                    {                        
                         Stroke = new SolidColorBrush(Colors.LightGray),
                         Fill = new SolidColorBrush(Colors.Transparent)
                     };
@@ -105,7 +108,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     Grid.SetRow(rectangle, j + 1);
                     gridDuel.Children.Add(rectangle);
                     var textBlockResult = new TextBlock
-                                     {
+                                     {                                         
                                          Text = i==j ? "".PadLeft(_currentTournament.Cycles,'*').Replace("*","* ") : string.Empty,
                                          Margin = new Thickness(5),
                                          TextAlignment = TextAlignment.Center
@@ -117,7 +120,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     gridDuel.Children.Add(textBlockResult);
                 }
               
-                gridDuel.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(20 *_currentTournament.Cycles)});
+                gridDuel.ColumnDefinitions.Add(new ColumnDefinition {Width = new GridLength(25 *_currentTournament.Cycles)});
 
                 Grid.SetColumn(textBlockEngine, 1);
                 Grid.SetRow(textBlockEngine, i + 1);
@@ -133,7 +136,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 Grid.SetColumn(textBlock, i + 3);
                 Grid.SetRow(textBlock, 0);
                 gridDuel.Children.Add(textBlock);
-                gridDuel.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(20 * _currentTournament.Cycles) });
+                gridDuel.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(25 * _currentTournament.Cycles) });
             }
 
             _totalGames = TournamentManager.GetNumberOfTotalGames(_currentTournament.TournamentType,
@@ -248,7 +251,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlock2.Text = $"{_results[pairing[1]]}";
             if (_isFinished)
             {
-                Array.Sort(_results, _numbers, _revComparer);
+                 Array.Sort(_results, _numbers, _revComparer);
+                
                 for (var i = 0; i < _numbers.Length; i++)
                 {
                     var textBlock = (TextBlock)gridDuel.Children.Cast<UIElement>()
@@ -268,9 +272,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                        .Where(r => Grid.GetRow(r) == i + 1)
                                                        .Where(c => Grid.GetColumn(c) == j+3)
                                                        .First(t => t is TextBlock);
-                        textBlock.Text = _resultsDetails[(int)_numbers[i], j];
+                        textBlock.Text = _resultsDetails[(int)_numbers[i], (int)_numbers[j]];
                     }
                 }
+                
             }
 
         }
@@ -332,6 +337,99 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _canClose = true;
                 SaveGame?.Invoke(this, "1/2");
             }
+        }
+
+        private void ButtonExport_OnClick(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog { Filter = "Tournament|*.html;" };
+            var showDialog = saveFileDialog.ShowDialog(this);
+            var fileName = saveFileDialog.FileName;
+            if (showDialog.Value && !string.IsNullOrWhiteSpace(fileName))
+            {
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+                ExportAsHTML(fileName);
+            }
+        }
+
+        private void ExportAsHTML(string fileName)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(@"<!DOCTYPE html>");
+            sb.AppendLine(@"<html>");
+            sb.AppendLine(@"<head>");
+            sb.Append(@"<title>");
+            sb.Append("BearChess Tournament");
+            sb.AppendLine(@"</title>");
+            sb.AppendLine(@"<style>");
+            sb.AppendLine(@"table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 50%;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}");
+            sb.AppendLine(@"</style>");
+            sb.AppendLine(@"</head>");
+            sb.AppendLine(@"<body>");
+            sb.Append(@"<h2>");
+            sb.Append($"{_currentTournament.GameEvent}");
+            sb.AppendLine(@"</h2>");
+            sb.Append(@"<p>");
+            sb.Append(@"<b>");
+            sb.Append(@"Time control: ");
+            sb.Append(@"</b>");
+            sb.Append($"{TimeControlHelper.GetDescription(_currentTournament.TimeControl)}");
+            sb.AppendLine(@"</p>");
+            sb.AppendLine(@"<table>");
+            sb.AppendLine(@"<tr>");
+            sb.AppendLine(@"<td></td>");
+            sb.AppendLine(@"<td></td>");
+            sb.AppendLine(@"<td><b>&sum;</b></td>");
+            for (int i = 1; i <= _currentTournament.Players.Length; i++)
+            {
+                sb.Append(@"<td>");
+                sb.Append(@"<b>");
+                sb.Append($"{i}");
+                sb.AppendLine(@"</b></td>");
+            }
+            sb.AppendLine(@"</tr>");
+        
+            for (var i = 0; i < _numbers.Length; i++)
+            {
+                sb.AppendLine(@"<tr>");
+                sb.Append(@"<td>");
+                sb.Append(@"<b>");
+                sb.Append($"{i+1}");
+                sb.AppendLine(@"</b></td>");
+                sb.Append(@"<td>");
+                sb.Append($"{_currentTournament.Players[(int)_numbers[i]].Name}");
+                sb.AppendLine(@"</td>");
+                sb.Append(@"<td>");
+                sb.Append($"{_results[i]}");
+                sb.AppendLine(@"</td>");
+                for (var j = 0; j < _results.Length; j++)
+                {
+                    sb.Append(@"<td>");
+                    sb.Append($"{_resultsDetails[(int)_numbers[i], (int)_numbers[j]]}");
+                    sb.AppendLine(@"</td>");
+                }
+                sb.AppendLine(@"</tr>");
+            }
+            sb.AppendLine(@"</table>");
+            sb.AppendLine(@"</body>");
+            sb.AppendLine(@"</html>");
+            File.WriteAllText(fileName,sb.ToString());
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.PerformanceData;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,7 @@ using System.Windows.Media.Imaging;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -39,6 +41,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _stopVisible = true;
         private bool _tournamentMode;
         private bool _moveAdded;
+        private Configuration _configuration;
+        private DisplayFigureType _figureType;
+        private DisplayMoveType _moveType;
+        private DisplayCountryType _countryType;
 
         public EngineInfoUserControl()
         {
@@ -50,8 +56,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _fenPosition = string.Empty;
         }
 
-        public EngineInfoUserControl(UciInfo uciInfo, int color, string hideInfo) : this()
+        public EngineInfoUserControl(UciInfo uciInfo, int color, string hideInfo, Configuration configuration) : this()
         {
+            _configuration = configuration;
             _uciInfo = uciInfo;
             _hideInfo = int.Parse(hideInfo);
             Color = color;
@@ -127,14 +134,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 imageBookClosed.Visibility = Visibility.Collapsed;
                
             }
+
+            if (!uciInfo.ValidForAnalysis)
+            {
+                engineInfoLineUserControl1.Visibility = Visibility.Collapsed;
+                buttonPlus.Visibility = Visibility.Collapsed;
+                buttonMinus.Visibility = Visibility.Collapsed;
+                buttonHide.Visibility = Visibility.Collapsed;
+            }
             engineInfoLineUserControl1.FillLine(string.Empty, string.Empty);
             var thread = new Thread(ShowInfoLine) { IsBackground = true };
             thread.Start();
         }
 
-        public int Color { get; private set; }
+        public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType)
+        {
+            _figureType = figureType;
+            _moveType = moveType;
+            _countryType = countryType;
+        }
 
-       
+
+        public int Color { get; private set; }
+   
         public string HideInfo => _hideInfo.ToString();
 
         public string EngineName
@@ -510,7 +532,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                             {
                                                 fastChessBoard.Init(_fenPosition, _allMoves.ToArray());
                                             }
-
+                                            fastChessBoard.SetDisplayTypes(_figureType, _moveType, _countryType);
+                                          
                                             var ml = string.Empty;
                                             var strings = moveLine.Split(" ".ToCharArray());
                                             foreach (var s in strings)
@@ -549,6 +572,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                 fastChessBoard.Init(_fenPosition, _allMoves.ToArray());
                                             }
 
+                                            fastChessBoard.SetDisplayTypes(_figureType, _moveType, _countryType);
                                             try
                                             {
                                                 var ml = string.Empty;

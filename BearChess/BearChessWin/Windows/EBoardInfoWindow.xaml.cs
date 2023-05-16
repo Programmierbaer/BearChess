@@ -41,7 +41,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _thread.Start();
             _eChessBoard.RequestDump();
             _chessBoard = null;
-            if (_eChessBoard.Information.Contains(Constants.MeOne))
+            if (_eChessBoard.Information.Contains(Constants.MeOne) || _eChessBoard.Information.Contains(Constants.Chesstimation))
             {
                 _chessBoard = new ChessBoard();
                 textBlockBoard.Text =

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Ports;
+using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
@@ -15,6 +18,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private IComPort _comPort;
         private Thread _readingThread;
+        private StringBuilder _allLines = new StringBuilder();
 
 
         public SerialPortTestWindow()
@@ -35,6 +39,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         listBoxLog.Items.Add(readLine); ;
                         listBoxLog.ScrollIntoView(listBoxLog.Items.GetItemAt(listBoxLog.Items.Count - 1));
+                        _allLines.AppendLine(readLine);
                     });
                 }
                 Thread.Sleep(50);
@@ -53,7 +58,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_comPort == null)
             {
-                _comPort = new SerialComPortEventBased(textBoxPort.Text, int.Parse(textBoxBaud.Text), Parity.None, 8,
+                _comPort = new SerialComPortStreamBased(textBoxPort.Text, int.Parse(textBoxBaud.Text), Parity.None, 8,
                                                        StopBits.One);
                 _comPort.Open();
                 buttonConnect.Content = "Disconnect";
@@ -70,6 +75,32 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonClear_OnClick(object sender, RoutedEventArgs e)
         {
             listBoxLog.Items.Clear();
+            _allLines.Clear();
+        }
+
+        private void ButtonCopy_OnClick(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(_allLines.ToString());
+        }
+
+        private void CheckBoxRTS_OnChecked(object sender, RoutedEventArgs e)
+        {
+            _comPort.RTS = true;
+        }
+
+        private void CheckBoxRTS_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            _comPort.RTS = false;
+        }
+
+        private void CheckBoxDTR_OnChecked(object sender, RoutedEventArgs e)
+        {
+            _comPort.DTR = true;
+        }
+
+        private void CheckBoxDTR_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            _comPort.DTR = false;
         }
     }
 }

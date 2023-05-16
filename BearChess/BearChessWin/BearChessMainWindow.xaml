@@ -178,6 +178,19 @@
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Load buddy engine" Name="menuItemEngineLoadBuddy"
+                              Click="MenuItemEngineLoadBuddy_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/user_comment.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Name="menuItemLoadBuddyEngine" Header="Load buddy engine on new game"
+                              Click="MenuItemLoadBuddyEngine_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageLoadBuddyEngine" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Name="menuItemLoadLastEngine" Header="Load last engine on start"
                               Click="MenuItemLoadLastEngine_OnClick">
                         <MenuItem.Icon>
@@ -190,6 +203,7 @@
                             <Image Source="Assets/Icons/tick.png" Name="imageUciLog" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <Separator />
                     <MenuItem Header="Settings">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/cog.png" />
@@ -218,6 +232,12 @@
                             <MenuItem.Icon>
                                 <Image Name="imageEngineShowForWhite" Source="Assets/Icons/tick.png"
                                        Visibility="Visible" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemConfigureNotation" Header="Notation..."
+                                  Click="MenuItemConfigureNotation_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/text_list_numbers.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
@@ -300,11 +320,11 @@
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Name="menuItemSettingsMoves" Header="Notation/Moves">
+                    <MenuItem Name="menuItemSettingsNotationMoves" Header="Notation/Moves">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/text_list_numbers.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemConfigureNotation" Header="Configure..."
+                        <MenuItem Name="menuItemConfigureNotationMoves" Header="Configure..."
                                   Click="MenuItemSettingsMoves_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/text_list_numbers.png" />
@@ -629,6 +649,24 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <MenuItem Header="IChessOne" Name="menuItemIChessOneBoard" Visibility="Collapsed">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/iChessOneIcon.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToIChessOneBoard" Header="Connect"
+                                  Click="MenuItemConnectIChessOneBoard_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/connect.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemBluetoothIChessOneAir" Header="Bluetooth"
+                                  Click="MenuItemBluetoothIChessOne_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageIChessOneBluetooth" Source="Assets/Icons/tick.png"
+                                       Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
                     <MenuItem Visibility="Collapsed" Header="Test COM" Name="menuItemTestComPort" Click="MenuItemTestComPort_OnClick" >
 
                     </MenuItem>
@@ -663,7 +701,13 @@
                             <Image Name="imageShowBestMoveOnGame" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                   <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />   -->
+                    <MenuItem Header="Show move when help is requested" Name="menuItemShowRequestForHelp"
+                              Click="MenuItemShowRequestForHelp_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageShowRequestForHelp" Source="Assets/Icons/tick.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />   -->
                 </MenuItem>
                 <MenuItem Header="Windows">
                     <MenuItem Header="Show">

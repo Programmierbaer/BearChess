@@ -141,22 +141,38 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private bool _upperRight = true;
         private bool _lowerLeft = true;
         private bool _lowerRight = true;
+        private EnumFlashMode _flashMode = EnumFlashMode.FlashAsync;
+        
 
         public string Version { get; private set; }
         public string Eprom { get; private set; }
 
-        public EChessBoard(ILogging logger, string portName)
+        public EChessBoard(ILogging logger, string portName) : this(logger,portName, false)
         {
+        }
+
+        public EChessBoard(ILogging logger, string portName, bool useChesstimation)
+        {
+            
             _logger = logger;
             _serialCommunication = new SerialCommunication(logger, portName);
+            _serialCommunication.UseChesstimation = useChesstimation;
             Version = string.Empty;
             Eprom = string.Empty;
             BatteryLevel = "100";
             BatteryStatus = "Full";
             IsConnected = EnsureConnection();
-            Information = "Millennium "+_serialCommunication.BoardInformation;
-            PieceRecognition = _serialCommunication.BoardInformation != Constants.MeOne;
+            if (useChesstimation)
+            {
+                Information = _serialCommunication.BoardInformation;
+            }
+            else
+            {
+                Information = "Millennium " + _serialCommunication.BoardInformation;
+            }
+            PieceRecognition =   _serialCommunication.BoardInformation != Constants.MeOne && _serialCommunication.BoardInformation != Constants.Chesstimation;
             SelfControlled = false;
+           
         }
 
         public EChessBoard(ILogging logger)
@@ -368,10 +384,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             //
         }
 
-        public override void FlashSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
-            _flashSync = flashSync;
+             _flashSync = flashMode == EnumFlashMode.FlashSync;
+             _flashMode = flashMode;
         }
+
 
         public override void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
@@ -510,6 +528,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
+        public override event EventHandler HelpRequestedEvent;
 
         public override void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
         {
@@ -555,13 +574,30 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private string GetLedForFields(string[] fieldNames, bool thinking)
         {
             var codes = string.Empty;
-            var toCode = _flashSync ? "CC" : "33";
+            var toCode = string.Empty;
             var fromCode = "CC";
-            if (thinking)
+            if (_flashMode == EnumFlashMode.NoFlash)
             {
-                toCode = "FF";
-                fromCode = "FF";
+                if (thinking)
+                {
+                    toCode = "33";
+                }
+                else
+                {
+                    toCode = "FF";
+                    fromCode = "FF";
+                }
             }
+            else
+            {
+                toCode = _flashMode == EnumFlashMode.FlashSync ? "CC" : "33";
+                if (thinking)
+                {
+                    toCode = "FF";
+                    fromCode = "FF";
+                }
+            }
+
             for (var i = 0; i < 81; i++)
             {
                 var code = "00";

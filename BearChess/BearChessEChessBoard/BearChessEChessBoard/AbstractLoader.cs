@@ -18,6 +18,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public event EventHandler AwaitedPosition;
         public event EventHandler BasePositionEvent;
         public event EventHandler BatteryChangedEvent;
+        public event EventHandler HelpRequestedEvent;
 
         public void SetReplayMode(bool inReplayMode)
         {
@@ -39,6 +40,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             Configuration = ReadConfiguration();
             // ReSharper disable once VirtualMemberCallInConstructor
             _eChessBoard = GetEBoardImpl(basePath, Configuration);
+            _eChessBoard.HelpRequestedEvent += EChessBoard_HelpRequestedEvent;
         }
 
 
@@ -83,7 +85,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.BasePositionEvent += EChessBoard_BasePositionEvent;
             _eChessBoard.BatteryChangedEvent += EChessBoard_BatteryChangedEvent;
             _eChessBoard.DataEvent += EChessBoard_DataEvent;
+            _eChessBoard.HelpRequestedEvent += EChessBoard_HelpRequestedEvent;
+        }
 
+        private void EChessBoard_HelpRequestedEvent(object sender, EventArgs e)
+        {
+           HelpRequestedEvent?.Invoke(this, e);
         }
 
         private void EChessBoard_DataEvent(object sender, string e)
@@ -271,8 +278,19 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public void FlashInSync(bool flashSync)
         {
-            _eChessBoard.FlashInSync(flashSync);
+            _eChessBoard.FlashMode(flashSync ? EnumFlashMode.FlashSync : EnumFlashMode.FlashAsync);
         }
+
+        public void FlashMode(EnumFlashMode flashMode)
+        {
+            _eChessBoard.FlashMode(flashMode);
+        }
+
+        public void UseChesstimation(bool useChesstimation)
+        {
+            _eChessBoard.UseChesstimation = useChesstimation;
+        }
+
 
         /// <inheritdoc />
         public EChessBoardConfiguration GetEChessBoardConfiguration()

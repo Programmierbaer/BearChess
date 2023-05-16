@@ -142,11 +142,18 @@
                     Click="ButtonCancel_OnClick">
                 <Image Source="../Assets/Icons/control_play_blue.png" Width="32" Height="32" />
             </Button>
+          
             <Button Name="buttonClose" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right" Visibility="Collapsed"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Click="ButtonCancel_OnClick">
                 <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32" />
+            </Button>
+            <Button Name="buttonExport" DockPanel.Dock="Right" Margin="5,5,5,5" HorizontalAlignment="Right" Visibility="Visible"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="ButtonExport_OnClick">
+                <Image Source="../Assets/Icons/file_extension_html.png" Width="32" Height="32" />
             </Button>
         </DockPanel>
     </StackPanel>

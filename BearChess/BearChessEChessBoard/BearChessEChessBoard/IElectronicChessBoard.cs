@@ -150,6 +150,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         event EventHandler BatteryChangedEvent;
 
+        event EventHandler HelpRequestedEvent;
+
         /// <summary>
         /// Return a best move
         /// </summary>
@@ -181,6 +183,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// Synchronized flash all fields
         /// </summary>
         void FlashInSync(bool flashSync);
+        void FlashMode(EnumFlashMode flashMode);
+
+        void UseChesstimation(bool useChesstimation);
 
         /// <summary>
         /// Returns the configuration.

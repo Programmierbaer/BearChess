@@ -45,6 +45,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             try
             {
+                int invalidBooks = 0;
                 fileLogger?.LogInfo("Read installed books...");
                 _installedBooks.Clear();
                 var fileNames = Directory.GetFiles(_bookPath, "*.book", SearchOption.TopDirectoryOnly);
@@ -59,11 +60,14 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         if (!File.Exists(savedBook.FileName))
                         {
                             fileLogger?.LogWarning($"  Book file {savedBook.FileName} not found");
+                            invalidBooks++;
+                            continue;
                         }
 
                         if (_installedBooks.ContainsKey(savedBook.Name))
                         {
                             fileLogger?.LogWarning($" Book file {savedBook.Name} already installed");
+                            invalidBooks++;
                             continue;
                         }
 
@@ -77,6 +81,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 }
 
                 fileLogger?.LogInfo($"{_installedBooks.Count} books read");
+                if (invalidBooks > 0)
+                {
+                    fileLogger?.LogWarning($"{invalidBooks} books could not read");
+                }
             }
             catch (Exception ex)
             {

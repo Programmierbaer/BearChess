@@ -58,6 +58,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (chessBoardInfo.Equals(Constants.ChessnutAir))
                 {
                     imageChessnutAir.Visibility = Visibility.Visible;
+                } 
+                
+                if (chessBoardInfo.Equals(Constants.IChessOne))
+                {
+                    imageIChessOne.Visibility = Visibility.Visible;
                 }
 
                 if (chessBoardInfo.Equals(Constants.SquareOffPro))
@@ -79,6 +84,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (chessBoardInfo.Equals(Constants.TabutronicCerno))
                 {
                     imageTabutronicCerno.Visibility = Visibility.Visible;
+                }
+                if (chessBoardInfo.Equals(Constants.Chesstimation))
+                {
+                    imageMephistoExclusive.Visibility = Visibility.Visible;
                 }
             }
         }

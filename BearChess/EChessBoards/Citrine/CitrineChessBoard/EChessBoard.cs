@@ -18,6 +18,7 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
 
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
+        public override event EventHandler HelpRequestedEvent;
 
         public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, string boardName)
         {
@@ -145,10 +146,12 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
             //
         }
 
-        public override void FlashSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
            //
         }
+
+     
 
         public override void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {

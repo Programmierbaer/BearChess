@@ -113,7 +113,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void DimLeds(int  level);
         void SetScanTime(int scanTime);
         void SetDebounce(int debounce);
-        void FlashSync(bool flashSync);
+        void FlashMode(EnumFlashMode flashMode);
+
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
         void SendCommand(string anyCommand);
         string BatteryLevel { get; }
@@ -134,6 +135,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void DisplayOnClock(string display);
 
         event EventHandler BasePositionEvent;
+        event EventHandler HelpRequestedEvent;
         event EventHandler<string> DataEvent;
     }
 }

@@ -27,11 +27,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.EBoardWrapper
             // ignore
         }
 
-        public override void FlashInSync(bool flashInSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
-            _board.FlashSync(flashInSync);
+            _board.FlashMode(flashMode);
         }
 
+       
         protected override IEBoard GetEBoard()
         {
             return new Cerno.ChessBoard.EChessBoard(basePath: _basePath,logger: _fileLogger, 
@@ -43,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.EBoardWrapper
             return new Cerno.ChessBoard.EChessBoard( logger: _fileLogger);
         }
 
-        public override void Calibrate()
+        public override bool Calibrate()
         {
             _stop = true;
             SetAllLedsOn();
@@ -51,6 +52,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.EBoardWrapper
             _board.Calibrate();
             SetAllLedsOff();
             _stop = false;
+            return _board.IsCalibrated;
         }
 
         public override void SendInformation(string message)

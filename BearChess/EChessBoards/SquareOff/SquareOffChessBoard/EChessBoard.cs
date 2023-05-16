@@ -226,10 +226,12 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             // ignore
         }
 
-        public override void FlashSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
             // throw new NotImplementedException();
         }
+
+       
 
         public override void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
@@ -473,6 +475,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
+        public override event EventHandler HelpRequestedEvent;
 
         public override void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
         {

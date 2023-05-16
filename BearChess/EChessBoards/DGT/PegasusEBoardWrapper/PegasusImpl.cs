@@ -27,10 +27,12 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
             // ignore
         }
 
-        public override void FlashInSync(bool flashInSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
-            _board.FlashSync(flashInSync);
+            _board.FlashMode(flashMode);
         }
+
+      
 
         protected override IEBoard GetEBoard()
         {
@@ -43,7 +45,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
             return new PegasusChessBoard.EChessBoard(logger: _fileLogger);
         }
 
-        public override void Calibrate()
+        public override bool Calibrate()
         {
             _stop = true;
             SetAllLedsOn();
@@ -51,6 +53,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
             _board.Calibrate();
             SetAllLedsOff();
             _stop = false;
+            return true;
         }
 
         public override void SendInformation(string message)

@@ -96,7 +96,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Calibrate board
         /// </summary>
-        void Calibrate();
+        bool Calibrate();
 
         void SendInformation(string message);
 
@@ -120,6 +120,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         event EventHandler AwaitedPosition;
         event EventHandler BasePositionEvent;
         event EventHandler BatteryChangedEvent;
+        event EventHandler HelpRequestedEvent;
 
         /// <summary>
         /// Return a best move
@@ -156,7 +157,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         void SetDebounce(int debounce);
 
-        void FlashInSync(bool flashSync);
+        void FlashMode(EnumFlashMode flashMode);
+
+        bool UseChesstimation { get; set; }
 
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
 

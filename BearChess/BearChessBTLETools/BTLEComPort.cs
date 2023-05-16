@@ -26,6 +26,9 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         private readonly string _chessnutAirServiceWrite  = "1B7E8272-2877-41C3-B46E-CF057C562023";
         private readonly string _chessnutAirServiceRead   = "1B7E8262-2877-41C3-B46E-CF057C562023";
         private readonly string _chessnutAirServiceReadC  = "1B7E8273-2877-41C3-B46E-CF057C562023";
+        private readonly string _iChessOneService         = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _iChessOneServiceWrite    = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _iChessOneServiceRead     = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _deviceId;
         private BluetoothLEDevice _bluetoothLeDevice = null;
         private GattCharacteristic _writeCharacteristic = null;
@@ -54,9 +57,9 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         public BTLEComPort(string deviceId)
         {
             _deviceId = deviceId;
-            _allServices = new List<string>() { _pegasusService, _mChessLinkService, _chessnutAirServiceR, _chessnutAirServiceW };
-            _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead, _squareOffProServiceRead, _chessnutAirServiceRead, _chessnutAirServiceReadC };
-            _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite, _squareOffProServiceWrite, _chessnutAirServiceWrite };
+            _allServices = new List<string>() { _pegasusService, _mChessLinkService, _chessnutAirServiceR, _chessnutAirServiceW, _iChessOneService,_iChessOneServiceRead,_iChessOneServiceWrite };
+            _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead, _squareOffProServiceRead, _chessnutAirServiceRead, _chessnutAirServiceReadC, _iChessOneServiceRead };
+            _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite, _squareOffProServiceWrite, _chessnutAirServiceWrite, _iChessOneServiceWrite };
 
         }
 
@@ -231,7 +234,22 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
         public void WriteLine(string command)
         {
-            
+            if (!IsOpen)
+            {
+                return;
+            }
+            var fromByteArray = CryptographicBuffer.ConvertStringToBinary(command,BinaryStringEncoding.Utf8);
+            try
+            {
+                AsyncHelper.RunSync(async () =>
+                {
+                    GattWriteResult result = await _writeCharacteristic.WriteValueWithResultAsync(fromByteArray);
+                });
+            }
+            catch (Exception)
+            {
+                //
+            }
         }
 
         public void Write(byte[] buffer, int offset, int count)
@@ -255,11 +273,15 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         }
 
         public int ReadTimeout { get; set; }
+        public int WriteTimeout { get; set; }
         public void ClearBuffer()
         {
             while (_byteArrayQueue.TryDequeue(out byte[] _));
             while (_byteQueue.TryDequeue(out byte _));
         }
+
+        public bool RTS { get; set; }
+        public bool DTR { get; set; }
 
         private string FormatValueByPresentation(IBuffer buffer, GattPresentationFormat format)
         {

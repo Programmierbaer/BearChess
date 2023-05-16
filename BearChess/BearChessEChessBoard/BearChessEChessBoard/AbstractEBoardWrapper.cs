@@ -36,7 +36,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         private bool _piecesFenBasePosition;
         private string _lastChangedFigure = string.Empty;
         private string _lastFenColor = string.Empty;
-        
+        public bool UseChesstimation { get; set; }
+
 
         public event EventHandler<string> MoveEvent;
         public event EventHandler<string> FenEvent;
@@ -44,6 +45,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public event EventHandler BasePositionEvent;
         public event EventHandler AwaitedPosition;
         public event EventHandler BatteryChangedEvent;
+        public event EventHandler HelpRequestedEvent;
 
         protected AbstractEBoardWrapper(string name, string basePath)
         {
@@ -63,29 +65,41 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _board = GetEBoard(true);
             _board.BasePositionEvent += _board_BasePositionEvent;
             _board.DataEvent += _board_DataEvent;
+            _board.HelpRequestedEvent += _board_HelpRequestedEvent;
+        }
+
+        private void _board_HelpRequestedEvent(object sender, EventArgs e)
+        {
+           HelpRequestedEvent?.Invoke(sender, EventArgs.Empty);
         }
 
         private void _board_DataEvent(object sender, string e)
         {
-            DataEvent?.Invoke(this,e);
+            DataEvent?.Invoke(sender, e);
+        }
+
+        protected AbstractEBoardWrapper(string name, string basePath, string comPortName, bool useChesstimation) : this(
+            name, basePath, comPortName, string.Empty, false, false, false, false, useChesstimation)
+        {
+
         }
 
         protected AbstractEBoardWrapper(string name, string basePath,  string comPortName) : this(
-            name, basePath, comPortName,string.Empty, false, false,false, false)
+            name, basePath, comPortName,string.Empty, false, false,false, false, false)
         {
 
         }
 
         protected AbstractEBoardWrapper(string name, string basePath, string comPortName,
                                         bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide):
-            this(name,basePath,comPortName,string.Empty,useBluetooth, useClock, showMovesOnly, switchClockSide)
+            this(name,basePath,comPortName,string.Empty,useBluetooth, useClock, showMovesOnly, switchClockSide, false)
         {
 
 
         }
 
         protected AbstractEBoardWrapper(string name, string basePath, string comPortName,string baud,
-                                        bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide)
+                                        bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide, bool useChesstimation = false)
         {
             Name = name;
             _basePath = basePath;
@@ -95,6 +109,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _useClock = useClock;
             _showMovesOnly = showMovesOnly;
             _switchClockSide = switchClockSide;
+            UseChesstimation = useChesstimation;
             try
             {
                 _fileLogger = new FileLogger(Path.Combine(basePath, "log", $"{Name}_1.log"), 10, 10);
@@ -107,7 +122,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             Init();
         }
 
-        public abstract void Calibrate();
+        public abstract bool Calibrate();
         public abstract void SendInformation(string message);
 
         public void RequestDump()
@@ -143,7 +158,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void SetScanTime(int scanTime);
         public abstract void SetDebounce(int debounce);
 
-        public abstract void FlashInSync(bool flashSync);
+        public abstract void FlashMode(EnumFlashMode flashMode);
+
 
         public void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
@@ -482,6 +498,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _board = GetEBoard();
             _board.BasePositionEvent += _board_BasePositionEvent;
             _board.DataEvent += _board_DataEvent;
+            _board.HelpRequestedEvent += _board_HelpRequestedEvent;
             if (!_board.IsCalibrated)
             {
                 _board.Calibrate();
@@ -500,7 +517,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         private void _board_BasePositionEvent(object sender, EventArgs e)
         {
-            _fileLogger?.LogDebug("C: Forced base position received");
+            //if (!_forcedBasePosition)
+            //{
+            //    _fileLogger?.LogDebug("C: Forced base position received");
+            //}
             _forcedBasePosition = true;
         }
 
@@ -749,7 +769,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 {
                     if (!_internalChessBoard.GetFigureOnField(f).Equals(internalChessBoard.GetFigureOnField(f)))
                     {
-                        _fileLogger?.LogDebug($"C: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
+                        //_fileLogger?.LogDebug($"C: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
                         invalidFields.Add(InternalChessBoard.GetFieldName(f));
                     }
                 }

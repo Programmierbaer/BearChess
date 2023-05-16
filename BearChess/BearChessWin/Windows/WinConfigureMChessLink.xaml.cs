@@ -76,12 +76,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(_eChessBoardConfiguration.PortName);
             }
             var flashInSync = _eChessBoardConfiguration.FlashInSync;
+            var noFlash = _eChessBoardConfiguration.NoFlash;
             sliderDim.Value = _eChessBoardConfiguration.DimLevel;
             sliderScanTime.Value = _eChessBoardConfiguration.ScanTime;
             sliderDebounce.Value = _eChessBoardConfiguration.Debounce;
-            radioButtonSync.IsChecked = flashInSync;
-            radioButtonAlternate.IsChecked = !flashInSync;
+            if (noFlash)
+            {
+                radioButtonNoFlash.IsChecked = true;
+                radioButtonSync.IsChecked = false;
+                radioButtonAlternate.IsChecked = false;
+            }
+            else
+            {
+                radioButtonNoFlash.IsChecked = false;
+                radioButtonSync.IsChecked = flashInSync;
+                radioButtonAlternate.IsChecked = !flashInSync;
+            }
+
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
+            checkBoxChesstimation.IsChecked = _eChessBoardConfiguration.UseChesstimation;
             SetScanText();
             SetDebounceText();
         }
@@ -96,13 +109,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _loader?.Close();
             }
 
-            _eChessBoardConfiguration.FlashInSync =
-                radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value;
+            _eChessBoardConfiguration.FlashInSync = radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value;
+            _eChessBoardConfiguration.NoFlash = radioButtonNoFlash.IsChecked.HasValue && radioButtonNoFlash.IsChecked.Value;
             _eChessBoardConfiguration.DimLeds = true;
             _eChessBoardConfiguration.DimLevel = (int)sliderDim.Value;
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
             _eChessBoardConfiguration.ScanTime = (int)sliderScanTime.Value;
             _eChessBoardConfiguration.Debounce = (int)sliderDebounce.Value;
+            _eChessBoardConfiguration.UseChesstimation =
+                checkBoxChesstimation.IsChecked.HasValue && checkBoxChesstimation.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -221,7 +236,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_loader != null)
             {
-                _loader.FlashInSync(radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value);
+                var flashSync = radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value;
+                if (radioButtonNoFlash.IsChecked.HasValue && radioButtonNoFlash.IsChecked.Value)
+                {
+                    _loader.FlashMode(EnumFlashMode.NoFlash);
+                }
+                else
+                {
+                    _loader.FlashMode(flashSync ? EnumFlashMode.FlashSync : EnumFlashMode.FlashAsync);
+                }
                 _loader.DimLeds((int)sliderDim.Value);
                 _loader.SetLedsFor(new[] { "e2", "e4" }, false);
             }
@@ -231,7 +254,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_loader != null)
             {
-                _loader.FlashInSync(radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value);
+                var flashSync = radioButtonSync.IsChecked.HasValue && radioButtonSync.IsChecked.Value;
+                if (radioButtonNoFlash.IsChecked.HasValue && radioButtonNoFlash.IsChecked.Value)
+                {
+                    _loader.FlashMode(EnumFlashMode.NoFlash);
+                }
+                else
+                {
+                    _loader.FlashMode(flashSync ? EnumFlashMode.FlashSync : EnumFlashMode.FlashAsync);
+                }
                 _loader.DimLeds((int)sliderDim.Value);
                 _loader.SetLedsFor(new[] { "e2", "e4" }, false);
             }

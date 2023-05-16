@@ -27,10 +27,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
             // ignore
         }
 
-        public override void FlashInSync(bool flashInSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
-            _board.FlashSync(flashInSync);
+            _board.FlashMode(flashMode);
         }
+
 
         protected override IEBoard GetEBoard()
         {
@@ -43,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
             return new CertaboChessBoard.EChessBoard( logger: _fileLogger);
         }
 
-        public override void Calibrate()
+        public override bool Calibrate()
         {
             _stop = true;
             SetAllLedsOn();
@@ -51,6 +52,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
             _board.Calibrate();
             SetAllLedsOff();
             _stop = false;
+            return _board.IsCalibrated;
         }
 
         public override void SendInformation(string message)

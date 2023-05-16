@@ -27,11 +27,12 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffEBoardWrapper
             // ignore
         }
 
-        public override void FlashInSync(bool flashInSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
-            _board.FlashSync(flashInSync);
+            _board.FlashMode(flashMode);
         }
 
+       
         protected override IEBoard GetEBoard()
         {
             return new SquareOffChessBoard.EChessBoard(basePath: _basePath, logger: _fileLogger,  portName: _comPortName, _useBluetooth,Name);
@@ -43,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffEBoardWrapper
             return new SquareOffChessBoard.EChessBoard(logger: _fileLogger);
         }
 
-        public override void Calibrate()
+        public override bool Calibrate()
         {
             _stop = true;
             SetAllLedsOn();
@@ -51,6 +52,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffEBoardWrapper
             _board.Calibrate();
             SetAllLedsOff();
             _stop = false;
+            return true;
         }
 
         public override void SendInformation(string message)

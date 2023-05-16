@@ -7,14 +7,32 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     public class FastChessBoard
     {
         private readonly Dictionary<string, string> _allFields = new Dictionary<string, string>();
+        private DisplayFigureType _displayFigureType;
+        private DisplayMoveType _displayMoveType;
+        private DisplayCountryType _displayCountryType;
 
         public FastChessBoard()
         {
             Init(Array.Empty<string>());
+            _displayFigureType = DisplayFigureType.Symbol;
+            _displayMoveType = DisplayMoveType.FromToField;
+            _displayCountryType = DisplayCountryType.GB;
         }
+
+      
+
+        public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType)
+        {
+            _displayFigureType = figureType;
+            _displayMoveType = moveType;
+            _displayCountryType = countryType;
+        }
+
+      
 
         public void Init(string[] allMoves)
         {
+           
             _allFields.Clear();
             _allFields["a1"] = FenCodes.WhiteRook;
             _allFields["b1"] = FenCodes.WhiteKnight;
@@ -145,7 +163,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 return string.Empty;
             }
 
-            var captureSign = "-";
+            var captureSign = _displayMoveType == DisplayMoveType.FromToField ? "-" : string.Empty;
             var fromField = move.Substring(0, 2);
             var toField = move.Substring(2, 2);
             if (!_allFields.ContainsKey(fromField))
@@ -205,14 +223,22 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
             if (figureOnField.Equals("p", StringComparison.OrdinalIgnoreCase))
             {
-                figureOnField = string.Empty;
+                figureOnField = _displayMoveType == DisplayMoveType.FromToField ? string.Empty : captureSign=="x" ? fromField.Substring(0, 1) : string.Empty;
             }
             else
             {
-                figureOnField = FontConverter.ConvertFont(figureOnField, string.Empty);
+                if (_displayFigureType == DisplayFigureType.Symbol)
+                {
+                    figureOnField = FontConverter.ConvertFont(figureOnField, string.Empty);
+                }
+                else
+                {
+                    figureOnField = DisplayCountryHelper.CountryLetter(figureOnField, _displayCountryType).ToUpper();
+                }
             }
-
-            return $"{figureOnField}{fromField}{captureSign}{toField}";
+            if (_displayMoveType==DisplayMoveType.FromToField)
+              return $"{figureOnField}{fromField}{captureSign}{toField}";
+            return $"{figureOnField}{captureSign}{toField}";
         }
     }
 }

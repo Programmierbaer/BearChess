@@ -52,7 +52,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract void SetDebounce(int debounce);
 
-        public abstract void FlashSync(bool flashSync);
+        public abstract void FlashMode(EnumFlashMode flashMode);
+
+
 
         public abstract void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
 
@@ -101,6 +103,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void DisplayOnClock(string display);
         
         public abstract event EventHandler BasePositionEvent;
+        public abstract event EventHandler HelpRequestedEvent;
 
         public abstract event EventHandler<string> DataEvent;
 

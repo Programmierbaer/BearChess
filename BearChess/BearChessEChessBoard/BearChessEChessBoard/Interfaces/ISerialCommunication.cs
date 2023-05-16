@@ -87,5 +87,7 @@
         bool SetComPort(string portName);
 
         string BoardInformation { get; }
+
+        bool UseChesstimation { get; set; }
     }
 }

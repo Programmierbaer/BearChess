@@ -19,7 +19,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
 
         }
 
-        public override void Calibrate()
+        public override bool Calibrate()
         {
             _stop = true;
             SetAllLedsOn();
@@ -27,6 +27,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
             _board.Calibrate();
             SetAllLedsOff();
             _stop = false;
+            return true;
         }
 
         public override void SendInformation(string message)
@@ -54,11 +55,12 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
             // ignore
         }
 
-        public override void FlashInSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
             //throw new System.NotImplementedException();
         }
 
+     
         protected override IEBoard GetEBoard()
         {
             return new ChessnutChessBoard.EChessBoard(_basePath, _fileLogger, _comPortName, _useBluetooth);

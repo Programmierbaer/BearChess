@@ -22,6 +22,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
         public string Baud => string.Empty;
 
         public int ReadTimeout { get; set; }
+        public int WriteTimeout { get; set; }
 
         public void WriteLine(string command)
         {
@@ -32,6 +33,9 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
         {
             //
         }
+
+        public bool RTS { get; set; }
+        public bool DTR { get; set; }
 
         public BTComPort(BluetoothAddress btAddress)
         {

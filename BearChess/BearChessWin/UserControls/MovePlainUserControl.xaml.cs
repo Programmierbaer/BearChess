@@ -174,7 +174,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                     else
                     {
-                        textBlockFigureSymbol.Text = CountryLetter(s.ToUpper(),_countryType);
+                        textBlockFigureSymbol.Text = DisplayCountryHelper.CountryLetter(s.ToUpper(),_countryType);
                     }
                 }
                 else
@@ -193,7 +193,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                     else
                     {
-                        textBlockPromotionSymbol.Text = CountryLetter(fenCharacter.ToUpper(), _countryType);
+                        textBlockPromotionSymbol.Text = DisplayCountryHelper.CountryLetter(fenCharacter.ToUpper(), _countryType);
                     }
                     textBlockPromotionSymbol.Visibility = Visibility.Visible;
                 }
@@ -279,7 +279,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var p = string.Empty;
             if (promotedFigureId != FigureId.NO_PIECE)
             {
-                p =  CountryLetter(FigureId.FigureIdToFenCharacter[promotedFigureId].ToUpper(),_countryType);
+                p = DisplayCountryHelper.CountryLetter(FigureId.FigureIdToFenCharacter[promotedFigureId].ToUpper(),_countryType);
             }
 
             if (_moveType == DisplayMoveType.FromToField)
@@ -300,34 +300,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return shortMoveIdentifier+"x" + move.Substring(2) + p;
         }
 
-        private string CountryLetter(string letter, DisplayCountryType countryType)
-        {
-            try
-            {
-                switch (countryType)
-                {
-                    case DisplayCountryType.GB:
-                        return letter;
-                    case DisplayCountryType.DE:
-                        return FigureId.FigureGBtoDE[letter];
-                    case DisplayCountryType.FR:
-                        return FigureId.FigureGBtoFR[letter];
-                    case DisplayCountryType.IT:
-                        return FigureId.FigureGBtoIT[letter];
-                    case DisplayCountryType.SP:
-                        return FigureId.FigureGBtoSP[letter];
-                    case DisplayCountryType.DA:
-                        return FigureId.FigureGBtoDA[letter];
-                    default:
-                        break;
-                }
-            }
-            catch
-            {
-                //
-            }
-            return  letter;
-        }
+      
 
         private void MenuItemMoveSymbol_OnClick(object sender, RoutedEventArgs e)
         {

@@ -55,6 +55,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void SetWindowPositions(double newLeft, double newTop);
 
         void SwitchColor();
+        void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType);
     }
 
     public abstract class AbstractEngineWindow

@@ -116,6 +116,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
           // Ignored for MChessLink
         }
 
+
+
         public override string GetCalibrateData()
         {
             return string.Empty;
@@ -138,120 +140,121 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     if (withConnection && !_pauseReading)
                     {
 
-                            int readByte = int.MaxValue;
-                            readLine = string.Empty;
-                            try
+                        int readByte = int.MaxValue;
+                        readLine = string.Empty;
+                        try
+                        {
+                            while (readByte > 0)
                             {
-                                while (readByte > 0)
+                                readByte = _comPort.ReadByte();
+                                if (readByte > 0)
                                 {
-                                    readByte = _comPort.ReadByte();
-                                    if (readByte > 0)
+                                    var convertFromRead = ConvertFromRead(readByte);
+                                    // _logger?.LogDebug($"SC: Read:  {convertFromRead}");
+                                    readLine += convertFromRead;
+                                }
+
+                            }
+                        }
+                        catch
+                        {
+                            // _logger?.LogDebug("SC: Catch");
+                        }
+
+
+                        if (string.IsNullOrWhiteSpace(readLine))
+                        {
+                            Thread.Sleep(5);
+                            continue;
+                        }
+
+                        if (readLine.Length == 1)
+                        {
+                            Thread.Sleep(5);
+                            continue;
+                        }
+
+                        _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
+                        if (readLine.Contains("s"))
+                        {
+
+                            lock (_locker)
+                            {
+                                string tmpLine =
+                                    readLine.Substring(readLine.IndexOf("s", StringComparison.Ordinal));
+
+                                while (true)
+                                {
+                                    var startIndex = tmpLine.IndexOf("s", StringComparison.Ordinal);
+                                    if (tmpLine.Length < startIndex + 67)
                                     {
-                                        var convertFromRead = ConvertFromRead(readByte);
-                                        // _logger?.LogDebug($"SC: Read:  {convertFromRead}");
-                                        readLine += convertFromRead;
+                                        break;
                                     }
 
-                                }
-                            }
-                            catch
-                            {
-                                // _logger?.LogDebug("SC: Catch");
-                            }
-
-
-                            if (string.IsNullOrWhiteSpace(readLine))
-                            {
-                                continue;
-                            }
-
-                            if (readLine.Length == 1)
-                            {
-                                continue;
-                            }
-
-                            _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
-                            if (readLine.Contains("s"))
-                            {
-
-                                lock (_locker)
-                                {
-                                    string tmpLine =
-                                        readLine.Substring(readLine.IndexOf("s", StringComparison.Ordinal));
-
-                                    while (true)
+                                    string currentPosition = tmpLine.Substring(startIndex, 67);
+                                    //if (!_currentPosition.Equals(currentPosition))
+                                    //{
+                                    //    _logger?.LogDebug($"SC: Current position: {_currentPosition}");
+                                    //}
+                                    _currentPosition = currentPosition;
+                                    _dataFromBoard.Enqueue(_currentPosition);
+                                    if (tmpLine.Length > 67)
                                     {
-                                        var startIndex = tmpLine.IndexOf("s", StringComparison.Ordinal);
-                                        if (tmpLine.Length < startIndex + 67)
-                                        {
-                                            break;
-                                        }
-
-                                        string currentPosition = tmpLine.Substring(startIndex, 67);
-                                        //if (!_currentPosition.Equals(currentPosition))
-                                        //{
-                                        //    _logger?.LogDebug($"SC: Current position: {_currentPosition}");
-                                        //}
-                                        _currentPosition = currentPosition;
-                                        _dataFromBoard.Enqueue(_currentPosition);
-                                        if (tmpLine.Length > 67)
-                                        {
-                                            tmpLine = tmpLine.Substring(67);
-                                            //_logger?.LogDebug($"SC: new tmp line: {tmpLine}");
-                                            if (!tmpLine.StartsWith("s"))
-                                            {
-                                                break;
-                                            }
-                                        }
-                                        else
+                                        tmpLine = tmpLine.Substring(67);
+                                        //_logger?.LogDebug($"SC: new tmp line: {tmpLine}");
+                                        if (!tmpLine.StartsWith("s"))
                                         {
                                             break;
                                         }
                                     }
-
+                                    else
+                                    {
+                                        break;
+                                    }
                                 }
 
                             }
-                            if (readLine.Contains("g"))
+
+                        }
+
+                        if (readLine.Contains("g"))
+                        {
+
+                            lock (_locker)
                             {
+                                string tmpLine =
+                                    readLine.Substring(readLine.IndexOf("g", StringComparison.Ordinal));
 
-                                lock (_locker)
+                                while (true)
                                 {
-                                    string tmpLine =
-                                        readLine.Substring(readLine.IndexOf("g", StringComparison.Ordinal));
-
-                                    while (true)
+                                    var startIndex = tmpLine.IndexOf("g", StringComparison.Ordinal);
+                                    if (tmpLine.Length < startIndex + 67)
                                     {
-                                        var startIndex = tmpLine.IndexOf("g", StringComparison.Ordinal);
-                                        if (tmpLine.Length < startIndex + 67)
-                                        {
-                                            break;
-                                        }
+                                        break;
+                                    }
 
-                                        string currentPosition = tmpLine.Substring(startIndex, 67);
-                                        _currentPosition = currentPosition;
-                                        _dataFromBoard.Enqueue(_currentPosition);
-                                        if (tmpLine.Length > 67)
-                                        {
-                                            tmpLine = tmpLine.Substring(67);
-                                            //_logger?.LogDebug($"SC: new tmp line: {tmpLine}");
-                                            if (!tmpLine.StartsWith("s"))
-                                            {
-                                                break;
-                                            }
-                                        }
-                                        else
+                                    string currentPosition = tmpLine.Substring(startIndex, 67);
+                                    _currentPosition = currentPosition;
+                                    _dataFromBoard.Enqueue(_currentPosition);
+                                    if (tmpLine.Length > 67)
+                                    {
+                                        tmpLine = tmpLine.Substring(67);
+                                        //_logger?.LogDebug($"SC: new tmp line: {tmpLine}");
+                                        if (!tmpLine.StartsWith("s"))
                                         {
                                             break;
                                         }
                                     }
-
+                                    else
+                                    {
+                                        break;
+                                    }
                                 }
 
                             }
 
-                          
-                        
+                        }
+
                     }
 
                     Thread.Sleep(5);

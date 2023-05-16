@@ -212,8 +212,6 @@
     <Compile Include="UserControls\DigitalNumberUserControl.xaml.cs">
       <DependentUpon>DigitalNumberUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\DisplayFigureType.cs" />
-    <Compile Include="UserControls\DisplayMoveType.cs" />
     <Compile Include="UserControls\EngineInfoLineUserControl.xaml.cs">
       <DependentUpon>EngineInfoLineUserControl.xaml</DependentUpon>
     </Compile>
@@ -863,6 +861,10 @@
     <ProjectReference Include="..\FICS\FicsClient\FicsClient.csproj">
       <Project>{e5679ec7-d909-447b-bc28-2a158779db23}</Project>
       <Name>FicsClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IChessOneLoader\IChessOneLoader.csproj">
+      <Project>{f77d1637-7997-4cc9-a954-e928ef93eb40}</Project>
+      <Name>IChessOneLoader</Name>
     </ProjectReference>
     <ProjectReference Include="..\MChessLinkLoader\MChessLinkLoader\MChessLinkLoader.csproj">
       <Project>{FEE3096B-8A9C-496B-B7F5-03E733614DD2}</Project>
@@ -1551,6 +1553,24 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\database_repeat_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\user_comment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\MephistoExclusive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\iChessOne.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\iChessOneIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\file_extension_html.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

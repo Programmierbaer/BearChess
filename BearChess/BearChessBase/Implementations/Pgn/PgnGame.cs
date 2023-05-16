@@ -62,6 +62,17 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             get => GetValue("BlackElo");
             set => AddValue("BlackElo", value);
         }
+        public string FENLine
+        {
+            get => GetValue("FEN");
+            set => AddValue("FEN", value);
+        }
+
+        public string SetUp
+        {
+            get => GetValue("SetUp");
+            set => AddValue("SetUp", value);
+        }
 
         public string MoveList => GetMoveList();
 
@@ -174,7 +185,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                 {
                     continue;
                 }
-                sb.AppendLine($"[{key} \"{GetValue(key)}\"]");
+
+                var value = GetValue(key);
+                if (key.Equals("FEN") || key.Equals("SetUp"))
+                {
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        continue;
+                    }
+                }
+                sb.AppendLine($"[{key} \"{value}\"]");
             }
 
             int moveCnt = 0;

@@ -34,5 +34,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.Loader
             //   eBoardWrapper.FlashInSync(true);
             return eBoardWrapper;
         }
+
+      
     }
 }

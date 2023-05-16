@@ -254,11 +254,12 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             // ignore
         }
 
-        public override void FlashSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
-            _flashSync = flashSync;
+            _flashSync = flashMode == EnumFlashMode.FlashSync;
         }
 
+     
         public override void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
             //
@@ -474,6 +475,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
 
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
+        public override event EventHandler HelpRequestedEvent;
 
         public override void SpeedLeds(int level)
         {

@@ -10,6 +10,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool DimLeds { get; set; }
         public int DimLevel { get; set; }
         public bool FlashInSync { get; set; }
+        public bool NoFlash { get; set; }
         public bool UseBluetooth { get; set; }
         public bool UseClock { get; set; }
         public bool ClockShowOnlyMoves { get; set; }
@@ -17,6 +18,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool LongMoveFormat { get; set; }
         public int ScanTime { get; set; }
         public int Debounce { get; set; }
+        public bool UseChesstimation { get; set; }
 
         public EChessBoardConfiguration()
         {
@@ -29,6 +31,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             ScanTime = 30; // Default for ChessLink
             Debounce = 0; // Default for ChessLink
             Baud = "1200";
+            UseChesstimation = false;
         }
 
         public static EChessBoardConfiguration Load(string fileName)
@@ -47,6 +50,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.DimLeds = savedConfig.DimLeds;
                     configuration.DimLevel = savedConfig.DimLevel;
                     configuration.FlashInSync = savedConfig.FlashInSync;
+                    configuration.NoFlash = savedConfig.NoFlash;
                     configuration.UseBluetooth = savedConfig.UseBluetooth;
                     configuration.ClockShowOnlyMoves = savedConfig.ClockShowOnlyMoves;
                     configuration.UseClock = savedConfig.UseClock;
@@ -54,6 +58,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.LongMoveFormat = savedConfig.LongMoveFormat;
                     configuration.ScanTime = savedConfig.ScanTime;
                     configuration.Debounce = savedConfig.Debounce;
+                    configuration.UseChesstimation = savedConfig.UseChesstimation;
                     if (configuration.DimLevel < 0)
                     {
                         configuration.DimLevel = configuration.DimLeds ? 0 : 14;

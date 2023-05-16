@@ -8,13 +8,13 @@
 \contentsline {figure}{\numberline {8}{\ignorespaces Games}}{13}{figure.8}%
 \contentsline {figure}{\numberline {9}{\ignorespaces Engines}}{13}{figure.9}%
 \contentsline {figure}{\numberline {10}{\ignorespaces Engine Settings}}{14}{figure.10}%
-\contentsline {figure}{\numberline {11}{\ignorespaces Books}}{14}{figure.11}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Books}}{15}{figure.11}%
 \contentsline {figure}{\numberline {12}{\ignorespaces Settings}}{15}{figure.12}%
 \contentsline {figure}{\numberline {13}{\ignorespaces Player}}{16}{figure.13}%
 \contentsline {figure}{\numberline {14}{\ignorespaces Electronic Boards}}{16}{figure.14}%
 \contentsline {figure}{\numberline {15}{\ignorespaces Windows}}{18}{figure.15}%
 \contentsline {figure}{\numberline {16}{\ignorespaces Open Load And Manage UCI Engines window}}{18}{figure.16}%
-\contentsline {figure}{\numberline {17}{\ignorespaces Load And Manage UCI Engines}}{19}{figure.17}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Load and Manage UCI Engines}}{19}{figure.17}%
 \contentsline {figure}{\numberline {18}{\ignorespaces Load parameter}}{20}{figure.18}%
 \contentsline {figure}{\numberline {19}{\ignorespaces Confirm UCI}}{20}{figure.19}%
 \contentsline {figure}{\numberline {20}{\ignorespaces Engine configuration}}{21}{figure.20}%
@@ -170,29 +170,30 @@
 \contentsline {figure}{\numberline {170}{\ignorespaces Manage engine tournaments}}{107}{figure.170}%
 \contentsline {figure}{\numberline {171}{\ignorespaces Rename a tournament}}{108}{figure.171}%
 \contentsline {figure}{\numberline {172}{\ignorespaces Repeat a game}}{109}{figure.172}%
-\contentsline {figure}{\numberline {173}{\ignorespaces Opens a window for position setup}}{109}{figure.173}%
-\contentsline {figure}{\numberline {174}{\ignorespaces Setup a new position with an electronic chessboard}}{110}{figure.174}%
-\contentsline {figure}{\numberline {175}{\ignorespaces Castling rights and current color}}{110}{figure.175}%
-\contentsline {figure}{\numberline {176}{\ignorespaces Setup a new position without an electronic chessboard}}{111}{figure.176}%
-\contentsline {figure}{\numberline {177}{\ignorespaces FEN input box}}{111}{figure.177}%
-\contentsline {figure}{\numberline {178}{\ignorespaces Castling rights and current color}}{112}{figure.178}%
-\contentsline {figure}{\numberline {179}{\ignorespaces Confirm position}}{112}{figure.179}%
-\contentsline {figure}{\numberline {180}{\ignorespaces Open FICS connection dialog}}{113}{figure.180}%
-\contentsline {figure}{\numberline {181}{\ignorespaces Connection parameters}}{113}{figure.181}%
-\contentsline {figure}{\numberline {182}{\ignorespaces Connect to FICS}}{114}{figure.182}%
-\contentsline {figure}{\numberline {183}{\ignorespaces Initial window}}{115}{figure.183}%
-\contentsline {figure}{\numberline {184}{\ignorespaces Time control}}{116}{figure.184}%
-\contentsline {figure}{\numberline {185}{\ignorespaces Define a command}}{117}{figure.185}%
-\contentsline {figure}{\numberline {186}{\ignorespaces Advertisements}}{118}{figure.186}%
-\contentsline {figure}{\numberline {187}{\ignorespaces Users}}{119}{figure.187}%
-\contentsline {figure}{\numberline {188}{\ignorespaces Time control}}{120}{figure.188}%
-\contentsline {figure}{\numberline {189}{\ignorespaces Log}}{120}{figure.189}%
-\contentsline {figure}{\numberline {190}{\ignorespaces Run a game on startup}}{121}{figure.190}%
-\contentsline {figure}{\numberline {191}{\ignorespaces Games}}{122}{figure.191}%
-\contentsline {figure}{\numberline {192}{\ignorespaces Save a game}}{122}{figure.192}%
-\contentsline {figure}{\numberline {193}{\ignorespaces Games window}}{123}{figure.193}%
-\contentsline {figure}{\numberline {194}{\ignorespaces Delete single duplicate game}}{124}{figure.194}%
-\contentsline {figure}{\numberline {195}{\ignorespaces Only pure PGN information}}{125}{figure.195}%
-\contentsline {figure}{\numberline {196}{\ignorespaces Two loaded engines}}{125}{figure.196}%
-\contentsline {figure}{\numberline {197}{\ignorespaces Two loaded engines}}{127}{figure.197}%
-\contentsline {figure}{\numberline {198}{\ignorespaces Play against Stockfish with support from Komodo}}{129}{figure.198}%
+\contentsline {figure}{\numberline {173}{\ignorespaces Tournament information}}{109}{figure.173}%
+\contentsline {figure}{\numberline {174}{\ignorespaces Opens a window for position setup}}{110}{figure.174}%
+\contentsline {figure}{\numberline {175}{\ignorespaces Setup a new position with an electronic chessboard}}{110}{figure.175}%
+\contentsline {figure}{\numberline {176}{\ignorespaces Castling rights and current color}}{111}{figure.176}%
+\contentsline {figure}{\numberline {177}{\ignorespaces Setup a new position without an electronic chessboard}}{112}{figure.177}%
+\contentsline {figure}{\numberline {178}{\ignorespaces FEN input box}}{112}{figure.178}%
+\contentsline {figure}{\numberline {179}{\ignorespaces Castling rights and current color}}{112}{figure.179}%
+\contentsline {figure}{\numberline {180}{\ignorespaces Confirm position}}{113}{figure.180}%
+\contentsline {figure}{\numberline {181}{\ignorespaces Open FICS connection dialog}}{114}{figure.181}%
+\contentsline {figure}{\numberline {182}{\ignorespaces Connection parameters}}{114}{figure.182}%
+\contentsline {figure}{\numberline {183}{\ignorespaces Connect to FICS}}{115}{figure.183}%
+\contentsline {figure}{\numberline {184}{\ignorespaces Initial window}}{116}{figure.184}%
+\contentsline {figure}{\numberline {185}{\ignorespaces Time control}}{117}{figure.185}%
+\contentsline {figure}{\numberline {186}{\ignorespaces Define a command}}{118}{figure.186}%
+\contentsline {figure}{\numberline {187}{\ignorespaces Advertisements}}{119}{figure.187}%
+\contentsline {figure}{\numberline {188}{\ignorespaces Users}}{120}{figure.188}%
+\contentsline {figure}{\numberline {189}{\ignorespaces Time control}}{121}{figure.189}%
+\contentsline {figure}{\numberline {190}{\ignorespaces Log}}{121}{figure.190}%
+\contentsline {figure}{\numberline {191}{\ignorespaces Run a game on startup}}{122}{figure.191}%
+\contentsline {figure}{\numberline {192}{\ignorespaces Games}}{123}{figure.192}%
+\contentsline {figure}{\numberline {193}{\ignorespaces Save a game}}{123}{figure.193}%
+\contentsline {figure}{\numberline {194}{\ignorespaces Games window}}{124}{figure.194}%
+\contentsline {figure}{\numberline {195}{\ignorespaces Delete single duplicate game}}{125}{figure.195}%
+\contentsline {figure}{\numberline {196}{\ignorespaces Only pure PGN information}}{126}{figure.196}%
+\contentsline {figure}{\numberline {197}{\ignorespaces Two loaded engines}}{126}{figure.197}%
+\contentsline {figure}{\numberline {198}{\ignorespaces Two loaded engines}}{128}{figure.198}%
+\contentsline {figure}{\numberline {199}{\ignorespaces Play against Stockfish with support from Komodo}}{130}{figure.199}%

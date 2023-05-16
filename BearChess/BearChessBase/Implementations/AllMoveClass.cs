@@ -30,11 +30,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return _fens.ContainsKey(color) ? _fens[color] : null;
         }
 
-        private string CountryLetter(string letter, DisplayCountryType countryType)
-        {
-            return countryType == DisplayCountryType.GB ? letter : FigureId.FigureGBtoDE[letter];
-        }
-
+      
         public string GetMoveString(bool longFormat = true, DisplayCountryType countryType=DisplayCountryType.GB)
         {
             Move move;
@@ -54,7 +50,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
             else
             {
-                result = CountryLetter(result, countryType);
+                result = DisplayCountryHelper.CountryLetter(result, countryType);
             }
 
             if (longFormat)
@@ -106,7 +102,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             string p = string.Empty;
             if (move.PromotedFigure != FigureId.NO_PIECE)
             {
-                p = CountryLetter(FigureId.FigureIdToFenCharacter[move.PromotedFigure].ToUpper(), countryType);
+                p = DisplayCountryHelper.CountryLetter(FigureId.FigureIdToFenCharacter[move.PromotedFigure].ToUpper(), countryType);
             }
 
             result += move.ToFieldName.ToLower() + p + move.CheckOrMateSign;

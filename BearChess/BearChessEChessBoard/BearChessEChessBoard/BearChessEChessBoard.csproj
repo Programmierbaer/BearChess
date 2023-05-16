@@ -48,6 +48,7 @@
     <Compile Include="DataFromBoard.cs" />
     <Compile Include="EChessBoardConfiguration.cs" />
     <Compile Include="IElectronicChessBoard.cs" />
+    <Compile Include="Interfaces\EnumFlashMode.cs" />
     <Compile Include="Interfaces\IEBoard.cs" />
     <Compile Include="Interfaces\IEBoardWrapper.cs" />
     <Compile Include="Interfaces\IInternalChessBoard.cs" />

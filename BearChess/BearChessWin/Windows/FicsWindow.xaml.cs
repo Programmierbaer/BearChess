@@ -1291,5 +1291,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             Clipboard.SetText(sb.ToString());
         }
+
+        public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType)
+        {
+           //
+        }
     }
 }

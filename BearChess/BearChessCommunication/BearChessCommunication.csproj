@@ -53,6 +53,8 @@
     <Compile Include="SerialComPort.cs" />
     <Compile Include="SerialComPortEventBased.cs" />
     <Compile Include="SerialComportForByteArray.cs" />
+    <Compile Include="SerialComPortSlowStreamBased.cs" />
+    <Compile Include="SerialComPortStreamBased.cs" />
     <Compile Include="Telnet.cs" />
   </ItemGroup>
   <ItemGroup>

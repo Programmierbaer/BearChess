@@ -356,6 +356,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public void MakeMove(Move move)
         {
           
+            if (move == null) return;
             var chessFigure = _figures[move.FromField];
 
             if (chessFigure.Color != CurrentColor)
@@ -414,7 +415,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             keysCount = _allPlayedMoves.Keys.Count;
             if ((keysCount == 0) && EnemyColor == Fields.COLOR_BLACK)
             {
-                return;
+              //  return;
             }
 
             var fenPosition = GetFenPosition();
@@ -451,7 +452,17 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
             else
             {
-                _allPlayedMoves[keysCount - 1].SetMove(Fields.COLOR_BLACK, move, fenPosition);
+                if (keysCount == 0)
+                {
+                    var allPlayedMove = new AllMoveClass(keysCount);
+                    allPlayedMove.SetMove(Fields.COLOR_BLACK, move, fenPosition);
+
+                    _allPlayedMoves[keysCount] = allPlayedMove;
+                }
+                else
+                {
+                    _allPlayedMoves[keysCount - 1].SetMove(Fields.COLOR_BLACK, move, fenPosition);
+                }
             }
 
             if (!DrawByMaterial)

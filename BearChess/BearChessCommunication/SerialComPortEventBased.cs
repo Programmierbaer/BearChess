@@ -183,5 +183,16 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             get => _serialPort.WriteTimeout;
             set => _serialPort.WriteTimeout = value;
         }
+
+        public bool RTS
+        {
+            get => _serialPort.RtsEnable;
+            set => _serialPort.RtsEnable = value;
+        }
+        public bool DTR
+        {
+            get => _serialPort.DtrEnable;
+            set => _serialPort.DtrEnable = value;
+        }
     }
 }

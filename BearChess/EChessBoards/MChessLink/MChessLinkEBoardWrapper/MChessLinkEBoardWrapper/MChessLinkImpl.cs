@@ -4,14 +4,17 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
 {
     public class MChessLinkImpl : AbstractEBoardWrapper
     {
+       
+
         public MChessLinkImpl(string name, string basePath) : base(name, basePath)
         {
         }
 
         /// <inheritdoc />
-        public MChessLinkImpl(string name, string basePath, string comPortName) : base(
-            name, basePath,  comPortName)
+        public MChessLinkImpl(string name, string basePath, string comPortName, bool useChesstimation) : base(
+            name, basePath,  comPortName, useChesstimation)
         {
+         
         }
 
 
@@ -26,16 +29,17 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         }
 
         /// <inheritdoc />
-        public override void FlashInSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
-            _board?.FlashSync(flashSync);
+            _board?.FlashMode(flashMode);
         }
 
+      
 
         /// <inheritdoc />
         protected override IEBoard GetEBoard()
         {
-            return new MChessLinkChessBoard.EChessBoard(_fileLogger,  _comPortName);
+            return new MChessLinkChessBoard.EChessBoard(_fileLogger, _comPortName, UseChesstimation);
         }
 
         protected override IEBoard GetEBoard(bool check)
@@ -45,9 +49,9 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
 
 
         /// <inheritdoc />
-        public override void Calibrate()
+        public override bool Calibrate()
         {
-            // ignore
+            return true;
         }
 
         public override void SendInformation(string message)

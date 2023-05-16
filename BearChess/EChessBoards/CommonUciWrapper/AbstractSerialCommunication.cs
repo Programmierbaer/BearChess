@@ -47,15 +47,18 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public string BoardInformation { get; private set; }
 
+        public bool UseChesstimation { get; set; }
+
 
         protected AbstractSerialCommunication(ILogging logger, string portName, string boardName) : this(logger, portName, string.Empty, boardName)
         {
-
+            UseChesstimation = false;
         }
 
         protected AbstractSerialCommunication(ILogging logger, string portName, string baud, string boardName)
         {
 
+            UseChesstimation = false;
             if (!string.IsNullOrWhiteSpace(portName))
             {
                 _setPortName = portName;
@@ -257,7 +260,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     }
                     else if (comPort.StartsWith("B"))
                     {
-                        //if (string.IsNullOrWhiteSpace(SerialBTLECommunicationTools.DeviceIdList))
                         {
                             int counter = 0;
                             if (SerialBTLECommunicationTools.StartWatching(_logger, "MILLENNIUM CHESS"))
@@ -310,7 +312,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     }
                     else if (comPort.StartsWith("C"))
                     {
-                        _comPort = new SerialComPort(comPort, 38400, Parity.None)
+                        _comPort = new SerialComPortSlowStreamBased(comPort, 38400, Parity.None)
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
                     }
                 }
@@ -329,7 +331,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     }
                     else if (comPort.StartsWith("C"))
                     {
-                        _comPort = new SerialComPort(comPort, 38400, Parity.None)
+                        _comPort = new SerialComPortSlowStreamBased(comPort, 38400, Parity.None)
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
                     }
                 }
@@ -348,7 +350,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     }
                     else if (comPort.StartsWith("C"))
                     {
-                        _comPort = new SerialComPortEventBased(comPort, 38400, Parity.None)
+                        _comPort = new SerialComPortStreamBased(comPort, 38400, Parity.None)
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
                     }
                 }
@@ -453,6 +455,42 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 if (counter > 100)
                                 {
                                     _logger?.LogInfo("No BTLE port for Chessnut Air");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+
+                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault());
+                        SerialBTLECommunicationTools.StopWatching();
+                    }
+                }
+
+                if (_boardName.Equals(Constants.IChessOne, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (_useHID && comPort.StartsWith("H"))
+                    {
+
+                        _comPort = HIDComPort.GetComPort(0x2D80, 0xFF00);
+                        if (_comPort == null)
+                        {
+                            _logger?.LogInfo("No HID port for IChessOne");
+                            return false;
+                        }
+                    }
+
+                    if (_useBluetooth && comPort.StartsWith("B"))
+                    {
+                        int counter = 0;
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, "iChessOne"))
+                        {
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count == 0)
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo("No BTLE port for iChessOne");
                                     SerialBTLECommunicationTools.StopWatching();
                                     return false;
                                 }
@@ -647,6 +685,16 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 return true;
                             }
                         }
+                        if (_boardName.Equals(Constants.IChessOne, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                CurrentComPort = portName;
+                                BoardInformation = Constants.IChessOne;
+                                return true;
+                            }
+                        }
                         if (_boardName.Equals(Constants.SquareOffPro, StringComparison.OrdinalIgnoreCase))
                         {
                             if (_comPort.IsOpen)
@@ -679,6 +727,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         string readLine = string.Empty;
                         if (_boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))
                         {
+                            _logger?.LogInfo("S: Try to detect connected board...");
                             readLine = GetRawFromBoard("V");
                             if (readLine.StartsWith("v") && readLine.Length==5)
                             {
@@ -693,23 +742,35 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 {
                                     BoardInformation = Constants.Exclusive;
                                 }
-
                                 if (BoardInformation.Equals(Constants.MeOne))
                                 {
-                                    _logger?.LogInfo($"S: e-one? Check information ");
-                                    readLine = GetRawFromBoard("I00");
-                                    _logger?.LogInfo($"S: Information: {readLine}");
-                                    if (!string.IsNullOrWhiteSpace(readLine))
+                                    if (UseChesstimation)
                                     {
-                                        if (!readLine.StartsWith("e-one"))
+                                        BoardInformation = Constants.Chesstimation;
+                                    }
+                                    else
+                                    {
+                                        _logger?.LogInfo("S: eOne? Check further information... ");
+                                        try
                                         {
-                                            BoardInformation = Constants.Supreme;
+                                            readLine = GetRawFromBoard("I00");
+                                            _logger?.LogInfo($"S: Information: {readLine}");
+                                            if (!string.IsNullOrWhiteSpace(readLine))
+                                            {
+                                                if (!readLine.StartsWith("e-one"))
+                                                {
+                                                    BoardInformation = Constants.Supreme;
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            _logger?.LogError(ex);
                                         }
                                     }
                                 }
-                          
+                                _logger?.LogInfo($"S: Detected: {BoardInformation}");
                             }
-                           
                         }
                         else
                         {

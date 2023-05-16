@@ -17,9 +17,10 @@ namespace www.SoLaNoSoft.com.BearChess.DGTEBoardWrapper
         }
 
 
-        public override void Calibrate()
+        public override bool Calibrate()
         {
             _board.Calibrate();
+            return true;
         }
 
         public override void SendInformation(string message)
@@ -47,10 +48,12 @@ namespace www.SoLaNoSoft.com.BearChess.DGTEBoardWrapper
             // ignore
         }
 
-        public override void FlashInSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
             // throw new NotImplementedException();
         }
+
+     
 
         protected override IEBoard GetEBoard()
         {

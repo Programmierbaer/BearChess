@@ -294,6 +294,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonImport_OnClick(object sender, RoutedEventArgs e)
         {
             int count = 0;
+            bool startFromBasePosition = true;
+            CurrentGame currentGame;
             var openFileDialog = new OpenFileDialog {Filter = "Games|*.pgn;*.db"};
             var showDialog = openFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
@@ -302,16 +304,41 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var chessBoard = new ChessBoard();
                 chessBoard.Init();
                 chessBoard.NewGame();
+              
 
                 foreach (var pgnGame in pgnLoader.Load(openFileDialog.FileName))
                 {
+                    var fenValue = pgnGame.GetValue("FEN");
+                    if (!string.IsNullOrWhiteSpace(fenValue))
+                    {
+                        chessBoard.SetPosition(fenValue, false);
+                        startFromBasePosition = false;
+                    }
                     for (int i = 0; i < pgnGame.MoveCount; i++)
                     {
                         chessBoard.MakePgnMove(pgnGame.GetMove(i), pgnGame.GetComment(i), pgnGame.GetEMT(i));
                     }
 
                     count++;
-                    if (_database.Save(new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList(), null),false)>0)
+                    var uciInfoWhite = new UciInfo()
+                                       {
+                                           IsPlayer = true,
+                                           Name = pgnGame.PlayerWhite
+                                       };
+                    var uciInfoBlack = new UciInfo()
+                                       {
+                                           IsPlayer = true,
+                                           Name = pgnGame.PlayerBlack
+                                       };
+                    currentGame = new CurrentGame(uciInfoWhite, uciInfoBlack, string.Empty,
+                                                   new TimeControl(), pgnGame.PlayerWhite, pgnGame.PlayerBlack,
+                                                   startFromBasePosition, true);
+                    if (!startFromBasePosition)
+                    {
+                        currentGame.StartPosition = fenValue;
+                    }
+
+                    if (_database.Save(new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList(), currentGame),false)>0)
                     {
                         chessBoard.Init();
                         chessBoard.NewGame();

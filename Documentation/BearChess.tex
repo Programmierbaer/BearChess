@@ -24,7 +24,7 @@ linkcolor=black
 \fancyhead[R]{Version 0.9.11.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{01.05.2023} 
+\date{15.05.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -217,6 +217,8 @@ All games are saved in a database file. Read more on chapter \textbf{\ref{games}
 \end{figure}
 \begin{itemize}
 	\item  \includegraphics[scale=0.5]{robot.png} \textbf{Load \& manage engines} opens a new window in which you can install, load or configure your chess engines.
+	\item  \includegraphics[scale=0.5]{user_comment.png} \textbf{Load buddy engine} load the as buddy defined engine.
+	\item \textbf{Load buddy engine on new game} if you  want to load the buddy engine when you start a new game.
 	\item \textbf{Load last engine on start} if you always want to load immediately an engine when you start BearChess. It has no effect if you have activated the option "Run startup game on start".
 	\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
 	\item \textbf{Settings} configure what information you want to see from the engine, e.g. nodes per second.	
@@ -235,6 +237,7 @@ All games are saved in a database file. Read more on chapter \textbf{\ref{games}
 	\item \textbf{Show nodes per seconds (Nps)} How many nodes are calculated per second.
 	\item \textbf{Show hash} Utilization of the hash memory in percent.
 	\item \textbf{From the point of view of White} Always shows the evaluation value from white's point of view.
+	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation...} Opens a configuration dialog to define the notation for the best move line.
 	\item \textbf{Switch MessChess window position} If you let \textbf{two} MessChess engines play against each other and the color changes, BearChess will also swap the window position so that the engines for black and white are in the correct order.
 \end{itemize}
 
@@ -333,18 +336,20 @@ BearChess does not include a chess engine. Click on "Load \& manage engines" to 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{LoadManageEngine1.png}
-	\caption{Load And Manage UCI Engines}
+	\caption{Load and Manage UCI Engines}
 	\label{fig:LoadManageEngine1}
 \end{figure}
 
 \begin{itemize}
-	\item \includegraphics[scale=0.5]{robot.png} Load selected engine
-	\item \includegraphics[scale=0.5]{cog_edit.png} Configure selected engine
-	\item \includegraphics[scale=0.5]{file_extension_exe.png} Install a new engine
-    \item \includegraphics[scale=0.5]{cog_add.png} Opens a dialog for installing a new engine, which requires parameters to start
-	\item \includegraphics[scale=0.5]{bin.png} Uninstall selected engine
-	\item \includegraphics[scale=0.5]{door_out.png} Close the window
+	\item \includegraphics[scale=0.5]{robot.png} Load selected engine.
+    \item \includegraphics[scale=0.5]{user_comment.png} Set selected engine as buddy.
+	\item \includegraphics[scale=0.5]{cog_edit.png} Configure selected engine.
+	\item \includegraphics[scale=0.5]{file_extension_exe.png} Install a new engine.
+    \item \includegraphics[scale=0.5]{cog_add.png} Opens a dialog for installing a new engine, which requires parameters to start.
+	\item \includegraphics[scale=0.5]{bin.png} Uninstall selected engine.
+	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
+"Citrine" and "Saitek OSA" are predefined engines for NOVAG Citrine and Saitek boards.
 
 \subsection{Install a new engine} \label{InstallEngine}
 
@@ -524,7 +529,7 @@ If an engine needs special parameters or a parameter to be recognized as a UCI e
 
 \subsection{Configure an engine}
 
-To change the configuration of an installed engine click on \includegraphics[scale=0.5]{cog.png}\\
+To change the configuration of an installed engine click on \includegraphics[scale=0.5]{cog_edit.png}\\
 The same configuration dialog box as during installation is shown where you can configure the engine or just change the name.
 
 \subsection{Additional configuration for an installed engine}
@@ -538,6 +543,12 @@ If you want to save the same engine with a different configuration, e.g. an addi
 	\label{fig:LoadEngine3}
 \end{figure}
 Click on \includegraphics[scale=0.5]{cog_add.png} to save the configuration with a new name.\\
+
+
+\subsection{Define a buddy engine}
+
+To define an installed engine as buddy, selected an engine and click on \includegraphics[scale=0.5]{user_comment.png}\\
+A buddy engine is the default engine if you request help during a game.
 
 
 \subsection{Load an engine}
@@ -1671,6 +1682,11 @@ For your convenience, you can configure and save a game definition that will be 
   	  \item \includegraphics[scale=0.5]{layer_open.png} Loads the definition.
 \end{itemize}
 
+
+\subsection{Request for help}
+If you play a game and you have "Show move when help is request" activated. raise your king for a short time and set it down again to see the best move on the board.\\
+Do it again to stop showing the best move.
+
 \section{Move list}
 The move list shows all moves of your game.
 \begin{figure}[H]
@@ -2225,6 +2241,19 @@ If you want to repeat a single game, you can do this by clicking the right mouse
 \end{figure}
 
 
+\subsubsection{Tournament information}
+Press \includegraphics[scale=0.5]{information.png} when you want to see the results of a tournament.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{EngineTournament10.png}
+	\caption{Tournament information}
+	\label{fig:EngineTournament10}
+\end{figure}
+When the tournament is finished, the participants are displayed in order of the ranking.
+Press \includegraphics[scale=0.5]{file_extension_html.png} to export the results as HTML file.
+
+
 \section{Setup position} \label{SetupPosition}
 
 \begin{figure}[H]
@@ -2744,15 +2773,25 @@ These are some ideas what will come in one of the next versions.
 \section{Change log}
 
 
-\subsection*{Version 0.9.10.0 $\Rightarrow$  0.9.11.0}
+\subsection*{Version 0.9.10.1 $\Rightarrow$  0.9.11.0}
 \begin{itemize}
     \item {\color{blue}New}: Define a buddy engine for help.
 	\item {\color{blue}New}: Lift up your king on board for help.
+    \item {\color{blue}New}: Export tournament result as HTML.
+    \item {\color{blue}New}: Configure engine move information.
 	\item {\color{teal}Changes}: Improved LED handling for Certabo and TabuTronic Cerno.
+	\item {\color{red}Fix}: Display tournament results.	
 	\item {\color{red}Fix}: Handling analyse engine.
 	\item {\color{red}Fix}: High CPU utilization on ChessLink.
 	\item {\color{red}Fix}: Reduced log output on reading installed engines.
 \end{itemize}
+
+
+\subsection*{Version 0.9.10.0 $\Rightarrow$  0.9.10.1}
+\begin{itemize}
+	\item {\color{red}Fix}: Loading stored games.
+\end{itemize}
+
 
 
 \subsection*{Version 0.9.9.1 $\Rightarrow$  0.9.10.0}

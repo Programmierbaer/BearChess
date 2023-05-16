@@ -33,6 +33,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly ConcurrentDictionary<string, bool> _pausedEngines = new ConcurrentDictionary<string, bool>();
         private readonly string _uciPath;
         private int _currentColor;
+        private DisplayFigureType _displayFigureType;
+        private DisplayMoveType _displayMoveType;
+        private DisplayCountryType _displayCountryType;
         private string _firstEngineName;
         private string _hideInfo;
         private string _lastCommand;
@@ -68,9 +71,32 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
             _hideInfo = _configuration.GetConfigValue("EngineWindowHideInfo", "0");
             _currentColor = Fields.COLOR_WHITE;
+            _displayFigureType = (DisplayFigureType)Enum.Parse(typeof(DisplayFigureType),
+                  _configuration.GetConfigValue(
+                      "DisplayFigureTypeEngine",
+                      DisplayFigureType.Symbol.ToString()));
+            _displayMoveType = (DisplayMoveType)Enum.Parse(typeof(DisplayMoveType),
+                _configuration.GetConfigValue(
+                    "DisplayMoveTypeEngine",
+                    DisplayMoveType.FromToField.ToString()));
+            _displayCountryType = (DisplayCountryType)Enum.Parse(typeof(DisplayCountryType),
+               _configuration.GetConfigValue(
+                   "DisplayCountryTypeEngine",
+                   DisplayCountryType.GB.ToString()));
+            
         }
 
-
+        public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType)
+        {
+            _displayFigureType = figureType;
+            _displayMoveType = moveType;
+            _displayCountryType = countryType;
+            var engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().ToList();
+            foreach (var engineInfoUserControl in engineInfoUserControls)
+            {
+                engineInfoUserControl.SetDisplayTypes(_displayFigureType,_displayMoveType,_displayCountryType);
+            }
+        }
         public event EventHandler<EngineEventArgs> EngineEvent;
 
         public void CloseLogWindow()
@@ -652,14 +678,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void CurrentColor(int color)
         {
             _currentColor = color;
-            var engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().ToList();
-            foreach (var engineInfoUserControl in engineInfoUserControls)
-            {
-                if (engineInfoUserControl.Color == Fields.COLOR_EMPTY)
-                {
-                    engineInfoUserControl.CurrentColor(_currentColor);
-                }
-            }
+          
         }
 
         private bool LoadUciEngine(UciInfo uciInfo, IFICSClient ficsClient, IElectronicChessBoard chessBoard, string fenPosition, Move[] playedMoves,
@@ -727,7 +746,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
 
-                var engineInfoUserControl = new EngineInfoUserControl(uciInfo, color, _hideInfo);
+                var engineInfoUserControl = new EngineInfoUserControl(uciInfo, color, _hideInfo, _configuration);
+                engineInfoUserControl.SetDisplayTypes(_displayFigureType, _displayMoveType, _displayCountryType);
                 engineInfoUserControl.MultiPvEvent += EngineInfoUserControl_MultiPvEvent;
                 engineInfoUserControl.CloseEvent += EngineInfoUserControl_CloseEvent;
                 engineInfoUserControl.StartStopEvent += EngineInfoUserControl_StartStopEvent;

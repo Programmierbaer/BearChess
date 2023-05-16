@@ -17,6 +17,7 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
 
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
+        public override event EventHandler HelpRequestedEvent;
 
         public EChessBoard(ILogging logger, string portName, string baud, bool useBluetooth, string boardName)
         {
@@ -344,11 +345,12 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
             //
         }
 
-        public override void FlashSync(bool flashSync)
+        public override void FlashMode(EnumFlashMode flashMode)
         {
             //
         }
 
+     
         public override void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
             //

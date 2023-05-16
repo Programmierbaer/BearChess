@@ -15,6 +15,10 @@
         void Write(string command);
         void WriteLine(string command);
         int ReadTimeout { get; set; }
+        int WriteTimeout { get; set; }
         void ClearBuffer();
+
+        bool RTS { get; set; }
+        bool DTR { get; set; }
     }
 }
