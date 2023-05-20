@@ -78,12 +78,12 @@ namespace www.SoLaNoSoft.com.BearChessTools
             {
                 case Constants.Certabo: 
                     boardDevice = "raspberrypi";
-                    boardDevice2 = "raspberrypi";
+                    boardDevice2 = "Certabo";
                     break;
                
                 case Constants.MChessLink:
                     boardDevice = "MILLENNIUM CHESS";
-                    boardDevice2 = "MILLENNIUM CHESS";
+                    boardDevice2 = "MILLENNIUM CHESS BT";
                     break;
                 case Constants.DGT:
                     boardDevice = "DGT_BT_";

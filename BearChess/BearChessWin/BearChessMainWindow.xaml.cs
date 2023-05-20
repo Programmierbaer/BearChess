@@ -5874,9 +5874,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                      _currentAction == CurrentAction.InGameAnalyseMode);
             var currentComPort = _eChessBoard?.GetCurrentComPort();
             textBlockEBoard.Text = $"Connected to Certabo chessboard ({currentComPort})";
-            imageBT.Visibility = currentComPort.Equals("BT", StringComparison.OrdinalIgnoreCase)
-                                     ? Visibility.Visible
-                                     : Visibility.Hidden;
+            if (_useBluetoothCertabo)
+            {
+                imageBT.Visibility = currentComPort.Equals("BT", StringComparison.OrdinalIgnoreCase)
+                                         ? Visibility.Visible
+                                         : Visibility.Hidden;
+            }
+            else
+            {
+                imageBT.Visibility = Visibility.Hidden;
+
+            }
             _lastEBoard = Constants.Certabo;
             textBlockButtonConnect.Text = _lastEBoard;
             buttonConnect.Visibility = Visibility.Visible;
@@ -6452,9 +6460,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             var currentComPort = _eChessBoard?.GetCurrentComPort();
             textBlockEBoard.Text = $"Connected to {_eChessBoard.Information} ({currentComPort})";
-            imageBT.Visibility = SerialCommunicationTools.IsBTPort(currentComPort)
-                                     ? Visibility.Visible
-                                     : Visibility.Hidden;
+            if (_useBluetoothClassicChessLink || _useBluetoothLEChessLink)
+            {
+                imageBT.Visibility = SerialCommunicationTools.IsBTPort(currentComPort)
+                                         ? Visibility.Visible
+                                         : Visibility.Hidden;
+            }
+            else
+            {
+                imageBT.Visibility = Visibility.Hidden;
+            }
             _lastEBoard = Constants.MChessLink;
             textBlockButtonConnect.Text = _lastEBoard;
             buttonConnect.Visibility = Visibility.Visible;
