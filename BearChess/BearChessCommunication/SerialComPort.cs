@@ -1,47 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 {
     public class SerialComPort : IComPort
     {
+        private readonly int _baud;
+        private readonly Parity _parity;
+        private readonly int _dataBits;
+        private readonly StopBits _stopBits;
+        private int _serialPortWriteTimeout;
+        private int _serialPortReadTimeout;
+        private readonly ILogging _logging;
+
         public string PortName { get; }
         public string Baud { get; }
 
-        private readonly SerialPort _serialPort;
+        private SerialPort _serialPort;
 
-        public SerialComPort(string comport, int baud, Parity parity)
+        public SerialComPort(string comport, int baud, Parity parity, ILogging logging)
         {
+            _baud = baud;
+            _parity = parity;
+            _dataBits = 8;
+            _stopBits = StopBits.None;
+            _logging = logging;
             PortName = comport;
             Baud = baud.ToString();
             _serialPort = new SerialPort(comport, baud, parity);
             _serialPort.ReadTimeout = 500;
-    //        _serialPort.DataReceived += _serialPort_DataReceived;
+            _serialPort.WriteTimeout = 500;
         }
 
-        private void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+       
+        public SerialComPort(string comport, int baud, Parity parity, int dataBits, StopBits stopBits, ILogging logging)
         {
-            var readByte = _serialPort.ReadByte();
-        }
-
-        public SerialComPort(string comport, int baud, Parity parity, int dataBits, StopBits stopBits)
-        {
+            _baud = baud;
+            _parity = parity;
+            _dataBits = dataBits;
+            _stopBits = stopBits;
+            _logging = logging;
             PortName = comport;
             Baud = baud.ToString();
             _serialPort = new SerialPort(comport, baud, parity, dataBits, stopBits);
             _serialPort.ReadTimeout = 500;
-            //_serialPort.DataReceived += _serialPort_DataReceived;
-            //_serialPort.ErrorReceived += _serialPort_ErrorReceived;
+            _serialPort.WriteTimeout = 500;
         }
 
-        private void _serialPort_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
-        {
-            var readByte = _serialPort.ReadByte();
-        }
+     
 
         public void Open()
         {
+            if (_serialPort == null)
+            {
+                _serialPort = new SerialPort(PortName, _baud, _parity, _dataBits, _stopBits);
+                _serialPort.ReadTimeout = _serialPortReadTimeout;
+                _serialPort.WriteTimeout = _serialPortWriteTimeout;
+
+            }
             _serialPort.Open();
         }
 
@@ -49,8 +67,11 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         {
             try
             {
+                _serialPortWriteTimeout = _serialPort.WriteTimeout;
+                _serialPortReadTimeout = _serialPort.ReadTimeout;
                 _serialPort.Close();
                 _serialPort.Dispose();
+                _serialPort = null;
             }
             catch
             {
@@ -58,11 +79,18 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             }
         }
 
-        public bool IsOpen => _serialPort.IsOpen;
+        public bool IsOpen => _serialPort !=null && _serialPort.IsOpen;
 
         public string ReadLine()
         {
-            return _serialPort.ReadLine();
+            try
+            {
+                return _serialPort.ReadLine();
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         public int ReadByte()
@@ -82,7 +110,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         {
             List<byte> byteList = new List<byte>();
             int aByte = ReadByte();
-            while (aByte> -1)
+            while (aByte > -1)
             {
                 byteList.Add((byte)aByte);
                 aByte = ReadByte();
@@ -93,17 +121,38 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
         public void Write(byte[] buffer, int offset, int count)
         {
-            _serialPort.Write(buffer, offset, count);
+            try
+            {
+                _serialPort.Write(buffer, offset, count);
+            }
+            catch (Exception e)
+            {
+                _logging.LogError(e);
+            }
         }
 
         public void Write(string message)
         {
-            _serialPort.Write(message);
+            try
+            {
+                _serialPort.Write(message);
+            }
+            catch (Exception e)
+            {
+                _logging.LogError(e);
+            }
         }
 
         public void WriteLine(string command)
         {
-            _serialPort.WriteLine(command);
+            try
+            {
+                _serialPort.WriteLine(command);
+            }
+            catch (Exception e)
+            {
+                _logging.LogError(e);
+            }
         }
 
         public int ReadTimeout
@@ -114,7 +163,11 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
         public void ClearBuffer()
         {
-            //
+            if (_serialPort != null)
+            {
+                _serialPort.DiscardInBuffer();
+                _serialPort.DiscardOutBuffer();
+            }          
         }
 
         public int WriteTimeout

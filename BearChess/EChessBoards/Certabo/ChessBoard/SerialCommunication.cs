@@ -81,7 +81,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             {
                 count++;
                 var fromBoard = GetFromCertaboBoard();
-                // _logger.LogDebug($"{count}.{fromBoard.Repeated} from board: {fromBoard.FromBoard}");
+                 _logger.LogDebug($"Calibrate: {count}.{fromBoard.Repeated} from board: {fromBoard.FromBoard}");
                 if (string.IsNullOrWhiteSpace(fromBoard.FromBoard))
                 {
                     Thread.Sleep(100);
@@ -227,13 +227,13 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
             var code = new string[80];
             Array.Copy(dataArray, 0, code, 0, 80);
-            if (string.Join(" ", code).Contains("0 0 0 0 0"))
+            if (string.Join(" ", code).Contains("0 0 0 0 0 0"))
             {
                 return false;
             }
 
             Array.Copy(dataArray, 240, code, 0, 80);
-            if (string.Join(" ", code).Contains("0 0 0 0 0"))
+            if (string.Join(" ", code).Contains("0 0 0 0 0 0"))
             {
                 return false;
             }

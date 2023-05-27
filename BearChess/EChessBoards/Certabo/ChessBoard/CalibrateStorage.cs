@@ -5,13 +5,15 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 {
     public class CalibrateStorage : ICalibrateStorage
     {
+        private readonly bool _useChesstimation;
         private readonly string _oldStorageFile = "calibrate.dat";
         private readonly string _storageFile = "calibrate.xml";
 
         private CalibrateData _calibrateData;
 
-        public CalibrateStorage(string basePath)
+        public CalibrateStorage(string basePath, bool useChesstimation)
         {
+            _useChesstimation = useChesstimation;
             try
             {
                 _storageFile = Path.Combine(basePath, _storageFile);
@@ -44,6 +46,10 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         private bool Save()
         {
+            if (_useChesstimation)
+            {
+                return true;
+            }
             try
             {
                 var serializer = new XmlSerializer(typeof(CalibrateData));
@@ -88,6 +94,16 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         private void Load()
         {
+            if (_useChesstimation)
+            {
+                _calibrateData = new CalibrateData
+                                 {
+                                     BasePositionCodes = "0 0 0 0 5 0 0 0 0 7 0 0 0 0 9 0 0 0 0 11 0 0 0 0 13 0 0 0 0 25 0 0 0 0 23 0 0 0 0 21 0 0 0 0 3 0 0 0 0 19 0 0 0 0 35 0 0 0 0 51 0 0 0 0 67 0 0 0 0 83 0 0 0 0 99 0 0 0 0 115 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 18 0 0 0 0 34 0 0 0 0 50 0 0 0 0 66 0 0 0 0 82 0 0 0 0 98 0 0 0 0 114 0 0 0 0 4 0 0 0 0 6 0 0 0 0 8 0 0 0 0 10 0 0 0 0 12 0 0 0 0 24 0 0 0 0 22 0 0 0 0 20",
+                                     WhiteQueenCodes = "0 0 0 0 10",
+                                     BlackQueenCodes = "0 0 0 0 11"
+                };
+                return;
+            }
             try
             {
                 if (File.Exists(_storageFile))

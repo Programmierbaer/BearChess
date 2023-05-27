@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         Icon="../Assets/Icons/Millennium ChessLink.png"
-        Title="Configure Millennium ChessLink" Height="520" Width="390" SizeToContent="WidthAndHeight">
+        Title="Configure Millennium ChessLink" Height="580" Width="390" SizeToContent="WidthAndHeight">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -185,7 +185,7 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Border Visibility="Collapsed" Margin="5" BorderBrush="Gray" BorderThickness="1">
+        <Border Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
                <CheckBox Name="checkBoxChesstimation" ToolTip="Using a Chesstimation module by Andreas Petersik"
                          Margin="5">Chesstimation Module</CheckBox>

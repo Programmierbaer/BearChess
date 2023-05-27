@@ -63,11 +63,12 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         private bool _useChesstimation;
 
 
-        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth)
+        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, bool useChesstimation)
         {
             _useBluetooth = useBluetooth;
+            _useChesstimation = useChesstimation;
             _serialCommunication = new SerialCommunication(logger, portName,useBluetooth);
-            _calibrateStorage = new CalibrateStorage(basePath);
+            _calibrateStorage = new CalibrateStorage(basePath, _useChesstimation);
             _logger = logger;
             BatteryLevel = "100";
             BatteryStatus = "Full";

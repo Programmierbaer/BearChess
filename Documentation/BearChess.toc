@@ -45,7 +45,8 @@
 \contentsline {subsection}{\numberline {11.1}Configure Certabo boards}{54}{subsection.11.1}%
 \contentsline {subsubsection}{\numberline {11.1.1}Configure Bluetooth}{57}{subsubsection.11.1.1}%
 \contentsline {subsubsection}{\numberline {11.1.2}Calibration}{57}{subsubsection.11.1.2}%
-\contentsline {subsubsection}{\numberline {11.1.3}Connect}{59}{subsubsection.11.1.3}%
+\contentsline {subsubsection}{\numberline {11.1.3}Chesstimation Modul}{59}{subsubsection.11.1.3}%
+\contentsline {subsubsection}{\numberline {11.1.4}Connect}{59}{subsubsection.11.1.4}%
 \contentsline {subsection}{\numberline {11.2}Configure TabuTronic Cerno}{59}{subsection.11.2}%
 \contentsline {subsection}{\numberline {11.3}Configure TabuTronic Sentio}{60}{subsection.11.3}%
 \contentsline {subsubsection}{\numberline {11.3.1}Configure Bluetooth}{60}{subsubsection.11.3.1}%
@@ -54,8 +55,9 @@
 \contentsline {subsubsection}{\numberline {11.4.1}LEDs}{64}{subsubsection.11.4.1}%
 \contentsline {subsubsection}{\numberline {11.4.2}Delay}{64}{subsubsection.11.4.2}%
 \contentsline {subsubsection}{\numberline {11.4.3}Scans}{64}{subsubsection.11.4.3}%
-\contentsline {subsubsection}{\numberline {11.4.4}Configure Bluetooth}{64}{subsubsection.11.4.4}%
-\contentsline {subsubsection}{\numberline {11.4.5}Connect}{65}{subsubsection.11.4.5}%
+\contentsline {subsubsection}{\numberline {11.4.4}Chesstimation Module}{65}{subsubsection.11.4.4}%
+\contentsline {subsubsection}{\numberline {11.4.5}Configure Bluetooth}{65}{subsubsection.11.4.5}%
+\contentsline {subsubsection}{\numberline {11.4.6}Connect}{65}{subsubsection.11.4.6}%
 \contentsline {subsection}{\numberline {11.5}Configure DGT e-Board}{66}{subsection.11.5}%
 \contentsline {subsubsection}{\numberline {11.5.1}Configure Bluetooth}{67}{subsubsection.11.5.1}%
 \contentsline {subsection}{\numberline {11.6}Connect DGT Pegasus}{67}{subsection.11.6}%

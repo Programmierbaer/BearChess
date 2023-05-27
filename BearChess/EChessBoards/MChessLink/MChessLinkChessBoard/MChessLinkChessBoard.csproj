@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CRCConversions.cs" />
     <Compile Include="EChessBoard.cs" />
     <Compile Include="FenConversions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

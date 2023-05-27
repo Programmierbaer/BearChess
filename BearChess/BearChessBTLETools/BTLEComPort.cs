@@ -7,6 +7,7 @@ using Windows.Devices.Bluetooth.GenericAttributeProfile;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessBTLETools
 {
@@ -30,6 +31,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         private readonly string _iChessOneServiceWrite    = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _iChessOneServiceRead     = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _deviceId;
+        private readonly ILogging _logging;
         private BluetoothLEDevice _bluetoothLeDevice = null;
         private GattCharacteristic _writeCharacteristic = null;
         private GattCharacteristic _readCharacteristic = null;
@@ -54,9 +56,10 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         public string PortName => "BTLE";
         public string Baud => string.Empty;
 
-        public BTLEComPort(string deviceId)
+        public BTLEComPort(string deviceId, ILogging logging)
         {
             _deviceId = deviceId;
+            _logging = logging;
             _allServices = new List<string>() { _pegasusService, _mChessLinkService, _chessnutAirServiceR, _chessnutAirServiceW, _iChessOneService,_iChessOneServiceRead,_iChessOneServiceWrite };
             _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead, _squareOffProServiceRead, _chessnutAirServiceRead, _chessnutAirServiceReadC, _iChessOneServiceRead };
             _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite, _squareOffProServiceWrite, _chessnutAirServiceWrite, _iChessOneServiceWrite };
@@ -162,12 +165,20 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             CryptographicBuffer.CopyToByteArray(args.CharacteristicValue, out var data);
             if (data != null)
             {
+                _logging.LogDebug($"BTLE: array length: {data.Length}");
                 _byteArrayQueue.Enqueue(data);
                 foreach (var b in data)
                 {
+                  //  _logging.LogDebug($"BTLE: {b} = {ConvertFromRead(b)}");
                     _byteQueue.Enqueue(b);
                 }
             }
+        }
+
+        private string ConvertFromRead(int data)
+        {
+            var i = data & 127;
+            return Encoding.ASCII.GetString(new[] { (byte)i });
         }
 
         public void Close()

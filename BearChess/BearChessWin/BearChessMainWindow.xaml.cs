@@ -554,7 +554,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageShowBestMoveOnGame.Visibility = _showBestMoveOnGame ? Visibility.Visible : Visibility.Hidden;
 
             _showRequestForHelp = bool.Parse(_configuration.GetConfigValue("showRequestForHelp", "false"));
-            imageShowRequestForHelp .Visibility = _showRequestForHelp ? Visibility.Visible : Visibility.Hidden;
+            imageShowRequestForHelp.Visibility = _showRequestForHelp ? Visibility.Visible : Visibility.Hidden;
 
             _loadBuddyEngineOnGameStart = bool.Parse(_configuration.GetConfigValue("loadBuddyEngineOnGameStart", "false"));
             imageLoadBuddyEngine.Visibility = _loadBuddyEngineOnGameStart ? Visibility.Visible : Visibility.Hidden;
@@ -5885,6 +5885,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 imageBT.Visibility = Visibility.Hidden;
 
             }
+
             _lastEBoard = Constants.Certabo;
             textBlockButtonConnect.Text = _lastEBoard;
             buttonConnect.Visibility = Visibility.Visible;
@@ -5962,21 +5963,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             try
             {
-                _requestForHelpByEvent = !_requestForHelpByEvent;
-                if (_requestForHelpByEvent)
+                bool allow = (_currentAction != CurrentAction.InRunningGame) ||
+                             (_currentAction == CurrentAction.InRunningGame
+                              && !_currentGame.TimeControl.TournamentMode);
+                if (allow)
                 {
-                    Dispatcher?.Invoke(() => { _eChessBoard?.SetLedsFor(_requestForHelpArray, true); });
-                    Array.Copy(_requestForHelpArray, _prevRequestForHelpArray, 2);
-                  
-                }
-                else 
-                {
-                    Dispatcher?.Invoke(() =>
+                    _requestForHelpByEvent = !_requestForHelpByEvent;
+                    if (_requestForHelpByEvent)
                     {
-                       
-                        _eChessBoard?.SetLedsFor(Array.Empty<string>(), false);
-                        _eChessBoard.SetAllLedsOff();
-                    });
+                        Dispatcher?.Invoke(() => { _eChessBoard?.SetLedsFor(_requestForHelpArray, true); });
+                        Array.Copy(_requestForHelpArray, _prevRequestForHelpArray, 2);
+                    }
+                    else
+                    {
+                        Dispatcher?.Invoke(() =>
+                        {
+                            _eChessBoard?.SetLedsFor(Array.Empty<string>(), false);
+                            _eChessBoard.SetAllLedsOff();
+                        });
+                    }
                 }
             }
             catch
@@ -6188,15 +6193,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
         private void EChessBoardFenEvent(object sender, string fenPosition)
-        {
-            
-            //_fileLogger?.LogDebug($"Pre position from e-chessboard: {_prevFenPosition}");
+        {            
             if (_pureEngineMatch || _ignoreEBoard)
             {
                 return;
             }
 
-            if (_currentAction == CurrentAction.InRunningGame)
+            if (_currentAction == CurrentAction.InRunningGame && !_currentGame.TimeControl.TournamentMode)
             {
                 if ((_currentGame.WhiteConfig.IsPlayer && !fenPosition.Contains("K")) ||
                     (_currentGame.BlackConfig.IsPlayer && !fenPosition.Contains("k")))
@@ -6470,6 +6473,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 imageBT.Visibility = Visibility.Hidden;
             }
+
             _lastEBoard = Constants.MChessLink;
             textBlockButtonConnect.Text = _lastEBoard;
             buttonConnect.Visibility = Visibility.Visible;
@@ -9417,7 +9421,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MenuItemTestComPort_OnClick(object sender, RoutedEventArgs e)
         {
             var serialPortTestWindow = new SerialPortTestWindow();
-            serialPortTestWindow.ShowDialog();
+            serialPortTestWindow.Show();
         }
 
         private void MenuItemEngineSwitchPosition_OnClick(object sender, RoutedEventArgs e)

@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal">
             <TextBlock  Margin="5" >COM:</TextBlock>
@@ -18,9 +19,15 @@
             <TextBlock  Margin="5" >BAUD:</TextBlock>
             <TextBox Name="textBoxBaud" Width="80" Margin="5" >115200</TextBox>
             <Button Name="buttonConnect" Width="100" Margin="5" Click="buttonConnect_Click">Connect</Button>
+            <CheckBox Margin="5" Content="Chesstimation" Name="checkBoxChesstimation" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </StackPanel>
         <ListBox Margin="5" Grid.Row="1" Name="listBoxLog"></ListBox>
         <StackPanel Grid.Row="2" Margin="5" Orientation="Horizontal">
+            <Button Margin="5" Width="50" Click="ButtonGet_OnClick" IsDefault="True" Name="buttonGet">Send</Button>
+            <TextBox Name="textBoxFrom" Margin="5" Width="400"></TextBox>
+           
+        </StackPanel>
+        <StackPanel Grid.Row="3" Margin="5" Orientation="Horizontal">
             <Button Margin="5" Width="50" Click="ButtonSend_OnClick" IsDefault="True" Name="buttonSend">Send</Button>
             <TextBox Name="textBoxSend" Margin="5" Width="400"></TextBox>
             <Button Margin="15,5" Width="50" Click="ButtonClear_OnClick" Name="buttonClear">Clear</Button>

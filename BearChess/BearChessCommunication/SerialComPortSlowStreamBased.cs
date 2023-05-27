@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Ports;
 using System.Text;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 {
     public class SerialComPortSlowStreamBased : IComPort
     {
+        private readonly ILogging _logging;
+
         // https://andre-benevides.medium.com/creating-a-serial-port-wrapper-c-net-framework-390584531285
         // https://www.vgies.com/a-reliable-serial-port-in-c/
         // https://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport
@@ -21,7 +24,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         private readonly ConcurrentQueue<string> _allLines = new ConcurrentQueue<string>();
         private readonly object _lock = new object();
 
-        public SerialComPortSlowStreamBased(string comport, int baud, Parity parity)
+        public SerialComPortSlowStreamBased(string comport, int baud, Parity parity, ILogging logging)
         {
             PortName = comport;
             Baud = baud.ToString();
@@ -30,8 +33,9 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         }
 
 
-        public SerialComPortSlowStreamBased(string comport, int baud, Parity parity, int dataBits, StopBits stopBits)
+        public SerialComPortSlowStreamBased(string comport, int baud, Parity parity, int dataBits, StopBits stopBits, ILogging logging)
         {
+            _logging = logging;
             PortName = comport;
             Baud = baud.ToString();
             _serialPort = new SerialPort(comport, baud, parity, dataBits, stopBits);

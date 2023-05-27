@@ -65,7 +65,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 comPortSearchWindow.Close();
                 if (btComPort.Length > 0)
                 {
-                    var btleComPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault());
+                    var btleComPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault(), _fileLogger);
                     btleComPort.Open();
                 }
 
@@ -79,11 +79,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             comboBoxComPorts.ItemsSource = _allPortNames;
             comboBoxComPorts.SelectedIndex = 0;
 
-
             _calibrateFileName = Path.Combine(_configuration.FolderPath, CertaboLoader.EBoardName, "calibrate.xml");
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseBluetooth = useBluetooth;
-            textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
+            textBlockCalibrate.Text = _eChessBoardConfiguration.UseChesstimation || File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
             if (_portNames.Count == 0)
             {
@@ -93,11 +92,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(_eChessBoardConfiguration.PortName);
             }
+            checkBoxChesstimation.IsChecked = _eChessBoardConfiguration.UseChesstimation;
+            buttonCalibrate.IsEnabled = !_eChessBoardConfiguration.UseChesstimation;
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
+            
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -115,7 +117,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-
 
             var infoWindow = new InfoWindow
                              {
@@ -204,7 +205,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _fileLogger?.LogError(ex);
             }
+        }
 
+        private void CheckBoxChesstimation_OnChecked(object sender, RoutedEventArgs e)
+        {
+            _eChessBoardConfiguration.UseChesstimation = true;
+            buttonCalibrate.IsEnabled = false;
+            textBlockCalibrate.Text = "Is calibrated";
+        }
+
+        private void CheckBoxChesstimation_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            _eChessBoardConfiguration.UseChesstimation = false;
+            buttonCalibrate.IsEnabled = true;
+            textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";           
         }
     }
 }

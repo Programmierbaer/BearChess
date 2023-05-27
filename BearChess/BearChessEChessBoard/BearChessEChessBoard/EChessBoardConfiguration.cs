@@ -63,8 +63,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     {
                         configuration.DimLevel = configuration.DimLeds ? 0 : 14;
                     }
-
-                 
                 }
                 else
                 {
@@ -74,7 +72,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             catch
             {
                 configuration.PortName = "<auto>";
-
             }
 
             return configuration;

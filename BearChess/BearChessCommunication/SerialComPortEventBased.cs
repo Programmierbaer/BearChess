@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.IO.Ports;
 using System.Text;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 {
     public class SerialComPortEventBased : IComPort
     {
+        private readonly ILogging _logging;
         public string PortName { get; }
         public string Baud { get; }
 
@@ -19,8 +21,9 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         private readonly ConcurrentQueue<string> _allLines = new ConcurrentQueue<string>();
         private object _lock = new object();
 
-        public SerialComPortEventBased(string comport, int baud, Parity parity)
+        public SerialComPortEventBased(string comport, int baud, Parity parity, ILogging logging)
         {
+            _logging = logging;
             PortName = comport;
             Baud = baud.ToString();
             _serialPort = new SerialPort(comport, baud, parity);
@@ -29,9 +32,10 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
         private void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            
             if (e.EventType == SerialData.Chars)
             {
-                lock (_lock)
+         //       lock (_lock)
                 {
                     var readByte = _serialPort.ReadByte();
                     while (readByte > -1)
@@ -41,8 +45,6 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
                         if (readByte == '\n' || readByte == 23)
                         {
-                            //_lineBytes.Enqueue((byte)'\r');
-                            //_lineBytes.Enqueue((byte)readByte);
                             _allLines.Enqueue(Encoding.ASCII.GetString(_lineBytes.ToArray()));
                             while (_lineBytes.TryDequeue(out _)) ;
                         }
@@ -66,11 +68,15 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                     }
                 }
             }
-            //   var readByte = _serialPort.ReadByte();
+            else
+            {
+                _logging.LogDebug($"SCP:  {e.EventType}");
+            }
         }
 
-        public SerialComPortEventBased(string comport, int baud, Parity parity, int dataBits, StopBits stopBits)
+        public SerialComPortEventBased(string comport, int baud, Parity parity, int dataBits, StopBits stopBits, ILogging logging)
         {
+            _logging = logging;
             PortName = comport;
             Baud = baud.ToString();
             _serialPort = new SerialPort(comport, baud, parity, dataBits, stopBits);
@@ -173,6 +179,11 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
         public void ClearBuffer()
         {
+            if (_serialPort != null)
+            {
+                _serialPort.DiscardInBuffer();
+                _serialPort.DiscardOutBuffer();
+            }
             while (_allBytes.TryDequeue(out _)) ;
             while (_allLines.TryDequeue(out _)) ;
             while (_lineBytes.TryDequeue(out _)) ;

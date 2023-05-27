@@ -63,6 +63,10 @@
       <Project>{72bad856-2f5e-45db-9ff1-42d68a4998f5}</Project>
       <Name>BearChessBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BearChessCommunication\BearChessCommunication.csproj">
+      <Project>{a8118cc3-827d-4635-8613-345b190ee763}</Project>
+      <Name>BearChessCommunication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BearChessTools\BearChessTools.csproj">
       <Project>{58EAB818-7176-4BA9-A62A-AC2F27B089AE}</Project>
       <Name>BearChessTools</Name>

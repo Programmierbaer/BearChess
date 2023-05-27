@@ -7,6 +7,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 {
     public class EChessBoard : AbstractEBoard
     {
+        private readonly bool _useChesstimation;
 
         private readonly string[] _ledToField =
         {
@@ -134,6 +135,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             "", "", "", "", "", "", "", "", ""
         };
 
+     
+
 
         private bool _flashSync = false;
         private string _lastSendLeds;
@@ -153,7 +156,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public EChessBoard(ILogging logger, string portName, bool useChesstimation)
         {
-            
+            _useChesstimation = useChesstimation;
             _logger = logger;
             _serialCommunication = new SerialCommunication(logger, portName);
             _serialCommunication.UseChesstimation = useChesstimation;
@@ -198,6 +201,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     if (_serialCommunication.CheckConnect(portName))
                     {
                         _logger?.LogDebug("CheckComPort successful. Send ROM initialize ");
+                        _serialCommunication.Connect();
                         _serialCommunication.SendRawToBoard("W0000");
                         _serialCommunication.SendRawToBoard("W011E");
                         _serialCommunication.SendRawToBoard("W0203");
@@ -213,7 +217,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                             return false;
                         }
                         readLine = _serialCommunication.GetRawFromBoard("R00");
-
 
                         if (readLine.Length > 0 && readLine.StartsWith("r"))
                         {
@@ -294,9 +297,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
             _lastSendLeds =  $"L22{ledForFields}";
             _logger?.LogDebug($"SendFields : {string.Join(" ",fieldNames)}");
-            lock (_locker)
+         //   lock (_locker)
             {
                 _serialCommunication.Send(_lastSendLeds);
+                if (fieldNames.Length == 1 && _useChesstimation)
+                {
+                    _serialCommunication.Send("S");
+                }
             }
         }
 
@@ -307,7 +314,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 return;
             }
 
-            lock (_locker)
+           // lock (_locker)
             {
                 _serialCommunication.Send(_lastSendLeds);
             }
@@ -320,8 +327,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 return;
             }
 
-            lock (_locker)
+           // lock (_locker)
             {
+                //var ledForFields = GetLedForAllFieldsOff();
+                //_serialCommunication.Send($"L22{ledForFields}");
                 _serialCommunication.Send("X");
             }
         }
@@ -333,10 +342,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 return;
             }
 
-            lock (_locker)
+          //  lock (_locker)
             {
                 var ledForFields = GetLedForAllFieldsOn();
-                _serialCommunication.Send($"L22{ledForFields}");
+               _serialCommunication.Send($"L22{ledForFields}");
             }
         }
 
@@ -375,7 +384,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             lock (_locker)
             {
                 debounce = 3 + debounce;
-                _serialCommunication?.Send($"W020{debounce}");
+               _serialCommunication?.Send($"W020{debounce}");
             }
         }
 
@@ -405,14 +414,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 _serialCommunication.Send("S");
                 IsCalibrated = true;
-                //_serialCommunication.Send("V");
-                //var readLine = _serialCommunication.GetRawFromBoard("V");
-
-                //if (readLine.Length > 0 && readLine.StartsWith("v"))
-                //{
-                //    Version = readLine;
-                //    Information = $"Millennium ChessLink {Version}";
-                //}
             }
         }
 
@@ -423,7 +424,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void RequestDump()
         {
-            lock (_locker)
+       //     lock (_locker)
             {
                 if (!PieceRecognition)
                 {
@@ -489,10 +490,16 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         protected override void SetToNewGame()
         {
-            //
+            lock (_locker)
+            {
+                if (!PieceRecognition)
+                {
+                    _serialCommunication.Send("S");
+                }
+            }
         }
 
-      
+
 
         public override void Release()
         {
@@ -501,7 +508,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void SetFen(string fen)
         {
-            lock (_locker)
+          //  lock (_locker)
             {
                 if (!PieceRecognition)
                 {
@@ -571,30 +578,44 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             return codes.PadLeft(162, 'C');
         }
 
+        private string GetLedForAllFieldsOff()
+        {
+            var codes = string.Empty;
+            return codes.PadLeft(162, '0');
+        }
+
         private string GetLedForFields(string[] fieldNames, bool thinking)
         {
             var codes = string.Empty;
             var toCode = string.Empty;
             var fromCode = "CC";
-            if (_flashMode == EnumFlashMode.NoFlash)
+            if (_useChesstimation)
             {
-                if (thinking)
-                {
-                    toCode = "33";
-                }
-                else
-                {
-                    toCode = "FF";
-                    fromCode = "FF";
-                }
+                fromCode = "FF";
+                toCode = "FF";
             }
             else
             {
-                toCode = _flashMode == EnumFlashMode.FlashSync ? "CC" : "33";
-                if (thinking)
+                if (_flashMode == EnumFlashMode.NoFlash)
                 {
-                    toCode = "FF";
-                    fromCode = "FF";
+                    if (thinking)
+                    {
+                        toCode = "33";
+                    }
+                    else
+                    {
+                        toCode = "FF";
+                        fromCode = "FF";
+                    }
+                }
+                else
+                {
+                    toCode = _flashMode == EnumFlashMode.FlashSync ? "CC" : "33";
+                    if (thinking)
+                    {
+                        toCode = "FF";
+                        fromCode = "FF";
+                    }
                 }
             }
 
@@ -608,29 +629,24 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                         if (_upperRight && _ledUpperRightToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
-
                             break;
                         }
-
 
                         if (_upperLeft && _ledUpperLeftToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
-
                             break;
                         }
 
                         if (_lowerRight && _ledLowerRightToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
-
                             break;
                         }
 
                         if (_lowerLeft && _ledLowerLeftToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
-
                             break;
                         }
                     }
@@ -639,7 +655,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                         if (_upperRight && _ledUpperRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
-
                             break;
                         }
 
@@ -647,32 +662,26 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                         if (_upperLeft && _ledUpperLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
-
                             break;
                         }
 
                         if (_lowerRight && _ledLowerRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
-
                             break;
                         }
 
                         if (_lowerLeft && _ledLowerLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
-
                             break;
                         }
                     }
-
-
                 }
-
                 codes += code;
             }
 
-            return codes;
+            return _useChesstimation ? codes.Replace("FFFFFFFF", "FFF00FFF") : codes;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Threading;
+using System.Xml.Linq;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
@@ -166,7 +167,12 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
         public void ClearBuffer()
         {
-            //
+            if (_serialPort != null)
+            {
+                _serialPort.DiscardInBuffer();
+                _serialPort.DiscardOutBuffer();
+            }
+            while (_allBytes.TryDequeue(out _)) ;
         }
 
         public int WriteTimeout

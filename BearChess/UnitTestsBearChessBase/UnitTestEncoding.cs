@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard;
 
 namespace UnitTestsBearChessBase

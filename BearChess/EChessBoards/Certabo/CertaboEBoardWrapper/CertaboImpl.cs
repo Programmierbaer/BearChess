@@ -11,8 +11,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
         {
         }
 
-        public CertaboImpl(string name, string basePath, string comPortName, bool useBluetooth) : base(
-            name, basePath, comPortName, useBluetooth, true, false, false)
+        public CertaboImpl(string name, string basePath, string comPortName, bool useBluetooth, bool useChesstimation) : base(
+            name, basePath, comPortName, string.Empty, useBluetooth, true, false, false, useChesstimation)
         {
 
         }
@@ -36,7 +36,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
         protected override IEBoard GetEBoard()
         {
             return new CertaboChessBoard.EChessBoard(basePath: _basePath,logger: _fileLogger, 
-                                   portName: _comPortName, _useBluetooth);
+                                   portName: _comPortName, _useBluetooth, UseChesstimation);
         }
 
         protected override IEBoard GetEBoard(bool check)

@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.11.0}
+\fancyhead[R]{Version 0.9.11.1}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{15.05.2023} 
+\date{26.05.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -1030,6 +1030,9 @@ If all pieces on the correct position, click the \includegraphics[scale=0.5]{acc
 
 \textbf{Hint:} If the calibration never seems to end, check that the chessmen are correctly placed in the middle of the squares.
 
+\subsubsection{Chesstimation Modul}
+If you use the Chesstimation Modul by Andras Petersik, you can switch on these option. In this case a calibration is not required because BearChess already knows the codes to identify the chessmen.
+
 \subsubsection{Connect}
 \begin{figure}[H]
 	\centering
@@ -1194,6 +1197,10 @@ You can specify how often internally within a second the board is checked for ch
 \end{figure}
 Valid values ranges from 32.6 to 1.9 per second. Default ist 16.3 per second.
 Changing the scan rate allows a finer adjustment of how fast a board change is reported to BearChess. But the influence is less than the delay setting.
+
+\subsubsection{Chesstimation Module}
+If you use the Chesstimation module by Andras Petersik, you should switch on this option.
+BearChess thus takes into account that the old boards of Mephisto Modular, Exclusive or Munich have only one LED per field and not four.
 
 \subsubsection{Configure Bluetooth} \label{Bluetooth}
 
@@ -2774,8 +2781,9 @@ These are some ideas what will come in one of the next versions.
 
 
 \subsection*{Version 0.9.11.0 $\Rightarrow$  0.9.11.1}
-\begin{itemize}
+\begin{itemize}	
 	\item {\color{red}Fix}: Fix communication to Chesstimation module by Andreas Petersik.	
+    \item {\color{teal}Changes}: Improved LED handling for Millennium ChessLink.
 \end{itemize}
 
 

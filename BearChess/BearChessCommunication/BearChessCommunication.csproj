@@ -47,10 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CRCConversions.cs" />
     <Compile Include="IComPort.cs" />
     <Compile Include="lichess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialComPort.cs" />
+    <Compile Include="SerialComPortByteBased.cs" />
     <Compile Include="SerialComPortEventBased.cs" />
     <Compile Include="SerialComportForByteArray.cs" />
     <Compile Include="SerialComPortSlowStreamBased.cs" />
