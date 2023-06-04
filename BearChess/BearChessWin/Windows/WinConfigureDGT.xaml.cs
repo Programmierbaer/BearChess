@@ -59,12 +59,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 _portNames = SerialCommunicationTools
-                            .GetBTComPort(DGTLoader.EBoardName, configuration, _fileLogger, true, false).ToList();
+                            .GetBTComPort(DGTLoader.EBoardName, configuration, _fileLogger, true, false, false).ToList();
                 comPortSearchWindow.Close();
             }
             else
             {
-                _portNames = SerialCommunicationTools.GetPortNames().ToList();
+                _portNames = SerialCommunicationTools.GetPortNames(string.Empty).ToList();
             }
 
             _portNames.ForEach(f => _allPortNames.Add(f));

@@ -304,12 +304,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (comPort.Equals("BT"))
                     {
-                        _comPort = new BTComPort(null);
+                        _comPort = new BTComPort(_boardName,null, UseChesstimation);
                         if (!((BTComPort)_comPort).EndPointFound)
                         {
                             SerialCommunicationTools.GetBTComPort(_boardName, Configuration.Instance, _logger, true,
-                                                                  false);
-                            _comPort = new BTComPort(null);
+                                                                  false, UseChesstimation);
+                            _comPort = new BTComPort(_boardName,null, UseChesstimation);
                         }
 
                     }
@@ -323,12 +323,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (comPort.Equals("BT"))
                     {
-                        _comPort = new BTComPort(null);
+                        _comPort = new BTComPort(_boardName, null, UseChesstimation);
                         if (!((BTComPort)_comPort).EndPointFound)
                         {
                             SerialCommunicationTools.GetBTComPort(_boardName, Configuration.Instance, _logger, true,
-                                                                  false);
-                            _comPort = new BTComPort(null);
+                                                                  false, UseChesstimation);
+                            _comPort = new BTComPort(_boardName, null, UseChesstimation);
                         }
 
                     }
@@ -342,12 +342,12 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (comPort.Equals("BT"))
                     {
-                        _comPort = new BTComPort(null);
+                        _comPort = new BTComPort(_boardName, null, UseChesstimation);
                         if (!((BTComPort)_comPort).EndPointFound)
                         {
                             SerialCommunicationTools.GetBTComPort(_boardName, Configuration.Instance, _logger, true,
-                                                                  false);
-                            _comPort = new BTComPort(null);
+                                                                  false, UseChesstimation);
+                            _comPort = new BTComPort(_boardName, null, UseChesstimation);
                         }
 
                     }
@@ -390,12 +390,13 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 {
                     if (comPort.Equals("BT"))
                     {
-                        _comPort = new BTComPort(null);
+                        _comPort = new BTComPort(_boardName, null, false);
                         if (!((BTComPort)_comPort).EndPointFound)
                         {
-                            SerialCommunicationTools.GetBTComPort(_boardName, Configuration.Instance, _logger, true, false);
+                            SerialCommunicationTools.GetBTComPort(_boardName, Configuration.Instance, _logger, true, false, UseChesstimation);
                         }
-                        _comPort = new BTComPort(null);
+
+                        _comPort = new BTComPort(_boardName, null, false);
 
                     }
                     else if (comPort.StartsWith("C"))
@@ -574,7 +575,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 if (_comPort.IsOpen)
                 {
                     _logger?.LogInfo($"S: CheckConnect: Open successful COM-Port {comPort} ");
-                    _comPort.Close();
                     return true;
                 }
             }
@@ -583,7 +583,6 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 _logger?.LogError($"S: Error on open port {comPort}: {ex.Message}");
                 //
             }
-
 
             return false;
 
@@ -621,7 +620,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     {
                         if (_boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase))
                         {
-                            BoardInformation = Constants.Certabo;
+                            BoardInformation = UseChesstimation ? Constants.Chesstimation : Constants.Certabo;
                         }
                         if (_boardName.Equals(Constants.TabutronicCerno, StringComparison.OrdinalIgnoreCase))
                         {
@@ -690,6 +689,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         }
                         if (_boardName.Equals(Constants.IChessOne, StringComparison.OrdinalIgnoreCase))
                         {
+                            if (!_comPort.IsOpen)
+                            {
+                                _comPort.Open();
+                            }
+
                             if (_comPort.IsOpen)
                             {
                                 _logger?.LogInfo($"S: Open COM-Port {portName}");
@@ -721,7 +725,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         // For MChessLink
                         if (_boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))
                         {
-                            _comPort.Open();
+                           
                             SendRawToBoard("W0000");
                             SendRawToBoard("W011E");
                             //SendRawToBoard("W0200");

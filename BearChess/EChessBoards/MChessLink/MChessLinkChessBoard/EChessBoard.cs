@@ -198,10 +198,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 {
                     _logger?.LogDebug($"CheckComPort {portName}");
                     _serialCommunication = new SerialCommunication(_logger, portName);
+                    _serialCommunication.UseChesstimation = _useChesstimation;
                     if (_serialCommunication.CheckConnect(portName))
                     {
                         _logger?.LogDebug("CheckComPort successful. Send ROM initialize ");
-                        _serialCommunication.Connect();
                         _serialCommunication.SendRawToBoard("W0000");
                         _serialCommunication.SendRawToBoard("W011E");
                         _serialCommunication.SendRawToBoard("W0203");
@@ -337,7 +337,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void SetAllLedsOn()
         {
-            if (!EnsureConnection())
+            if (_useChesstimation || !EnsureConnection())
             {
                 return;
             }
@@ -529,6 +529,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         }
 
         public override void DisplayOnClock(string display)
+        {
+            //
+        }
+
+        public override void SetCurrentColor(int currentColor)
         {
             //
         }

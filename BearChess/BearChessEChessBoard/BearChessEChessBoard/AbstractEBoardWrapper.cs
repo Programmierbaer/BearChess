@@ -160,6 +160,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract void FlashMode(EnumFlashMode flashMode);
 
+        public void SetCurrentColor(int currentColor)
+        {
+            _board?.SetCurrentColor(currentColor);
+        }
+
 
         public void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {

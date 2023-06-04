@@ -15,6 +15,11 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
         private bool _runAsUci;
         private string _currentLevel;
 
+        public override void SetCurrentColor(int currentColor)
+        {
+            //
+        }
+
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;

@@ -68,6 +68,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _useBluetooth = useBluetooth;
             _useChesstimation = useChesstimation;
             _serialCommunication = new SerialCommunication(logger, portName,useBluetooth);
+            _serialCommunication.UseChesstimation = useChesstimation;
             _calibrateStorage = new CalibrateStorage(basePath, _useChesstimation);
             _logger = logger;
             BatteryLevel = "100";
@@ -81,7 +82,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 IsCalibrated = Calibrate(calibrationData);
             }
             IsConnected = EnsureConnection();
-            Information = Constants.Certabo;
+            Information = useChesstimation ? Constants.Chesstimation : Constants.Certabo;
             var thread = new Thread(FlashLeds) { IsBackground = true };
             thread.Start();
         }
@@ -103,6 +104,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         public override bool CheckComPort(string portName)
         {
             _serialCommunication = new SerialCommunication( _logger, portName, _useBluetooth);
+            _serialCommunication.UseChesstimation = _useChesstimation;
             if (_serialCommunication.CheckConnect(portName))
             {
                 var readLine = _serialCommunication.GetRawFromBoard(string.Empty);
@@ -711,6 +713,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         }
 
         public override void DisplayOnClock(string display)
+        {
+            //
+        }
+
+        public override void SetCurrentColor(int currentColor)
         {
             //
         }

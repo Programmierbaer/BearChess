@@ -58,7 +58,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 _portNames = SerialCommunicationTools
-                             .GetBTComPort(TabutronicSentioLoader.EBoardName, configuration, _fileLogger, true, false).ToList();
+                             .GetBTComPort(TabutronicSentioLoader.EBoardName, configuration, _fileLogger, true, false, false).ToList();
                 var btComPort = SerialBTLECommunicationTools.GetBTComPort(Constants.TabutronicSentio);
                 comPortSearchWindow.Close();
                 if (btComPort.Length > 0)
@@ -70,7 +70,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                _portNames = SerialCommunicationTools.GetPortNames().ToList();
+                _portNames = SerialCommunicationTools.GetPortNames(string.Empty).ToList();
             }
 
             _portNames.ForEach(f => _allPortNames.Add(f));

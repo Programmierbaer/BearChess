@@ -421,7 +421,7 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemConfigureCertabo" Header="Configure"
+                        <MenuItem Name="menuItemConfigureCertabo" Header="Configure..."
                                   Click="MenuItemConfigureCertabo_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/cog.png" />
@@ -431,6 +431,12 @@
                                   Click="MenuItemBluetoothCertabo_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemChesstimationCertabo" Header="Chesstimation module"
+                                  Click="MenuItemChesstimationCertabo_OnClick" ToolTip="Using a Chesstimation module by Andreas Petersik">
+                            <MenuItem.Icon>
+                                <Image Name="imageCertaboChesstimation" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
@@ -448,7 +454,7 @@
                                     <Image Source="Assets/Icons/connect.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemConfigureCerno" Header="Configure"
+                            <MenuItem Name="menuItemConfigureCerno" Header="Configure..."
                                       Click="MenuItemConfigureCerno_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="Assets/Icons/cog.png" />
@@ -471,7 +477,7 @@
                                     <Image Source="Assets/Icons/connect.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemConfigureSentio" Header="Configure"
+                            <MenuItem Name="menuItemConfigureSentio" Header="Configure..."
                                       Click="MenuItemConfigureSentio_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="Assets/Icons/cog.png" />
@@ -496,7 +502,7 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemConfigureMChessLink" Header="Configure"
+                        <MenuItem Name="menuItemConfigureMChessLink" Header="Configure..."
                                   Click="MenuItemConfigureChessLink_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/cog.png" />
@@ -522,7 +528,12 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-
+                        <MenuItem Name="menuItemChesstimationMChessLink" Header="Chesstimation module"
+                                  Click="MenuItemChesstimationMChessLink_OnClick" ToolTip="Using a Chesstimation module by Andreas Petersik">
+                            <MenuItem.Icon>
+                                <Image Name="imageMChessLinkChesstimation" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                     <MenuItem Name="menuItemDGT" Header="DGT">
                         <MenuItem.Icon>
@@ -538,7 +549,7 @@
                                     <Image Source="Assets/Icons/connect.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemConfigureDGT" Header="Configure"
+                            <MenuItem Name="menuItemConfigureDGT" Header="Configure..."
                                       Click="MenuItemConfigureDGT_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="Assets/Icons/cog.png" />
@@ -607,7 +618,7 @@
                                     <Image Source="Assets/Icons/connect.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemConfigureCitrine" Header="Configure"
+                            <MenuItem Name="menuItemConfigureCitrine" Header="Configure..."
                                       Click="MenuItemConfigureCitrine_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="Assets/Icons/cog.png" />
@@ -624,7 +635,7 @@
                                     <Image Source="Assets/Icons/connect.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemConfigureUCB" Header="Configure"
+                            <MenuItem Name="menuItemConfigureUCB" Header="Configure..."
                                       Click="MenuItemConfigureUCB_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="Assets/Icons/cog.png" />
@@ -642,7 +653,7 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemConfigureOSA" Header="Configure"
+                        <MenuItem Name="menuItemConfigureOSA" Header="Configure..."
                                   Click="MenuItemConfigureOSA_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/cog.png" />
@@ -659,7 +670,7 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBluetoothIChessOneAir" Header="Bluetooth"
+                        <MenuItem Name="menuItemBluetoothIChessOne" Header="Bluetooth"
                                   Click="MenuItemBluetoothIChessOne_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageIChessOneBluetooth" Source="Assets/Icons/tick.png"

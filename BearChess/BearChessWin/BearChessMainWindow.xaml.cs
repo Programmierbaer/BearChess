@@ -175,7 +175,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _loadLastEngine = false;
         private bool _useBluetoothClassicChessLink;
         private bool _useBluetoothLEChessLink;
+        private bool _useChesstimationChessLink;
         private bool _useBluetoothCertabo;
+        private bool _useChesstimationCertabo;
         private bool _useBluetoothTabuTronicCerno;
         private bool _useBluetoothTabuTronicSentio;
         private bool _useBluetoothDGT;
@@ -481,6 +483,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             
             _useBluetoothCertabo = bool.Parse(_configuration.GetConfigValue("usebluetoothCertabo", "false"));
             imageCertaboBluetooth.Visibility = _useBluetoothCertabo ? Visibility.Visible : Visibility.Hidden;
+
+            _useChesstimationCertabo = bool.Parse(_configuration.GetConfigValue("usechesstimationCertabo", "false"));
+            imageCertaboChesstimation.Visibility = _useChesstimationCertabo ? Visibility.Visible : Visibility.Hidden;
+
+            _useChesstimationChessLink = bool.Parse(_configuration.GetConfigValue("usechesstimationChessLink", "false"));
+            imageMChessLinkChesstimation.Visibility = _useChesstimationChessLink ? Visibility.Visible : Visibility.Hidden;
 
             _useBluetoothTabuTronicCerno = bool.Parse(_configuration.GetConfigValue("usebluetoothTabuTronicCerno", "false"));
             imageCernoBluetooth.Visibility = _useBluetoothTabuTronicCerno ? Visibility.Visible : Visibility.Hidden;
@@ -2637,7 +2645,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                 }
             }
-
+            _eChessBoard?.SetCurrentColor(_chessBoard.CurrentColor);
             _configuration.Save();
             if (runEngine && _gameAgainstEngine)
             {
@@ -2668,7 +2676,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 if (_timeControlWhite.TimeControlType == TimeControlEnum.AverageTimePerMove || _timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
                 {
-
                     var second = _timeControlWhite.Value1 * 8 * 1000;
                     if (!_timeControlWhite.AverageTimInSec)
                     {
@@ -3282,6 +3289,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_lastEBoard.Equals(Constants.OSA, StringComparison.OrdinalIgnoreCase))
             {
                 MenuItemConnectToOSA_OnClick(sender, e);
+                return;
+            }
+            if (_lastEBoard.Equals(Constants.IChessOne, StringComparison.OrdinalIgnoreCase))
+            {
+                MenuItemConnectIChessOneBoard_OnClick(sender,e);
                 return;
             }
         }
@@ -5386,9 +5398,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DisconnectFromIChessOne()
         {
-
             DisconnectFromEBoard(menuItemConnectToIChessOneBoard, "IChessOne");
-
         }
 
         private void DisconnectFromUCB()
@@ -5656,7 +5666,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageConnect.Visibility = Visibility.Collapsed;
             imageDisconnect.Visibility = Visibility.Visible;
             _configuration.SetConfigValue("LastEBoard", _lastEBoard);
-            buttonConnect.ToolTip = "Disconnect from Chessnut IChessOne";
+            buttonConnect.ToolTip = "Disconnect from IChessOne";
             _eChessBoard.Calibrate();
             if (_currentAction == CurrentAction.InRunningGame)
             {
@@ -5664,6 +5674,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             chessBoardUcGraphics.SetEBoardMode(true);
             chessBoardUcGraphics.RepaintBoard(_chessBoard);
+            
         }
 
         private void DisconnectFromDGT()
@@ -5804,6 +5815,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard.AwaitedPosition -= EChessBoardAwaitedPositionEvent;
             _eChessBoard.SetAllLedsOff();
             _eChessBoard.Release();
+            Thread.Sleep(200);
             _eChessBoard.Close();
             _eChessBoard = null;
             textBlockEBoard.Text = " Disconnected";
@@ -5873,7 +5885,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                      _currentAction == CurrentAction.InEasyPlayingMode ||
                                      _currentAction == CurrentAction.InGameAnalyseMode);
             var currentComPort = _eChessBoard?.GetCurrentComPort();
-            textBlockEBoard.Text = $"Connected to Certabo chessboard ({currentComPort})";
+            textBlockEBoard.Text = _useChesstimationCertabo ? $"Connected to Chesstimation module ({currentComPort})"
+                                       : $"Connected to Certabo chessboard ({currentComPort})";
+            
             if (_useBluetoothCertabo)
             {
                 imageBT.Visibility = currentComPort.Equals("BT", StringComparison.OrdinalIgnoreCase)
@@ -5892,7 +5906,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageConnect.Visibility = Visibility.Collapsed;  
             imageDisconnect.Visibility = Visibility.Visible;
             _configuration.SetConfigValue("LastEBoard", _lastEBoard);
-            buttonConnect.ToolTip = "Disconnect from Certabo chessboard";
+            buttonConnect.ToolTip = _useChesstimationCertabo ? "Disconnect from Chesstimation module" : "Disconnect from Certabo chessboard";
             if (_currentAction == CurrentAction.InRunningGame)
             {
                 _eChessBoard.SetFen(_chessBoard.GetFenPosition(), string.Empty);
@@ -6222,6 +6236,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (string.IsNullOrWhiteSpace(_prevRequestForHelpFen) && fenPosition.Equals(_prevRequestForHelpFen))
                 {
+                  
                     _requestForHelp = false;
                 }
                 else
@@ -6238,7 +6253,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         try
                         {
 
-                            Dispatcher?.Invoke(() => { _eChessBoard?.SetLedsFor(_requestForHelpArray, true); });
+                            Dispatcher?.Invoke(() =>
+                            {
+                                _eChessBoard?.SetLedsFor(_requestForHelpArray, true);
+                                _eChessBoard?.DisplayOnClock(string.Join("-",_requestForHelpArray));
+                            });
 
                             Array.Copy(_requestForHelpArray, _prevRequestForHelpArray, 2);
                             _requestForHelpArray = Array.Empty<string>();
@@ -6546,7 +6565,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 reConnect = true;
             }
 
-            var winConfigureCertabo = new WinConfigureCertabo(_configuration, _useBluetoothCertabo) {Owner = this};
+            var winConfigureCertabo = new WinConfigureCertabo(_configuration, _useBluetoothCertabo, _useChesstimationCertabo) {Owner = this};
             winConfigureCertabo.ShowDialog();
             if (reConnect)
             {
@@ -6567,7 +6586,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            var winConfigureMChessLink = new WinConfigureMChessLink(_configuration,_useBluetoothClassicChessLink, _useBluetoothLEChessLink) {Owner = this};
+            var winConfigureMChessLink = new WinConfigureMChessLink(_configuration,_useBluetoothClassicChessLink, _useBluetoothLEChessLink, _useChesstimationChessLink) {Owner = this};
             winConfigureMChessLink.ShowDialog();
         }
 
@@ -9709,6 +9728,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _engineWindow?.SetDisplayTypes(_movesConfigWindow.GetDisplayFigureType(),
                                             _movesConfigWindow.GetDisplayMoveType(), _movesConfigWindow.GetDisplayCountryType());
+        }
+
+        private void MenuItemChesstimationCertabo_OnClick(object sender, RoutedEventArgs e)
+        {
+            _useChesstimationCertabo = !_useChesstimationCertabo;
+            _configuration.SetConfigValue("usechesstimationCertabo", _useChesstimationCertabo.ToString());
+            imageCertaboChesstimation.Visibility = _useChesstimationCertabo ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        private void MenuItemChesstimationMChessLink_OnClick(object sender, RoutedEventArgs e)
+        {
+            _useChesstimationChessLink = !_useChesstimationChessLink;
+            _configuration.SetConfigValue("usechesstimationChessLink", _useChesstimationChessLink.ToString());
+            imageMChessLinkChesstimation.Visibility = _useChesstimationChessLink ? Visibility.Visible : Visibility.Hidden;
         }
     }
 }

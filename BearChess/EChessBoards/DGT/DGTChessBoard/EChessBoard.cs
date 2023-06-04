@@ -154,6 +154,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         private bool _readingClockTime = false;
         private bool _readingBlackTime = false;
         private int _readingClockIndex = 0;
+        private int _currentColor;
 
 
         public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, bool useClock, bool showOnlyMoves, bool switchClockSide)
@@ -681,6 +682,11 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         public override void DisplayOnClock(string display)
         {
             SendDisplayToClock(display);
+        }
+
+        public override void SetCurrentColor(int currentColor)
+        {
+            _currentColor = currentColor;
         }
 
         public override event EventHandler BasePositionEvent;

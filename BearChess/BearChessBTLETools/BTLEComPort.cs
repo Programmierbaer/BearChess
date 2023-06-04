@@ -169,18 +169,13 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 _byteArrayQueue.Enqueue(data);
                 foreach (var b in data)
                 {
-                  //  _logging.LogDebug($"BTLE: {b} = {ConvertFromRead(b)}");
+                    _logging.LogDebug($"BTLE: {b} = {b:x}");
                     _byteQueue.Enqueue(b);
                 }
             }
         }
 
-        private string ConvertFromRead(int data)
-        {
-            var i = data & 127;
-            return Encoding.ASCII.GetString(new[] { (byte)i });
-        }
-
+       
         public void Close()
         {
             if (_readCharacteristic != null)
@@ -199,8 +194,8 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             while (_byteArrayQueue.TryDequeue(out byte[] _));
             while (_byteQueue.TryDequeue(out byte _));
             SerialBTLECommunicationTools.Clear();
-            _service.Dispose();
-            _bluetoothLeDevice.Dispose();
+            _service?.Dispose();
+            _bluetoothLeDevice?.Dispose();
         }
 
         public bool IsOpen => _readCharacteristic != null && _writeCharacteristic != null;
@@ -238,6 +233,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
               return b;
             return 0;
         }
+
         public void Write(string message)
         {
 

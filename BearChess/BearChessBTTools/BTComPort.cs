@@ -37,11 +37,12 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
         public bool RTS { get; set; }
         public bool DTR { get; set; }
 
-        public BTComPort(BluetoothAddress btAddress)
+        public BTComPort(string boardName, BluetoothAddress btAddress, bool useChesstimation)
         {
             if (btAddress == null)
             {
-                btAddress = BearChessTools.Configuration.Instance.LoadBtAddress();
+                string ident = useChesstimation ? "Chesstimation" : "0";
+                btAddress = BearChessTools.Configuration.Instance.LoadBTAddress(boardName, ident);
                 if (btAddress == null)
                 {
                     _bluetoothEndPoint = null;

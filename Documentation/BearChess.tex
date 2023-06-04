@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.11.1}
+\fancyhead[R]{Version 0.9.11.2}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{26.05.2023} 
+\date{02.06.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -943,17 +943,18 @@ In the classic variant, pairing is necessary and the connection is then made to 
 \subsection{Configure Certabo boards} \label{ConfigureCertabo}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{Certabo1.png}
+	\includegraphics[scale=0.9]{Certabo1.png}
 	\caption{Open a window to configure Certabo boards }
 	\label{fig:Certabo1}
 \end{figure}
 
 Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the Bluetooth module from Certabo, you can also connect to the Certabo board via bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration window.\\
+If you are using a Chesstimation module, check the option first, before opening the configuration window.\\
 The piece recognition assumes that the USB port of the board is on the bottom right.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{Certabo6.png}
+	\includegraphics[scale=0.9]{Certabo6.png}
 	\caption{Search for Bluetooth }
 	\label{fig:Certabo6}
 \end{figure}
@@ -1033,6 +1034,20 @@ If all pieces on the correct position, click the \includegraphics[scale=0.5]{acc
 \subsubsection{Chesstimation Modul}
 If you use the Chesstimation Modul by Andras Petersik, you can switch on these option. In this case a calibration is not required because BearChess already knows the codes to identify the chessmen.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Certabo8.png}
+	\caption{Using Chesstimation module}
+	\label{fig:Certabo8}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Certabo7.png}
+	\caption{Calibration not required}
+	\label{fig:Certabo7}
+\end{figure}
+
 \subsubsection{Connect}
 \begin{figure}[H]
 	\centering
@@ -1040,8 +1055,11 @@ If you use the Chesstimation Modul by Andras Petersik, you can switch on these o
 	\caption{Connect to Certabo}
 	\label{fig:Certabo3}
 \end{figure}
+
+
 When the configuration is complete, you can connect your chessboard.
-In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
+In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.\\
+{\color{red}*}\textbf{ Whenever you change one of the options, Bluetooth or Chesstimation module, you need to reconfigure to set the right configuration values.}
 
 \begin{figure}[H]
 	\centering
@@ -1124,12 +1142,13 @@ In the lower right corner appears a new button, which allows you to easily conne
 
 For your Millennium ChessLink you may need to configure if you want to use a COM port or Bluetooth. You can also change how the LEDs should light up.\\
 If your PC supports Bluetooth, you can also connect to the ChessLink module via Bluetooth. If you want to do this, check the option "Bluetooth Classic" and/or "Bluetooth LE" first, before opening the configuration windows.\\
+If you are using a Chesstimation module, check the option first, before opening the configuration window.\\
 The piece recognition assumes that the cable is on the right side of the board.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{MillenniumChessLink9.png}
-	\caption{Search for Bluetooth }
+	\includegraphics[scale=0.7]{MillenniumChessLink9.png}
+	\caption{Search for Bluetooth}
 	\label{fig:MillenniumChessLink9}
 \end{figure}
 Read chapter \textbf{\ref{Bluetooth}  \nameref{Bluetooth}} on page \pageref{Bluetooth} for more information.
@@ -1198,9 +1217,6 @@ You can specify how often internally within a second the board is checked for ch
 Valid values ranges from 32.6 to 1.9 per second. Default ist 16.3 per second.
 Changing the scan rate allows a finer adjustment of how fast a board change is reported to BearChess. But the influence is less than the delay setting.
 
-\subsubsection{Chesstimation Module}
-If you use the Chesstimation module by Andras Petersik, you should switch on this option.
-BearChess thus takes into account that the old boards of Mephisto Modular, Exclusive or Munich have only one LED per field and not four.
 
 \subsubsection{Configure Bluetooth} \label{Bluetooth}
 
@@ -1213,9 +1229,21 @@ If the "Bluetooth Classic" option is set, the following window will be displayed
 	\label{fig:MillenniumChessLink10}
 \end{figure}
 
+
+
 During this time or if you connect for the first time, Windows may ask you to connect to the Millennium ChessLink module. In this case, confirm this.\\
 
 If the "Bluetooth LE" option is set, the connection is not emulated as a serial COM port. The configuration shows the port name as "BTLE".
+
+\subsubsection{Chesstimation Module}
+If you use the Chesstimation module by Andras Petersik, you must switch on this option.
+BearChess thus takes into account that the old boards of Mephisto Modular, Exclusive or Munich have only one LED per field and not four.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{MillenniumChessLink13.png}
+	\caption{Using Chesstimation Module}
+	\label{fig:MillenniumChessLink13}
+\end{figure}
 
 
 \subsubsection{Connect}
@@ -1226,7 +1254,8 @@ If the "Bluetooth LE" option is set, the connection is not emulated as a serial 
 	\label{fig:MillenniumChessLink6}
 \end{figure}
 When the configuration is complete, you can connect to your chessboard.
-In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
+In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.\\
+{\color{red}*}\textbf{ Whenever you change one of the options, Bluetooth or Chesstimation module, you need to reconfigure to set the right configuration values.}
 
 \begin{figure}[H]
 	\centering
@@ -1692,7 +1721,8 @@ For your convenience, you can configure and save a game definition that will be 
 
 \subsection{Request for help}
 If you play a game and you have "Show move when help is request" activated. raise your king for a short time and set it down again to see the best move on the board.\\
-Do it again to stop showing the best move.
+Do it again to stop showing the best move.\\
+{\color{red}\textbf{*}} This is not supported DGT e-Board, Square Off Pro, NOVAG and Saitek OSA boards
 
 \section{Move list}
 The move list shows all moves of your game.
@@ -2764,11 +2794,11 @@ All these boards have no piece detection, but check if the piece makes a legal m
 These are some ideas what will come in one of the next versions.
 
 \begin{itemize}
+		\item Support for \textbf{iChessOne} board.
 		\item Extend the game analysis.
 		\item Improve electronic chess board handling.
   	    \item Improve the performance of the opening book.
    		\item GUI redesign.
-   		\item Support for \textbf{iChessOne} board.
 	\end{itemize} 
 
 \pagebreak
@@ -2780,7 +2810,15 @@ These are some ideas what will come in one of the next versions.
 \section{Change log}
 
 
-\subsection*{Version 0.9.11.0 $\Rightarrow$  0.9.11.1}
+
+\subsection*{Version 0.9.11.1 $\Rightarrow$  0.9.11.2}
+\begin{itemize}	
+	\item {\color{red}Fix}: Fix error by version 0.9.11.1. Version 0.9.11.1 has been withdrawn	
+	\item {\color{teal}Changes}: Save BT configuration separately for each board.
+    \item {\color{teal}Changes}: Load only for chessboard relevant COM-Ports.
+\end{itemize}
+
+\subsection*{Version 0.9.11.0 $\Rightarrow$ {\color{red}0.9.11.1}}
 \begin{itemize}	
 	\item {\color{red}Fix}: Fix communication to Chesstimation module by Andreas Petersik.	
     \item {\color{teal}Changes}: Improved LED handling for Millennium ChessLink.

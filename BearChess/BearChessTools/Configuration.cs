@@ -25,15 +25,13 @@ namespace www.SoLaNoSoft.com.BearChessTools
         private static readonly object Locker = new object();
         private readonly ConfigurationSettings<string, string> _appSettings;
         private string ConfigFileName { get; }
-        private string BtConfigFileName { get; }
+        private string BTConfigFileName { get; }
         private string TimeControlFileName { get; }
         private string TimeControlBlackFileName { get; }
         private string FicTimeControlFileName { get; }
         private string StartupTimeControlFileName { get; }
         private string StartupTimeControlBlackFileName { get; }
         private string DatabaseFilterFileName { get; }
-
-        static byte[] _additionalEntropy = { 9, 8, 7, 6, 5 };
 
         public const string STARTUP_WHITE_ENGINE_ID = "startupWhite.uci";
         public const string STARTUP_BLACK_ENGINE_ID = "startupBlack.uci";
@@ -71,13 +69,13 @@ namespace www.SoLaNoSoft.com.BearChessTools
             StartupTimeControlFileName = Path.Combine(FolderPath, "bearchess_start_tc.xml");
             StartupTimeControlBlackFileName = Path.Combine(FolderPath, "bearchess_start_tc2.xml");
             ConfigFileName = Path.Combine(FolderPath, "bearchess.xml");
-            BtConfigFileName = Path.Combine(FolderPath, "bearchess_bt.xml");
+            BTConfigFileName = "bearchess_bt.xml";
             DatabaseFilterFileName = Path.Combine(FolderPath, "bearchess_dbfilter.xml");
             try
             {
                 if (File.Exists(ConfigFileName))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(ConfigurationSettings<string, string>));
+                    var serializer = new XmlSerializer(typeof(ConfigurationSettings<string, string>));
                     TextReader textReader = new StreamReader(ConfigFileName);
                     _appSettings = (ConfigurationSettings<string, string>) serializer.Deserialize(textReader);
                     textReader.Close();
@@ -146,7 +144,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
         {
             try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(GamesFilter));
+                var serializer = new XmlSerializer(typeof(GamesFilter));
                 TextWriter textWriter = new StreamWriter(DatabaseFilterFileName, false);
                 serializer.Serialize(textWriter, gamesFilter);
                 textWriter.Close();
@@ -163,19 +161,29 @@ namespace www.SoLaNoSoft.com.BearChessTools
             {
                 return new GamesFilter() {FilterIsActive = false};
             }
-            XmlSerializer serializer = new XmlSerializer(typeof(GamesFilter));
-            TextReader textReader = new StreamReader(DatabaseFilterFileName);
-            GamesFilter gamesFilter = (GamesFilter)serializer.Deserialize(textReader);
-            textReader.Close();
-            return gamesFilter;
+
+            try
+            {
+                var serializer = new XmlSerializer(typeof(GamesFilter));
+                TextReader textReader = new StreamReader(DatabaseFilterFileName);
+                var gamesFilter = (GamesFilter)serializer.Deserialize(textReader);
+                textReader.Close();
+                return gamesFilter;
+            }
+            catch
+            {
+                //
+            }
+            return new GamesFilter() { FilterIsActive = false };
         }
 
-        public void Save(BluetoothAddress btAddress)
+        public void SaveBTAddress(string boardName, BluetoothAddress btAddress, string identifier = "0")
         {
             try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(BluetoothAddress));
-                TextWriter textWriter = new StreamWriter(BtConfigFileName, false);
+                var fileName = Path.Combine(FolderPath, boardName,$"{boardName}_{identifier}_bt.xml");
+                var serializer = new XmlSerializer(typeof(BluetoothAddress));
+                TextWriter textWriter = new StreamWriter(fileName, false);
                 serializer.Serialize(textWriter, btAddress);
                 textWriter.Close();
             }
@@ -185,24 +193,44 @@ namespace www.SoLaNoSoft.com.BearChessTools
             }
         }
 
-        public BluetoothAddress LoadBtAddress()
+        public BluetoothAddress LoadBTAddress(string boardName, string identifier = "0")
         {
-            if (!File.Exists(BtConfigFileName))
+            var migrateConfig = false;
+            var fileName = Path.Combine(FolderPath, boardName, $"{boardName}_{identifier}_bt.xml");
+            if (!File.Exists(fileName))
             {
-                return null;
+                fileName = Path.Combine(FolderPath, BTConfigFileName);
+                if (!File.Exists(fileName))
+                {
+                    return null;
+                }
+                migrateConfig  = true;
             }
-            XmlSerializer serializer = new XmlSerializer(typeof(BluetoothAddress));
-            TextReader textReader = new StreamReader(BtConfigFileName);
-            BluetoothAddress btAddress = (BluetoothAddress)serializer.Deserialize(textReader);
-            textReader.Close();
-            return btAddress;
+            try
+            {
+                var serializer = new XmlSerializer(typeof(BluetoothAddress));
+                TextReader textReader = new StreamReader(fileName);
+                var btAddress = (BluetoothAddress)serializer.Deserialize(textReader);
+                textReader.Close();
+                if (migrateConfig)
+                {
+                    SaveBTAddress(boardName, btAddress);
+                }
+                return btAddress;
+            }
+            catch
+            {
+                //
+            }
+
+            return null;
         }
 
         public void Save()
         {
             try
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(ConfigurationSettings<string, string>));
+                var serializer = new XmlSerializer(typeof(ConfigurationSettings<string, string>));
                 TextWriter textWriter = new StreamWriter(ConfigFileName, false);
                 serializer.Serialize(textWriter, _appSettings);
                 textWriter.Close();
@@ -225,7 +253,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
             {
                 if (white)
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
+                    var serializer = new XmlSerializer(typeof(TimeControl));
                     TextWriter textWriter =
                         new StreamWriter(asStartup ? StartupTimeControlFileName : TimeControlFileName, false);
                     serializer.Serialize(textWriter, timeControl);
@@ -233,7 +261,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 }
                 else
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
+                    var serializer = new XmlSerializer(typeof(TimeControl));
                     TextWriter textWriter =
                         new StreamWriter(asStartup ? StartupTimeControlBlackFileName : TimeControlBlackFileName, false);
                     serializer.Serialize(textWriter, timeControl);
@@ -260,9 +288,9 @@ namespace www.SoLaNoSoft.com.BearChessTools
             {
                 return null;
             }
-            XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
+            var serializer = new XmlSerializer(typeof(TimeControl));
             TextReader textReader = new StreamReader(asStartup ? StartupTimeControlFileName : TimeControlFileName);
-            TimeControl timeControl = (TimeControl)serializer.Deserialize(textReader);
+            var timeControl = (TimeControl)serializer.Deserialize(textReader);
             textReader.Close();
             return timeControl;
         }
@@ -273,9 +301,9 @@ namespace www.SoLaNoSoft.com.BearChessTools
             {
                 return LoadWhiteTimeControl(asStartup);
             }
-            XmlSerializer serializer = new XmlSerializer(typeof(TimeControl));
+            var serializer = new XmlSerializer(typeof(TimeControl));
             TextReader textReader = new StreamReader(asStartup ? StartupTimeControlBlackFileName : TimeControlBlackFileName);
-            TimeControl timeControl = (TimeControl)serializer.Deserialize(textReader);
+            var timeControl = (TimeControl)serializer.Deserialize(textReader);
             textReader.Close();
             return timeControl;
         }
@@ -284,8 +312,8 @@ namespace www.SoLaNoSoft.com.BearChessTools
         {
             try
             {
-                string fileName = FicTimeControlFileName.Replace("ficstc", $"ficstc_{number}");
-                XmlSerializer serializer = new XmlSerializer(typeof(FicsTimeControl));
+                var fileName = FicTimeControlFileName.Replace("ficstc", $"ficstc_{number}");
+                var serializer = new XmlSerializer(typeof(FicsTimeControl));
                 TextWriter textWriter = new StreamWriter(fileName, false);
                 serializer.Serialize(textWriter, timeControl);
                 textWriter.Close();
@@ -298,14 +326,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public FicsTimeControl LoadFicsTimeControl(int number)
         {
-            string fileName = FicTimeControlFileName.Replace("ficstc", $"ficstc_{number}");
+            var fileName = FicTimeControlFileName.Replace("ficstc", $"ficstc_{number}");
             if (!File.Exists(fileName))
             {
                 return new FicsTimeControl(number);
             }
-            XmlSerializer serializer = new XmlSerializer(typeof(FicsTimeControl));
+            var serializer = new XmlSerializer(typeof(FicsTimeControl));
             TextReader textReader = new StreamReader(fileName);
-            FicsTimeControl timeControl = (FicsTimeControl)serializer.Deserialize(textReader);
+            var timeControl = (FicsTimeControl)serializer.Deserialize(textReader);
             textReader.Close();
             return timeControl;
         }
@@ -313,7 +341,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public void SetSecureConfigValue(string key, string value)
         {
-            string encryptPlainTextToCipherText = EnDeCryption.EncryptPlainTextToCipherText(value);
+            var encryptPlainTextToCipherText = EnDeCryption.EncryptPlainTextToCipherText(value);
             SetConfigValue(_appSettings, key, encryptPlainTextToCipherText);
         }
 
@@ -333,22 +361,22 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public string GetConfigValue(string key, string defaultValue)
         {
-            return _appSettings.ContainsKey(key) ? _appSettings[key] : defaultValue;
+            return _appSettings.TryGetValue(key, out var setting) ? setting : defaultValue;
         }
 
         public string GetSecureConfigValue(string key, string defaultValue)
         {
 
-            return _appSettings.ContainsKey(key) ? EnDeCryption.DecryptCipherTextToPlainText(_appSettings[key]) : defaultValue;
+            return _appSettings.TryGetValue(key, out var appSetting) ? EnDeCryption.DecryptCipherTextToPlainText(appSetting) : defaultValue;
         }
 
 
-        private string GetConfigValue(Dictionary<string, string> settings, string key, string defaultValue)
+        private string GetConfigValue(IReadOnlyDictionary<string, string> settings, string key, string defaultValue)
         {
-            return settings.ContainsKey(key) ? settings[key] : defaultValue;
+            return settings.TryGetValue(key, out var setting) ? setting : defaultValue;
         }
 
-        private void SetConfigValue(Dictionary<string, string> settings, string key, string value)
+        private void SetConfigValue(IDictionary<string, string> settings, string key, string value)
         {
             settings[key] = value;
         }

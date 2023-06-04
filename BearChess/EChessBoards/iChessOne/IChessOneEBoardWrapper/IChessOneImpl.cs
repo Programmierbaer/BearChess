@@ -6,8 +6,6 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneEBoardWrapper
     public class IChessOneImpl : AbstractEBoardWrapper
     {
 
-
-
         public IChessOneImpl(string name, string basePath) : base(name, basePath)
         {
 

@@ -70,20 +70,18 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
                     if (withConnection && !_pauseReading)
                     {
-                        
-                        if (_stringDataToBoard.TryDequeue(out string stringData))
+                        if (_byteDataToBoard.TryDequeue(out byte[] byteData))
                         {
+                            var convertFromArray = ConvertFromArray(byteData);
+                            if (convertFromArray.Equals(lastReadToSend))
                             {
-                                _forcedSend = false;
-                                _logger?.LogDebug($"SC: Send {stringData}");
-                                var convertToArray = ConvertToArray($"{stringData}{Environment.NewLine}");
-                                _comPort.Write(convertToArray,0,convertToArray.Length);
-                                //_comPort.WriteLine(UTF8toASCII(stringData));
-                                //_comPort.WriteLine($"{stringData}{Environment.NewLine}");
-                                lastReadToSend = convertFromRead;
+                                Thread.Sleep(5);
+                                continue;
                             }
+                            lastReadToSend = convertFromArray;
+                            _logger?.LogDebug($"SC: Send {convertFromArray}");
+                            _comPort.Write(byteData, 0, byteData.Length);
                         }
-
                     }
 
                     Thread.Sleep(5);
@@ -132,16 +130,22 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
         private string ConvertFromRead(byte[] bArray)
         {
-            string r = Encoding.UTF8.GetString(bArray, 0, bArray.Length);
-           
+            string r = string.Empty;
+            foreach (var b in bArray)
+            {
+                r = r + b.ToString("X2") + " ";
+            }
+
             return r;
         }
+
 
 
         private void ReadingFromBoard()
         {
             bool withConnection = true;
             string readLine = string.Empty;
+            string stringLine = string.Empty;
             string prevLine = string.Empty;
             while (!_stopReading)
             {
@@ -155,15 +159,17 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                     if (withConnection && !_pauseReading)
                     {
                         readLine = string.Empty;
+                        stringLine = string.Empty;
                         try
                         {
                             {
-                                readLine = _comPort.ReadLine();
+                            //    readLine = _comPort.ReadLine();
                                 byte[] readByte = _comPort.ReadByteArray();
                                 if (readByte.Length > 0)
                                 {
                                     var convertFromRead = ConvertFromRead(readByte);
                                     readLine = convertFromRead;
+                                    stringLine = Encoding.ASCII.GetString(readByte);
                                 }
 
                             }
@@ -180,11 +186,9 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                         }
                         if (!readLine.Equals(prevLine))
                             _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
+                       // _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {stringLine}");
                         prevLine = readLine;
                         _dataFromBoard.Enqueue(readLine);
-
-
-
                     }
 
                 }

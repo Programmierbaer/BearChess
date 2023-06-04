@@ -16,6 +16,11 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
         private bool _runAsUci;
         private string _lastFromBoard;
 
+        public override void SetCurrentColor(int currentColor)
+        {
+            //
+        }
+
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;

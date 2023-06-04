@@ -52,14 +52,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _fileLogger = null;
             }
-
+            _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _allPortNames = new List<string> { "<auto>" };
             if (_useBluetooth)
             {
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 _portNames = SerialCommunicationTools
-                             .GetBTComPort(TabutronicCernoLoader.EBoardName, configuration, _fileLogger, true, false).ToList();
+                             .GetBTComPort(TabutronicCernoLoader.EBoardName, configuration, _fileLogger, true, false, _eChessBoardConfiguration.UseChesstimation).ToList();
                 var btComPort = SerialBTLECommunicationTools.GetBTComPort(Constants.TabutronicCerno);
                 comPortSearchWindow.Close();
                 if (btComPort.Length > 0)
@@ -71,16 +71,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                _portNames = SerialCommunicationTools.GetPortNames().ToList();
+                _portNames = SerialCommunicationTools.GetPortNames(string.Empty).ToList();
             }
 
             _portNames.ForEach(f => _allPortNames.Add(f));
             comboBoxComPorts.ItemsSource = _allPortNames;
             comboBoxComPorts.SelectedIndex = 0;
-
-
             _calibrateFileName = Path.Combine(_configuration.FolderPath, TabutronicCernoLoader.EBoardName, "calibrate.xml");
-            _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseBluetooth = useBluetooth;
             textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;

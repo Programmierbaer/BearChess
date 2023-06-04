@@ -101,7 +101,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void StopClock();
         public abstract void StartClock(bool white);
         public abstract void DisplayOnClock(string display);
-        
+        public abstract void SetCurrentColor(int currentColor);
+
         public abstract event EventHandler BasePositionEvent;
         public abstract event EventHandler HelpRequestedEvent;
 

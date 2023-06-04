@@ -31,7 +31,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
-        public WinConfigureCertabo(Configuration configuration, bool useBluetooth)
+        public WinConfigureCertabo(Configuration configuration, bool useBluetooth, bool useChesstimation)
         {
             _configuration = configuration;
             _useBluetooth = useBluetooth;
@@ -53,26 +53,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _fileLogger = null;
             }
-
+            _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
+            _eChessBoardConfiguration.UseChesstimation = useChesstimation;
             _allPortNames = new List<string> { "<auto>" };
             if (_useBluetooth)
             {
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 _portNames = SerialCommunicationTools
-                             .GetBTComPort(CertaboLoader.EBoardName, configuration, _fileLogger, true, false).ToList();
-                var btComPort = SerialBTLECommunicationTools.GetBTComPort(Constants.Certabo);
+                             .GetBTComPort(CertaboLoader.EBoardName, configuration, _fileLogger, true, false, useChesstimation).ToList();
                 comPortSearchWindow.Close();
-                if (btComPort.Length > 0)
-                {
-                    var btleComPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault(), _fileLogger);
-                    btleComPort.Open();
-                }
 
             }
             else
             {
-                _portNames = SerialCommunicationTools.GetPortNames().ToList();
+                if (useChesstimation)
+                {
+                    
+                    _portNames = SerialCommunicationTools.GetPortNames("CH340").ToList();
+                }
+                else
+                {
+                    _portNames = SerialCommunicationTools.GetPortNames("Silicon Labs").ToList();
+                }
             }
 
             _portNames.ForEach(f => _allPortNames.Add(f));
@@ -80,9 +83,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             comboBoxComPorts.SelectedIndex = 0;
 
             _calibrateFileName = Path.Combine(_configuration.FolderPath, CertaboLoader.EBoardName, "calibrate.xml");
-            _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
+           
             _eChessBoardConfiguration.UseBluetooth = useBluetooth;
-            textBlockCalibrate.Text = _eChessBoardConfiguration.UseChesstimation || File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
+            textBlockCalibrate.Text = useChesstimation || File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
             if (_portNames.Count == 0)
             {
@@ -92,8 +95,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(_eChessBoardConfiguration.PortName);
             }
-            checkBoxChesstimation.IsChecked = _eChessBoardConfiguration.UseChesstimation;
-            buttonCalibrate.IsEnabled = !_eChessBoardConfiguration.UseChesstimation;
+            borderChesstimation.Visibility = useChesstimation ? Visibility.Visible : Visibility.Collapsed;
+            buttonCalibrate.IsEnabled = !useChesstimation;
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -207,19 +210,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        private void CheckBoxChesstimation_OnChecked(object sender, RoutedEventArgs e)
-        {
-            _eChessBoardConfiguration.UseChesstimation = true;
-            buttonCalibrate.IsEnabled = false;
-            textBlockCalibrate.Text = "Is calibrated";
-        }
-
-        private void CheckBoxChesstimation_OnUnchecked(object sender, RoutedEventArgs e)
-        {
-            _eChessBoardConfiguration.UseChesstimation = false;
-            buttonCalibrate.IsEnabled = true;
-            textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";           
-        }
     }
 }
 

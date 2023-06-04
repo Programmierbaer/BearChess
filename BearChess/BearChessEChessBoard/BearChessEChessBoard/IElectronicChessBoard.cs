@@ -116,6 +116,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         void SendCommand(string command);
 
+        void SetCurrentColor(int currentColor);
+
         void RequestDump();
 
 

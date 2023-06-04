@@ -56,7 +56,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             _allPortNames = new List<string>();
-            _portNames = SerialCommunicationTools.GetPortNames().ToList();
+            _portNames = SerialCommunicationTools.GetPortNames(string.Empty).ToList();
             _portNames.ForEach(f => _allPortNames.Add(f));
             comboBoxComPorts.ItemsSource = _allPortNames;
             comboBoxComPorts.SelectedIndex = 0;

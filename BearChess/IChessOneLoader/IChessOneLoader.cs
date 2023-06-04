@@ -7,13 +7,9 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneLoader
 {
     public class IChessOneLoader : AbstractLoader
     {
-        public static readonly string EBoardName = Constants.IChessOne;
+        private const string EBoardName = Constants.IChessOne;
 
         public IChessOneLoader(bool check, string name) : base(check, name)
-        {
-        }
-
-        public IChessOneLoader(string folderPath, string name) : base(folderPath, name)
         {
         }
 

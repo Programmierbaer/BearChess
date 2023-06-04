@@ -215,6 +215,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.SendCommand(command);
         }
 
+        public void SetCurrentColor(int currentColor)
+        {
+            _eChessBoard.SetCurrentColor(currentColor);
+        }
+
         public void RequestDump()
         {
             _eChessBoard.RequestDump();
@@ -326,6 +331,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         public bool PieceRecognition => _eChessBoard.PieceRecognition;
+
         public void Ignore(bool ignore)
         {
             _eChessBoard.Ignore(ignore);

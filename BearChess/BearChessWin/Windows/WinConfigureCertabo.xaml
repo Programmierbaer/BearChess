@@ -72,11 +72,8 @@
 
             </Grid>
         </Border>
-        <Border Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1">
-            <StackPanel Margin="0,5,0,5" Orientation="Horizontal">
-                <CheckBox Name="checkBoxChesstimation" Checked="CheckBoxChesstimation_OnChecked" Unchecked="CheckBoxChesstimation_OnUnchecked" ToolTip="Using a Chesstimation module by Andreas Petersik"
-                          Margin="5">Chesstimation Module</CheckBox>
-            </StackPanel>
+        <Border Name="borderChesstimation" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" IsEnabled="False">
+            <TextBlock Margin="5">Using a Chesstimation module by Andreas Petersik</TextBlock>
         </Border>
         <Grid>
             <Grid.ColumnDefinitions>

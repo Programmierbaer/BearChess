@@ -26,7 +26,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private MChessLinkLoader _loader;
         private readonly ILogging _fileLogger;
 
-        public WinConfigureMChessLink(Configuration configuration, bool useBluetoothClassic, bool useBluetoothLE)
+        public WinConfigureMChessLink(Configuration configuration, bool useBluetoothClassic, bool useBluetoothLE, bool useChesstimation)
         {
             InitializeComponent();
             _allPortNames = new List<string> { "<auto>" };
@@ -46,27 +46,36 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _fileLogger = null;
             }
+            _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
+            _eChessBoardConfiguration.UseChesstimation = useChesstimation;
             if (useBluetoothClassic || useBluetoothLE) 
             { 
 
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 portNames = SerialCommunicationTools
-                            .GetBTComPort(MChessLinkLoader.EBoardName, configuration, _fileLogger,useBluetoothClassic,useBluetoothLE).ToList();
+                            .GetBTComPort(MChessLinkLoader.EBoardName, configuration, _fileLogger,useBluetoothClassic,useBluetoothLE, _eChessBoardConfiguration.UseChesstimation).ToList();
                 comPortSearchWindow.Close();
 
             }
             else
             {
-                portNames =  SerialCommunicationTools.GetPortNames().ToList();
+                if (useChesstimation)
+                {
+
+                    portNames = SerialCommunicationTools.GetPortNames("CH340").ToList();
+                }
+                else
+                {
+                    portNames = SerialCommunicationTools.GetPortNames(string.Empty).ToList();
+                }
             }
 
 
             _allPortNames.AddRange(portNames);
-            comboBoxComPorts.ItemsSource = _allPortNames;
+            comboBoxComPorts.ItemsSource = _allPortNames; 
             comboBoxComPorts.SelectedIndex = 0;
 
-            _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             if (portNames.Count == 0)
             {
                 textBlockInformation.Visibility = Visibility.Visible;
@@ -94,9 +103,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
-            checkBoxChesstimation.IsChecked = _eChessBoardConfiguration.UseChesstimation;
+            borderChesstimation.Visibility = _eChessBoardConfiguration.UseChesstimation ? Visibility.Visible : Visibility.Collapsed;
             SetScanText();
             SetDebounceText();
+            if (_eChessBoardConfiguration.UseChesstimation)
+            {
+                borderDelay.IsEnabled = false;
+                borderLEDs.IsEnabled = false;
+                borderScans.IsEnabled = false;
+            }
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -116,8 +131,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
             _eChessBoardConfiguration.ScanTime = (int)sliderScanTime.Value;
             _eChessBoardConfiguration.Debounce = (int)sliderDebounce.Value;
-            _eChessBoardConfiguration.UseChesstimation =
-                checkBoxChesstimation.IsChecked.HasValue && checkBoxChesstimation.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }

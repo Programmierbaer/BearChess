@@ -1,4 +1,5 @@
 ﻿using System;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
@@ -133,6 +134,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void StopClock();
         void StartClock(bool white);
         void DisplayOnClock(string display);
+
+        void SetCurrentColor(int currentColor);
 
         event EventHandler BasePositionEvent;
         event EventHandler HelpRequestedEvent;
