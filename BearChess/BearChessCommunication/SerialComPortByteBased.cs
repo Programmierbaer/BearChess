@@ -77,25 +77,8 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                 while (_serialPort.BytesToRead > 0)
                 {
                     _serialPort.Read(receivedByte, 0, 1);
-                    _data.Enqueue(receivedByte[0]);
-                    //buffer.Write(receivedByte, 0, 1);
+                    _data.Enqueue(receivedByte[0]);                    
                 }
-                /*
-                var readByte = _serialPort.ReadByte();
-
-                while (readByte > -1)
-                {
-                    try
-                    {
-                        _data.Enqueue(readByte);
-                        readByte = _serialPort.ReadByte();
-                    }
-                    catch
-                    {
-                        readByte = -1;
-                    }
-                }
-                */
             }
             catch
             {
@@ -112,8 +95,8 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                     _serialPort.DataReceived -= _serialPort_DataReceived;
                     _serialPortWriteTimeout = _serialPort.WriteTimeout;
                     _serialPortReadTimeout = _serialPort.ReadTimeout;
-                    _serialPort.Close();
-                    _serialPort.Dispose();
+                    _serialPort?.Close();
+                    _serialPort?.Dispose();
                 }
 
                 _serialPort = null;
@@ -199,8 +182,8 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         {
             if (_serialPort != null)
             {
-                _serialPort.DiscardInBuffer();
-                _serialPort.DiscardOutBuffer();
+                _serialPort?.DiscardInBuffer();
+                _serialPort?.DiscardOutBuffer();
             }
             while (_data.TryDequeue(out  _)) ;
         }

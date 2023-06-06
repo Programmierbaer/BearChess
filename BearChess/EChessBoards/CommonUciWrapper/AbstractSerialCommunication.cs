@@ -727,10 +727,14 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         {
                            
                             SendRawToBoard("W0000");
+                            Thread.Sleep(10);
                             SendRawToBoard("W011E");
+                            Thread.Sleep(10);
                             //SendRawToBoard("W0200");
                             SendRawToBoard("W0203");
+                            Thread.Sleep(10);
                             SendRawToBoard("W030A");
+                            Thread.Sleep(10);
                         }
 
                         string readLine = string.Empty;

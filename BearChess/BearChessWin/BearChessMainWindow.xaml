@@ -427,7 +427,7 @@
                                 <Image Source="Assets/Icons/cog.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBluetoothCertabo" Header="Bluetooth"
+                        <MenuItem Name="menuItemBluetoothCertabo" Header="Bluetooth Classic" ToolTip="Connect via Bluetooth Classic"
                                   Click="MenuItemBluetoothCertabo_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
@@ -460,7 +460,7 @@
                                     <Image Source="Assets/Icons/cog.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothCerno" Header="Bluetooth"
+                            <MenuItem Name="menuItemBluetoothCerno" Header="Bluetooth Classic" ToolTip="Connect via Bluetooth Classic"
                                       Click="MenuItemBluetoothCerno_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageCernoBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
@@ -483,7 +483,7 @@
                                     <Image Source="Assets/Icons/cog.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothSentio" Header="Bluetooth" Visibility="Visible"
+                            <MenuItem Name="menuItemBluetoothSentio" Header="Bluetooth Classic" Visibility="Visible" ToolTip="Connect via Bluetooth Classic"
                                       Click="MenuItemBluetoothSentio_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageSentioBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
@@ -513,14 +513,14 @@
                                 <Image Name="imageChessLinkBluetooth" Source="Assets/Icons/tick.png"
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
-                            <MenuItem Name="menuItemBluetoothClassicMChessLink" Header="Bluetooth Classic"
+                            <MenuItem Name="menuItemBluetoothClassicMChessLink" Header="Bluetooth Classic" ToolTip="Connect via Bluetooth Classic"
                                       Click="MenuItemBluetoothClassicMChessLink_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageBluetoothClassicMChessLink" Source="Assets/Icons/tick.png"
                                            Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothLEMChessLink" Header="Bluetooth LE"
+                            <MenuItem Name="menuItemBluetoothLEMChessLink" Header="Bluetooth LE" ToolTip="Connect via Bluetooth LE"
                                       Click="MenuItemBluetoothLEMChessLink_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageBluetoothLEMChessLink" Source="Assets/Icons/tick.png"
@@ -555,7 +555,7 @@
                                     <Image Source="Assets/Icons/cog.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothDGT" Header="Bluetooth"
+                            <MenuItem Name="menuItemBluetoothDGT" Header="Bluetooth Classic" ToolTip="Connect via Bluetooth Classic"
                                       Click="MenuItemBluetoothDGT_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageDGTBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
@@ -596,7 +596,7 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBluetoothChessnutAir" Header="Bluetooth"
+                        <MenuItem Name="menuItemBluetoothChessnutAir" Header="Bluetooth LE" ToolTip="Connect via Bluetooth LE"
                                   Click="MenuItemBluetoothChesssnutAir_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageChessnutAirBluetooth" Source="Assets/Icons/tick.png"
@@ -670,7 +670,7 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBluetoothIChessOne" Header="Bluetooth"
+                        <MenuItem Name="menuItemBluetoothIChessOne" Header="Bluetooth LE" ToolTip="Connect via Bluetooth LE"
                                   Click="MenuItemBluetoothIChessOne_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageIChessOneBluetooth" Source="Assets/Icons/tick.png"

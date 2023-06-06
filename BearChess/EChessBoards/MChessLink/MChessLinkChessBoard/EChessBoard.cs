@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
@@ -145,11 +146,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private bool _lowerLeft = true;
         private bool _lowerRight = true;
         private EnumFlashMode _flashMode = EnumFlashMode.FlashAsync;
-        
+        private string _eprom { get; set; }
+
 
         public string Version { get; private set; }
-        public string Eprom { get; private set; }
-
+        
         public EChessBoard(ILogging logger, string portName) : this(logger,portName, false)
         {
         }
@@ -161,13 +162,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             _serialCommunication = new SerialCommunication(logger, portName);
             _serialCommunication.UseChesstimation = useChesstimation;
             Version = string.Empty;
-            Eprom = string.Empty;
+            _eprom = string.Empty;
             BatteryLevel = "100";
             BatteryStatus = "Full";
             IsConnected = EnsureConnection();
             if (useChesstimation)
             {
-                Information = _serialCommunication.BoardInformation;
+                Information = Constants.Chesstimation;
             }
             else
             {
@@ -203,9 +204,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     {
                         _logger?.LogDebug("CheckComPort successful. Send ROM initialize ");
                         _serialCommunication.SendRawToBoard("W0000");
+                        Thread.Sleep(10);
                         _serialCommunication.SendRawToBoard("W011E");
+                        Thread.Sleep(10);
                         _serialCommunication.SendRawToBoard("W0203");
+                        Thread.Sleep(10);
                         _serialCommunication.SendRawToBoard("W030A");
+                        Thread.Sleep(10);
                         var readLine = _serialCommunication.GetRawFromBoard("V");
 
                         if (readLine.Length > 0 && readLine.StartsWith("v"))
@@ -220,7 +225,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                         if (readLine.Length > 0 && readLine.StartsWith("r"))
                         {
-                            Eprom += readLine + " ";
+                            _eprom += readLine + " ";
                         }
 
                         readLine = _serialCommunication.GetRawFromBoard("R01");
@@ -228,7 +233,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                         if (readLine.Length > 0 && readLine.StartsWith("r"))
                         {
-                            Eprom += readLine + " ";
+                            _eprom += readLine + " ";
                         }
 
                         readLine = _serialCommunication.GetRawFromBoard("R02");
@@ -236,7 +241,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                         if (readLine.Length > 0 && readLine.StartsWith("r"))
                         {
-                            Eprom += readLine + " ";
+                            _eprom += readLine + " ";
                         }
 
                         readLine = _serialCommunication.GetRawFromBoard("R03");
@@ -244,7 +249,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                         if (readLine.Length > 0 && readLine.StartsWith("r"))
                         {
-                            Eprom += readLine + " ";
+                            _eprom += readLine + " ";
                         }
 
                         readLine = _serialCommunication.GetRawFromBoard("R04");
@@ -252,7 +257,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                         if (readLine.Length > 0 && readLine.StartsWith("r"))
                         {
-                            Eprom += readLine + " ";
+                            _eprom += readLine + " ";
                         }
 
                         readLine = _serialCommunication.GetRawFromBoard("R04");
@@ -260,15 +265,15 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                         if (readLine.Length > 0 && readLine.StartsWith("r"))
                         {
-                            Eprom += readLine + " ";
+                            _eprom += readLine + " ";
                         }
 
                         _serialCommunication.DisConnectFromCheck();
 
                     }
 
-                    _logger?.LogDebug($"C: Version: {Version}  Eprom: {Eprom}");
-                    return !string.IsNullOrWhiteSpace(Version) && !string.IsNullOrWhiteSpace(Eprom);
+                    _logger?.LogDebug($"C: Version: {Version}  Eprom: {_eprom}");
+                    return !string.IsNullOrWhiteSpace(Version) && !string.IsNullOrWhiteSpace(_eprom);
                 }
                 catch (Exception ex)
                 {
@@ -328,9 +333,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
 
            // lock (_locker)
-            {
-                //var ledForFields = GetLedForAllFieldsOff();
-                //_serialCommunication.Send($"L22{ledForFields}");
+            {           
                 _serialCommunication.Send("X");
             }
         }
@@ -342,10 +345,13 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 return;
             }
 
-          //  lock (_locker)
+            //  lock (_locker)
             {
-                var ledForFields = GetLedForAllFieldsOn();
-               _serialCommunication.Send($"L22{ledForFields}");
+                if (!_useChesstimation)
+                {
+                    var ledForFields = GetLedForAllFieldsOn();
+                    _serialCommunication.Send($"L22{ledForFields}");
+                }
             }
         }
 

@@ -22,7 +22,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override string GetRawFromBoard(string param)
         {
-            _logger?.LogDebug($"SC: GetRawFromBoard: {param}");
+            _logger?.LogDebug($"SC: GetRawFromBoard Param: {param}");
             string result = string.Empty;
             if (string.IsNullOrWhiteSpace(param))
             {
@@ -36,7 +36,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 var convertToSend = ConvertToSend(param);
                 Thread.Sleep(100);
                 _comPort.ClearBuffer();
-                _logger?.LogDebug($"SC: Write {param}");
+                _logger?.LogDebug($"SC:  GetRawFromBoard...Write {param}");
                 _comPort.Write(convertToSend, 0, convertToSend.Length);
                 Thread.Sleep(100);
                 while (readByte > 0 || counter > 10)
@@ -60,7 +60,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                         var startIndex = readLine.IndexOf(param.ToLower());
                         if (readLine.Length - startIndex >= 5)
                         {
-                            _logger?.LogDebug($"SC: readline {readLine}");
+                            _logger?.LogDebug($"SC:  GetRawFromBoard...readline {readLine}");
                             result = readLine.Substring(startIndex, 5);
                             _comPort.ClearBuffer();
                             break;
@@ -71,7 +71,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                         var startIndex = readLine.IndexOf(param.ToLower());
                         if (readLine.Length - startIndex >= 5)
                         {
-                            _logger?.LogDebug($"SC: readline {readLine}");
+                            _logger?.LogDebug($"SC:  GetRawFromBoard...readline {readLine}");
                             result = readLine.Substring(startIndex, 5);
                             _comPort.ClearBuffer();
                             break;
@@ -82,7 +82,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                         var startIndex = readLine.IndexOf(param.ToLower());
                         if (convertFromRead == "\n")
                         {
-                            _logger?.LogDebug($"SC: readline {readLine}");
+                            _logger?.LogDebug($"SC:  GetRawFromBoard...readline {readLine}");
                             result = readLine.Substring(startIndex + 3);
                             _comPort.ClearBuffer();
                             break;
@@ -92,9 +92,9 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
             catch (Exception ex)
             {
-                _logger?.LogDebug($"SC: Catch {ex.Message}");
+                _logger?.LogError($"SC: GetRawFromBoard...Catch {ex.Message}");
             }
-            _logger?.LogDebug($"SC: {result}");
+            _logger?.LogDebug($"SC:  GetRawFromBoard Result: {result}   Readline: {readLine}");
             return string.IsNullOrWhiteSpace(result) ? readLine : result;
         }
 
@@ -103,7 +103,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             try
             {
                 var convertToSend = ConvertToSend(param);
-                _comPort.Write(convertToSend, 0, convertToSend.Length);
+                _comPort.Write(convertToSend, 0, convertToSend.Length);                
             }
             catch (Exception ex)
             {
@@ -115,8 +115,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         {
             // Ignored for MChessLink
         }
-
-
 
         public override string GetCalibrateData()
         {
@@ -234,7 +232,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
                         if (readLine.Contains("g"))
                         {
-
                             lock (_locker)
                             {
                                 string tmpLine =
@@ -267,7 +264,6 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                 }
 
                             }
-
                         }
                     }
 
@@ -314,7 +310,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                                 continue;
                             }
 
-                            _logger?.LogDebug($"SC: Send {data}");
+                            _logger?.LogDebug($"SC: Communicate...Send {data}");
                             lastReadToSend = data;
                             var convertToSend = ConvertToSend(data);
                             _comPort.Write(convertToSend, 0, convertToSend.Length);

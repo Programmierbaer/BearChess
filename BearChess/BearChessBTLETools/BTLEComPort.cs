@@ -165,11 +165,11 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             CryptographicBuffer.CopyToByteArray(args.CharacteristicValue, out var data);
             if (data != null)
             {
-                _logging.LogDebug($"BTLE: array length: {data.Length}");
+                //_logging.LogDebug($"BTLE: array length: {data.Length}");
                 _byteArrayQueue.Enqueue(data);
                 foreach (var b in data)
                 {
-                    _logging.LogDebug($"BTLE: {b} = {b:x}");
+                    //_logging.LogDebug($"BTLE: {b} = {b:x}");
                     _byteQueue.Enqueue(b);
                 }
             }
@@ -210,7 +210,6 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 {
                     r = r + b + " ";
                 }
-
             }
             return r;
         }
