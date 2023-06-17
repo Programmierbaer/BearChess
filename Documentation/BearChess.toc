@@ -56,7 +56,7 @@
 \contentsline {subsubsection}{\numberline {11.4.2}Delay}{64}{subsubsection.11.4.2}%
 \contentsline {subsubsection}{\numberline {11.4.3}Scans}{65}{subsubsection.11.4.3}%
 \contentsline {subsubsection}{\numberline {11.4.4}Configure Bluetooth}{65}{subsubsection.11.4.4}%
-\contentsline {subsubsection}{\numberline {11.4.5}Chesstimation Module}{66}{subsubsection.11.4.5}%
+\contentsline {subsubsection}{\numberline {11.4.5}Chesstimation/Elfacun Module}{66}{subsubsection.11.4.5}%
 \contentsline {subsubsection}{\numberline {11.4.6}Connect}{66}{subsubsection.11.4.6}%
 \contentsline {subsection}{\numberline {11.5}Configure DGT e-Board}{67}{subsection.11.5}%
 \contentsline {subsubsection}{\numberline {11.5.1}Configure Bluetooth}{68}{subsubsection.11.5.1}%
