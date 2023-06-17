@@ -528,8 +528,8 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Name="menuItemChesstimationMChessLink" Header="Chesstimation module"
-                                  Click="MenuItemChesstimationMChessLink_OnClick" ToolTip="Using a Chesstimation module by Andreas Petersik">
+                        <MenuItem Name="menuItemChesstimationMChessLink" Header="Chesstimation/Elfacun module"
+                                  Click="MenuItemChesstimationMChessLink_OnClick" ToolTip="Using a Chesstimation module by Andreas Petersik or Elfacun module by 'inmbolmie'">
                             <MenuItem.Icon>
                                 <Image Name="imageMChessLinkChesstimation" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>

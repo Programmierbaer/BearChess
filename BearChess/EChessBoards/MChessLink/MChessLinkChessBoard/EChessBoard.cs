@@ -168,13 +168,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             IsConnected = EnsureConnection();
             if (useChesstimation)
             {
-                Information = Constants.Chesstimation;
+                Information = _serialCommunication.BoardInformation;
             }
             else
             {
                 Information = "Millennium " + _serialCommunication.BoardInformation;
             }
-            PieceRecognition =   _serialCommunication.BoardInformation != Constants.MeOne && _serialCommunication.BoardInformation != Constants.Chesstimation;
+            PieceRecognition =   _serialCommunication.BoardInformation != Constants.MeOne && !_serialCommunication.BoardInformation.Contains(Constants.Chesstimation)
+                                     && !_serialCommunication.BoardInformation.Contains((Constants.Elfacun));
             SelfControlled = false;
            
         }

@@ -85,7 +85,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     imageTabutronicCerno.Visibility = Visibility.Visible;
                 }
-                if (chessBoardInfo.Equals(Constants.Chesstimation))
+                if (chessBoardInfo.Contains(Constants.Chesstimation))
+                {
+                    imageMephistoExclusive.Visibility = Visibility.Visible;
+                }
+                if (chessBoardInfo.Contains(Constants.Elfacun))
                 {
                     imageMephistoExclusive.Visibility = Visibility.Visible;
                 }

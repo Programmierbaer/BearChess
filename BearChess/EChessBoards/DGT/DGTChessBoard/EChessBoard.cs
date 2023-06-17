@@ -18,7 +18,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         private readonly bool _switchClockSide;
         private readonly bool _useBluetooth;
 
-        private readonly byte[] _allLEDsOff = { 96, 2, 0, 0 };
+        private readonly byte[] _allLEDsOff = { 0x60, 0x04, 0x00, 0x40, 0x00, 0x00 };
         private readonly byte[] _resetBoard = { 64 }; // @
         private readonly byte[] _dumpBoard = { 66 };  // B
         private readonly byte[] _startReading = { 68 }; // D
@@ -163,7 +163,8 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             _useClock = useClock;
             _showOnlyMoves = showOnlyMoves;
             _switchClockSide = switchClockSide;
-            _serialCommunication = new SerialCommunication(new FileLogger(Path.Combine(basePath, "log", $"DGTSC_1.log"), 10, 10), portName, useBluetooth);
+            _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
+            //_serialCommunication = new SerialCommunication(new FileLogger(Path.Combine(basePath, "log", $"DGTSC_1.log"), 10, 10), portName, useBluetooth);
 
             _logger = logger;
             BatteryLevel = "--";
@@ -274,9 +275,9 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             //    return;
             //}
           
-            allBytes.Add(96);
-            allBytes.Add(4);
-            allBytes.Add(1);
+            allBytes.Add(0x60);
+            allBytes.Add(0x04);
+            allBytes.Add(0x01);
             string fieldName = fieldNames[0];
             if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
             {
@@ -776,6 +777,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             {
                 return;
             }
+
             _logger?.LogDebug($"DGT: Display: {displayString}");
             List<byte> allBytes = new List<byte>
                                   {
@@ -786,13 +788,14 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
                                   };
 
             var bytes = Encoding.ASCII.GetBytes(displayString.PadRight(8));
-           foreach (var b in bytes)
-           {
-               allBytes.Add(b);
-           }
-           allBytes.Add(0);
-           allBytes.Add(DGT_CMD_CLOCK_END_MESSAGE);
-           _clockQueue.Enqueue(allBytes);
+            foreach (var b in bytes)
+            {
+                allBytes.Add(b);
+            }
+
+            allBytes.Add(0);
+            allBytes.Add(DGT_CMD_CLOCK_END_MESSAGE);
+            _clockQueue.Enqueue(allBytes);
         }
 
         private string ConvertFromRead(byte[] bArray)

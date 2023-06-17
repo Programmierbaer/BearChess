@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.11.2}
+\fancyhead[R]{Version 0.9.11.3}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{02.06.2023} 
+\date{17.06.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -1142,7 +1142,7 @@ In the lower right corner appears a new button, which allows you to easily conne
 
 For your Millennium ChessLink you may need to configure if you want to use a COM port or Bluetooth. You can also change how the LEDs should light up.\\
 If your PC supports Bluetooth, you can also connect to the ChessLink module via Bluetooth. If you want to do this, check the option "Bluetooth Classic" and/or "Bluetooth LE" first, before opening the configuration windows.\\
-If you are using a Chesstimation module, check the option first, before opening the configuration window.\\
+If you are using a Chesstimation or Elfacun module, check the option first, before opening the configuration window.\\
 The piece recognition assumes that the cable is on the right side of the board.
 
 \begin{figure}[H]
@@ -1235,13 +1235,13 @@ During this time or if you connect for the first time, Windows may ask you to co
 
 If the "Bluetooth LE" option is set, the connection is not emulated as a serial COM port. The configuration shows the port name as "BTLE".
 
-\subsubsection{Chesstimation Module}
-If you use the Chesstimation module by Andras Petersik, you must switch on this option.
+\subsubsection{Chesstimation/Elfacun Module}
+If you use the Chesstimation module by Andras Petersik or Elfacun module by 'inmbolmie', you must switch on this option.
 BearChess thus takes into account that the old boards of Mephisto Modular, Exclusive or Munich have only one LED per field and not four.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{MillenniumChessLink13.png}
-	\caption{Using Chesstimation Module}
+	\caption{Using Chesstimation/Elfacun Module}
 	\label{fig:MillenniumChessLink13}
 \end{figure}
 
@@ -2809,6 +2809,13 @@ These are some ideas what will come in one of the next versions.
 
 \section{Change log}
 
+
+
+\subsection*{Version 0.9.11.2 $\Rightarrow$  0.9.11.3}
+\begin{itemize}	
+	\item {\color{red}Fix}: Fix command for DGT e-Board
+	\item {\color{teal}Changes}: Support for Elfacun module.
+\end{itemize}
 
 
 \subsection*{Version 0.9.11.1 $\Rightarrow$  0.9.11.2}

@@ -754,6 +754,10 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 if (value <= 271)
                                 {
                                     BoardInformation = Constants.Exclusive;
+                                    if (UseChesstimation && value <= 256)
+                                    {
+                                        BoardInformation = Constants.Elfacun;
+                                    }
                                 }
                                 if (BoardInformation.Equals(Constants.MeOne))
                                 {

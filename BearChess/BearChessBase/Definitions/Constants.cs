@@ -19,6 +19,7 @@
         public const string Teddy = "Teddy";
         public const string MeOne = "eOne";
         public const string Chesstimation = "Chesstimation";
+        public const string Elfacun = "Elfacun";
         public const string KingPerformance = "King Performance";
         public const string Exclusive = "Exclusive";
         public const string Supreme = "Supreme Tournament";

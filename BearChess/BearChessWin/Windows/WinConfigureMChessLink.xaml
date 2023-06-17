@@ -186,7 +186,10 @@
             </StackPanel>
         </Border>
         <Border Name="borderChesstimation" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" IsEnabled="False">
-            <TextBlock Margin="5">Using a Chesstimation module by Andreas Petersik</TextBlock>
+            <StackPanel Orientation="Vertical">
+            <TextBlock TextWrapping="Wrap" Margin="5,5,5,0">Using a Chesstimation module by Andreas Petersik</TextBlock>
+            <TextBlock TextWrapping="Wrap" Margin="5,0,5,5">or a Elfacun module by 'inmbolmie'</TextBlock>
+            </StackPanel>
         </Border>
         <DockPanel Margin="0,0,0,5">
             <Button DockPanel.Dock="Left" Margin="10,5,5,5" HorizontalAlignment="Left" Name="buttonOk" Width="32"
