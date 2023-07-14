@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -162,38 +163,52 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             return true;
         }
 
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
-
-            if (fieldNames == null || fieldNames.Length == 0)
+            if (setLedsParameter.FieldNames == null || setLedsParameter.FieldNames.Length == 0)
             {
                 return;
             }
             List<byte> allBytes = new List<byte>();
-            var fieldNamesLength = fieldNames.Length;
-            string sendFields = string.Join(" ", fieldNames);
+            var fieldNamesLength = setLedsParameter.FieldNames.Length;
+            string sendFields = string.Join(" ", setLedsParameter.FieldNames);
             if (sendFields.Equals(_lastSendFields))
             {
                 return;
             }
 
             _lastSendFields = sendFields;
-            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} Thinking: {thinking}");
-            
-            if (thinking && fieldNamesLength > 1)
+            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} Thinking: {setLedsParameter.Thinking}");
+
+            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} Thinking: {setLedsParameter.Thinking}");
+            if (setLedsParameter.Thinking && fieldNamesLength > 1)
             {
-                SetLedForFields(new string[] {fieldNames[0]},string.Empty, thinking, isMove, string.Empty);
-                SetLedForFields(new string[] {fieldNames[1]},string.Empty, thinking, isMove, string.Empty);
+                SetLedForFields(new SetLedsParameter()
+                {
+                    FieldNames = new[] { setLedsParameter.FieldNames[0] },
+                    Promote = string.Empty,
+                    Thinking = setLedsParameter.Thinking,
+                    IsMove = setLedsParameter.IsMove,
+                    DisplayString = string.Empty
+                });
+                SetLedForFields(new SetLedsParameter()
+                {
+                    FieldNames = new[] { setLedsParameter.FieldNames[1] },
+                    Promote = string.Empty,
+                    Thinking = setLedsParameter.Thinking,
+                    IsMove = setLedsParameter.IsMove,
+                    DisplayString = string.Empty
+                });
                 return;
             }
             byte anzahl = byte.Parse((fieldNamesLength + 5).ToString());
             allBytes.Add(96);
             allBytes.Add(anzahl);
             allBytes.Add(5);
-            allBytes.Add(thinking ? (byte)0 : _currentSpeed); // Speed
-            allBytes.Add(thinking ? (byte)0 : _currentTimes); // Times
-            allBytes.Add(thinking ? (byte)1 : _currentIntensity); // Intensity
-            foreach (var fieldName in fieldNames)
+            allBytes.Add(setLedsParameter.Thinking ? (byte)0 : _currentSpeed); // Speed
+            allBytes.Add(setLedsParameter.Thinking ? (byte)0 : _currentTimes); // Times
+            allBytes.Add(setLedsParameter.Thinking ? (byte)1 : _currentIntensity); // Intensity
+            foreach (var fieldName in setLedsParameter.FieldNames)
             {
                 if (PlayingWithWhite)
                 {
@@ -226,12 +241,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                 _serialCommunication.Send(_requestTrademark);
             }
         }
-
-        public override void SetLastLeds()
-        {
-            //
-        }
-
+   
         public override void SetAllLedsOff()
         {
             _serialCommunication.Send(_allLEDsOff);
@@ -249,10 +259,14 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             _currentSpeed = 10;
             _currentTimes = 3;
             _currentIntensity = 1;
-            SetLedForFields(new[]
-                            {
-                                "A1","H1","H8","A8"
-                            },string.Empty, false, false, string.Empty);
+            SetLedForFields( new SetLedsParameter()
+                             {
+                                 FieldNames = new[] { "A1", "H1", "H8", "A8" },
+                                 Promote = string.Empty,
+                                 Thinking = false,
+                                 IsMove = false,
+                                 DisplayString = string.Empty
+            });
             Thread.Sleep(3000);
             _currentSpeed = currentSpeed;
             _currentTimes = currentTimes; 
@@ -297,6 +311,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         }
 
         public override void SendInformation(string message)
+        {
+            //
+        }
+
+        public override void AdditionalInformation(string information)
         {
             //
         }

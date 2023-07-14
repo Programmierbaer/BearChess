@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 
 namespace www.SoLaNoSoft.com.BearChess.SquareOffEBoardWrapper
@@ -17,14 +18,20 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffEBoardWrapper
 
         }
 
+        public SquareOffImpl(string name, string basePath, EChessBoardConfiguration configuration) :
+            base(name, basePath, configuration)
+        {
+
+        }
+
         public override void SetScanTime(int scanTime)
         {
-            // ignore
+            _board?.SetScanTime(scanTime);
         }
 
         public override void SetDebounce(int debounce)
         {
-            // ignore
+            //
         }
 
         public override void FlashMode(EnumFlashMode flashMode)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http.Headers;
 using System.Threading;
+using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -91,22 +92,22 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
             return CheckComPort(portName);
         }
 
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
             lock (_locker)
             {
-                if (thinking || !isMove)
+                if (setLedsParameter.Thinking || !setLedsParameter.IsMove)
                 {
                     return;
                 }
-                if (fieldNames.Length > 1)
+                if (setLedsParameter.FieldNames.Length > 1)
                 {
-                    string m = $"{fieldNames[0]}{fieldNames[1]}";
+                    string m = $"{setLedsParameter.FieldNames[0]}{setLedsParameter.FieldNames[1]}";
                     if (m.Equals(_lastMove))
                     {
                         return;
                     }
-                    _chessBoard.MakeMove(fieldNames[0], fieldNames[1], promote);
+                    _chessBoard.MakeMove(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1], setLedsParameter.Promote);
                     if (!_runAsUci)
                     {
                         _serialCommunication.Send($"M{m}");
@@ -114,11 +115,6 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
                     }
                 }
             }
-        }
-
-        public override void SetLastLeds()
-        {
-            //
         }
 
         public override void SetAllLedsOff()
@@ -183,6 +179,11 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
                 }
                 _serialCommunication.Send(message);
             }
+        }
+
+        public override void AdditionalInformation(string information)
+        {
+            //
         }
 
         public override void RequestDump()

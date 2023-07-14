@@ -10,6 +10,7 @@ using System.Timers;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
 using Timer = System.Timers.Timer;
 
 namespace www.SoLaNoSoft.com.BearChess.Teddy
@@ -106,6 +107,7 @@ namespace www.SoLaNoSoft.com.BearChess.Teddy
             try
             {
                 _fileLogger = new FileLogger(Path.Combine(logPath, $"{name}.log"), 10, 100);
+                _fileLogger.Active = bool.Parse(Configuration.Instance.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {

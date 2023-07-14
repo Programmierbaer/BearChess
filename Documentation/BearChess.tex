@@ -21,10 +21,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.11.3}
+\fancyhead[R]{Version 0.9.12.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{17.06.2023} 
+\date{14.07.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -263,6 +263,7 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	\label{fig:Settings}
 \end{figure}
 \begin{itemize}
+	\item  \includegraphics[scale=0.2]{bearchess_2.png} \textbf{BearChess} opens a window where you can change some BearChess basic settings.  Read more on chapter \textbf{\ref{ConfigureBearChess}  \nameref{ConfigureBearChess}} on page \pageref{ConfigureBearChess}.
 	\item  \includegraphics[scale=0.9]{Board2DPieces32.png} \textbf{Board \& Pieces} opens a window where you can change the appearance of the chessboard and the pieces.  Read more on chapter \textbf{\ref{BoardAndPieces}  \nameref{BoardAndPieces}} on page \pageref{BoardAndPieces}.
 	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png}  \textbf{Rotate board} if the board on the screen should automatically rotate for your color.
 	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation/Moves} opens a windows where you can change the appearance of the notation, e.g. figurine or letters.
@@ -636,6 +637,27 @@ You can load more than one book. Every book has its own window and is synchroniz
 \end{figure}
 
 {\color{red}\textbf{*}} So far, the possibilities are still very limited with the opening books. This will improve in the next versions. 
+
+\section{Configure BearChess} \label{ConfigureBearChess}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{ConfigureBearChess.png}
+	\caption{Open window to configure BearChess}
+	\label{fig:ConfigureBearChess}
+\end{figure}
+
+\subsection{Games}
+\begin{itemize}
+	\item If you start a new game and the current position on your board is not the home position, the game will start from that position by default. Activate this option to always set the default to the home position.
+	\item Activate this option if you want finished games to be saved automatically.
+	\item Abort games\\To prevent pure engines games from continuing, although the rating clearly shows a winner, BearChess ends these games prematurely. For this, both engines must have determined the value of "Evaluation" (or greater) for at least 3 moves in a row. Here you can completely deactivate the premature termination of the game or change the limit value of the evaluation.
+\end{itemize}
+
+\subsection{Internal}
+BearChess writes a lot of log files which makes it easier for to detect problems or errors.
+Disable this option if you do not wish to do so. Changing these options requires a restart of BearChess to make it take effect. Existing log files will not be deleted.
+
 
 \section{Configure Board and Pieces} \label{BoardAndPieces}
 
@@ -2745,7 +2767,8 @@ Figure recognition assumes that the board is oriented so that the company sign f
 The DGT Pegasus board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible.
 
 \subsection{Square Off Pro: Piece recognition}
-The Square Off Pro board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible.
+The Square Off Pro board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible. Due to firmware changes in the SquareOff Pro board, the communication between the board and BearChess has become worse. Important commands are no longer sent from the board.
+That is why some functions are no longer possible with this board and the stability is limited.
 
 \subsection{Electronic chessboard and engine duels}
 When two engines play against each other, all moves are ignored by the electronic chess board.
@@ -2798,6 +2821,7 @@ These are some ideas what will come in one of the next versions.
 		\item Extend the game analysis.
 		\item Improve electronic chess board handling.
   	    \item Improve the performance of the opening book.
+    	\item More BearChess settings.
    		\item GUI redesign.
 	\end{itemize} 
 
@@ -2809,6 +2833,14 @@ These are some ideas what will come in one of the next versions.
 
 \section{Change log}
 
+
+\subsection*{Version 0.9.11.3 $\Rightarrow$  0.9.12.0}
+\begin{itemize}	
+	\item {\color{blue}New}: Show LEDs along the move.
+	\item {\color{blue}New}: BearChess settings.
+	\item {\color{teal}Changes}: Due to firmware changes in the SquareOff Pro board, the communication between the board and BearChess has become worse. Important commands are no longer sent from the board. That is why some functions are no longer possible with this board and the stability is limited.
+	\item {\color{teal}Changes}: Better support TabuTronic Sentio boards.
+\end{itemize}
 
 
 \subsection*{Version 0.9.11.2 $\Rightarrow$  0.9.11.3}

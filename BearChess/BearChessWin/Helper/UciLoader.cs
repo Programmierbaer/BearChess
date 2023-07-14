@@ -87,6 +87,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private  RECT _rect;
         private int _windowPosDelta = 0;
         public bool IsTeddy => _uciInfo.AdjustStrength;
+        public bool IsBuddy => _uciInfo.IsBuddy;
         public bool isLoaded { get; private set; }
 
         public event EventHandler<EngineEventArgs> EngineReadingEvent;

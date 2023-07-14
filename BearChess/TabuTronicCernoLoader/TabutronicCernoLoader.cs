@@ -30,7 +30,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.Loader
                 return new CernoImpl(Name, basePath);
             }
 
-            var eBoardWrapper = new CernoImpl(Name, basePath, configuration.PortName, configuration.UseBluetooth);
+            var eBoardWrapper = new CernoImpl(Name, basePath, configuration);
             //   eBoardWrapper.FlashInSync(true);
             return eBoardWrapper;
         }

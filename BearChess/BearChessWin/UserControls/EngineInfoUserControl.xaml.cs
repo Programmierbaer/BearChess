@@ -58,6 +58,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public EngineInfoUserControl(UciInfo uciInfo, int color, string hideInfo, Configuration configuration) : this()
         {
+            if (uciInfo.IsBuddy && color==Fields.COLOR_EMPTY)
+            {
+                if (bool.Parse(configuration.GetConfigValue("hideBuddyEngine", "false")))
+                {
+                    borderAll.Visibility = Visibility.Collapsed;
+                }
+            }
             _configuration = configuration;
             _uciInfo = uciInfo;
             _hideInfo = int.Parse(hideInfo);
@@ -713,16 +720,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_hideInfo == 0)
             {
                 buttonHide.Visibility = Visibility.Visible;
+                engineInfoLineUserControl1.Visibility = Visibility.Visible;
             }
 
             if (_hideInfo == 1)
             {
                 buttonHide1.Visibility = Visibility.Visible;
+                engineInfoLineUserControl1.Visibility = Visibility.Collapsed;
             }
 
             if (_hideInfo == 2)
             {
                 buttonHide2.Visibility = Visibility.Visible;
+                engineInfoLineUserControl1.Visibility = Visibility.Collapsed;
             }
         }
 

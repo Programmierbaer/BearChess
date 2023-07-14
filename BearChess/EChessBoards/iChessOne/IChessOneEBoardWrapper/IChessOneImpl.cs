@@ -11,8 +11,10 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneEBoardWrapper
 
         }
 
-        public IChessOneImpl(string name, string basePath, string comPortName, bool useBluetooth) : base(
-            name, basePath, comPortName, useBluetooth, false, false, false)
+      
+
+        public IChessOneImpl(string name, string basePath, EChessBoardConfiguration configuration) : base(
+            name, basePath, configuration)
         {
 
         }
@@ -30,7 +32,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneEBoardWrapper
 
         public override void SendInformation(string message)
         {
-            // throw new System.NotImplementedException();
+            _board.SendInformation(message);
         }
 
         public override void DimLEDs(bool dimLEDs)
@@ -61,7 +63,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneEBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new IChessOneChessBoard.EChessBoard(_basePath, _fileLogger, _comPortName, _useBluetooth);
+            return new IChessOneChessBoard.EChessBoard(_basePath, _fileLogger, _configuration);
         }
 
         protected override IEBoard GetEBoard(bool check)

@@ -18,6 +18,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.EBoardWrapper
 
         }
 
+        public SentioImpl(string name, string basePath, EChessBoardConfiguration configuration) :
+            base(name, basePath, configuration)
+        {
+
+        }
+
         public override void SetScanTime(int scanTime)
         {
             // ignore
@@ -37,13 +43,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.EBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new ChessBoard.EChessBoard(basePath: _basePath, logger: _fileLogger,
-                                                     portName: _comPortName, _useBluetooth);
+            return new ChessBoard.EChessBoard(_basePath, _fileLogger, _configuration);
         }
 
         protected override IEBoard GetEBoard(bool check)
         {
-            return new ChessBoard.EChessBoard(logger: _fileLogger);
+            return new ChessBoard.EChessBoard(_fileLogger);
         }
 
         public override bool Calibrate()

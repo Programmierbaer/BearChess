@@ -53,6 +53,9 @@
             <Button Name="buttonOk" Margin="5,5,5,5" DockPanel.Dock="Left" Background="Transparent" BorderBrush="Transparent" IsDefault="True" Click="ButtonOk_OnClick">
                 <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32"></Image>
             </Button>
+            <Button Name="buttonReplace" Margin="5,5,5,5" DockPanel.Dock="Left" Background="Transparent" BorderBrush="Transparent"  ToolTip="Replace current game" Click="ButtonReplace_OnClick">
+                <Image Source="../Assets/Icons/file_save_as.png" Width="32" Height="32"></Image>
+            </Button>
             <Button Name="buttonCancel"  Margin="5,5,5,5" DockPanel.Dock="Right"  Background="Transparent" BorderBrush="Transparent" IsCancel="True">
                 <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32"></Image>
             </Button>

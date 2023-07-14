@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
@@ -146,6 +147,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private bool _lowerLeft = true;
         private bool _lowerRight = true;
         private EnumFlashMode _flashMode = EnumFlashMode.FlashAsync;
+        private readonly bool _showMoveLine;
         private string _eprom { get; set; }
 
 
@@ -153,6 +155,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         
         public EChessBoard(ILogging logger, string portName) : this(logger,portName, false)
         {
+        }
+
+        public EChessBoard(ILogging logger, EChessBoardConfiguration configuration, bool useChesstimation) : this(logger, configuration.PortName, useChesstimation)
+        {
+            _showMoveLine = configuration.ShowMoveLine;
         }
 
         public EChessBoard(ILogging logger, string portName, bool useChesstimation)
@@ -290,41 +297,41 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             return CheckComPort(portName);
         }
 
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
             if (!EnsureConnection())
             {
                 return;
             }
-            var ledForFields = GetLedForFields(fieldNames, thinking);
+
+            string ledForFields;
+            if (setLedsParameter.FieldNames.Length == 2 && _showMoveLine)
+            {
+                string[] moveLine = MoveLineHelper.GetMoveLine(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1]);
+                _logger.LogDebug($"Extend move line: {string.Join(" ", moveLine)} ");
+                ledForFields = GetLedForFields(moveLine, setLedsParameter.Thinking);
+            }
+            else
+            {
+                ledForFields = GetLedForFields(setLedsParameter.FieldNames, setLedsParameter.Thinking);
+            }
+
             if (!string.IsNullOrWhiteSpace(_lastSendLeds) && _lastSendLeds.Equals($"L22{ledForFields}"))
             {
                 return;
             }
-            _lastSendLeds =  $"L22{ledForFields}";
-            _logger?.LogDebug($"SendFields : {string.Join(" ",fieldNames)}");
-         //   lock (_locker)
+            _lastSendLeds = $"L22{ledForFields}";
+            _logger?.LogDebug($"SendFields : {string.Join(" ", setLedsParameter.FieldNames)}");
+            //   lock (_locker)
             {
                 _serialCommunication.Send(_lastSendLeds);
-                if (fieldNames.Length == 1 && _useChesstimation)
+                if (setLedsParameter.FieldNames.Length == 1 && _useChesstimation)
                 {
                     _serialCommunication.Send("S");
                 }
             }
         }
-
-        public override void SetLastLeds()
-        {
-            if (!EnsureConnection())
-            {
-                return;
-            }
-
-           // lock (_locker)
-            {
-                _serialCommunication.Send(_lastSendLeds);
-            }
-        }
+      
 
         public override void SetAllLedsOff()
         {
@@ -425,6 +432,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         }
 
         public override void SendInformation(string message)
+        {
+            //
+        }
+
+        public override void AdditionalInformation(string information)
         {
             //
         }

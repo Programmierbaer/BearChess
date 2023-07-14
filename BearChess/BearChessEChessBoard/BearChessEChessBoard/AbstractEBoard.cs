@@ -14,7 +14,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected bool _inDemoMode = false;
         protected bool _allowTakeBack;
         protected bool _stopReading = false;
-        protected bool _stopAll = false;
+        protected volatile bool _stopAll = false;
         protected bool _ignoreReading = false;
 
 
@@ -25,19 +25,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string UnknownPieceCode => "unknown";
 
         public abstract void Reset();
-        
-        
-        public void SetLedForFields(string fromFieldName, string toFieldName, string promote, bool thinking, bool isMove, string displayString)
-        {
-            SetLedForFields(new[] { fromFieldName, toFieldName }, promote, thinking, isMove, displayString);
-        }
 
+        
         public abstract bool CheckComPort(string portName);
         public abstract bool CheckComPort(string portName, string baud);
         
-        public abstract void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString);
+        public abstract void SetLedForFields(SetLedsParameter setLedsParameter);
 
-        public abstract void SetLastLeds();
 
         public abstract void SetAllLedsOff();
 
@@ -55,12 +49,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void FlashMode(EnumFlashMode flashMode);
 
 
-
         public abstract void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
 
         public abstract void Calibrate();
 
         public abstract void SendInformation(string message);
+        
+        public abstract void AdditionalInformation(string information);
 
         public abstract void RequestDump();
 
@@ -92,7 +87,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public  string BatteryStatus { get; protected set; }
         public  string Information { get; protected set; }
         public  string Level { get; protected set; }
-
 
 
         public abstract void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack,

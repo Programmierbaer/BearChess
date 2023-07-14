@@ -17,6 +17,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.EBoardWrapper
 
         }
 
+        public CernoImpl(string name, string basePath, EChessBoardConfiguration configuration) :
+            base(name, basePath, configuration)
+        {
+
+        }
+
         public override void SetScanTime(int scanTime)
         {
             // ignore
@@ -35,8 +41,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.EBoardWrapper
        
         protected override IEBoard GetEBoard()
         {
-            return new Cerno.ChessBoard.EChessBoard(basePath: _basePath,logger: _fileLogger, 
-                                   portName: _comPortName, _useBluetooth);
+            return new Cerno.ChessBoard.EChessBoard(_basePath, _fileLogger, _configuration);
+
         }
 
         protected override IEBoard GetEBoard(bool check)

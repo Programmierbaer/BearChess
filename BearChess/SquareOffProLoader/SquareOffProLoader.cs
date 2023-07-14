@@ -31,6 +31,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffProLoader
             }
 
             var eBoardWrapper = new SquareOffImpl(Name, basePath, configuration.PortName, true);
+            eBoardWrapper.SetScanTime(configuration.ScanTime);
 
             return eBoardWrapper;
         }

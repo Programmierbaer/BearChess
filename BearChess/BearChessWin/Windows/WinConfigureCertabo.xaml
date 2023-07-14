@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="Height"
-        Title="Configure Certabo Chessboard" Height="260" Width="390" Icon="../Assets/Icons/Certabo_icon.ico">
+        Title="Configure Certabo Chessboard" Height="280" Width="390" Icon="../Assets/Icons/Certabo_icon.ico">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -71,6 +71,9 @@
                 </Button>
 
             </Grid>
+        </Border>
+        <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" >
+            <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
         </Border>
         <Border Name="borderChesstimation" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" IsEnabled="False">
             <TextBlock Margin="5">Using a Chesstimation module by Andreas Petersik</TextBlock>

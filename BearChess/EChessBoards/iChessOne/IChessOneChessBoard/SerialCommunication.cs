@@ -72,7 +72,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                     {
                         if (_byteDataToBoard.TryDequeue(out byte[] byteData))
                         {
-                            var convertFromArray = ConvertFromArray(byteData);
+                            var convertFromArray = ConvertFromRead(byteData);
                             if (convertFromArray.Equals(lastReadToSend))
                             {
                                 Thread.Sleep(5);
@@ -81,6 +81,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                             lastReadToSend = convertFromArray;
                             _logger?.LogDebug($"SC: Send {convertFromArray}");
                             _comPort.Write(byteData, 0, byteData.Length);
+                            Thread.Sleep(50);
                         }
                     }
 
@@ -162,17 +163,17 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                         stringLine = string.Empty;
                         try
                         {
-                            {
-                            //    readLine = _comPort.ReadLine();
-                                byte[] readByte = _comPort.ReadByteArray();
-                                if (readByte.Length > 0)
-                                {
-                                    var convertFromRead = ConvertFromRead(readByte);
-                                    readLine = convertFromRead;
-                                    stringLine = Encoding.ASCII.GetString(readByte);
-                                }
 
+                            //    readLine = _comPort.ReadLine();
+                            byte[] readByte = _comPort.ReadByteArray();
+                            if (readByte.Length > 0)
+                            {
+                                var convertFromRead = ConvertFromRead(readByte);
+                                readLine = convertFromRead;
+                                stringLine = Encoding.ASCII.GetString(readByte);
                             }
+
+
                         }
                         catch
                         {

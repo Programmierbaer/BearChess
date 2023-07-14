@@ -9,9 +9,10 @@
         LocationChanged="BearChessMainWindow_OnLocationChanged"
         Title="BearChess" MinHeight="660" MinWidth="600">
     <Window.CommandBindings>
-        <CommandBinding Command="Copy" Executed="MenuItemGamesCopy_OnClick" CanExecute="CommandBinding_OnCanExecute"></CommandBinding>
-        <CommandBinding Command="Paste" Executed="MenuItemGamesPaste_OnClick" CanExecute="CommandBinding_OnCanExecuteTrue"></CommandBinding>
-        <CommandBinding Command="Save" Executed="MenuItemGamesSave_OnClick" CanExecute="CommandBinding_OnCanExecute"></CommandBinding>
+        <CommandBinding Command="Copy" Executed="MenuItemGamesCopy_OnClick" CanExecute="CommandBinding_OnCanExecute" />
+        <CommandBinding Command="Paste" Executed="MenuItemGamesPaste_OnClick"
+                        CanExecute="CommandBinding_OnCanExecuteTrue" />
+        <CommandBinding Command="Save" Executed="MenuItemGamesSave_OnClick" CanExecute="CommandBinding_OnCanExecute" />
     </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -131,7 +132,7 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Games" Name="menuItemGames">
-                    <MenuItem Name="menuItemGamesSave" Command="Save"  Header="Save" >
+                    <MenuItem Name="menuItemGamesSave" Command="Save" Header="Save">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/diskette.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
@@ -141,7 +142,7 @@
                             <Image Source="Assets/Icons/file_manager.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Name="menuItemGamesCopy" Command="Copy"  Header="Copy to clipboard" >
+                    <MenuItem Name="menuItemGamesCopy" Command="Copy" Header="Copy to clipboard">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/clipboard_sign_out.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
@@ -178,18 +179,29 @@
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Load buddy engine" Name="menuItemEngineLoadBuddy"
-                              Click="MenuItemEngineLoadBuddy_OnClick">
+                    <MenuItem Header="Buddy engine">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/user_comment.png" />
                         </MenuItem.Icon>
-                    </MenuItem>
-                    <Separator />
-                    <MenuItem Name="menuItemLoadBuddyEngine" Header="Load buddy engine on new game"
-                              Click="MenuItemLoadBuddyEngine_OnClick">
-                        <MenuItem.Icon>
-                            <Image Name="imageLoadBuddyEngine" Source="Assets/Icons/tick.png" Visibility="Hidden" />
-                        </MenuItem.Icon>
+                        <MenuItem Header="Load buddy engine" Name="menuItemEngineLoadBuddy"
+                                  Click="MenuItemEngineLoadBuddy_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/user_comment.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Name="menuItemLoadBuddyEngine" Header="Load buddy engine on new game"
+                                  Click="MenuItemLoadBuddyEngineNewGame_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageLoadBuddyEngine" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemHideBuddyEngine" Header="Hide buddy engine"
+                                  Click="MenuItemHideBuddyEngine_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageHideBuddyEngine" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                     <MenuItem Name="menuItemLoadLastEngine" Header="Load last engine on start"
                               Click="MenuItemLoadLastEngine_OnClick">
@@ -242,7 +254,8 @@
                         </MenuItem>
                         <Separator />
                         <MenuItem Name="menuItemEngineSwitchPosition" Header="Switch MessChess window position"
-                                  Click="MenuItemEngineSwitchPosition_OnClick" ToolTip="Tries to match the positions of MessChess engines to the current color.">
+                                  Click="MenuItemEngineSwitchPosition_OnClick"
+                                  ToolTip="Tries to match the positions of MessChess engines to the current color.">
                             <MenuItem.Icon>
                                 <Image Name="imageEngineSwitchPosition" Source="Assets/Icons/tick.png"
                                        Visibility="Visible" />
@@ -260,52 +273,61 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Settings">
+                    <MenuItem Name="menuItemConfigBearChess" Header="BearChess..." Click="MenuItemConfigBearChess_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/bearchess_2.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Name="menuItemSettingsBoard" Header="Board &amp; Pieces...">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/Board2DPieces32.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemConfigurePieces" Header="Configure board &amp; pieces"
+                        <MenuItem Name="menuItemConfigurePieces" Header="Configure board &amp; pieces..."
                                   Click="MenuItemSettingsBoard_OnClick">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/Board2DPieces32.png"  />
+                                <Image Source="Assets/Icons/Board2DPieces32.png" />
                             </MenuItem.Icon>
                         </MenuItem>
 
-                        <MenuItem Name="menuItemShowLastMove" Header="Show last move" ToolTip="Shows last move as green arrow"
+                        <MenuItem Name="menuItemShowLastMove" Header="Show last move"
+                                  ToolTip="Shows last move as green arrow"
                                   Click="MenuItemShowLast_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageShowLastMove" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemShowBestMove" Header="Show best move" ToolTip="Shows best move by engine as orange arrow"
+                        <MenuItem Name="menuItemShowBestMove" Header="Show best move"
+                                  ToolTip="Shows best move by engine as orange arrow"
                                   Click="MenuItemShowBest_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageShowBestMove" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
-                        </MenuItem >
+                        </MenuItem>
                         <MenuItem Header="Possible moves">
-                            <MenuItem Name="menuItemShowPossibleMoves" Header="Show possible moves" ToolTip="Show all possible moves on mouse over"
+                            <MenuItem Name="menuItemShowPossibleMoves" Header="Show possible moves"
+                                      ToolTip="Show all possible moves on mouse over"
                                       Click="MenuItemShowPossibleMoves_OnClick">
-                               <MenuItem.Icon>
-                                    <Image Name="imageShowPossibleMoves" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                <MenuItem.Icon>
+                                    <Image Name="imageShowPossibleMoves" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem  Header="Color" ToolTip="Color for the arrow"
+                            <MenuItem Header="Color" ToolTip="Color for the arrow"
                                       Click="MenuItemPossibleMoveArrowColor_OnClick">
                                 <MenuItem.Icon>
-                                  <TextBlock Name="textBlockHintArrowColor" Text=" "></TextBlock>    
+                                    <TextBlock Name="textBlockHintArrowColor" Text=" " />
                                 </MenuItem.Icon>
                             </MenuItem>
 
                         </MenuItem>
 
-                        <MenuItem Name="menuItemFastMoveInput" Header="Fast move input" ToolTip="Make move if selected field allows only one move"
+                        <MenuItem Name="menuItemFastMoveInput" Header="Fast move input"
+                                  ToolTip="Make move if selected field allows only one move"
                                   Click="MenuItemFastMoveInput_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageFastMoveInput" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-
 
                     </MenuItem>
                     <MenuItem Name="menuItemRotateBoard" Header="Rotate board">
@@ -318,8 +340,8 @@
                                 <Image Name="imageAdjustedForPlayer" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-
                     </MenuItem>
+               
                     <MenuItem Name="menuItemSettingsNotationMoves" Header="Notation/Moves">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/text_list_numbers.png" />
@@ -427,16 +449,19 @@
                                 <Image Source="Assets/Icons/cog.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBluetoothCertabo" Header="Bluetooth Classic" ToolTip="Connect via Bluetooth Classic"
+                        <MenuItem Name="menuItemBluetoothCertabo" Header="Bluetooth Classic"
+                                  ToolTip="Connect via Bluetooth Classic"
                                   Click="MenuItemBluetoothCertabo_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemChesstimationCertabo" Header="Chesstimation module"
-                                  Click="MenuItemChesstimationCertabo_OnClick" ToolTip="Using a Chesstimation module by Andreas Petersik">
+                                  Click="MenuItemChesstimationCertabo_OnClick"
+                                  ToolTip="Using a Chesstimation module by Andreas Petersik">
                             <MenuItem.Icon>
-                                <Image Name="imageCertaboChesstimation" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                <Image Name="imageCertaboChesstimation" Source="Assets/Icons/tick.png"
+                                       Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
@@ -444,11 +469,11 @@
                         <MenuItem.Icon>
                             <Image Source="Assets/tabutronic_logo_def.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemCerno"  Header="Cerno">
+                        <MenuItem Name="menuItemCerno" Header="Cerno">
                             <MenuItem.Icon>
                                 <Image Source="Assets/tabutronic_logo_def.png" />
                             </MenuItem.Icon>
-                            <MenuItem Name="menuItemConnectToCerno" Header="Connect" 
+                            <MenuItem Name="menuItemConnectToCerno" Header="Connect"
                                       Click="MenuItemConnectCerno_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="Assets/Icons/connect.png" />
@@ -460,14 +485,16 @@
                                     <Image Source="Assets/Icons/cog.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothCerno" Header="Bluetooth Classic" ToolTip="Connect via Bluetooth Classic"
+                            <MenuItem Name="menuItemBluetoothCerno" Header="Bluetooth Classic"
+                                      ToolTip="Connect via Bluetooth Classic"
                                       Click="MenuItemBluetoothCerno_OnClick">
                                 <MenuItem.Icon>
-                                    <Image Name="imageCernoBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                    <Image Name="imageCernoBluetooth" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Name="menuItemSentio" Header="Sentio" >
+                        <MenuItem Name="menuItemSentio" Header="Sentio">
                             <MenuItem.Icon>
                                 <Image Source="Assets/tabutronic_logo_def.png" />
                             </MenuItem.Icon>
@@ -483,14 +510,16 @@
                                     <Image Source="Assets/Icons/cog.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothSentio" Header="Bluetooth Classic" Visibility="Visible" ToolTip="Connect via Bluetooth Classic"
+                            <MenuItem Name="menuItemBluetoothSentio" Header="Bluetooth Classic" Visibility="Visible"
+                                      ToolTip="Connect via Bluetooth Classic"
                                       Click="MenuItemBluetoothSentio_OnClick">
                                 <MenuItem.Icon>
-                                    <Image Name="imageSentioBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                    <Image Name="imageSentioBluetooth" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                      
+
                     </MenuItem>
                     <MenuItem Header="Millennium ChessLink" Name="menuItemMChessLink">
                         <MenuItem.Icon>
@@ -513,14 +542,16 @@
                                 <Image Name="imageChessLinkBluetooth" Source="Assets/Icons/tick.png"
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
-                            <MenuItem Name="menuItemBluetoothClassicMChessLink" Header="Bluetooth Classic" ToolTip="Connect via Bluetooth Classic"
+                            <MenuItem Name="menuItemBluetoothClassicMChessLink" Header="Bluetooth Classic"
+                                      ToolTip="Connect via Bluetooth Classic"
                                       Click="MenuItemBluetoothClassicMChessLink_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageBluetoothClassicMChessLink" Source="Assets/Icons/tick.png"
                                            Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothLEMChessLink" Header="Bluetooth LE" ToolTip="Connect via Bluetooth LE"
+                            <MenuItem Name="menuItemBluetoothLEMChessLink" Header="Bluetooth LE"
+                                      ToolTip="Connect via Bluetooth LE"
                                       Click="MenuItemBluetoothLEMChessLink_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageBluetoothLEMChessLink" Source="Assets/Icons/tick.png"
@@ -529,9 +560,11 @@
                             </MenuItem>
                         </MenuItem>
                         <MenuItem Name="menuItemChesstimationMChessLink" Header="Chesstimation/Elfacun module"
-                                  Click="MenuItemChesstimationMChessLink_OnClick" ToolTip="Using a Chesstimation module by Andreas Petersik or Elfacun module by 'inmbolmie'">
+                                  Click="MenuItemChesstimationMChessLink_OnClick"
+                                  ToolTip="Using a Chesstimation module by Andreas Petersik or Elfacun module by 'inmbolmie'">
                             <MenuItem.Icon>
-                                <Image Name="imageMChessLinkChesstimation" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                <Image Name="imageMChessLinkChesstimation" Source="Assets/Icons/tick.png"
+                                       Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
@@ -555,7 +588,8 @@
                                     <Image Source="Assets/Icons/cog.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothDGT" Header="Bluetooth Classic" ToolTip="Connect via Bluetooth Classic"
+                            <MenuItem Name="menuItemBluetoothDGT" Header="Bluetooth Classic"
+                                      ToolTip="Connect via Bluetooth Classic"
                                       Click="MenuItemBluetoothDGT_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageDGTBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
@@ -578,6 +612,12 @@
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/squareoff.png" />
                         </MenuItem.Icon>
+                        <MenuItem Name="menuItemConfigureSquareOff" Header="Configure..."
+                                  Click="MenuItemConfigureSquareOff_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/cog.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                         <MenuItem Name="menuItemConnectToSquareOffPro" Header="Connect"
                                   Click="MenuItemConnectSquareOffPro_OnClick">
                             <MenuItem.Icon>
@@ -596,10 +636,19 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBluetoothChessnutAir" Header="Bluetooth LE" ToolTip="Connect via Bluetooth LE"
+                        <MenuItem Name="menuItemBluetoothChessnutAir" Header="Bluetooth LE"
+                                  ToolTip="Connect via Bluetooth LE"
                                   Click="MenuItemBluetoothChesssnutAir_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageChessnutAirBluetooth" Source="Assets/Icons/tick.png"
+                                       Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemShowMoveLineChessnutAir" Header="Show move line"
+                                  ToolTip="Activate all LEDs along the move"
+                                  Click="MenuItemShowMoveLineChesssnutAir_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageChessnutAirShowMoveLine" Source="Assets/Icons/tick.png"
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
@@ -670,7 +719,14 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBluetoothIChessOne" Header="Bluetooth LE" ToolTip="Connect via Bluetooth LE"
+                        <MenuItem Name="menuItemConfigureIChessOne" Header="Configure..."
+                                  Click="MenuItemConfigureIChessOne_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/cog.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemBluetoothIChessOne" Header="Bluetooth LE"
+                                  ToolTip="Connect via Bluetooth LE"
                                   Click="MenuItemBluetoothIChessOne_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageIChessOneBluetooth" Source="Assets/Icons/tick.png"
@@ -678,9 +734,8 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Visibility="Collapsed" Header="Test COM" Name="menuItemTestComPort" Click="MenuItemTestComPort_OnClick" >
-
-                    </MenuItem>
+                    <MenuItem Visibility="Collapsed" Header="Test COM" Name="menuItemTestComPort"
+                              Click="MenuItemTestComPort_OnClick" />
                     <Separator />
                     <MenuItem Header="Connect on startup" Name="menuItemConnectOnStartup"
                               Click="MenuItemConnectOnStartup_OnClick">
@@ -753,7 +808,7 @@
             </Menu>
             <local:GraphicsChessBoardUserControl Margin="5,5,5,0" Grid.Column="0" Grid.Row="1"
                                                  x:Name="chessBoardUcGraphics" Visibility="Visible" />
-            <Canvas Name="canvasBoard" Grid.Row="1"/>
+            <Canvas Name="canvasBoard" Grid.Row="1" />
 
         </Grid>
         <DockPanel Margin="5" Grid.Row="1">

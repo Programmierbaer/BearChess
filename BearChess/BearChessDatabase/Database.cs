@@ -458,7 +458,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 if (game.CurrentGame != null && (game.CurrentGame.RepeatedGame || updateGame))
                 {
                  
-                    var sql = @"UPDATE games set result=@result, gameDate=@gameDate, pgn=@pgn, pgnXML=@pgnXML,pgnHash=@pgnHash
+                    var sql = @"UPDATE games set event=@event, result=@result, gameDate=@gameDate, pgn=@pgn, pgnXML=@pgnXML,pgnHash=@pgnHash
                            WHERE id=@id; ";
                     using (var command2 = new SQLiteCommand(sql, _connection))
                     {
@@ -471,6 +471,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                             }
                         }
 
+                        command2.Parameters.Add("@event", DbType.String).Value = game.GameEvent;
                         command2.Parameters.Add("@result", DbType.String).Value = game.Result;
                         command2.Parameters.Add("@gameDate", DbType.Int64).Value = gameDate.ToFileTime();
                         command2.Parameters.Add("@pgn", DbType.String).Value = game.PgnGame.MoveList;

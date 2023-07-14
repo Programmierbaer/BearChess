@@ -10,28 +10,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         
         void Release();
 
-        /// <summary>
-        /// Set the leds on for the given fields <paramref name="fromFieldName"/> and <paramref name="toFieldName"/>-
-        /// </summary>
-        /// <param name="fromFieldName">Field name e.g. E2</param>
-        /// <param name="toFieldName">Field name e.g. E4</param>
-        /// <param name="promote"></param>
-        /// <param name="thinking"></param>
-        /// <param name="isMove"></param>
-        /// <param name="displayString"></param>
-        void SetLedForFields(string fromFieldName, string toFieldName, string promote, bool thinking, bool isMove, string displayString);
 
-        /// <summary>
-        /// Set the leds on for the given fields <paramref name="fieldNames"/>-
-        /// </summary>
-        /// <param name="fieldNames">Field names e.g. E2</param>
-        /// <param name="promote"></param>
-        /// <param name="thinking"></param>
-        /// <param name="isMove"></param>
-        /// <param name="displayString"></param>
-        void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString);
+        void SetLedForFields(SetLedsParameter setLedsParameter);
 
-        void SetLastLeds();
 
         /// <summary>
         /// Switch all leds off
@@ -61,6 +42,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void Calibrate();
 
         void SendInformation(string message);
+        void AdditionalInformation(string information);
 
         void RequestDump();
 

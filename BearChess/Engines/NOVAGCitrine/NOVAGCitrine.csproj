@@ -53,6 +53,10 @@
       <Project>{a6bcdc78-1edc-40c7-936f-880423360ba3}</Project>
       <Name>BearChessEChessBoard</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\BearChessTools\BearChessTools.csproj">
+      <Project>{58eab818-7176-4ba9-a62a-ac2f27b089ae}</Project>
+      <Name>BearChessTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\EChessBoards\Citrine\CitrineChessBoard\CitrineChessBoard.csproj">
       <Project>{29b3f07f-cb42-48a5-9db3-f6f541975422}</Project>
       <Name>CitrineChessBoard</Name>

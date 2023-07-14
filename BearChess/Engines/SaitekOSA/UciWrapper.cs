@@ -11,6 +11,7 @@ using www.SoLaNoSoft.com.BearChess.OSAChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChess.SaitekOSA
 {
@@ -38,6 +39,7 @@ namespace www.SoLaNoSoft.com.BearChess.SaitekOSA
                 var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                                            Constants.BearChess, Constants.OSA);
                 _fileLogger = new FileLogger(Path.Combine(logPath, "SaitekOSAUci.log"), 10, 100);
+                _fileLogger.Active = bool.Parse(Configuration.Instance.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {
@@ -246,10 +248,11 @@ namespace www.SoLaNoSoft.com.BearChess.SaitekOSA
 
                         if (!string.IsNullOrWhiteSpace(_lastMoveCommand))
                         {
-                            _eChessBoard.ShowMove(_lastMoveCommand.Substring(0, 2),
-                                                  _lastMoveCommand.Substring(3, 2),
-                                                  string.Empty,
-                                                  string.Empty);
+                            _eChessBoard.ShowMove(new SetLedsParameter()
+                                                  {
+                                                      FieldNames = new []{ _lastMoveCommand.Substring(0, 2),
+                                                                             _lastMoveCommand.Substring(3, 2)}
+                                                  });
                             _eChessBoard.SendInformation("NORMAL");
                             _lastMoveCommand = _lastMoveCommand.Replace("-", string.Empty);
                         }

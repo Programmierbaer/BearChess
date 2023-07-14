@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
@@ -11,6 +12,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
     public class EChessBoard : AbstractEBoard
     {
         private readonly bool _useBluetooth;
+        private readonly bool _showMoveLine;
         private bool _flashSync = false;
         private bool _release = false;
         private readonly byte[] _lastSendBytes = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -72,6 +74,19 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         private readonly byte[] _allLEDSOn = { 0x0A, 0x08, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
         private ConcurrentQueue<string[]> _flashFields = new ConcurrentQueue<string[]>();
+
+        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
+        {
+            _useBluetooth = configuration.UseBluetooth;
+            _showMoveLine = configuration.ShowMoveLine;
+            _logger = logger;
+            BatteryLevel = "100";
+            BatteryStatus = "Full";
+            _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
+            Information = "Chessnut Air";
+            var thread = new Thread(FlashLeds) { IsBackground = true };
+            thread.Start();
+        }
         public EChessBoard(string basePath, ILogging logger,string portName, bool useBluetooth)
         {
             _useBluetooth = useBluetooth;
@@ -134,16 +149,15 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         {
             return true;
         }
-
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
             if (!EnsureConnection())
             {
                 return;
             }
-            var joinedString = string.Join(" ", fieldNames);
+            var joinedString = string.Join(" ", setLedsParameter.FieldNames);
             _flashFields.TryDequeue(out _);
-            if (thinking)
+            if (setLedsParameter.Thinking)
             {
                 _prevLedField = _prevLedField == 1 ? 0 : 1;
             }
@@ -155,19 +169,30 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                 }
             }
             _logger?.LogDebug($"B: set leds for {joinedString}");
-            if (thinking && fieldNames.Length > 1)
+            if (setLedsParameter.Thinking && setLedsParameter.FieldNames.Length > 1)
             {
-                _flashFields.Enqueue(fieldNames);
+                _flashFields.Enqueue(setLedsParameter.FieldNames);
                 return;
             }
             _prevJoinedString = joinedString;
             byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            foreach (string fieldName in fieldNames)
+            if (setLedsParameter.FieldNames.Length == 2 && _showMoveLine)
             {
-                result = UpdateLedsForField(fieldName, result);
+                string[] moveLine = MoveLineHelper.GetMoveLine(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1]);
+                foreach (string fieldName in moveLine)
+                {
+                    result = UpdateLedsForField(fieldName, result);
+                }
+            }
+            else
+            {
+                foreach (string fieldName in setLedsParameter.FieldNames)
+                {
+                    result = UpdateLedsForField(fieldName, result);
+                }
             }
 
-            _logger?.LogDebug($"SendFields : {string.Join(" ", fieldNames)}");
+            _logger?.LogDebug($"SendFields : {string.Join(" ", setLedsParameter.FieldNames)}");
             lock (_locker)
             {
                 List<byte> inits = new List<byte>() { 0x0A, 0x08 };
@@ -175,6 +200,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                 _serialCommunication.Send(inits.ToArray());
             }
         }
+
 
         private byte[] UpdateLedsForField(string fieldName, byte[] current)
         {
@@ -203,18 +229,6 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             return result;
         }
 
-        public override void SetLastLeds()
-        {
-            if (!EnsureConnection())
-            {
-                return;
-            }
-
-            lock (_locker)
-            {
-                _serialCommunication.Send(_lastSendBytes);
-            }
-        }
 
         public override void SetAllLedsOff()
         {
@@ -275,6 +289,11 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         }
 
         public override void SendInformation(string message)
+        {
+            //
+        }
+
+        public override void AdditionalInformation(string information)
         {
             //
         }

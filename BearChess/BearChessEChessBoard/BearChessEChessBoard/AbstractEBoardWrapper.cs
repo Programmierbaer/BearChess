@@ -6,6 +6,7 @@ using System.Threading;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
@@ -33,6 +34,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected  bool _useClock;
         protected  bool _showMovesOnly;
         protected  bool _switchClockSide;
+        protected EChessBoardConfiguration _configuration;
         private bool _piecesFenBasePosition;
         private string _lastChangedFigure = string.Empty;
         private string _lastFenColor = string.Empty;
@@ -55,6 +57,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             try
             {
                 _fileLogger = new FileLogger(Path.Combine(basePath, "log", $"{Name}_1.log"), 10, 10);
+                _fileLogger.Active = bool.Parse(Configuration.Instance.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {
@@ -79,28 +82,37 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         protected AbstractEBoardWrapper(string name, string basePath, string comPortName, bool useChesstimation) : this(
-            name, basePath, comPortName, string.Empty, false, false, false, false, useChesstimation)
+            name, basePath, comPortName, string.Empty, false, false, false, false, useChesstimation, null)
         {
 
         }
 
         protected AbstractEBoardWrapper(string name, string basePath,  string comPortName) : this(
-            name, basePath, comPortName,string.Empty, false, false,false, false, false)
+            name, basePath, comPortName,string.Empty, false, false,false, false, false, null)
         {
 
         }
 
         protected AbstractEBoardWrapper(string name, string basePath, string comPortName,
                                         bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide):
-            this(name,basePath,comPortName,string.Empty,useBluetooth, useClock, showMovesOnly, switchClockSide, false)
+            this(name,basePath,comPortName,string.Empty,useBluetooth, useClock, showMovesOnly, switchClockSide, false, null)
         {
 
 
         }
 
-        protected AbstractEBoardWrapper(string name, string basePath, string comPortName,string baud,
-                                        bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide, bool useChesstimation = false)
+        protected AbstractEBoardWrapper(string name, string basePath, EChessBoardConfiguration configuration) :
+            this(name, basePath, configuration.PortName, string.Empty, configuration.UseBluetooth,configuration.UseClock, 
+                 configuration.ClockShowOnlyMoves,configuration.ClockSwitchSide, false, configuration)
         {
+
+        
+        }
+
+        protected AbstractEBoardWrapper(string name, string basePath, string comPortName,string baud,
+                                        bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide, bool useChesstimation, EChessBoardConfiguration configuration)
+        {
+            _configuration = configuration;
             Name = name;
             _basePath = basePath;
             _comPortName = comPortName;
@@ -113,6 +125,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             try
             {
                 _fileLogger = new FileLogger(Path.Combine(basePath, "log", $"{Name}_1.log"), 10, 10);
+                _fileLogger.Active = bool.Parse(Configuration.Instance.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {
@@ -174,6 +187,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void SendCommand(string anyCommand)
         {
             _board?.SendCommand(anyCommand);
+        }
+
+        public void AdditionalInformation(string information)
+        {
+            _board?.AdditionalInformation(information);
         }
 
         public string BatteryLevel => _board?.BatteryLevel;
@@ -255,14 +273,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public bool IsConnected => _board?.IsConnected ?? false;
 
-        public void ShowMove(string allMoves, string startFenPosition, string promote, bool waitFor)
+        public void ShowMove(string allMoves, string startFenPosition, SetLedsParameter setLedsParameter, bool waitFor)
         {
             if (string.IsNullOrWhiteSpace(allMoves))
             {
                 _fileLogger?.LogError("C: No moves given for ShowMove");
                 return;
             }
-
+            
          
             _fileLogger?.LogDebug($"C: Show Move for: {allMoves}");
             var moveList = allMoves.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -280,11 +298,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     return;
                 }
 
-                promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
-                _internalChessBoard.MakeMove(move.Substring(0, 2), move.Substring(2, 2), promote);
+                setLedsParameter.Promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
+                _internalChessBoard.MakeMove(move.Substring(0, 2), move.Substring(2, 2), setLedsParameter.Promote);
             }
             var lastMove = moveList[moveList.Length - 1];
-            promote = lastMove.Length == 4 ? string.Empty : lastMove.Substring(4, 1);
+            setLedsParameter.Promote = lastMove.Length == 4 ? string.Empty : lastMove.Substring(4, 1);
             _fileLogger?.LogDebug($"C: Show Move {lastMove}");
             var position = _internalChessBoard.GetPosition();
           
@@ -297,24 +315,33 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
             if (_board!= null && !_board.SelfControlled)
             {
-                _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2), promote, false, true, string.Empty);
+                _board?.SetLedForFields(new SetLedsParameter()
+                                        {
+                                            FieldNames = new []{ lastMove.Substring(0, 2), lastMove.Substring(2, 2) },
+                                            Promote = setLedsParameter.Promote,
+                                            Thinking = false,
+                                            IsTakeBack = true,
+                                            IsMove = false,
+                                            DisplayString = string.Empty
+                                        });
             }
             _stop = false;
         }
 
-        public void ShowMove(string fromField, string toField, string promote, string displayString)
+     
+
+        public void ShowMove(SetLedsParameter setLedsParameter)
         {
-            _internalChessBoard.MakeMove(fromField, toField, promote);
+            _internalChessBoard.MakeMove(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1], setLedsParameter.Promote);
             var position = _internalChessBoard.GetPosition();
             _waitForFen.Enqueue(position);
-            _board?.SetLedForFields(fromField, toField, promote, false, true, displayString);
+            _board?.SetLedForFields(setLedsParameter);
             _stop = false;
         }
 
-        public void SetLedsFor(string[] fields, bool thinking)
+        public void SetLedsFor(SetLedsParameter setLedsParameter)
         {
-            //_allLedOff =  _inDemoMode;
-            _board?.SetLedForFields(fields,string.Empty, thinking, false, string.Empty);
+            _board?.SetLedForFields(setLedsParameter);
         }
 
         public void SetAllLedsOff()
@@ -425,7 +452,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _fileLogger?.LogDebug($"C: Wait for: {position}");
             // Set LEDs on for received move and wait until board is in same position
             _waitForFen.Enqueue(position);
-            _board?.SetLedForFields(lastMove.Substring(0, 2), lastMove.Substring(2, 2),promote, false, true, string.Empty);
+            _board?.SetLedForFields(new SetLedsParameter()
+                                    {
+                                     FieldNames = new[] { lastMove.Substring(0, 2), lastMove.Substring(2, 2) },
+                                     Promote = promote,
+                                     Thinking = false,
+                                     IsMove = true,
+                                     DisplayString = string.Empty
+                                    });
             _stop = false;
          
         }
@@ -591,6 +625,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 {
                     _fileLogger?.LogDebug($"C: Awaited fen position on board received: {waitForFen}");
                     _board?.SetAllLedsOff();
+                 
                     currentFen = piecesFen.FromBoard;
                     waitForFen = string.Empty;
                     AwaitedPosition?.Invoke(this, null);
@@ -624,7 +659,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 {
                     continue;
                 }
-
+              
                 var move = _internalChessBoard.GetMove(piecesFen.FromBoard, false);
                 if (move.Length >= 4)
                 {
@@ -784,7 +819,16 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
              
                 fenPosition.Invalid = true;
-                _board?.SetLedForFields(invalidFields.ToArray(), string.Empty,false, false, string.Empty);
+                _board?.SetLedForFields(new SetLedsParameter()
+                                        {
+                                            FieldNames = invalidFields.ToArray(),
+                                            Promote = string.Empty,
+                                            Thinking = false,
+                                            IsMove = false,
+                                            IsError = true,
+                                            DisplayString = string.Empty
+
+                                        });
                 _allLedOff = false;
             }
             else
@@ -795,6 +839,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     {
                         _fileLogger?.LogDebug("C: Waiting for fen is empty: Set all LEDs off");
                         _board?.SetAllLedsOff();
+                        _board?.SetCurrentColor(_internalChessBoard.CurrentColor);
                         _allLedOff = true;
                     }
                 }

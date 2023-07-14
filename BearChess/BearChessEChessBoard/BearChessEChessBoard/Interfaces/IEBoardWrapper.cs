@@ -35,11 +35,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Shows the LED for the last move in <paramref name="allMoves"/>.
         /// </summary>
-        void ShowMove(string allMoves, string startFenPosition, string promote, bool waitFor);
 
-        void ShowMove(string fromField, string toField, string promote, string displayString);
+        void ShowMove(string allMoves, string fenStartPosition, SetLedsParameter setLedsParameter, bool waitFor);
 
-        void SetLedsFor(string[] fields, bool thinking);
+        void ShowMove(SetLedsParameter setLedsParameter);
+        
+        void SetLedsFor(SetLedsParameter setLedsParameter);
 
         /// <summary>
         /// All led off
@@ -99,6 +100,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         bool Calibrate();
 
         void SendInformation(string message);
+        void AdditionalInformation(string information);
 
         void SetCurrentColor(int currentColor);
 
@@ -166,7 +168,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight);
 
         void SendCommand(string anyCommand);
-
+        
         string BatteryLevel { get; }
         string BatteryStatus { get; }
         string Information { get; }

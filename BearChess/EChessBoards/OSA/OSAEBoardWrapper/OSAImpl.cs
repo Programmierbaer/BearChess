@@ -10,7 +10,7 @@ namespace www.SoLaNoSoft.com.BearChess.OSAEBoardWrapper
         }
 
         public OSAImpl(string name, string basePath, string comPortName, string baud, bool useBluetooth) : base(
-            name, basePath, comPortName, baud, useBluetooth, true, false, false)
+            name, basePath, comPortName, baud, useBluetooth, true, false, false, false,null)
         {
         }
 

@@ -45,7 +45,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             try
             {
-                _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "TabutronicSentioCfg.log"), 10, 10);
+                _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "TabutronicSentioCfg.log"), 10, 10); 
+                _fileLogger.Active = bool.Parse(configuration.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {
@@ -70,16 +71,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                _portNames = SerialCommunicationTools.GetPortNames(string.Empty).ToList();
+                _portNames = SerialCommunicationTools.GetPortNames("Silicon Labs").ToList();
             }
 
             _portNames.ForEach(f => _allPortNames.Add(f));
             comboBoxComPorts.ItemsSource = _allPortNames;
             comboBoxComPorts.SelectedIndex = 0;
 
-
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseBluetooth = useBluetooth;
+            checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
             if (_portNames.Count == 0)
             {
@@ -153,6 +154,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
+            _eChessBoardConfiguration.ShowMoveLine = checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }

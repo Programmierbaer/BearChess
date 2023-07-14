@@ -11,9 +11,11 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
     {
         public string White => textBoxWhite.Text;
         public string Black => textBoxBlack.Text;
-        public string Result => getResult();
+        public string Result => GetResult();
         public string GameEvent => textBoxEvent.Text;
         public string GameDate => textBoxDate.Text;
+
+        public bool ReplaceGame { get; private set; }
 
 
         public SaveGameWindow(string moveList)
@@ -22,6 +24,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             textBoxDate.Text = DateTime.Now.ToString("dd.MM.yyyy");
             textBoxEvent.Text = Constants.BearChess;
             textBlockMoves.Text = moveList;
+            ReplaceGame = false;
         }
 
         public SaveGameWindow(string playerName, string white, string black, string result, string eventName, string date,
@@ -50,7 +53,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         }
 
-        private string getResult()
+        private string GetResult()
         {
             if (radioButton10.IsChecked.HasValue && radioButton10.IsChecked.Value)
             {
@@ -70,22 +73,35 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
+            ReplaceGame = false;
+            DialogResult = Check();
+        }
+
+        private void ButtonReplace_OnClick(object sender, RoutedEventArgs e)
+        {
+            ReplaceGame = true;
+            DialogResult = Check();
+        }
+
+        private bool Check()
+        {
             if (string.IsNullOrWhiteSpace(White))
             {
                 MessageBox.Show("White player missing", "Required", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
             if (string.IsNullOrWhiteSpace(Black))
             {
                 MessageBox.Show("Black player missing", "Required", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
             if (string.IsNullOrWhiteSpace(GameEvent))
             {
-                MessageBox.Show("Event player missing", "Required", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                MessageBox.Show("Event missing", "Required", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
-            DialogResult = true;
+
+            return true;
         }
     }
 }

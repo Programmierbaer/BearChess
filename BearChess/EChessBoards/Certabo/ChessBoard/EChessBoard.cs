@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
@@ -61,8 +62,13 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         private ConcurrentQueue<string[]> _flashFields = new ConcurrentQueue<string[]>();
         private bool _release = false;
         private bool _useChesstimation;
+        private readonly bool _showMoveLine;
 
-
+        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration, bool useChesstimation) :
+            this (basePath,logger,configuration.PortName,configuration.UseBluetooth,useChesstimation)
+        {
+            _showMoveLine = configuration.ShowMoveLine;
+        }
         public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, bool useChesstimation)
         {
             _useBluetooth = useBluetooth;
@@ -147,18 +153,19 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 Thread.Sleep(10);
             }
         }
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
+
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
             if (!EnsureConnection())
             {
                 return;
             }
             _flashFields.TryDequeue(out _);
-         
+
             lock (_locker)
             {
-                var joinedString = string.Join(" ", fieldNames);
-                if (thinking)
+                var joinedString = string.Join(" ", setLedsParameter.FieldNames);
+                if (setLedsParameter.Thinking)
                 {
                     _prevLedField = _prevLedField == 1 ? 0 : 1;
                 }
@@ -170,9 +177,9 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     }
                 }
                 _logger?.LogDebug($"B: set leds for {joinedString}");
-                if (thinking && fieldNames.Length > 1)
+                if (setLedsParameter.Thinking && setLedsParameter.FieldNames.Length > 1)
                 {
-                    _flashFields.Enqueue(fieldNames);
+                    _flashFields.Enqueue(setLedsParameter.FieldNames);
                     return;
                 }
 
@@ -180,15 +187,26 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
                 byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
                 Array.Copy(AllOff, result, AllOff.Length);
-                if (thinking && fieldNames.Length == 2)
+                if (setLedsParameter.Thinking && setLedsParameter.FieldNames.Length == 2)
                 {
-                    result = UpdateLedsForField(fieldNames[_prevLedField], result);
+                    result = UpdateLedsForField(setLedsParameter.FieldNames[_prevLedField], result);
                 }
                 else
                 {
-                    foreach (string fieldName in fieldNames)
+                    if (setLedsParameter.FieldNames.Length == 2 && _showMoveLine)
                     {
-                        result = UpdateLedsForField(fieldName, result);
+                        string[] moveLine = MoveLineHelper.GetMoveLine(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1]);
+                        foreach (string fieldName in moveLine)
+                        {
+                            result = UpdateLedsForField(fieldName, result);
+                        }
+                    }
+                    else
+                    {
+                        foreach (string fieldName in setLedsParameter.FieldNames)
+                        {
+                            result = UpdateLedsForField(fieldName, result);
+                        }
                     }
                 }
 
@@ -197,18 +215,6 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
         }
 
-        public override void SetLastLeds()
-        {
-            if (!EnsureConnection())
-            {
-                return;
-            }
-
-            lock (_locker)
-            {
-                _serialCommunication.Send(_lastSendBytes);
-            }
-        }
 
         public override void SetAllLedsOff()
         {
@@ -284,7 +290,14 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
 
             _logger?.LogDebug("B: start calibrate ");
-            SetLedForFields(new[] { "A1", "B1", "C1","D1","E1","F1","G1","H1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7","D3","D6" }, string.Empty, false, false, string.Empty);
+            SetLedForFields(new SetLedsParameter()
+                            {
+                                FieldNames = new[] { "A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7", "D3", "D6" },
+                                Promote = string.Empty,
+                                Thinking = false,
+                                IsMove = false,
+                                DisplayString = string.Empty
+            });
             var boardData = _serialCommunication.GetCalibrateData();
             _logger?.LogDebug($"B: calibrate data: {boardData}");
             if (!Calibrate(boardData))
@@ -314,6 +327,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         }
 
         public override void SendInformation(string message)
+        {
+            //
+        }
+
+        public override void AdditionalInformation(string information)
         {
             //
         }
@@ -844,11 +862,6 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             return true;
         }
 
-        private byte[] GetLedForFields(string fromFieldName, string toFieldName)
-        {
-            return UpdateLedsForField(toFieldName, UpdateLedsForField(fromFieldName, AllOff));
-        }
-
         private byte[] UpdateLedsForField(string fieldName, byte[] current)
         {
             // Exact two letters expected, e.g. "E2"
@@ -958,6 +971,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
             return string.Empty;
         }
+
+       
 
         #endregion
 

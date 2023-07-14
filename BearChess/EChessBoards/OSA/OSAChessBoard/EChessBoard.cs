@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -93,29 +94,28 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
             return false;
         }
 
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove,
-                                             string displayString)
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
             lock (_locker)
             {
-                if (thinking || !isMove)
+                if (setLedsParameter.Thinking || !setLedsParameter.IsMove)
                 {
                     return;
                 }
 
-                if (fieldNames.Length > 1)
+                if (setLedsParameter.FieldNames.Length > 1)
                 {
                     _logger.LogDebug("OSABoard: SetLedForFields");
-                    var chessFigure = _chessBoard.GetFigureOn(Fields.GetFieldNumber(fieldNames[1]));
+                    var chessFigure = _chessBoard.GetFigureOn(Fields.GetFieldNumber(setLedsParameter.FieldNames[1]));
                     string del = "-";
                     if (chessFigure.Color != Fields.COLOR_EMPTY)
                     {
                         del = "x";
                     }
 
-                    string m = $"{fieldNames[0].ToLower()}{del}{fieldNames[1].ToLower()}";
-                    _logger.LogDebug($"OSABoard: Make internal move: {m}{promote}");
-                    _chessBoard.MakeMove(fieldNames[0], fieldNames[1], promote);
+                    string m = $"{setLedsParameter.FieldNames[0].ToLower()}{del}{setLedsParameter.FieldNames[1].ToLower()}";
+                    _logger.LogDebug($"OSABoard: Make internal move: {m}{setLedsParameter.Promote}");
+                    _chessBoard.MakeMove(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1], setLedsParameter.Promote);
                     if (!_runAsUci)
                     {
                         Thread.Sleep(500);
@@ -127,8 +127,7 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
                 }
             }
         }
-
-      
+        
 
         public override void Calibrate()
         {
@@ -156,6 +155,11 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
                 _serialCommunication.Send(message);
             }
             
+        }
+
+        public override void AdditionalInformation(string information)
+        {
+            //
         }
 
         public override DataFromBoard GetPiecesFen()
@@ -315,11 +319,7 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
             }
         }
 
-        public override void SetLastLeds()
-        {
-            //
-        }
-
+       
         public override void SetAllLedsOff()
         {
             //

@@ -756,7 +756,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockPlayerBlackEngine.Text = selectedEngine.Name;
                 textBlockPlayerBlackEngine.ToolTip = selectedEngine.Name;
                 PlayerBlackConfigValues = selectedEngine;
-                SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloWhite, imageBookBlack, imageBookBlack2);
+                SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
                 buttonConfigureBlack.Visibility = Visibility.Visible;
                 if (selectedEngine.IsChessComputer || (PlayerWhiteConfigValues != null && PlayerWhiteConfigValues.IsChessComputer))
                 {

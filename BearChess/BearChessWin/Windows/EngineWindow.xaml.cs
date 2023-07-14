@@ -56,6 +56,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration = configuration;
             _uciPath = uciPath;
             _fileLogger = new FileLogger(Path.Combine(_uciPath, "bearchess_uci.log"), 10, 10);
+            _fileLogger.Active = bool.Parse(configuration.GetConfigValue("writeLogFiles", "true"));
             _whiteOnTop = true;
             Top = _configuration.GetWinDoubleValue("EngineWindowTop", Configuration.WinScreenInfo.Top,
                                                    SystemParameters.VirtualScreenHeight,
@@ -693,8 +694,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
 
-                var fileLogger = new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2,
-                                               10);
+                var fileLogger = new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
+                fileLogger.Active = bool.Parse(_configuration.GetConfigValue("writeLogFiles", "true"));
                 fileLogger.UciCommunicationEvent += FileLogger_UciCommunicationEvent;
                 UciLoader uciLoader = null;
                 for (var i = 1; i < 4; i++)
@@ -829,7 +830,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 EngineEvent?.Invoke(
                     this,
                     new EngineEventArgs(e.Name, e.FromEngine, _loadedEngines[e.Name].Color,
-                                        e.Name.Equals(_firstEngineName)));
+                                        e.Name.Equals(_firstEngineName), _loadedEngines[e.Name].UciEngine.IsBuddy));
                 return;
             }
 
@@ -842,7 +843,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 EngineEvent?.Invoke(
                     this,
                     new EngineEventArgs(e.Name, e.FromEngine, _loadedEngines[e.Name].Color,
-                                        e.Name.Equals(_firstEngineName)));
+                                        e.Name.Equals(_firstEngineName), _loadedEngines[e.Name].UciEngine.IsBuddy));
             }
 
             if (e.FromEngine.Contains(" pv "))
@@ -850,7 +851,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 EngineEvent?.Invoke(
                     this,
                     new EngineEventArgs(e.Name, e.FromEngine, _loadedEngines[e.Name].Color,
-                                        e.Name.Equals(_firstEngineName)));
+                                        e.Name.Equals(_firstEngineName), _loadedEngines[e.Name].UciEngine.IsBuddy));
             }
 
             var scoreString = string.Empty;
@@ -895,7 +896,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 EngineEvent?.Invoke(
                     this,
                     new EngineEventArgs(e.Name, scoreString, _loadedEngines[e.Name].Color,
-                                        e.Name.Equals(_firstEngineName)));
+                                        e.Name.Equals(_firstEngineName), _loadedEngines[e.Name].UciEngine.IsBuddy));
                 _fileLogger?.LogInfo($"Score from engine {e.Name}: {scoreString}");
             }
         }

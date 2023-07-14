@@ -19,6 +19,12 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
 
         }
 
+        public ChessnutAirImpl(string name, string basePath, EChessBoardConfiguration configuration) : base(
+            name, basePath, configuration)
+        {
+
+        }
+
         public override bool Calibrate()
         {
             _stop = true;
@@ -63,7 +69,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
      
         protected override IEBoard GetEBoard()
         {
-            return new ChessnutChessBoard.EChessBoard(_basePath, _fileLogger, _comPortName, _useBluetooth);
+            return new ChessnutChessBoard.EChessBoard(_basePath, _fileLogger, _configuration);
         }
 
         protected override IEBoard GetEBoard(bool check)

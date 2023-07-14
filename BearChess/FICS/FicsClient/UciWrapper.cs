@@ -6,6 +6,7 @@ using System.Threading;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChess.FicsClient
 {
@@ -33,6 +34,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                 var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                                             Constants.BearChess,Constants.FICS);
                 _fileLogger = new FileLogger(Path.Combine(logPath, "FICSUci2.log"), 10, 100);
+                _fileLogger.Active = bool.Parse(Configuration.Instance.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {

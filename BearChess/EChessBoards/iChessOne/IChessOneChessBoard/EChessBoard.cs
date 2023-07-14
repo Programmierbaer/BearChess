@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
@@ -13,20 +15,21 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 {
     public class EChessBoard : AbstractEBoard
     {
+        private readonly object _lock = new object();
         private readonly bool _useBluetooth;
         private bool _release = false;
-        private ConcurrentQueue<string[]> _flashFields = new ConcurrentQueue<string[]>();
         private readonly string[] _allLEDSOn  = { "FF", "FF", "FF", "FF", "FF", "FF", "FF", "FF", "FF", "FF" };
         private readonly string[] _allLEDSOff = { "00", "00", "00", "00", "00", "00", "00", "00", "00", "00" };
-        //private readonly string[] _LEDSForWhiteOnMove = { "0F", "FF", "FF", "00", "00", "00", "00", "00", "00", "00", "00", "00", "51", "00"};
-        private readonly string[] _LEDSForWhiteOnMove = { "00", "00", "00", "00", "00", "00", "00", "00", "00", "FF"};
+        private readonly string[] _LEDSForFlash = { "00", "80", "00", "00", "00", "00", "00", "00", "01", "00"};
         private readonly string[] _LEDSForBlackOnMove = { "FF", "00", "00", "00", "00", "00", "00", "00", "00", "00" };
         private readonly string _startReadingCmd = "CPIRQ";
+        private readonly string _requestHardwareVersion = "RH";
+        private readonly string _requestBattery = "RB";
+        private readonly string _requestPosition = "RP";
         //private readonly string _startReadingCmd = "CPM1000";
         private readonly string _stopReadingCmd = "CPOFF";
         private readonly string _statusOffCmd = "CSOFF";
-        private readonly string _simpleColor = "ELS";
-        private readonly string _advancedColor = "ELA";
+        private readonly string _advancedColor = "EL";
 
       
 
@@ -65,22 +68,42 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
         private string _lastData = string.Empty;
         private string _lastResult = string.Empty;
+        private string _dimLevel = string.Empty;
         private readonly string[] _allData = new string[32];
         private int _allIndex = 0;
         private bool _readingPosition = false;
+        private bool _readingCmdStart = false;
         private int _currentColor;
+        private bool _showMoveLine;
+        private readonly bool _showEvaluationValue;
+        private readonly bool _showCurrentColor;
+        private string _currentEval = "0";
+        private ExtendedEChessBoardConfiguration _extendedConfiguration;
+        HashSet<string> _moveLeds = new HashSet<string>();
+        HashSet<string> _lastSend = new HashSet<string>();
 
-        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth)
+        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
         {
-            _useBluetooth = useBluetooth;
+            _useBluetooth = configuration.UseBluetooth;
+            
+            _extendedConfiguration = configuration.ExtendedConfig.First(e => e.IsCurrent);
+            _showEvaluationValue = _extendedConfiguration.ShowEvaluationValue;
+            _showMoveLine = _extendedConfiguration.ShowMoveLine;
+            _showCurrentColor = _extendedConfiguration.ShowCurrentColor;
+            _dimLevel =  _extendedConfiguration.DimLevel.ToString("X");
+            _currentColor = Fields.COLOR_WHITE;
             _logger = logger;
             BatteryLevel = "100";
             BatteryStatus = "Full";
-            _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
+            lock (_lock)
+            {
+                _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
+            }
+
             Information = "IChessOne";
-            var thread = new Thread(FlashLeds) { IsBackground = true };
-            thread.Start();
         }
+
+      
 
         public EChessBoard(ILogging logger)
         {
@@ -92,68 +115,11 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
         public override void SetCurrentColor(int currentColor)
         {
-            return;
             _currentColor = currentColor;
-            byte[] convertToArray = ConvertToArray("ELS");
-            byte[] stringToByteArray = StringToByteArray(string.Join("", currentColor==Fields.COLOR_WHITE ? _LEDSForWhiteOnMove : _LEDSForBlackOnMove));
-            _serialCommunication.Send(convertToArray.Concat(stringToByteArray).ToArray());
+            ShowCurrentColorInfos();
         }
 
-        private void FlashLeds()
-        {
-            bool switchSide = false;
-            while (!_release)
-            {
-                if (_flashFields.TryPeek(out string[] fields))
-                {
-                    byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
-                    if (switchSide)
-                    {
-                        result = UpdateLedsForField(fields[1], result);
-                        result = UpdateLedsForField(fields[1], result);
-                    }
-                    else
-                    {
-                        result = UpdateLedsForField(fields[0], result);
-                        result = UpdateLedsForField(fields[0], result);
-                    }
-                    switchSide = !switchSide;
-                    List<byte> inits = new List<byte>() { 0x0A, 0x08 };
-                    inits.AddRange(result);
-                    _serialCommunication.Send(inits.ToArray());
-
-                }
-
-                Thread.Sleep(500);
-            }
-        }
-
-        private byte[] UpdateLedsForField(string fieldName, byte[] current)
-        {
-            // Exact two letters expected, e.g. "E2"
-            if (string.IsNullOrWhiteSpace(fieldName) || fieldName.Length != 2)
-            {
-                return current;
-            }
-
-            if (!int.TryParse(fieldName[1].ToString(), out int _))
-            {
-                return current;
-            }
-            // Don't manipulate parameters
-            byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            Array.Copy(current, result, current.Length);
-            if (_playWithWhite)
-            {
-              //  result[8 - rowNumber] |= _colName2ColByte[colName];
-            }
-            else
-            {
-              //  result[rowNumber - 1] |= _flippedColName2ColByte[colName];
-            }
-            return result;
-        }
-
+        
         private byte[] StringToByteArray(string hex)
         {
             return Enumerable.Range(0, hex.Length)
@@ -170,8 +136,10 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
         public override void Release()
         {
             _release = true;
-//            _serialCommunication.Send(ConvertToArray(_stopReadingCmd));
-            _serialCommunication.Send(ConvertToArray(_statusOffCmd));
+            lock (_lock)
+            {
+                _serialCommunication.Send(ConvertToArray(_statusOffCmd));
+            }
         }
 
         public override void SetFen(string fen)
@@ -210,67 +178,171 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
             return true;
         }
 
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove,
-                                             string displayString)
+
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
-            string[] allLedsOff = new string[_allLEDSOff.Length];
-            _allLEDSOff.CopyTo(allLedsOff, 0);
-            int[] sumCols = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            foreach (var fieldName in fieldNames)
+            var fieldNamesList = new List<string>();
+            var rgbMoveFrom = _extendedConfiguration.RGBMoveFrom;
+            var rgbInvalid = _extendedConfiguration.RGBInvalid;
+            var rgbHelp = _extendedConfiguration.RGBHelp;
+            var rgbTakeBack = _extendedConfiguration.RGBTakeBack;
+
+            if (setLedsParameter.FieldNames.Length == 2)
             {
-                var fieldNumber = Fields.GetFieldNumber(fieldName);
-                var row = Fields.GetRow(fieldNumber);
-                Fields.Lines line = Fields.GetLine(fieldNumber);
-                sumCols[row - 1] += _linesToCol[line];
+                if (_showMoveLine && !setLedsParameter.IsError)
+                {
+                    string[] moveLine = MoveLineHelper.GetMoveLine(setLedsParameter.FieldNames[0],setLedsParameter.FieldNames[1]);
+                    fieldNamesList.AddRange(moveLine);
+                }
+                else
+                {
+                    fieldNamesList.AddRange(setLedsParameter.FieldNames);
+                }
+            }
+            else
+            {
+                fieldNamesList.AddRange(setLedsParameter.FieldNames);
+
             }
 
-            allLedsOff[9] = $"FF";
-            allLedsOff[8] = $"{sumCols[0]:X2}";
-            allLedsOff[7] = $"{sumCols[1]:X2}";
-            allLedsOff[6] = $"{sumCols[2]:X2}";
-            allLedsOff[5] = $"{sumCols[3]:X2}";
-            allLedsOff[4] = $"{sumCols[4]:X2}";
-            allLedsOff[3] = $"{sumCols[5]:X2}";
-            allLedsOff[2] = $"{sumCols[6]:X2}";
-            allLedsOff[1] = $"{sumCols[7]:X2}";
-            byte[] startCode = ConvertToArray(_advancedColor);
-        //    byte[] startCode = ConvertToArray(_simpleColor);
-            byte[] fieldLEDS = StringToByteArray(string.Join("", allLedsOff));
-            //byte[] colorFields = !isMove ? StringToByteArray(string.Join("", new string[] {"80","0F"})) : StringToByteArray(string.Join("", new string[] { "8F", "00" }));
-            byte[] colorFields = StringToByteArray(string.Join("", new string[] {"80","F0"}));
-            byte[] flashFields = StringToByteArray(string.Join("", new string[] { "51", "AA" }));
-            
+            if (setLedsParameter.IsMove)
             {
-                _serialCommunication.Send(startCode.Concat(colorFields).Concat(fieldLEDS).Concat(flashFields).ToArray());
-             //   _serialCommunication.Send(startCode.Concat(fieldLEDS).ToArray());
+                _moveLeds = new HashSet<string>(fieldNamesList);
             }
-            
-        }
 
-        public override void SetLastLeds()
-        {
-            //
+            if (fieldNamesList.All(f => _lastSend.Contains(f)))
+            {
+                return;
+            }
+            _lastSend.Clear();
+            _lastSend = new HashSet<string>(fieldNamesList);
+
+            if (setLedsParameter.Thinking)
+            {
+                lock (_lock)
+                {
+                    SetLedForFields(fieldNamesList.ToArray(), rgbHelp, _extendedConfiguration.FlashHelp, _dimLevel, false);
+                }
+
+                return;
+            }
+            if (setLedsParameter.IsMove)
+            {
+                lock (_lock)
+                {
+                    SetLedForFields(fieldNamesList.ToArray(), rgbMoveFrom, _extendedConfiguration.FlashMoveFrom, _dimLevel, false);
+                }
+
+                return;
+            }
+
+            if (setLedsParameter.IsTakeBack)
+            {
+                lock (_lock)
+                {
+                    SetLedForFields(fieldNamesList.ToArray(), rgbTakeBack, _extendedConfiguration.FlashTakeBack, _dimLevel, false);
+                }
+
+                return;
+            }
+
+            if (setLedsParameter.IsError)
+            {
+                lock (_lock)
+                {
+                    SetLedForFields(fieldNamesList.ToArray(), rgbInvalid, _extendedConfiguration.FlashInvalid, _dimLevel, false);
+                }
+
+                return;
+            }
+
+            if (_moveLeds.Count > 0)
+            {
+                List<string> moveLeds = new List<string>();
+                List<string> invalidLeds = new List<string>();
+                foreach (var s in fieldNamesList)
+                {
+                    if (_moveLeds.Contains(s))
+                    {
+                        moveLeds.Add(s);
+                    }
+                    else
+                    {
+                        invalidLeds.Add(s);
+                    }
+                }
+                lock (_lock)
+                {
+                    SetLedForFields(moveLeds.ToArray(), rgbMoveFrom, _extendedConfiguration.FlashMoveFrom, _dimLevel, false);
+                }
+
+                lock (_lock)
+                {
+                    SetLedForFields(invalidLeds.ToArray(), rgbInvalid, _extendedConfiguration.FlashInvalid, _dimLevel, true);
+                }
+
+                return;
+            }
         }
 
         public override void SetAllLedsOff()
         {
-            byte[] convertToArray = ConvertToArray(_simpleColor);
-            byte[] stringToByteArray = StringToByteArray(string.Join("", _allLEDSOff));
-            _serialCommunication.Send(convertToArray.Concat(stringToByteArray).ToArray());
+
+            _moveLeds.Clear();
+            string[] allLEDsOff = new string[_allLEDSOff.Length];
+            _allLEDSOff.CopyTo(allLEDsOff, 0);
+            
+            byte[] startCode = ConvertToArray(_advancedColor);
+            byte[] fieldLEDS = StringToByteArray(string.Join("", allLEDsOff));
+
+            byte[] colorFieldsMove = StringToByteArray(string.Join("", $"00", $"00"));
+            byte[] flashFields = StringToByteArray(string.Join("", $"01", "FF"));
+
+            lock (_lock)
+            {
+                _logger.LogDebug("Send for all off");
+                _serialCommunication.Send(startCode.Concat(colorFieldsMove).Concat(fieldLEDS).Concat(flashFields)
+                    .ToArray());
+            }
+
+
+            // _serialCommunication.Send(startCode.Concat(colorFieldsMove).Concat(fieldLEDS).Concat(flashFieldsAdd).ToArray());
         }
 
         public override void SetAllLedsOn()
         {
-            byte[] convertToArray = ConvertToArray(_simpleColor);
-            byte[] stringToByteArray = StringToByteArray(string.Join("", _allLEDSOn));
-            _serialCommunication.Send(convertToArray.Concat(stringToByteArray).ToArray());
+            byte[] startCode = ConvertToArray(_advancedColor);
+            byte[] fieldLEDS = StringToByteArray(string.Join("", _allLEDSOn));
+            byte[] colorFields = StringToByteArray(string.Join("", $"{_dimLevel}F", "00"));
+            byte[] flashFields = StringToByteArray(string.Join("", "E1", "FF"));
+            lock (_lock)
+            {
+                _serialCommunication.Send(startCode.Concat(colorFields).Concat(fieldLEDS).Concat(flashFields)
+                    .ToArray());
+            }
+            
+            colorFields = StringToByteArray(string.Join("", $"{_dimLevel}0", "F0"));
+            
+            lock (_lock)
+            {
+                Thread.Sleep(500);
+                _serialCommunication.Send(startCode.Concat(colorFields).Concat(fieldLEDS).Concat(flashFields)
+                                                   .ToArray());
+            }
+            
+            colorFields = StringToByteArray(string.Join("", $"{_dimLevel}0", "0F"));
+
+            lock (_lock)
+            {
+                Thread.Sleep(500);
+                _serialCommunication.Send(startCode.Concat(colorFields).Concat(fieldLEDS).Concat(flashFields)
+                                                   .ToArray());
+            }
         }
         private byte[] ConvertToArray(string param)
         {
-
             return Encoding.ASCII.GetBytes(param);
         }
-
 
         public override void DimLeds(bool dimLeds)
         {
@@ -308,15 +380,75 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
             {
                 return;
             }
-            _serialCommunication.Send(ConvertToArray("CLC001"));
-            _serialCommunication.Send(ConvertToArray(_startReadingCmd));
-            _serialCommunication.Send(ConvertToArray("RP"));
-           
+            _currentColor = Fields.COLOR_WHITE;
+            lock (_lock)
+            {
+                _serialCommunication.Send(ConvertToArray(_startReadingCmd));
+                _serialCommunication.Send(ConvertToArray(_requestPosition));
+                _serialCommunication.Send(ConvertToArray(_requestHardwareVersion));
+            }
         }
 
         public override void SendInformation(string message)
         {
-           //
+
+        }
+
+        public override void AdditionalInformation(string information)
+        {
+            var strings = information.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+            if (strings.Length == 0)
+            {
+                return;
+            }
+
+            if (strings[0].StartsWith("45", StringComparison.InvariantCultureIgnoreCase))
+            {
+                byte[] startCode = StringToByteArray(string.Join("", strings));
+                _serialCommunication.Send(startCode);
+                return;
+            }
+       
+
+            if (strings[0].StartsWith("DIM:", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var array = strings[1].Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+                string dim = int.Parse(array[0]).ToString("X");
+                array = strings[2].Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+                string red = int.Parse(array[1]).ToString("X");
+
+                array = strings[3].Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+                string green = int.Parse(array[1]).ToString("X");
+
+                array = strings[4].Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+                string blue = int.Parse(array[1]).ToString("X");
+
+                array = strings[5].Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+                bool flash = array[1].ToUpper().StartsWith("T");
+
+                array = strings[6].Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+                string clear = array[1];
+                List<string> fieldNames = new List<string>();
+                for (int i = 7; i < strings.Length; i++)
+                {
+                    fieldNames.Add(strings[i]);
+                }
+                lock (_lock)
+                {
+                    SetLedForFields(fieldNames.ToArray(), $"{red}{green}{blue}",flash, dim, clear.Equals("0"));
+                }
+            }
+
+            if (strings[0].StartsWith("SCORE:", StringComparison.InvariantCultureIgnoreCase))
+            {
+                _currentEval = strings[1];
+            }
+        }
+
+        private string ConvertFromRead(string data)
+        {
+            var i = Convert.ToInt32(data, 16);
+            return Encoding.ASCII.GetString(new byte[] { (byte)i });
         }
 
         public override void RequestDump()
@@ -341,10 +473,29 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
             var allData = dataFromBoard.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < allData.Length; i++)
             {
-                if (allData[i].Equals("3D") && _allIndex==0)
+                if (allData[i].Equals("3D") )
+                {
+                    _readingCmdStart = true;
+                    continue;
+                }
+                if (allData[i].Equals("70") && _readingCmdStart)
                 {
                     _readingPosition = true;
+                    _readingCmdStart = false;
                     continue;
+                }
+                if (allData[i].Equals("68") && _readingCmdStart)
+                {
+                    _readingCmdStart = false;
+                    string pLine = "";
+                    for (int j = i+1; j < allData.Length; j++)
+                    {
+                        pLine += ConvertFromRead(allData[j]);
+                    }
+
+                    Information += " " + pLine;
+                    return new DataFromBoard(_lastResult, dataFromBoard.Repeated);
+                    
                 }
                 if (_allIndex < _allData.Length)
                 {
@@ -405,7 +556,12 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
         protected override void SetToNewGame()
         {
-            _serialCommunication.Send(ConvertToArray("RP"));
+            lock (_lock)
+            {
+                _serialCommunication.Send(ConvertToArray("RP"));
+            }
+
+            _currentColor = Fields.COLOR_WHITE;
             //_serialCommunication.Send(ConvertToArray("RH"));
         }
 
@@ -469,5 +625,208 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
             return result + "/";
         }
+
+        private void ShowCurrentColorInfos()
+        {
+            string red = _showCurrentColor ? _extendedConfiguration.RGBCurrentColor[0].ToString() : "0";
+            string green = _showCurrentColor ? _extendedConfiguration.RGBCurrentColor[1].ToString() : "0";
+            string blue = _showCurrentColor ? _extendedConfiguration.RGBCurrentColor[2].ToString() : "0";
+            string flash = _showCurrentColor && _extendedConfiguration.FlashCurrentColor ? "F" : "0";
+            string[] allLEDsOff = new string[_allLEDSOff.Length];
+            _allLEDSOff.CopyTo(allLEDsOff, 0);
+            if (_showCurrentColor)
+            {
+                allLEDsOff[9] = _currentColor == Fields.COLOR_WHITE ? $"80" : $"00";
+                allLEDsOff[0] = _currentColor == Fields.COLOR_WHITE ? $"00" : $"80";
+            }
+
+            byte[] startCode = ConvertToArray(_advancedColor);
+            byte[] fieldLEDS = StringToByteArray(string.Join("", allLEDsOff));
+
+            byte[] colorFieldsMove = StringToByteArray(string.Join("", $"{_dimLevel}{red}", $"{green}{blue}"));
+            byte[] flashFields = StringToByteArray(string.Join("", $"{flash}1", "FF"));
+
+            lock (_lock)
+            {
+                _logger.LogDebug("Send for current color infos");
+                _serialCommunication.Send(startCode.Concat(colorFieldsMove).Concat(fieldLEDS).Concat(flashFields)
+                    .ToArray());
+            }
+
+       
+
+            //if (!_showEvaluationValue || _currentColor != Fields.COLOR_WHITE)
+            if (!_showEvaluationValue )
+            {
+                return;
+            }
+
+            Thread.Sleep(100);
+            if (decimal.TryParse(_currentEval.Replace(".", ","), out decimal eval))
+            {
+                if (eval > 0)
+                {
+                    red = _extendedConfiguration.RGBEvalAdvantage[0].ToString();
+                    green = _extendedConfiguration.RGBEvalAdvantage[1].ToString();
+                    blue = _extendedConfiguration.RGBEvalAdvantage[2].ToString();
+                    flash = _showCurrentColor && _extendedConfiguration.FlashEvalAdvantage ? "F" : "0";
+                }
+                else
+                {
+                    red = _extendedConfiguration.RGBEvalDisAdvantage[0].ToString();
+                    green = _extendedConfiguration.RGBEvalDisAdvantage[1].ToString();
+                    blue = _extendedConfiguration.RGBEvalDisAdvantage[2].ToString();
+                    flash = _showCurrentColor && _extendedConfiguration.FlashEvalDisAdvantage ? "F" : "0";
+                }
+                byte[] colorFieldsOff = StringToByteArray(string.Join("", $"{_dimLevel}{red}", $"{green}{blue}"));
+                int number = 0;
+                if (eval < 0)
+                {
+                    if (eval <= -1)
+                    {
+                        number += 64;
+                    }
+
+                    if (eval <= -2)
+                    {
+                        number += 32;
+                    }
+
+                    if (eval <= -3)
+                    {
+                        number += 16;
+                    }
+
+                    if (eval <= -4)
+                    {
+                        number += 8;
+                    }
+
+                    if (eval <= -5)
+                    {
+                        number += 4;
+                    }
+
+                    if (eval <= -6)
+                    {
+                        number += 2;
+                    }
+
+                    if (eval <= -7)
+                    {
+                        number += 1;
+                    }
+                }
+                else
+                {
+                    if (eval >= 1)
+                    {
+                        number += 1;
+                    }
+
+                    if (eval >= 2)
+                    {
+                        number += 2;
+                    }
+
+                    if (eval >= 3)
+                    {
+                        number += 4;
+                    }
+
+                    if (eval >= 4)
+                    {
+                        number += 8;
+                    }
+
+                    if (eval >= 5)
+                    {
+                        number += 16;
+                    }
+
+                    if (eval >= 6)
+                    {
+                        number += 32;
+                    }
+
+                    if (eval >= 7)
+                    {
+                        number += 64;
+                    }
+                }
+
+                if (_currentColor == Fields.COLOR_WHITE)
+                {
+                    allLEDsOff[9] = number.ToString("X2");
+                }
+                else
+                {
+                    allLEDsOff[0] = number.ToString("X2");
+                }
+                fieldLEDS = StringToByteArray(string.Join("", allLEDsOff));
+                byte[] flashFieldsAdd = StringToByteArray(string.Join("", $"{flash}0", "FF"));
+                lock (_lock)
+                {
+                    _serialCommunication.Send(startCode.Concat(colorFieldsOff).Concat(fieldLEDS).Concat(flashFieldsAdd)
+                        .ToArray());
+                }
+            }
+        }
+
+        private void SetLedForFields(string[] fieldNames, string rgbCode, bool flash, string dimLevel, bool addLEDs)
+        {
+            if (fieldNames.Length == 0)
+            {
+                return;
+            }
+            string[] allLEDsOff = new string[_allLEDSOff.Length];
+            _allLEDSOff.CopyTo(allLEDsOff, 0);
+            int[] sumCols = { 0, 0, 0, 0, 0, 0, 0, 0 };
+            foreach (var fieldName in fieldNames)
+            {
+                if (fieldName == "CC")
+                {
+                    allLEDsOff[9] = "80";
+                    break;
+                }
+                if (fieldName == "AD")
+                {
+                    allLEDsOff[9] = "3F";
+                    break;
+                }
+                if (fieldName == "DA")
+                {
+                    allLEDsOff[9] = "7E";
+                    break;
+                }
+                var fieldNumber = Fields.GetFieldNumber(fieldName);
+                var row = Fields.GetRow(fieldNumber);
+                Fields.Lines line = Fields.GetLine(fieldNumber);
+                sumCols[row - 1] += _linesToCol[line];
+            }
+            
+            allLEDsOff[8] = $"{sumCols[0]:X2}";
+            allLEDsOff[7] = $"{sumCols[1]:X2}";
+            allLEDsOff[6] = $"{sumCols[2]:X2}";
+            allLEDsOff[5] = $"{sumCols[3]:X2}";
+            allLEDsOff[4] = $"{sumCols[4]:X2}";
+            allLEDsOff[3] = $"{sumCols[5]:X2}";
+            allLEDsOff[2] = $"{sumCols[6]:X2}";
+            allLEDsOff[1] = $"{sumCols[7]:X2}";
+           
+            byte[] startCode = ConvertToArray(_advancedColor);
+            byte[] fieldLEDS = StringToByteArray(string.Join("", allLEDsOff));
+            byte[] colorFields = StringToByteArray(string.Join("", $"{dimLevel}{rgbCode[0]}", $"{rgbCode[1]}{rgbCode[2]}"));
+            string flashCode = flash ? "F" : "0";
+            string clear = addLEDs ? "0" : "1";
+            byte[] flashFields = StringToByteArray(string.Join("", $"{flashCode}{clear}", "FF"));
+            lock (_lock)
+            {
+                _logger.LogDebug("Send for fields " + string.Join(" ", fieldNames));
+                _serialCommunication.Send(startCode.Concat(colorFields).Concat(fieldLEDS).Concat(flashFields).ToArray());
+            }
+
+        }
+
     }
 }

@@ -9,6 +9,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public const int FA1 = 21;
         public const int FH8 = 98;
+        public int CurrentColor => _bearChessBoard.CurrentColor;
 
         public InternalChessBoard()
         {

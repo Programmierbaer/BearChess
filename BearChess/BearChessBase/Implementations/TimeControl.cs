@@ -3,6 +3,8 @@ using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
+
+
     [Serializable]
     public class TimeControl
     {

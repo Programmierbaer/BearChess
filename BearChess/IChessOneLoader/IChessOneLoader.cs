@@ -7,7 +7,12 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneLoader
 {
     public class IChessOneLoader : AbstractLoader
     {
-        private const string EBoardName = Constants.IChessOne;
+        public const string EBoardName = Constants.IChessOne;
+
+        public IChessOneLoader() : base(EBoardName)
+        {
+            
+        }
 
         public IChessOneLoader(bool check, string name) : base(check, name)
         {
@@ -24,7 +29,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneLoader
                 return new IChessOneImpl(Name, basePath);
             }
 
-            var eBoardWrapper = new IChessOneImpl(Name, basePath, configuration.PortName, configuration.UseBluetooth);
+            var eBoardWrapper = new IChessOneImpl(Name, basePath, configuration);
             return eBoardWrapper;
         }
 

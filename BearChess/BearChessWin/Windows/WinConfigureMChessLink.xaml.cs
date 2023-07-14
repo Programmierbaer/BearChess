@@ -41,6 +41,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             try
             {
                 _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "MChessLinkCfg.log"), 10, 10);
+                _fileLogger.Active = bool.Parse(configuration.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {
@@ -48,6 +49,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseChesstimation = useChesstimation;
+            checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
             if (useBluetoothClassic || useBluetoothLE) 
             { 
 
@@ -131,6 +133,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
             _eChessBoardConfiguration.ScanTime = (int)sliderScanTime.Value;
             _eChessBoardConfiguration.Debounce = (int)sliderDebounce.Value;
+            _eChessBoardConfiguration.ShowMoveLine = checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }

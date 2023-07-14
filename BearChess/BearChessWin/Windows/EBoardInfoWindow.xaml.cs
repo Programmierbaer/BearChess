@@ -85,7 +85,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 dataFromBoard.FromBoard.Split(",".ToCharArray()), "P");
                         });
 
-                        if (!dataFromBoard.BasePosition)
+                        //if (!dataFromBoard.BasePosition)
                         {
                             _eChessBoard.RequestDump();
                         }

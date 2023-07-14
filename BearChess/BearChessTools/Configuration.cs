@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Xml.Serialization;
 using InTheHand.Net;
-using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;

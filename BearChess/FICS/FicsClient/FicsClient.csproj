@@ -47,7 +47,6 @@
     <Compile Include="FICSClient.cs" />
     <Compile Include="FicsGameAd.cs" />
     <Compile Include="FicsNewGameInfo.cs" />
-    <Compile Include="FicsTimeControl.cs" />
     <Compile Include="FicsUser.cs" />
     <Compile Include="IFICSClient.cs" />
     <Compile Include="ITelnetClient.cs" />
@@ -63,6 +62,10 @@
     <ProjectReference Include="..\..\BearChessCommunication\BearChessCommunication.csproj">
       <Project>{a8118cc3-827d-4635-8613-345b190ee763}</Project>
       <Name>BearChessCommunication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BearChessTools\BearChessTools.csproj">
+      <Project>{58eab818-7176-4ba9-a62a-ac2f27b089ae}</Project>
+      <Name>BearChessTools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

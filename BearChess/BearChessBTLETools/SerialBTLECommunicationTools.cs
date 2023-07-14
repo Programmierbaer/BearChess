@@ -13,14 +13,14 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
         private static DeviceWatcher _deviceWatcher;
         private static ILogging _logger;
-        private static string _deviceName;
+        private static string[] _deviceNames;
 
-        public static bool StartWatching(ILogging logger, string deviceName)
+        public static bool StartWatching(ILogging logger, string[] deviceNames)
         {
             try
             {
                 _logger = logger;
-                _deviceName = deviceName;
+                _deviceNames = new List<string>(deviceNames).ToArray();
                 if (DeviceIdList == null)
                 {
                     DeviceIdList = new List<string>();
@@ -130,12 +130,13 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 allDevices[deviceInfo.Id] = deviceInfo;
                 if (!string.IsNullOrWhiteSpace(deviceInfo.Name))
                 {
-                    if (deviceInfo.Name.StartsWith(_deviceName, StringComparison.OrdinalIgnoreCase))
+                    foreach (string deviceName in _deviceNames)
                     {
-                        DeviceIdList.Add(deviceInfo.Id);
-                        
+                        if (deviceInfo.Name.StartsWith(deviceName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            DeviceIdList.Add(deviceInfo.Id);
+                        }
                     }
-                   
                 }
             }
         }

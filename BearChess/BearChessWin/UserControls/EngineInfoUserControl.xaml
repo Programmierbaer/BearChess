@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
              mc:Ignorable="d" Background="AliceBlue"
              d:DesignHeight="150" d:DesignWidth="670">
-    <Border BorderThickness="1" BorderBrush="Gray">
+    <Border Name="borderAll" BorderThickness="1" BorderBrush="Gray">
         <StackPanel Name="stackPanelMain">
             <DockPanel LastChildFill="False">
                 <Grid DockPanel.Dock="Left">

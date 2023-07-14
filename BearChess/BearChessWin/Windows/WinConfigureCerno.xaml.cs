@@ -47,12 +47,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             try
             {
                 _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "CernoCfg.log"), 10, 10);
+                _fileLogger.Active = bool.Parse(configuration.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {
                 _fileLogger = null;
             }
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
+            checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
             _allPortNames = new List<string> { "<auto>" };
             if (_useBluetooth)
             {
@@ -71,7 +73,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                _portNames = SerialCommunicationTools.GetPortNames(string.Empty).ToList();
+                _portNames = SerialCommunicationTools.GetPortNames("Silicon Labs").ToList();
             }
 
             _portNames.ForEach(f => _allPortNames.Add(f));
@@ -94,6 +96,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
+            _eChessBoardConfiguration.ShowMoveLine = checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }

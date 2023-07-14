@@ -47,6 +47,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             try
             {
                 _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "DGTCfg.log"), 10, 10);
+                _fileLogger.Active = bool.Parse(configuration.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {

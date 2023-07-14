@@ -117,21 +117,31 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         /// <inheritdoc />
-        public void ShowMove(string allMoves, string startFenPosition, string promote, bool waitFor)
+       
+
+        public void ShowMove(string allMoves, string fenStartPosition, SetLedsParameter setLedsParameter, bool waitFor)
         {
-            _eChessBoard.ShowMove(allMoves, startFenPosition, promote, waitFor);
+            _eChessBoard.ShowMove(allMoves,fenStartPosition, setLedsParameter, waitFor);
         }
 
-        /// <inheritdoc />
-        public void ShowMove(string fromField, string toField, string promote, string displayString)
+        public void ShowMove(SetLedsParameter setLedsParameter)
         {
-            _eChessBoard.ShowMove(fromField, toField, promote, displayString);
+            _eChessBoard.ShowMove(setLedsParameter);
         }
 
         /// <inheritdoc />
         public void SetLedsFor(string[] fields, bool thinking)
         {
-            _eChessBoard.SetLedsFor(fields, thinking);
+            _eChessBoard.SetLedsFor(new SetLedsParameter()
+                                    {
+                                        FieldNames = fields,
+                                        Thinking = thinking
+                                    } );
+        }
+
+        public void SetLedsFor(SetLedsParameter setLedsParameter)
+        {
+            _eChessBoard.SetLedsFor(setLedsParameter);
         }
 
 
@@ -208,6 +218,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void SendInformation(string message)
         {
             _eChessBoard.SendInformation(message);
+        }
+
+        public void AdditionalInformation(string information)
+        {
+            _eChessBoard.AdditionalInformation(information);
         }
 
         public void SendCommand(string command)

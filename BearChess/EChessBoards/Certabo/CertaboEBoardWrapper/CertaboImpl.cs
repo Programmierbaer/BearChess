@@ -6,15 +6,20 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
     public class CertaboImpl : AbstractEBoardWrapper
     {
 
-
         public CertaboImpl(string name, string basePath) : base(name, basePath)
         {
         }
 
         public CertaboImpl(string name, string basePath, string comPortName, bool useBluetooth, bool useChesstimation) : base(
-            name, basePath, comPortName, string.Empty, useBluetooth, true, false, false, useChesstimation)
+            name, basePath, comPortName, string.Empty, useBluetooth, true, false, false, useChesstimation, null)
         {
 
+        }
+
+        public CertaboImpl(string name, string basePath, EChessBoardConfiguration configuration) :
+            base(name, basePath, configuration)
+        {
+            
         }
 
         public override void SetScanTime(int scanTime)
@@ -35,8 +40,9 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new CertaboChessBoard.EChessBoard(basePath: _basePath,logger: _fileLogger, 
-                                   portName: _comPortName, _useBluetooth, UseChesstimation);
+            //return new CertaboChessBoard.EChessBoard(basePath: _basePath,logger: _fileLogger, 
+            //                       portName: _comPortName, _useBluetooth, UseChesstimation);
+            return new CertaboChessBoard.EChessBoard(_basePath, _fileLogger, _configuration, UseChesstimation);
         }
 
         protected override IEBoard GetEBoard(bool check)

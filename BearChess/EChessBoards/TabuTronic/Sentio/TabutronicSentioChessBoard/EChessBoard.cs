@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
@@ -72,7 +73,13 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
         private readonly object _lockThinking = new object();
         private bool _beginHelpRequested;
         private int _helpRequestedField;
+        private readonly bool _showMoveLine;
 
+        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration) :
+            this(basePath, logger, configuration.PortName, configuration.UseBluetooth)
+        {
+            _showMoveLine = configuration.ShowMoveLine;
+        }
         public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth)
         {
             _useBluetooth = useBluetooth;
@@ -217,20 +224,29 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                 }
                 else
                 {
-                    if (_requiredLeds.Count > 0)
+                    lock (_locker)
                     {
-                        byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
-                        Array.Copy(AllOff, result, AllOff.Length);
-
-                        foreach (string fieldName in _requiredLeds)
+                        if (_requiredLeds.Count > 0)
                         {
-                            result = UpdateLedsForField(fieldName, result);
-                        }
-                        Array.Copy(result, _lastSendBytes, result.Length);
-                        if (!result.SequenceEqual(_lastSend))
-                        {
-                            _lastSend = result;
-                            _serialCommunication.Send(result);
+                            byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
+                            Array.Copy(AllOff, result, AllOff.Length);
+                            try
+                            {
+                                foreach (string fieldName in _requiredLeds)
+                                {
+                                    result = UpdateLedsForField(fieldName, result);
+                                }
+                            }
+                            catch
+                            {
+                                //
+                            }
+                            Array.Copy(result, _lastSendBytes, result.Length);
+                            if (!result.SequenceEqual(_lastSend))
+                            {
+                                _lastSend = result;
+                                _serialCommunication.Send(result);
+                            }
                         }
                     }
                 }
@@ -277,16 +293,16 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             }
         }
 
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
             if (!EnsureConnection())
             {
                 return;
             }
-            
+
             lock (_locker)
             {
-                if (!thinking)
+                if (!setLedsParameter.Thinking)
                 {
                     lock (_lockThinking)
                     {
@@ -297,50 +313,49 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                         }
                     }
                 }
-                if (fieldNames.Length > 1)
+                if (setLedsParameter.FieldNames.Length > 1)
                 {
-                    if (thinking)
+                    if (setLedsParameter.Thinking)
                     {
                         lock (_lockThinking)
                         {
                             _thinkingLeds.Clear();
-                            _thinkingLeds.Add(fieldNames[0]);
-                            _thinkingLeds.Add(fieldNames[1]);
+                            _thinkingLeds.Add(setLedsParameter.FieldNames[0]);
+                            _thinkingLeds.Add(setLedsParameter.FieldNames[1]);
                             return;
                         }
                     }
                     _requiredLeds.Clear();
-                    string m = $"{fieldNames[0]}{fieldNames[1]}";
+                    string m = $"{setLedsParameter.FieldNames[0]}{setLedsParameter.FieldNames[1]}";
                     _logger?.LogDebug($"Set LEDs for {m}  Last move was: {_lastMove}");
                     if (m.Equals(_lastMove))
                     {
                         return;
                     }
-                   
-                    var fieldNumberFrom = Fields.GetFieldNumber(fieldNames[0]);
-                    var fieldNumberTo = Fields.GetFieldNumber(fieldNames[1]);
+                    var fieldNumberFrom = Fields.GetFieldNumber(setLedsParameter.FieldNames[0]);
+                    var fieldNumberTo = Fields.GetFieldNumber(setLedsParameter.FieldNames[1]);
                     if (_chessBoard.MoveIsValid(fieldNumberFrom, fieldNumberTo))
                     {
-                        _requiredLeds.Add(fieldNames[0]);
-                        _requiredLeds.Add(fieldNames[1]);
+                        if (_showMoveLine)
+                        {
+                            string[] moveLine = MoveLineHelper.GetMoveLine(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1]);
+                            foreach (var ml in moveLine)
+                            {
+                                _requiredLeds.Add(ml);
+                            }
+                        }
+                        else
+                        {
+                            _requiredLeds.Add(setLedsParameter.FieldNames[0]);
+                            _requiredLeds.Add(setLedsParameter.FieldNames[1]);
+                        }
+
                         _takeBackLeds.Clear();
                     }
                 }
             }
         }
-
-        public override void SetLastLeds()
-        {
-            if (!EnsureConnection())
-            {
-                return;
-            }
-
-            lock (_locker)
-            {
-                _serialCommunication.Send(_lastSendBytes);
-            }
-        }
+       
 
         public override void SetAllLedsOff()
         {
@@ -411,6 +426,11 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
         }
 
         public override void SendInformation(string message)
+        {
+            //
+        }
+
+        public override void AdditionalInformation(string information)
         {
             //
         }

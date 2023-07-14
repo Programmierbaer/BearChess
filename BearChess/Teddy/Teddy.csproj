@@ -77,6 +77,10 @@
       <Project>{A6BCDC78-1EDC-40C7-936F-880423360BA3}</Project>
       <Name>BearChessEChessBoard</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BearChessTools\BearChessTools.csproj">
+      <Project>{58eab818-7176-4ba9-a62a-ac2f27b089ae}</Project>
+      <Name>BearChessTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EChessBoards\CommonUciWrapper\CommonUciWrapper.csproj">
       <Project>{66ab214e-2281-4d97-99c7-b54b0e31df1a}</Project>
       <Name>CommonUciWrapper</Name>

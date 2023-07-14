@@ -60,7 +60,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     imageChessnutAir.Visibility = Visibility.Visible;
                 } 
                 
-                if (chessBoardInfo.Equals(Constants.IChessOne))
+                if (chessBoardInfo.StartsWith(Constants.IChessOne))
                 {
                     imageIChessOne.Visibility = Visibility.Visible;
                 }

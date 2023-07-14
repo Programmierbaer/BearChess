@@ -19,6 +19,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public int ScanTime { get; set; }
         public int Debounce { get; set; }
         public bool UseChesstimation { get; set; }
+        public bool ShowMoveLine { get; set; }
+
+        [XmlArray]
+        public ExtendedEChessBoardConfiguration[] ExtendedConfig { get; set; }
 
         public EChessBoardConfiguration()
         {
@@ -32,6 +36,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             Debounce = 0; // Default for ChessLink
             Baud = "1200";
             UseChesstimation = false;
+            ShowMoveLine = false;
+            ExtendedConfig = new ExtendedEChessBoardConfiguration[]
+                             {
+                                 new ExtendedEChessBoardConfiguration()
+                                 {
+                                     Name = "BearChess",
+                                     IsCurrent = true
+                                 }
+                             };
         }
 
         public static EChessBoardConfiguration Load(string fileName)
@@ -59,10 +72,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.ScanTime = savedConfig.ScanTime;
                     configuration.Debounce = savedConfig.Debounce;
                     configuration.UseChesstimation = savedConfig.UseChesstimation;
+                    configuration.ShowMoveLine = savedConfig.ShowMoveLine;
+                   
                     if (configuration.DimLevel < 0)
                     {
                         configuration.DimLevel = configuration.DimLeds ? 0 : 14;
                     }
+                    configuration.ExtendedConfig = savedConfig.ExtendedConfig;
                 }
                 else
                 {

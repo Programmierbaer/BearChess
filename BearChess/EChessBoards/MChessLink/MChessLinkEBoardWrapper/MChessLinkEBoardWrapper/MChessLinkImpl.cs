@@ -16,7 +16,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         {
          
         }
+        public MChessLinkImpl(string name, string basePath, EChessBoardConfiguration configuration) :
+            base(name, basePath, configuration)
+        {
 
+        }
 
         public override void SetScanTime(int scanTime)
         {
@@ -39,7 +43,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         /// <inheritdoc />
         protected override IEBoard GetEBoard()
         {
-            return new MChessLinkChessBoard.EChessBoard(_fileLogger, _comPortName, UseChesstimation);
+           // return new MChessLinkChessBoard.EChessBoard(_fileLogger, _comPortName, UseChesstimation);
+            return new MChessLinkChessBoard.EChessBoard( _fileLogger, _configuration, UseChesstimation);
         }
 
         protected override IEBoard GetEBoard(bool check)

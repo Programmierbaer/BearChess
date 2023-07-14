@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         Icon="../Assets/Icons/Millennium ChessLink.png"
-        Title="Configure Millennium ChessLink" Height="580" Width="390" SizeToContent="WidthAndHeight">
+        Title="Configure Millennium ChessLink" Height="600" Width="390" SizeToContent="WidthAndHeight">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -184,6 +184,9 @@
                     <TextBlock VerticalAlignment="Center">reset to default with 16.3 scans per sec</TextBlock>
                 </StackPanel>
             </StackPanel>
+        </Border>
+        <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" >
+            <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
         </Border>
         <Border Name="borderChesstimation" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" IsEnabled="False">
             <StackPanel Orientation="Vertical">

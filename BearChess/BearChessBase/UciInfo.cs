@@ -6,6 +6,9 @@ using System.Xml.Serialization;
 
 namespace www.SoLaNoSoft.com.BearChessBase
 {
+
+    
+
     [Serializable]
     public class UciInfo
     {

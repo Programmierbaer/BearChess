@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -250,23 +251,22 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             return CheckComPort(portName);
         }
 
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
 
-            if (fieldNames == null || fieldNames.Length == 0)
+            if (setLedsParameter.FieldNames == null || setLedsParameter.FieldNames.Length == 0)
             {
                 return;
             }
             List<byte> allBytes = new List<byte>();
-            var fieldNamesLength = fieldNames.Length;
-            string sendFields = string.Join(" ", fieldNames);
+            string sendFields = string.Join(" ", setLedsParameter.FieldNames);
             if (sendFields.Equals(_lastSendFields))
             {
                 return;
             }
 
             _lastSendFields = sendFields;
-            _logger?.LogDebug($"DGT: Set LED for fields: {_lastSendFields} Thinking: {thinking}");
+            _logger?.LogDebug($"DGT: Set LED for fields: {_lastSendFields} Thinking: {setLedsParameter.Thinking}");
 
             //if (thinking && fieldNamesLength > 1)
             //{
@@ -274,19 +274,19 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             //    SetLedForFields(new string[] { fieldNames[1], fieldNames[1] }, thinking, isMove, displayString);
             //    return;
             //}
-          
+
             allBytes.Add(0x60);
             allBytes.Add(0x04);
             allBytes.Add(0x01);
-            string fieldName = fieldNames[0];
+            string fieldName = setLedsParameter.FieldNames[0];
             if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
             {
                 allBytes.Add(_fieldName2FieldByte[fieldName.ToUpper()]);
             }
 
-            if (fieldNames.Length > 1)
+            if (setLedsParameter.FieldNames.Length > 1)
             {
-                fieldName = fieldNames[1];
+                fieldName = setLedsParameter.FieldNames[1];
             }
             if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
             {
@@ -294,24 +294,17 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             }
             allBytes.Add(0);
             _serialCommunication.Send(allBytes.ToArray());
-            if (isMove && fieldNames.Length==2)
+            if (setLedsParameter.IsMove && setLedsParameter.FieldNames.Length == 2)
             {
-                SendDisplayToClock(displayString);
+                SendDisplayToClock(setLedsParameter.DisplayString);
             }
             if (_useBluetooth)
             {
                 _serialCommunication.Send(_batteryState);
             }
-            //if (string.IsNullOrWhiteSpace(Information))
-            //{
-            //    _serialCommunication.Send(_requestTrademark);
-            //}
         }
 
-        public override void SetLastLeds()
-        {
-            //
-        }
+       
 
         public override void SetAllLedsOff()
         {
@@ -321,8 +314,17 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
 
         public override void SetAllLedsOn()
         {
-            SetLedForFields("A1","H8",string.Empty, false,false, string.Empty);
-            SetLedForFields("A8","H1",string.Empty, false,false, string.Empty);
+
+            SetLedForFields(new SetLedsParameter()
+                            {
+                                FieldNames = new string[] { "A1", "H8" },
+
+                            });
+            SetLedForFields(new SetLedsParameter()
+                            {
+                                FieldNames = new string[] { "A8", "H1" },
+
+                            });
         }
 
         public override void DimLeds(bool dimLeds)
@@ -365,6 +367,11 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         public override void SendInformation(string message)
         {
             SendDisplayToClock(message);
+        }
+
+        public override void AdditionalInformation(string information)
+        {
+            //
         }
 
         public override void RequestDump()

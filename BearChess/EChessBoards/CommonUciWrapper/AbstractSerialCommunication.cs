@@ -265,7 +265,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     {
                         {
                             int counter = 0;
-                            if (SerialBTLECommunicationTools.StartWatching(_logger, "MILLENNIUM CHESS"))
+                            if (SerialBTLECommunicationTools.StartWatching(_logger, new string[]{"MILLENNIUM CHESS"}))
                             {
                                 _logger?.LogDebug("S: CheckConnect: Check for BTLE ");
                                 while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
@@ -413,7 +413,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (comPort.StartsWith("B"))
                     {
                         int counter = 0;
-                        if (SerialBTLECommunicationTools.StartWatching(_logger, "DGT_PEGASUS"))
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[]{"DGT_PEGASUS"}))
                         {
                             while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
                             {
@@ -450,7 +450,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (_useBluetooth && comPort.StartsWith("B"))
                     {
                         int counter = 0;
-                        if (SerialBTLECommunicationTools.StartWatching(_logger, "Chessnut Air"))
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "Chessnut Air" }))
                         {
                             while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
                             {
@@ -486,7 +486,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (_useBluetooth && comPort.StartsWith("B"))
                     {
                         int counter = 0;
-                        if (SerialBTLECommunicationTools.StartWatching(_logger, "iChessOne"))
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "iChessOne" }))
                         {
                             while (SerialBTLECommunicationTools.DeviceIdList.Count == 0)
                             {
@@ -511,7 +511,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (comPort.StartsWith("B"))
                     {
                         int counter = 0;
-                        if (SerialBTLECommunicationTools.StartWatching(_logger, "Squareoff Pro"))
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "Squareoff Pro", "Square Off" }))
                         {
                             while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
                             {
@@ -537,7 +537,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (comPort.StartsWith("B"))
                     {
                         int counter = 0;
-                        if (SerialBTLECommunicationTools.StartWatching(_logger, "Square Off"))
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "Square Off" }))
                         {
                             while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
                             {

@@ -278,8 +278,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 UnloadUciEngines();
             }
 
-            var fileLogger =
-                new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
+            var fileLogger = new UciLogger(uciInfo.Name, Path.Combine(_uciPath, uciInfo.Id, uciInfo.Id + ".log"), 2, 10);
+            fileLogger.Active = bool.Parse(_configuration.GetConfigValue("writeLogFiles", "true"));
             UciLoader uciLoader = null;
             for (var i = 1; i < 4; i++)
             {
@@ -1243,14 +1243,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 EngineEvent?.Invoke(
                     this,
-                    new EngineEventArgs(e.Name, e.FromEngine, _loadedEngine.Color,true));
+                    new EngineEventArgs(e.Name, e.FromEngine, _loadedEngine.Color,true, false));
             }
 
             if (e.FromEngine.Contains(" pv "))
             {
                 EngineEvent?.Invoke(
                     this,
-                    new EngineEventArgs(e.Name, e.FromEngine, _loadedEngine.Color, true));
+                    new EngineEventArgs(e.Name, e.FromEngine, _loadedEngine.Color, true, false));
             }
         }
 

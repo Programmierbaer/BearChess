@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
@@ -14,13 +16,15 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
     {
         private readonly IChessBoard _chessBoard;
         private bool _withLeds = false;
+        private bool _stopLoop = false;
         private string _lastSendFields = string.Empty;
         private string _prevRead = string.Empty;
         private readonly string[] _fromField = {string.Empty,string.Empty};
         private string _toField = string.Empty;
         private string _lastFromField = string.Empty;
         private string _lastToField = string.Empty;
-      
+        private string _prevFieldNames = string.Empty;
+                                               
         private readonly string _basePosition = "1100001111000011110000111100001111000011110000111100001111000011";
 
         private readonly Dictionary<byte, string> _fieldByte2FieldName = new Dictionary<byte, string>()
@@ -78,12 +82,17 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
 
         private object _lastLogMessage;
+        private bool _dumpRequested;
+        private DataFromBoard _dumpDataFromBoard = new DataFromBoard(string.Empty);
+        private volatile int _dumpLoopWait;
+        private bool _boardSendUpDown;
 
         public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, string boardName)
         {
             _withLeds = boardName.Equals(Constants.SquareOffPro);
-            _serialCommunication = new SerialCommunication(new FileLogger(Path.Combine(basePath, "log", $"SC_1.log"), 10, 10), portName, useBluetooth,boardName);
+            _serialCommunication = new SerialCommunication(logger, portName, useBluetooth,boardName);
 
+            _boardSendUpDown = false;
             _logger = logger;
             BatteryLevel = "--";
             BatteryStatus = "";
@@ -93,12 +102,11 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             IsConnected = EnsureConnection();
             _serialCommunication.Send("14#1*");
             _serialCommunication.Send("4#*");
-            //_serialCommunication.Send(_resetBoard);
-            //_serialCommunication.Send(_startReading);
-            //_serialCommunication.Send(_requestTrademark);
+            _serialCommunication.Send("30#R*");
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
+            _dumpLoopWait = 1000;
             var requestDumpThread = new Thread(RequestADumpLoop) { IsBackground = true };
             requestDumpThread.Start();
         }
@@ -107,8 +115,11 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
         {
             while (!_stopAll)
             {
-                Thread.Sleep(1000);
-                RequestDump();
+                Thread.Sleep(_boardSendUpDown ? 1000 : _dumpLoopWait);
+                if (!_stopLoop)
+                {
+                    _serialCommunication.Send("30#R*");
+                }
             }
         }
 
@@ -123,6 +134,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             _fromField[0] = string.Empty;
             _fromField[1] = string.Empty;
             _toField = string.Empty;
+            _boardSendUpDown = false;
         }
         public override void Reset()
         {
@@ -143,15 +155,14 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             return true;
         }
 
-        public override void SetLedForFields(string[] fieldNames, string promote, bool thinking, bool isMove, string displayString)
+        public override void SetLedForFields(SetLedsParameter setLedsParameter)
         {
-            
-            if (fieldNames == null || fieldNames.Length == 0)
+            if (setLedsParameter.FieldNames == null || setLedsParameter.FieldNames.Length == 0)
             {
                 return;
             }
-            var fieldNamesLength = fieldNames.Length;
-            if (thinking && !_withLeds)
+            var fieldNamesLength = setLedsParameter.FieldNames.Length;
+            if (setLedsParameter.Thinking && !_withLeds)
             {
                 return;
             }
@@ -160,45 +171,56 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 return;
             }
             //_serialCommunication.Send($"25#e2e4*");
-            var sendFields = string.Join("", fieldNames);
-            _logger?.LogDebug($"SQ: Request set LED for fields: {sendFields} Thinking: {thinking}");
+            var sendFields = string.Join("", setLedsParameter.FieldNames);
+            _logger?.LogDebug($"SQ: Request set LED for fields: {sendFields} Thinking: {setLedsParameter.Thinking}");
             if (sendFields.Equals(_lastSendFields))
             {
                 _logger?.LogDebug($"SQ: Ignored equals last send {_lastSendFields}");
                 return;
             }
-            if (thinking && fieldNamesLength > 1)
+            if (setLedsParameter.Thinking && fieldNamesLength > 1)
             {
-                SetLedForFields(new[] { fieldNames[0] }, string.Empty, true, isMove, string.Empty);
-                SetLedForFields(new[] { fieldNames[1] }, string.Empty, true, isMove, string.Empty);
+
+                SetLedForFields(new SetLedsParameter()
+                                {
+                                    FieldNames = new[] { setLedsParameter.FieldNames[0] },
+                                    Promote = string.Empty,
+                                    Thinking = true,
+                                    IsMove = setLedsParameter.IsMove,
+                                    DisplayString = string.Empty
+
+                });
+                SetLedForFields(new SetLedsParameter()
+                                {
+                                    FieldNames = new[] { setLedsParameter.FieldNames[1] },
+                                    Promote = string.Empty,
+                                    Thinking = true,
+                                    IsMove = setLedsParameter.IsMove,
+                                    DisplayString = string.Empty
+
+                                });
                 return;
             }
-            
+
             _lastSendFields = sendFields;
             if (fieldNamesLength == 2 && _withLeds)
             {
-                if (_lastFromField.Equals(fieldNames[0], StringComparison.OrdinalIgnoreCase) &&
-                    _lastToField.Equals(fieldNames[1], StringComparison.OrdinalIgnoreCase))
+                if (_lastFromField.Equals(setLedsParameter.FieldNames[0], StringComparison.OrdinalIgnoreCase) &&
+                    _lastToField.Equals(setLedsParameter.FieldNames[1], StringComparison.OrdinalIgnoreCase))
                 {
                     _logger?.LogDebug($"SQ: Ignore set LED for fields: {_lastSendFields}: Equals last move {_lastFromField} {_lastToField}");
                     return;
                 }
-            
+
             }
-            _logger?.LogDebug($"SQ: Set LED for fields: {_lastSendFields} Thinking: {thinking}");
+            _logger?.LogDebug($"SQ: Set LED for fields: {_lastSendFields} Thinking: {setLedsParameter.Thinking}");
             _serialCommunication.Send($"25#{sendFields.ToLower()}*");
-            //_serialCommunication.Send("4#*");
-            //throw new NotImplementedException();
         }
-
-        public override void SetLastLeds()
-        {
-            //throw new NotImplementedException();
-        }
-
+     
         public override void SetAllLedsOff()
         {
            _serialCommunication.Send("25#*");
+           
         }
 
         public override void SetAllLedsOn()
@@ -218,7 +240,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         public override void SetScanTime(int scanTime)
         {
-            // Ignore
+            _dumpLoopWait = scanTime > 0 ? scanTime : 1000;
         }
 
         public override void SetDebounce(int debounce)
@@ -245,18 +267,33 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         public override void SendInformation(string message)
         {
-            //
+
+            
+        }
+
+        public override void AdditionalInformation(string information)
+        {
+            if (information.StartsWith("stop"))
+            {
+                _stopLoop = true;
+                return;
+            }
+            if (information.StartsWith("go"))
+            {
+                _stopLoop = false;
+                return;
+            }
+            _serialCommunication.Send(information);
         }
 
         public override void RequestDump()
         {
-            _serialCommunication.Send("30#R*");
+            _dumpRequested = true;
         }
 
         public override DataFromBoard GetPiecesFen()
         {
-            ulong repeated = 0;
-          
+           
             while (true)
             {
                 var dataFromBoard = _serialCommunication.GetFromBoard();
@@ -266,7 +303,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                     _prevRead = dataFromBoard.FromBoard;
                 }
 
-                repeated = dataFromBoard.Repeated;
+
                 if (dataFromBoard.FromBoard.Length == 0)
                 {
                     break;
@@ -274,6 +311,13 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
                 if (dataFromBoard.FromBoard.StartsWith("0#"))
                 {
+                    if (!_boardSendUpDown)
+                    {
+                        _fromField[0] = string.Empty;
+                        _fromField[1] = string.Empty;
+                        _toField = string.Empty;
+                    }
+                    _boardSendUpDown = true;
                     var fieldName = dataFromBoard.FromBoard.Substring(2, 2);
                     if (!PlayingWithWhite)
                     {
@@ -301,6 +345,11 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
                 if (dataFromBoard.FromBoard.StartsWith("14#"))
                 {
+                    break;
+                }
+                if (dataFromBoard.FromBoard.StartsWith("4#"))
+                {
+                    
                     break;
                 }
                 if (dataFromBoard.FromBoard.StartsWith("22#"))
@@ -334,13 +383,55 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
                     }
 
+                    var fromBoard = string.Join(",", dumpFields);
+                    if (!_boardSendUpDown && !_prevFieldNames.Equals(fromBoard))
+                    {
+                        if (!string.IsNullOrWhiteSpace(_prevFieldNames))
+                        {
+                            var fieldChanges = FieldChangeHelper.GetFieldChanges(_prevFieldNames, fromBoard);
+                            if (fieldChanges.RemovedFields.Length == 1)
+                            {
+                                if (!string.IsNullOrWhiteSpace(_fromField[0]) && !string.IsNullOrWhiteSpace(_fromField[1]))
+                                {
+                                    _fromField[0] = string.Empty;
+                                    _fromField[1] = string.Empty;
+                                    _toField = string.Empty;
+                                }
+                                fieldName = fieldChanges.RemovedFields[0];
+                                if (string.IsNullOrWhiteSpace(_fromField[0]))
+                                {
+                                    _fromField[0] = fieldName;
+                                }
+                                else
+                                {
+                                    _fromField[1] = fieldName;
+                                }
+                                _toField = string.Empty;
+                            }
+                            else
+                            {
+                                if (fieldChanges.AddedFields.Length == 1)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(_fromField[0]))
+                                        _toField = fieldChanges.AddedFields[0];
+                                }
+                            }
+                        }
+                        _prevFieldNames = fromBoard;
+                    }
+
                     if (isBasePosition)
                     {
                         BasePositionEvent?.Invoke(this, null);
                     }
-                    return new DataFromBoard(string.Join(",", dumpFields), 3)
-                           { IsFieldDump = true, BasePosition = isBasePosition };
-                    
+
+                    if (_dumpRequested)
+                    {
+                        _dumpRequested = false;
+
+                        _dumpDataFromBoard = new DataFromBoard(fromBoard, 3)
+                               { IsFieldDump = true, BasePosition = isBasePosition };
+                    }
                 }
                 break;
             }
@@ -427,7 +518,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         public override DataFromBoard GetDumpPiecesFen()
         {
-            return GetPiecesFen();
+            return _dumpDataFromBoard;
         }
 
         protected override void SetToNewGame()

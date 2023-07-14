@@ -930,7 +930,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageD1.Source = _piecesBitmaps[allFields.Contains("D1") ? figureCharacter : string.Empty];
             imageD2.Source = _piecesBitmaps[allFields.Contains("D2") ? figureCharacter : string.Empty];
             imageD3.Source = _piecesBitmaps[allFields.Contains("D3") ? figureCharacter : string.Empty];
-            imageD4.Source = _piecesBitmaps[allFields.Contains("D5") ? figureCharacter : string.Empty];
+            imageD4.Source = _piecesBitmaps[allFields.Contains("D4") ? figureCharacter : string.Empty];
+            imageD5.Source = _piecesBitmaps[allFields.Contains("D5") ? figureCharacter : string.Empty];
             imageD6.Source = _piecesBitmaps[allFields.Contains("D6") ? figureCharacter : string.Empty];
             imageD7.Source = _piecesBitmaps[allFields.Contains("D7") ? figureCharacter : string.Empty];
             imageD8.Source = _piecesBitmaps[allFields.Contains("D8") ? figureCharacter : string.Empty];

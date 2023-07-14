@@ -39,17 +39,18 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Shows the LED for the last move in <paramref name="allMoves"/>, limited by spaces.
         /// </summary>
-        void ShowMove(string allMoves, string fenStartPosition, string promote, bool waitFor);
+        void ShowMove(string allMoves, string fenStartPosition, SetLedsParameter setLedsParameter, bool waitFor);
 
         /// <summary>
         /// Show fields <paramref name="fromField"/> and <paramref name="toField"/> on board.
         /// </summary>
-        void ShowMove(string fromField, string toField, string promote, string displayString);
+        void ShowMove( SetLedsParameter setLedsParameter);
 
         /// <summary>
         /// Show all fields <paramref name="fields"/> on board.
         /// </summary>
-        void SetLedsFor(string[] fields, bool thinking);
+   
+        void SetLedsFor(SetLedsParameter setLedsParameter);
 
         /// <summary>
         /// All led off
@@ -113,6 +114,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         /// <param name="message"></param>
         void SendInformation(string message);
+        void AdditionalInformation(string information);
 
         void SendCommand(string command);
 

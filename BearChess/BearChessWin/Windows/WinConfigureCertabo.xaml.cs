@@ -48,6 +48,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             try
             {
                 _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "CertaboCfg.log"), 10, 10);
+                _fileLogger.Active = bool.Parse(configuration.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {
@@ -55,6 +56,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseChesstimation = useChesstimation;
+            checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
             _allPortNames = new List<string> { "<auto>" };
             if (_useBluetooth)
             {
@@ -102,7 +104,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
-            
+            _eChessBoardConfiguration.ShowMoveLine = checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }

@@ -21,8 +21,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         private bool _paused;
         private volatile bool _stopThread;
         private Thread _thread;
+        public LogLevel LogLevel { get; set; }
+        public bool Active { get; set; }
 
-     
+
         public FileLogger(string fileName, int historyCount, long maxFileSizeInMb)
         {
             _fileName = fileName;
@@ -118,9 +120,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _paused = false;
         }
 
-        public LogLevel LogLevel { get; set; }
-
-        public bool Active { get; set; }
 
 
         /// <inheritdoc />

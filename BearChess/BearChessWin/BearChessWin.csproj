@@ -365,6 +365,9 @@
     </Compile>
     <Compile Include="Helper\UciInstaller.cs" />
     <Compile Include="Helper\UciLoader.cs" />
+    <Compile Include="Windows\WinConfigureBearChess.xaml.cs">
+      <DependentUpon>WinConfigureBearChess.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\WinConfigureCerno.xaml.cs">
       <DependentUpon>WinConfigureCerno.xaml</DependentUpon>
     </Compile>
@@ -377,6 +380,9 @@
     <Compile Include="Windows\WinConfigureDGT.xaml.cs">
       <DependentUpon>WinConfigureDGT.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\WinConfigureIChessOne.xaml.cs">
+      <DependentUpon>WinConfigureIChessOne.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\WinConfigureMChessLink.xaml.cs">
       <DependentUpon>WinConfigureMChessLink.xaml</DependentUpon>
     </Compile>
@@ -385,6 +391,9 @@
     </Compile>
     <Compile Include="Windows\WinConfigureSentio.xaml.cs">
       <DependentUpon>WinConfigureSentio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WinConfigureSquareOff.xaml.cs">
+      <DependentUpon>WinConfigureSquareOff.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\WinConfigureUCB.xaml.cs">
       <DependentUpon>WinConfigureUCB.xaml</DependentUpon>
@@ -702,6 +711,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\WinConfigureBearChess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\WinConfigureCerno.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -718,6 +731,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\WinConfigureIChessOne.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\WinConfigureMChessLink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -727,6 +744,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\WinConfigureSentio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WinConfigureSquareOff.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1578,6 +1599,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\file_extension_html.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\bullet_blue.png" />
+    <Resource Include="Assets\Icons\bullet_green.png" />
+    <Resource Include="Assets\Icons\bullet_red.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

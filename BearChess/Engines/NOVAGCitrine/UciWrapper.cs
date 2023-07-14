@@ -6,6 +6,7 @@ using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChess.NOVAGCitrine
 {
@@ -30,6 +31,7 @@ namespace www.SoLaNoSoft.com.BearChess.NOVAGCitrine
                 var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                                            Constants.BearChess, Constants.Citrine);
                 _fileLogger = new FileLogger(Path.Combine(logPath, "NOVAGCitrineUci.log"), 10, 100);
+                _fileLogger.Active = bool.Parse(Configuration.Instance.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {
@@ -189,10 +191,14 @@ namespace www.SoLaNoSoft.com.BearChess.NOVAGCitrine
 
                         if (!string.IsNullOrWhiteSpace(_lastMoveCommand))
                         {
-                            _eChessBoard.ShowMove(_lastMoveCommand.Substring(0, 2),
-                                                  _lastMoveCommand.Substring(3, 2),
-                                                  string.Empty,
-                                                  string.Empty);
+                            _eChessBoard.ShowMove(new SetLedsParameter()
+                                                  {
+                                                      FieldNames = new string[]
+                                                                   {
+                                                                       _lastMoveCommand.Substring(0, 2),
+                                                                       _lastMoveCommand.Substring(3, 2)
+                                                                   }
+                                                  });
                             _lastMoveCommand = _lastMoveCommand.Replace("-", string.Empty);
                         }
                         if (!_eChessBoard.PlayingWithWhite)

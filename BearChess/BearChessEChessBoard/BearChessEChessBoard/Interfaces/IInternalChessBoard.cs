@@ -2,6 +2,8 @@
 {
     public interface IInternalChessBoard
     {
+        int CurrentColor { get; }
+
         /// <summary>
         /// Set the board position given by <paramref name="fenPosition"/>.
         /// </summary>
