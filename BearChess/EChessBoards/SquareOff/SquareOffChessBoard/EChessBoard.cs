@@ -155,14 +155,14 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             return true;
         }
 
-        public override void SetLedForFields(SetLedsParameter setLedsParameter)
+        public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
-            if (setLedsParameter.FieldNames == null || setLedsParameter.FieldNames.Length == 0)
+            if (ledsParameter.FieldNames == null || ledsParameter.FieldNames.Length == 0)
             {
                 return;
             }
-            var fieldNamesLength = setLedsParameter.FieldNames.Length;
-            if (setLedsParameter.Thinking && !_withLeds)
+            var fieldNamesLength = ledsParameter.FieldNames.Length;
+            if (ledsParameter.IsThinking && !_withLeds)
             {
                 return;
             }
@@ -171,31 +171,31 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 return;
             }
             //_serialCommunication.Send($"25#e2e4*");
-            var sendFields = string.Join("", setLedsParameter.FieldNames);
-            _logger?.LogDebug($"SQ: Request set LED for fields: {sendFields} Thinking: {setLedsParameter.Thinking}");
+            var sendFields = string.Join("", ledsParameter.FieldNames);
+            _logger?.LogDebug($"SQ: Request set LED for fields: {sendFields} IsThinking: {ledsParameter.IsThinking}");
             if (sendFields.Equals(_lastSendFields))
             {
                 _logger?.LogDebug($"SQ: Ignored equals last send {_lastSendFields}");
                 return;
             }
-            if (setLedsParameter.Thinking && fieldNamesLength > 1)
+            if (ledsParameter.IsThinking && fieldNamesLength > 1)
             {
 
-                SetLedForFields(new SetLedsParameter()
+                SetLedForFields(new SetLEDsParameter()
                                 {
-                                    FieldNames = new[] { setLedsParameter.FieldNames[0] },
+                                    FieldNames = new[] { ledsParameter.FieldNames[0] },
                                     Promote = string.Empty,
-                                    Thinking = true,
-                                    IsMove = setLedsParameter.IsMove,
+                                    IsThinking = true,
+                                    IsMove = ledsParameter.IsMove,
                                     DisplayString = string.Empty
 
                 });
-                SetLedForFields(new SetLedsParameter()
+                SetLedForFields(new SetLEDsParameter()
                                 {
-                                    FieldNames = new[] { setLedsParameter.FieldNames[1] },
+                                    FieldNames = new[] { ledsParameter.FieldNames[1] },
                                     Promote = string.Empty,
-                                    Thinking = true,
-                                    IsMove = setLedsParameter.IsMove,
+                                    IsThinking = true,
+                                    IsMove = ledsParameter.IsMove,
                                     DisplayString = string.Empty
 
                                 });
@@ -205,15 +205,15 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             _lastSendFields = sendFields;
             if (fieldNamesLength == 2 && _withLeds)
             {
-                if (_lastFromField.Equals(setLedsParameter.FieldNames[0], StringComparison.OrdinalIgnoreCase) &&
-                    _lastToField.Equals(setLedsParameter.FieldNames[1], StringComparison.OrdinalIgnoreCase))
+                if (_lastFromField.Equals(ledsParameter.FieldNames[0], StringComparison.OrdinalIgnoreCase) &&
+                    _lastToField.Equals(ledsParameter.FieldNames[1], StringComparison.OrdinalIgnoreCase))
                 {
                     _logger?.LogDebug($"SQ: Ignore set LED for fields: {_lastSendFields}: Equals last move {_lastFromField} {_lastToField}");
                     return;
                 }
 
             }
-            _logger?.LogDebug($"SQ: Set LED for fields: {_lastSendFields} Thinking: {setLedsParameter.Thinking}");
+            _logger?.LogDebug($"SQ: Set LED for fields: {_lastSendFields} IsThinking: {ledsParameter.IsThinking}");
             _serialCommunication.Send($"25#{sendFields.ToLower()}*");
         }
      

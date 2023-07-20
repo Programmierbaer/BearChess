@@ -11,7 +11,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void Release();
 
 
-        void SetLedForFields(SetLedsParameter setLedsParameter);
+        void SetLedForFields(SetLEDsParameter ledsParameter);
 
 
         /// <summary>
@@ -108,6 +108,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetFen(string fen);
         bool PieceRecognition { get; }
         bool SelfControlled { get; }
+
+        bool MultiColorLEDs { get; }
 
         void Stop(bool stop);
         void Ignore(bool ignore);

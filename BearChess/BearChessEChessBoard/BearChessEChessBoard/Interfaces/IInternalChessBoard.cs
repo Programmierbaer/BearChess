@@ -1,8 +1,11 @@
-﻿namespace www.SoLaNoSoft.com.BearChess.EChessBoard
+﻿using www.SoLaNoSoft.com.BearChessBase.Implementations;
+
+namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
     public interface IInternalChessBoard
     {
         int CurrentColor { get; }
+        int EnemyColor { get; }
 
         /// <summary>
         /// Set the board position given by <paramref name="fenPosition"/>.
@@ -47,5 +50,10 @@
         /// </summary>
         /// <param name="fenPosition"></param>
         bool IsBasePosition(string fenPosition);
+
+        AllMoveClass GetPrevMove();
+
+        Move[] CurrentMoveList { get; }
+        Move[] EnemyMoveList { get; }
     }
 }

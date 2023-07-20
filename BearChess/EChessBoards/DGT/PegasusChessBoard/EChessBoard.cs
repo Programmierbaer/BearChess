@@ -163,40 +163,40 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             return true;
         }
 
-        public override void SetLedForFields(SetLedsParameter setLedsParameter)
+        public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
-            if (setLedsParameter.FieldNames == null || setLedsParameter.FieldNames.Length == 0)
+            if (ledsParameter.FieldNames == null || ledsParameter.FieldNames.Length == 0)
             {
                 return;
             }
             List<byte> allBytes = new List<byte>();
-            var fieldNamesLength = setLedsParameter.FieldNames.Length;
-            string sendFields = string.Join(" ", setLedsParameter.FieldNames);
+            var fieldNamesLength = ledsParameter.FieldNames.Length;
+            string sendFields = string.Join(" ", ledsParameter.FieldNames);
             if (sendFields.Equals(_lastSendFields))
             {
                 return;
             }
 
             _lastSendFields = sendFields;
-            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} Thinking: {setLedsParameter.Thinking}");
+            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} IsThinking: {ledsParameter.IsThinking}");
 
-            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} Thinking: {setLedsParameter.Thinking}");
-            if (setLedsParameter.Thinking && fieldNamesLength > 1)
+            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} IsThinking: {ledsParameter.IsThinking}");
+            if (ledsParameter.IsThinking && fieldNamesLength > 1)
             {
-                SetLedForFields(new SetLedsParameter()
+                SetLedForFields(new SetLEDsParameter()
                 {
-                    FieldNames = new[] { setLedsParameter.FieldNames[0] },
+                    FieldNames = new[] { ledsParameter.FieldNames[0] },
                     Promote = string.Empty,
-                    Thinking = setLedsParameter.Thinking,
-                    IsMove = setLedsParameter.IsMove,
+                    IsThinking = ledsParameter.IsThinking,
+                    IsMove = ledsParameter.IsMove,
                     DisplayString = string.Empty
                 });
-                SetLedForFields(new SetLedsParameter()
+                SetLedForFields(new SetLEDsParameter()
                 {
-                    FieldNames = new[] { setLedsParameter.FieldNames[1] },
+                    FieldNames = new[] { ledsParameter.FieldNames[1] },
                     Promote = string.Empty,
-                    Thinking = setLedsParameter.Thinking,
-                    IsMove = setLedsParameter.IsMove,
+                    IsThinking = ledsParameter.IsThinking,
+                    IsMove = ledsParameter.IsMove,
                     DisplayString = string.Empty
                 });
                 return;
@@ -205,10 +205,10 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             allBytes.Add(96);
             allBytes.Add(anzahl);
             allBytes.Add(5);
-            allBytes.Add(setLedsParameter.Thinking ? (byte)0 : _currentSpeed); // Speed
-            allBytes.Add(setLedsParameter.Thinking ? (byte)0 : _currentTimes); // Times
-            allBytes.Add(setLedsParameter.Thinking ? (byte)1 : _currentIntensity); // Intensity
-            foreach (var fieldName in setLedsParameter.FieldNames)
+            allBytes.Add(ledsParameter.IsThinking ? (byte)0 : _currentSpeed); // Speed
+            allBytes.Add(ledsParameter.IsThinking ? (byte)0 : _currentTimes); // Times
+            allBytes.Add(ledsParameter.IsThinking ? (byte)1 : _currentIntensity); // Intensity
+            foreach (var fieldName in ledsParameter.FieldNames)
             {
                 if (PlayingWithWhite)
                 {
@@ -259,11 +259,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             _currentSpeed = 10;
             _currentTimes = 3;
             _currentIntensity = 1;
-            SetLedForFields( new SetLedsParameter()
+            SetLedForFields( new SetLEDsParameter()
                              {
                                  FieldNames = new[] { "A1", "H1", "H8", "A8" },
                                  Promote = string.Empty,
-                                 Thinking = false,
+                                 IsThinking = false,
                                  IsMove = false,
                                  DisplayString = string.Empty
             });

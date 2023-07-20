@@ -273,7 +273,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public bool IsConnected => _board?.IsConnected ?? false;
 
-        public void ShowMove(string allMoves, string startFenPosition, SetLedsParameter setLedsParameter, bool waitFor)
+        public void ShowMove(string allMoves, string startFenPosition, SetLEDsParameter setLeDsParameter, bool waitFor)
         {
             if (string.IsNullOrWhiteSpace(allMoves))
             {
@@ -298,11 +298,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     return;
                 }
 
-                setLedsParameter.Promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
-                _internalChessBoard.MakeMove(move.Substring(0, 2), move.Substring(2, 2), setLedsParameter.Promote);
+                setLeDsParameter.Promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
+                _internalChessBoard.MakeMove(move.Substring(0, 2), move.Substring(2, 2), setLeDsParameter.Promote);
             }
             var lastMove = moveList[moveList.Length - 1];
-            setLedsParameter.Promote = lastMove.Length == 4 ? string.Empty : lastMove.Substring(4, 1);
+            setLeDsParameter.Promote = lastMove.Length == 4 ? string.Empty : lastMove.Substring(4, 1);
             _fileLogger?.LogDebug($"C: Show Move {lastMove}");
             var position = _internalChessBoard.GetPosition();
           
@@ -315,11 +315,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
             if (_board!= null && !_board.SelfControlled)
             {
-                _board?.SetLedForFields(new SetLedsParameter()
+                _board?.SetLedForFields(new SetLEDsParameter()
                                         {
                                             FieldNames = new []{ lastMove.Substring(0, 2), lastMove.Substring(2, 2) },
-                                            Promote = setLedsParameter.Promote,
-                                            Thinking = false,
+                                            Promote = setLeDsParameter.Promote,
+                                            IsThinking = false,
                                             IsTakeBack = true,
                                             IsMove = false,
                                             DisplayString = string.Empty
@@ -330,18 +330,18 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
      
 
-        public void ShowMove(SetLedsParameter setLedsParameter)
+        public void ShowMove(SetLEDsParameter setLeDsParameter)
         {
-            _internalChessBoard.MakeMove(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1], setLedsParameter.Promote);
+            _internalChessBoard.MakeMove(setLeDsParameter.FieldNames[0], setLeDsParameter.FieldNames[1], setLeDsParameter.Promote);
             var position = _internalChessBoard.GetPosition();
             _waitForFen.Enqueue(position);
-            _board?.SetLedForFields(setLedsParameter);
+            _board?.SetLedForFields(setLeDsParameter);
             _stop = false;
         }
 
-        public void SetLedsFor(SetLedsParameter setLedsParameter)
+        public void SetLedsFor(SetLEDsParameter setLeDsParameter)
         {
-            _board?.SetLedForFields(setLedsParameter);
+            _board?.SetLedForFields(setLeDsParameter);
         }
 
         public void SetAllLedsOff()
@@ -452,11 +452,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _fileLogger?.LogDebug($"C: Wait for: {position}");
             // Set LEDs on for received move and wait until board is in same position
             _waitForFen.Enqueue(position);
-            _board?.SetLedForFields(new SetLedsParameter()
+            _board?.SetLedForFields(new SetLEDsParameter()
                                     {
                                      FieldNames = new[] { lastMove.Substring(0, 2), lastMove.Substring(2, 2) },
                                      Promote = promote,
-                                     Thinking = false,
+                                     IsThinking = false,
                                      IsMove = true,
                                      DisplayString = string.Empty
                                     });
@@ -760,6 +760,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 return null;
             }
             var invalidFields = new List<string>();
+            var validFields = new List<string>();
             if (fenPosition.IsFieldDump)
             {
                 var hashSet = new HashSet<string>(fenPosition.FromBoard.Split(",".ToCharArray()));
@@ -804,31 +805,114 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 var internalChessBoard = new InternalChessBoard();
                 internalChessBoard.NewGame();
                 internalChessBoard.SetPosition(fenPosition.FromBoard);
-
+                HashSet<string> prevMove = new HashSet<string>();
+                var allMoveClass = _internalChessBoard.GetPrevMove();
+                
+                if (allMoveClass != null)
+                {
+                    var move = allMoveClass.GetMove(_internalChessBoard.EnemyColor);
+                    if (move != null)
+                    {
+                        prevMove.Add(move.FromFieldName);
+                        prevMove.Add(move.ToFieldName);
+                    }
+                }
                 for (var f = InternalChessBoard.FA1; f <= InternalChessBoard.FH8; f++)
                 {
                     if (!_internalChessBoard.GetFigureOnField(f).Equals(internalChessBoard.GetFigureOnField(f)))
                     {
                         //_fileLogger?.LogDebug($"C: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
-                        invalidFields.Add(InternalChessBoard.GetFieldName(f));
+                        var fieldName = InternalChessBoard.GetFieldName(f);
+                        if (_board != null && _board.MultiColorLEDs)
+                        {
+                            if (prevMove.Contains(fieldName))
+                            {
+                                validFields.Add(fieldName);
+                            }
+                            else
+                            {
+                                invalidFields.Add(fieldName);
+                            }
+                        }
+                        else
+                        {
+                            invalidFields.Add(fieldName);
+                        }
                     }
                 }
             }
 
-            if (invalidFields.Count > 0)
+            if (invalidFields.Count > 0 || validFields.Count>0)
             {
              
                 fenPosition.Invalid = true;
-                _board?.SetLedForFields(new SetLedsParameter()
-                                        {
-                                            FieldNames = invalidFields.ToArray(),
-                                            Promote = string.Empty,
-                                            Thinking = false,
-                                            IsMove = false,
-                                            IsError = true,
-                                            DisplayString = string.Empty
+                if (_board!=null && _board.MultiColorLEDs)
+                {
+                    Move[] checkMoves;
+                    if (_waitForFen.IsEmpty)
+                    {
+                        checkMoves = new List<Move>(_internalChessBoard.CurrentMoveList).ToArray();
+                    }
+                    else
+                    {
+                        checkMoves = new List<Move>(_internalChessBoard.EnemyMoveList).ToArray();
+                    }
+                    foreach (var move in checkMoves)
+                    {
+                        if (invalidFields.Contains(move.FromFieldName) && invalidFields.Contains(move.ToFieldName))
+                        {
+                            validFields.Add(move.ToFieldName);
+                            invalidFields.Remove(move.ToFieldName);
+                            validFields.Add(move.FromFieldName);
+                            invalidFields.Remove(move.FromFieldName);
+                            break;
+                        }
 
-                                        });
+                        if (validFields.Count == 0)
+                        {
+
+                            if (invalidFields.Count == 1 && invalidFields.Contains(move.ToFieldName))
+                            {
+                                validFields.Add(move.ToFieldName);
+                                invalidFields.Remove(move.ToFieldName);
+                                break;
+                            }
+
+                            if (invalidFields.Count == 1 && invalidFields.Contains(move.FromFieldName))
+                            {
+                                validFields.Add(move.FromFieldName);
+                                invalidFields.Remove(move.FromFieldName);
+                                break;
+                            }
+                        }
+                    };
+
+                    _board?.SetLedForFields(new SetLEDsParameter()
+                    {
+                        FieldNames = validFields.ToArray(),
+                        InvalidFieldNames = invalidFields.ToArray(),
+                        Promote = string.Empty,
+                        IsThinking = false,
+                        IsMove = false,
+                        IsError = true,
+                        DisplayString = string.Empty
+
+                    });
+                }
+                else
+                {
+                    _board?.SetLedForFields(new SetLEDsParameter()
+                    {
+                        FieldNames = invalidFields.ToArray(),
+                        Promote = string.Empty,
+                        IsThinking = false,
+                        IsMove = false,
+                        IsError = true,
+                        DisplayString = string.Empty
+
+                    });
+                }
+
                 _allLedOff = false;
             }
             else

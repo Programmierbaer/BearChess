@@ -805,7 +805,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var databaseGameAllMove = _databaseGame.AllMoves[0];
                 Thread.Sleep(1000);
                 _eChessBoard?.SetLedsFor(
-                    new SetLedsParameter()
+                    new SetLEDsParameter()
                     {
                         FieldNames =
                             new string[] { databaseGameAllMove.FromFieldName, databaseGameAllMove.ToFieldName },
@@ -1644,7 +1644,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _eChessBoard?.SetAllLedsOff();
                 _eChessBoard?.StopClock();
 //                _eChessBoard?.ShowMove(fromFieldFieldName, toFieldFieldName, promoteFigure,  prevMove?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType));
-                _eChessBoard?.ShowMove(new SetLedsParameter() {FieldNames = new string[] {fromFieldFieldName,toFieldFieldName},Promote = promoteFigure, DisplayString = prevMove?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType) });
+                _eChessBoard?.ShowMove(new SetLEDsParameter() {FieldNames = new string[] {fromFieldFieldName,toFieldFieldName},Promote = promoteFigure, DisplayString = prevMove?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType) });
                 _engineWindow?.MakeMove(fromFieldFieldName, toFieldFieldName, promoteFigure);
                 if (_currentGame != null)
                 {
@@ -1704,7 +1704,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (!_pureEngineMatch)
             {
                 _eChessBoard?.SetAllLedsOff();
-                _eChessBoard?.ShowMove(new SetLedsParameter()
+                _eChessBoard?.ShowMove(new SetLEDsParameter()
                                        {
                                            FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                                            Promote = promoteFigure,
@@ -1754,7 +1754,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     
                     _moveListWindow?.AddMove(move1, _gameAgainstEngine && _timeControlWhite.TournamentMode);
                     _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
-                    _eChessBoard?.ShowMove(new SetLedsParameter()
+                    _eChessBoard?.ShowMove(new SetLEDsParameter()
                                            {
                                                FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                                                Promote = promoteFigure,
@@ -4201,7 +4201,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StopClock();
                     chessBoardUcGraphics.RepaintBoard(_chessBoard);
                     _eChessBoard?.SetAllLedsOff();
-                    _eChessBoard?.ShowMove(new SetLedsParameter()
+                    _eChessBoard?.ShowMove(new SetLEDsParameter()
                                            {
                                                FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                                                Promote = promote,
@@ -4271,7 +4271,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         _eChessBoard?.StopClock();
                         chessBoardUcGraphics.RepaintBoard(_chessBoard);
                         _eChessBoard?.SetAllLedsOff();
-                        _eChessBoard?.ShowMove(new SetLedsParameter()
+                        _eChessBoard?.ShowMove(new SetLEDsParameter()
                                                {
                                                    FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                                                    Promote = promote,
@@ -4354,7 +4354,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (!_pureEngineMatch)
                 {
                     _eChessBoard?.SetAllLedsOff();
-                    _eChessBoard?.ShowMove(new SetLedsParameter()
+                    _eChessBoard?.ShowMove(new SetLEDsParameter()
                                            {
                                                FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                                                Promote = promote,
@@ -4879,8 +4879,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 Dispatcher?.Invoke(() =>
                                 {
                                     if (_currentAction != CurrentAction.InGameAnalyseMode)
-                                        //if (_currentAction != CurrentAction.InGameAnalyseMode && 
-                                        //(_eChessBoard == null || !_eChessBoard.IsConnected))
                                     {
                                         if (_showBestMove)
                                         {
@@ -4898,31 +4896,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     if ( _currentAction == CurrentAction.InGameAnalyseMode && _showBestMoveOnAnalysisMode && !_showNextMoveOnGameAnalysisMode)
                                     {
 
-                                        _eChessBoard?.SetLedsFor(new SetLedsParameter()
+                                        _eChessBoard?.SetLedsFor(new SetLEDsParameter()
                                                                  {
                                                                      FieldNames = new[] { strings[i + 1].Substring(0, 2), strings[i + 1].Substring(2, 2) },
-                                                                     IsMove = true
-                                                                     
-                                        });
+                                                                     IsThinking = true
+                                                                 });
                                     }
                                     if (_currentAction == CurrentAction.InAnalyseMode && _showBestMoveOnAnalysisMode)
                                     {
-                                        _eChessBoard?.SetLedsFor(new SetLedsParameter()
+                                        _eChessBoard?.SetLedsFor(new SetLEDsParameter()
                                                                  {
                                                                      FieldNames = new[] { strings[i + 1].Substring(0, 2), strings[i + 1].Substring(2, 2) },
-                                                                     IsMove = true
-
+                                                                     IsThinking = true
                                                                  });
                                     }
                                     if (_currentAction == CurrentAction.InRunningGame && _showBestMoveOnGame)
                                     {
-                                        _eChessBoard?.SetLedsFor(new SetLedsParameter()
+                                        _eChessBoard?.SetLedsFor(new SetLEDsParameter()
                                                                  {
                                                                      FieldNames = new[] { strings[i + 1].Substring(0, 2), strings[i + 1].Substring(2, 2) },
-                                                                     Thinking = e.Color != Fields.COLOR_EMPTY
-
-                                        });
-
+                                                                     IsThinking = e.Color != Fields.COLOR_EMPTY
+                                                                 });
                                     }
                                 });
                             }
@@ -4947,7 +4941,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     scoreString = $"SCORE: {(-score).ToString(CultureInfo.InvariantCulture)}";
                                     Dispatcher?.Invoke(() => { _eChessBoard?.AdditionalInformation(scoreString); });
                                 }
-
                             }
                         }
                     }
@@ -4963,10 +4956,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         Dispatcher?.Invoke(() =>
                         {
                             _eChessBoard?.SetLedsFor(
-                                new SetLedsParameter()
+                                new SetLEDsParameter()
                                 {
                                     FieldNames = _requestForHelpArray,
-                                    Thinking = true
+                                    IsThinking = true
                                 });
                         });
                         Array.Copy(_requestForHelpArray, _prevRequestForHelpArray, 2);
@@ -5004,10 +4997,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     Dispatcher?.Invoke(() =>
                                     {
                                         _eChessBoard?.SetLedsFor(
-                                            new SetLedsParameter()
+                                            new SetLEDsParameter()
                                             {
                                                 FieldNames = _requestForHelpArray,
-                                                Thinking = true
+                                                IsThinking = true
                                             });
                                     });
                                     Array.Copy(_requestForHelpArray, _prevRequestForHelpArray, 2);
@@ -5586,7 +5579,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void DisconnectFromIChessOne()
         {
             menuItemConfigureIChessOne.IsEnabled = true;
-            DisconnectFromEBoard(menuItemConnectToIChessOneBoard, "IChessOne");
+            DisconnectFromEBoard(menuItemConnectToIChessOneBoard, "iChessOne");
         }
 
         private void DisconnectFromUCB()
@@ -5816,7 +5809,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ConnectToIChessOne()
         {
-            _fileLogger?.LogInfo("Connect to IChessOne");
+            _fileLogger?.LogInfo("Connect to iChessOne");
             _eChessBoard = new IChessOneLoader(_configuration.FolderPath);
             _eChessBoard.MoveEvent += EChessBoardMoveEvent;
             _eChessBoard.FenEvent += EChessBoardFenEvent;
@@ -5846,7 +5839,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                      _currentAction == CurrentAction.InEasyPlayingMode ||
                                      _currentAction == CurrentAction.InGameAnalyseMode);
             var currentComPort = _eChessBoard?.GetCurrentComPort();
-            textBlockEBoard.Text = $"Connected to IChessOne ({currentComPort})";
+            textBlockEBoard.Text = $"Connected to iChessOne ({currentComPort})";
             imageBT.Visibility = currentComPort.Equals("BT", StringComparison.OrdinalIgnoreCase)
                 ? Visibility.Visible
                 : Visibility.Hidden;
@@ -5856,7 +5849,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             imageConnect.Visibility = Visibility.Collapsed;
             imageDisconnect.Visibility = Visibility.Visible;
             _configuration.SetConfigValue("LastEBoard", _lastEBoard);
-            buttonConnect.ToolTip = "Disconnect from IChessOne";
+            buttonConnect.ToolTip = "Disconnect from iChessOne";
            // _eChessBoard.Calibrate();
             if (_currentAction == CurrentAction.InRunningGame)
             {
@@ -6178,10 +6171,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         Dispatcher?.Invoke(() =>
                         {
                             _eChessBoard?.SetLedsFor(
-                                new SetLedsParameter()
+                                new SetLEDsParameter()
                                 {
                                     FieldNames = _requestForHelpArray,
-                                    Thinking = true
+                                    IsThinking = true
                                 });
                         });
                         Array.Copy(_requestForHelpArray, _prevRequestForHelpArray, 2);
@@ -6192,10 +6185,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             
                                 _eChessBoard?.SetLedsFor(
-                                    new SetLedsParameter()
+                                    new SetLEDsParameter()
                                     {
                                         FieldNames = Array.Empty<string>(),
-                                        Thinking = false
+                                        IsThinking = false
                                     });
                             
                             _eChessBoard.SetAllLedsOff();
@@ -6465,10 +6458,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                             Dispatcher?.Invoke(() =>
                             {
-                                _eChessBoard?.SetLedsFor(new SetLedsParameter()
+                                _eChessBoard?.SetLedsFor(new SetLEDsParameter()
                                                          {
                                                              FieldNames = _requestForHelpArray,
-                                                             Thinking = true
+                                                             IsThinking = true
                                                          } );
                                 _eChessBoard?.DisplayOnClock(string.Join("-", _requestForHelpArray));
                             });
@@ -6561,7 +6554,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         
                     });
                     _fileLogger?.LogDebug($"New prev fen: {_prevFenPosition.Split(" ".ToCharArray())[0]}");
-                    _eChessBoard?.ShowMove(allMoves, _gameStartFenPosition,new SetLedsParameter()
+                    _eChessBoard?.ShowMove(allMoves, _gameStartFenPosition,new SetLEDsParameter()
                                                                            {
                                                                                Promote = string.Empty,
                                                                                IsTakeBack = true
@@ -6990,7 +6983,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         if (nextMove!=null)
                         {
-                            _eChessBoard?.SetLedsFor(new SetLedsParameter()
+                            _eChessBoard?.SetLedsFor(new SetLEDsParameter()
                                                      {
                                                          FieldNames = new string[] { nextMove.FromFieldName, nextMove.ToFieldName },
                                                          IsMove = true,
@@ -7115,10 +7108,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 Dispatcher?.Invoke(() =>
                 {
-                    _eChessBoard?.SetLedsFor(new SetLedsParameter()
+                    _eChessBoard?.SetLedsFor(new SetLEDsParameter()
                                              {
                                                  FieldNames = new string[0],
-                                                 Thinking = false,
+                                                 IsThinking = false,
                                                  
                                              });
                 });
@@ -7289,7 +7282,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 $"{elapsedTime.Hour}:{elapsedTime.Minute}:{elapsedTime.Second}";
                         }
                     }
-                    _eChessBoard?.ShowMove(new SetLedsParameter()
+                    _eChessBoard?.ShowMove(new SetLEDsParameter()
                                            {
                                                FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                                                Promote = promoteFigure,
@@ -7377,7 +7370,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         }
                         chessBoardUcGraphics.RepaintBoard(_chessBoard);
                         _eChessBoard?.SetAllLedsOff();
-                        _eChessBoard?.ShowMove(new SetLedsParameter()
+                        _eChessBoard?.ShowMove(new SetLEDsParameter()
                                                {
                                                    FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                                                    Promote = promoteFigure,

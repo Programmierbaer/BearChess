@@ -1,15 +1,23 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
     public class InternalChessBoard : IInternalChessBoard
     {
-        private readonly BearChessBase.Implementations.ChessBoard _bearChessBoard = new BearChessBase.Implementations.ChessBoard();
+        private readonly ChessBoard _bearChessBoard = new ChessBoard();
+        private List<Move> _moveList = new List<Move>();
+        private List<Move> _enemyMoveList = new List<Move>();
 
         public const int FA1 = 21;
         public const int FH8 = 98;
         public int CurrentColor => _bearChessBoard.CurrentColor;
+        public int EnemyColor => _bearChessBoard.EnemyColor;
+
+        public Move[] CurrentMoveList => _moveList.ToArray();
+        public Move[] EnemyMoveList => _enemyMoveList.ToArray();
 
         public InternalChessBoard()
         {
@@ -21,7 +29,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             return _bearChessBoard.GetFigureOn(field).FenFigureCharacter;
 
-
         }
 
         /// <inheritdoc />
@@ -29,12 +36,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             _bearChessBoard.Init();
             _bearChessBoard.NewGame();
+            _moveList = _bearChessBoard.GenerateMoveList();
+            _enemyMoveList = _bearChessBoard.EnemyMoveList;
         }
 
         /// <inheritdoc />
         public string GetBestMove()
         {
-            var firstOrDefault = _bearChessBoard.GenerateMoveList().FirstOrDefault();
+            var firstOrDefault = _moveList.FirstOrDefault();
             if (firstOrDefault == null)
             {
                 return string.Empty;
@@ -47,6 +56,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool IsBasePosition(string fenPosition)
         {
             return _bearChessBoard.IsBasePosition(fenPosition);
+        }
+
+        public AllMoveClass GetPrevMove()
+        {
+            return _bearChessBoard.GetPrevMove();
         }
 
 
@@ -63,7 +77,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void SetPosition(string fenPosition)
         {
             _bearChessBoard.SetPosition(fenPosition);
-
+            _moveList = _bearChessBoard.GenerateMoveList().Where(m => m.FigureColor==_bearChessBoard.CurrentColor).ToList();
+            _enemyMoveList = _bearChessBoard.EnemyMoveList;
         }
 
         /// <inheritdoc />
@@ -77,6 +92,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
                 _bearChessBoard.MakeMove(fromField, toField, promote);
             }
+
+            _moveList = _bearChessBoard.GenerateMoveList();
+            _enemyMoveList = _bearChessBoard.EnemyMoveList;
         }
 
         /// <inheritdoc />

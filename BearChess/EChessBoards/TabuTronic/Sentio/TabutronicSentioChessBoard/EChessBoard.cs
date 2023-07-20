@@ -293,7 +293,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             }
         }
 
-        public override void SetLedForFields(SetLedsParameter setLedsParameter)
+        public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
             if (!EnsureConnection())
             {
@@ -302,7 +302,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
             lock (_locker)
             {
-                if (!setLedsParameter.Thinking)
+                if (!ledsParameter.IsThinking)
                 {
                     lock (_lockThinking)
                     {
@@ -313,32 +313,32 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                         }
                     }
                 }
-                if (setLedsParameter.FieldNames.Length > 1)
+                if (ledsParameter.FieldNames.Length > 1)
                 {
-                    if (setLedsParameter.Thinking)
+                    if (ledsParameter.IsThinking)
                     {
                         lock (_lockThinking)
                         {
                             _thinkingLeds.Clear();
-                            _thinkingLeds.Add(setLedsParameter.FieldNames[0]);
-                            _thinkingLeds.Add(setLedsParameter.FieldNames[1]);
+                            _thinkingLeds.Add(ledsParameter.FieldNames[0]);
+                            _thinkingLeds.Add(ledsParameter.FieldNames[1]);
                             return;
                         }
                     }
                     _requiredLeds.Clear();
-                    string m = $"{setLedsParameter.FieldNames[0]}{setLedsParameter.FieldNames[1]}";
+                    string m = $"{ledsParameter.FieldNames[0]}{ledsParameter.FieldNames[1]}";
                     _logger?.LogDebug($"Set LEDs for {m}  Last move was: {_lastMove}");
                     if (m.Equals(_lastMove))
                     {
                         return;
                     }
-                    var fieldNumberFrom = Fields.GetFieldNumber(setLedsParameter.FieldNames[0]);
-                    var fieldNumberTo = Fields.GetFieldNumber(setLedsParameter.FieldNames[1]);
+                    var fieldNumberFrom = Fields.GetFieldNumber(ledsParameter.FieldNames[0]);
+                    var fieldNumberTo = Fields.GetFieldNumber(ledsParameter.FieldNames[1]);
                     if (_chessBoard.MoveIsValid(fieldNumberFrom, fieldNumberTo))
                     {
                         if (_showMoveLine)
                         {
-                            string[] moveLine = MoveLineHelper.GetMoveLine(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1]);
+                            string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
                             foreach (var ml in moveLine)
                             {
                                 _requiredLeds.Add(ml);
@@ -346,8 +346,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                         }
                         else
                         {
-                            _requiredLeds.Add(setLedsParameter.FieldNames[0]);
-                            _requiredLeds.Add(setLedsParameter.FieldNames[1]);
+                            _requiredLeds.Add(ledsParameter.FieldNames[0]);
+                            _requiredLeds.Add(ledsParameter.FieldNames[1]);
                         }
 
                         _takeBackLeds.Clear();

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="Configure IChessOne" Height="640" Width="400" SizeToContent="WidthAndHeight">
+        Title="Configure iChessOne" Height="640" Width="400" SizeToContent="WidthAndHeight">
     <StackPanel>
         <Border Name="borderLEDs" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <StackPanel>
@@ -23,18 +23,18 @@
                             <Image Source="../Assets/Icons/eye_half.png" />
                         </Button>
                     </StackPanel>
-                    <Button Margin="55,0,0,0" Name="buttonDecrementDim" Background="Transparent" DockPanel.Dock="Left"
+                    <Button Margin="55,0,0,0" Name="buttonDecrementDim" Background="Transparent" DockPanel.Dock="Left" ToolTip="Decrement"
                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonDecrementDim_OnClick">
                         <Image Source="../Assets/Icons/lightbulb_delete.png" />
                     </Button>
 
-                    <Slider DockPanel.Dock="Left" Name="sliderDim" Margin="15,10,5,5" Minimum="0" Maximum="15"
+                    <Slider DockPanel.Dock="Left" Name="sliderDim" Margin="15,10,5,5" Minimum="0" Maximum="15" ValueChanged="SliderDim_OnValueChanged"
                             Width="110" />
                     <Button Margin="5,0,0,0" Name="buttonIncrementDim" Background="Transparent" DockPanel.Dock="Left"
-                            BorderBrush="Transparent" Width="32" Height="32" Click="ButtonIncrementDim_OnClick">
+                            BorderBrush="Transparent" Width="32" Height="32" Click="ButtonIncrementDim_OnClick" ToolTip="Increment">
                         <Image Source="../Assets/Icons/lightbulb_add.png" />
                     </Button>
-
+                    <TextBlock DockPanel.Dock="Left" Margin="15,0,0,0" ToolTip="0 - 15" Name="textBlockValue" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Center" >10</TextBlock>
                 </DockPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>

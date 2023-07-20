@@ -297,7 +297,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             return CheckComPort(portName);
         }
 
-        public override void SetLedForFields(SetLedsParameter setLedsParameter)
+        public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
             if (!EnsureConnection())
             {
@@ -305,15 +305,15 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
 
             string ledForFields;
-            if (setLedsParameter.FieldNames.Length == 2 && _showMoveLine)
+            if (ledsParameter.FieldNames.Length == 2 && _showMoveLine)
             {
-                string[] moveLine = MoveLineHelper.GetMoveLine(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1]);
+                string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
                 _logger.LogDebug($"Extend move line: {string.Join(" ", moveLine)} ");
-                ledForFields = GetLedForFields(moveLine, setLedsParameter.Thinking);
+                ledForFields = GetLedForFields(moveLine, ledsParameter.IsThinking);
             }
             else
             {
-                ledForFields = GetLedForFields(setLedsParameter.FieldNames, setLedsParameter.Thinking);
+                ledForFields = GetLedForFields(ledsParameter.FieldNames, ledsParameter.IsThinking);
             }
 
             if (!string.IsNullOrWhiteSpace(_lastSendLeds) && _lastSendLeds.Equals($"L22{ledForFields}"))
@@ -321,11 +321,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 return;
             }
             _lastSendLeds = $"L22{ledForFields}";
-            _logger?.LogDebug($"SendFields : {string.Join(" ", setLedsParameter.FieldNames)}");
+            _logger?.LogDebug($"SendFields : {string.Join(" ", ledsParameter.FieldNames)}");
             //   lock (_locker)
             {
                 _serialCommunication.Send(_lastSendLeds);
-                if (setLedsParameter.FieldNames.Length == 1 && _useChesstimation)
+                if (ledsParameter.FieldNames.Length == 1 && _useChesstimation)
                 {
                     _serialCommunication.Send("S");
                 }

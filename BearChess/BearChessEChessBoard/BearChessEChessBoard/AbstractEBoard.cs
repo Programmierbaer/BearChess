@@ -30,7 +30,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract bool CheckComPort(string portName);
         public abstract bool CheckComPort(string portName, string baud);
         
-        public abstract void SetLedForFields(SetLedsParameter setLedsParameter);
+        public abstract void SetLedForFields(SetLEDsParameter ledsParameter);
 
 
         public abstract void SetAllLedsOff();
@@ -72,6 +72,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool PieceRecognition { get; set; } = true;
 
         public bool SelfControlled { get; set; }
+        public bool MultiColorLEDs { get; set; } = false;
 
         public void Stop(bool stop)
         {

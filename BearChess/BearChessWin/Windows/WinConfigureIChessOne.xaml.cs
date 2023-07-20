@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.IChessOneLoader;
@@ -24,11 +25,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly EChessBoardConfiguration _eChessBoardConfiguration;
         private int _currentIndex;
         private bool _loaded = false;
+        private string _lastButtonName = string.Empty;
 
         public WinConfigureIChessOne(Configuration configuration)
         {
         
             InitializeComponent();
+            sliderDim.AutoToolTipPlacement = AutoToolTipPlacement.TopLeft;
+            sliderDim.AutoToolTipPrecision = 0;
             _fileName = Path.Combine(configuration.FolderPath, IChessOneLoader.EBoardName, $"{IChessOneLoader.EBoardName}Cfg.xml");
             
             var fileInfo = new FileInfo(_fileName);
@@ -224,6 +228,66 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        private void ShowExample(string buttonName)
+        {
+            _lastButtonName = buttonName;
+            if (buttonName.Equals("buttonShowMoveFrom"))
+            {
+                string moves = "E2 E4";
+                if (checkBoxMoveLine.IsChecked.Value)
+                {
+                    moves = "E2 E3 E4";
+                }
+                _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlMoveFromRed.Value} G:{numericUpDownUserControlMoveFromGreen.Value} B:{numericUpDownUserControlMoveFromBlue.Value} F:{checkBoxFlashMoveFrom.IsChecked} A:1 {moves}");
+                return;
+            }
+            if (buttonName.Equals("buttonShowInvalid"))
+            {
+                string moves = "E2 E4";
+
+                _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlInvalidRed.Value} G:{numericUpDownUserControlInvalidGreen.Value} B:{numericUpDownUserControlInvalidBlue.Value} F:{checkBoxFlashInvalid.IsChecked} A:1 {moves}");
+                return;
+            }
+            if (buttonName.Equals("buttonShowTakeBack"))
+            {
+                string moves = "E2 E4";
+                if (checkBoxMoveLine.IsChecked.Value)
+                {
+                    moves = "E2 E3 E4";
+                }
+                _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlTakeBackRed.Value} G:{numericUpDownUserControlTakeBackGreen.Value} B:{numericUpDownUserControlTakeBackBlue.Value} F:{checkBoxFlashTakeBack.IsChecked} A:1 {moves}");
+                return;
+            }
+            if (buttonName.Equals("buttonShowHint"))
+            {
+                string moves = "E2 E4";
+                if (checkBoxMoveLine.IsChecked.Value)
+                {
+                    moves = "E2 E3 E4";
+                }
+                _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlHintRed.Value} G:{numericUpDownUserControlHintGreen.Value} B:{numericUpDownUserControlHintBlue.Value} F:{checkBoxFlashHint.IsChecked} A:1 {moves}");
+                return;
+            }
+            if (buttonName.Equals("buttonShowCurrentColor"))
+            {
+                string moves = "CC";
+                _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlCurrentColorRed.Value} G:{numericUpDownUserControlCurrentColorGreen.Value} B:{numericUpDownUserControlCurrentColorBlue.Value} F:{checkBoxFlashCurrentColor.IsChecked} A:1 {moves}");
+                return;
+            }
+            if (buttonName.Equals("buttonShowCurrentAdvantage"))
+            {
+                string moves = "AD";
+                _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlEvaluationRed.Value} G:{numericUpDownUserControlEvaluationGreen.Value} B:{numericUpDownUserControlEvaluationBlue.Value} F:{checkBoxFlashEvaluation.IsChecked} A:1 {moves}");
+                return;
+            }
+            if (buttonName.Equals("buttonShowCurrentDisAdvantage"))
+            {
+                string moves = "DA";
+                _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlDisEvaluationRed.Value} G:{numericUpDownUserControlDisEvaluationGreen.Value} B:{numericUpDownUserControlDisEvaluationBlue.Value} F:{checkBoxFlashDisEvaluation.IsChecked} A:1 {moves}");
+                return;
+            }
+        }
+
         private void ButtonShowHideLEDs_OnClick(object sender, RoutedEventArgs e)
         {
             if (_loader == null)
@@ -232,61 +296,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (sender is Button button)
             {
-                if (button.Name.Equals("buttonShowMoveFrom"))
-                {
-                    string moves = "E2 E4";
-                    if (checkBoxMoveLine.IsChecked.Value)
-                    {
-                        moves = "E2 E3 E4";
-                    }
-                    _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlMoveFromRed.Value} G:{numericUpDownUserControlMoveFromGreen.Value} B:{numericUpDownUserControlMoveFromBlue.Value} F:{checkBoxFlashMoveFrom.IsChecked} A:1 {moves}");
-                    return;
-                }
-                if (button.Name.Equals("buttonShowInvalid"))
-                {
-                    string moves = "E2 E4";
-                   
-                    _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlInvalidRed.Value} G:{numericUpDownUserControlInvalidGreen.Value} B:{numericUpDownUserControlInvalidBlue.Value} F:{checkBoxFlashInvalid.IsChecked} A:1 {moves}");
-                    return;
-                }
-                if (button.Name.Equals("buttonShowTakeBack"))
-                {
-                    string moves = "E2 E4";
-                    if (checkBoxMoveLine.IsChecked.Value)
-                    {
-                        moves = "E2 E3 E4";
-                    }
-                    _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlTakeBackRed.Value} G:{numericUpDownUserControlTakeBackGreen.Value} B:{numericUpDownUserControlTakeBackBlue.Value} F:{checkBoxFlashTakeBack.IsChecked} A:1 {moves}");
-                    return;
-                }
-                if (button.Name.Equals("buttonShowHint"))
-                {
-                    string moves = "E2 E4";
-                    if (checkBoxMoveLine.IsChecked.Value)
-                    {
-                        moves = "E2 E3 E4";
-                    }
-                    _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlHintRed.Value} G:{numericUpDownUserControlHintGreen.Value} B:{numericUpDownUserControlHintBlue.Value} F:{checkBoxFlashHint.IsChecked} A:1 {moves}");
-                    return;
-                }
-                if (button.Name.Equals("buttonShowCurrentColor"))
-                {
-                    string moves = "CC";
-                    _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlCurrentColorRed.Value} G:{numericUpDownUserControlCurrentColorGreen.Value} B:{numericUpDownUserControlCurrentColorBlue.Value} F:{checkBoxFlashCurrentColor.IsChecked} A:1 {moves}");
-                    return;
-                }
-                if (button.Name.Equals("buttonShowCurrentAdvantage"))
-                {
-                    string moves = "AD";
-                    _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlEvaluationRed.Value} G:{numericUpDownUserControlEvaluationGreen.Value} B:{numericUpDownUserControlEvaluationBlue.Value} F:{checkBoxFlashEvaluation.IsChecked} A:1 {moves}");
-                    return;
-                }
-                if (button.Name.Equals("buttonShowCurrentDisAdvantage"))
-                {
-                    string moves = "DA";
-                    _loader.AdditionalInformation($"DIM: {(int)sliderDim.Value} R:{numericUpDownUserControlDisEvaluationRed.Value} G:{numericUpDownUserControlDisEvaluationGreen.Value} B:{numericUpDownUserControlDisEvaluationBlue.Value} F:{checkBoxFlashDisEvaluation.IsChecked} A:1 {moves}");
-                    return;
-                }
+                ShowExample(button.Name);
+           
             }
         }
 
@@ -343,6 +354,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 ((ExtendedEChessBoardConfiguration)comboBoxSettings.Items[_currentIndex]).IsCurrent = true;
                 ShowCurrentConfig();
             }
+        }
+
+        private void SliderDim_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+            textBlockValue.Text = ((int)sliderDim.Value).ToString();
+            if (_loader == null)
+            {
+                return;
+            }
+            ShowExample(_lastButtonName);
         }
     }
 }

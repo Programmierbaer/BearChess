@@ -15,12 +15,16 @@
         <CommandBinding Command="Save" Executed="MenuItemGamesSave_OnClick" CanExecute="CommandBinding_OnCanExecute" />
     </Window.CommandBindings>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="107*"/>
+            <ColumnDefinition Width="13*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -341,7 +345,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-               
+
                     <MenuItem Name="menuItemSettingsNotationMoves" Header="Notation/Moves">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/text_list_numbers.png" />
@@ -709,7 +713,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="IChessOne" Name="menuItemIChessOneBoard" Visibility="Collapsed">
+                    <MenuItem Header="iChessOne" Name="menuItemIChessOneBoard" Visibility="Collapsed">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/iChessOneIcon.png" />
                         </MenuItem.Icon>
@@ -811,7 +815,7 @@
             <Canvas Name="canvasBoard" Grid.Row="1" />
 
         </Grid>
-        <DockPanel Margin="5" Grid.Row="1">
+        <DockPanel Margin="5,5,5,5" Grid.Row="1" Grid.ColumnSpan="2">
             <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect"
                     Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonConnect_OnClick">
                 <StackPanel Orientation="Horizontal">
@@ -843,7 +847,7 @@
         </DockPanel>
 
 
-        <StatusBar Grid.Row="2" VerticalAlignment="Bottom">
+        <StatusBar Grid.Row="2" VerticalAlignment="Center" Grid.ColumnSpan="2">
             <StatusBarItem>
                 <TextBlock Name="textBlockRunningMode">Mode: Easy playing</TextBlock>
             </StatusBarItem>

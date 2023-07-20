@@ -150,21 +150,21 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             }
         }
 
-        public override void SetLedForFields(SetLedsParameter setLedsParameter)
+        public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
             if (!EnsureConnection())
             {
                 return;
             }
             _flashFields.TryDequeue(out _);
-            if (setLedsParameter.FieldNames.Length < 2)
+            if (ledsParameter.FieldNames.Length < 2)
             {
                 return;
             }
             lock (_locker)
             {
-                var joinedString = string.Join(" ", setLedsParameter.FieldNames);
-                if (setLedsParameter.Thinking)
+                var joinedString = string.Join(" ", ledsParameter.FieldNames);
+                if (ledsParameter.IsThinking)
                 {
                     _prevLedField = _prevLedField == 1 ? 0 : 1;
                 }
@@ -176,9 +176,9 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                     }
                 }
                 _logger?.LogDebug($"B: set leds for {joinedString}");
-                if (setLedsParameter.Thinking && setLedsParameter.FieldNames.Length > 1)
+                if (ledsParameter.IsThinking && ledsParameter.FieldNames.Length > 1)
                 {
-                    _flashFields.Enqueue(setLedsParameter.FieldNames);
+                    _flashFields.Enqueue(ledsParameter.FieldNames);
                     return;
                 }
 
@@ -186,15 +186,15 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
                 byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
                 Array.Copy(AllOff, result, AllOff.Length);
-                if (setLedsParameter.Thinking && setLedsParameter.FieldNames.Length == 2)
+                if (ledsParameter.IsThinking && ledsParameter.FieldNames.Length == 2)
                 {
-                    result = UpdateLedsForField(setLedsParameter.FieldNames[_prevLedField], result);
+                    result = UpdateLedsForField(ledsParameter.FieldNames[_prevLedField], result);
                 }
                 else
                 {
-                    if (setLedsParameter.FieldNames.Length == 2 && _showMoveLine)
+                    if (ledsParameter.FieldNames.Length == 2 && _showMoveLine)
                     {
-                        string[] moveLine = MoveLineHelper.GetMoveLine(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1]);
+                        string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
                         foreach (string fieldName in moveLine)
                         {
                             result = UpdateLedsForField(fieldName, result);
@@ -202,7 +202,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                     }
                     else
                     {
-                        foreach (string fieldName in setLedsParameter.FieldNames)
+                        foreach (string fieldName in ledsParameter.FieldNames)
                         {
                             result = UpdateLedsForField(fieldName, result);
                         }
@@ -289,11 +289,11 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             }
 
             _logger?.LogDebug("B: start calibrate ");
-            SetLedForFields(new SetLedsParameter()
+            SetLedForFields(new SetLEDsParameter()
                             {
                                 FieldNames = new[] { "A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7", "D3", "D6" },
                                 Promote = string.Empty,
-                                Thinking = false,
+                                IsThinking = false,
                                 IsMove = false,
                                 DisplayString = string.Empty
             });

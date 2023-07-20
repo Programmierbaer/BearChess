@@ -92,22 +92,22 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
             return CheckComPort(portName);
         }
 
-        public override void SetLedForFields(SetLedsParameter setLedsParameter)
+        public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
             lock (_locker)
             {
-                if (setLedsParameter.Thinking || !setLedsParameter.IsMove)
+                if (ledsParameter.IsThinking || !ledsParameter.IsMove)
                 {
                     return;
                 }
-                if (setLedsParameter.FieldNames.Length > 1)
+                if (ledsParameter.FieldNames.Length > 1)
                 {
-                    string m = $"{setLedsParameter.FieldNames[0]}{setLedsParameter.FieldNames[1]}";
+                    string m = $"{ledsParameter.FieldNames[0]}{ledsParameter.FieldNames[1]}";
                     if (m.Equals(_lastMove))
                     {
                         return;
                     }
-                    _chessBoard.MakeMove(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1], setLedsParameter.Promote);
+                    _chessBoard.MakeMove(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1], ledsParameter.Promote);
                     if (!_runAsUci)
                     {
                         _serialCommunication.Send($"M{m}");

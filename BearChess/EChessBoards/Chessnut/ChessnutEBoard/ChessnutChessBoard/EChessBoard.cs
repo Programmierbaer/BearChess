@@ -149,15 +149,15 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         {
             return true;
         }
-        public override void SetLedForFields(SetLedsParameter setLedsParameter)
+        public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
             if (!EnsureConnection())
             {
                 return;
             }
-            var joinedString = string.Join(" ", setLedsParameter.FieldNames);
+            var joinedString = string.Join(" ", ledsParameter.FieldNames);
             _flashFields.TryDequeue(out _);
-            if (setLedsParameter.Thinking)
+            if (ledsParameter.IsThinking)
             {
                 _prevLedField = _prevLedField == 1 ? 0 : 1;
             }
@@ -169,16 +169,16 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                 }
             }
             _logger?.LogDebug($"B: set leds for {joinedString}");
-            if (setLedsParameter.Thinking && setLedsParameter.FieldNames.Length > 1)
+            if (ledsParameter.IsThinking && ledsParameter.FieldNames.Length > 1)
             {
-                _flashFields.Enqueue(setLedsParameter.FieldNames);
+                _flashFields.Enqueue(ledsParameter.FieldNames);
                 return;
             }
             _prevJoinedString = joinedString;
             byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
-            if (setLedsParameter.FieldNames.Length == 2 && _showMoveLine)
+            if (ledsParameter.FieldNames.Length == 2 && _showMoveLine)
             {
-                string[] moveLine = MoveLineHelper.GetMoveLine(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1]);
+                string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
                 foreach (string fieldName in moveLine)
                 {
                     result = UpdateLedsForField(fieldName, result);
@@ -186,13 +186,13 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             }
             else
             {
-                foreach (string fieldName in setLedsParameter.FieldNames)
+                foreach (string fieldName in ledsParameter.FieldNames)
                 {
                     result = UpdateLedsForField(fieldName, result);
                 }
             }
 
-            _logger?.LogDebug($"SendFields : {string.Join(" ", setLedsParameter.FieldNames)}");
+            _logger?.LogDebug($"SendFields : {string.Join(" ", ledsParameter.FieldNames)}");
             lock (_locker)
             {
                 List<byte> inits = new List<byte>() { 0x0A, 0x08 };

@@ -119,29 +119,29 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
        
 
-        public void ShowMove(string allMoves, string fenStartPosition, SetLedsParameter setLedsParameter, bool waitFor)
+        public void ShowMove(string allMoves, string fenStartPosition, SetLEDsParameter setLeDsParameter, bool waitFor)
         {
-            _eChessBoard.ShowMove(allMoves,fenStartPosition, setLedsParameter, waitFor);
+            _eChessBoard.ShowMove(allMoves,fenStartPosition, setLeDsParameter, waitFor);
         }
 
-        public void ShowMove(SetLedsParameter setLedsParameter)
+        public void ShowMove(SetLEDsParameter setLeDsParameter)
         {
-            _eChessBoard.ShowMove(setLedsParameter);
+            _eChessBoard.ShowMove(setLeDsParameter);
         }
 
         /// <inheritdoc />
         public void SetLedsFor(string[] fields, bool thinking)
         {
-            _eChessBoard.SetLedsFor(new SetLedsParameter()
+            _eChessBoard.SetLedsFor(new SetLEDsParameter()
                                     {
                                         FieldNames = fields,
-                                        Thinking = thinking
+                                        IsThinking = thinking
                                     } );
         }
 
-        public void SetLedsFor(SetLedsParameter setLedsParameter)
+        public void SetLedsFor(SetLEDsParameter setLeDsParameter)
         {
-            _eChessBoard.SetLedsFor(setLedsParameter);
+            _eChessBoard.SetLedsFor(setLeDsParameter);
         }
 
 

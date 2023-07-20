@@ -94,28 +94,28 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
             return false;
         }
 
-        public override void SetLedForFields(SetLedsParameter setLedsParameter)
+        public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
             lock (_locker)
             {
-                if (setLedsParameter.Thinking || !setLedsParameter.IsMove)
+                if (ledsParameter.IsThinking || !ledsParameter.IsMove)
                 {
                     return;
                 }
 
-                if (setLedsParameter.FieldNames.Length > 1)
+                if (ledsParameter.FieldNames.Length > 1)
                 {
                     _logger.LogDebug("OSABoard: SetLedForFields");
-                    var chessFigure = _chessBoard.GetFigureOn(Fields.GetFieldNumber(setLedsParameter.FieldNames[1]));
+                    var chessFigure = _chessBoard.GetFigureOn(Fields.GetFieldNumber(ledsParameter.FieldNames[1]));
                     string del = "-";
                     if (chessFigure.Color != Fields.COLOR_EMPTY)
                     {
                         del = "x";
                     }
 
-                    string m = $"{setLedsParameter.FieldNames[0].ToLower()}{del}{setLedsParameter.FieldNames[1].ToLower()}";
-                    _logger.LogDebug($"OSABoard: Make internal move: {m}{setLedsParameter.Promote}");
-                    _chessBoard.MakeMove(setLedsParameter.FieldNames[0], setLedsParameter.FieldNames[1], setLedsParameter.Promote);
+                    string m = $"{ledsParameter.FieldNames[0].ToLower()}{del}{ledsParameter.FieldNames[1].ToLower()}";
+                    _logger.LogDebug($"OSABoard: Make internal move: {m}{ledsParameter.Promote}");
+                    _chessBoard.MakeMove(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1], ledsParameter.Promote);
                     if (!_runAsUci)
                     {
                         Thread.Sleep(500);

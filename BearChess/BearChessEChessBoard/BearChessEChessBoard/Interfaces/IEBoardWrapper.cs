@@ -36,11 +36,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// Shows the LED for the last move in <paramref name="allMoves"/>.
         /// </summary>
 
-        void ShowMove(string allMoves, string fenStartPosition, SetLedsParameter setLedsParameter, bool waitFor);
+        void ShowMove(string allMoves, string fenStartPosition, SetLEDsParameter setLeDsParameter, bool waitFor);
 
-        void ShowMove(SetLedsParameter setLedsParameter);
+        void ShowMove(SetLEDsParameter setLeDsParameter);
         
-        void SetLedsFor(SetLedsParameter setLedsParameter);
+        void SetLedsFor(SetLEDsParameter setLeDsParameter);
 
         /// <summary>
         /// All led off

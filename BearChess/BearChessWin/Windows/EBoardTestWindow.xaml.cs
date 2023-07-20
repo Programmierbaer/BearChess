@@ -59,10 +59,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonGo_OnClick(object sender, RoutedEventArgs e)
         {
-            _eChessBoard?.SetLedsFor(new SetLedsParameter()
+            _eChessBoard?.SetLedsFor(new SetLEDsParameter()
                                      {
                                          FieldNames = textBoxFields.Text.Split(" ".ToCharArray()),
-                                         Thinking = true
+                                         IsThinking = true
                                      });
         }
 

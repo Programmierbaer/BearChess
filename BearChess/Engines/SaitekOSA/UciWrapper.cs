@@ -248,7 +248,7 @@ namespace www.SoLaNoSoft.com.BearChess.SaitekOSA
 
                         if (!string.IsNullOrWhiteSpace(_lastMoveCommand))
                         {
-                            _eChessBoard.ShowMove(new SetLedsParameter()
+                            _eChessBoard.ShowMove(new SetLEDsParameter()
                                                   {
                                                       FieldNames = new []{ _lastMoveCommand.Substring(0, 2),
                                                                              _lastMoveCommand.Substring(3, 2)}

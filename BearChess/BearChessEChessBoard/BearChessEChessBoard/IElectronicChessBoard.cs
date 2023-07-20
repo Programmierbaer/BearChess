@@ -39,18 +39,18 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Shows the LED for the last move in <paramref name="allMoves"/>, limited by spaces.
         /// </summary>
-        void ShowMove(string allMoves, string fenStartPosition, SetLedsParameter setLedsParameter, bool waitFor);
+        void ShowMove(string allMoves, string fenStartPosition, SetLEDsParameter setLeDsParameter, bool waitFor);
 
         /// <summary>
         /// Show fields <paramref name="fromField"/> and <paramref name="toField"/> on board.
         /// </summary>
-        void ShowMove( SetLedsParameter setLedsParameter);
+        void ShowMove( SetLEDsParameter setLeDsParameter);
 
         /// <summary>
         /// Show all fields <paramref name="fields"/> on board.
         /// </summary>
    
-        void SetLedsFor(SetLedsParameter setLedsParameter);
+        void SetLedsFor(SetLEDsParameter setLeDsParameter);
 
         /// <summary>
         /// All led off

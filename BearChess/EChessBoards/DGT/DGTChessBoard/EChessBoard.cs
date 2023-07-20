@@ -19,7 +19,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         private readonly bool _switchClockSide;
         private readonly bool _useBluetooth;
 
-        private readonly byte[] _allLEDsOff = { 0x60, 0x04, 0x00, 0x40, 0x00, 0x00 };
+        private readonly byte[] _allLEDsOff = { 0x60, 0x04, 0x00, 0x00, 0x00, 0x00 };
         private readonly byte[] _resetBoard = { 64 }; // @
         private readonly byte[] _dumpBoard = { 66 };  // B
         private readonly byte[] _startReading = { 68 }; // D
@@ -251,22 +251,22 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             return CheckComPort(portName);
         }
 
-        public override void SetLedForFields(SetLedsParameter setLedsParameter)
+        public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
 
-            if (setLedsParameter.FieldNames == null || setLedsParameter.FieldNames.Length == 0)
+            if (ledsParameter.FieldNames == null || ledsParameter.FieldNames.Length == 0)
             {
                 return;
             }
             List<byte> allBytes = new List<byte>();
-            string sendFields = string.Join(" ", setLedsParameter.FieldNames);
+            string sendFields = string.Join(" ", ledsParameter.FieldNames);
             if (sendFields.Equals(_lastSendFields))
             {
                 return;
             }
 
             _lastSendFields = sendFields;
-            _logger?.LogDebug($"DGT: Set LED for fields: {_lastSendFields} Thinking: {setLedsParameter.Thinking}");
+            _logger?.LogDebug($"DGT: Set LED for fields: {_lastSendFields} IsThinking: {ledsParameter.IsThinking}");
 
             //if (thinking && fieldNamesLength > 1)
             //{
@@ -274,19 +274,18 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             //    SetLedForFields(new string[] { fieldNames[1], fieldNames[1] }, thinking, isMove, displayString);
             //    return;
             //}
-
             allBytes.Add(0x60);
             allBytes.Add(0x04);
             allBytes.Add(0x01);
-            string fieldName = setLedsParameter.FieldNames[0];
+            string fieldName = ledsParameter.FieldNames[0];
             if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
             {
                 allBytes.Add(_fieldName2FieldByte[fieldName.ToUpper()]);
             }
 
-            if (setLedsParameter.FieldNames.Length > 1)
+            if (ledsParameter.FieldNames.Length > 1)
             {
-                fieldName = setLedsParameter.FieldNames[1];
+                fieldName = ledsParameter.FieldNames[1];
             }
             if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
             {
@@ -294,9 +293,9 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             }
             allBytes.Add(0);
             _serialCommunication.Send(allBytes.ToArray());
-            if (setLedsParameter.IsMove && setLedsParameter.FieldNames.Length == 2)
+            if (ledsParameter.IsMove && ledsParameter.FieldNames.Length == 2)
             {
-                SendDisplayToClock(setLedsParameter.DisplayString);
+                SendDisplayToClock(ledsParameter.DisplayString);
             }
             if (_useBluetooth)
             {
@@ -315,12 +314,12 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         public override void SetAllLedsOn()
         {
 
-            SetLedForFields(new SetLedsParameter()
+            SetLedForFields(new SetLEDsParameter()
                             {
                                 FieldNames = new string[] { "A1", "H8" },
 
                             });
-            SetLedForFields(new SetLedsParameter()
+            SetLedForFields(new SetLEDsParameter()
                             {
                                 FieldNames = new string[] { "A8", "H1" },
 

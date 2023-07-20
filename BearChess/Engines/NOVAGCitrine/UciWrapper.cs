@@ -191,7 +191,7 @@ namespace www.SoLaNoSoft.com.BearChess.NOVAGCitrine
 
                         if (!string.IsNullOrWhiteSpace(_lastMoveCommand))
                         {
-                            _eChessBoard.ShowMove(new SetLedsParameter()
+                            _eChessBoard.ShowMove(new SetLEDsParameter()
                                                   {
                                                       FieldNames = new string[]
                                                                    {
