@@ -26,7 +26,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DuelInfoWindow _duelInfoWindow;
         private DuelManager _duelManager;
 
-        public static Dictionary<int,SolidColorBrush> colorMap = new Dictionary<int,SolidColorBrush>();
+        public static Dictionary<ulong,SolidColorBrush> colorMap = new Dictionary<ulong, SolidColorBrush>();
         public static bool ShowGamesDuplicates = true;
 
         public event EventHandler<DatabaseGame> SelectedGameChanged;
@@ -124,7 +124,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DataGridDuel_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Dictionary<int,int> pgnHashCounter = new Dictionary<int,int>();
+            Dictionary<ulong,ulong> pgnHashCounter = new Dictionary<ulong, ulong>();
             colorMap.Clear();
             _duelFinished = false;
             int ci = 0;
@@ -472,10 +472,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return DependencyProperty.UnsetValue;
             }
-            int input;
+            ulong input;
             try
             {
-                input = (int)value;
+                input = (ulong)value;
 
             }
             catch (InvalidCastException )

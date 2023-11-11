@@ -631,5 +631,56 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textWriter.Close();
             NameChanged();
         }
+
+        private void MenuItemSetAsBearChess_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (SelectedEngine == null)
+            {
+                return;
+            }
+            if (!SelectedEngine.ValidForAnalysis)
+            {
+                MessageBox.Show("This kind of engine is not suitable for a BearChess", "Not suitable", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+            string uciPath;
+            XmlSerializer serializer;
+            TextWriter textWriter;
+            SelectedEngine.IsProbing = !SelectedEngine.IsProbing;
+            foreach (var uciInfo in _uciInfos)
+            {
+                if (!uciInfo.Id.Equals(SelectedEngine.Id))
+                {
+                    if (uciInfo.IsProbing)
+                    {
+                        uciInfo.IsProbing = false;
+                        uciPath = Path.Combine(_uciPath, uciInfo.Id);
+                        serializer = new XmlSerializer(typeof(UciInfo));
+                        textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
+                        serializer.Serialize(textWriter, uciInfo);
+                        textWriter.Close();
+                        break;
+                    }
+
+                }
+            }
+            uciPath = Path.Combine(_uciPath, SelectedEngine.Id);
+            serializer = new XmlSerializer(typeof(UciInfo));
+            textWriter = new StreamWriter(Path.Combine(uciPath, SelectedEngine.Id + ".uci"), false);
+            serializer.Serialize(textWriter, SelectedEngine);
+            textWriter.Close();
+            NameChanged();
+        }
+
+        private void DataGridEngine_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var u = e.OriginalSource as UIElement;
+            if (e.Key == Key.Enter && u != null)
+            {
+                e.Handled = true;
+                DialogResult = true;
+            }
+        }
     }
 }

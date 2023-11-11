@@ -45,7 +45,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// All led off
         /// </summary>
-        void SetAllLedsOff();
+        void SetAllLedsOff(bool forceOff);
 
         /// <summary>
         /// All led on
@@ -120,11 +120,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         event EventHandler<string> FenEvent;
         event EventHandler<string> DataEvent;
+        event EventHandler<string[]> ProbeMoveEvent;
 
         event EventHandler AwaitedPosition;
         event EventHandler BasePositionEvent;
         event EventHandler BatteryChangedEvent;
         event EventHandler HelpRequestedEvent;
+        event EventHandler ProbeMoveEndingEvent;
 
         /// <summary>
         /// Return a best move
@@ -182,5 +184,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void StopClock();
         void StartClock(bool white);
         void DisplayOnClock(string display);
+
+        bool MultiColorLEDs { get; }
     }
 }

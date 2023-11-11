@@ -5,7 +5,8 @@
 \usepackage{float}
 \usepackage{titlesec}
 \usepackage{fancyhdr}
-\usepackage{xcolor}
+
+\usepackage[dvipsnames]{xcolor}
 \usepackage[T1]{fontenc} 
 \usepackage{mathptmx}
 \usepackage{nameref}
@@ -21,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 0.9.12.1}
+\fancyhead[R]{Version 1.0.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{20.07.2023} 
+\date{06.11.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -43,9 +44,9 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
+BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
 
-I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc. If something does not work, the companies are not responsible for it.\\
+I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc or iChessOne. If something does not work, the companies are not responsible for it.\\
 
 Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 
@@ -79,6 +80,7 @@ BearChess offers among others the following functions:
 	  \item Play with \textbf{DGT Pegasus} chessboard.	  
 	  \item Play with \textbf{Square Off Pro} chessboard.	  	  
 	  \item Play with \textbf{Chessnut Air} chessboard.	  	  	  
+	  \item Play with \textbf{iChessOne} chessboard.	  	  	  	  
 	  \item Play with \textbf{NOVAG Citrine/UCB} chessboard.
 	  \item Play with \textbf{Saitek OSA} chessboard.	  
   	  \item Play against human beings or UCI engines.
@@ -92,6 +94,7 @@ BearChess offers among others the following functions:
   	  \item Engine \textbf{duels} and \textbf{tournaments}.
   	  \item Support for Polyglot and Arena opening books.
   	  \item Save and load your games.
+  	  \item Load games from "The Week in Chess"
   	  \item Individual chessmen and board fields.
 \end{enumerate}
 
@@ -99,7 +102,7 @@ BearChess follows the design of Single Document Interface (SDI). You can place d
 If you click on the BearChess main screen, all other open windows are also brought to the foreground. If you hold down the Shift key and move the BearChess main screen, all other windows will also be moved synchronously.\\\\
 The version numbering follows the following scheme:\\ 
 "\textit{major release}"\textbf{.}""\textit{minor release}"\textbf{.}""\textit{sub release}"\textbf{.}""\textit{bug fix}"\\
-Currently the \textit{major release} is still 0 and will only become a 1 when all planned functions are implemented. The \textit{minor release} is increased when new features are added. The \textit{sub release} is increased when minor features are added or improved. The last number is incremented if only errors were corrected.
+The \textit{minor release} is increased when new features are added. The \textit{sub release} is increased when minor features are added or improved. The last number is incremented if only errors were corrected.
 
 \subsection{Modes}
 BearChess is running in different modes. The current mode is displayed in the lower left corner.
@@ -174,7 +177,7 @@ The symbols on the right side give information about the current color and the b
 	\label{fig:Actions}
 \end{figure}
 \begin{itemize}
-	\item \includegraphics[scale=0.2]{bearchess.png} \textbf{Start a new game} opens a new window to select opponents and time control (see chapter \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent}).
+	\item \includegraphics[scale=0.6]{BearChessIcon.png} \textbf{Start a new game} opens a new window to select opponents and time control (see chapter \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent}).
 	
 	\item \includegraphics[scale=0.5]{robot.png} \textbf{Analysis} allows you to analyze games or positions with suppport of several chess engines (see chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode})
 	
@@ -200,7 +203,7 @@ The symbols on the right side give information about the current color and the b
 \end{figure}
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{diskette.png} \textbf{Save} your current game.
-	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Games manager} opens a new window in which you can see and load all your previously saved games.
+	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Games manager} opens a new window in which you can see and load all your previously saved games or import games from "The Week in Chess".
 	\item \includegraphics[scale=0.5]{clipboard_sign_out.png}  \textbf{Copy to clipboard} copy the current game (PGN) to your clipboard.	
 	\item \includegraphics[scale=0.5]{clipboard_sign.png}  \textbf{Paste from clipboard} loads a game (PGN) from your clipboard.
 	\item \includegraphics[scale=0.5]{cog.png}  \textbf{Settings} for show or hide duplicate games.
@@ -217,8 +220,7 @@ All games are saved in a database file. Read more on chapter \textbf{\ref{games}
 \end{figure}
 \begin{itemize}
 	\item  \includegraphics[scale=0.5]{robot.png} \textbf{Load \& manage engines} opens a new window in which you can install, load or configure your chess engines.
-	\item  \includegraphics[scale=0.5]{user_comment.png} \textbf{Load buddy engine} load the as buddy defined engine.
-	\item \textbf{Load buddy engine on new game} if you  want to load the buddy engine when you start a new game.
+	\item  \includegraphics[scale=0.5]{user_comment.png} \textbf{Buddy engine} load the as buddy defined engine and configure the behaviour.
 	\item \textbf{Load last engine on start} if you always want to load immediately an engine when you start BearChess. It has no effect if you have activated the option "Run startup game on start".
 	\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
 	\item \textbf{Settings} configure what information you want to see from the engine, e.g. nodes per second.	
@@ -263,7 +265,7 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	\label{fig:Settings}
 \end{figure}
 \begin{itemize}
-	\item  \includegraphics[scale=0.2]{bearchess_2.png} \textbf{BearChess} opens a window where you can change some BearChess basic settings.  Read more on chapter \textbf{\ref{ConfigureBearChess}  \nameref{ConfigureBearChess}} on page \pageref{ConfigureBearChess}.
+	\item  \includegraphics[scale=0.6]{BearChessIcon.png} \textbf{BearChess} opens a window where you can change some BearChess basic settings.  Read more on chapter \textbf{\ref{ConfigureBearChess}  \nameref{ConfigureBearChess}} on page \pageref{ConfigureBearChess}.
 	\item  \includegraphics[scale=0.9]{Board2DPieces32.png} \textbf{Board \& Pieces} opens a window where you can change the appearance of the chessboard and the pieces.  Read more on chapter \textbf{\ref{BoardAndPieces}  \nameref{BoardAndPieces}} on page \pageref{BoardAndPieces}.
 	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png}  \textbf{Rotate board} if the board on the screen should automatically rotate for your color.
 	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation/Moves} opens a windows where you can change the appearance of the notation, e.g. figurine or letters.
@@ -290,20 +292,27 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 \end{figure}
 \begin{itemize}
 	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
-\item  \includegraphics[scale=0.05]{tabutronic_logo_def.png} \textbf{TabuTronic} opens a window where you can configure and connect to TabuTronic chessboards (Cerno and Sentio).
-Read more on chapter \textbf{\ref{ConfigureTabuTronicCerno}  \nameref{ConfigureTabuTronicCerno}} on page \pageref{ConfigureTabuTronicCerno}.	
-or on chapter \textbf{\ref{ConfigureTabuTronicSentio}  \nameref{ConfigureTabuTronicSentio}} on page \pageref{ConfigureTabuTronicSentio}.	
+    \item  \includegraphics[scale=0.05]{tabutronic_logo_def.png} \textbf{TabuTronic} opens a window where you can configure and connect to TabuTronic chessboards (Cerno and Sentio). Read more on chapter \textbf{\ref{ConfigureTabuTronicCerno}  \nameref{ConfigureTabuTronicCerno}} on page \pageref{ConfigureTabuTronicCerno}.	or on chapter \textbf{\ref{ConfigureTabuTronicSentio}  \nameref{ConfigureTabuTronicSentio}} on page \pageref{ConfigureTabuTronicSentio}.	
+    \item  \includegraphics[scale=0.1]{iChessOneIcon.png} \textbf{iChessOne} opens a window in which you can configure and connect to iChessOne chessboards.  Read more on chapter \textbf{\ref{ConfigureIChessOne}  \nameref{ConfigureIChessOne}} on page \pageref{ConfigureIChessOne}.    
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
 	\item  \includegraphics[scale=0.3]{dgt48.png} \textbf{DGT} connect to DGT e-Boards, DGT Revelation or DGT Pegasus chessboard.	
 	\item  \includegraphics[scale=0.05]{squareoff.png} \textbf{Square Off Pro} connect to Square Off Pro chessboard.		
 	\item  \includegraphics[scale=0.1]{chessnut.png} \textbf{Chessnut Air/Pro} connect to Chessnut Air/Pro chessboard.		
 	\item  \includegraphics[scale=0.3]{novag48.PNG} \textbf{NOVAG} connect to NOVAG Citrine or NOVAG UCB chessboard.			
-\item  \includegraphics[scale=0.4]{Saitek_logo.PNG} \textbf{Saitek OSA} connect to Saitek chessboards with supports OSA protocol.		
+    \item  \includegraphics[scale=0.4]{Saitek_logo.PNG} \textbf{Saitek OSA} connect to Saitek chessboards with supports OSA protocol.		
+    \item  \includegraphics[scale=0.4]{Saitek_logo.PNG} \textbf{iChessOne} connect to iChessOne chessboard 
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
-	\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
-	\item \textbf{Show best move in game} displays the current best move of the engine on your electronic chessboard.	
-	\item \textbf{Show move when help is requested} displays the current best move of the analysis engine on your electronic chessboard when help is requested. To request help, raise your king for a short time and set it down again. To do this, you must be on the move and have an additional engine loaded for assistent (read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}).
+    \item \textbf{Show next move in game analysis mode} displays the next move on your electronic chessboard.
+    \item \textbf{Engines} Configure the impact of engines
+
+\end{itemize}
+
+\subsubsection{Engines}
+\begin{itemize}
+   \item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
+	\item \textbf{Show current best move in game} displays the current best move of the engine on your electronic chessboard.	
+	\item \textbf{Show move from buddy when help is requested} displays the current best move of the analysis engine on your electronic chessboard when help is requested. To request help, raise your king for a short time and set it down again. To do this, you must be on the move and have an additional engine loaded for assistent (read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}).
 \end{itemize}
 
 \subsection{Windows}
@@ -330,7 +339,7 @@ Opens this document.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{LoadEngine.png}
-	\caption{Open Load And Manage UCI Engines window}
+	\caption{Open "Load and manage UCI Engines" window}
 	\label{fig:LoadEngine}
 \end{figure}
 BearChess does not include a chess engine. Click on "Load \& manage engines" to install and configure one. "\textit{Install}" means to make a chess program known to BearChess, not to install it on your computer. BearChess supports any UCI engine.\\
@@ -350,7 +359,7 @@ BearChess does not include a chess engine. Click on "Load \& manage engines" to 
 	\item \includegraphics[scale=0.5]{bin.png} Uninstall selected engine.
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
-"Citrine" and "Saitek OSA" are predefined engines for NOVAG Citrine and Saitek boards.
+"Citrine" and "Saitek OSA" are predefined engines for NOVAG Citrine and Saitek boards and cannot deleted.\\
 
 \subsection{Install a new engine} \label{InstallEngine}
 
@@ -546,10 +555,23 @@ If you want to save the same engine with a different configuration, e.g. an addi
 Click on \includegraphics[scale=0.5]{cog_add.png} to save the configuration with a new name.\\
 
 
-\subsection{Define a buddy engine}
+\subsection{Define a Buddy engine} \label{BuddyEngine}
 
-To define an installed engine as buddy, selected an engine and click on \includegraphics[scale=0.5]{user_comment.png}\\
-A buddy engine is the default engine if you request help during a game.
+To define an installed engine as buddy, select an engine and click on \includegraphics[scale=0.5]{user_comment.png}\\
+A buddy engine is the default engine if you request help during a game (see \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}).
+
+
+\subsection{Define a BearChess engine} \label{BearChessEngine}
+
+To define an installed engine as BearChess engine, select an engine open the context menue with a right-mouse-click.\\
+{\color{red}\textbf{*}} Currently, a BearChess engine is only used in conjunction with an iChessOne chessboard (see \textbf{\ref{ConfigureIChessOne}  \nameref{ConfigureIChessOne}} on page \pageref{ConfigureIChessOne} and \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{BearChessEngine1.png}
+	\caption{Set as BearChess engine}
+	\label{fig:BearChessEngine1}
+\end{figure}
 
 
 \subsection{Load an engine}
@@ -786,8 +808,8 @@ Now you can combine your boards with your pieces.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{CombineBoardPieces.png}
-	\caption{Combine board and pieces }
+	\includegraphics[scale=0.7]{CombineBoardPieces.png}
+	\caption{Combine board and pieces by yoour own }
 	\label{fig:CombineBoardPieces}
 \end{figure}
 
@@ -958,7 +980,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Pro communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
+BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{iChessOne}, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, iChessOne, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth or Bluetooth LE. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Pro communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
 For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
 In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
@@ -1019,6 +1041,7 @@ If you select <auto> and no board is found, you will receive the following error
 \end{figure}
 
 \textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can take some seconds until the right one is recognized.
+
 
 \subsubsection{Configure Bluetooth} \label{CertaboBluetooth}
 
@@ -1097,6 +1120,7 @@ In the lower right corner appears a new button, which allows you to easily conne
 	\label{fig:Certabo5}
 \end{figure}
 
+
 \subsection{Configure TabuTronic Cerno} \label{ConfigureTabuTronicCerno}
 
 \begin{figure}[H]
@@ -1153,6 +1177,145 @@ When the configuration is complete, you can connect your chessboard.
 In the lower right corner appears a new button, which allows you to easily connect or disconnect your board. The current status is also displayed.
 \\TabuTronic Sentio has no real piece recognition and can only give the information per field whether there is a piece or not.
 
+\subsection{Configure iChessOne} \label{ConfigureIChessOne}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne1.png}
+	\caption{Open a window to configure iChessOne }
+	\label{fig:iChessOne1}
+\end{figure}
+
+For your iChessOne you may need to configure if you want to use a COM port or Bluetooth LE.\\
+If your PC supports Bluetooth LE, you can also connect to the iChessOne via Bluetooth LE. If you want to do this, check the option "Bluetooth LE" first, before opening the configuration windows.\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{iChessOne2.png}
+	\caption{Configure iChessOne }
+	\label{fig:iChessOne2}
+\end{figure}
+
+
+Select the COM port if you know it or use the <auto> selection.
+Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MillenniumChessLink3.png}
+	\caption{COM port successful detected }
+	\label{fig:iChessOne3}
+\end{figure}
+
+If you select an invalid COM port,e.G. COM7, you will see the following error message:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MillenniumChessLink4.png}
+	\caption{Invalid COM port }
+	\label{fig:iChessOne4}
+\end{figure}
+
+If you select <auto> and no board is found, you will receive the following error message:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MillenniumChessLink5.png}
+	\caption{No board found }
+	\label{fig:iChessOne5}
+\end{figure}
+
+\textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can take some seconds until the right one is recognized.\\
+
+You can configure how iChessOne reports changes on the board to BearChess. Either it transmits changes independently ("Send only updates") or it transmits the current position regularly at intervals of between 250 and 1000 ms.\\
+\textbf{Hint:} The "Send only updates" option is preferred. Especially if you operate the board with batteries.\\
+
+{\color{red}\textbf{*}} The communication with the iChessOne was implemented with a developer version of the board. Despite intensive exchange with the developers of iChessOne, it is possible that corrections are still necessary.
+
+
+\subsubsection{LEDs}
+
+The iChessOne offers multi-colored LEDs. This allows a much more detailed configuration. Each LED can combine three colors ({\color{red}red}, {\color{ForestGreen}green} and {\color{blue}blue}) in different proportions (0 = none to 15 = full) and display them in different brightness levels (0 = off to 15 = very bright).
+And you can set whether they should light up permanently or flash.\\
+The following example defines the LED for the square from which you are to take the chess pieces, with a full proportion of  {\color{ForestGreen}green} and {\color{blue}blue}) and a brightness of 4.
+The LED for the target square is {\color{ForestGreen}green} with a brightness of 4 and flashes.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne3.png}
+	\caption{Set LEDs }
+	\label{fig:iChessOne6}
+\end{figure}
+In addition to "Move from" and "Move to", further information can be assigned to LEDs.
+\begin{itemize}
+	\item \textbf{Invalid} If chess pieces are on the wrong square or missing.
+	\item \textbf{Take back} When a move is to be reversed.
+    \item \textbf{Hint} For a suggestion move from an engine.
+    \item \textbf{Current color} The LED in the corner of field H1 or H8 shows which site is currently taking their turn.	       
+\end{itemize}
+
+The next two options require an engine defined as "BearChess". See \textbf{\ref{BearChessEngine}  \nameref{BearChessEngine}} on page \pageref{BearChessEngine} and \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}.
+
+\begin{itemize}
+	\item \textbf{Valuation Advantage/Disadvantage} The LEDs at the bottom indicate whether and how much of an advantage or disadvantage you have.
+	\item \textbf{Possible moves} When you lift a chess piece, all possible target squares are displayed. In addition, they can be shown whether the target field is a good, bad or just playable move.
+\end{itemize}
+
+
+
+\subsubsection{Active LEDs}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne4.png}
+	\caption{Active LEDs }
+	\label{fig:iChessOne7}
+\end{figure}
+If you check "Activate all LEDs aliong the move", all fields are displayed that lie on the path between the from and target field. For example, a bishop move from F1 to C4 also activates squares E2 and D3.\\
+If "Show own moves" is not activated, no LEDs are displayed for the fields when you make a move (unless the move is invalid).
+
+\subsubsection{Test your LED configuration}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne5.png}
+	\caption{Test your LEDs }
+	\label{fig:iChessOne8}
+\end{figure}
+
+A click on \includegraphics[scale=0.4]{eye.png} connects to the board.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne6.png}
+	\caption{Test your LEDs }
+	\label{fig:iChessOne9}
+\end{figure}
+The icon changes to \includegraphics[scale=0.4]{eye_half.png} and small \includegraphics[scale=0.3]{eye.png} appears besides every configuration option. Click on the small eyes shows you an example of the LED configuration on your board.
+
+\subsubsection{Save your LED configuration}
+You can configure and save as many configurations as you like. For example, different people can each define their favorite configuration. Or you want to have different configurations, whether you are playing a tournament game or training.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne7.png}
+	\caption{Save your configuration}
+	\label{fig:iChessOne10}
+\end{figure}
+
+\begin{itemize}
+	\item \includegraphics[scale=0.3]{accept_button.png} Saves your current configuration.
+    \item \includegraphics[scale=0.3]{cog_add.png} Saves your configuration with a new name.
+    \item \includegraphics[scale=0.3]{bin.png} Delete the current configuration. You cannot delete the configuration with the name "BearChess", but you can change it.
+    \item \includegraphics[scale=0.3]{cancel.png} Close the configuration without any changes.
+\end{itemize}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne8.png}
+	\caption{Select a configuration}
+	\label{fig:iChessOne11}
+\end{figure}
 
 \subsection{Configure Millennium ChessLink} \label{ConfigureChessLink}
 \begin{figure}[H]
@@ -2628,7 +2791,8 @@ The save dialog is prefilled with the known data. But you can correct them befor
 
 \subsection{Games manager}
 
-BearChess stores all games in one database file. The current name is shown in the title bar.
+BearChess stores all games in one database file. The current name is shown in the title bar.\\
+\textbf{ {\color{red}*} The database has changed with version 1.0.0.0. If you open a database prior to version 1.0.0.0, a migration is performed first.}
 
 \begin{figure}[H]
 	\centering
@@ -2646,6 +2810,7 @@ If you double click on a row, the game is displayed on the board.
 	\item \includegraphics[scale=0.5]{saved_imports.png} Import games from a PGN file {\color{red}*}.	
 	\item \includegraphics[scale=0.5]{clipboard_sign_out.png} Copy selected game into clipboard.		
 	\item \includegraphics[scale=0.5]{database_repeat_delete.png} Delete all duplicate games. Duel and tournament games will be ignored.	
+	\item \includegraphics[scale=0.5]{outlook_calendar_week.png} Open a dialog for games from "The Week in Chess" (see \textbf{\ref{twic}  \nameref{twic}} on page \pageref{twic})	
 	\item \includegraphics[scale=0.5]{link.png} Filter games that correspond to the current board position.	
 	\item \includegraphics[scale=0.5]{table_filter.png} Opens a window for further filter options.		
 	\item \includegraphics[scale=0.5]{text_exports.png} Exports all or the selected games into a PGN file.
@@ -2664,9 +2829,43 @@ You also can delete all duplicates of a specific game:
 \end{figure}
 
 
-{\color{red}*} The import is very slow. It will be improved in the next version.
+{\color{red}*} The import has been improved in version 1.0.0.0, but is still slower than in other database programs. Further improvements are still being worked on.
 
 {\color{red}**} Currently BearChess does not support a search function, only filter.
+
+\subsubsection{The Week in Chess (TWIC)} \label{twic}
+BearChess can download and import games from "The Week in Chess" website \url{https://theweekinchess.com/twic}. If you visit the website, you see a table with all available files.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{twic2.png}
+	\caption{The Week in Chess Archive}
+	\label{fig:TWIC2}
+\end{figure}
+
+
+The dialog in BearChess shows all files already imported with name, number of games, date of the file and when they were imported.\\
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.6]{twic1.png}
+	\caption{The Week in Chess}
+	\label{fig:TWIC1}
+\end{figure}
+
+With the button \includegraphics[scale=0.5]{download.png} you download and import all files with numbers above your highest import. For this example, you would download and install \textbf{all} files above 1487. If you have no games imported before the download starts with 1500.\\
+With the button \includegraphics[scale=0.5]{mark_to_download.png} you download and import all files with numbers, for example from 1500 to 1510.\\
+
+{\color{red}*} The import is probably slower than you are used to from other database programs. You should not import too many files at once.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{twic3.png}
+	\caption{Delete files}
+	\label{fig:TWIC3}
+\end{figure}
+The context menu for aline (right mouse click) allows you to delete all games with this number.
+
 
 \subsection{Copy \& Paste from clipboard}
 
@@ -2721,7 +2920,8 @@ If you have configured that currently the best move should be displayed, the ana
 Another outstanding feature compared to other GUIs is the extended engine support. You can load one or more engines at any time (except your are connected to FICS) to assist you in a game against another engine or another player.
 \begin{enumerate}
 	\item Start a new game against an engine.
-	\item Load a second engine for assistent.
+	\item Load your Buddy engine for assistent.
+	\item Load further engines for more information.
 \end{enumerate}
 
 The following figure gives you an example. You play a game against Stockfish and Komodo gives hints for the next best move. 
@@ -2744,6 +2944,11 @@ Even if you are not playing a game and are on mode "Easy playing", just load som
 \subsection{Install a new version}
 All your configration settings for BearChess is not stored in the directory from which you start BearChess. For an installation of a new version of BearChess you can delete the complete BearChess directory and unpack the new version there. Or you unpack the new version in a separate directory and still have the same configuration.
 
+\subsection{Usage of "Buddy" and "BearChess" engines} \label{BuddyBearChessEngines}
+BearChess is delivered without its own engine. However, it can use engines for internal tasks.\\
+The task of a "Buddy" engine is to be able to make move suggestions during a game. To do this, it calculates in parallel on the current position on the board to make a move proposal when the king piece is briefly raised.\\
+The task of a "BearChess" engine is to quickly give an evaluation for all possible moves when a piece is raised.
+
 \subsection{MessChess engines}
 These engines simluate a chess computer the configuration is limited to the capabilities of them. Not everything that is possible with normal engines can be done here. 
 
@@ -2755,7 +2960,6 @@ For the first time, the engine assumes that all chessmen are on their initial po
 
 \subsection{Certabo: Pawn conversion to a queen}
 If you have performed the calibration without extra queens and are performing a pawn conversion with a extra queen on your board for the first time, the program needs a few seconds to identify the new piece. Please wait until the LEDs are off. The new piece code is stored. There is no delay next time.
-
 
 \subsection{TabuTronic Sentio: Piece recognition}
 The TabuTronic Sentio board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible.
@@ -2769,6 +2973,10 @@ The DGT Pegasus board has no chess piece detection but only detects if a piece i
 \subsection{Square Off Pro: Piece recognition}
 The Square Off Pro board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible. Due to firmware changes in the SquareOff Pro board, the communication between the board and BearChess has become worse. Important commands are no longer sent from the board.
 That is why some functions are no longer possible with this board and the stability is limited.
+
+\subsection{iChessOne}
+The communication with the iChessOne was implemented with a developer version of the board. Despite intensive exchange with the developers of iChessOne, it is possible that corrections are still necessary.
+
 
 \subsection{Electronic chessboard and engine duels}
 When two engines play against each other, all moves are ignored by the electronic chess board.
@@ -2788,6 +2996,9 @@ All these boards have no piece detection, but check if the piece makes a legal m
 	\item The NOVAG Citrine board must be sent an engine's moves twice in order for them to be displayed. However, this causes an error message to appear on the display.
 	\item With NOVAG Citrine and Saitek OSA, the LEDs do not show the target field when a piece is captured.
 \end{itemize}
+
+\subsection{Available COM-Ports}
+The electronic chessboards work with different drivers for the COM interface. During configuration, BearChess only offers the COM ports that can only be considered due to the driver used.
 
 \section{Trouble shooting}
 
@@ -2816,14 +3027,13 @@ All these boards have no piece detection, but check if the piece makes a legal m
 
 These are some ideas what will come in one of the next versions.
 
-\begin{itemize}
-		\item Support for \textbf{iChessOne} board.
+\begin{itemize}		
 		\item Extend the game analysis.
 		\item Improve electronic chess board handling.
   	    \item Improve the performance of the opening book.
     	\item More BearChess settings.
    		\item GUI redesign.
-	\end{itemize} 
+\end{itemize} 
 
 \pagebreak
 
@@ -2834,9 +3044,16 @@ These are some ideas what will come in one of the next versions.
 \section{Change log}
 
 
+\subsection*{Version 0.9.12.1 $\Rightarrow$  1.0.0.0}
+\begin{itemize}	
+	\item {\color{blue}New}: Integration of iChessOne.
+	\item {\color{blue}New}: Integration of "The Week in Chess".
+	\item {\color{teal}Changes}: Database structure optimized.
+\end{itemize}
+
 \subsection*{Version 0.9.12.0 $\Rightarrow$  0.9.12.1}
 \begin{itemize}	
-	\item {\color{red}Fix}: Fix command for DGT e-Board
+	\item {\color{red}Fix}: Fix command for DGT e-Board.
 \end{itemize}
 
 \subsection*{Version 0.9.11.3 $\Rightarrow$  0.9.12.0}

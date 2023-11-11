@@ -98,7 +98,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                _loader.SetAllLedsOff();
+                _loader.SetAllLedsOff(false);
                 Thread.Sleep(1000);
                 _loader.Close();
                 _loader = null;

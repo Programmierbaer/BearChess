@@ -11,6 +11,7 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessBTLETools;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -81,6 +82,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseBluetooth = useBluetooth;
             checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
+            checkBoxOwnMoves.IsChecked = _eChessBoardConfiguration.ShowOwnMoves;
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
             if (_portNames.Count == 0)
             {
@@ -155,6 +157,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
             _eChessBoardConfiguration.ShowMoveLine = checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value;
+            _eChessBoardConfiguration.ShowOwnMoves = checkBoxOwnMoves.IsChecked.HasValue && checkBoxOwnMoves.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }

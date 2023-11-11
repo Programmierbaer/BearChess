@@ -174,15 +174,15 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                 {
                     if (_byteDataToBoard.TryDequeue(out var data))
                     {
-                        var s = BitConverter.ToString(data);
-                        prevDataArrayToBoard = new byte[data.Length];
-                        Array.Copy(data,prevDataArrayToBoard,data.Length);
+                        var s = BitConverter.ToString(data.Data);
+                        prevDataArrayToBoard = new byte[data.Data.Length];
+                        Array.Copy(data.Data, prevDataArrayToBoard, data.Data.Length);
                         if (!s.Equals(prevDataToBoard))
                         {
                             _logger?.LogDebug($"SC: Send byte array: {s}");
                             Thread.Sleep(250);
                             prevDataToBoard = s;
-                            _comPort.Write(data, 0, data.Length);
+                            _comPort.Write(data.Data, 0, data.Data.Length);
                             Thread.Sleep(250);
                         }
                         else

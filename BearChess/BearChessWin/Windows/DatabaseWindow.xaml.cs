@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,8 +13,11 @@ using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
+using TimeControl = www.SoLaNoSoft.com.BearChessBase.Implementations.TimeControl;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -28,27 +31,35 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Database _database;
         private string _lastSyncFen = string.Empty;
         private readonly bool _readOnly;
+        private readonly ILogging _logger;
         private bool _syncWithBoard;
         private DatabaseFilterWindow _databaseFilterWindow;
         private GamesFilter _gamesFilter;
+        private readonly string _twicUrl;
+        private readonly bool _deleteAfterDownload = false;
+        private readonly int _initialTwicNumber  = 0;
 
-        public static Dictionary<int, SolidColorBrush> colorMap = new Dictionary<int, SolidColorBrush>();
+        public static Dictionary<ulong, SolidColorBrush> colorMap = new Dictionary<ulong, SolidColorBrush>();
         public static bool ShowGamesDuplicates = true;
 
         public event EventHandler<DatabaseGame> SelectedGameChanged;
         public event EventHandler<GamesFilter> SelectedFilterChanged;
 
-        public DatabaseWindow(Configuration configuration, Database database, string fen, bool readOnly)
+        public DatabaseWindow(Configuration configuration, Database database, string fen, bool readOnly, ILogging logger)
         {
             InitializeComponent();
             _configuration = configuration;
             ShowGamesDuplicates = bool.Parse(_configuration.GetConfigValue("showGamesDuplicates", "true"));
+            _twicUrl = _configuration.GetConfigValue("twicUrl", "https://theweekinchess.com/zips/");
+            bool.TryParse(_configuration.GetConfigValue("deleteAfterDownload", "true"), out _deleteAfterDownload);
+            int.TryParse(_configuration.GetConfigValue("initialTwicNumber", "1499"), out _initialTwicNumber);
             dataGridGames.Columns[0].Visibility = ShowGamesDuplicates ? Visibility.Visible : Visibility.Collapsed;
             _database = database;
             Top = _configuration.GetWinDoubleValue("DatabaseWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("DatabaseWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             _lastSyncFen = fen;
             _readOnly = readOnly;
+            _logger = logger;
             _gamesFilter = _configuration.LoadGamesFilter();
             SetItemsSource();
             imageTableFilterActive.Visibility = _gamesFilter.FilterIsActive ? Visibility.Visible : Visibility.Hidden;
@@ -58,45 +69,47 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void SetItemsSource(bool deleteDuplicates = false)
         {
-            Dictionary<int, int> pgnHashCounter = new Dictionary<int, int>();
-            Dictionary<int, List<int>> pgnHashCounterFirst = new Dictionary<int, List<int>>();
+
+            bool.TryParse(_configuration.GetConfigValue("duplicatedByMoves", "false"), out bool duplicatedByMoves);
+            var duplicatesId = new List<ulong>();
+            var pgnHashCounter = new Dictionary<ulong, ulong>();
+            var pgnHashCounterFirst = new Dictionary<ulong, List<int>>();
             colorMap.Clear();
-            int ci = 0;
-            DatabaseGameSimple[] databaseGameSimples = _database.GetGames(_gamesFilter);
+            var ci = 0;
+            var databaseGameSimples = _database.GetGames(_gamesFilter);
             foreach (var databaseGameSimple in databaseGameSimples)
             {
-                if (pgnHashCounter.ContainsKey(databaseGameSimple.PgnHash))
+                if (pgnHashCounter.ContainsKey(duplicatedByMoves ? databaseGameSimple.PgnHash : databaseGameSimple.GameHash))
                 {
-                    pgnHashCounter[databaseGameSimple.PgnHash]++;
-                    pgnHashCounterFirst[databaseGameSimple.PgnHash].Add(databaseGameSimple.Id);
+                    pgnHashCounter[duplicatedByMoves ? databaseGameSimple.PgnHash : databaseGameSimple.GameHash]++;
+                    pgnHashCounterFirst[duplicatedByMoves ? databaseGameSimple.PgnHash : databaseGameSimple.GameHash].Add(databaseGameSimple.Id);
                 }
                 else
                 {
-                    pgnHashCounter[databaseGameSimple.PgnHash] = 1;
-                    pgnHashCounterFirst[databaseGameSimple.PgnHash] = new List<int>();
+                    pgnHashCounter[duplicatedByMoves ? databaseGameSimple.PgnHash : databaseGameSimple.GameHash] = 1;
+                    pgnHashCounterFirst[duplicatedByMoves ? databaseGameSimple.PgnHash : databaseGameSimple.GameHash] = new List<int>();
                 }
             }
             foreach (var idCounterKey in pgnHashCounter.Keys)
             {
                 if (pgnHashCounter[idCounterKey] > 1)
                 {
-                    if (deleteDuplicates)
+                    duplicatesId.Add(idCounterKey);
+                    foreach (var game in pgnHashCounterFirst[idCounterKey])
                     {
-
-                        foreach (var game in pgnHashCounterFirst[idCounterKey])
+                      //  duplicatesId.Add(game);
+                        if (deleteDuplicates)
                         {
                             if (_database.IsDuelGame(game) ||
-                                _database.IsTournamentGame(game))
+                            _database.IsTournamentGame(game))
                             {
                                 continue;
                             }
 
                             _database.DeleteGame(game);
                         }
-
                         continue;
                     }
-
                     if (ci >= DoublettenColorIndex.colorIndex.Keys.Count)
                     {
                         ci = 0;
@@ -106,19 +119,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
-            if (deleteDuplicates)
+            
+            if (_gamesFilter.FilterIsActive && _gamesFilter.OnlyDuplicates)
             {
-                databaseGameSimples = _database.GetGames(_gamesFilter);
+                databaseGameSimples = _database.GetGames(duplicatesId.ToArray(), duplicatedByMoves);
+            }
+            else
+            {
+                if (deleteDuplicates)
+                {
+                    databaseGameSimples = _database.GetGames(_gamesFilter);
+                }
             }
             dataGridGames.ItemsSource = databaseGameSimples;
         }
 
         private void SetItemsSource(string fen)
         {
-            Dictionary<int, int> pgnHashCounter = new Dictionary<int, int>();
+            var pgnHashCounter = new Dictionary<ulong, int>();
             colorMap.Clear();
-            int ci = 0;
-            DatabaseGameSimple[] databaseGameSimples = _database.GetGames(_gamesFilter, fen);
+            var ci = 0;
+            var databaseGameSimples = _database.GetGames(_gamesFilter, fen);
             foreach (var databaseGameSimple in databaseGameSimples)
             {
                 if (pgnHashCounter.ContainsKey(databaseGameSimple.PgnHash))
@@ -142,7 +163,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     ci++;
                 }
             }
-            dataGridGames.ItemsSource = databaseGameSimples;
+            Dispatcher.Invoke(() => dataGridGames.ItemsSource = databaseGameSimples);
         }
 
         public void SetReadOnly(bool readOnly)
@@ -241,16 +262,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (_database.IsDuelGame(pgnGame.Id))
                     {
                         MessageBox.Show("Game is part of a duel. Use duel manager to repeat duel games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
-                        
-                            return;
+                        return;
                         
                     }
                     if (_database.IsTournamentGame(pgnGame.Id))
                     {
                         MessageBox.Show("Game is part of a tournament. Use tournament manager to repeat tournament games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
-
                         return;
-
                     }
 
                 }
@@ -291,22 +309,87 @@ namespace www.SoLaNoSoft.com.BearChessWin
             UpdateTitle();
         }
 
-        private void ButtonImport_OnClick(object sender, RoutedEventArgs e)
+        private async void ButtonImport_OnClick(object sender, RoutedEventArgs e)
         {
-            int count = 0;
-            bool startFromBasePosition = true;
-            CurrentGame currentGame;
+           
             var openFileDialog = new OpenFileDialog {Filter = "Games|*.pgn;*.db"};
             var showDialog = openFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
-                var pgnLoader = new PgnLoader();
-                var chessBoard = new ChessBoard();
-                chessBoard.Init();
-                chessBoard.NewGame();
-              
+               await ImportFile(openFileDialog.FileName, 0);
+            }
+        }
 
-                foreach (var pgnGame in pgnLoader.Load(openFileDialog.FileName))
+      
+        private async Task ImportFile(string fileName, int twicId)
+        {
+            _logger?.LogDebug($"Import file started.");
+            var count = 0;
+            var fi = new FileInfo(fileName);
+
+            ProgressWindow infoWindow = null;
+            Dispatcher.Invoke(() =>
+            {
+                infoWindow = new ProgressWindow
+                {
+                    Owner = this
+                };
+
+                infoWindow.IsIndeterminate(true);
+                infoWindow.SetTitle($"Import {fi.Name}");
+                infoWindow.Show();
+            });
+            if (fi.Extension.Equals(".db",StringComparison.OrdinalIgnoreCase))
+            {
+                await Task.Factory.StartNew(() =>
+                {
+                    var startTime = DateTime.Now;
+                    _logger?.LogDebug("Start import...");
+                    var tempDb = new Database(this, null, fileName);
+                    tempDb.Open();
+                    tempDb.Close();
+                    var allIds = tempDb.GetGamesIds();
+                    foreach (var id in allIds)
+                    {
+                        count++;
+                        if (count % 100 == 0)
+                        {
+                            infoWindow.SetInfo($"{count} games...");
+                        }
+                        var dbGame = tempDb.LoadGame(id, false);
+                        _database.Save(dbGame, false, false, dbGame.TwicId);
+                    }
+
+                    tempDb.Close();
+
+                     var diff = DateTime.Now - startTime;
+                    _database.CommitAndClose();
+                    _logger?.LogDebug($"... {count} games imported in {diff.TotalSeconds} sec.");
+
+                }).ContinueWith(task =>
+                {
+                    _database.SetNumberOfTWICGames(twicId, _database.NumberOfTWICInGames(twicId));
+                    infoWindow.Close();
+                    SetItemsSource();
+                    UpdateTitle();
+                }, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskContinuationOptions.None,
+            System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
+                return;
+            }
+         
+            var startFromBasePosition = true;
+            CurrentGame currentGame;
+            var pgnLoader = new PgnLoader();
+            var chessBoard = new ChessBoard();
+            chessBoard.Init();
+            chessBoard.NewGame();
+           
+            await Task.Factory.StartNew(() =>
+            {
+                var startTime = DateTime.Now;
+                _logger?.LogDebug("Start import...");
+          
+                foreach (var pgnGame in pgnLoader.Load(fileName))
                 {
                     var fenValue = pgnGame.GetValue("FEN");
                     if (!string.IsNullOrWhiteSpace(fenValue))
@@ -314,31 +397,36 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         chessBoard.SetPosition(fenValue, false);
                         startFromBasePosition = false;
                     }
-                    for (int i = 0; i < pgnGame.MoveCount; i++)
+                    for (var i = 0; i < pgnGame.MoveCount; i++)
                     {
                         chessBoard.MakePgnMove(pgnGame.GetMove(i), pgnGame.GetComment(i), pgnGame.GetEMT(i));
                     }
-
+                    //    continue;
                     count++;
+                    if (count % 100 == 0)
+                    {
+                        Dispatcher.Invoke(() => { infoWindow.SetInfo($"{count} games..."); });
+                    }
                     var uciInfoWhite = new UciInfo()
-                                       {
-                                           IsPlayer = true,
-                                           Name = pgnGame.PlayerWhite
-                                       };
+                    {
+                        IsPlayer = true,
+                        Name = pgnGame.PlayerWhite
+                    };
                     var uciInfoBlack = new UciInfo()
-                                       {
-                                           IsPlayer = true,
-                                           Name = pgnGame.PlayerBlack
-                                       };
+                    {
+                        IsPlayer = true,
+                        Name = pgnGame.PlayerBlack
+                    };
                     currentGame = new CurrentGame(uciInfoWhite, uciInfoBlack, string.Empty,
-                                                   new TimeControl(), pgnGame.PlayerWhite, pgnGame.PlayerBlack,
-                                                   startFromBasePosition, true);
+                        new TimeControl(), pgnGame.PlayerWhite, pgnGame.PlayerBlack,
+                        startFromBasePosition, true);
                     if (!startFromBasePosition)
                     {
                         currentGame.StartPosition = fenValue;
                     }
 
-                    if (_database.Save(new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList(), currentGame),false)>0)
+
+                    if (_database.Save(new DatabaseGame(pgnGame, chessBoard.GetPlayedMoveList(), currentGame) { TwicId=twicId}, false, count % 100 == 0, twicId) > 0)
                     {
                         chessBoard.Init();
                         chessBoard.NewGame();
@@ -348,9 +436,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         break;
                     }
                 }
-                SetItemsSource();
-                UpdateTitle();
-            }
+                var diff = DateTime.Now - startTime;
+                _database.CommitAndClose();
+                _database.Compress();
+                _logger?.LogDebug($"... {count} games imported in {diff.TotalSeconds} sec.");
+
+            }).ContinueWith(task =>
+                {
+                    _database.SetNumberOfTWICGames(twicId, _database.NumberOfTWICInGames(twicId));
+                    Dispatcher.Invoke(() => { infoWindow.Close(); });
+                    //infoWindow.Close();
+                    SetItemsSource();
+                    UpdateTitle();
+                }, System.Threading.CancellationToken.None, TaskContinuationOptions.None,
+                TaskScheduler.FromCurrentSynchronizationContext());
+            _logger?.LogDebug($"Import file finished.");
         }
 
         private void ButtonSync_OnClick(object sender, RoutedEventArgs e)
@@ -426,6 +526,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _databaseFilterWindow.SelectedFilterChanged -= _databaseFilterWindow_SelectedFilterChanged;
             _databaseFilterWindow.Closing -= _databaseFilterWindow_Closing;
             _databaseFilterWindow = null;
+            Reload();
         }
 
         private void _databaseFilterWindow_SelectedFilterChanged(object sender, GamesFilter e)
@@ -438,7 +539,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void UpdateTitle()
         {
-            Title = $"{dataGridGames.Items.Count} of {_database.GetTotalGamesCount()} games on: {_database.FileName}";
+            Dispatcher.Invoke(() => { Title = $"{dataGridGames.Items.Count} of {_database.GetTotalGamesCount()} games on: {_database.FileName}"; });
+            
         }
 
         private void ButtonExport_OnClick(object sender, RoutedEventArgs e)
@@ -447,7 +549,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            IList selectedItems = dataGridGames.SelectedItems;
+            var selectedItems = dataGridGames.SelectedItems;
             if (selectedItems.Count == 0)
             {
                 selectedItems = dataGridGames.Items;
@@ -529,14 +631,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (_database.IsDuelGame(pgnGame.Id))
                 {
                     MessageBox.Show("Game is part of a duel. Use duel manager to continue duel games", "Cannot continue selected game", MessageBoxButton.OK, MessageBoxImage.Error);
-
                     return;
 
                 }
                 if (_database.IsTournamentGame(pgnGame.Id))
                 {
                     MessageBox.Show("Game is part of a tournament. Use tournament manager to continue tournament games", "Cannot continue selected game", MessageBoxButton.OK, MessageBoxImage.Error);
-
                     return;
 
                 }
@@ -575,8 +675,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     var game = _database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame();
                     e.ClipboardRowContent.Add(
                         new DataGridClipboardCellContent(e.Item, (sender as DataGrid).Columns[0], game));
-                    // Clipboard.SetText(_database.LoadGame(pgnGame.Id).PgnGame.GetGame());
-
                 }
             }
             catch (Exception ex)
@@ -628,7 +726,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 var pgnGame2Id = pgnGame2.Id;
                 var pgnGame2PgnHash = pgnGame2.PgnHash;
-                DatabaseGameSimple[] databaseGameSimples = _database.GetGames(_gamesFilter);
+                var databaseGameSimples = _database.GetGames(_gamesFilter);
                 foreach (var databaseGameSimple in databaseGameSimples)
                 { 
                     if (databaseGameSimple.PgnHash==pgnGame2PgnHash && databaseGameSimple.Id!=pgnGame2Id)
@@ -656,6 +754,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             SetItemsSource(true);
             UpdateTitle();
         }
+
+        private void ButtonCompressDb_OnClick(object sender, RoutedEventArgs e)
+        {
+          _database.Compress();
+        }
+
+        private void ButtonTwic_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+            var twicWindow = new TwicWindow(_database,_logger,_configuration) { Owner = this };
+            var showDialog = twicWindow.ShowDialog();
+            SetItemsSource();
+            UpdateTitle();
+        }
+
     }
 
     public class GamesValueToBrushConverter : IValueConverter
@@ -667,10 +780,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return DependencyProperty.UnsetValue;
             }
-            int input;
+            ulong input;
             try
             {
-                input = (int)value;
+                input = (ulong)value;
 
             }
             catch (InvalidCastException )

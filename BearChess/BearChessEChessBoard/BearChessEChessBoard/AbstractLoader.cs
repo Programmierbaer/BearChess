@@ -15,10 +15,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public event EventHandler<string> MoveEvent;
         public event EventHandler<string> DataEvent;
         public event EventHandler<string> FenEvent;
+        public event EventHandler<string[]> ProbeMoveEvent;
         public event EventHandler AwaitedPosition;
         public event EventHandler BasePositionEvent;
         public event EventHandler BatteryChangedEvent;
         public event EventHandler HelpRequestedEvent;
+        public event EventHandler ProbeMoveEndingEvent;
 
         public void SetReplayMode(bool inReplayMode)
         {
@@ -86,6 +88,18 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.BatteryChangedEvent += EChessBoard_BatteryChangedEvent;
             _eChessBoard.DataEvent += EChessBoard_DataEvent;
             _eChessBoard.HelpRequestedEvent += EChessBoard_HelpRequestedEvent;
+            _eChessBoard.ProbeMoveEvent += EChessBoard_ProbeMoveEvent;
+            _eChessBoard.ProbeMoveEndingEvent += EChessBoard_ProbeMoveEndingEvent; ;
+        }
+
+        private void EChessBoard_ProbeMoveEndingEvent(object sender, EventArgs e)
+        {
+            ProbeMoveEndingEvent?.Invoke(this, e);
+        }
+
+        private void EChessBoard_ProbeMoveEvent(object sender, string[] e)
+        {
+            ProbeMoveEvent?.Invoke(this,e);
         }
 
         private void EChessBoard_HelpRequestedEvent(object sender, EventArgs e)
@@ -144,12 +158,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.SetLedsFor(setLeDsParameter);
         }
 
-
-        /// <inheritdoc />
-        public void SetAllLedsOff()
+        public void SetAllLedsOff(bool forceOff)
         {
-            _eChessBoard.SetAllLedsOff();
+            _eChessBoard.SetAllLedsOff(forceOff);
         }
+
+
 
         /// <inheritdoc />
         public void SetAllLedsOn()
@@ -346,6 +360,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         public bool PieceRecognition => _eChessBoard.PieceRecognition;
+        public bool MultiColorLEDs => _eChessBoard.MultiColorLEDs;
 
         public void Ignore(bool ignore)
         {

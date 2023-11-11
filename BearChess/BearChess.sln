@@ -147,6 +147,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IChessOneEBoardWrapper", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IChessOneLoader", "IChessOneLoader\IChessOneLoader.csproj", "{F77D1637-7997-4CC9-A954-E928EF93EB40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BearChessWpfCustomControlLib", "BearChessWpfCustomControlLib\BearChessWpfCustomControlLib.csproj", "{B5899481-4C32-4267-8547-9DC0198FF7A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1261,6 +1263,26 @@ Global
 		{F77D1637-7997-4CC9-A954-E928EF93EB40}.Release|x64.Build.0 = Release|Any CPU
 		{F77D1637-7997-4CC9-A954-E928EF93EB40}.Release|x86.ActiveCfg = Release|Any CPU
 		{F77D1637-7997-4CC9-A954-E928EF93EB40}.Release|x86.Build.0 = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|x64.Build.0 = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Debug|x86.Build.0 = Debug|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|ARM.Build.0 = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|ARM64.Build.0 = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|x64.ActiveCfg = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|x64.Build.0 = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{B5899481-4C32-4267-8547-9DC0198FF7A1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

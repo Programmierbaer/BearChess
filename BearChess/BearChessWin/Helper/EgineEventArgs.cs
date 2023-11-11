@@ -9,8 +9,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public int Color { get; }
         public bool FirstEngine { get; }
         public bool BuddyEngine { get; }
+        public bool ProbingEngine { get; }
 
-        public EngineEventArgs(string name, string fromEngine, int color, bool firstEngine, bool buddyEngine)
+        public EngineEventArgs(string name, string fromEngine, int color, bool firstEngine, bool buddyEngine, bool probingEngine)
         {
 
             Name = name;
@@ -18,6 +19,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Color = color;
             FirstEngine = firstEngine;
             BuddyEngine = buddyEngine;
+            ProbingEngine = probingEngine;
+        }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}  FromEngine: {FromEngine} Color: {Color}  FirstEngine: {FirstEngine}  BuddyEnigine: {BuddyEngine}  ProbingEngine: {ProbingEngine}";
         }
     }
 }

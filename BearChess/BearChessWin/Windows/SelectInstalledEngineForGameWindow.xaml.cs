@@ -94,5 +94,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Configuration.Instance.SetDoubleValue("InstalledEngineForGameWindowWidth", Width);
             Configuration.Instance.SetDoubleValue("InstalledEngineForGameWindowHeight", Height);
         }
+
+        private void DataGridEngine_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var u = e.OriginalSource as UIElement;
+            if (e.Key == Key.Enter && u != null)
+            {
+                e.Handled = true;
+                DialogResult = true;
+            }
+        }
     }
 }

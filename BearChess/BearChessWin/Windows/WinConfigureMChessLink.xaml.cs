@@ -10,6 +10,7 @@ using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -50,6 +51,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseChesstimation = useChesstimation;
             checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
+            checkBoxOwnMoves.IsChecked = _eChessBoardConfiguration.ShowOwnMoves;
             if (useBluetoothClassic || useBluetoothLE) 
             { 
 
@@ -121,7 +123,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_loader != null)
             {
                 _loader?.SetAllLedsOn();
-                _loader?.SetAllLedsOff();
+                _loader?.SetAllLedsOff(false);
                 Thread.Sleep(1000);
                 _loader?.Close();
             }
@@ -134,6 +136,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.ScanTime = (int)sliderScanTime.Value;
             _eChessBoardConfiguration.Debounce = (int)sliderDebounce.Value;
             _eChessBoardConfiguration.ShowMoveLine = checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value;
+            _eChessBoardConfiguration.ShowOwnMoves = checkBoxOwnMoves.IsChecked.HasValue && checkBoxOwnMoves.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -143,7 +146,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_loader != null)
             {
                 _loader?.SetAllLedsOn();
-                _loader?.SetAllLedsOff();
+                _loader?.SetAllLedsOff(false);
                 Thread.Sleep(1000);
                 _loader?.Close();
             }
@@ -241,7 +244,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 buttonShowDim.Visibility = Visibility.Visible;
                 buttonShowDim2.Visibility = Visibility.Collapsed;
                 _loader.SetAllLedsOn();
-                _loader.SetAllLedsOff();
+                _loader.SetAllLedsOff(false);
                 Thread.Sleep(1000);
                 _loader.Close();
                 _loader = null;

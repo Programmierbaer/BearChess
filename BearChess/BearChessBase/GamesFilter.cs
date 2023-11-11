@@ -8,6 +8,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool FilterIsActive { get; set; }
         public bool NoTournamentGames { get; set; }
         public bool NoDuelGames { get; set; }
+        public bool OnlyDuplicates { get; set; }
         public string WhitePlayer { get; set; }
         public bool WhitePlayerWhatever { get; set; }
         public string BlackPlayer { get; set; }

@@ -16,7 +16,6 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneEBoardWrapper
         public IChessOneImpl(string name, string basePath, EChessBoardConfiguration configuration) : base(
             name, basePath, configuration)
         {
-
         }
 
         public override bool Calibrate()
@@ -25,7 +24,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneEBoardWrapper
             SetAllLedsOn();
             Thread.Sleep(1000);
             _board.Calibrate();
-            SetAllLedsOff();
+            SetAllLedsOff(true);
             _stop = false;
             return true;
         }

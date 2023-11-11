@@ -17,7 +17,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Switch all leds off
         /// </summary>
-        void SetAllLedsOff();
+        void SetAllLedsOff(bool forceOff);
 
         /// <summary>
         /// Switch all leds on

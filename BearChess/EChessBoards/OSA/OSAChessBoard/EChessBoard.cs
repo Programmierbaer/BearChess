@@ -14,7 +14,6 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
         private readonly IChessBoard _chessBoard;
         private string _lastMove;
         private bool _runAsUci;
-        private string _currentLevel;
 
         public override void SetCurrentColor(int currentColor)
         {
@@ -319,8 +318,8 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
             }
         }
 
-       
-        public override void SetAllLedsOff()
+
+        public override void SetAllLedsOff(bool forceOff)
         {
             //
         }

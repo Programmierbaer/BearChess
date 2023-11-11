@@ -313,9 +313,6 @@
     <Compile Include="Windows\PositionSetupWindow.xaml.cs">
       <DependentUpon>PositionSetupWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ProgressWindow.xaml.cs">
-      <DependentUpon>ProgressWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\PromoteWindow.xaml.cs">
       <DependentUpon>PromoteWindow.xaml</DependentUpon>
     </Compile>
@@ -358,6 +355,9 @@
     <Compile Include="Windows\TournamentInfoWindowFactory.cs" />
     <Compile Include="Windows\TournamentWindow.xaml.cs">
       <DependentUpon>TournamentWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\TwicWindow.xaml.cs">
+      <DependentUpon>TwicWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\UciConfigValue.cs" />
     <Compile Include="Windows\UciConfigWindow.xaml.cs">
@@ -647,10 +647,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\ProgressWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Windows\PromoteWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -704,6 +700,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\TournamentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\TwicWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -857,6 +857,10 @@
     <ProjectReference Include="..\BearChessTournament\BearChessTournament.csproj">
       <Project>{36a83fb3-f131-426b-ae74-cd36ef110658}</Project>
       <Name>BearChessTournament</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessWpfCustomControlLib\BearChessWpfCustomControlLib.csproj">
+      <Project>{b5899481-4c32-4267-8547-9dc0198ff7a1}</Project>
+      <Name>BearChessWpfCustomControlLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\CertaboLoader\CertaboLoader\CertaboLoader.csproj">
       <Project>{40462629-633b-4944-873d-5beed2a60d88}</Project>
@@ -1604,6 +1608,30 @@
     <Resource Include="Assets\Icons\bullet_blue.png" />
     <Resource Include="Assets\Icons\bullet_green.png" />
     <Resource Include="Assets\Icons\bullet_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\flag_iceland.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\flag_poland.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\database_cleanup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="20230701_132242672_iOS.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\bearchess_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\outlook_calendar_week.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\mark_to_download.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

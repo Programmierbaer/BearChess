@@ -76,9 +76,10 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                         if (_byteDataToBoard.TryDequeue(out var data))
                         {
 
-                            var s = BitConverter.ToString(data);
-                            _logger?.LogDebug($"SC: Send byte array: {s}");
-                            _comPort.Write(data, 0, data.Length);
+                            var s = BitConverter.ToString(data.Data);
+                            _logger?.LogDebug($"SC: Send info: {data.Info}");
+                            _logger?.LogDebug($"SC: As byte array: {s}");
+                            _comPort.Write(data.Data, 0, data.Data.Length);
                             //_logger?.LogDebug($"SC: bytes send");
                             //  Thread.Sleep(15);
 

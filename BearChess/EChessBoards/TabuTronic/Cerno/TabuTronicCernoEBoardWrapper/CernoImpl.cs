@@ -56,7 +56,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.EBoardWrapper
             SetAllLedsOn();
             Thread.Sleep(1000);
             _board.Calibrate();
-            SetAllLedsOff();
+            SetAllLedsOff(false);
             _stop = false;
             return _board.IsCalibrated;
         }

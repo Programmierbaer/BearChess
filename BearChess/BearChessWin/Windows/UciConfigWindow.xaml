@@ -4,97 +4,154 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
-        mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="UCI Engine Configuration" Height="770" Width="400" SizeToContent="Width">
-    <StackPanel>
-        <StackPanel Orientation="Horizontal">
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="CanResize"
+        Title="UCI Engine Configuration" MaxHeight="770" Width="400" SizeToContent="WidthAndHeight">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
             <TextBlock Name="textBlockName" Margin="5">Name:</TextBlock>
             <TextBox Name="textBoxName" Width="330" Margin="5"></TextBox>
         </StackPanel>
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+        <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
             <StackPanel>
-               <DockPanel >
-                    <CheckBox Name="checkBoxUseOpeningBook" VerticalAlignment="Center" VerticalContentAlignment="Center" DockPanel.Dock="Left" Checked="CheckBoxUseOpeningBook_OnChecked" Unchecked="CheckBoxUseOpeningBook_OnUnchecked"  Margin="5">Use opening book:</CheckBox>
+                <DockPanel>
+                    <CheckBox Name="checkBoxUseOpeningBook" VerticalAlignment="Center"
+                              VerticalContentAlignment="Center" DockPanel.Dock="Left"
+                              Checked="CheckBoxUseOpeningBook_OnChecked"
+                              Unchecked="CheckBoxUseOpeningBook_OnUnchecked" Margin="5">
+                        Use opening book:
+                    </CheckBox>
                     <ComboBox Name="comboBoxOpeningBooks" Margin="5" DockPanel.Dock="Left"></ComboBox>
                 </DockPanel>
                 <StackPanel Margin="5" Orientation="Horizontal">
-                    <RadioButton Name="radioButtonBest" Margin="10,0,5,0" GroupName="Variation"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Always choose the best move">Best</RadioButton>
-                    <RadioButton Name="radioButtonFlexible" Margin="5,0,5,0" GroupName="Variation"  VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Choose one of the better moves">Flexible</RadioButton>
-                    <RadioButton Name="radioButtonWide" Margin="5,0,5,0" GroupName="Variation" VerticalAlignment="Center" HorizontalAlignment="Center" ToolTip="Choose any move">Wide</RadioButton>
+                    <RadioButton Name="radioButtonBest" Margin="10,0,5,0" GroupName="Variation"
+                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                 ToolTip="Always choose the best move">
+                        Best
+                    </RadioButton>
+                    <RadioButton Name="radioButtonFlexible" Margin="5,0,5,0" GroupName="Variation"
+                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                 ToolTip="Choose one of the better moves">
+                        Flexible
+                    </RadioButton>
+                    <RadioButton Name="radioButtonWide" Margin="5,0,5,0" GroupName="Variation"
+                                 VerticalAlignment="Center" HorizontalAlignment="Center"
+                                 ToolTip="Choose any move">
+                        Wide
+                    </RadioButton>
                 </StackPanel>
             </StackPanel>
         </Border>
-       
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-          <ScrollViewer Height="400" VerticalScrollBarVisibility="Visible">
-            <Grid Name="gridMain">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+
+             
+
+                <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <ScrollViewer Height="400" VerticalScrollBarVisibility="Visible">
+                        <Grid Name="gridMain">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
+                <Border Grid.Row="3" BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5" Text="Wait for new game:" VerticalAlignment="Center"
+                                   FontWeight="DemiBold">
+                        </TextBlock>
+                        <CheckBox VerticalAlignment="Center" Name="checkBoxWaitForStart" Margin="5"
+                                  Unchecked="CheckBoxWaitForStart_OnUnchecked" Checked="CheckBoxWaitForStart_OnChecked">
+                        </CheckBox>
+                        <local:NumericUpDownUserControl Margin="30,0,0,0" Width="70"
+                                                        x:Name="numericUpDownUserControlWait" MaxValue="120"
+                                                        MinValue="0" IsEnabled="False"
+                                                        ToolTip="0 seconds = until button click">
+                        </local:NumericUpDownUserControl>
+                        <TextBlock Margin="5" Text="sec." VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="4" BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5" Text="File:" FontWeight="DemiBold"></TextBlock>
+                        <TextBlock Name="textBlockFileName" Margin="0,5,5,5"></TextBlock>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="5" BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <DockPanel LastChildFill="False">
+                        <TextBlock DockPanel.Dock="Left" Margin="5" Text="Logo:" FontWeight="DemiBold"></TextBlock>
+                        <TextBlock DockPanel.Dock="Left" Name="textBlockLogoFileName" Margin="0,5,5,5"></TextBlock>
+                        <Button DockPanel.Dock="Right" Name="buttonLogoClear" Click="ButtonLogoClear_OnClick"
+                                BorderBrush="Transparent" Background="Transparent">
+                            <Image Source="../Assets/Icons/cancel.png" Width="16" Height="16"></Image>
+                        </Button>
+                        <Button DockPanel.Dock="Right" Name="buttonLogoFile" Click="ButtonLogoFile_OnClick"
+                                BorderBrush="Transparent" Background="Transparent">
+                            <Image Source="../Assets/Icons/folder.png" Width="16" Height="16"></Image>
+                        </Button>
+                    </DockPanel>
+
+                </Border>
+                <Border Grid.Row="6" BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Left" Margin="5" Text="Parameter:" FontWeight="DemiBold"></TextBlock>
+                        <Button DockPanel.Dock="Right" Name="buttonParameterFile" Click="ButtonParameter_OnClick"
+                                BorderBrush="Transparent" Background="Transparent">
+                            <Image Source="../Assets/Icons/folder.png" Width="16" Height="16"></Image>
+                        </Button>
+                        <TextBox DockPanel.Dock="Right" Name="textBlockFileParameter" MinWidth="270" Margin="0,5,5,5"></TextBox>
+
+                    </DockPanel>
+                </Border>
+
             </Grid>
-         </ScrollViewer>
-        </Border>
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="5" Text="Wait for new game:" VerticalAlignment="Center" FontWeight="DemiBold"></TextBlock>
-                <CheckBox VerticalAlignment="Center" Name="checkBoxWaitForStart" Margin="5" Unchecked="CheckBoxWaitForStart_OnUnchecked" Checked="CheckBoxWaitForStart_OnChecked"></CheckBox>
-                <local:NumericUpDownUserControl Margin="30,0,0,0" Width="70" x:Name="numericUpDownUserControlWait" MaxValue="120" MinValue="0" IsEnabled="False" ToolTip="0 seconds = until button click"></local:NumericUpDownUserControl>
-                <TextBlock Margin="5" Text="sec." VerticalAlignment="Center" ></TextBlock>
-            </StackPanel>
-        </Border>
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="5" Text="File:" FontWeight="DemiBold"></TextBlock>
-                <TextBlock Name="textBlockFileName" Margin="0,5,5,5"></TextBlock>
-            </StackPanel>
-        </Border>
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <DockPanel LastChildFill="False">
-                <TextBlock DockPanel.Dock="Left" Margin="5" Text="Logo:" FontWeight="DemiBold"></TextBlock>
-                <TextBlock  DockPanel.Dock="Left"  Name="textBlockLogoFileName" Margin="0,5,5,5"></TextBlock>
-                <Button  DockPanel.Dock="Right" Name="buttonLogoClear" Click="ButtonLogoClear_OnClick" BorderBrush="Transparent" Background="Transparent" >
-                    <Image Source="../Assets/Icons/cancel.png" Width="16" Height="16"></Image>
-                </Button>
-                <Button  DockPanel.Dock="Right" Name="buttonLogoFile" Click="ButtonLogoFile_OnClick" BorderBrush="Transparent" Background="Transparent" >
-                    <Image Source="../Assets/Icons/folder.png" Width="16" Height="16"></Image>
-                </Button>
-            </DockPanel>
-
-        </Border>
-        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-            <DockPanel >
-                <TextBlock DockPanel.Dock="Left" Margin="5" Text="Parameter:" FontWeight="DemiBold"></TextBlock>
-                <Button  DockPanel.Dock="Right" Name="buttonParameterFile" Click="ButtonParameter_OnClick" BorderBrush="Transparent" Background="Transparent" >
-                    <Image Source="../Assets/Icons/folder.png" Width="16" Height="16"></Image>
-                </Button>
-                <TextBox  DockPanel.Dock="Right" Name="textBlockFileParameter" MinWidth="270" Margin="0,5,5,5"></TextBox>
-
-            </DockPanel>
-        </Border>
-        <DockPanel Margin="10" LastChildFill="False">
-            <Button DockPanel.Dock="Left"  Name="buttonOk" Click="ButtonOk_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Save">
-                <Image Source="../Assets/Icons/accept_button.png"  Width="32" Height="32"></Image>
+        </ScrollViewer>
+        <DockPanel Grid.Row="3" Margin="10" LastChildFill="False">
+            <Button DockPanel.Dock="Left" Name="buttonOk" Click="ButtonOk_OnClick" BorderBrush="Transparent"
+                    Background="Transparent" ToolTip="Save">
+                <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32"></Image>
             </Button>
-            <Button  DockPanel.Dock="Left"  Margin="20,0,10,0" Name="buttonSaveAs" Click="ButtonSaveAs_OnClick" BorderBrush="Transparent" Background="Transparent"
-                     ToolTip="Add as new configuration">
-                <Image Source="../Assets/Icons/cog_add.png"  Width="32" Height="32"></Image>
+            <Button DockPanel.Dock="Left" Margin="20,0,10,0" Name="buttonSaveAs" Click="ButtonSaveAs_OnClick"
+                    BorderBrush="Transparent" Background="Transparent"
+                    ToolTip="Add as new configuration">
+                <Image Source="../Assets/Icons/cog_add.png" Width="32" Height="32"></Image>
             </Button>
 
-            <Button  DockPanel.Dock="Right"  Name="buttonCancel" Click="ButtonCancel_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Cancel"> 
-                <Image Source="../Assets/Icons/cancel.png"  Width="32" Height="32"></Image>
+            <Button DockPanel.Dock="Right" Name="buttonCancel" Click="ButtonCancel_OnClick" BorderBrush="Transparent"
+                    Background="Transparent" ToolTip="Cancel">
+                <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32"></Image>
             </Button>
 
-            <Button  DockPanel.Dock="Right"  Margin="0,0,10,0" Name="buttonDefault" Click="ButtonDefault_OnClick" BorderBrush="Transparent" Background="Transparent"
-                     ToolTip="Reset to default values">
-                <Image Source="../Assets/Icons/undo.png"  Width="32" Height="32"></Image>
+            <Button DockPanel.Dock="Right" Margin="0,0,10,0" Name="buttonDefault" Click="ButtonDefault_OnClick"
+                    BorderBrush="Transparent" Background="Transparent"
+                    ToolTip="Reset to default values">
+                <Image Source="../Assets/Icons/undo.png" Width="32" Height="32"></Image>
             </Button>
-            <Button  DockPanel.Dock="Right"  Name="buttonLog" Click="ButtonLog_OnClick" BorderBrush="Transparent" Background="Transparent" ToolTip="Show log files">
-                <Image Source="../Assets/Icons/file_extension_log.png"  Width="32" Height="32"></Image>
+            <Button DockPanel.Dock="Right" Name="buttonLog" Click="ButtonLog_OnClick" BorderBrush="Transparent"
+                    Background="Transparent" ToolTip="Show log files">
+                <Image Source="../Assets/Icons/file_extension_log.png" Width="32" Height="32"></Image>
             </Button>
 
         </DockPanel>
-    </StackPanel>
+    </Grid>
 </Window>

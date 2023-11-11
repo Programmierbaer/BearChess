@@ -21,6 +21,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool UseChesstimation { get; set; }
         public bool ShowMoveLine { get; set; }
 
+        public bool ShowPossibleMoves { get; set; }
+        public bool ShowPossibleMovesEval { get; set; }
+        public bool ShowOwnMoves { get; set; }
+        public bool ShowHintMoves { get; set; }
+        public string FileName { get; set; }
+        
+
         [XmlArray]
         public ExtendedEChessBoardConfiguration[] ExtendedConfig { get; set; }
 
@@ -37,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             Baud = "1200";
             UseChesstimation = false;
             ShowMoveLine = false;
-            ExtendedConfig = new ExtendedEChessBoardConfiguration[]
+            ExtendedConfig = new[]
                              {
                                  new ExtendedEChessBoardConfiguration()
                                  {
@@ -45,6 +52,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                                      IsCurrent = true
                                  }
                              };
+            FileName = string.Empty;
+            ShowPossibleMoves = false;
+            ShowPossibleMovesEval = false;
+            ShowOwnMoves = true;
+            ShowHintMoves = true;
         }
 
         public static EChessBoardConfiguration Load(string fileName)
@@ -73,12 +85,18 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.Debounce = savedConfig.Debounce;
                     configuration.UseChesstimation = savedConfig.UseChesstimation;
                     configuration.ShowMoveLine = savedConfig.ShowMoveLine;
-                   
+
                     if (configuration.DimLevel < 0)
                     {
                         configuration.DimLevel = configuration.DimLeds ? 0 : 14;
                     }
+
                     configuration.ExtendedConfig = savedConfig.ExtendedConfig;
+                    configuration.FileName = fileName;
+                    configuration.ShowPossibleMoves = savedConfig.ShowPossibleMoves;
+                    configuration.ShowPossibleMovesEval = savedConfig.ShowPossibleMovesEval;
+                    configuration.ShowOwnMoves = savedConfig.ShowOwnMoves;
+                    configuration.ShowHintMoves = savedConfig.ShowHintMoves;
                 }
                 else
                 {
@@ -97,6 +115,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             try
             {
+                configuration.FileName = fileName;
                 XmlSerializer serializer = new XmlSerializer(typeof(EChessBoardConfiguration));
                 TextWriter textWriter = new StreamWriter(fileName, false);
                 serializer.Serialize(textWriter, configuration);

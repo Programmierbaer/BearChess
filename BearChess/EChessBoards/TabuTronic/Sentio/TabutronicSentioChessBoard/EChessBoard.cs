@@ -218,7 +218,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                         if (!AllOff.SequenceEqual(_lastSend))
                         {
                             _lastSend = AllOff;
-                            SetAllLedsOff();
+                            SetAllLedsOff(false);
                         }
                     }
                 }
@@ -336,7 +336,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                     var fieldNumberTo = Fields.GetFieldNumber(ledsParameter.FieldNames[1]);
                     if (_chessBoard.MoveIsValid(fieldNumberFrom, fieldNumberTo))
                     {
-                        if (_showMoveLine)
+                        if (_showMoveLine && !ledsParameter.IsError)
                         {
                             string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
                             foreach (var ml in moveLine)
@@ -355,9 +355,9 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                 }
             }
         }
-       
 
-        public override void SetAllLedsOff()
+
+        public override void SetAllLedsOff(bool forceOff)
         {
             if (!EnsureConnection())
             {

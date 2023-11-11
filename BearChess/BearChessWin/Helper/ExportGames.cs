@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessDatabase;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {

@@ -200,6 +200,73 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                          {FH8, Lines.H}
                                                                      };
 
+        private static readonly Dictionary<string, string> AdpatedFieldName = new Dictionary<string, string>
+        {
+            {"A1","H8"},
+            {"B1","G8"},
+            {"C1","F8"},
+            {"D1","E8"},
+            {"E1","D8"},
+            {"F1","C8"},
+            {"G1","B8"},
+            {"H1","A8"},
+            {"A2","H7"},
+            {"B2","G7"},
+            {"C2","F7"},
+            {"D2","E7"},
+            {"E2","D7"},
+            {"F2","C7"},
+            {"G2","B7"},
+            {"H2","A7"},
+            {"A3","H6"},
+            {"B3","G6"},
+            {"C3","F6"},
+            {"D3","E6"},
+            {"E3","D6"},
+            {"F3","C6"},
+            {"G3","B6"},
+            {"H3","A6"},
+            {"A4","H5"},
+            {"B4","G5"},
+            {"C4","F5"},
+            {"D4","E5"},
+            {"E4","D5"},
+            {"F4","C5"},
+            {"G4","B5"},
+            {"H4","A5"},
+            {"A5","H4"},
+            {"B5","G4"},
+            {"C5","F4"},
+            {"D5","E4"},
+            {"E5","D4"},
+            {"F5","C4"},
+            {"G5","B4"},
+            {"H5","A4"},
+            {"A6","H3"},
+            {"B6","G3"},
+            {"C6","F3"},
+            {"D6","E3"},
+            {"E6","D3"},
+            {"F6","C3"},
+            {"G6","B3"},
+            {"H6","A3"},
+            {"A7","H2"},
+            {"B7","G2"},
+            {"C7","F2"},
+            {"D7","E2"},
+            {"E7","D2"},
+            {"F7","C2"},
+            {"G7","B2"},
+            {"H7","A2"},
+            {"A8","H1"},
+            {"B8","G1"},
+            {"C8","F1"},
+            {"D8","E1"},
+            {"E8","D1"},
+            {"F8","C1"},
+            {"G8","B1"},
+            {"H8","A1"},
+        };
         private static readonly Dictionary<int, int> FieldToRow = new Dictionary<int, int>
                                                                   {
                                                                       {FA1, 1},
@@ -410,6 +477,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
             var einer = field - zehner * 10;
             zehner--;
             return row[einer] + zehner;
+        }
+
+        public static string GetAdaptedFieldName(string fieldName, bool playingWhite)
+        {
+            if (playingWhite)
+            {
+                return fieldName;
+            }
+
+            return AdpatedFieldName[fieldName];
         }
 
         public static int GetFieldNumber(string field)

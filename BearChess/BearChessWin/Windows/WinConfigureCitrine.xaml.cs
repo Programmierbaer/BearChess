@@ -8,6 +8,7 @@ using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 using Path = System.IO.Path;
 
 namespace www.SoLaNoSoft.com.BearChessWin

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase;
@@ -303,9 +304,17 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 return;
             }
+            if (ledsParameter.FieldNames.Length == 0)
+            {
+                ledsParameter.FieldNames = ledsParameter.InvalidFieldNames.ToArray();
+            }
+            if (ledsParameter.FieldNames.Length==0)
+            {
+                return;
+            }
 
             string ledForFields;
-            if (ledsParameter.FieldNames.Length == 2 && _showMoveLine)
+            if ((ledsParameter.FieldNames.Length == 2) && _showMoveLine)
             {
                 string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
                 _logger.LogDebug($"Extend move line: {string.Join(" ", moveLine)} ");
@@ -313,6 +322,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
             else
             {
+
                 ledForFields = GetLedForFields(ledsParameter.FieldNames, ledsParameter.IsThinking);
             }
 
@@ -331,9 +341,9 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 }
             }
         }
-      
 
-        public override void SetAllLedsOff()
+
+        public override void SetAllLedsOff(bool forceOff)
         {
             if (!EnsureConnection())
             {

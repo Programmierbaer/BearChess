@@ -337,8 +337,16 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 {
                     resultList.Add("BTLE");
                 }
+                if (boardName.Equals(Constants.IChessOne, StringComparison.OrdinalIgnoreCase))
+                {
+                    resultList.Add("BTLE");
+                }
             }
             if (boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))
+            {
+                return resultList.ToArray();
+            }
+            if (boardName.Equals(Constants.IChessOne, StringComparison.OrdinalIgnoreCase))
             {
                 return resultList.ToArray();
             }

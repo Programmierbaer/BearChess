@@ -24,6 +24,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             radioButtonIT.IsChecked = displayCountryType == DisplayCountryType.IT;
             radioButtonSP.IsChecked = displayCountryType == DisplayCountryType.SP;
             radioButtonDA.IsChecked = displayCountryType == DisplayCountryType.DA;
+            radioButtonPo.IsChecked = displayCountryType == DisplayCountryType.PO;
+            radioButtonIceland.IsChecked = displayCountryType == DisplayCountryType.IC;
             SetCountries();            
         }
 
@@ -56,6 +58,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return DisplayCountryType.SP;
             if (radioButtonDA.IsChecked.HasValue && radioButtonDA.IsChecked.Value)
                 return DisplayCountryType.DA;
+            if (radioButtonPo.IsChecked.HasValue && radioButtonPo.IsChecked.Value)
+                return DisplayCountryType.PO;
+            if (radioButtonIceland.IsChecked.HasValue && radioButtonIceland.IsChecked.Value)
+                return DisplayCountryType.IC;
             return DisplayCountryType.GB;
         }
 
@@ -112,6 +118,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 radioButtonLetter.Content = "KDTSL";
                 radioButtonLetter.ToolTip = "Konge Dronning Tårn Springer Løber";
+            }
+            if (radioButtonPo.IsChecked.HasValue && radioButtonPo.IsChecked.Value)
+            {
+                radioButtonLetter.Content = "KHWSG";
+                radioButtonLetter.ToolTip = " Król Hetman Wieża Skoczek Goniec";
+            }
+            if (radioButtonIceland.IsChecked.HasValue && radioButtonIceland.IsChecked.Value)
+            {
+                radioButtonLetter.Content = "KDHRB";
+                radioButtonLetter.ToolTip = " Kóngur Drottning Hrókur Riddari Biskup";
             }
         }
     }

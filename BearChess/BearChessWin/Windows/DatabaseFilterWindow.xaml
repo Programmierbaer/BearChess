@@ -26,6 +26,7 @@
             <StackPanel Margin="5" Grid.Row="0" Grid.Column="0">
                 <CheckBox Margin="5" Name="checkBoxTournament" Content="No tournament games" />
                 <CheckBox Margin="5" Name="checkBoxDuel" Content="No duel games" />
+                <CheckBox Margin="5" Name="checkBoxDuplicates" Content="Only duplicates" />
             </StackPanel>
             <Grid Margin="5" Grid.Row="1" Grid.Column="0">
                 <Grid.ColumnDefinitions>

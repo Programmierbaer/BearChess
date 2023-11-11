@@ -45,12 +45,13 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
                         if (readByte == '\n' || readByte == 23)
                         {
+                            _logging.LogDebug($"Reading {readByte}");
                             _allLines.Enqueue(Encoding.ASCII.GetString(_lineBytes.ToArray()));
-                            while (_lineBytes.TryDequeue(out _)) ;
+                            while (_lineBytes.TryDequeue(out _));
                         }
                         else if (readByte == '\r')
                         {
-                            //
+                            _logging.LogDebug($"Reading {readByte}");
                         }
                         else
                         {
@@ -66,6 +67,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                             readByte = -1;
                         }
                     }
+                    _logging.LogDebug($"Reading {readByte}: Count: {_lineBytes.Count}");
                 }
             }
             else

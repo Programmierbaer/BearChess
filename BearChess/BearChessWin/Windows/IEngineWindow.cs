@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase;
@@ -39,6 +40,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void AddMoveForCoaches(string fromField, string toField, string promote);
         void MakeMove(string fromField, string toField, string promote, string engineName = "");
         void SetFen(string fen, string moves, string engineName = "");
+        void SetFenForProbing(string fen, Move[] moves);
         void ClearTimeControl();
         void StopForCoaches();
         void Stop(string engineName = "");

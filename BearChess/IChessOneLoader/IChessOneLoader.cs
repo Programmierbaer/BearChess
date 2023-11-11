@@ -3,6 +3,7 @@ using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.IChessOneEBoardWrapper;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
+
 namespace www.SoLaNoSoft.com.BearChess.IChessOneLoader 
 {
     public class IChessOneLoader : AbstractLoader
@@ -29,6 +30,11 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneLoader
                 return new IChessOneImpl(Name, basePath);
             }
 
+            if (string.IsNullOrWhiteSpace(configuration.FileName))
+            {
+                configuration.PortName = "BTLE";
+                configuration.UseBluetooth = true;
+            }
             var eBoardWrapper = new IChessOneImpl(Name, basePath, configuration);
             return eBoardWrapper;
         }

@@ -34,6 +34,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public string ElapsedMoveTime { get; set; }
 
+
+
         [XmlIgnore]
         public string PGNMove
         {
@@ -68,7 +70,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             OwnSymbol = string.Empty;
             ShortMoveIdentifier = string.Empty;
             ElapsedMoveTime = string.Empty;
-           
         }
 
         public Move(int fromField, int toField, int color, int figureId, IChessFigure capturedFigure) : this(fromField,
@@ -174,5 +175,32 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             return move.Identifier.Equals(move2.Identifier);
         }
+
+        public static bool IsCastleMove(this Move move)
+        {
+            
+            
+            
+                switch (move.FromField)
+                {
+                    case Fields.FE1 when move.ToField.Equals(Fields.FG1):
+            
+                        return true;
+                    case Fields.FE1 when move.ToField.Equals(Fields.FC1):
+            
+                        return true;
+                    case Fields.FE8 when move.ToField.Equals(Fields.FG8):
+            
+                        return true;
+                    case Fields.FE8 when move.ToField.Equals(Fields.FC8):
+            
+                        return true;
+                    default:
+                        return false;
+                }
+            
+        }
     }
+
+
 }

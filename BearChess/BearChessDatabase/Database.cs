@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -12,18 +13,25 @@ using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using PgnCreator = www.SoLaNoSoft.com.BearChessBase.Implementations.pgn.PgnCreator;
+using System.Runtime.Serialization.Formatters.Binary;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
+using System.Windows;
 
 namespace www.SoLaNoSoft.com.BearChessDatabase
 {
     public class Database : IDisposable
     {
+        private readonly Window _owner;
         private readonly ILogging _logging;
         private SQLiteConnection _connection;
         private bool _dbExists;
         private bool _inError;
+        private int _storageVersion;
+        SQLiteTransaction _sqLiteTransaction;
 
-        public Database(ILogging logging, string fileName)
+        public Database(Window owner, ILogging logging, string fileName)
         {
+            _owner = owner;
             _logging = logging;
             FileName = fileName;
         }
@@ -100,6 +108,31 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             _inError = false;
         }
 
+        public void Compress()
+        {
+            if (_inError)
+            {
+                return;
+            }
+
+            try
+            {
+                _connection.Open();
+                string sql = "VACUUM; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                _connection.Close();
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+                _inError = true;
+            }
+        }
+
         public string Backup()
         {
             string target = string.Empty;
@@ -173,7 +206,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
             try
             {
-                int storageVersion = 1;
+                _storageVersion = -1;
                 if (!TableExists("storageVersion"))
                 {
                     var sql = "CREATE TABLE storageVersion " +
@@ -187,7 +220,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 }
                 else
                 {
-                    storageVersion = GetStorageVersion();
+                    _storageVersion = GetStorageVersion();
                 }
 
                 if (!TableExists("games"))
@@ -319,7 +352,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     }
                 }
 
-                if (storageVersion == 1)
+                if (_storageVersion <= 1)
                 {
                     var sql = "ALTER TABLE games ADD COLUMN round INTEGER DEFAULT 1; ";
                     using (var command = new SQLiteCommand(sql, _connection))
@@ -339,14 +372,68 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                         command.ExecuteNonQuery();
 
                     }
-                    sql = "UPDATE storageVersion SET version=3; ";
+                    sql = "ALTER TABLE games ADD COLUMN byteXML BLOB NOT NULL DEFAULT 0; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "ALTER TABLE games ADD COLUMN gameHash INTEGER NOT NULL DEFAULT 0; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "CREATE INDEX idx_games_gameHash ON games(gameHash);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "ALTER TABLE games ADD COLUMN twic_id INTEGER NOT NULL DEFAULT 0; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "CREATE INDEX idx_games_twic ON games(twic_id);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "CREATE TABLE twic " +
+                          "(id INTEGER PRIMARY KEY," +
+                          " twicNumber INTEGER NOT NULL,"+
+                          " importedPGNFile TEXT NOT NULL," +
+                          " importedUrl TEXT NOT NULL," +
+                          " numberOfGames INTEGER NOT NULL DEFAULT 0, "+
+                          " importDate INTEGER NOT NULL, "+
+                          " fileDate INTEGER NOT NULL); ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    sql = "CREATE INDEX twic_importedUrl ON twic(importedUrl);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "CREATE INDEX twic_twicNumber ON twic(twicNumber);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "UPDATE storageVersion SET version=5; ";
                     using (var command = new SQLiteCommand(sql, _connection))
                     {
                         command.ExecuteNonQuery();
 
                     }
                 }
-                if (storageVersion == 2)
+                if (_storageVersion == 2)
                 {
                     var sql = "ALTER TABLE games ADD COLUMN white_elo text DEFAULT ''; ";
                     using (var command = new SQLiteCommand(sql, _connection))
@@ -367,7 +454,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
                     }
                 }
-                if (storageVersion == 3)
+                if (_storageVersion == 3)
                 {
                     Close();
                     var databaseGameSimples = GetGames(new GamesFilter() { FilterIsActive = false });
@@ -384,6 +471,141 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
                     }
                 }
+                if (_storageVersion == 4)
+                {
+                    string target = $"{FileName}.bak_{DateTime.UtcNow.ToFileTime()}";
+                    Close();
+                    _connection = null;
+                    File.Copy(FileName, target);
+                    _connection = new SQLiteConnection($"Data Source = {FileName}; Version = 3;");
+                    _connection.Open();
+
+                    //" byteXML BLOB NOT NULL," +
+                    string sql = "ALTER TABLE games ADD COLUMN byteXML BLOB NOT NULL DEFAULT 0; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "ALTER TABLE games ADD COLUMN gameHash INTEGER NOT NULL DEFAULT 0; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "CREATE INDEX idx_games_gameHash ON games(gameHash);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "ALTER TABLE games ADD COLUMN twic_id INTEGER NOT NULL DEFAULT 0; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "CREATE INDEX idx_games_twic ON games(twic_id);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "delete from fenToGames; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "delete from fens; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    Close();
+                    var databaseGameSimples = GetGames(new GamesFilter() { FilterIsActive = false });
+                    var infoWindow = new ProgressWindow
+                    {
+                        Owner = _owner
+                    };
+                    
+                    infoWindow.SetTitle("Migrate database");
+                    infoWindow.SetMaxValue(databaseGameSimples.Length);
+                    _logging?.LogDebug($"Migrate database with {databaseGameSimples.Length} games");
+                    infoWindow.Show();
+                    int i = 0;
+                    try
+                    {
+                        foreach (var databaseGameSimple in databaseGameSimples)
+                        {
+                            Save(LoadOldGame(databaseGameSimple.Id, false), true, true, 0);
+                            i++;
+                            if (i % 100 == 0)
+                            {
+                                infoWindow.SetCurrentValue(i, $"{i} of {databaseGameSimples.Length}");
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        CommitAndClose();
+                    }
+                    infoWindow.Close();
+                    _logging?.LogDebug("Database migrated");
+                    infoWindow = new ProgressWindow
+                    {
+                        Owner = _owner
+                    };
+
+                    _connection.Open();
+                    sql = "CREATE TABLE twic " +
+                            "(id INTEGER PRIMARY KEY," +
+                            " twicNumber INTEGER NOT NULL," +
+                            " importedPGNFile TEXT NOT NULL," +
+                            " importedUrl TEXT NOT NULL," +
+                            " numberOfGames INTEGER NOT NULL DEFAULT 0, " +
+                            " importDate INTEGER NOT NULL, " +
+                            " fileDate INTEGER NOT NULL); ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    sql = "CREATE INDEX twic_importedUrl ON twic(importedUrl);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "CREATE INDEX twic_twicNumber ON twic(twicNumber);";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    sql = "UPDATE storageVersion SET version=5; ";
+                    using (var command = new SQLiteCommand(sql, _connection))
+                    {
+                        command.ExecuteNonQuery();
+
+                    }
+                    infoWindow.SetTitle("Reduce file size");
+                    infoWindow.IsIndeterminate(true);
+                    infoWindow.Show();
+                    try
+                    {
+                        sql = "VACUUM; ";
+                        using (var command = new SQLiteCommand(sql, _connection))
+                        {
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    catch
+                    {
+                        //
+                    }
+                    infoWindow.Close();
+                }
 
                 _dbExists = true;
                 Close();
@@ -397,6 +619,8 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
             return false;
         }
+
+  
 
         private bool TableExists(string tableName)
         {
@@ -420,7 +644,85 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
         #region Games
 
-        public int Save(DatabaseGame game, bool updateGame)
+        public int[] GetGamesIds()
+        {
+            List<int> allIds = new List<int>();
+            _connection.Open();
+            using (var cmd = new SQLiteCommand("select id from games", _connection))
+            {
+                using (var rdr = cmd.ExecuteReader())
+                {
+                    while (rdr.Read())
+                    {
+
+                        allIds.Add(rdr.GetInt32(0));
+
+                    }
+                }
+            }
+
+            _connection.Close();
+            return allIds.ToArray();
+        }
+
+        public DatabaseGame LoadOldGame(int id, bool purePGN)
+        {
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return null;
+                }
+            }
+
+            DatabaseGame databaseGame = null;
+
+            try
+            {
+                _connection.Open();
+                var sql =
+                    "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round FROM games WHERE id=@ID;";
+                var xmlSerializer = new XmlSerializer(typeof(DatabaseGame));
+                using (var cmd = new SQLiteCommand(sql, _connection))
+                {
+                    cmd.Parameters.Add("@ID", DbType.Int32).Value = id;
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            using (TextReader reader = new StringReader(rdr.GetString(8)))
+                            {
+                                databaseGame = (DatabaseGame)xmlSerializer.Deserialize(reader);
+
+                                databaseGame.Id = id;
+
+                                var pgnCreator = databaseGame.CurrentGame == null ? new PgnCreator(purePGN) : new PgnCreator(databaseGame.CurrentGame.StartPosition, purePGN);
+                                foreach (var databaseGameAllMove in databaseGame.AllMoves)
+                                {
+                                    pgnCreator.AddMove(databaseGameAllMove);
+                                }
+
+                                foreach (var move in pgnCreator.GetAllMoves())
+                                {
+                                    databaseGame.PgnGame.AddMove(move);
+                                }
+                            }
+                        }
+
+                        rdr.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+            }
+
+            _connection.Close();
+            return databaseGame;
+        }
+
+        public int Save(DatabaseGame game, bool updateGame, bool commitTransaction, int twicId)
         {
             if (_inError)
             {
@@ -436,29 +738,56 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             }
 
             var gameId = game.Id;
-           _connection.Open();
-            var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
+            if (_connection.State == ConnectionState.Closed)
+            {
+                _connection.Open();
+                string pragma = "pragma journal_mode = memory;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+                pragma = "pragma synchronous = normal;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+                pragma = "pragma temp_store = memory;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+                pragma = "pragma mmap_size = 30000000000;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+            }
+            if (_sqLiteTransaction == null)
+            {
+                _sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
+            }
             try
             {
-                string moveList = string.Empty;
+                StringBuilder sb = new StringBuilder();
                 foreach (var gameAllMove in game.AllMoves)
                 {
                     if (gameAllMove == null)
                     {
                         continue;
                     }
-                    moveList += gameAllMove.FromFieldName + gameAllMove.ToFieldName;
+                    sb.Append(gameAllMove.FromFieldName + gameAllMove.ToFieldName);
                 }
-                var deterministicHashCode = moveList.GetDeterministicHashCode();
-                var aSerializer = new XmlSerializer(typeof(DatabaseGame));
-                var sb = new StringBuilder();
-                var sw = new StringWriter(sb);
-                aSerializer.Serialize(sw, game);
-                var xmlResult = sw.GetStringBuilder().ToString();
+
+                var deterministicHashCode = sb.ToString().CalculateHash();
+                var deterministicGameHashCode = game.PgnGame.GetGame().CalculateHash();
+                MemoryStream ms = new MemoryStream();
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(ms, game);
+                byte[] data = ms.ToArray();
                 if (game.CurrentGame != null && (game.CurrentGame.RepeatedGame || updateGame))
                 {
-                 
-                    var sql = @"UPDATE games set event=@event, result=@result, gameDate=@gameDate, pgn=@pgn, pgnXML=@pgnXML,pgnHash=@pgnHash
+
+                    var sql = @"UPDATE games set event=@event, result=@result, gameDate=@gameDate, pgn=@pgn, pgnXML=@pgnXML, byteXML=@byteXML, pgnHash=@pgnHash, gameHash=@gameHash, twic_id=@twic_id 
                            WHERE id=@id; ";
                     using (var command2 = new SQLiteCommand(sql, _connection))
                     {
@@ -475,13 +804,16 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                         command2.Parameters.Add("@result", DbType.String).Value = game.Result;
                         command2.Parameters.Add("@gameDate", DbType.Int64).Value = gameDate.ToFileTime();
                         command2.Parameters.Add("@pgn", DbType.String).Value = game.PgnGame.MoveList;
-                        command2.Parameters.Add("@pgnXml", DbType.String).Value = xmlResult;
-                        command2.Parameters.Add("@pgnHash", DbType.Int32).Value = deterministicHashCode;
+                        command2.Parameters.Add("@pgnXml", DbType.String).Value = "";//xmlResult;
+                        command2.Parameters.Add("@byteXML", DbType.Object).Value = data;
+                        command2.Parameters.Add("@pgnHash", DbType.UInt64).Value = deterministicHashCode;
+                        command2.Parameters.Add("@gameHash", DbType.UInt64).Value = deterministicGameHashCode;
+                        command2.Parameters.Add("@twic_id", DbType.Int32).Value = twicId;
                         command2.Parameters.Add("@id", DbType.Int32).Value = game.Id;
 
                         command2.ExecuteNonQuery();
                     }
-                    sql =  @"DELETE FROM fenToGames  WHERE game_id=@game_id; ";
+                    sql = @"DELETE FROM fenToGames  WHERE game_id=@game_id; ";
                     using (var command2 = new SQLiteCommand(sql, _connection))
                     {
                         command2.Parameters.Add("@game_id", DbType.String).Value = game.Id;
@@ -492,8 +824,8 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 else
                 {
                     var sql =
-                        @"INSERT INTO games (white, black, event,site, result, gameDate, pgn, pgnXml, pgnHash, round, white_elo, black_elo)
-                           VALUES (@white, @black, @event, @site,  @result, @gameDate, @pgn, @pgnXml, @pgnHash, @round, @white_elo, @black_elo); ";
+                        @"INSERT INTO games (white, black, event,site, result, gameDate, pgn, pgnXml,byteXML, pgnHash, gameHash, round, white_elo, black_elo, twic_id)
+                           VALUES (@white, @black, @event, @site,  @result, @gameDate, @pgn, @pgnXml,@byteXML, @pgnHash, @gameHash, @round, @white_elo, @black_elo, @twic_id); ";
                     using (var command2 = new SQLiteCommand(sql, _connection))
                     {
                         command2.Parameters.Add("@white", DbType.String).Value = game.White;
@@ -503,11 +835,14 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                         command2.Parameters.Add("@result", DbType.String).Value = game.Result;
                         command2.Parameters.Add("@gameDate", DbType.Int64).Value = game.GameDate.ToFileTime();
                         command2.Parameters.Add("@pgn", DbType.String).Value = game.PgnGame.MoveList;
-                        command2.Parameters.Add("@pgnXml", DbType.String).Value = xmlResult;
-                        command2.Parameters.Add("@pgnHash", DbType.Int32).Value = deterministicHashCode;
+                        command2.Parameters.Add("@pgnXml", DbType.String).Value = ""; //xmlResult;
+                        command2.Parameters.Add("@byteXML", DbType.Object).Value = data;
+                        command2.Parameters.Add("@pgnHash", DbType.UInt64).Value = deterministicHashCode;
+                        command2.Parameters.Add("@gameHash", DbType.UInt64).Value = deterministicGameHashCode;
                         command2.Parameters.Add("@round", DbType.Int32).Value = game.Round;
                         command2.Parameters.Add("@white_elo", DbType.String).Value = game.PgnGame.WhiteElo;
                         command2.Parameters.Add("@black_elo", DbType.String).Value = game.PgnGame.BlackElo;
+                        command2.Parameters.Add("@twic_id", DbType.Int32).Value = twicId;
                         command2.ExecuteNonQuery();
                     }
 
@@ -518,22 +853,21 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                         gameId = int.Parse(executeScalar.ToString());
                     }
                 }
-
                 var moveNumber = 1;
-                var chessBoard = new ChessBoard();
-                chessBoard.Init();
-                chessBoard.NewGame();
-
+                var fastBoard = new FastChessBoard();
+             
                 foreach (var move in game.MoveList)
                 {
                     if (move == null)
                     {
                         continue;
                     }
-                    chessBoard.MakeMove(move);
-                    var fen = chessBoard.GetFenPosition();
+                    fastBoard.SetMove($"{move.FromFieldName}{move.ToFieldName}".ToLower());
+                    string shortFen = fastBoard.GetPositionHashCode();
+                    // chessBoard.MakeMove(move);
+                    //var fen = chessBoard.GetFenPosition();
                     var fenId = 0;
-                    var shortFen = fen.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                    //var shortFen = fen.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
                     var sql = "SELECT id FROM fens WHERE shortFen=@shortFen;";
                     using (var command = new SQLiteCommand(sql, _connection))
                     {
@@ -545,7 +879,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                             using (var command2 = new SQLiteCommand(sql, _connection))
                             {
                                 command2.Parameters.Add("@shortFen", DbType.String).Value = shortFen;
-                                command2.Parameters.Add("@fullFen", DbType.String).Value = fen;
+                                command2.Parameters.Add("@fullFen", DbType.String).Value = "";
                                 command2.ExecuteNonQuery();
                             }
 
@@ -573,26 +907,73 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     }
                 }
 
-                sqLiteTransaction.Commit();
+                if (commitTransaction)
+                {
+                    _sqLiteTransaction.Commit();
+                    _sqLiteTransaction = null;
+                }
             }
             catch (Exception ex)
             {
-                sqLiteTransaction.Rollback();
+                _sqLiteTransaction.Rollback();
+                _sqLiteTransaction = null;
                 _logging?.LogError(ex);
                 return -1;
             }
             finally
             {
-                _connection.Close();
+                if (commitTransaction)
+                {
+                    _connection.Close();
+                }
             }
 
             return gameId;
         }
 
+        public void CommitAndClose()
+        {
+            if (_sqLiteTransaction != null)
+            {
+                _sqLiteTransaction.Commit();
+                _connection.Close();
+                _sqLiteTransaction = null;
+            }
+        }
+
+        public int Save(DatabaseGame game, bool updateGame)
+        {
+            return Save(game, updateGame, true, 0);
+        }
+
+      
+
         public void DeleteGame(int id)
         {
-
-            _connection.Open();
+            if (_connection.State == ConnectionState.Closed)
+            {
+                _connection.Open();
+                string pragma = "pragma journal_mode = memory;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+                pragma = "pragma synchronous = normal;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+                pragma = "pragma temp_store = memory;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+                pragma = "pragma mmap_size = 30000000000;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+            }
             var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
             try
             {
@@ -658,8 +1039,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             try
             {
                 _connection.Open();
-                var sql =
-                    "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round FROM games WHERE id=@ID;";
+                var sql = "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, byteXML, pgnHash, round FROM games WHERE id=@ID;";
                 var xmlSerializer = new XmlSerializer(typeof(DatabaseGame));
                 using (var cmd = new SQLiteCommand(sql, _connection))
                 {
@@ -668,23 +1048,48 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     {
                         if (rdr.Read())
                         {
-                            using (TextReader reader = new StringReader(rdr.GetString(8)))
+                            if (_storageVersion < 5)
                             {
-                                databaseGame = (DatabaseGame)xmlSerializer.Deserialize(reader);
-                                
-                                databaseGame.Id = id;
-
-                                var pgnCreator = databaseGame.CurrentGame == null ? new PgnCreator(purePGN) :  new PgnCreator(databaseGame.CurrentGame.StartPosition, purePGN);
-                                foreach (var databaseGameAllMove in databaseGame.AllMoves)
+                                using (TextReader reader = new StringReader(rdr.GetString(8)))
                                 {
-                                    pgnCreator.AddMove(databaseGameAllMove);
-                                }
+                                    databaseGame = (DatabaseGame)xmlSerializer.Deserialize(reader);
 
-                                foreach (var move in pgnCreator.GetAllMoves())
-                                {
-                                    databaseGame.PgnGame.AddMove(move);
+                                    databaseGame.Id = id;
+
+                                    var pgnCreator = databaseGame.CurrentGame == null ? new PgnCreator(purePGN) : new PgnCreator(databaseGame.CurrentGame.StartPosition, purePGN);
+                                    foreach (var databaseGameAllMove in databaseGame.AllMoves)
+                                    {
+                                        pgnCreator.AddMove(databaseGameAllMove);
+                                    }
+
+                                    foreach (var move in pgnCreator.GetAllMoves())
+                                    {
+                                        databaseGame.PgnGame.AddMove(move);
+                                    }
                                 }
                             }
+                            else
+                            {
+                                BinaryFormatter bf = new BinaryFormatter();
+                                using (MemoryStream memoryStream = new MemoryStream(rdr.GetValue(9) as byte[]))
+                                {
+                                    databaseGame = bf.Deserialize(memoryStream) as DatabaseGame;
+                                    databaseGame.Id = id;
+
+                                    var pgnCreator = databaseGame.CurrentGame == null ? new PgnCreator(purePGN) : new PgnCreator(databaseGame.CurrentGame.StartPosition, purePGN);
+                                    foreach (var databaseGameAllMove in databaseGame.AllMoves)
+                                    {
+                                        pgnCreator.AddMove(databaseGameAllMove);
+                                    }
+
+                                    foreach (var move in pgnCreator.GetAllMoves())
+                                    {
+                                        databaseGame.PgnGame.AddMove(move);
+                                    }
+                                }
+
+                            }
+
                         }
 
                         rdr.Close();
@@ -703,7 +1108,6 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         public DatabaseGameSimple[] GetGames(GamesFilter gamesFilter)
         {
             return GetGames(gamesFilter, string.Empty);
-            
         }
 
         private DatabaseGameSimple[] FilterByFen(string fen)
@@ -716,17 +1120,20 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             if (fen.StartsWith("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
             {
                 return GetBySql(
-                    "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round, white_elo, black_elo FROM games ORDER BY ID;");
+                    "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round, white_elo, black_elo, gameHash FROM games ORDER BY ID;");
             }
+            var fastBoard = new FastChessBoard();
+            fastBoard.Init(fen, Array.Empty<string>());
             DatabaseGameSimple[] allGames = null;
             _connection.Open();
             using (var cmd = new SQLiteCommand(
-                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo" +
+                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo, g.gameHash" +
                 " FROM games as g JOIN fenToGames as fg ON (g.ID=fg.game_id) " +
                 " JOIN fens as f ON (fg.fen_id = f.id)" +
                 "WHERE f.shortFen=@shortFen;", _connection))
             {
-                cmd.Parameters.Add("@shortFen", DbType.String).Value = fen.Split(" ".ToCharArray())[0];
+               // cmd.Parameters.Add("@shortFen", DbType.String).Value = fen.Split(" ".ToCharArray())[0];
+                cmd.Parameters.Add("@shortFen", DbType.String).Value = fastBoard.GetPositionHashCode();
                 using (var rdr = cmd.ExecuteReader())
                 {
                     allGames = GetByReader(rdr);
@@ -761,7 +1168,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     if (string.IsNullOrWhiteSpace(fen))
                     {
                         return GetBySql(
-                            "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round, white_elo, black_elo FROM games ORDER BY ID;");
+                            "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round, white_elo, black_elo, gameHash FROM games ORDER BY ID;");
                     }
 
                     return FilterByFen(fen);
@@ -803,7 +1210,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                 DatabaseGameSimple[] allGames = null;
                 _connection.Open();
                 using (var cmd = new SQLiteCommand(
-                    "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo" +
+                    "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo, g.gameHash " +
                     " FROM games g  " +
                     fenSQl+
                     " WHERE g.Event LIKE @gameEvent" +
@@ -878,7 +1285,8 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             var allGames = new List<DatabaseGameSimple>(10000);
             while (rdr.Read())
             {
-                var pgnHash = rdr.GetInt32(9);
+                var pgnHash = rdr.GetInt64(9);
+                var gameHash = rdr.GetInt64(13);
                 var databaseGameSimple = new DatabaseGameSimple
                                          {
                                              Id = rdr.GetInt32(0),
@@ -892,13 +1300,16 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                                              Round = rdr.GetInt32(10).ToString(),
                                              WhiteElo = rdr.GetString(11),
                                              BlackElo = rdr.GetString(12),
-                                             PgnHash = pgnHash
+                                             PgnHash = (ulong)pgnHash,
+                                             GameHash = (ulong)gameHash
                                          };
                 allGames.Add(databaseGameSimple);
             }
 
             return allGames.ToArray();
         }
+
+   
 
         private DatabaseGameSimple[] GetBySql(string sql)
         {
@@ -917,7 +1328,39 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             return allGames;
         }
 
+        public DatabaseGameSimple[] GetGames(ulong[] keys, bool duplicatedByMoves)
+        {
+            List<DatabaseGameSimple> allGames = new List<DatabaseGameSimple>();
+            foreach (var key in keys)
+            {
+                DatabaseGameSimple[] games = GetDatabaseGameSimple(key, duplicatedByMoves);
+                allGames.AddRange(games);
+            }
+            return allGames.ToArray();
+        }
 
+        private DatabaseGameSimple[] GetDatabaseGameSimple(ulong id, bool duplicatedByMoves)
+        {
+            if (_inError)
+            {
+                return null;
+            }
+
+            string column = duplicatedByMoves ? "pgnHash" : "gameHash";
+            try
+            {
+               return GetBySql(
+                        "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round, white_elo, black_elo, gameHash FROM games WHERE "+column+"=" + id + " ORDER BY ID;");
+
+            }
+            catch (Exception ex)
+            {
+                _inError = true;
+                _logging?.LogError(ex);
+            }
+
+            return null;
+        }
         #endregion
 
         #region Duel
@@ -2114,8 +2557,284 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             return allGames;
         }
 
+
         #endregion
 
-   
+        #region TWIC
+
+        public int SaveTWICImport(int twicNumber, string url, string fileName, int numberOfGames, long fileDate)
+        {
+            int twicId = -1;
+            if (_inError)
+            {
+                return -1;
+            }
+
+            if (!_dbExists)
+            {
+                if (!CreateTables())
+                {
+                    return -1;
+                }
+            }
+           
+            _connection.Open();
+            try
+            {
+                var sql = @"INSERT INTO twic (twicNumber,importedPGNFile,importedUrl, numberOfGames, importDate, fileDate) VALUES (@twicNumber,@importedPGNFile,@importedUrl,@numberOfGames, @importDate, @fileDate); ";
+                using (var command2 = new SQLiteCommand(sql, _connection))
+                {
+                    command2.Parameters.Add("@twicNumber", DbType.Int32).Value = twicNumber;
+                    command2.Parameters.Add("@importedPGNFile", DbType.String).Value = fileName;
+                    command2.Parameters.Add("@importedUrl", DbType.String).Value = url;
+                    command2.Parameters.Add("@numberOfGames", DbType.Int32).Value = numberOfGames;
+                    command2.Parameters.Add("@importDate", DbType.Int64).Value = DateTime.UtcNow.ToFileTime();
+                    command2.Parameters.Add("@fileDate", DbType.Int64).Value = fileDate;
+                    command2.ExecuteNonQuery();
+                    using (var command3 = new SQLiteCommand("SELECT LAST_INSERT_ROWID();", _connection))
+                    {
+                        var executeScalar = command3.ExecuteScalar();
+                        twicId = int.Parse(executeScalar.ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logging?.LogError(ex);
+                twicId = -1;
+            }
+            finally
+            {
+                _connection.Close();
+            }
+            return twicId;
+        }
+
+        public DateTime? TWICFileImported(string url)
+        {
+            if (_inError)
+            {
+                return null;
+            }
+
+            DateTime? result = null;
+            _connection.Open();
+            var sql = "SELECT importDate FROM twic WHERE importedUrl = @importedUrl";
+            using (var command = new SQLiteCommand(sql, _connection))
+            {
+                command.Parameters.Add("@importedUrl", DbType.String).Value = url;
+                var executeScalar = command.ExecuteScalar();
+                if (executeScalar != null)
+                {
+                    result = DateTime.FromFileTime((long)executeScalar);
+                }
+            }
+            _connection.Close();
+            return result;
+        }
+
+        public DateTime? TWICFileImported(int twicNumber)
+        {
+            if (_inError)
+            {
+                return null;
+            }
+
+            DateTime? result = null;
+            _connection.Open();
+            var sql = "SELECT importDate FROM twic WHERE twicNumber = @twicNumber";
+            using (var command = new SQLiteCommand(sql, _connection))
+            {
+                command.Parameters.Add("@twicNumber", DbType.Int32).Value = twicNumber;
+                var executeScalar = command.ExecuteScalar();
+                if (executeScalar != null)
+                {
+                    result = DateTime.FromFileTime((long)executeScalar);
+                }
+            }
+            _connection.Close();
+            return result;
+        }
+
+        public TwicDownload[] GeTwicDownloads()
+        {
+            if (_inError)
+            {
+                return Array.Empty<TwicDownload>();
+            }
+            TwicDownload[] allDownloads = null;
+            _connection.Open();
+            using (var cmd = new SQLiteCommand(
+                       "SELECT id, twicNumber, importedPGNFile, numberOfGames, importedUrl, importDate, fileDate " +
+                       " FROM twic order by twicNumber", _connection))
+            {
+               
+                using (var rdr = cmd.ExecuteReader())
+                {
+                    allDownloads = GetTwicByReader(rdr);
+                    rdr.Close();
+                }
+            }
+
+            _connection.Close();
+
+            return allDownloads;
+        }
+
+        public int NumberOfTWICInGames(int twicId)
+        {
+            if (_inError)
+            {
+                return -1;
+            }
+
+            int result = -1;
+            _connection.Open();
+            var sql = "SELECT count(*) as number FROM games WHERE twic_id = @twic_id";
+            using (var command = new SQLiteCommand(sql, _connection))
+            {
+                command.Parameters.Add("@twic_id", DbType.Int32).Value = twicId;
+                var executeScalar = command.ExecuteScalar();
+                if (executeScalar != null)
+                {
+                    result = int.Parse(executeScalar.ToString());
+                }
+            }
+
+            _connection.Close();
+            return result;
+        }
+
+        public int MaxTwicNumber()
+        {
+            if (_inError)
+            {
+                return -1;
+            }
+
+            int result = -1;
+            _connection.Open();
+            var sql = "SELECT MAX(twicNumber) as number FROM twic";
+            using (var command = new SQLiteCommand(sql, _connection))
+            {
+                var executeScalar = command.ExecuteScalar();
+                if (executeScalar != null)
+                {
+                    int.TryParse(executeScalar.ToString(), out result);
+                }
+            }
+            _connection.Close();
+            return result;
+        }
+
+        public void SetNumberOfTWICGames(int twicId, int numberOfGames)
+        {
+            if (_inError)
+            {
+                return;
+            }
+
+            
+            _connection.Open();
+            var sql = "UPDATE twic set NumberOfGames=@NumberOfGames WHERE id = @twic_id";
+            using (var command = new SQLiteCommand(sql, _connection))
+            {
+                command.Parameters.Add("@twic_id", DbType.Int32).Value = twicId;
+                command.Parameters.Add("@NumberOfGames", DbType.Int32).Value = numberOfGames;
+                var executeScalar = command.ExecuteNonQuery();
+              
+            }
+            _connection.Close();
+        }
+
+        public void DeleteTWICGames(int twicId)
+        {
+            if (_connection.State == ConnectionState.Closed)
+            {
+                _connection.Open();
+                string pragma = "pragma journal_mode = memory;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+                pragma = "pragma synchronous = normal;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+                pragma = "pragma temp_store = memory;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+                pragma = "pragma mmap_size = 30000000000;";
+                using (var command2 = new SQLiteCommand(pragma, _connection))
+                {
+                    command2.ExecuteNonQuery();
+                }
+            }
+            var sqLiteTransaction = _connection.BeginTransaction(IsolationLevel.Serializable);
+            try
+            {
+                var sql = @"DELETE FROM fenToGames WHERE game_id IN (select id from games where twic_id=@twic_id); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@twic_id", DbType.Int32).Value = twicId;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM games WHERE twic_id=@twic_id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@twic_id", DbType.Int32).Value = twicId;
+                    command.ExecuteNonQuery();
+                }
+
+                sql = @"DELETE FROM fens WHERE id NOT IN (SELECT fen_id FROM fenToGames); ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                sql = @"DELETE FROM twic WHERE id=@twic_id; ";
+                using (var command = new SQLiteCommand(sql, _connection))
+                {
+                    command.Parameters.Add("@twic_id", DbType.Int32).Value = twicId;
+                    command.ExecuteNonQuery();
+                }
+                sqLiteTransaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                sqLiteTransaction.Rollback();
+                _logging?.LogError(ex);
+            }
+            finally
+            {
+                _connection.Close();
+            }
+        }
+
+        private TwicDownload[] GetTwicByReader(SQLiteDataReader rdr)
+        {
+            // "id, twicNumber, importedPGNFile, numberOfGames, importedUrl, importDate"
+            var allGames = new List<TwicDownload>(100);
+            while (rdr.Read())
+            {
+                var databaseGameSimple = new TwicDownload
+                {
+                    Id = rdr.GetInt32(0),
+                    TwicNumber = rdr.GetInt32(1),
+                    NumberOfGames = rdr.GetInt32(3),
+                    ImportDate = DateTime.FromFileTime(rdr.GetInt64(5)),
+                    FileDate = DateTime.FromFileTime(rdr.GetInt64(6)),
+                    FileName = rdr.GetString(2),
+                };
+                allGames.Add(databaseGameSimple);
+            }
+
+            return allGames.ToArray();
+        }
+
+        #endregion
     }
 }

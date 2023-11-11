@@ -65,6 +65,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     borderAll.Visibility = Visibility.Collapsed;
                 }
             }
+            if (uciInfo.IsProbing)
+            {
+                borderAll.Visibility = Visibility.Collapsed;
+            }
             _configuration = configuration;
             _uciInfo = uciInfo;
             _hideInfo = int.Parse(hideInfo);

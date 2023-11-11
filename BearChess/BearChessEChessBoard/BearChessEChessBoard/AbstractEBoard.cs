@@ -33,7 +33,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void SetLedForFields(SetLEDsParameter ledsParameter);
 
 
-        public abstract void SetAllLedsOff();
+        public abstract void SetAllLedsOff(bool forceOff);
 
         public abstract void SetAllLedsOn();
 

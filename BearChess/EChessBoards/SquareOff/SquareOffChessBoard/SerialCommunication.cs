@@ -152,10 +152,10 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                             
                         }
 
-                        if (_byteDataToBoard.TryDequeue(out byte[] byteData))
+                        if (_byteDataToBoard.TryDequeue(out ByteDataWithInfo byteData))
                         {
                             
-                                var convertFromRead = ConvertFromRead(byteData);
+                                var convertFromRead = ConvertFromRead(byteData.Data);
                                 bool force = false;
                                 if (_forcedSend)
                                 {
@@ -165,7 +165,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                                 {
                                     _forcedSend = false;
                                     _logger?.LogDebug($"SC: Send byteData {convertFromRead}");
-                                    _comPort.Write(byteData, 0, byteData.Length);
+                                    _comPort.Write(byteData.Data, 0, byteData.Data.Length);
                                     lastSend = convertFromRead;
                                 }
                             

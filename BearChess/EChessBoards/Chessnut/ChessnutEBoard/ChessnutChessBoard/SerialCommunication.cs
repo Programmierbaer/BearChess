@@ -71,10 +71,10 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
 
                     if (withConnection && !_pauseReading)
                     {
-                        if (_byteDataToBoard.TryDequeue(out byte[] byteData))
+                        if (_byteDataToBoard.TryDequeue(out ByteDataWithInfo byteData))
                         {
                           
-                                convertFromRead = ConvertFromArray(byteData);
+                                convertFromRead = ConvertFromArray(byteData.Data);
                                 bool force = false;
                                 if (_forcedSend)
                                 {
@@ -85,7 +85,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                                 {
                                     _forcedSend = false;
                                     _logger?.LogDebug($"SC: Send byteData {convertFromRead}");
-                                    _comPort.Write(byteData, 0, byteData.Length);
+                                    _comPort.Write(byteData.Data, 0, byteData.Data.Length);
                                     lastReadToSend = convertFromRead;
                                 }
                             

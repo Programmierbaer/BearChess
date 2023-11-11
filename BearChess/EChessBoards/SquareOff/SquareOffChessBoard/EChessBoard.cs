@@ -216,8 +216,8 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             _logger?.LogDebug($"SQ: Set LED for fields: {_lastSendFields} IsThinking: {ledsParameter.IsThinking}");
             _serialCommunication.Send($"25#{sendFields.ToLower()}*");
         }
-     
-        public override void SetAllLedsOff()
+
+        public override void SetAllLedsOff(bool forceOff)
         {
            _serialCommunication.Send("25#*");
            

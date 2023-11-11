@@ -186,7 +186,10 @@
             </StackPanel>
         </Border>
         <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" >
-            <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
+            <StackPanel >
+                <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
+                <CheckBox Margin="5" Name="checkBoxOwnMoves">Show own moves</CheckBox>
+            </StackPanel>
         </Border>
         <Border Name="borderChesstimation" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" IsEnabled="False">
             <StackPanel Orientation="Vertical">

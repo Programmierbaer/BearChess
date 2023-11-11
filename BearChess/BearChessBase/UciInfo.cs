@@ -51,6 +51,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool IsChessComputer { get; set; }
         public bool IsActive { get; set; }
         public bool IsBuddy { get; set; }
+        public bool IsProbing { get; set; }
 
         public UciInfo()
         {
@@ -69,6 +70,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             IsActive = true;
             _playerElo = 0;
             IsBuddy = false;
+            IsProbing = false;
         }
 
         public UciInfo(string fileName) : this()

@@ -161,7 +161,14 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 return;
             }
             _flashFields.TryDequeue(out _);
-
+            if (ledsParameter.FieldNames.Length == 0)
+            {
+                ledsParameter.FieldNames = ledsParameter.InvalidFieldNames.ToArray();
+            }
+            if (ledsParameter.FieldNames.Length < 1)
+            {
+                return;
+            }
             lock (_locker)
             {
                 var joinedString = string.Join(" ", ledsParameter.FieldNames);
@@ -216,7 +223,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         }
 
 
-        public override void SetAllLedsOff()
+        public override void SetAllLedsOff(bool forceOff)
         {
             if (!EnsureConnection())
             {

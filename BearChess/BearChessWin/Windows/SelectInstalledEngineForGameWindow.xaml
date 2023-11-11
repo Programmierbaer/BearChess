@@ -11,7 +11,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <DataGrid Name="dataGridEngine" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False" SelectionChanged="DataGridEngine_OnSelectionChanged"
-                  SelectionMode="Extended" IsReadOnly="True" >
+                  SelectionMode="Extended" IsReadOnly="True"  PreviewKeyDown="DataGridEngine_OnPreviewKeyDown">
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <EventSetter Event="MouseDoubleClick" Handler="DataGridEngine_OnMouseDoubleClick"/>

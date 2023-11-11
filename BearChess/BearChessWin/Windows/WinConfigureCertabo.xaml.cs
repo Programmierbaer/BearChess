@@ -11,6 +11,7 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessBTLETools;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -57,6 +58,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseChesstimation = useChesstimation;
             checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
+            checkBoxOwnMoves.IsChecked = _eChessBoardConfiguration.ShowOwnMoves;
             _allPortNames = new List<string> { "<auto>" };
             if (_useBluetooth)
             {
@@ -105,6 +107,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
             _eChessBoardConfiguration.ShowMoveLine = checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value;
+            _eChessBoardConfiguration.ShowOwnMoves = checkBoxOwnMoves.IsChecked.HasValue && checkBoxOwnMoves.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -135,11 +138,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var certaboLoader = new CertaboLoader();
                 certaboLoader.Calibrate();
                 certaboLoader.SetAllLedsOn();
-                certaboLoader.SetAllLedsOff();
-                certaboLoader.SetAllLedsOff();
+                certaboLoader.SetAllLedsOff(false);
+                certaboLoader.SetAllLedsOff(false);
                 infoWindow.Close();
                 certaboLoader.Stop();
-                certaboLoader.SetAllLedsOff();
+                certaboLoader.SetAllLedsOff(false);
                 MessageBox.Show(this, "Calibration finished", "Calibrate", MessageBoxButton.OK,
                                 MessageBoxImage.Information);
                 certaboLoader.Close();

@@ -303,9 +303,9 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             }
         }
 
-       
 
-        public override void SetAllLedsOff()
+
+        public override void SetAllLedsOff(bool forceOff)
         {
             _serialCommunication.Send(_allLEDsOff);
             SendClockToNormal();

@@ -16,6 +16,9 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         public ClockTime BlackClockTime { get; set; }
         public int Round  { get; set; }
 
+        [XmlIgnore]
+        public int TwicId { get; set; }
+
         [XmlArrayItem("ListOfMoves")]
         public Move[] AllMoves;
 
@@ -79,17 +82,21 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
               Round = currentGame.Round;
             Id = 0;
             Continue = false;
+            TwicId = 0;
         }
 
         public DatabaseGame()
         {
             
         }
+
         public void Reset()
         {
             AllMoves = Array.Empty<Move>();
             WhiteClockTime = new ClockTime();
             BlackClockTime = new ClockTime();
+            TwicId = 0;
+            Round = 0;
             PgnGame.Result = "*";
             PgnGame.ClearMoveList();
         }

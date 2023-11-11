@@ -16,6 +16,7 @@ using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 using Configuration = www.SoLaNoSoft.com.BearChessTools.Configuration;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -368,6 +369,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _logger?.LogInfo($"Send fen: {fen} moves: {moves} ");
             _loadedEngine.UciEngine.SetFen(fen, moves);
+        }
+
+        public void SetFenForProbing(string fen, Move[] moves)
+        {
+            //
         }
 
         public void ClearTimeControl()
@@ -1243,14 +1249,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 EngineEvent?.Invoke(
                     this,
-                    new EngineEventArgs(e.Name, e.FromEngine, _loadedEngine.Color,true, false));
+                    new EngineEventArgs(e.Name, e.FromEngine, _loadedEngine.Color,true, false, false));
             }
 
             if (e.FromEngine.Contains(" pv "))
             {
                 EngineEvent?.Invoke(
                     this,
-                    new EngineEventArgs(e.Name, e.FromEngine, _loadedEngine.Color, true, false));
+                    new EngineEventArgs(e.Name, e.FromEngine, _loadedEngine.Color, true, false, false));
             }
         }
 

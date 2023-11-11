@@ -8,7 +8,9 @@
         FR,
         IT,
         SP,
-        DA
+        DA,
+        PO,
+        IC
     }
 
     public static class DisplayCountryHelper
@@ -31,6 +33,10 @@
                         return FigureId.FigureGBtoSP[letter];
                     case DisplayCountryType.DA:
                         return FigureId.FigureGBtoDA[letter];
+                    case DisplayCountryType.PO:
+                        return FigureId.FigureGBtoPO[letter];
+                    case DisplayCountryType.IC:
+                        return FigureId.FigureGBtoIC[letter];
                     default:
                         break;
                 }

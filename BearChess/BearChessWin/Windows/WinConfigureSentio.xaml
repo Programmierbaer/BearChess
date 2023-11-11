@@ -45,10 +45,13 @@
 
             </Grid>
         </Border>
+       
         <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" >
-            <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
+            <StackPanel >
+                <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
+                <CheckBox Visibility="Collapsed" Margin="5" Name="checkBoxOwnMoves">Show own moves</CheckBox>
+            </StackPanel>
         </Border>
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="70" />

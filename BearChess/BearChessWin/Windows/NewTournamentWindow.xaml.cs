@@ -298,7 +298,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDatabase_OnClick(object sender, RoutedEventArgs e)
         {
-            var databaseWindow = new DatabaseWindow(_configuration, _database, string.Empty, false);
+            var databaseWindow = new DatabaseWindow(_configuration, _database, string.Empty, false, null);
             databaseWindow.ShowDialog();
             labelDatabaseName.Content = _database.FileName;
             labelDatabaseName.ToolTip = _database.FileName;

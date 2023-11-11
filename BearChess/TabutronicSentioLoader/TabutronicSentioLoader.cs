@@ -30,6 +30,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.Loader
                 return new SentioImpl(Name, basePath);
             }
 
+            configuration.ShowOwnMoves = false;
             var eBoardWrapper = new SentioImpl(Name, basePath, configuration);
             return eBoardWrapper;
         }

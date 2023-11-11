@@ -95,8 +95,8 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
         }
 
 
-      
-        public override void SetAllLedsOff()
+
+        public override void SetAllLedsOff(bool forceOff)
         {
             //
         }

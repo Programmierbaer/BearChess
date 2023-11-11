@@ -157,7 +157,11 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                 return;
             }
             _flashFields.TryDequeue(out _);
-            if (ledsParameter.FieldNames.Length < 2)
+            if (ledsParameter.FieldNames.Length == 0)
+            {
+                ledsParameter.FieldNames = ledsParameter.InvalidFieldNames.ToArray();
+            }
+            if (ledsParameter.FieldNames.Length < 1 )
             {
                 return;
             }
@@ -175,7 +179,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                         return;
                     }
                 }
-                _logger?.LogDebug($"B: set leds for {joinedString}");
+                _logger?.LogDebug($"B: set leds for {ledsParameter}");
                 if (ledsParameter.IsThinking && ledsParameter.FieldNames.Length > 1)
                 {
                     _flashFields.Enqueue(ledsParameter.FieldNames);
@@ -192,6 +196,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                 }
                 else
                 {
+                    //if (ledsParameter.FieldNames.Length == 2 && _showMoveLine && !ledsParameter.IsError)
                     if (ledsParameter.FieldNames.Length == 2 && _showMoveLine)
                     {
                         string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
@@ -214,8 +219,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             }
         }
 
-       
-        public override void SetAllLedsOff()
+
+        public override void SetAllLedsOff(bool forceOff)
         {
             if (!EnsureConnection())
             {

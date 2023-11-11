@@ -6,8 +6,8 @@
         xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" Closing="DatabaseWindow_OnClosing" WindowStyle="SingleBorderWindow"
-        Icon="../Assets/Icons/database.png" MinWidth="820"
-        Title="Games" Height="450" Width="820">
+        Icon="../Assets/Icons/database.png" MinWidth="930"
+        Title="Games" Height="450" Width="930">
     <Window.Resources>
         <bearChessWin:GamesValueToBrushConverter x:Key="ValueToBrushConverter" />
     </Window.Resources>
@@ -56,7 +56,7 @@
                 <Style TargetType="DataGridRow">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <Binding Path="PgnHash" Converter="{StaticResource ValueToBrushConverter}" />
+                            <Binding Path="GameHash" Converter="{StaticResource ValueToBrushConverter}" />
                         </Setter.Value>
                     </Setter>
                 </Style>
@@ -106,7 +106,7 @@
             </DataGrid.Columns>
 
         </DataGrid>
-        <DockPanel Margin="5" Grid.Row="1" LastChildFill="False">
+        <StackPanel Margin="5" Grid.Row="1" Orientation="Horizontal">
             <Button Margin="5" DockPanel.Dock="Left" Name="buttonNewFolder" Click="ButtonNewFolder_OnClick"
                     Background="Transparent" BorderBrush="Transparent" ToolTip="New games database">
                 <Image Source="../Assets/Icons/database_add.png" Width="32" Height="32" />
@@ -133,7 +133,11 @@
             </Button>
             <Button Margin="15,5,5,5" DockPanel.Dock="Left"  Visibility="Visible" Name="buttonDeleteDuplicates" Click="ButtonDeleteAllDuplicates_OnClick"
                     Background="Transparent" BorderBrush="Transparent" ToolTip="Delete all duplicates">
-                <Image Source="../Assets/Icons/database_repeat_delete.png#" Width="32" Height="32" />
+                <Image Source="../Assets/Icons/database_repeat_delete.png" Width="32" Height="32" />
+            </Button>
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left"  Visibility="Visible" Name="buttonTwic" Click="ButtonTwic_OnClick"
+           Background="Transparent" BorderBrush="Transparent" ToolTip="Manage 'The Week in Chess'">
+                <Image Source="../Assets/Icons/outlook_calendar_week.png" Width="32" Height="32" />
             </Button>
 
             <Button Margin="15,5,5,5" DockPanel.Dock="Left"  Visibility="Hidden" Name="buttonContinue" Click="ButtonContinue_OnClick"
@@ -141,7 +145,7 @@
                 <Image Source="../Assets/Icons/control_play_blue.png" Width="32" Height="32" />
             </Button>
 
-            <Button Margin="35,5,5,5" DockPanel.Dock="Left" Name="buttonSync" Click="ButtonSync_OnClick"
+            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonSync" Click="ButtonSync_OnClick"
                     Background="Transparent" BorderBrush="Transparent" ToolTip="Synchronize with chessboard">
                 <StackPanel Orientation="Horizontal">
                     <Image Name="imageLinkClear" Source="../Assets/Icons/link_break.png" Width="32" Height="32"
@@ -162,15 +166,13 @@
                     Background="Transparent" BorderBrush="Transparent" ToolTip="Export selected games">
                 <Image Source="../Assets/Icons/text_exports.png" Width="32" Height="32" />
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick"
-                    Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
-                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32" />
-            </Button>
+          
 
 
-            <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"
-                    Background="Transparent" BorderBrush="Transparent" ToolTip="Delete database">
-                <Image Source="../Assets/Icons/database_delete.png" Width="32" Height="32" />
+          
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonCompressDb" Click="ButtonCompressDb_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Compress database">
+                <Image Source="../Assets/Icons/database_cleanup.png" Width="32" Height="32" />
             </Button>
             <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonSaveDb" Click="ButtonSaveDb_OnClick"
                     Background="Transparent" BorderBrush="Transparent" ToolTip="Save database">
@@ -180,6 +182,14 @@
                     Background="Transparent" BorderBrush="Transparent" ToolTip="Restore database">
                 <Image Source="../Assets/Icons/database_refresh.png" Width="32" Height="32" />
             </Button>
-        </DockPanel>
+            <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Delete database">
+                <Image Source="../Assets/Icons/database_delete.png" Width="32" Height="32" />
+            </Button>
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
+                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32" />
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>

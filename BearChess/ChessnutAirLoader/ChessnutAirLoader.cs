@@ -32,13 +32,14 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutAirLoader
             var eBoardWrapper = new ChessnutAirImpl(Name, basePath, configuration);
             return eBoardWrapper;
         }
-        public static void Save(string basePath, bool useBluetooth, bool showMoveLine)
+        public static void Save(string basePath, bool useBluetooth, bool showMoveLine, bool showOwnMove)
         {
             string fileName = Path.Combine(basePath, Constants.ChessnutAir,
                 $"{Constants.ChessnutAir}Cfg.xml");
             var eChessBoardConfiguration = EChessBoardConfiguration.Load(fileName);
             eChessBoardConfiguration.UseBluetooth = useBluetooth;
             eChessBoardConfiguration.ShowMoveLine = showMoveLine;
+            eChessBoardConfiguration.ShowOwnMoves = showOwnMove;
             EChessBoardConfiguration.Save(eChessBoardConfiguration, fileName);
         }
     }

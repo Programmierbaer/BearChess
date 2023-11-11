@@ -117,7 +117,7 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
             }
         }
 
-        public override void SetAllLedsOff()
+        public override void SetAllLedsOff(bool forceOff)
         {
             //
         }

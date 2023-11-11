@@ -96,6 +96,26 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                              { "","" }
                                                                          };
 
+        public static readonly Dictionary<string, string> FigureGBtoPO = new Dictionary<string, string>()
+        {
+            { "K","K" },
+            { "Q","H" },
+            { "R","W" },
+            { "N","S" },
+            { "B","G" },
+            { "","" }
+        };
+
+        public static readonly Dictionary<string, string> FigureGBtoIC = new Dictionary<string, string>()
+        {
+            { "K","K" },
+            { "Q","D" },
+            { "R","H" },
+            { "N","R" },
+            { "B","B" },
+            { "","" }
+        };
+
         public static readonly Dictionary<int, string> FigureIdToEnName = new Dictionary<int, string>()
                                                                           {
                                                                               {NO_PIECE, string.Empty},

@@ -200,7 +200,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
        
             _allUciInfos.Clear();
 
-            var array = uciInfos.Where(u => u.IsActive).OrderBy(u => u.Name).ToArray();
+            var array = uciInfos.Where(u => u.IsActive && !u.IsProbing && !u.IsBuddy).OrderBy(u => u.Name).ToArray();
             textBlockPlayerWhiteEngine.Text = Constants.Player;
             textBlockPlayerWhiteEngine.ToolTip = "A human being as a player";
             textBlockPlayerBlackEngine.Text = Constants.Player;

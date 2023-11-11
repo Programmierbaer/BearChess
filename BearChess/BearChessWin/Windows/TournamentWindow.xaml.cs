@@ -26,7 +26,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _tournamentFinished;
         private TournamentManager _tournamentManager;
         private ITournamentInfoWindow _tournamentInfoWindow;
-        public static Dictionary<int, SolidColorBrush> colorMap = new Dictionary<int, SolidColorBrush>();
+        public static Dictionary<ulong, SolidColorBrush> colorMap = new Dictionary<ulong, SolidColorBrush>();
         public static bool ShowGamesDuplicates = true;
 
         public event EventHandler<DatabaseGame> SelectedGameChanged;
@@ -216,7 +216,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void DataGridTournament_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _tournamentFinished = false;
-            Dictionary<int, int> pgnHashCounter = new Dictionary<int, int>();
+            Dictionary<ulong, ulong> pgnHashCounter = new Dictionary<ulong, ulong>();
             colorMap.Clear();
             int ci = 0;
             if (e.AddedItems.Count > 0)
@@ -410,10 +410,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return DependencyProperty.UnsetValue;
             }
-            int input;
+            ulong input;
             try
             {
-                input = (int)value;
+                input = (ulong)value;
 
             }
             catch (InvalidCastException) 

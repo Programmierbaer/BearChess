@@ -34,8 +34,10 @@
         /// </summary>
         /// <param name="data">data to send</param>
         void Send(byte[] data, bool forcedSend);
+        void Send(byte[] data, bool forcedSend, string info);
 
         void Send(byte[] data);
+        void Send(byte[] data, string info);
 
         void Send(string data);
 

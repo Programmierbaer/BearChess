@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
@@ -81,6 +83,18 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
         }
 
+        public string GetPositionHashCode()
+        {
+          
+            string result = string.Empty;
+            foreach (string k in  _allFields.Keys.OrderBy(k => k) )
+            {
+                if (!string.IsNullOrEmpty(_allFields[k]))
+                    result += k + _allFields[k];
+            }
+            return result;
+        }
+
         private void SetPosition(string fenPosition)
         {
             _allFields.Clear();
@@ -118,10 +132,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
         }
 
-        private void SetMove(string move)
+        public void SetMove(string move)
         {
-            var fromField = move.Substring(0, 2);
-            var toField = move.Substring(2, 2);
+            var fromField = move.Substring(0, 2).ToLower();
+            var toField = move.Substring(2, 2).ToLower();
             var figureOnField = _allFields[fromField];
             _allFields[toField] = figureOnField;
             _allFields[fromField] = string.Empty;

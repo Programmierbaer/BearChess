@@ -16,10 +16,21 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 {
     public abstract class AbstractSerialCommunication : ISerialCommunication
     {
+        protected class ByteDataWithInfo
+        {
+            public byte[] Data { get; }
+            public string Info { get;  }
+            
+            public ByteDataWithInfo(byte[] data, string info)
+            {
+                Data = data;
+                Info = info;
+            }
+        }
+
         private readonly string _boardName;
         private readonly int _baud;
-        protected readonly ConcurrentQueue<byte[]> _byteDataToBoard = new ConcurrentQueue<byte[]>();
-     
+        protected readonly ConcurrentQueue<ByteDataWithInfo> _byteDataToBoard = new ConcurrentQueue<ByteDataWithInfo>();
 
         protected readonly ConcurrentQueue<string> _dataFromBoard = new ConcurrentQueue<string>();
         protected readonly ILogging _logger;
@@ -140,12 +151,24 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         {
             _forcedSend = forcedSend;
             _forcedSendValue = data;
-            _byteDataToBoard.Enqueue(data);
+            _byteDataToBoard.Enqueue(new ByteDataWithInfo(data,string.Empty));
         }
 
         public void Send(byte[] data)
         {
-            _byteDataToBoard.Enqueue(data);
+            _byteDataToBoard.Enqueue(new ByteDataWithInfo(data, string.Empty));
+        }
+
+        public void Send(byte[] data, bool forcedSend, string info)
+        {
+            _forcedSend = forcedSend;
+            _forcedSendValue = data;
+            _byteDataToBoard.Enqueue(new ByteDataWithInfo(data, info));
+        }
+
+        public void Send(byte[] data, string info)
+        {
+            _byteDataToBoard.Enqueue(new ByteDataWithInfo(data, info));
         }
 
         public void Send(string data)
@@ -233,6 +256,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public bool CheckConnect(string comPort)
         {
+            _logger?.LogDebug($"S: CheckConnect for {comPort}");
             try
             {
                 if (_comPort != null && _comPort.IsOpen)
@@ -240,6 +264,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     _logger?.LogDebug($"S: CheckConnect: Try to close port {_comPort.PortName}");
                     _comPort.Close();
                 }
+
+                _comPort = null;
 
             }
             catch (Exception ex)
@@ -483,7 +509,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         }
                     }
 
-                    if (_useBluetooth && comPort.StartsWith("B"))
+                    if (comPort.StartsWith("B"))
                     {
                         int counter = 0;
                         if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "iChessOne" }))
@@ -503,6 +529,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
                         _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault(),_logger);
                         SerialBTLECommunicationTools.StopWatching();
+                    }
+                    else
+                    {
+                        _comPort = new SerialComPortEventBased(comPort, 115200, Parity.None, 8, StopBits.One, _logger)
+                            { ReadTimeout = 500, WriteTimeout = 500 };
                     }
                 }
 
@@ -566,15 +597,15 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                 
                 if (_comPort.IsOpen)
                 {
-                    _logger?.LogDebug("S: Port is already open ");
+                    _logger?.LogDebug($"S: Port {_comPort.PortName} is already open ");
                     return false;
                 }
 
-                _logger?.LogError("S: CheckConnect: Try to open ");
+                _logger?.LogError($"S: CheckConnect: Try to open {_comPort.PortName}");
                 _comPort.Open();
                 if (_comPort.IsOpen)
                 {
-                    _logger?.LogInfo($"S: CheckConnect: Open successful COM-Port {comPort} ");
+                    _logger?.LogInfo($"S: CheckConnect: Open successful COM-Port {_comPort.PortName} ");
                     return true;
                 }
             }
@@ -682,7 +713,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             if (_comPort.IsOpen)
                             {
                                 _logger?.LogInfo($"S: Open COM-Port {portName}");
-                                CurrentComPort = portName;
+                                CurrentComPort = portName.StartsWith("B") ? "BTLE" : portName;
                                 BoardInformation = Constants.ChessnutAir;
                                 return true;
                             }

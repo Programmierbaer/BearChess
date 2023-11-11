@@ -6,6 +6,17 @@
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
         Title="New Game" Height="590" Width="670">
+    <Window.Resources>
+        <ResourceDictionary>
+            <RoutedUICommand x:Key="CtrEnter" Text="Exit" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="Enter" Modifiers="Ctrl" Command="{StaticResource CtrEnter}" />
+    </Window.InputBindings>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource CtrEnter}" Executed="ButtonOk_OnClick" />
+    </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -287,7 +298,7 @@
             </Grid>
         </Border>
         <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="False" Margin="5">
-            <Button Name="buttonOk" Click="ButtonOk_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left"
+            <Button Name="buttonOk" Click="ButtonOk_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left" 
                     Background="Transparent" BorderBrush="Transparent">
                 <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32" />
             </Button>

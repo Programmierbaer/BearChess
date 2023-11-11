@@ -241,8 +241,8 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                 _serialCommunication.Send(_requestTrademark);
             }
         }
-   
-        public override void SetAllLedsOff()
+
+        public override void SetAllLedsOff(bool forceOff)
         {
             _serialCommunication.Send(_allLEDsOff);
             if (string.IsNullOrWhiteSpace(Information))

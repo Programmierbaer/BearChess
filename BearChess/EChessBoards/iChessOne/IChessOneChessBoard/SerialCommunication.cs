@@ -18,14 +18,26 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
         public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.IChessOne)
         {
             _useBluetooth = useBluetooth;
-            _useHID = !useBluetooth;
+            _useHID = false;
         }
 
         public override string GetRawFromBoard(string param)
         {
             try
             {
-                return _comPort.ReadLine();
+                SendRawToBoard("RH");
+                for (int i = 0; i < 10; i++)
+                {
+                    Thread.Sleep(250);
+                    byte[] readByte = _comPort.ReadByteArray();
+                    if (readByte.Length > 0)
+                    {
+                        return ConvertFromRead(readByte);
+                    }
+
+                }
+
+                return string.Empty;
             }
             catch (Exception ex)
             {
@@ -70,17 +82,21 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
                     if (withConnection && !_pauseReading)
                     {
-                        if (_byteDataToBoard.TryDequeue(out byte[] byteData))
+                        if (_byteDataToBoard.TryDequeue(out ByteDataWithInfo byteData))
                         {
-                            var convertFromArray = ConvertFromRead(byteData);
+                            var convertFromArray = ConvertFromRead(byteData.Data);
                             if (convertFromArray.Equals(lastReadToSend))
                             {
                                 Thread.Sleep(5);
+                                _logger?.LogDebug($"SC: Same as previous: {byteData.Info}");
+                                _logger?.LogDebug($"SC:                   {convertFromArray}");
                                 continue;
                             }
                             lastReadToSend = convertFromArray;
-                            _logger?.LogDebug($"SC: Send {convertFromArray}");
-                            _comPort.Write(byteData, 0, byteData.Length);
+
+                            _logger?.LogDebug($"SC: Send info: {byteData.Info}");
+                            _logger?.LogDebug($"SC:            {convertFromArray}");
+                            _comPort.Write(byteData.Data, 0, byteData.Data.Length);
                             Thread.Sleep(50);
                         }
                     }
@@ -175,9 +191,9 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
 
                         }
-                        catch
+                        catch (Exception e) 
                         {
-                            // _logger?.LogDebug("SC: Catch");
+                            _logger?.LogError("SC: Catch",e);
                         }
 
 
@@ -185,9 +201,13 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                         {
                             continue;
                         }
+
                         if (!readLine.Equals(prevLine))
+                        {
                             _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
-                       // _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {stringLine}");
+                            //_logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {stringLine}");
+                        }
+
                         prevLine = readLine;
                         _dataFromBoard.Enqueue(readLine);
                     }

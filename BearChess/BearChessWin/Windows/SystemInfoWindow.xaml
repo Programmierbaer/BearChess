@@ -7,7 +7,7 @@
         mc:Ignorable="d" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         Title="System Information" MinHeight="250" MinWidth="400" SizeToContent="WidthAndHeight">
     <DockPanel LastChildFill="False">
-        <Image DockPanel.Dock="Top" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Source="../Assets/Icons/bearchess_2.png" Width="50" Height="50" Name="imageBearChess" Visibility="Visible"></Image>
+        <Image DockPanel.Dock="Top" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Source="../Assets/Icons/BearChess.ico" Width="50" Height="50" Name="imageBearChess" Visibility="Visible"></Image>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>

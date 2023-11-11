@@ -55,7 +55,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// All led off
         /// </summary>
-        void SetAllLedsOff();
+        void SetAllLedsOff(bool forceOff);
+
 
         /// <summary>
         /// All led on
@@ -142,6 +143,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         event EventHandler<string> FenEvent;
 
+        event EventHandler<string[]> ProbeMoveEvent;
+
         /// <summary>
         /// The awaited position is on the board
         /// </summary>
@@ -155,6 +158,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         event EventHandler BatteryChangedEvent;
 
         event EventHandler HelpRequestedEvent;
+        event EventHandler ProbeMoveEndingEvent;
 
         /// <summary>
         /// Return a best move
@@ -219,6 +223,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         string Level { get; }
         void AllowTakeBack(bool allowTakeBack);
         bool PieceRecognition { get; }
+        bool MultiColorLEDs { get; }
         void Ignore(bool ignore);
 
         void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack);

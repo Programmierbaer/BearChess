@@ -27,7 +27,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _eChessBoard.FenEvent -= this._eChessBoard_FenEvent;
                 _eChessBoard.MoveEvent -= this._eChessBoard_MoveEvent;
-                _eChessBoard.SetAllLedsOff();
+                _eChessBoard.SetAllLedsOff(false);
                 _eChessBoard.Close();
                 _eChessBoard = null;
                 return;
@@ -44,7 +44,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _eChessBoard.FenEvent -= this._eChessBoard_FenEvent;
                 _eChessBoard.MoveEvent -= this._eChessBoard_MoveEvent;
-                _eChessBoard.SetAllLedsOff();
+                _eChessBoard.SetAllLedsOff(false);
                 _eChessBoard.Close();
                 _eChessBoard = null;
                 return;
@@ -68,7 +68,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonAllOff_OnClick(object sender, RoutedEventArgs e)
         {
-            _eChessBoard?.SetAllLedsOff();
+            _eChessBoard?.SetAllLedsOff(false);
         }
 
         private void ButtonAllOn_OnClick(object sender, RoutedEventArgs e)

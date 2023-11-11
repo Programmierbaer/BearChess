@@ -24,6 +24,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxEnableFilter.IsChecked = gamesFilter.FilterIsActive;
             checkBoxDuel.IsChecked = gamesFilter.NoDuelGames;
             checkBoxTournament.IsChecked = gamesFilter.NoTournamentGames;
+            checkBoxDuplicates.IsChecked = gamesFilter.OnlyDuplicates;
             datePickerFromDate.SelectedDate = gamesFilter.FromDate;
             datePickerToDate.SelectedDate = gamesFilter.ToDate;
             textBoxWhite.Text = gamesFilter.WhitePlayer;
@@ -44,6 +45,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _enable = false;
             checkBoxDuel.IsChecked = false;
             checkBoxTournament.IsChecked = false;
+            checkBoxDuplicates.IsChecked = false;
             datePickerFromDate.SelectedDate = null;
             datePickerToDate.SelectedDate = null;
             textBoxWhite.Clear();
@@ -92,7 +94,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                         FromDate = datePickerFromDate.SelectedDate,
                                                         ToDate = datePickerToDate.SelectedDate,
                                                         NoDuelGames = checkBoxDuel.IsChecked.HasValue && checkBoxDuel.IsChecked.Value,
-                                                        NoTournamentGames = checkBoxTournament.IsChecked.HasValue && checkBoxTournament.IsChecked.Value
+                                                        NoTournamentGames = checkBoxTournament.IsChecked.HasValue && checkBoxTournament.IsChecked.Value,
+                                                        OnlyDuplicates = checkBoxDuplicates.IsChecked.HasValue && checkBoxDuplicates.IsChecked.Value
                                                     });
             }
             
@@ -118,7 +121,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 FromDate = datePickerFromDate.SelectedDate,
                 ToDate = datePickerToDate.SelectedDate,
                 NoDuelGames = checkBoxDuel.IsChecked.HasValue && checkBoxDuel.IsChecked.Value,
-                NoTournamentGames = checkBoxTournament.IsChecked.HasValue && checkBoxTournament.IsChecked.Value
+                NoTournamentGames = checkBoxTournament.IsChecked.HasValue && checkBoxTournament.IsChecked.Value,
+                OnlyDuplicates = checkBoxDuplicates.IsChecked.HasValue && checkBoxDuplicates.IsChecked.Value
             };
             _configuration.SaveGamesFilter(gamesFilter);
             SelectedFilterChanged?.Invoke(sender, gamesFilter);
