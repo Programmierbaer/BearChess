@@ -57,10 +57,11 @@
 \contentsline {subsubsection}{\numberline {12.3.1}Configure Bluetooth}{65}{subsubsection.12.3.1}%
 \contentsline {subsubsection}{\numberline {12.3.2}Connect}{65}{subsubsection.12.3.2}%
 \contentsline {subsection}{\numberline {12.4}Configure iChessOne}{66}{subsection.12.4}%
-\contentsline {subsubsection}{\numberline {12.4.1}LEDs}{69}{subsubsection.12.4.1}%
-\contentsline {subsubsection}{\numberline {12.4.2}Active LEDs}{70}{subsubsection.12.4.2}%
-\contentsline {subsubsection}{\numberline {12.4.3}Test your LED configuration}{70}{subsubsection.12.4.3}%
-\contentsline {subsubsection}{\numberline {12.4.4}Save your LED configuration}{71}{subsubsection.12.4.4}%
+\contentsline {subsubsection}{\numberline {12.4.1}Battery Level {\color {red}\textbf {*}} }{69}{subsubsection.12.4.1}%
+\contentsline {subsubsection}{\numberline {12.4.2}LEDs}{69}{subsubsection.12.4.2}%
+\contentsline {subsubsection}{\numberline {12.4.3}Active LEDs}{70}{subsubsection.12.4.3}%
+\contentsline {subsubsection}{\numberline {12.4.4}Test your LED configuration}{70}{subsubsection.12.4.4}%
+\contentsline {subsubsection}{\numberline {12.4.5}Save your LED configuration}{71}{subsubsection.12.4.5}%
 \contentsline {subsection}{\numberline {12.5}Configure Millennium ChessLink}{72}{subsection.12.5}%
 \contentsline {subsubsection}{\numberline {12.5.1}LEDs}{74}{subsubsection.12.5.1}%
 \contentsline {subsubsection}{\numberline {12.5.2}Delay}{74}{subsubsection.12.5.2}%

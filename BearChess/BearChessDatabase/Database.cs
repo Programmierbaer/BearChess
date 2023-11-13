@@ -1119,6 +1119,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
             if (fen.StartsWith("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"))
             {
+                // g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo
                 return GetBySql(
                     "SELECT id, white, black, event, site, result, gameDate, pgn, pgnXml, pgnHash, round, white_elo, black_elo, gameHash FROM games ORDER BY ID;");
             }
@@ -1917,7 +1918,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             DatabaseGameSimple[] allGames = null;
             _connection.Open();
             using (var cmd = new SQLiteCommand(
-                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo" +
+                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo,  g.gameHash" +
                 " FROM games as g  " +
                 " JOIN duelGames t ON (t.game_id=g.id)" +
                 "WHERE t.duel_id=@duelId;", _connection))
@@ -2540,7 +2541,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             DatabaseGameSimple[] allGames = null;
             _connection.Open();
             using (var cmd = new SQLiteCommand(
-                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo" +
+                "SELECT g.id, g.white, g.black, g.event, g.site, g.result, g.gameDate, g.pgn, g.pgnXml, g.pgnHash, g.round, g.white_elo, g.black_elo,  g.gameHash" +
                 " FROM games as g  " +
                 " JOIN tournamentGames t ON (t.game_id=g.id)" +
                 "WHERE t.tournament_id=@tournamentId;", _connection))

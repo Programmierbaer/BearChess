@@ -454,28 +454,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (infoLineParts[i].Equals("currmove", StringComparison.OrdinalIgnoreCase))
                         {
                             currentMove = $"Current: {infoLineParts[i + 1]}";
-
+                            readingMoveLine = false;
                             continue;
                         }
 
                         if (infoLineParts[i].Equals("currmovenumber", StringComparison.OrdinalIgnoreCase))
                         {
                             currentMove += $" ({infoLineParts[i + 1]})";
-
+                            readingMoveLine = false;
                             continue;
                         }
 
                         if (_showNodes && infoLineParts[i].Equals("nodes", StringComparison.OrdinalIgnoreCase))
                         {
                             currentNodes = $" N: {infoLineParts[i + 1]} ";
-
+                            readingMoveLine = false;
                             continue;
                         }
 
                         if (_showNodesPerSec && infoLineParts[i].Equals("nps", StringComparison.OrdinalIgnoreCase))
                         {
                             currentNodesPerSec = $" Nps: {infoLineParts[i + 1]} ";
-
+                            readingMoveLine = false;
                             continue;
                         }
 
@@ -485,7 +485,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             {
                                 currentHash = $" Hash: {hashValue / 10}%";
                             }
-
+                            readingMoveLine = false;
                             continue;
                         }
 
@@ -547,9 +547,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                           
                                             var ml = string.Empty;
                                             var strings = moveLine.Split(" ".ToCharArray());
-                                            foreach (var s in strings)
+                                            try
                                             {
-                                                ml = ml + " " + fastChessBoard.GetMove(s);
+                                                foreach (var s in strings)
+                                                {
+                                                    ml = ml + " " + fastChessBoard.GetMove(s);
+                                                }
+                                            }
+                                            catch 
+                                            {
+                                                if (string.IsNullOrWhiteSpace(ml))
+                                                {
+                                                    ml = moveLine;
+                                                }
+                                                //
                                             }
 
                                             engineInfoLineUserControl1.FillLine(scoreString, ml);
@@ -588,9 +599,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                             {
                                                 var ml = string.Empty;
                                                 var strings = moveLine.Split(" ".ToCharArray());
-                                                foreach (var s in strings)
+                                                try
                                                 {
-                                                    ml = ml + " " + fastChessBoard.GetMove(s);
+                                                    foreach (var s in strings)
+                                                    {
+                                                        ml = ml + " " + fastChessBoard.GetMove(s);
+                                                    }
+                                                }
+                                                catch
+                                                {
+                                                    if (string.IsNullOrWhiteSpace(ml))
+                                                    {
+                                                        ml = moveLine;
+                                                    }
+                                                    //
                                                 }
 
                                                 _engineInfoLineUserControls[multiPv].FillLine(scoreString, ml);

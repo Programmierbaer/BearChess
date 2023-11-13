@@ -4958,6 +4958,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 // break;
                             }
                             _bestLine = e.FromEngine.Substring(e.FromEngine.IndexOf(" pv ", StringComparison.OrdinalIgnoreCase) + 4);
+                            if (_bestLine.Contains("  "))
+                            {
+                                _bestLine = _bestLine.Substring(0,_bestLine.IndexOf("  "));
+                            }
                             try
                             {
                                 Dispatcher?.Invoke(() =>

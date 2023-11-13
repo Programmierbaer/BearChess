@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.0.0}
+\fancyhead[R]{Version 1.0.0.1}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{06.11.2023} 
+\date{13.11.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -1231,6 +1231,9 @@ You can configure how iChessOne reports changes on the board to BearChess. Eithe
 
 {\color{red}\textbf{*}} The communication with the iChessOne was implemented with a developer version of the board. Despite intensive exchange with the developers of iChessOne, it is possible that corrections are still necessary.
 
+\subsubsection{Battery Level {\color{red}\textbf{*}} }
+ 
+The final version of iChessOne will have a built-in battery. BearChess will be able to display the battery level in the next version.
 
 \subsubsection{LEDs}
 
@@ -3043,6 +3046,12 @@ These are some ideas what will come in one of the next versions.
 
 \section{Change log}
 
+
+\subsection*{Version 1.0.0.0 $\Rightarrow$  1.0.0.1}
+\begin{itemize}	
+	\item {\color{red}Fix}: Duel/Tournament: Reading games
+	\item {\color{red}Fix}: Fix capturing engine output.
+\end{itemize}
 
 \subsection*{Version 0.9.12.1 $\Rightarrow$  1.0.0.0}
 \begin{itemize}	
