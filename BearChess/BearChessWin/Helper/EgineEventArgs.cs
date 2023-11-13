@@ -24,7 +24,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public override string ToString()
         {
-            return $"Name: {Name}  FromEngine: {FromEngine} Color: {Color}  FirstEngine: {FirstEngine}  BuddyEnigine: {BuddyEngine}  ProbingEngine: {ProbingEngine}";
+            return $"Name: {Name}  FromEngine: {FromEngine} Color: {Color}  FirstEngine: {FirstEngine}  BuddyEngine: {BuddyEngine}  ProbingEngine: {ProbingEngine}";
         }
     }
 }

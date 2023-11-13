@@ -57,7 +57,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public override string ToString()
         {
             return $"Fields: {string.Join(" ",FieldNames)} Invalid: {string.Join(" ", InvalidFieldNames)} Hints: {string.Join(" ", HintFieldNames)} Probing; {string.Join(" ",ProbingMoves.Select(f => f.FieldName))} " +
-                   $"IsMove: {IsMove} IsThinking: {IsThinking} IsError: {IsError}  IsSProbing: {IsProbing} IsTakeBack: {IsTakeBack} Repeat: {RepeatLastMove}";
+                   $"IsMove: {IsMove} IsThinking: {IsThinking} IsError: {IsError}  IsProbing: {IsProbing} IsTakeBack: {IsTakeBack} Repeat: {RepeatLastMove}";
         }
     }
 }

@@ -268,6 +268,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _currentProbingMoveListIndex = 0;
         private bool _probingSend = false;
         private int _probingDepth;
+        private int _prevProbingDepth;
         private bool _showRequestForHelp;
         private bool _showHintMoves = true;
         private string _prevRequestForHelpFen = string.Empty;
@@ -276,6 +277,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string[] _requestForHelpArray = Array.Empty<string>();
         private int _propingDepthTarget =10;
         private bool _showProbing = false;
+        private bool _canSend;
 
         public BearChessMainWindow()
         {
@@ -5092,9 +5094,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             if (_eChessBoard.Configuration.ShowPossibleMoves)
                             {
-                                if (_probingEngineLoaded && strings[i].Equals("depth"))
+                                if (e.ProbingEngine && _probingEngineLoaded && strings[i].Equals("depth"))
                                 {
                                     int.TryParse(strings[i + 1], out _probingDepth);
+                                    if (_probingDepth != _prevProbingDepth)
+                                    {
+                                        _canSend = true;
+                                        _prevProbingDepth = _probingDepth;
+                                    }
                                 }
 
                                 if (_showProbing && _probingSend && (_probingDepth == _propingDepthTarget + 5) && strings[i].Equals("score", StringComparison.OrdinalIgnoreCase))
@@ -5113,7 +5120,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 }
                                 else
                                 {
-                                    if (_probingEngineLoaded && _currentProbingMoveListIndex < _probingMoveList.Length && e.ProbingEngine &&
+                                    if (_canSend && _probingEngineLoaded && _currentProbingMoveListIndex < _probingMoveList.Length && e.ProbingEngine &&
                                         strings[i].Equals("score", StringComparison.OrdinalIgnoreCase))
                                     {
                                         var scoreType = strings[i + 1];
@@ -5135,12 +5142,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                     _currentProbingMoveListIndex = 0;
                                                 }
 
+                                                _canSend = false;
                                                 _fileLogger.LogDebug(
                                                     $"Add probing score for depth {_probingDepth}:  {_probingMoveList[_currentProbingMoveListIndex].FromFieldName} {_probingMoveList[_currentProbingMoveListIndex].ToFieldName} {score}");
                                                 _probingMoveList[_currentProbingMoveListIndex].Score = score;
 
                                                 _currentProbingMoveListIndex++;
-
 
                                                 if (_currentProbingMoveListIndex < _probingMoveList.Length)
                                                 {
