@@ -20,12 +20,12 @@
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Set as..">
-                    <MenuItem Header="Buddy"   Click="MenuItemSetAsBuddy_OnClick">
+                    <MenuItem Header="Buddy" Click="MenuItemSetAsBuddy_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/user_comment.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                        <MenuItem Header="BearChess"   Click="MenuItemSetAsBearChess_OnClick">
+                        <MenuItem Header="BearChess" Click="MenuItemSetAsBearChess_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="../Assets/Icons/user_comment.png" />
                             </MenuItem.Icon>

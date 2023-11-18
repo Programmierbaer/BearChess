@@ -53,6 +53,8 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool IsBuddy { get; set; }
         public bool IsProbing { get; set; }
 
+        public bool IsInternalBearChess { get; set; }
+
         public UciInfo()
         {
             Options = Array.Empty<string>();
@@ -71,6 +73,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             _playerElo = 0;
             IsBuddy = false;
             IsProbing = false;
+            IsInternalBearChess = false;
         }
 
         public UciInfo(string fileName) : this()

@@ -9,10 +9,12 @@ namespace www.SoLaNoSoft.com.BearChess.OSAEBoardWrapper
         {
         }
 
-        public OSAImpl(string name, string basePath, string comPortName, string baud, bool useBluetooth) : base(
-            name, basePath, comPortName, baud, useBluetooth, true, false, false, false,null)
+        public OSAImpl(string name, string basePath, string comPortName, string baud, bool useBluetooth, EChessBoardConfiguration configuration) : base(
+            name, basePath, comPortName, baud, useBluetooth, true, false, false, false,configuration)
         {
         }
+
+       
 
         public override bool Calibrate()
         {

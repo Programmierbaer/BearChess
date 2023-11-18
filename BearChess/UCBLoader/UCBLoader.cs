@@ -30,7 +30,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBLoader
                 return new UCBImpl(Name, basePath);
             }
 
-            var eBoardWrapper = new UCBImpl(Name, basePath, configuration.PortName, false);
+            var eBoardWrapper = new UCBImpl(Name, basePath, configuration);
             return eBoardWrapper;
         }
 

@@ -62,6 +62,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
+            if (SelectedEngine != null)
+            {
+                if (SelectedEngine.IsInternalBearChess || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
+                {
+                    MessageBox.Show($"You cannot play with a BearChess or Buddy engine: '{SelectedEngine.Name}'", "Load UCI Engine",
+                             MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
             DialogResult = true;
         }
 
@@ -74,6 +83,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (SelectedEngine != null)
             {
+                if (SelectedEngine.IsInternalBearChess || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
+                {
+                    MessageBox.Show($"You cannot play with a BearChess or Buddy engine '{SelectedEngine.Name}'", "Load UCI Engine",
+                             MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 DialogResult = true;
             }
         }
@@ -84,7 +99,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-
+            if (SelectedEngine.IsInternalBearChess)
+            {
+                MessageBox.Show($"You cannot change internal engine '{SelectedEngine.Name}'", "Configure UCI Engine",
+                         MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             var uciConfigWindow = new UciConfigWindow(SelectedEngine, true, false, true) { Owner = this };
             var showDialog = uciConfigWindow.ShowDialog();
             if (!showDialog.HasValue || !showDialog.Value)
@@ -159,7 +179,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     if (selectedItem is UciInfo uciInfo)
                     {
-                        enginesToDelete.Add(uciInfo);
+                        if (!uciInfo.IsInternalBearChess)
+                        {
+                            enginesToDelete.Add(uciInfo);
+                        }
                     }
                 }
 
@@ -195,7 +218,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 return;
             }
-
+            if (SelectedEngine.IsInternalBearChess)
+            {
+                MessageBox.Show($"It is not allowed to uninstall internal engine '{SelectedEngine.Name}'", "Uninstall UCI Engine",
+                              MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             var engineName = SelectedEngine.Name;
             var engineId = SelectedEngine.Id;
             if (MessageBox.Show($"Uninstall engine '{engineName}'?", "Uninstall Engine",
@@ -603,6 +631,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 MessageBoxImage.Error);
                 return;
             }
+            if (SelectedEngine.IsProbing)
+            {
+                MessageBox.Show("A BearChess engine cannot be a buddy", "Not suitable", MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return;
+            }
+            if (SelectedEngine.IsInternalBearChess)
+            {
+                MessageBox.Show("This internal engine is not suitable for a buddy", "Not suitable", MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return;
+            }
             string uciPath;
             XmlSerializer serializer;
             TextWriter textWriter;
@@ -644,6 +684,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     MessageBoxImage.Error);
                 return;
             }
+            if (SelectedEngine.IsBuddy)
+            {
+                MessageBox.Show("A Buddy engine cannot be a BearChess engine", "Not suitable", MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return;
+            }
+
             string uciPath;
             XmlSerializer serializer;
             TextWriter textWriter;

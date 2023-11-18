@@ -30,7 +30,7 @@ namespace www.SoLaNoSoft.com.BearChess.OSALoader
                 return new OSAImpl(Name, basePath);
             }
 
-            var eBoardWrapper = new OSAImpl(Name, basePath, configuration.PortName, configuration.Baud, false);
+            var eBoardWrapper = new OSAImpl(Name, basePath, configuration.PortName, configuration.Baud, false, configuration);
             return eBoardWrapper;
         }
 

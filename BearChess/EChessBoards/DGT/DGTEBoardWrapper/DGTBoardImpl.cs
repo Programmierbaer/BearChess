@@ -10,11 +10,14 @@ namespace www.SoLaNoSoft.com.BearChess.DGTEBoardWrapper
         }
 
      
-        public DGTBoardImpl(string name, string basePath, string comPortName, bool useBluetooth, bool useClock, bool showOnlyMoves, bool switchClockSide) : base(
-            name, basePath, comPortName, useBluetooth, useClock, showOnlyMoves, switchClockSide)
+       
+
+        public DGTBoardImpl(string name, string basePath, EChessBoardConfiguration configuration) : base(
+            name, basePath, configuration)
         {
 
         }
+
 
 
         public override bool Calibrate()

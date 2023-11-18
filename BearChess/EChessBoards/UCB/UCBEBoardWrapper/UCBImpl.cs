@@ -10,8 +10,8 @@ namespace www.SoLaNoSoft.com.BearChess.UCBEBoardWrapper
         {
         }
 
-        public UCBImpl(string name, string basePath, string comPortName, bool useBluetooth) : base(
-            name, basePath, comPortName, useBluetooth, true, false, false)
+        public UCBImpl(string name, string basePath, EChessBoardConfiguration configuration) : base(
+            name, basePath, configuration)
         {
 
         }

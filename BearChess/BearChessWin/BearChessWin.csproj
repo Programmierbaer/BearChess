@@ -890,6 +890,10 @@
       <Project>{faa0af21-c37d-4ad7-afaf-f5e9eb30cb7a}</Project>
       <Name>SaitekOSA</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.csproj">
+      <Project>{98c77d6d-470a-4a6d-b4bd-7965d6a82f29}</Project>
+      <Name>Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FICS\FicsClient\FicsClient.csproj">
       <Project>{e5679ec7-d909-447b-bc28-2a158779db23}</Project>
       <Name>FicsClient</Name>
@@ -1620,9 +1624,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\download.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="20230701_132242672_iOS.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\bearchess_3.png" />

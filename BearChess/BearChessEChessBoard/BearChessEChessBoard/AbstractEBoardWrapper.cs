@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -14,7 +15,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     public abstract class AbstractEBoardWrapper : IEBoardWrapper
     {
 
-        
+
         private bool _stopCommunication = false;
         private bool _allLedOff = true;
         private bool _forcedBasePosition = false;
@@ -32,10 +33,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected string _comPortName;
         protected string _baud;
         protected bool _useBluetooth;
-        protected  bool _useClock;
-        protected  bool _showMovesOnly;
-        protected  bool _switchClockSide;
-        
+        protected bool _useClock;
+        protected bool _showMovesOnly;
+        protected bool _switchClockSide;
+
         protected EChessBoardConfiguration _configuration;
         private bool _piecesFenBasePosition;
         private string _lastChangedFigure = string.Empty;
@@ -76,7 +77,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         private void _board_HelpRequestedEvent(object sender, EventArgs e)
         {
-           HelpRequestedEvent?.Invoke(sender, EventArgs.Empty);
+            HelpRequestedEvent?.Invoke(sender, EventArgs.Empty);
         }
 
         private void _board_DataEvent(object sender, string e)
@@ -90,30 +91,33 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         }
 
-        protected AbstractEBoardWrapper(string name, string basePath,  string comPortName) : this(
-            name, basePath, comPortName,string.Empty, false, false,false, false, false, null)
+        protected AbstractEBoardWrapper(string name, string basePath, string comPortName) : this(
+            name, basePath, comPortName, string.Empty, false, false, false, false, false, null)
         {
 
         }
 
         protected AbstractEBoardWrapper(string name, string basePath, string comPortName,
-                                        bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide):
-            this(name,basePath,comPortName,string.Empty,useBluetooth, useClock, showMovesOnly, switchClockSide, false, null)
+            bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide) :
+            this(name, basePath, comPortName, string.Empty, useBluetooth, useClock, showMovesOnly, switchClockSide,
+                false, null)
         {
 
 
         }
 
         protected AbstractEBoardWrapper(string name, string basePath, EChessBoardConfiguration configuration) :
-            this(name, basePath, configuration.PortName, string.Empty, configuration.UseBluetooth,configuration.UseClock, 
-                 configuration.ClockShowOnlyMoves,configuration.ClockSwitchSide, false, configuration)
+            this(name, basePath, configuration.PortName, string.Empty, configuration.UseBluetooth,
+                configuration.UseClock,
+                configuration.ClockShowOnlyMoves, configuration.ClockSwitchSide, false, configuration)
         {
 
-        
+
         }
 
-        protected AbstractEBoardWrapper(string name, string basePath, string comPortName,string baud,
-                                        bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide, bool useChesstimation, EChessBoardConfiguration configuration)
+        protected AbstractEBoardWrapper(string name, string basePath, string comPortName, string baud,
+            bool useBluetooth, bool useClock, bool showMovesOnly, bool switchClockSide, bool useChesstimation,
+            EChessBoardConfiguration configuration)
         {
             _configuration = configuration;
             Name = name;
@@ -134,6 +138,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
                 _fileLogger = null;
             }
+
             Init();
         }
 
@@ -183,7 +188,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
-            _board?.SetLedCorner(upperLeft,upperRight,lowerLeft,lowerRight);
+            _board?.SetLedCorner(upperLeft, upperRight, lowerLeft, lowerRight);
         }
 
         public void SendCommand(string anyCommand)
@@ -207,12 +212,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         public bool PieceRecognition => _board?.PieceRecognition ?? true;
+
         public void Ignore(bool ignore)
         {
             _board?.Ignore(ignore);
         }
 
-        public void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
+        public void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack,
+            int secondBlack)
         {
             _board?.SetClock(hourWhite, minuteWhite, secWhite, hourBlack, minuteBlack, secondBlack);
         }
@@ -284,8 +291,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 _fileLogger?.LogError("AB: No moves given for ShowMove");
                 return;
             }
-            
-         
+
+
             _fileLogger?.LogDebug($"AB: Show Move for: {allMoves}");
             var moveList = allMoves.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             _internalChessBoard = new InternalChessBoard();
@@ -294,6 +301,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
                 _internalChessBoard.SetPosition(startFenPosition);
             }
+
             foreach (string move in moveList)
             {
                 if (move.Length < 4)
@@ -305,11 +313,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 setLeDsParameter.Promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
                 _internalChessBoard.MakeMove(move.Substring(0, 2), move.Substring(2, 2), setLeDsParameter.Promote);
             }
+
             var lastMove = moveList[moveList.Length - 1];
             setLeDsParameter.Promote = lastMove.Length == 4 ? string.Empty : lastMove.Substring(4, 1);
             _fileLogger?.LogDebug($"AB: Show Move {lastMove}");
             var position = _internalChessBoard.GetPosition();
-          
+
             if (waitFor && !_board.SelfControlled)
             {
                 _fileLogger?.LogDebug($"AB: Wait for: {position}");
@@ -317,26 +326,28 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 _waitForFen.Enqueue(position);
             }
 
-            if (_board!= null && !_board.SelfControlled)
+            if (_board != null && !_board.SelfControlled)
             {
                 _board?.SetLedForFields(new SetLEDsParameter()
-                                        {
-                                            FieldNames = new []{ lastMove.Substring(0, 2), lastMove.Substring(2, 2) },
-                                            Promote = setLeDsParameter.Promote,
-                                            IsThinking = false,
-                                            IsTakeBack = true,
-                                            IsMove = false,
-                                            DisplayString = string.Empty
-                                        });
+                {
+                    FieldNames = new[] { lastMove.Substring(0, 2), lastMove.Substring(2, 2) },
+                    Promote = setLeDsParameter.Promote,
+                    IsThinking = false,
+                    IsTakeBack = true,
+                    IsMove = false,
+                    DisplayString = string.Empty
+                });
             }
+
             _stop = false;
         }
 
-     
+
 
         public void ShowMove(SetLEDsParameter setLeDsParameter)
         {
-            _internalChessBoard.MakeMove(setLeDsParameter.FieldNames[0], setLeDsParameter.FieldNames[1], setLeDsParameter.Promote);
+            _internalChessBoard.MakeMove(setLeDsParameter.FieldNames[0], setLeDsParameter.FieldNames[1],
+                setLeDsParameter.Promote);
             var position = _internalChessBoard.GetPosition();
             _waitForFen.Enqueue(position);
             _board?.SetLedForFields(setLeDsParameter);
@@ -357,6 +368,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 {
                     _waitForFen.TryDequeue(out _);
                 }
+
                 _board?.SetAllLedsOff(forceOff);
                 while (_waitForFen.Count > 0)
                 {
@@ -404,6 +416,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
                 _waitForFen.TryDequeue(out _);
             }
+
             _stop = false;
             _waitForFen.Enqueue(_internalChessBoard.GetPosition());
         }
@@ -415,6 +428,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 _fileLogger?.LogError("AB: No fen position");
                 return;
             }
+
             SetAllLedsOff(false);
             _fileLogger?.LogDebug($"AB: set fen position: {fen}");
             _internalChessBoard = new InternalChessBoard();
@@ -434,6 +448,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 _stop = false;
                 return;
             }
+
             var moveList = allMoves.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             string promote = string.Empty;
             foreach (string move in moveList)
@@ -457,15 +472,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             // Set LEDs on for received move and wait until board is in same position
             _waitForFen.Enqueue(position);
             _board?.SetLedForFields(new SetLEDsParameter()
-                                    {
-                                     FieldNames = new[] { lastMove.Substring(0, 2), lastMove.Substring(2, 2) },
-                                     Promote = promote,
-                                     IsThinking = false,
-                                     IsMove = true,
-                                     DisplayString = string.Empty
-                                    });
+            {
+                FieldNames = new[] { lastMove.Substring(0, 2), lastMove.Substring(2, 2) },
+                Promote = promote,
+                IsThinking = false,
+                IsMove = true,
+                DisplayString = string.Empty
+            });
             _stop = false;
-         
+
         }
 
         public void Close()
@@ -477,7 +492,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             try
             {
                 _board?.Stop(_stop);
-                
+
                 _board?.Dispose();
             }
             catch
@@ -509,10 +524,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 _board.PlayWithWhite();
                 return;
             }
+
             _board.PlayWithBlack();
         }
 
-        public bool PlayingWithWhite =>  _board?.PlayingWithWhite ?? true;
+        public bool PlayingWithWhite => _board?.PlayingWithWhite ?? true;
 
 
         public string GetBestMove()
@@ -546,6 +562,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
                 _board.Calibrate();
             }
+
             SetAllLedsOn();
             Thread.Sleep(100);
             SetAllLedsOff(true);
@@ -555,12 +572,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _internalChessBoard.NewGame();
             _inDemoMode = false;
             _inReplayMode = false;
-           
+
         }
 
         private void _board_BasePositionEvent(object sender, EventArgs e)
         {
-          
+
             _forcedBasePosition = true;
         }
 
@@ -580,18 +597,22 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 {
                     continue;
                 }
+
                 if (_waitForFen.TryDequeue(out string fen))
                 {
                     waitForFen = fen;
                     _fileLogger?.LogDebug($"AB: Wait for fen: {waitForFen}");
                 }
-                var piecesFen = GetPiecesFenAndSetLedsForInvalidField(!string.IsNullOrWhiteSpace(waitForFen)) ?? _board?.GetPiecesFen();
+
+                var piecesFen = GetPiecesFenAndSetLedsForInvalidField(!string.IsNullOrWhiteSpace(waitForFen)) ??
+                                _board?.GetPiecesFen();
                 if (piecesFen == null)
                 {
                     continue;
                 }
 
-                if (string.IsNullOrWhiteSpace(piecesFen.FromBoard) || piecesFen.FromBoard.Equals(_board?.UnknownPieceCode))
+                if (string.IsNullOrWhiteSpace(piecesFen.FromBoard) ||
+                    piecesFen.FromBoard.Equals(_board?.UnknownPieceCode))
                 {
                     continue;
                 }
@@ -604,10 +625,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 _piecesFenBasePosition = piecesFen.BasePosition;
                 if (piecesFen.Repeated > 2 && !string.IsNullOrWhiteSpace(potentialMove))
                 {
-                    _fileLogger?.LogDebug($"AB: Fen {piecesFen.FromBoard} repeated {piecesFen.Repeated} for same position. OnMoveEvent for: {potentialMove}  {currentFen}");
+                    _fileLogger?.LogDebug(
+                        $"AB: Fen {piecesFen.FromBoard} repeated {piecesFen.Repeated} for same position. OnMoveEvent for: {potentialMove}  {currentFen}");
                     potentialMove = string.Empty;
                     OnMoveEvent(currentFen);
                 }
+
                 // Something changed on board?
                 if (!piecesFen.FromBoard.Equals(currentFen))
                 {
@@ -622,11 +645,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 // Awaited position on board?
                 if (!string.IsNullOrWhiteSpace(waitForFen) &&
                     !string.IsNullOrWhiteSpace(piecesFen.FromBoard) &&
-                    waitForFen.StartsWith(piecesFen.FromBoard)) 
+                    waitForFen.StartsWith(piecesFen.FromBoard))
                 {
                     _fileLogger?.LogDebug($"AB: Awaited fen position on board received: {waitForFen}");
                     _board?.SetAllLedsOff(false);
-                 
+
                     currentFen = piecesFen.FromBoard;
                     waitForFen = string.Empty;
                     AwaitedPosition?.Invoke(this, null);
@@ -643,27 +666,30 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     batteryLevel = _board?.BatteryLevel;
                     BatteryChangedEvent?.Invoke(this, null);
                 }
+
                 if (!string.IsNullOrWhiteSpace(waitForFen))
                 {
-               
+
                     continue;
                 }
+
                 if (!prevFen.Equals(piecesFen.FromBoard))
                 {
                     var changedFigure = _internalChessBoard.GetChangedFigure(prevFen, piecesFen.FromBoard);
                     prevFen = piecesFen.FromBoard;
                     OnFenEvent(piecesFen.FromBoard, changedFigure);
                 }
+
                 if (currentFen.Equals(piecesFen.FromBoard))
                 {
                     continue;
                 }
-              
+
                 var move = _internalChessBoard.GetMove(piecesFen.FromBoard, false);
                 if (move.Length >= 4)
                 {
                     _fileLogger?.LogDebug($"AB: Move detected: {move}");
-                    
+
                     currentFen = piecesFen.FromBoard;
                     if (string.IsNullOrWhiteSpace(potentialMove))
                     {
@@ -677,13 +703,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                         _fileLogger?.LogDebug($"AB: OnMoveEvent: move equal to potential move: {move}");
                         potentialMove = string.Empty;
                         OnMoveEvent(piecesFen.FromBoard);
-                   
+
                         continue;
                     }
 
                     if (potentialMove.StartsWith(move.Substring(0, 2)))
                     {
-                        _fileLogger?.LogDebug($"AB: Slow figure: new move {move} starts with potential move: {potentialMove}");
+                        _fileLogger?.LogDebug(
+                            $"AB: Slow figure: new move {move} starts with potential move: {potentialMove}");
                         potentialMove = move;
                         continue;
                     }
@@ -692,7 +719,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         }
 
-        
+
 
         /// <summary>
         /// New fen position received from chess board. Translate to a move
@@ -707,6 +734,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 _fileLogger?.LogDebug("AB: Move is invalid");
                 return;
             }
+
             _fileLogger?.LogDebug($"AB: Move detected: {move}");
             string promote = move.Length == 4 ? string.Empty : move.Substring(4, 1);
             _internalChessBoard.MakeMove(move.Substring(0, 2), move.Substring(2, 2), promote);
@@ -729,320 +757,346 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             }
 
             _lastChangedFigure = changedFigure;
-      //      _lastFenColor = c;
+            //      _lastFenColor = c;
             _fileLogger?.LogDebug($"AB: FenEvent from board: {fenPosition} {changedFigure}");
-            FenEvent?.Invoke(this, fenPosition+" "+c);
+            FenEvent?.Invoke(this, fenPosition + " " + c);
         }
 
         private DataFromBoard GetPiecesFenAndSetLedsForInvalidField(bool waitMove)
         {
-            // Every position is possible
-            if (_inDemoMode || _stop )
+            try
             {
-                if (!_allLedOff)
+                // Every position is possible
+                if (_inDemoMode || _stop)
                 {
-                    _board?.SetAllLedsOff(false);
-                    _allLedOff = true;
-                }
-
-                return null;
-            }
-
-            if (_board.SelfControlled)
-            {
-                return null;
-            }
-            //_board?.SetAllLedsOff();
-            var fenPosition = _board?.GetPiecesFen();
-            if (fenPosition == null)
-            {
-                return null;
-            }
-            var invalidFields = new List<string>();
-            var validFields = new List<string>();
-            Move prevMove = null;
-            if (fenPosition.IsFieldDump)
-            {
-                var hashSet = new HashSet<string>(fenPosition.FromBoard.Split(",".ToCharArray()));
-                for (int i = 0; i < Fields.BoardFields.Length; i++)
-                {
-                    int f = Fields.BoardFields[i];
-                    var figureOnField = _internalChessBoard.GetFigureOnField(f);
-                    var fieldName = InternalChessBoard.GetFieldName(f);
-                    if (string.IsNullOrWhiteSpace(figureOnField))
+                    if (!_allLedOff)
                     {
-                        if (hashSet.Contains(fieldName))
-                        {
-                            invalidFields.Add(fieldName);
-                            hashSet.Remove(fieldName);
-                        }
-                    }
-                    else
-                    {
-                        if (hashSet.Contains(fieldName))
-                        {
-                            hashSet.Remove(fieldName);
-                        }
+                        _board?.SetAllLedsOff(false);
+                        _allLedOff = true;
                     }
 
-                }
-                invalidFields.AddRange(hashSet);
-                if (invalidFields.Count > 0)
-                {
-                    fenPosition.Invalid = true;
-                }
-                invalidFields.Clear();
-            }
-            else
-            {
-                if (!string.IsNullOrWhiteSpace(fenPosition.FromBoard) &&
-                    fenPosition.FromBoard.Equals(_board?.UnknownPieceCode))
-                {
-                    return fenPosition;
+                    return null;
                 }
 
-                var internalChessBoard = new InternalChessBoard();
-                internalChessBoard.NewGame();
-                internalChessBoard.SetPosition(fenPosition.FromBoard);
-                HashSet<string> prevMoveFields = new HashSet<string>();
-                var allMoveClass = _internalChessBoard.GetPrevMove();
-                
-                if (allMoveClass != null)
+                if (_board.SelfControlled)
                 {
-                    prevMove = allMoveClass.GetMove(Fields.COLOR_BLACK);
-                    if (prevMove == null)
-                    {
-                        prevMove = allMoveClass.GetMove(Fields.COLOR_WHITE);
-                    }
-                    if (prevMove != null)
-                    {
-                        // _fileLogger.LogDebug($"AB: Prev move: {prevMove.FromFieldName}-{prevMove.ToFieldName} ");
-                        prevMoveFields.Add(prevMove.FromFieldName);
-                        prevMoveFields.Add(prevMove.ToFieldName);
-                        if (prevMove.IsCastleMove())
-                        {
-                            if (prevMove.FromField == Fields.FE1)
-                            {
-                                prevMoveFields.Add("F1");
-                                prevMoveFields.Add("H1");
-                            }
-                            if (prevMove.FromField == Fields.FE8)
-                            {
-                                prevMoveFields.Add("F8");
-                                prevMoveFields.Add("H8");
-
-                            }
-                        }
-                    }
-                    else
-                    {
-                        _fileLogger.LogDebug($"AB: Prev move is null");
-                    }
+                    return null;
                 }
-                for (var f = InternalChessBoard.FA1; f <= InternalChessBoard.FH8; f++)
+
+                //_board?.SetAllLedsOff();
+                var fenPosition = _board?.GetPiecesFen();
+                if (fenPosition == null)
                 {
-                    if (!_internalChessBoard.GetFigureOnField(f).Equals(internalChessBoard.GetFigureOnField(f)))
+                    return null;
+                }
+
+                var invalidFields = new List<string>();
+                var validFields = new List<string>();
+                Move prevMove = null;
+                if (fenPosition.IsFieldDump)
+                {
+                    var hashSet = new HashSet<string>(fenPosition.FromBoard.Split(",".ToCharArray()));
+                    for (int i = 0; i < Fields.BoardFields.Length; i++)
                     {
-                        //_fileLogger?.LogDebug($"AB: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
+                        int f = Fields.BoardFields[i];
+                        var figureOnField = _internalChessBoard.GetFigureOnField(f);
                         var fieldName = InternalChessBoard.GetFieldName(f);
-                        if (_board != null && _board.MultiColorLEDs)
+                        if (string.IsNullOrWhiteSpace(figureOnField))
                         {
-                            if (prevMoveFields.Contains(fieldName))
+                            if (hashSet.Contains(fieldName))
                             {
-                                validFields.Add(fieldName);
+                                invalidFields.Add(fieldName);
+                                hashSet.Remove(fieldName);
+                            }
+                        }
+                        else
+                        {
+                            if (hashSet.Contains(fieldName))
+                            {
+                                hashSet.Remove(fieldName);
+                            }
+                        }
+
+                    }
+
+                    invalidFields.AddRange(hashSet);
+                    if (invalidFields.Count > 0)
+                    {
+                        fenPosition.Invalid = true;
+                    }
+
+                    invalidFields.Clear();
+                }
+                else
+                {
+                    if (!string.IsNullOrWhiteSpace(fenPosition.FromBoard) &&
+                        fenPosition.FromBoard.Equals(_board?.UnknownPieceCode))
+                    {
+                        return fenPosition;
+                    }
+
+                    var internalChessBoard = new InternalChessBoard();
+                    internalChessBoard.NewGame();
+                    internalChessBoard.SetPosition(fenPosition.FromBoard);
+                    HashSet<string> prevMoveFields = new HashSet<string>();
+                    var allMoveClass = _internalChessBoard.GetPrevMove();
+
+                    if (allMoveClass != null)
+                    {
+                        prevMove = allMoveClass.GetMove(Fields.COLOR_BLACK);
+                        if (prevMove == null)
+                        {
+                            prevMove = allMoveClass.GetMove(Fields.COLOR_WHITE);
+                        }
+
+                        if (prevMove != null)
+                        {
+                            // _fileLogger.LogDebug($"AB: Prev move: {prevMove.FromFieldName}-{prevMove.ToFieldName} ");
+                            prevMoveFields.Add(prevMove.FromFieldName);
+                            prevMoveFields.Add(prevMove.ToFieldName);
+                            if (prevMove.IsCastleMove())
+                            {
+                                if (prevMove.FromField == Fields.FE1)
+                                {
+                                    prevMoveFields.Add("F1");
+                                    prevMoveFields.Add("H1");
+                                }
+
+                                if (prevMove.FromField == Fields.FE8)
+                                {
+                                    prevMoveFields.Add("F8");
+                                    prevMoveFields.Add("H8");
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            _fileLogger.LogDebug($"AB: Prev move is null");
+                        }
+                    }
+
+                    for (var f = InternalChessBoard.FA1; f <= InternalChessBoard.FH8; f++)
+                    {
+                        if (!_internalChessBoard.GetFigureOnField(f).Equals(internalChessBoard.GetFigureOnField(f)))
+                        {
+                            //_fileLogger?.LogDebug($"AB: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
+                            var fieldName = InternalChessBoard.GetFieldName(f);
+                            if (_board != null && _board.MultiColorLEDs)
+                            {
+                                if (prevMoveFields.Contains(fieldName))
+                                {
+                                    validFields.Add(fieldName);
+                                }
+                                else
+                                {
+                                    invalidFields.Add(fieldName);
+                                }
                             }
                             else
                             {
                                 invalidFields.Add(fieldName);
                             }
                         }
-                        else
-                        {
-                            invalidFields.Add(fieldName);
-                        }
                     }
                 }
-            }
 
-            if (invalidFields.Count > 0 || validFields.Count>0)
-            {
-                fenPosition.Invalid = true;
-           //     if (_board!=null && _board.MultiColorLEDs)
-                if (_board!=null)
+                if (invalidFields.Count > 0 || validFields.Count > 0)
                 {
-                    Move[] checkMoves;
-                    if (prevMove!=null && waitMove)
+                    fenPosition.Invalid = true;
+                    //     if (_board!=null && _board.MultiColorLEDs)
+                    if (_board != null)
                     {
-                        if (prevMove.FigureColor == Fields.COLOR_WHITE)
+                        Move[] checkMoves;
+                        if (prevMove != null && waitMove)
+                        {
+                            if (prevMove.FigureColor == Fields.COLOR_WHITE)
+                            {
+                                checkMoves = new List<Move>(_internalChessBoard.CurrentMoveList).ToArray();
+                            }
+                            else
+                            {
+                                checkMoves = new List<Move>(_internalChessBoard.EnemyMoveList).ToArray();
+                            }
+                        }
+                        else
                         {
                             checkMoves = new List<Move>(_internalChessBoard.CurrentMoveList).ToArray();
                         }
-                        else
-                        {
-                            checkMoves = new List<Move>(_internalChessBoard.EnemyMoveList).ToArray();
-                        }
-                    }
-                    else
-                    {
-                        checkMoves = new List<Move>(_internalChessBoard.CurrentMoveList).ToArray();
-                    }
 
-                    foreach (var move in checkMoves)
-                    {
-                        if (invalidFields.Contains(move.FromFieldName) && invalidFields.Contains(move.ToFieldName) )
+                        foreach (var move in checkMoves)
                         {
-                            validFields.Add(move.ToFieldName);
-                            invalidFields.Remove(move.ToFieldName);
-                            validFields.Add(move.FromFieldName);
-                            invalidFields.Remove(move.FromFieldName);
-                            break;
-                        }
-
-                        if (validFields.Count == 0)
-                        {
-                            if (invalidFields.Count == 1 && invalidFields.Contains(move.ToFieldName))
+                            if (invalidFields.Contains(move.FromFieldName) && invalidFields.Contains(move.ToFieldName))
                             {
                                 validFields.Add(move.ToFieldName);
                                 invalidFields.Remove(move.ToFieldName);
-                                break;
-                            }
-
-                            if (invalidFields.Count == 1 && invalidFields.Contains(move.FromFieldName))
-                            {
                                 validFields.Add(move.FromFieldName);
                                 invalidFields.Remove(move.FromFieldName);
                                 break;
                             }
-                        }
 
-                    };
-                    var setLeDsParameter = new SetLEDsParameter()
-                    {
-                        FieldNames = validFields.ToArray(),
-                        InvalidFieldNames = invalidFields.ToArray(),
-                        Promote = string.Empty,
-                        IsThinking = false,
-                        IsMove = invalidFields.Count == 0,
-                        IsError = invalidFields.Count > 0,
-                        DisplayString = string.Empty
-
-                    };
-                    if (_configuration.ShowPossibleMoves && setLeDsParameter.IsMove && setLeDsParameter.FieldNames.Length == 1 && !waitMove)
-                    {
-                        List<string> hintFields = new List<string> { setLeDsParameter.FieldNames[0] };
-                        foreach (var move in checkMoves)
-                        {
-                            if (move.FromFieldName.Equals(setLeDsParameter.FieldNames[0]))
+                            if (validFields.Count == 0)
                             {
-                                hintFields.Add(move.ToFieldName);
-                            }
-                        }
-
-                        if (hintFields.Count() > 1)
-                        {
-                            _fileLogger?.LogDebug($"AB: ProbeMoveEvent for  {string.Join(" ",hintFields)} ");
-                            ProbeMoveEvent?.Invoke(this, hintFields.ToArray());
-                        }
-                    }
-                    if (!_configuration.ShowOwnMoves && setLeDsParameter.IsMove)
-                    {
-                        setLeDsParameter.FieldNames = Array.Empty<string>();
-                    }
-                    _board?.SetLedForFields(setLeDsParameter);
-                    
-                    //if (_board.MultiColorLEDs || _configuration.ShowOwnMoves)
-                    //{
-                    //    _board?.SetLedForFields(setLeDsParameter);
-                    //}
-                    //else
-                    //{
-                    //    if (!setLeDsParameter.IsMove && setLeDsParameter.FieldNames.Length==0)
-                    //    {
-                    //        setLeDsParameter.FieldNames = setLeDsParameter.InvalidFieldNames.ToArray();
-                    //        _board?.SetLedForFields(setLeDsParameter);
-                    //    }
-                    //}
-                }
-                else
-                {
-                    var setLeDsParameter = new SetLEDsParameter()
-                    {
-                        FieldNames = invalidFields.ToArray(),
-                        Promote = string.Empty,
-                        IsThinking = false,
-                        IsMove = invalidFields.Count == 0,
-                        IsError = true,
-                        DisplayString = string.Empty
-
-                    };
-                    //if (!_configuration.ShowOwnMoves && setLeDsParameter.IsMove)
-                    if (!_configuration.ShowOwnMoves)
-                    {
-                        
-                        {
-                            Move[] checkMoves;
-                            if (prevMove != null && waitMove)
-                            {
-                                if (prevMove.FigureColor == Fields.COLOR_WHITE)
+                                if (invalidFields.Count == 1 && invalidFields.Contains(move.ToFieldName))
                                 {
-                                    checkMoves = new List<Move>(_internalChessBoard.CurrentMoveList).ToArray();
-                                }
-                                else
-                                {
-                                    checkMoves = new List<Move>(_internalChessBoard.EnemyMoveList).ToArray();
-                                }
-                            }
-                            else
-                            {
-                                checkMoves = new List<Move>(_internalChessBoard.CurrentMoveList).ToArray();
-                            }
-                            setLeDsParameter.IsMove = true;
-                            foreach (var invalidField in invalidFields)
-                            {
-                                bool found = false;
-                                foreach (var checkMove in checkMoves)
-                                {
-                                    if (checkMove.FromFieldName.Equals(invalidField) ||
-                                        checkMove.ToFieldName.Equals(invalidField))
-                                    {
-                                        found = true;
-                                        break;
-                                    }
+                                    validFields.Add(move.ToFieldName);
+                                    invalidFields.Remove(move.ToFieldName);
+                                    break;
                                 }
 
-                                if (!found)
+                                if (invalidFields.Count == 1 && invalidFields.Contains(move.FromFieldName))
                                 {
-                                    setLeDsParameter.IsMove = false;
+                                    validFields.Add(move.FromFieldName);
+                                    invalidFields.Remove(move.FromFieldName);
                                     break;
                                 }
                             }
+
                         }
-                        if (setLeDsParameter.IsMove)
+
+                        ;
+                        var setLeDsParameter = new SetLEDsParameter()
+                        {
+                            FieldNames = validFields.ToArray(),
+                            InvalidFieldNames = invalidFields.ToArray(),
+                            Promote = string.Empty,
+                            IsThinking = false,
+                            IsMove = invalidFields.Count == 0,
+                            IsError = invalidFields.Count > 0,
+                            DisplayString = string.Empty
+
+                        };
+                        if (_configuration.ShowPossibleMoves && setLeDsParameter.IsMove &&
+                            setLeDsParameter.FieldNames.Length == 1 && !waitMove)
+                        {
+                            List<string> hintFields = new List<string> { setLeDsParameter.FieldNames[0] };
+                            foreach (var move in checkMoves)
+                            {
+                                if (move.FromFieldName.Equals(setLeDsParameter.FieldNames[0]))
+                                {
+                                    hintFields.Add(move.ToFieldName);
+                                }
+                            }
+
+                            if (hintFields.Count() > 1)
+                            {
+                                _fileLogger?.LogDebug($"AB: ProbeMoveEvent for  {string.Join(" ", hintFields)} ");
+                                ProbeMoveEvent?.Invoke(this, hintFields.ToArray());
+                            }
+                        }
+
+                        if (!_configuration.ShowOwnMoves && setLeDsParameter.IsMove)
+                        {
                             setLeDsParameter.FieldNames = Array.Empty<string>();
-                    }
-                    _board?.SetLedForFields(setLeDsParameter);
-                }
+                        }
 
-                _allLedOff = false;
-            }
-            else
-            {
-                if (_waitForFen.IsEmpty && !_stop )
-                {
-                    ProbeMoveEndingEvent?.Invoke(this, EventArgs.Empty);
-                    if (!_allLedOff && !fenPosition.IsFieldDump)
+                        _board?.SetLedForFields(setLeDsParameter);
+
+                        //if (_board.MultiColorLEDs || _configuration.ShowOwnMoves)
+                        //{
+                        //    _board?.SetLedForFields(setLeDsParameter);
+                        //}
+                        //else
+                        //{
+                        //    if (!setLeDsParameter.IsMove && setLeDsParameter.FieldNames.Length==0)
+                        //    {
+                        //        setLeDsParameter.FieldNames = setLeDsParameter.InvalidFieldNames.ToArray();
+                        //        _board?.SetLedForFields(setLeDsParameter);
+                        //    }
+                        //}
+                    }
+                    else
                     {
-                        _fileLogger?.LogDebug("AB: Waiting for fen is empty: Set all LEDs off");
-                        _board?.SetAllLedsOff(false);
-                        _board?.SetCurrentColor(_internalChessBoard.CurrentColor);
-                        _allLedOff = true;
+                        var setLeDsParameter = new SetLEDsParameter()
+                        {
+                            FieldNames = invalidFields.ToArray(),
+                            Promote = string.Empty,
+                            IsThinking = false,
+                            IsMove = invalidFields.Count == 0,
+                            IsError = true,
+                            DisplayString = string.Empty
+
+                        };
+                        //if (!_configuration.ShowOwnMoves && setLeDsParameter.IsMove)
+                        if (!_configuration.ShowOwnMoves)
+                        {
+
+                            {
+                                Move[] checkMoves;
+                                if (prevMove != null && waitMove)
+                                {
+                                    if (prevMove.FigureColor == Fields.COLOR_WHITE)
+                                    {
+                                        checkMoves = new List<Move>(_internalChessBoard.CurrentMoveList).ToArray();
+                                    }
+                                    else
+                                    {
+                                        checkMoves = new List<Move>(_internalChessBoard.EnemyMoveList).ToArray();
+                                    }
+                                }
+                                else
+                                {
+                                    checkMoves = new List<Move>(_internalChessBoard.CurrentMoveList).ToArray();
+                                }
+
+                                setLeDsParameter.IsMove = true;
+                                foreach (var invalidField in invalidFields)
+                                {
+                                    bool found = false;
+                                    foreach (var checkMove in checkMoves)
+                                    {
+                                        if (checkMove.FromFieldName.Equals(invalidField) ||
+                                            checkMove.ToFieldName.Equals(invalidField))
+                                        {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!found)
+                                    {
+                                        setLeDsParameter.IsMove = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (setLeDsParameter.IsMove)
+                                setLeDsParameter.FieldNames = Array.Empty<string>();
+                        }
+
+                        _board?.SetLedForFields(setLeDsParameter);
+                    }
+
+                    _allLedOff = false;
+                }
+                else
+                {
+                    if (_waitForFen.IsEmpty && !_stop)
+                    {
+                        ProbeMoveEndingEvent?.Invoke(this, EventArgs.Empty);
+                        if (!_allLedOff && !fenPosition.IsFieldDump)
+                        {
+                            _fileLogger?.LogDebug("AB: Waiting for fen is empty: Set all LEDs off");
+                            _board?.SetAllLedsOff(false);
+                            _board?.SetCurrentColor(_internalChessBoard.CurrentColor);
+                            _allLedOff = true;
+                        }
                     }
                 }
-            }
 
-            return fenPosition;
+                return fenPosition;
+            }
+            catch (Exception ex)
+            {
+                _fileLogger?.LogError(ex);
+                return null;
+            }
         }
 
-        #endregion
+
     }
+
+
+    #endregion
+
 }

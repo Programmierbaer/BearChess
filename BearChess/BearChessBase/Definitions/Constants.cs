@@ -32,6 +32,7 @@
         public const string BryanWhitbyRoyalGold = "BryanWhitbyRoyalGold";
         public const string BryanWhitbyRoyalBrown = "BryanWhitbyRoyalBrown";
         public const string BryanWhitbyModernGold = "BryanWhitbyModernGold";
-        public const string BryanWhitbyModernBrown = "BryanWhitbyModernBrown";       
+        public const string BryanWhitbyModernBrown = "BryanWhitbyModernBrown";
+        public const string InternalBearChessEngineGUID = "uciCCF089128BFD4C57881D3D85B804F5A5";
     }
 }

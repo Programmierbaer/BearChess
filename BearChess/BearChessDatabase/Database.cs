@@ -1219,12 +1219,12 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     filterSQl +
                     " ORDER BY g.ID;", _connection))
                 {
-                    cmd.Parameters.Add("@gameEvent", DbType.String).Value = string.IsNullOrWhiteSpace(gamesFilter.GameEvent) ? "%" : gamesFilter.GameEvent;
+                    cmd.Parameters.Add("@gameEvent", DbType.String).Value = string.IsNullOrWhiteSpace(gamesFilter.GameEvent) ? "%" : gamesFilter.GameEvent.Replace("*","%");
                     cmd.Parameters.Add("@fromDate", DbType.Int64).Value = gamesFilter.FromDate?.ToFileTime() ?? 0;
                     cmd.Parameters.Add("@toDate", DbType.Int64).Value = gamesFilter.ToDate?.ToFileTime() ?? long.MaxValue;
 
-                    cmd.Parameters.Add("@black", DbType.String).Value = string.IsNullOrWhiteSpace(gamesFilter.BlackPlayer) ? "%" : gamesFilter.BlackPlayer;
-                    cmd.Parameters.Add("@white", DbType.String).Value = string.IsNullOrWhiteSpace(gamesFilter.WhitePlayer) ? "%" : gamesFilter.WhitePlayer;
+                    cmd.Parameters.Add("@black", DbType.String).Value = string.IsNullOrWhiteSpace(gamesFilter.BlackPlayer) ? "%" : gamesFilter.BlackPlayer.Replace("*", "%");
+                    cmd.Parameters.Add("@white", DbType.String).Value = string.IsNullOrWhiteSpace(gamesFilter.WhitePlayer) ? "%" : gamesFilter.WhitePlayer.Replace("*", "%");
                     if (!string.IsNullOrWhiteSpace(fen))
                     {
                         cmd.Parameters.Add("@shortFen", DbType.String).Value = fen.Split(" ".ToCharArray())[0];

@@ -31,7 +31,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusLoader
                 return new PegasusImpl(Name, basePath);
             }
 
-            var eBoardWrapper = new PegasusImpl(Name, basePath, configuration.PortName, true);
+            var eBoardWrapper = new PegasusImpl(Name, basePath, configuration);
 
             return eBoardWrapper;
         }

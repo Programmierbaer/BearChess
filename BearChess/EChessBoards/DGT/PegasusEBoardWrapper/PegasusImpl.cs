@@ -17,6 +17,13 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
 
         }
 
+        public PegasusImpl(string name, string basePath, EChessBoardConfiguration configuration) : base(
+            name, basePath, configuration)
+        {
+
+        }
+
+
         public override void SetScanTime(int scanTime)
         {
             //

@@ -39,6 +39,7 @@ using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessTournament;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
+using www.SoLaNoSoft.com.BearChess.Engine;
 using Color = System.Drawing.Color;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -135,6 +136,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private readonly string _piecesPath;
         private readonly string _uciPath;
+        private readonly string _binPath;
         private bool _allowTakeMoveBack;
         private ChessBoardSetupWindow _chessBoardSetupWindow;
         private IChessClocksWindow _chessClocksWindowBlack;
@@ -305,7 +307,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
-
+            _binPath = fileInfo.DirectoryName;
             var logPath = Path.Combine(_configuration.FolderPath, "log");
             _uciPath    = Path.Combine(_configuration.FolderPath, "uci");
             _bookPath   = Path.Combine(_configuration.FolderPath, "book");
@@ -3743,6 +3745,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (_eChessBoard != null && _eChessBoard.IsConnected)
             {
                 var firstOrDefault = _installedEngines.FirstOrDefault(i => i.Value.IsProbing);
+                if (firstOrDefault.Value==null)
+                {
+                    firstOrDefault = _installedEngines.FirstOrDefault(i => i.Value.IsInternalBearChess);
+                }               
                 if (firstOrDefault.Value != null)
                 {
                     _probingEngineLoaded = true;
@@ -3832,7 +3838,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _engineWindow.EngineEvent += EngineWindow_EngineEvent;
                 _engineWindow.Show();
             }
-
+            if (uciInfo.IsInternalBearChess)
+            {
+                uciInfo.IsProbing = true;
+            }
             chessBoardUcGraphics.ShowRobot(true);
             _fileLogger?.LogInfo($"Load engine {uciInfo.Name}");
             _engineWindow.LoadUciEngine(uciInfo, _chessBoard.GetInitialFenPosition(), _chessBoard.GetPlayedMoveList(), lookForBookMoves);
@@ -3910,7 +3919,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     _usedEngines.Add(playerUciInfo.Name, playerUciInfo);
                 }
-               
+                BearChessEngine.InstallBearChessEine(_binPath, _uciPath);
                 _fileLogger?.LogInfo($"Reading installed engines from {_uciPath} ");
                 var fileNames = Directory.GetFiles(_uciPath, "*.uci", SearchOption.AllDirectories);
                 int invalidEngines = 0;
