@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.0.3}
+\fancyhead[R]{Version 1.0.1.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{18.11.2023} 
+\date{19.11.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -47,6 +47,8 @@ So the focus of BearChess is more on exploiting the possibilities of the chessbo
 BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
 
 I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc or iChessOne. If something does not work, the companies are not responsible for it.\\
+
+Many thanks to Ralf Schäfer and Volker Böhm for the use of their engine Spike (\url{http://spike.lazypics.de/index.html}).\\
 
 Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 
@@ -342,10 +344,10 @@ Opens this document.
 	\caption{Open "Load and manage UCI Engines" window}
 	\label{fig:LoadEngine}
 \end{figure}
-BearChess does not include a chess engine. Click on "Load \& manage engines" to install and configure one. "\textit{Install}" means to make a chess program known to BearChess, not to install it on your computer. BearChess supports any UCI engine.\\
+BearChess includes a chess engine, \textbf{Spike 1.4} by Ralf Schäfer and Volker Böhm (\url{http://spike.lazypics.de/index.html}).\\ You can install additional engines as much as you like. Click on "Load \& manage engines" to install and configure one. "\textit{Install}" means to make a chess program known to BearChess, not to install it on your computer. BearChess supports any UCI engine.\\
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{LoadManageEngine1.png}
+	\includegraphics[scale=0.8]{LoadManageEngine1.png}
 	\caption{Load and Manage UCI Engines}
 	\label{fig:LoadManageEngine1}
 \end{figure}
@@ -359,6 +361,7 @@ BearChess does not include a chess engine. Click on "Load \& manage engines" to 
 	\item \includegraphics[scale=0.5]{bin.png} Uninstall selected engine.
 	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
 \end{itemize}
+You can modify "Spike 1.4 BearChess" but you cannot delete the engine.\\
 "Citrine" and "Saitek OSA" are predefined engines for NOVAG Citrine and Saitek boards and cannot deleted.\\
 
 \subsection{Install a new engine} \label{InstallEngine}
@@ -3047,9 +3050,15 @@ These are some ideas what will come in one of the next versions.
 \section{Change log}
 
 
+\subsection*{Version 1.0.0.3 $\Rightarrow$  1.0.1.0}
+\begin{itemize}		
+	\item {\color{blue}New}: Integration of engine Spike 1.4 by Ralf Schäfer and Volker Böhm.
+	\item {\color{red}Fix}: Fix continue games.	
+\end{itemize}
+
 \subsection*{Version 1.0.0.2 $\Rightarrow$  1.0.0.3}
 \begin{itemize}		
-	\item {\color{red}Fix}: Fix DGT e-Boards
+	\item {\color{red}Fix}: Fix for DGT e-Boards.	
 \end{itemize}
 
 \subsection*{Version 1.0.0.1 $\Rightarrow$  1.0.0.2}
