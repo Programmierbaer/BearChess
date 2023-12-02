@@ -62,7 +62,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTEBoardWrapper
         {
             return new DGTChessBoard.EChessBoard(basePath: _basePath, logger: _fileLogger,
                                                   portName: _comPortName,
-                                                 _useBluetooth, _useClock, _showMovesOnly, _switchClockSide);
+                                                 _useBluetooth, _useClock, _showMovesOnly, _switchClockSide, _clockUpperCase);
         }
 
         protected override IEBoard GetEBoard(bool check)

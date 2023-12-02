@@ -34,5 +34,8 @@
         public const string BryanWhitbyModernGold = "BryanWhitbyModernGold";
         public const string BryanWhitbyModernBrown = "BryanWhitbyModernBrown";
         public const string InternalBearChessEngineGUID = "uciCCF089128BFD4C57881D3D85B804F5A5";
+        public const string InternalChessEngineGUID = "uciF4CB8D89254F4891A3E7F7D4209C3F55";
+        public const string InternalChessEngineFileName = "Spike1.4.exe";
+        public const string InternalChessEngineLogoFileName = "spike.bmp";
     }
 }

@@ -71,8 +71,7 @@
                             <Button Name="buttonSwap" ToolTip="Switch color" Margin="100,1,0,0" Height="24" BorderBrush="Transparent" 
                                     Background="Transparent" Click="ButtonSwap_OnClick">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Margin="5,0,0,0"  Source="../Assets/Icons/arrow_up.png" />
-                                    <Image Margin="-5,0,0,0" Source="../Assets/Icons/arrow_down.png" />
+                                    <Image Margin="5,0,0,0"  Source="../Assets/Icons/arrow_refresh.png" />
                                 </StackPanel>
                             </Button>
                         </StackPanel>

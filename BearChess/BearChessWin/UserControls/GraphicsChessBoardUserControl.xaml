@@ -903,7 +903,7 @@
         <Button Grid.Column="4" Grid.Row="9" Name="moveStepAllForward" Background="Transparent" BorderBrush="Transparent" ToolTip="Forward to last move" Click="MoveStepAllForward_OnClick">
             <Image  VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/control_end.png" />
         </Button>
-        <Button  Grid.Column="6" Grid.Row="9" Name="buttonPauseGame" Background="Transparent" BorderBrush="Transparent"  Click="MovePauseGame_OnClick" ToolTip="Pause/Continue game" >
+        <Button  Grid.Column="5" Grid.Row="9" Name="buttonPauseGame" Background="Transparent" BorderBrush="Transparent"  Click="MovePauseGame_OnClick" ToolTip="Pause/Continue game" >
             <StackPanel>
                 <Image Margin="1" Name="imageClockPlay"  Visibility="Hidden" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/stopwatch_start.png" />
                 <Image Margin="1" Name="imageClockPause" Visibility="Collapsed" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/stopwatch_pause.png" />
@@ -915,22 +915,21 @@
               <Image Margin="1" Name="imageRobotPause" Visibility="Collapsed" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/robotPause.png" />
             </StackPanel>
         </Button>
-        <Button Name="buttonSwap" ToolTip="Switch color" Grid.Column="8" Grid.Row="9" Width="30" Height="30" BorderBrush="Transparent" 
-                Background="Transparent" Click="ButtonSwap_OnClick" Visibility="Collapsed">
-            <StackPanel Orientation="Horizontal">
-                <Image Margin="0,0,0,0"  Width="14" Source="../Assets/Icons/arrow_up.png" />
-                <Image Margin="-5,0,0,0"  Width="14" Source="../Assets/Icons/arrow_down.png" />
+        <Button  Grid.Column="6" Grid.Row="9" Name="buttonForceMove" Background="Transparent" BorderBrush="Transparent"  Click="ForceMove_OnClick" ToolTip="Force move" Visibility="Hidden" >
+            <StackPanel>
+                <Image Margin="1" Name="imageForceMove" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Style="{StaticResource controlButtons}" Source="../Assets/Icons/arrow_right.png" />
+                <Image Margin="1" Name="imageSwitchColor" VerticalAlignment="Center" Width="30" Height="30" HorizontalAlignment="Center" Visibility="Collapsed" Style="{StaticResource controlButtons}" Source="../Assets/Icons/arrow_refresh.png" />
             </StackPanel>
         </Button>
         <TextBlock FontSize="30" Margin="10,0,0,0"  Name="textBlockBlackClock" Grid.Column="9" Grid.Row="0" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Left" ToolTip="Black's move" >C</TextBlock>
         <TextBlock Margin="5,0,0,0" Width="100" Height="90" Name="textBlockBlackPlayer" Grid.Column="9" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top"  HorizontalAlignment="Left"  TextAlignment="Left"  TextWrapping="Wrap" >Black</TextBlock>
         <DockPanel Grid.Column="9" Grid.Row="5" Grid.RowSpan="2" LastChildFill="True" >
-        <TextBlock  Margin="5,0,0,0" Width="100"  DockPanel.Dock="Bottom" Name="textBlockWhitePlayer" Grid.Column="9" Grid.Row="5" Grid.RowSpan="2" VerticalAlignment="Bottom" TextAlignment="Left"  HorizontalAlignment="Left"  TextWrapping="Wrap" >White</TextBlock>
+        <TextBlock  Margin="5,0,0,0" Width="100"  DockPanel.Dock="Bottom" Name="textBlockWhitePlayer"  VerticalAlignment="Bottom" TextAlignment="Left"  HorizontalAlignment="Left"  TextWrapping="Wrap" >White</TextBlock>
         </DockPanel>
         <TextBlock FontSize="30" Margin="10,0,0,0" Name="textBlockWhiteClock" Grid.Column="9" Grid.Row="7" VerticalAlignment="Center" TextAlignment="Right" HorizontalAlignment="Left" ToolTip="White's move" >c</TextBlock>
 
         <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="9" >
-            <Button Name="buttonRotate" Click="ButtonRotate_OnClick" Grid.Row="8" Grid.Column="9"  Background="Transparent" BorderBrush="Transparent" ToolTip="Rotate board" Width="30" Height="30">
+            <Button Name="buttonRotate" Click="ButtonRotate_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Rotate board" Width="30" Height="30">
               <Image Source="../Assets/Icons/arrow_rotate_anticlockwise.png" Width="28" Height="28" Style="{StaticResource controlButtons}"></Image>
             </Button>
             <TextBlock Name="textBlockWhiteKing" DockPanel.Dock="Right" FontSize="30" TextAlignment="Center" VerticalAlignment="Center" ToolTip="Playing with white" >♔</TextBlock>

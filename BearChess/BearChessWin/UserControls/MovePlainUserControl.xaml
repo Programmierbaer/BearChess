@@ -61,6 +61,11 @@
                                 <Image Source="../Assets/Icons/script_add.png" />
                             </MenuItem.Icon>
                         </MenuItem>
+                        <MenuItem Header="Restart from here..." Click="MenuItemRestart_Click">
+                            <MenuItem.Icon>
+                                <Image Source="../Assets/Icons/control_repeat_blue.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </Button.ContextMenu>
                 <WrapPanel Orientation="Horizontal">

@@ -97,6 +97,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _fieldId = string.Empty;
             _piecesBitmaps.Clear();
             HideRobot();
+            buttonForceMove.Visibility = Visibility.Hidden;
             _showPossibleMoves = false;
             _fastMoveSelection = false;
             _hintArrowColor = Brushes.Khaki;
@@ -135,6 +136,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler ResetBasePositionEvent;
         public event EventHandler RotateBoardEvent;
         public event EventHandler SwitchColorEvent;
+        public event EventHandler ForceMoveEvent;
         public event EventHandler<int> RequestForHint;
 
         public void SetCanvas(Canvas canvas)
@@ -281,10 +283,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void LoadBigImage(string fileName)
         {
-            //LoadBigWideImage(fileName);
-            //_piecesBitmaps[""] = null;
-            //_piecesBitmaps[" "] = null;
-            //return;
+           
             var bitmapImage = new BitmapImage(new Uri(fileName));
 
             var bitmapImageWidth = bitmapImage.PixelWidth / 6;
@@ -787,8 +786,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             moveStepAllForward.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
             moveStepBack.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
             moveStepForward.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
-            //buttonPauseEngine.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
-            //multiButton.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
+           
         }
 
         public void ShowMultiButton(bool showButton)
@@ -811,11 +809,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _chessBoard.Init();
                 _chessBoard.NewGame();
                 _chessBoard.SetPosition(fenPosition);
-                //buttonRotate.Visibility = Visibility.Hidden;
             }
             else
             {
-                //buttonRotate.Visibility = Visibility.Visible;
                 _chessBoard = null;
             }
 
@@ -1461,8 +1457,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonPauseGame.Visibility = Visibility.Collapsed;
         }
 
+        public void ShowForceMove(bool show)
+        {
+            buttonForceMove.ToolTip = show ? "Force move" : "Switch color";
+            imageForceMove.Visibility = Visibility.Collapsed;
+            imageSwitchColor.Visibility = Visibility.Collapsed;
+            imageForceMove.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+            imageSwitchColor.Visibility = show ? Visibility.Collapsed : Visibility.Visible;
+            buttonForceMove.Visibility = Visibility.Visible;
+        }
+
+        public void HideForceMove()
+        {
+            buttonForceMove.Visibility =  Visibility.Hidden;
+            imageForceMove.Visibility = Visibility.Collapsed;
+            imageSwitchColor.Visibility = Visibility.Collapsed;
+        }
+
+
         public void ShowRobot(bool show)
         {
+            imageRobotPause.Visibility = Visibility.Collapsed;
+            imageRobot.Visibility = Visibility.Collapsed;
             if (show)
             {
                 imageRobotPause.Visibility = Visibility.Collapsed;
@@ -1533,10 +1549,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             PauseGameEvent?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ButtonSwap_OnClick(object sender, RoutedEventArgs e)
-        {
-            SwitchColorEvent?.Invoke(this, EventArgs.Empty);
-        }
 
         public void ShowPossibleMoves(bool showPossibleMoves)
         {
@@ -1748,6 +1760,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MovePause_OnClick(object sender, RoutedEventArgs e)
         {
             PausePlayEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ForceMove_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (imageForceMove.Visibility == Visibility.Visible)
+            {
+                ForceMoveEvent?.Invoke(this, e);
+            }
+            else
+            {
+                SwitchColorEvent?.Invoke(this, e);
+            }
         }
 
         private void MoveStepAllForward_OnClick(object sender, RoutedEventArgs e)
@@ -2121,5 +2145,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
         #endregion
+
+
     }
 }

@@ -79,7 +79,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public bool SeparateControl =>
             checkBox2TimeControls.IsChecked.HasValue && checkBox2TimeControls.IsChecked.Value;
 
-
        
         public TimeControl GetTimeControlWhite()
         {
@@ -200,7 +199,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
        
             _allUciInfos.Clear();
 
-            var array = uciInfos.Where(u => u.IsActive && !u.IsProbing && !u.IsBuddy && !u.IsInternalBearChess).OrderBy(u => u.Name).ToArray();
+            var array = uciInfos.Where(u => u.IsActive && !u.IsProbing && !u.IsBuddy && !u.IsInternalBearChessEngine).OrderBy(u => u.Name).ToArray();
             textBlockPlayerWhiteEngine.Text = Constants.Player;
             textBlockPlayerWhiteEngine.ToolTip = "A human being as a player";
             textBlockPlayerBlackEngine.Text = Constants.Player;
@@ -226,8 +225,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
-
-
             PlayerWhiteConfigValues = _allUciInfos.ContainsKey(textBlockPlayerWhiteEngine.Text)
                                           ? _allUciInfos[textBlockPlayerWhiteEngine.Text]
                                           : null;
@@ -250,7 +247,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGame)
             {
@@ -296,8 +292,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-           
-         
+                    
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGame)
             {
                 comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[0];
@@ -353,9 +348,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetRelaxedMode(bool relaxed)
         {
-
             checkBoxRelaxed.IsChecked = relaxed;
-
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -405,7 +398,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
       
-
         private void SetPonderControl(UciInfo playConfigValue, TextBlock textBlockPonder, Image ponderImage, Image ponderImage2, TextBlock textBlockElo, Image bookImage, Image bookImage2)
         {
 
@@ -627,16 +619,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2,
                                  textBlockEloBlack, imageBookBlack, imageBookBlack2);
             }
-
-            if (whiteConfig == null)
-            {
-              //  comboBoxPlayerWhite.SelectedIndex = 0;
-            }
-
-            if (blackConfig == null)
-            {
-             //   comboBoxPlayerBlack.SelectedIndex = 0;
-            }
+          
             SetTimeControlWhite(loadTimeControl);
             SetTimeControlBlack(loadTimeControlBlack);
 

@@ -40,6 +40,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public event EventHandler SelectedChanged;
         public event EventHandler ContentChanged;
+        public event EventHandler RestartEvent;
 
         public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType)
         {
@@ -405,6 +406,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 CurrentMove.OwnSymbol = textBlockOwnSymbol.Text;
                 ContentChanged?.Invoke(this, e);
             }
+        }
+
+
+        private void MenuItemRestart_Click(object sender, RoutedEventArgs e)
+        {
+            RestartEvent?.Invoke(this, null);
         }
     }
 }

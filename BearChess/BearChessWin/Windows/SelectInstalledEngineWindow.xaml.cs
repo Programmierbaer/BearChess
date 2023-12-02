@@ -64,7 +64,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (SelectedEngine != null)
             {
-                if (SelectedEngine.IsInternalBearChess || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
+                if (SelectedEngine.IsInternalBearChessEngine || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
                 {
                     MessageBox.Show($"You cannot play with a BearChess or Buddy engine: '{SelectedEngine.Name}'", "Load UCI Engine",
                              MessageBoxButton.OK, MessageBoxImage.Error);
@@ -83,7 +83,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (SelectedEngine != null)
             {
-                if (SelectedEngine.IsInternalBearChess || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
+                if (SelectedEngine.IsInternalBearChessEngine || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
                 {
                     MessageBox.Show($"You cannot play with a BearChess or Buddy engine '{SelectedEngine.Name}'", "Load UCI Engine",
                              MessageBoxButton.OK, MessageBoxImage.Error);
@@ -99,7 +99,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            if (SelectedEngine.IsInternalBearChess)
+            if (SelectedEngine.IsInternalBearChessEngine)
             {
                 MessageBox.Show($"You cannot change internal engine '{SelectedEngine.Name}'", "Configure UCI Engine",
                          MessageBoxButton.OK, MessageBoxImage.Error);
@@ -179,7 +179,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     if (selectedItem is UciInfo uciInfo)
                     {
-                        if (!uciInfo.IsInternalBearChess)
+                        if (!uciInfo.IsInternalBearChessEngine && !uciInfo.IsInternalChessEngine)
                         {
                             enginesToDelete.Add(uciInfo);
                         }
@@ -218,7 +218,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 return;
             }
-            if (SelectedEngine.IsInternalBearChess)
+            if (SelectedEngine.IsInternalBearChessEngine  || SelectedEngine.IsInternalChessEngine)
             {
                 MessageBox.Show($"It is not allowed to uninstall internal engine '{SelectedEngine.Name}'", "Uninstall UCI Engine",
                               MessageBoxButton.OK, MessageBoxImage.Error);
@@ -637,7 +637,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 MessageBoxImage.Error);
                 return;
             }
-            if (SelectedEngine.IsInternalBearChess)
+            if (SelectedEngine.IsInternalBearChessEngine)
             {
                 MessageBox.Show("This internal engine is not suitable for a buddy", "Not suitable", MessageBoxButton.OK,
                                 MessageBoxImage.Error);

@@ -57,14 +57,15 @@
                     <RowDefinition Height="40"></RowDefinition>
                 </Grid.RowDefinitions>
                 <CheckBox Name="checkBoxUseClock" Margin="5"  VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" FontWeight="DemiBold" Unchecked="CheckBoxUseClock_OnUnchecked" Checked="CheckBoxUseClock_OnChecked" ToolTip="Use DGT 3000 clock if connected">Clock</CheckBox>
-                <CheckBox Name="checkBoxSwitchSide" VerticalAlignment="Center" Margin="25,5,5,5" Grid.Row="1" Grid.Column="0" Checked="CheckBoxSwitchSide_OnChecked" Unchecked="CheckBoxSwitchSide_OnUnchecked" ToolTip="Left left side shows the time for white">Switch side</CheckBox>
+                <CheckBox Name="checkBoxSwitchSide" VerticalAlignment="Center" Margin="25,5,5,5" Grid.Row="1" Grid.Column="0" Checked="CheckBoxSwitchSide_OnChecked" Unchecked="CheckBoxSwitchSide_OnUnchecked" ToolTip="Left side shows the time for white">Switch side</CheckBox>
                 <TextBlock Name="textBlockClock" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.Row="1" Margin="5,0,0,0"  Grid.Column="1">C</TextBlock>
                 <CheckBox Name="checkBoxShowOnlyMoves"  VerticalAlignment="Center" Margin="25,5,5,5" Grid.Row="2" Grid.Column="0">Show only moves</CheckBox>
-                <StackPanel Grid.Row="3" Grid.Column="0" Margin="25,5,5,5" Orientation="Horizontal">
+                <StackPanel Name="stackPanelStyle" Grid.Row="3" Grid.Column="0" Margin="25,5,5,5" Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Style:"></TextBlock>
                     <RadioButton Name="radioButtonLongFormat"  GroupName="moveFormat" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,5,5,5"  IsChecked="True">e2-e4</RadioButton>
-                  <RadioButton Name="radioButtonShortFormat"  GroupName="moveFormat" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,5,5,5" Grid.Row="2" Grid.Column="1">e4</RadioButton>
+                  <RadioButton Name="radioButtonShortFormat"  GroupName="moveFormat" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,5,5,5" >e4</RadioButton>
                 </StackPanel>
+                <CheckBox Name="checkBoxUpperCase" Margin="5,0,0,0" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" ToolTip="Show all characters in upper case" >Upper case</CheckBox>
             </Grid>
         </Border>
         <Grid>

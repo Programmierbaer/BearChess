@@ -25,7 +25,7 @@ linkcolor=black
 \fancyhead[R]{Version 1.0.1.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{19.11.2023} 
+\date{02.12.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -1487,6 +1487,7 @@ You can use an external clock (DGT3000, DGTPi) or the Revelation display to disp
 	\item Activate the "Change side" checkbox if your clock is set on the right side. Normally, the clock is set to the left side for a white player. 
 	\item Activate "Show only moves" if you do not want to display your time on the clock.
 	\item Select how you want the moves to be displayed on the clock.
+    \item Activate "Upper case" if you want the chess moves  to be in capital letters.
 \end{itemize}
 
 
@@ -1945,6 +1946,14 @@ When the move list window is selected, you can use the cursor keys and the scrol
 \section{Pause and continue a game} \label{pauseAGame}
 
 The button \includegraphics[scale=0.4]{stopwatch_pause.png} is an easy way to pause a game.  The clocks are stopped until you make move or press the button \includegraphics[scale=0.4]{stopwatch_start.png}. If an engine is in progress, BearChess waits for the last move before stopping the clocks. \textbf{These options are not available for games against MessChess engines.}
+
+\section{Force a move} \label{forceMove}
+
+The button \includegraphics[scale=0.4]{arrow_right.png} forces the engine to make a move. If it is not the engine's turn, the button \includegraphics[scale=0.4]{arrow_refresh.png} to switch sides appears \textbf{These options are only available if a player is playing against an engine}.
+
+\section{Switch side} \label{switchSide}
+
+The button \includegraphics[scale=0.4]{arrow_refresh.png} causes a  switch side. This makes it the engine's turn and it starts calculating the next move, the button \includegraphics[scale=0.4]{arrow_right.png} to force the move appears \textbf{These options are only available if a player is playing against an engine}.
 
 \section{Easy start or restart of a game} \label{easyStart}
 
@@ -3053,6 +3062,9 @@ These are some ideas what will come in one of the next versions.
 \subsection*{Version 1.0.0.3 $\Rightarrow$  1.0.1.0}
 \begin{itemize}		
 	\item {\color{blue}New}: Integration of engine Spike 1.4 by Ralf Schäfer and Volker Böhm.
+	\item {\color{blue}New}: Show moves in upper or lower case for DGT clocks.
+	\item {\color{blue}New}: Easily force move and switch side.
+	\item {\color{teal}Changes}: Improved performance reading opening books.
 	\item {\color{red}Fix}: Fix continue games.	
 \end{itemize}
 

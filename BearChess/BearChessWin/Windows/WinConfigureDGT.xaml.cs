@@ -88,6 +88,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxUseClock.IsChecked = _eChessBoardConfiguration.UseClock;
             checkBoxShowOnlyMoves.IsChecked = _eChessBoardConfiguration.ClockShowOnlyMoves;
             checkBoxSwitchSide.IsChecked = _eChessBoardConfiguration.ClockSwitchSide;
+            checkBoxUpperCase.IsChecked = _eChessBoardConfiguration.ClockUpperCase;
             textBlockClock.Text = _eChessBoardConfiguration.ClockSwitchSide ? "C" : "c";
             if (_eChessBoardConfiguration.LongMoveFormat)
             {
@@ -165,8 +166,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.UseClock = checkBoxUseClock.IsChecked.HasValue && checkBoxUseClock.IsChecked.Value;
             _eChessBoardConfiguration.ClockShowOnlyMoves = checkBoxShowOnlyMoves.IsChecked.HasValue && checkBoxShowOnlyMoves.IsChecked.Value;
             _eChessBoardConfiguration.ClockSwitchSide = checkBoxSwitchSide.IsChecked.HasValue && checkBoxSwitchSide.IsChecked.Value;
-            _eChessBoardConfiguration.LongMoveFormat =
-                radioButtonLongFormat.IsChecked.HasValue && radioButtonLongFormat.IsChecked.Value;
+            _eChessBoardConfiguration.ClockUpperCase = checkBoxUpperCase.IsChecked.HasValue && checkBoxUpperCase.IsChecked.Value;
+            _eChessBoardConfiguration.LongMoveFormat = radioButtonLongFormat.IsChecked.HasValue && radioButtonLongFormat.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -179,23 +180,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void CheckBoxUseClock_OnChecked(object sender, RoutedEventArgs e)
         {
             checkBoxShowOnlyMoves.IsEnabled = true;
+            checkBoxSwitchSide.IsEnabled = true;
+            checkBoxUpperCase.IsEnabled = true;
+            stackPanelStyle.IsEnabled = true;
         }
 
         private void CheckBoxUseClock_OnUnchecked(object sender, RoutedEventArgs e)
         {
             checkBoxShowOnlyMoves.IsEnabled = false;
+            checkBoxSwitchSide.IsEnabled = false;
+            checkBoxUpperCase.IsEnabled = false;
+            stackPanelStyle.IsEnabled = false;
         }
 
         private void CheckBoxSwitchSide_OnChecked(object sender, RoutedEventArgs e)
         {
             textBlockClock.Text = "C";
-            checkBoxSwitchSide.ToolTip = "Left left side shows the time for black";
+            checkBoxSwitchSide.ToolTip = "Left side shows the time for black";
         }
 
         private void CheckBoxSwitchSide_OnUnchecked(object sender, RoutedEventArgs e)
         {
             textBlockClock.Text = "c";
-            checkBoxSwitchSide.ToolTip = "Left left side shows the time for white";
+            checkBoxSwitchSide.ToolTip = "Left side shows the time for white";
         }
     }
 }

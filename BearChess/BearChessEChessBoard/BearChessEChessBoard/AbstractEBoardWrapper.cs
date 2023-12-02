@@ -34,6 +34,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected string _baud;
         protected bool _useBluetooth;
         protected bool _useClock;
+        protected bool _clockUpperCase;
         protected bool _showMovesOnly;
         protected bool _switchClockSide;
 
@@ -126,6 +127,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _baud = baud;
             _useBluetooth = useBluetooth;
             _useClock = useClock;
+            _clockUpperCase = configuration?.ClockUpperCase ?? false;
             _showMovesOnly = showMovesOnly;
             _switchClockSide = switchClockSide;
             UseChesstimation = useChesstimation;

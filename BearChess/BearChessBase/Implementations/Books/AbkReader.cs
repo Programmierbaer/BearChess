@@ -62,12 +62,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
         }
 
-        public BookMove[] GetMoves(BookMove lastMove)
+        public IBookMoveBase[] GetMoves(IBookMoveBase lastMove)
         {
-            return GetMoves(lastMove.NextMovePointer);
+            return GetMoves(((IArenaBookMove)lastMove).NextMovePointer);
         }
 
-        public BookMove[] FirstMoves()
+        public IBookMoveBase[] FirstMoves()
         {
             if (_book == null)
             {
@@ -83,7 +83,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
         }
 
-        private BookMove[] GetMoves(uint nextMovePointer)
+        private IBookMoveBase[] GetMoves(uint nextMovePointer)
         {
             if (_book == null)
             {
@@ -92,9 +92,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
             if (nextMovePointer.Equals(uint.MaxValue))
             {
-                return new BookMove[0];
+                return Array.Empty<IBookMoveBase>();
             }
-            List<BookMove> result = new List<BookMove>();
+            List<ArenaBookMove> result = new List<ArenaBookMove>();
             byte[] moveBytes = new byte[28];
             byte[] fourBytes = new byte[4];
             Array.Copy(_book, nextMovePointer * 28, moveBytes, 0, 28);
@@ -110,7 +110,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             Array.Copy(moveBytes, 12, fourBytes, 0, 4);
             uint noOfLoss = BitConverter.ToUInt32(fourBytes, 0);
             byte priority = moveBytes[3];
-            result.Add(new BookMove(_fields[moveBytes[0]], _fields[moveBytes[1]], priority, plyCount, nextMovePointer,
+            result.Add(new ArenaBookMove(_fields[moveBytes[0]], _fields[moveBytes[1]], priority, plyCount, nextMovePointer,
                 noOfGames, noOfWins, noOfLoss));
 
             Array.Copy(moveBytes, 24, fourBytes, 0, 4);
@@ -124,10 +124,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return AdjustBookMoves(result);
         }
 
-        private BookMove[] NextMoves(byte[] moveBytes)
+        private ArenaBookMove[] NextMoves(byte[] moveBytes)
         {
             byte[] fourBytes = new byte[4];
-            List<BookMove> result = new List<BookMove>();
+            List<ArenaBookMove> result = new List<ArenaBookMove>();
             Array.Copy(moveBytes, 16, fourBytes, 0, 4);
             int plyCount = BitConverter.ToInt32(fourBytes, 0);
 
@@ -140,7 +140,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             Array.Copy(moveBytes, 12, fourBytes, 0, 4);
             uint noOfLoss = BitConverter.ToUInt32(fourBytes, 0);
             byte priority = moveBytes[3];
-            result.Add(new BookMove(_fields[moveBytes[0]], _fields[moveBytes[1]], priority, plyCount,nextMovePointer,noOfGames, noOfWins, noOfLoss));
+            result.Add(new ArenaBookMove(_fields[moveBytes[0]], _fields[moveBytes[1]], priority, plyCount,nextMovePointer,noOfGames, noOfWins, noOfLoss));
 
             Array.Copy(moveBytes, 24, fourBytes, 0, 4);
             uint siblingPointer = BitConverter.ToUInt32(fourBytes, 0);
@@ -152,10 +152,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return result.ToArray();
         }
 
-        private BookMove[] AdjustBookMoves(IReadOnlyCollection<BookMove> bookMoves)
+        private IBookMoveBase[] AdjustBookMoves(IReadOnlyCollection<IArenaBookMove> bookMoves)
         {
             uint max = bookMoves.Max(m => m.NoOfGames);
-            foreach (BookMove bookMove in bookMoves.Where(b => b.Weight>0))
+            foreach (IArenaBookMove bookMove in bookMoves.Where(b => b.Weight>0))
             {
                 decimal factor =  (decimal) bookMove.NoOfGames / (decimal) max;
                 if (factor <= (decimal)0.01 && factor > (decimal)0.001)

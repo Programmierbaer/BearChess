@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase;
@@ -45,10 +44,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void StopForCoaches();
         void Stop(string engineName = "");
         void Quit(string engineName = "");
+        void GoWithMoves(string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "");
         void Go(string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "");
         void Go(int color, string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "");
+        void GoWithMoves(int color, string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "");
         void GoCommand(int color, string command, string engineName = "");
         void GoCommand(string command, string engineName = "");
+
+        void GoCommandWithMoves(int color, string command, string engineName = "");
+        void GoCommandWithMoves(string command, string engineName = "");
         void GoInfiniteForCoach(string fenPosition);
         void GoInfinite(int color = Fields.COLOR_EMPTY, string engineName = "");
         void CurrentColor(int color);
@@ -58,10 +62,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         void SwitchColor();
         void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType);
-    }
-
-    public abstract class AbstractEngineWindow
-    {
     }
 
    

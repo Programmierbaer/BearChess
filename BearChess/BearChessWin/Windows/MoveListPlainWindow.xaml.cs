@@ -55,6 +55,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
         public event EventHandler<SelectedMoveOfMoveList> ContentChanged;
+        public event EventHandler<SelectedMoveOfMoveList> RestartEvent;
 
         public MoveListPlainWindow(Configuration configuration)
         {
@@ -278,6 +279,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                        };
             movePlainUserControl.SelectedChanged += MovePlainUserControl_SelectedChanged;
             movePlainUserControl.ContentChanged += MovePlainUserControl_ContentChanged;
+            movePlainUserControl.RestartEvent += MovePlainUserControl_RestarEvent;
             movePlainUserControl.SetDisplayTypes(_figureType, _moveType, _countryType);
             movePlainUserControl.SetInformationDetails(_showOnlyMoves, _showFullInfo, _showComments, _showForWhite);
             if (move.FigureColor == Fields.COLOR_WHITE || (_lastMoveNumber==0))
@@ -312,6 +314,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             movePlainUserControl.BringIntoView();
         }
 
+
+        private void MovePlainUserControl_RestarEvent(object sender, EventArgs e)
+        {
+            _movePlainUserControl = sender as MovePlainUserControl;
+            if (_movePlainUserControl != null)
+            {
+                RestartEvent?.Invoke(this,
+                                       new SelectedMoveOfMoveList(_movePlainUserControl.CurrentMove,
+                                                                  _movePlainUserControl.CurrentMoveNumber
+                                       ));
+            }
+        }
         private void MovePlainUserControl_ContentChanged(object sender, EventArgs e)
         {
             _movePlainUserControl = sender as MovePlainUserControl;

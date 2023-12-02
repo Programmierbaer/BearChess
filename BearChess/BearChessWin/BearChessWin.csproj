@@ -125,7 +125,7 @@
     <Compile Include="BearChessSingleMainWindow.xaml.cs">
       <DependentUpon>BearChessSingleMainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HandlingClocks.cs" />
+    <Compile Include="Helper\HandlingClocks.cs" />
     <Compile Include="Helper\ArrowEnds.cs" />
     <Compile Include="Helper\ArrowLine.cs" />
     <Compile Include="Helper\ArrowLineBase.cs" />
@@ -1626,13 +1626,19 @@
     <Resource Include="Assets\Icons\download.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Icons\bearchess_3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\Icons\outlook_calendar_week.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\mark_to_download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\time_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\arrow_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\arrow_refresh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

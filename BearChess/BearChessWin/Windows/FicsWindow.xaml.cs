@@ -399,6 +399,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _loadedEngine.UciEngine.Quit();
         }
 
+        public void GoWithMoves(string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "")
+        {
+            //
+        }
+
         public void Go(string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "")
         {
             _logger?.LogInfo($"Send Go wTime:{wTime}  bTime:{bTime} wInc:{wInc}  bInc:{bInc} ");
@@ -416,19 +421,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        public void GoWithMoves(int color, string wTime, string bTime, string wInc = "0", string bInc = "0", string engineName = "")
+        {
+            //
+        }
+
         public void GoCommand(int color, string command, string engineName = "")
         {
             _logger?.LogInfo($"Send Go {command} for engines {engineName} with color {color}");
             if (_loadedEngine.Color == color)
             {
-                _loadedEngine.UciEngine.Go(command);
+                _loadedEngine.UciEngine.Go(command, false);
             }
         }
 
         public void GoCommand(string command, string engineName = "")
         {
             _logger?.LogInfo($"Send Go {command} for engines {engineName} ");
-            _loadedEngine.UciEngine.Go(command);
+            _loadedEngine.UciEngine.Go(command, false);
+        }
+
+        public void GoCommandWithMoves(int color, string command, string engineName = "")
+        {
+            //
+        }
+
+        public void GoCommandWithMoves(string command, string engineName = "")
+        {
+            //
         }
 
         public void GoInfiniteForCoach(string fenPosition)

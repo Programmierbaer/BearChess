@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
+using System.Speech.Synthesis;
 using System.Threading;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -83,7 +84,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private volatile bool _quit;
         private readonly object _locker = new object();
         private readonly OpeningBook _openingBook;
-        private BookMove _bookMove;
+        private IBookMoveBase _bookMove;
         private IUciWrapper _uciWrapper = null;
         private string _initFen;
         private  RECT _rect;
@@ -307,7 +308,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _allMoves.Clear();
             _allMoves.Add("position startpos moves");
             SendToEngine("ucinewgame");
-            _bookMove = _lookForBookMoves ? _openingBook?.GetMove(new BookMove(string.Empty,string.Empty,0)) : null;
+            _bookMove = _lookForBookMoves ? _openingBook?.GetMove(new PolyglotBookMove(string.Empty,string.Empty,0)) : null;
             IsReady();
             if (_uciInfo.WaitForStart && ownerWindow!=null)
             {
@@ -455,6 +456,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+
+        public void GoWithMoves(string wTime, string bTime, string wInc = "0", string bInc = "0")
+        {
+            if (_allMoves.Count == 0)
+            {
+                if (string.IsNullOrEmpty(_initFen))
+                {
+                    _allMoves.Add("position startpos moves");
+                }
+                else
+                {
+                    _allMoves.Add($"position fen {_initFen} moves");
+                }
+
+                SendToEngine("ucinewgame");
+            }
+
+            SendToEngine(string.Join(" ", _allMoves));
+            SendToEngine($"go wtime {wTime} btime {bTime} winc {wInc} binc {bInc}");
+        }
+
         public void Go(string wTime, string bTime, string wInc = "0", string bInc = "0")
         {
             if (_bookMove == null || _bookMove.EmptyMove)
@@ -476,10 +498,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        public void Go(string command)
+        public void Go(string command, bool goWithMoves)
         {
             if (_bookMove == null || _bookMove.EmptyMove)
             {
+                if (goWithMoves)
+                {
+                    if (_allMoves.Count == 0)
+                    {
+                        if (string.IsNullOrEmpty(_initFen))
+                        {
+                            _allMoves.Add("position startpos moves");
+                        }
+                        else
+                        {
+                            _allMoves.Add($"position fen {_initFen} moves");
+                        }
+
+                        SendToEngine("ucinewgame");
+                    }
+                    SendToEngine(string.Join(" ", _allMoves));
+                }
+
                 SendToEngine($"go {command}");
             }
             else

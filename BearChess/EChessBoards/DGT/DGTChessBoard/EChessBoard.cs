@@ -15,6 +15,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
     public class EChessBoard : AbstractEBoard
     {
         private readonly bool _useClock;
+        private readonly bool _clockUpperCase;
         private readonly bool _showOnlyMoves;
         private readonly bool _switchClockSide;
         private readonly bool _useBluetooth;
@@ -158,10 +159,11 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         private int _currentColor;
 
 
-        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, bool useClock, bool showOnlyMoves, bool switchClockSide)
+        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, bool useClock, bool showOnlyMoves, bool switchClockSide, bool clockUpperCase)
         {
             _useBluetooth = useBluetooth;
             _useClock = useClock;
+            _clockUpperCase = clockUpperCase;
             _showOnlyMoves = showOnlyMoves;
             _switchClockSide = switchClockSide;
             _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
@@ -295,7 +297,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             _serialCommunication.Send(allBytes.ToArray());
             if (ledsParameter.IsMove && ledsParameter.FieldNames.Length == 2)
             {
-                SendDisplayToClock(ledsParameter.DisplayString);
+                SendDisplayToClock(_clockUpperCase ? ledsParameter.DisplayString.ToUpper() : ledsParameter.DisplayString);
             }
             if (_useBluetooth)
             {

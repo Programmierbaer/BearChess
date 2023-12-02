@@ -21,7 +21,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly List<string> _allMoves = new List<string>();
         private readonly ConcurrentQueue<string> _concurrentFenPositions = new ConcurrentQueue<string>();
 
-        public event EventHandler<BookMove> SelectedMoveChanged;
+        public event EventHandler<IBookMoveBase> SelectedMoveChanged;
 
         public BookWindow()
         {
@@ -45,12 +45,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             thread.Start();
         }
 
-        public BookWindow(IEnumerable<BookMove> bookMoves) : this()
+        public BookWindow(IEnumerable<IBookMoveBase> bookMoves) : this()
         {
             dataGridMoves.ItemsSource = bookMoves;
         }
 
-        public void SetMoves(BookMove[] bookMoves) 
+        public void SetMoves(IBookMoveBase[] bookMoves) 
         {
             dataGridMoves.ItemsSource = bookMoves;
         }
@@ -98,20 +98,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DataGridMoves_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (dataGridMoves.SelectedItem is BookMove)
+            if (dataGridMoves.SelectedItem is IBookMoveBase)
             {
-                OnSelectedMoveChanged(dataGridMoves.SelectedItem as BookMove);
+                OnSelectedMoveChanged(dataGridMoves.SelectedItem as IBookMoveBase);
             }
         }
 
         private void BookWindow_OnClosing(object sender, CancelEventArgs e)
         {
             _openingBook = null;
+            GC.Collect();
             _configuration.SetDoubleValue("BookWindowTop", Top);
             _configuration.SetDoubleValue("BookWindowLeft", Left);
         }
 
-        protected virtual void OnSelectedMoveChanged(BookMove e)
+        protected virtual void OnSelectedMoveChanged(IBookMoveBase e)
         {
             SelectedMoveChanged?.Invoke(this, e);
         }
