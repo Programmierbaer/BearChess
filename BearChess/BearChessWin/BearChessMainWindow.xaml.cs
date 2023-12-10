@@ -1618,11 +1618,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"go depth {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"depth {_timeControlWhite.Value1}");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"go depth {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"depth {_timeControlWhite.Value1}");
                     }
 
 
@@ -1636,11 +1636,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"go nodes {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"nodes {_timeControlWhite.Value1}");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"go nodes {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"nodes {_timeControlWhite.Value1}");
                     }
 
                     break;
@@ -1653,11 +1653,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"go movetime {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"movetime {_timeControlWhite.Value1}");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"go movetime {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"movetime {_timeControlWhite.Value1}");
                     }
 
 
@@ -1831,11 +1831,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"go depth {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"depth {_timeControlWhite.Value1}");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"go depth {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"depth {_timeControlWhite.Value1}");
                     }
 
 
@@ -1849,11 +1849,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"go nodes {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"nodes {_timeControlWhite.Value1}");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"go nodes {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"nodes {_timeControlWhite.Value1}");
                     }
 
 
@@ -1867,11 +1867,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"go movetime {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"movetime {_timeControlWhite.Value1}");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"go movetime {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"movetime {_timeControlWhite.Value1}");
                     }
 
 
