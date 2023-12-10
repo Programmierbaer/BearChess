@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.1.0}
+\fancyhead[R]{Version 1.0.2.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{02.12.2023} 
+\date{10.12.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -62,7 +62,7 @@ Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@
 \section{Quick start}
 \begin{itemize}
 	\item Simply unpack the file BearChessWin.zip into a new folder.
-	\item Start BearChess with a double-click on BearChessWin.exe
+	\item Start BearChess with a double-click on \textbf{BearChessWin.exe}
 	\item Connect your electronic chessboard to your computer.
 	\item Set all chessmen to their start position.
 	\item Configure the electronic chessboard connection (\textbf{\ref{ElectronicChessBoard}  \nameref{ElectronicChessBoard}} on page \pageref{ElectronicChessBoard}).
@@ -1869,7 +1869,10 @@ Normally white and black have the same time control. With BearChess, you can def
 	\item \textbf{Time per game with increment} limits the entire game to the given minutes, but gives extra seconds for every move.
 	\item \textbf{Time per given move} limits the game for moves in a certain time frame, e.g. 40 moves in 60 minutes.
 	\item \textbf{Average time per move} requires the engine to execute the moves in an average time of seconds or minutes.
-	\item \textbf{Adapted time} gives the program the same average time in which the player makes his moves.	
+	\item \textbf{Adapted time} gives the engine the same average time in which the player makes his moves.	
+	\item \textbf{Depth} how deep the engine is allowed to search.	
+	\item \textbf{Nodes} how many nodes the engine is allowed to examine.
+    \item \textbf{Exact time per move} limits the time for each move.
 \end{itemize}
 
 
@@ -3043,6 +3046,7 @@ The electronic chessboards work with different drivers for the COM interface. Du
 These are some ideas what will come in one of the next versions.
 
 \begin{itemize}		
+	    \item More time control settings.
 		\item Extend the game analysis.
 		\item Improve electronic chess board handling.
   	    \item Improve the performance of the opening book.
@@ -3058,6 +3062,13 @@ These are some ideas what will come in one of the next versions.
 
 \section{Change log}
 
+
+\subsection*{Version 1.0.1.0 $\Rightarrow$  1.0.2.0}
+\begin{itemize}		
+	\item {\color{blue}New}: New time control "Depth", "Nodes" and "Exact time per move".
+	\item {\color{red}Fix}: Time control "Time per given moves".	
+	\item {\color{red}Fix}: Force move and switch side.
+\end{itemize}
 
 \subsection*{Version 1.0.0.3 $\Rightarrow$  1.0.1.0}
 \begin{itemize}		

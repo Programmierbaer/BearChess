@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Border Margin="5,0,5,0" Name="borderWarning" Height="10" Grid.Row="0" Background="Red" Visibility="Hidden">
         </Border>
@@ -23,5 +24,6 @@
             <bearChessWin:DigitalNumberUserControl x:Name="digitalNumberUserControlSec1" Margin="5,5,5,5" />
             <bearChessWin:DigitalNumberUserControl x:Name="digitalNumberUserControlSec2" Margin="0,5,5,5" />
         </StackPanel>
+        <TextBlock Name="textBlockInfo" Margin="5,0,0,0" Grid.Row="2" Grid.Column="0" FontSize="12" FontWeight="Normal" />
     </Grid>
 </Window>

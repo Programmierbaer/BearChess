@@ -53,6 +53,9 @@
                             <ComboBoxItem>Time per given moves</ComboBoxItem>
                             <ComboBoxItem>Average time per move</ComboBoxItem>
                             <ComboBoxItem>Adapted time</ComboBoxItem>
+                            <ComboBoxItem>Depth</ComboBoxItem>
+                            <ComboBoxItem>Nodes</ComboBoxItem>
+                            <ComboBoxItem>Exact time per move</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
 
@@ -112,7 +115,33 @@
                                          GroupName="averageTime" Content="min." />
                         </StackPanel>
                     </Border>
-
+                    <Border Name="borderDepth" Grid.Column="1" Grid.Row="1" BorderBrush="Gray" BorderThickness="0"
+                            Margin="5"
+                            Visibility="Collapsed" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <bearChessWin:NumericUpDownUserControl x:Name="numericUpDownUserControlDepth" Height="40"
+                                                            MinValue="1" MaxValue="999" Value="1" />
+                            <Label VerticalAlignment="Center">plies</Label>
+                        </StackPanel>
+                    </Border>
+                    <Border Name="borderNodes" Grid.Column="1" Grid.Row="1" BorderBrush="Gray" BorderThickness="0"
+                            Margin="5"
+                            Visibility="Collapsed" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <bearChessWin:NumericUpDownUserControl x:Name="numericUpDownUserControlNodes" Height="40"
+                                                            MinValue="1" MaxValue="999999999" Value="1" />
+                            <Label VerticalAlignment="Center">nodes</Label>
+                        </StackPanel>
+                    </Border>
+                    <Border Name="borderExactTime" Grid.Column="1" Grid.Row="1" BorderBrush="Gray" BorderThickness="0"
+                            Margin="5"
+                            Visibility="Collapsed" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <bearChessWin:NumericUpDownUserControl x:Name="numericUpDownUserControlExactTime" Height="40"
+                                                            MinValue="1" MaxValue="999" Value="1" />
+                            <Label VerticalAlignment="Center">sec.</Label>
+                        </StackPanel>
+                    </Border>
                     <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Margin="5">
                         <Label VerticalAlignment="Center" Width="90">Type:</Label>
                         <ComboBox Name="comboBoxTournamentType" Width="200" Height="30"

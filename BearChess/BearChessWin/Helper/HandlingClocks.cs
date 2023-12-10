@@ -82,8 +82,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 if (timeControl.HumanValue > 0 && whiteIsPlayer)
                 {
-                    chessClocksWindowWhite.SetTime(hourH, timeControl.Value2 + timeControl.HumanValue - hourH * 60,
-                                                   0);
+                    chessClocksWindowWhite.SetTime(hourH, timeControl.Value2 + timeControl.HumanValue - hourH * 60, 0);
                     chessClocksWindowWhite.SetTooltip(
                         $"{timeControl.Value1} moves in {timeControl.Value2} minutes with {timeControl.HumanValue} extra minutes ");
                 }
@@ -91,6 +90,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     chessClocksWindowWhite.SetTime(hour, timeControl.Value2 - hour * 60, 0);
                     chessClocksWindowWhite.SetTooltip($"{timeControl.Value1} moves in {timeControl.Value2} minutes ");
+                    chessClocksWindowWhite.SetInfo($"{timeControl.Value1} moves in {timeControl.Value2} minutes ");
                 }
                 hourWhite = hour;
                 minuteWhite = timeControl.Value1 - hour * 60;
@@ -111,6 +111,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 chessClocksWindowWhite.SetTime(0, 0, 0);
                 chessClocksWindowWhite.CountDown = false;
                 chessClocksWindowWhite.SetTooltip("Adapted time ");
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Depth)
+            {
+                chessClocksWindowWhite.SetTime(0, 0, 0);
+                chessClocksWindowWhite.CountDown = false;
+                chessClocksWindowWhite.SetTooltip($"Search depth {timeControl.Value1}");
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Nodes)
+            {
+                chessClocksWindowWhite.SetTime(0, 0, 0);
+                chessClocksWindowWhite.CountDown = false;
+                chessClocksWindowWhite.SetTooltip($"Search nodes {timeControl.Value1}");
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Movetime)
+            {
+                chessClocksWindowWhite.SetTime(0, 0, 0);
+                chessClocksWindowWhite.CountDown = false;
+                chessClocksWindowWhite.SetTooltip($"{timeControl.Value1} sec. per move");
             }
 
 
@@ -176,6 +194,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     chessClocksWindowBlack.SetTime(hour, timeControlBlack.Value2 - hour * 60, 0);
                     chessClocksWindowBlack.SetTooltip($"{timeControlBlack.Value1} moves in {timeControlBlack.Value2} minutes ");
+                    chessClocksWindowBlack.SetInfo($"{timeControlBlack.Value1} moves in {timeControlBlack.Value2} minutes ");
                 }
 
                 hourBlack = hourH;
@@ -190,14 +209,32 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 chessClocksWindowBlack.CountDown = false;
                 var secOrMin = timeControlBlack.AverageTimInSec ? "sec." : "min.";
                 chessClocksWindowBlack.SetTooltip($"Average {timeControlBlack.Value1} {secOrMin} per move");
-            } else if (timeControlBlack.TimeControlType == TimeControlEnum.Adapted)
+            } 
+            if (timeControlBlack.TimeControlType == TimeControlEnum.Adapted)
             {
                 chessClocksWindowBlack.SetTime(0, 0, 0);
                 chessClocksWindowBlack.CountDown = false;
                 chessClocksWindowBlack.SetTooltip("Adapted time ");
             }
-            else
-                eChessBoard?.SetClock(hourWhite, minuteWhite, secWhite, hourBlack, minuteBlack, secBlack);
+            if (timeControlBlack.TimeControlType == TimeControlEnum.Depth)
+            {
+                chessClocksWindowBlack.SetTime(0, 0, 0);
+                chessClocksWindowBlack.CountDown = false;
+                chessClocksWindowBlack.SetTooltip($"Search depth {timeControlBlack.Value1}");
+            }
+            if (timeControlBlack.TimeControlType == TimeControlEnum.Nodes)
+            {
+                chessClocksWindowBlack.SetTime(0, 0, 0);
+                chessClocksWindowBlack.CountDown = false;
+                chessClocksWindowBlack.SetTooltip($"Search nodes {timeControlBlack.Value1}");
+            }
+            if (timeControlBlack.TimeControlType == TimeControlEnum.Movetime)
+            {
+                chessClocksWindowBlack.SetTime(0, 0, 0);
+                chessClocksWindowBlack.CountDown = false;
+                chessClocksWindowBlack.SetTooltip($"{timeControlBlack.Value1} sec. per move");
+            }
+
         }
     }
 }

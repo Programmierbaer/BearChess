@@ -16,6 +16,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void CorrectTime(int hh, int mm, int ss);
         void SetContinueTime(ClockTime clockTime, int extraSeconds = 0);
         void SetTooltip(string tooltip);
+        void SetInfo(string info);
         void Reset();
         void Stop();
         void Go();

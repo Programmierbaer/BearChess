@@ -51,6 +51,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockSec1.Foreground = new SolidColorBrush(inversColor);
             textBlock1.Foreground = new SolidColorBrush(inversColor);
             textBlock2.Foreground = new SolidColorBrush(inversColor);
+            textBlockInfo.Foreground = new SolidColorBrush(inversColor);
             var thread = new Thread(updateTime) { IsBackground = true };
             thread.Start();
             Title = capture;
@@ -93,6 +94,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ToolTip = tooltip;
         }
 
+        public void SetInfo(string info)
+        {
+            textBlockInfo.Text = info;
+        }
+
         public void Reset()
         {
             borderWarning.Visibility = Visibility.Hidden;
@@ -127,6 +133,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderWarning.Visibility = Visibility.Hidden;
             _duration = TimeSpan.Zero;
         }
+
+
 
 
         public void CorrectTime(int hh, int mm, int ss)
@@ -245,12 +253,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ShowDigitalNumbers(string hh, string mm, string ss)
         {
-            
-            
-                textBlockHour1.Text = hh.Length == 2 ? hh : 0 + hh;
-                textBlockMin1.Text = mm.Length == 2 ? mm : 0 + mm;
-                textBlockSec1.Text = ss.Length == 2 ? ss : 0 + ss;
-            
+            textBlockHour1.Text = hh.Length == 2 ? hh : 0 + hh;
+            textBlockMin1.Text = mm.Length == 2 ? mm : 0 + mm;
+            textBlockSec1.Text = ss.Length == 2 ? ss : 0 + ss;
         }
 
         private void SetDigitalNumbers(int hh, int mm, int ss)

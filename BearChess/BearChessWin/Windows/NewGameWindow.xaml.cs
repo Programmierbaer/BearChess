@@ -114,6 +114,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 timeControl.Value1 = 5;
                 timeControl.Value2 = 0;
             }
+            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Depth"))
+            {
+                timeControl.TimeControlType = TimeControlEnum.Depth;
+                timeControl.Value1 = numericUpDownUserControlDepth.Value;
+                timeControl.Value2 = 0;
+            }
+            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Nodes"))
+            {
+                timeControl.TimeControlType = TimeControlEnum.Nodes;
+                timeControl.Value1 = numericUpDownUserControlNodes.Value;
+                timeControl.Value2 = 0;
+            }
+            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Exact"))
+            {
+                timeControl.TimeControlType = TimeControlEnum.Movetime;
+                timeControl.Value1 = numericUpDownUserControlExactTime.Value;
+                timeControl.Value2 = 0;
+            }
+
 
             timeControl.HumanValue = numericUpDownUserExtraTime.Value;
             timeControl.AllowTakeBack = AllowTakeMoveBack;
@@ -167,6 +186,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     timeControl.TimeControlType = TimeControlEnum.Adapted;
                     timeControl.Value1 = 5;
+                    timeControl.Value2 = 0;
+                }
+                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Depth"))
+                {
+                    timeControl.TimeControlType = TimeControlEnum.Depth;
+                    timeControl.Value1 = numericUpDownUserControlDepth2.Value;
+                    timeControl.Value2 = 0;
+                }
+                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Nodes"))
+                {
+                    timeControl.TimeControlType = TimeControlEnum.Nodes;
+                    timeControl.Value1 = numericUpDownUserControlNodes2.Value;
+                    timeControl.Value2 = 0;
+                }
+                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Exact"))
+                {
+                    timeControl.TimeControlType = TimeControlEnum.Movetime;
+                    timeControl.Value1 = numericUpDownUserControlExactTime2.Value;
                     timeControl.Value2 = 0;
                 }
 
@@ -277,6 +314,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[4];
             }
+            if (timeControl.TimeControlType == TimeControlEnum.Depth)
+            {
+                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[5];
+                numericUpDownUserControlDepth.Value = timeControl.Value1;
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Nodes)
+            {
+                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[6];
+                numericUpDownUserControlNodes.Value = timeControl.Value1;
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Movetime)
+            {
+                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[7];
+                numericUpDownUserControlExactTime.Value = timeControl.Value1;
+            }
 
             numericUpDownUserExtraTime.Value = timeControl.HumanValue;
             radioButtonSecond.IsChecked = timeControl.AverageTimInSec;
@@ -321,6 +373,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (timeControl.TimeControlType == TimeControlEnum.Adapted)
             {
                 comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[4];
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Depth)
+            {
+                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[5];
+                numericUpDownUserControlDepth2.Value = timeControl.Value1;
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Nodes)
+            {
+                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[6];
+                numericUpDownUserControlNodes2.Value = timeControl.Value1;
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Movetime)
+            {
+                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[7];
+                numericUpDownUserControlExactTime2.Value = timeControl.Value1;
             }
 
             radioButtonSecond2.IsChecked = timeControl.AverageTimInSec;
@@ -372,6 +439,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderTimePerGameWithIncrement.Visibility = Visibility.Collapsed;
             borderTimePerGivenMoves.Visibility = Visibility.Collapsed;
             borderAverageTimePerMove.Visibility = Visibility.Collapsed;
+            borderDepth.Visibility = Visibility.Collapsed;
+            borderNodes.Visibility = Visibility.Collapsed;
+            borderExactTime.Visibility = Visibility.Collapsed;
             if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game with increment"))
             {
                 borderTimePerGameWithIncrement.Visibility = Visibility.Visible;
@@ -394,7 +464,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 borderAverageTimePerMove.Visibility = Visibility.Visible;
             }
-          
+            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Depth"))
+            {
+                borderDepth.Visibility = Visibility.Visible;
+            }
+            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Nodes"))
+            {
+                borderNodes.Visibility = Visibility.Visible;
+            }
+            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Exact"))
+            {
+                borderExactTime.Visibility = Visibility.Visible;
+            }
+
         }
 
       
@@ -756,6 +838,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderTimePerGameWithIncrement2.Visibility = Visibility.Collapsed;
             borderTimePerGivenMoves2.Visibility = Visibility.Collapsed;
             borderAverageTimePerMove2.Visibility = Visibility.Collapsed;
+            borderDepth2.Visibility = Visibility.Collapsed;
+            borderNodes2.Visibility = Visibility.Collapsed;
+            borderExactTime2.Visibility = Visibility.Collapsed;
             comboBoxTimeControl2.SelectedIndex = 0;
             checkBoxRelaxed.IsChecked = false;
             textBlockTimeControl1.Text = "Time control ♔:";
@@ -769,6 +854,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderTimePerGameWithIncrement2.Visibility = Visibility.Collapsed;
             borderTimePerGivenMoves2.Visibility = Visibility.Collapsed;
             borderAverageTimePerMove2.Visibility = Visibility.Collapsed;
+            borderDepth2.Visibility = Visibility.Collapsed;
+            borderNodes2.Visibility = Visibility.Collapsed;
+            borderExactTime2.Visibility = Visibility.Collapsed;
             textBlockTimeControl1.Text = "Time control:";
             SetRelaxedVisibility();
         }
@@ -784,6 +872,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderTimePerGameWithIncrement2.Visibility = Visibility.Collapsed;
             borderTimePerGivenMoves2.Visibility = Visibility.Collapsed;
             borderAverageTimePerMove2.Visibility = Visibility.Collapsed;
+            borderDepth2.Visibility = Visibility.Collapsed;
+            borderNodes2.Visibility = Visibility.Collapsed;
+            borderExactTime2.Visibility = Visibility.Collapsed;
             if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per game with increment"))
             {
                 borderTimePerGameWithIncrement2.Visibility = Visibility.Visible;
@@ -805,6 +896,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Average time per move"))
             {
                 borderAverageTimePerMove2.Visibility = Visibility.Visible;
+            }
+            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Depth"))
+            {
+                borderDepth2.Visibility = Visibility.Visible;
+            }
+            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Nodes"))
+            {
+                borderNodes2.Visibility = Visibility.Visible;
+            }
+            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Exact"))
+            {
+                borderExactTime2.Visibility = Visibility.Visible;
             }
         }
 

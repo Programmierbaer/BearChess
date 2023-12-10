@@ -60,12 +60,11 @@ namespace www.SoLaNoSoft.com.BearChessTools
                     //    }
                     //}
 
-                    //var propertyData = managementBaseObjects[0].Properties;
                     var ports = managementBaseObjects.Where(p => p["Caption"].ToString().Contains(filter)
                                                             || p["DeviceId"].ToString().Contains(filter)).Select(p => p["Caption"].ToString()).ToList();
                     foreach (var portname in portnames)
                     {
-                        if (ports.Any(p =>p.Contains(portname)))
+                        if (ports.Any(p => p.Contains(portname)))
                         {
                             result.Add(portname);
                         }

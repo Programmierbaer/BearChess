@@ -1484,47 +1484,53 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 chessBoardUcGraphics.ShowRobot(true);
             }
-            if (_timeControlBlack.TimeControlType == TimeControlEnum.AverageTimePerMove || _timeControlBlack.TimeControlType == TimeControlEnum.Adapted)
+
+            switch (_timeControlBlack.TimeControlType)
             {
-                int second = 0;
-                if (_timeControlBlack.TimeControlType == TimeControlEnum.Adapted)
+                case TimeControlEnum.AverageTimePerMove:
+                case TimeControlEnum.Adapted:
                 {
-                    var totalSeconds = _chessClocksWindowWhite.GetElapsedTime().TotalSeconds;
-                    //                                totalSeconds = _chessClocksWindowBlack.GetElapsedTime().TotalSeconds;
-                    second = totalSeconds * 1000 / chessBoardFullMoveNumber * 8;
-                    // _fileLogger?.LogDebug($"Adapted: Seconds: {totalSeconds}  Moves: {chessBoardFullMoveNumber}: Average: {totalSeconds / chessBoardFullMoveNumber}");
-                    if (second == 0)
+                    int second = 0;
+                    if (_timeControlBlack.TimeControlType == TimeControlEnum.Adapted)
+                    {
+                        var totalSeconds = _chessClocksWindowWhite.GetElapsedTime().TotalSeconds;
+                        //                                totalSeconds = _chessClocksWindowBlack.GetElapsedTime().TotalSeconds;
+                        second = totalSeconds * 1000 / chessBoardFullMoveNumber * 8;
+                        // _fileLogger?.LogDebug($"Adapted: Seconds: {totalSeconds}  Moves: {chessBoardFullMoveNumber}: Average: {totalSeconds / chessBoardFullMoveNumber}");
+                        if (second == 0)
+                        {
+                            second = _timeControlBlack.Value1 * 8 * 1000;
+                        }
+                    }
+                    else
                     {
                         second = _timeControlBlack.Value1 * 8 * 1000;
                     }
+
+                    if (!_timeControlBlack.AverageTimInSec)
+                    {
+                        second *= 60;
+                    }
+
+                    _chessClocksWindowBlack?.Go();
+                    _eChessBoard?.StartClock(false);
+                    if (goWithMoves)
+                    {
+                        _engineWindow?.GoCommandWithMoves($"wtime {second} btime {second} movestogo 9");
+                    }
+                    else
+                    {
+                        _engineWindow?.GoCommand($"wtime {second} btime {second} movestogo 9");
+                    }
+
+                    break;
                 }
-                else
+                case TimeControlEnum.TimePerGameIncrement:
                 {
-                    second = _timeControlBlack.Value1 * 8 * 1000;
-                }
-                if (!_timeControlBlack.AverageTimInSec)
-                {
-                    second *= 60;
-                }
-                _chessClocksWindowBlack?.Go();
-                _eChessBoard?.StartClock(false);
-                if (goWithMoves)
-                {
-                    _engineWindow?.GoCommandWithMoves($"wtime {second} btime {second} movestogo 9");
-                }
-                else
-                {
-                    _engineWindow?.GoCommand($"wtime {second} btime {second} movestogo 9");
-                }
-                
-            }
-            else
-            {
-                var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
-                var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
-                if ((_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                    || (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement))
-                {
+                    var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
+                    var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
+
+
                     wTime += _timeControlWhite.Value2 * 1000;
                     bTime += _timeControlBlack.Value2 * 1000;
                     int wTimeInc = 0;
@@ -1535,32 +1541,141 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         wTimeInc = _timeControlWhite.Value2 * 1000;
                     }
 
-                    if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                    {
-                        bTime += _timeControlBlack.Value2 * 1000;
-                        bTimeInc = _timeControlBlack.Value2 * 1000;
-                    }
+                    bTime += _timeControlBlack.Value2 * 1000;
+                    bTimeInc = _timeControlBlack.Value2 * 1000;
+
                     _chessClocksWindowBlack?.Go();
                     _eChessBoard?.StartClock(false);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoWithMoves(Fields.COLOR_BLACK, wTime.ToString(), bTime.ToString(), wTimeInc.ToString(),
-                            bTimeInc.ToString());
+                        _engineWindow?.GoWithMoves(Fields.COLOR_BLACK, wTime.ToString(), bTime.ToString(), wTimeInc.ToString(), bTimeInc.ToString());
                     }
                     else
                     {
-                        _engineWindow?.Go(Fields.COLOR_BLACK, wTime.ToString(), bTime.ToString(), wTimeInc.ToString(),
-                            bTimeInc.ToString());
+                        _engineWindow?.Go(Fields.COLOR_BLACK, wTime.ToString(), bTime.ToString(), wTimeInc.ToString(), bTimeInc.ToString());
+
                     }
+
+
+                    break;
                 }
-                else
+                case TimeControlEnum.TimePerMoves:
                 {
+                    var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
+                    var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
+                    _chessClocksWindowBlack.SetInfo($"{_timeControlBlack.Value1} moves in {_timeControlBlack.Value2} minutes");
+                    _chessClocksWindowBlack.SetTooltip($"{_timeControlBlack.Value1} moves in {_timeControlBlack.Value2} minutes");
+                    _chessClocksWindowBlack?.Go();
+                    _eChessBoard?.StartClock(false);
+                    int moveNumber = chessBoardFullMoveNumber - 1;
+                    var cycle = (moveNumber / _timeControlBlack.Value1) + 1;
+                    var cycle2 = moveNumber > 0 &&  ((_timeControlBlack.Value1 * (cycle-1)) == (moveNumber));
+                    int movesToGo = (_timeControlBlack.Value1 * cycle) - moveNumber;
+                    if (cycle2)
+                    {
+                        var hour = _timeControlBlack.Value2 / 60;
+                        var hourH = (_timeControlBlack.Value2 + _timeControlBlack.HumanValue) / 60;
+                        var seconds = _chessClocksWindowBlack.GetClockTime().TotalSeconds;
+                        var minutes = _timeControlBlack.Value2 - hour * 60;
+                        hour += (seconds / 60 / 60);
+                        minutes += (seconds / 60) ;
+                        seconds -= ((seconds / 60 / 60) * 3600 + ((seconds / 60) * 60));
+                        if (_timeControlBlack.HumanValue>0)
+                        {
+                            _chessClocksWindowBlack.CorrectTime(hourH, _timeControlBlack.Value2 + _timeControlBlack.HumanValue - hourH * 60, 0);
+                        }
+                        else
+                        {
+                            _chessClocksWindowBlack.CorrectTime(hour,minutes, seconds);
+                            _chessClocksWindowBlack.SetInfo($"{_timeControlBlack.Value1} moves in {_timeControlBlack.Value2} minutes ");
+                        }
+
+                    }
+                    else
+                    {
+                        _chessClocksWindowBlack.SetInfo($"Remaining moves {movesToGo}");
+                    }
+
+                    wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
+                    bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
+                    if (goWithMoves)
+                    {
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"wtime {wTime} btime {bTime} movestogo {movesToGo}");
+                    }
+                    else
+                    {
+                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"wtime {wTime} btime {bTime} movestogo {movesToGo}");
+                    }
+
+
+                    break;
+                }
+                case TimeControlEnum.Depth:
+                {
+                    _chessClocksWindowBlack.SetTooltip($"Search depth {_timeControlBlack.Value1} plies");
+                    _chessClocksWindowBlack.SetInfo($"Search depth {_timeControlBlack.Value1} plies");
+                    _chessClocksWindowBlack?.Go();
+                    _eChessBoard?.StartClock(true);
+                    if (goWithMoves)
+                    {
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"go depth {_timeControlWhite.Value1}");
+                    }
+                    else
+                    {
+                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"go depth {_timeControlWhite.Value1}");
+                    }
+
+
+                    break;
+                }
+                case TimeControlEnum.Nodes:
+                {
+                    _chessClocksWindowBlack.SetTooltip($"Search {_timeControlBlack.Value1} nodes");
+                    _chessClocksWindowBlack.SetInfo($"Search {_timeControlBlack.Value1} nodes");
+                        _chessClocksWindowBlack?.Go();
+                    _eChessBoard?.StartClock(true);
+                    if (goWithMoves)
+                    {
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"go nodes {_timeControlWhite.Value1}");
+                    }
+                    else
+                    {
+                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"go nodes {_timeControlWhite.Value1}");
+                    }
+
+                    break;
+                }
+                case TimeControlEnum.Movetime:
+                {
+                    _chessClocksWindowBlack.SetTooltip($"{_timeControlBlack.Value1} seconds per move");
+                    _chessClocksWindowBlack.SetInfo($"{_timeControlBlack.Value1} sec. per move");
+                        _chessClocksWindowBlack?.Go();
+                    _eChessBoard?.StartClock(true);
+                    if (goWithMoves)
+                    {
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"go movetime {_timeControlWhite.Value1}");
+                    }
+                    else
+                    {
+                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"go movetime {_timeControlWhite.Value1}");
+                    }
+
+
+                    break;
+                }
+                default:
+                {
+                    var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
+                    var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
+
                     _chessClocksWindowBlack?.Go();
                     _eChessBoard?.StartClock(false);
                     if (goWithMoves)
                         _engineWindow?.GoWithMoves(Fields.COLOR_BLACK, wTime.ToString(), bTime.ToString());
                     else
                         _engineWindow?.Go(Fields.COLOR_BLACK, wTime.ToString(), bTime.ToString());
+
+                    break;
                 }
             }
         }
@@ -1573,81 +1688,207 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 chessBoardUcGraphics.ShowRobot(true);
             }
-            if (_timeControlWhite.TimeControlType == TimeControlEnum.AverageTimePerMove || _timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
+
+            switch (_timeControlWhite.TimeControlType)
             {
-                int second = 0;
-                if (_timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
+                case TimeControlEnum.AverageTimePerMove:
+                case TimeControlEnum.Adapted:
                 {
-                    var totalSeconds = _chessClocksWindowBlack.GetElapsedTime().TotalSeconds;
-                    second = totalSeconds * 1000 / chessBoardFullMoveNumber * 8;
-                    _fileLogger?.LogDebug($"Adapted: Seconds: {totalSeconds}  Moves: {chessBoardFullMoveNumber}: Average: {totalSeconds / chessBoardFullMoveNumber}");
-                    if (second == 0)
+                    int second = 0;
+                    if (_timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
+                    {
+                        var totalSeconds = _chessClocksWindowBlack.GetElapsedTime().TotalSeconds;
+                        second = totalSeconds * 1000 / chessBoardFullMoveNumber * 8;
+                        _fileLogger?.LogDebug(
+                            $"Adapted: Seconds: {totalSeconds}  Moves: {chessBoardFullMoveNumber}: Average: {totalSeconds / chessBoardFullMoveNumber}");
+                        if (second == 0)
+                        {
+                            second = _timeControlWhite.Value1 * 8 * 1000;
+                        }
+
+                    }
+                    else
                     {
                         second = _timeControlWhite.Value1 * 8 * 1000;
                     }
 
-                }
-                else
-                {
-                    second = _timeControlWhite.Value1 * 8 * 1000;
-                }
-
-                if (!_timeControlWhite.AverageTimInSec)
-                {
-                    second *= 60;
-                }
-                _chessClocksWindowWhite?.Go();
-                _eChessBoard?.StartClock(true);
-                if (goWithMoves)
-                {
-                    _engineWindow?.GoCommandWithMoves($"wtime {second} btime {second} movestogo 9");
-                }
-                else
-                {
-                    _engineWindow?.GoCommand($"wtime {second} btime {second} movestogo 9");
-                }
-            }
-
-            else
-            {
-                var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
-                var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
-                if ((_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                    || (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement))
-                {
-                    int wTimeInc = 0;
-                    int bTimeInc = 0;
-                    if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
+                    if (!_timeControlWhite.AverageTimInSec)
                     {
-                        wTime += _timeControlWhite.Value2 * 1000;
-                        wTimeInc = _timeControlWhite.Value2 * 1000;
-                    }
-
-                    if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                    {
-                        bTime += _timeControlBlack.Value2 * 1000;
-                        bTimeInc = _timeControlBlack.Value2 * 1000;
+                        second *= 60;
                     }
 
                     _chessClocksWindowWhite?.Go();
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoWithMoves(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString(), wTimeInc.ToString(), bTimeInc.ToString());
+                        _engineWindow?.GoCommandWithMoves($"wtime {second} btime {second} movestogo 9");
                     }
                     else
                     {
-                        _engineWindow?.Go(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString(), wTimeInc.ToString(), bTimeInc.ToString());
+                        _engineWindow?.GoCommand($"wtime {second} btime {second} movestogo 9");
                     }
+
+                    break;
                 }
-                else
+
+                case TimeControlEnum.TimePerGameIncrement:
                 {
+                    var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
+                    var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
+                    if ((_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
+                        || (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement))
+                    {
+                        int wTimeInc = 0;
+                        int bTimeInc = 0;
+                        if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
+                        {
+                            wTime += _timeControlWhite.Value2 * 1000;
+                            wTimeInc = _timeControlWhite.Value2 * 1000;
+                        }
+
+                        if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
+                        {
+                            bTime += _timeControlBlack.Value2 * 1000;
+                            bTimeInc = _timeControlBlack.Value2 * 1000;
+                        }
+
+                        _chessClocksWindowWhite?.Go();
+                        _eChessBoard?.StartClock(true);
+                        if (goWithMoves)
+                        {
+                            _engineWindow?.GoWithMoves(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString(),
+                                wTimeInc.ToString(), bTimeInc.ToString());
+                        }
+                        else
+                        {
+                            _engineWindow?.Go(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString(),
+                                wTimeInc.ToString(), bTimeInc.ToString());
+                        }
+                    }
+
+                    break;
+                }
+                case TimeControlEnum.TimePerMoves:
+                {
+                    var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
+                    var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
+                    _chessClocksWindowWhite.SetInfo(
+                        $"{_timeControlWhite.Value1} moves in {_timeControlWhite.Value2} minutes");
+                    _chessClocksWindowWhite.SetTooltip(
+                        $"{_timeControlWhite.Value1} moves in {_timeControlWhite.Value2} minutes");
+                    _chessClocksWindowWhite?.Go();
+                    _eChessBoard?.StartClock(false);
+                    int moveNumber = chessBoardFullMoveNumber - 1;
+                    var cycle = (moveNumber / _timeControlWhite.Value1) + 1;
+                    var cycle2 = moveNumber > 0 && ((_timeControlWhite.Value1 * (cycle - 1)) == (moveNumber));
+                    int movesToGo = (_timeControlWhite.Value1 * cycle) - moveNumber;
+                    if (cycle2)
+                    {
+                        var hour = _timeControlWhite.Value2 / 60;
+                        var hourH = (_timeControlWhite.Value2 + _timeControlWhite.HumanValue) / 60;
+                        var seconds = _chessClocksWindowWhite.GetClockTime().TotalSeconds;
+                        var minutes = _timeControlWhite.Value2 - hour * 60;
+                        hour += (seconds / 60 / 60);
+                        minutes += (seconds / 60);
+                        seconds -= ((seconds / 60 / 60) * 3600 + ((seconds / 60) * 60));
+                        if (_timeControlWhite.HumanValue > 0)
+                        {
+                            _chessClocksWindowWhite.CorrectTime(hourH,
+                                _timeControlWhite.Value2 + _timeControlWhite.HumanValue - hourH * 60, 0);
+                        }
+                        else
+                        {
+                            _chessClocksWindowWhite.CorrectTime(hour, minutes, seconds);
+                            _chessClocksWindowWhite.SetInfo(
+                                $"{_timeControlWhite.Value1} moves in {_timeControlWhite.Value2} minutes ");
+                        }
+
+                    }
+                    else
+                    {
+                        _chessClocksWindowWhite.SetInfo($"Remaining moves {movesToGo}");
+                    }
+
+                    wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
+                    bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
+                    if (goWithMoves)
+                    {
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"wtime {wTime} btime {bTime} movestogo {movesToGo}");
+                    }
+                    else
+                    {
+                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"wtime {wTime} btime {bTime} movestogo {movesToGo}");
+                    }
+
+
+                    break;
+                }
+                case TimeControlEnum.Depth:
+                {
+                    _chessClocksWindowWhite.SetTooltip($"Search depth {_timeControlWhite.Value1} plies");
+                    _chessClocksWindowWhite.SetInfo($"Search depth {_timeControlWhite.Value1} plies");
+                    _chessClocksWindowWhite?.Go();
+                    _eChessBoard?.StartClock(true);
+                    if (goWithMoves)
+                    {
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"go depth {_timeControlWhite.Value1}");
+                    }
+                    else
+                    {
+                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"go depth {_timeControlWhite.Value1}");
+                    }
+
+
+                    break;
+                }
+                case TimeControlEnum.Nodes:
+                {
+                    _chessClocksWindowWhite.SetTooltip($"Search {_timeControlWhite.Value1} nodes");
+                    _chessClocksWindowWhite.SetInfo($"Search {_timeControlWhite.Value1} nodes");
+                        _chessClocksWindowWhite?.Go();
+                    _eChessBoard?.StartClock(true);
+                    if (goWithMoves)
+                    {
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"go nodes {_timeControlWhite.Value1}");
+                    }
+                    else
+                    {
+                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"go nodes {_timeControlWhite.Value1}");
+                    }
+
+
+                    break;
+                }
+                case TimeControlEnum.Movetime:
+                {
+                    _chessClocksWindowWhite.SetTooltip($"{_timeControlWhite.Value1} seconds per move");
+                    _chessClocksWindowWhite.SetInfo($"{_timeControlWhite.Value1} sec. per move");
+                        _chessClocksWindowWhite?.Go();
+                    _eChessBoard?.StartClock(true);
+                    if (goWithMoves)
+                    {
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"go movetime {_timeControlWhite.Value1}");
+                    }
+                    else
+                    {
+                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"go movetime {_timeControlWhite.Value1}");
+                    }
+
+
+                    break;
+                }
+                default:
+                {
+
+                    var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
+                    var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
                     _chessClocksWindowWhite?.Go();
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                         _engineWindow?.GoWithMoves(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString());
                     else
                         _engineWindow?.Go(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString());
+                    break;
                 }
             }
         }
@@ -2048,10 +2289,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         GoTimeForWhiteEngine();
                    
                     }
-
                     else
                     {
-                        _chessClocksWindowWhite?.Go();
+                        GoTimeForWhiteEngine();
+                        //_chessClocksWindowWhite?.Go();
                         if (!_pausedEngine)
                         {
                             _engineWindow?.GoInfinite();
@@ -2100,12 +2341,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (_gameAgainstEngine)
                     {
                         GoTimeForBlackEngine();
-                     
                     }
-
                     else
                     {
-                        _chessClocksWindowBlack?.Go();
+                        GoTimeForBlackEngine();
+                        //_chessClocksWindowBlack?.Go();
                         if (!_pausedEngine)
                         {
                             _engineWindow?.GoInfinite();
@@ -2419,45 +2659,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     return;
                 }
-                if (_timeControlWhite.TimeControlType == TimeControlEnum.AverageTimePerMove || _timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                {
 
-                    var second = _timeControlWhite.Value1 * 8 * 1000;
-                    if (!_timeControlWhite.AverageTimInSec)
-                    {
-                        second *= 60;
-                    }
-                    _engineWindow?.GoCommand(currentColor, $"wtime {second} btime {second} movestogo 9");
+                if (currentColor == Fields.COLOR_WHITE)
+                {
+                    GoTimeForWhiteEngine();
                 }
                 else
                 {
-                    var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
-                    var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
-                    if ((_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                        || (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement))
-                    {
-
-                        int wTimeInc = 0;
-                        int bTimeInc = 0;
-                        if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                        {
-                            wTime += _timeControlWhite.Value2 * 1000;
-                            wTimeInc = _timeControlWhite.Value2 * 1000;
-                        }
-
-                        if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                        {
-                            bTime += _timeControlBlack.Value2 * 1000;
-                            bTimeInc = _timeControlBlack.Value2 * 1000;
-                        }
-
-                        _engineWindow?.Go(currentColor, wTime.ToString(), bTime.ToString(),
-                            wTimeInc.ToString(), bTimeInc.ToString());
-                    }
-                    else
-                    {
-                        _engineWindow?.Go(currentColor, wTime.ToString(), bTime.ToString());
-                    }
+                    GoTimeForBlackEngine();
                 }
             }
         }
@@ -2588,7 +2797,35 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                chessBoardUcGraphics.ShowForceMove(_pureEngineMatch);
+                if (_pureEngineMatch)
+                {
+                    chessBoardUcGraphics.ShowForceMove(true);
+                }
+                else
+                {
+                    if (_chessBoard.CurrentColor == Fields.COLOR_WHITE)
+                    {
+                        if (whiteIsPlayer)
+                        {
+                            chessBoardUcGraphics.ShowForceMove(false);
+                        }
+                        else
+                        {
+                            chessBoardUcGraphics.ShowForceMove(true);
+                        }
+                    }
+                    if (_chessBoard.CurrentColor == Fields.COLOR_BLACK)
+                    {
+                        if (blackIsPlayer)
+                        {
+                            chessBoardUcGraphics.ShowForceMove(false);
+                        }
+                        else
+                        {
+                            chessBoardUcGraphics.ShowForceMove(true);
+                        }
+                    }
+                }
             }
 
             chessBoardUcGraphics.AllowTakeBack(_allowTakeMoveBack);
@@ -2841,45 +3078,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     return;
                 }
-                if (_timeControlWhite.TimeControlType == TimeControlEnum.AverageTimePerMove || _timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
+                if (currentColor == Fields.COLOR_WHITE)
                 {
-                    var second = _timeControlWhite.Value1 * 8 * 1000;
-                    if (!_timeControlWhite.AverageTimInSec)
-                    {
-                        second *= 60;
-                    }
-                    _engineWindow?.GoCommand(currentColor, $"wtime {second} btime {second} movestogo 9");
+                    GoTimeForWhiteEngine();
                 }
                 else
                 {
-                    var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
-                    var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
-                 
-                    if ((_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                        || (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement))
-                    {
-
-                        int wTimeInc = 0;
-                        int bTimeInc = 0;
-                        if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                        {
-                            wTime += _timeControlWhite.Value2 * 1000;
-                            wTimeInc = _timeControlWhite.Value2 * 1000;
-                        }
-
-                        if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                        {
-                            bTime += _timeControlBlack.Value2 * 1000;
-                            bTimeInc = _timeControlBlack.Value2 * 1000;
-                        }
-
-                        _engineWindow?.Go(currentColor, wTime.ToString(), bTime.ToString(),
-                                          wTimeInc.ToString(), bTimeInc.ToString());
-                    }
-                    else
-                    {
-                        _engineWindow?.Go(currentColor, wTime.ToString(), bTime.ToString());
-                    }
+                    GoTimeForBlackEngine();
                 }
             }         
         }
@@ -4559,86 +4764,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
                     }
                     //_eChessBoard?.StopClock();
-                    if (_currentAction == CurrentAction.InRunningGame)
+                    if (_currentAction == CurrentAction.InRunningGame && ! _pureEngineMatch)
                     {
                         if (_eChessBoard == null || (_eChessBoard != null && _eChessBoard.IsConnected &&
                                                      !_timeControlWhite.WaitForMoveOnBoard))
                         {
                             if (!_pausedGame)
                             {
-                                _chessClocksWindowWhite?.Go();
+                             //   _chessClocksWindowWhite?.Go();
                                 //_eChessBoard?.StartClock(true);
                             }
+                            GoTimeForWhiteEngine();
                         }
+                        
                     }
+
                     if (_currentAction == CurrentAction.InRunningGame && _pureEngineMatch)
                     {
-                        if (_timeControlWhite.TimeControlType == TimeControlEnum.AverageTimePerMove || _timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                        {
-                            int second = 0;
-                            if (_timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                            {
-                                var chessBoardFullMoveNumber = _chessBoard.FullMoveNumber;
-                                var totalSeconds = _chessClocksWindowBlack.GetElapsedTime().TotalSeconds;
-                                second = totalSeconds * 1000 / chessBoardFullMoveNumber * 8;
-                                _fileLogger?.LogDebug($"Adapted: Seconds: {totalSeconds}  Moves: {chessBoardFullMoveNumber}: Average: {totalSeconds / chessBoardFullMoveNumber}");
-                                if (second == 0)
-                                {
-                                    second = _timeControlWhite.Value1 * 8 * 1000;
-                                }
-
-                            }
-                            else
-                            {
-                                second = _timeControlWhite.Value1 * 8 * 1000;
-                            }
-                            if (!_timeControlWhite.AverageTimInSec)
-                            {
-                                second *= 60;
-                            }
-
-                            if (!_pausedGame)
-                            {
-                                _engineWindow?.GoCommand(Fields.COLOR_WHITE,
-                                                         $"wtime {second} btime {second} movestogo 9");
-                            }
-                        }
-                        else
-                        {
-                            var wTime = _chessClocksWindowWhite?.GetClockTime().TotalSeconds * 1000;
-                            var bTime = _chessClocksWindowBlack?.GetClockTime().TotalSeconds * 1000;
-                            if ((_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                || (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement))
-                            {
-
-                                int wTimeInc = 0;
-                                int bTimeInc = 0;
-                                if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    wTime += _timeControlWhite.Value2 * 1000;
-                                    wTimeInc = _timeControlWhite.Value2 * 1000;
-                                }
-
-                                if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    bTime += _timeControlBlack.Value2 * 1000;
-                                    bTimeInc = _timeControlBlack.Value2 * 1000;
-                                }
-
-                                if (!_pausedGame)
-                                {
-                                    _engineWindow?.Go(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString(),
-                                                      wTimeInc.ToString(), bTimeInc.ToString());
-                                }
-                            }
-                            else
-                            {
-                                if (!_pausedGame)
-                                {
-                                    _engineWindow?.Go(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString());
-                                }
-                            }
-                        }
+                        GoTimeForWhiteEngine();
                     }
                 }
                 else
@@ -4668,86 +4811,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
                     }
                     // _eChessBoard?.StopClock();
-                    if (_currentAction == CurrentAction.InRunningGame)
+                    if (_currentAction == CurrentAction.InRunningGame && !_pureEngineMatch)
                     {
                         if (_eChessBoard == null || (_eChessBoard != null && _eChessBoard.IsConnected &&
                                                      !_timeControlWhite.WaitForMoveOnBoard))
                         {
                             if (!_pausedGame)
                             {
-                                _chessClocksWindowBlack?.Go();
+                             //   _chessClocksWindowBlack?.Go();
                                 //_eChessBoard?.StartClock(false);
                             }
+                            GoTimeForBlackEngine();
                         }
+                        
                     }
                     if (_currentAction == CurrentAction.InRunningGame && _pureEngineMatch)
                     {
-                        if (_timeControlWhite.TimeControlType == TimeControlEnum.AverageTimePerMove || _timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                        {
-                            int second = 0;
-                            if (_timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                            {
-                                var chessBoardFullMoveNumber = _chessBoard.FullMoveNumber;
-                                var totalSeconds = _chessClocksWindowWhite.GetElapsedTime().TotalSeconds;
-                                second = totalSeconds * 1000 / chessBoardFullMoveNumber * 8;
-                                _fileLogger?.LogDebug($"Adapted: Seconds: {totalSeconds}  Moves: {chessBoardFullMoveNumber}: Average: {totalSeconds / chessBoardFullMoveNumber}");
-                                if (second == 0)
-                                {
-                                    second = _timeControlWhite.Value1 * 8 * 1000;
-                                }
-
-                            }
-                            else
-                            {
-                                second = _timeControlWhite.Value1 * 8 * 1000;
-                            }
-                            if (!_timeControlWhite.AverageTimInSec)
-                            {
-                                second *= 60;
-                            }
-
-                            if (!_pausedGame)
-                            {
-                                _engineWindow?.GoCommand(Fields.COLOR_BLACK,
-                                                         $"wtime {second} btime {second} movestogo 9");
-                            }
-                        }
-                        else
-                        {
-                            var wTime = _chessClocksWindowWhite?.GetClockTime().TotalSeconds * 1000;
-                            var bTime = _chessClocksWindowBlack?.GetClockTime().TotalSeconds * 1000;
-                            if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                            {
-
-                                int wTimeInc = 0;
-                                int bTimeInc = 0;
-                                if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    wTime += _timeControlWhite.Value2 * 1000;
-                                    wTimeInc = _timeControlWhite.Value2 * 1000;
-                                }
-
-                                if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    bTime += _timeControlBlack.Value2 * 1000;
-                                    bTimeInc = _timeControlBlack.Value2 * 1000;
-                                }
-
-                                if (!_pausedGame)
-                                {
-                                    _engineWindow?.Go(Fields.COLOR_BLACK, wTime.ToString(), bTime.ToString(),
-                                                      wTimeInc.ToString(), bTimeInc.ToString());
-                                }
-                            
-                            }
-                            else
-                            {
-                                if (!_pausedGame)
-                                {
-                                    _engineWindow?.Go(Fields.COLOR_BLACK, wTime.ToString(), bTime.ToString());
-                                }
-                            }
-                        }
+                         GoTimeForBlackEngine();
+                      
                     }
                 }
                 if (_currentGame.WhiteConfig.IsChessServer || _currentGame.BlackConfig.IsChessServer)
@@ -6698,48 +6779,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     if (!_currentWhitePlayer.Equals(Constants.Player))
                     {
-                        if (_timeControlWhite.TimeControlType == TimeControlEnum.AverageTimePerMove ||
-                            _timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                        {
-                            var second = _timeControlWhite.Value1 * 8 * 1000;
-                            if (!_timeControlWhite.AverageTimInSec)
-                            {
-                                second *= 60;
-                            }
-
-                            _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"wtime {second} btime {second} movestogo 9");
-                        }
-                        else
-                        {
-                            var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
-                            var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
-                            if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                            {
-                                int wTimeInc = 0;
-                                int bTimeInc = 0;
-                                if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    wTime += _timeControlWhite.Value2 * 1000;
-                                    wTimeInc = _timeControlWhite.Value2 * 1000;
-                                }
-
-                                if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    bTime += _timeControlBlack.Value2 * 1000;
-                                    bTimeInc = _timeControlBlack.Value2 * 1000;
-                                }
-
-                                if (!_pausedGame)
-                                {
-                                    _engineWindow?.Go(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString(),
-                                                      wTimeInc.ToString(), bTimeInc.ToString());
-                                }
-                            }
-                            else
-                            {
-                                _engineWindow?.Go(Fields.COLOR_WHITE, wTime.ToString(), bTime.ToString());
-                            }
-                        }
+                        GoTimeForWhiteEngine();
                     }
                 }
 
@@ -6971,7 +7011,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                         if (_timeControlWhite.WaitForMoveOnBoard)
                         {
-                            _chessClocksWindowWhite?.Go();
+                            GoTimeForWhiteEngine();
                         }
 
                         return;
@@ -6995,7 +7035,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                     if (_timeControlWhite.WaitForMoveOnBoard)
                     {
-                        _chessClocksWindowBlack?.Go();
+                        GoTimeForBlackEngine();
                     }
                     return;
                 });
@@ -7862,80 +7902,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _chessClocksWindowBlack?.Stop();
                     if (_currentAction == CurrentAction.InRunningGame)
                     {
-                        if (_timeControlWhite.TimeControlType == TimeControlEnum.AverageTimePerMove || _timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                        {
-                            int second = 0;
-                            if (_timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                            {
-                                var totalSeconds = _chessClocksWindowBlack.GetElapsedTime().TotalSeconds;
-                                second = totalSeconds * 1000 / chessBoardFullMoveNumber * 8;
-                                if (second == 0)
-                                {
-                                    second = _timeControlWhite.Value1 *8 * 1000;
-                                }
-                            }
-                            else
-                            {
-                                second = _timeControlWhite.Value1 * 8 * 1000;
-                            }
-
-                            if (!_timeControlWhite.AverageTimInSec)
-                            {
-                                second *= 60;
-                            }
-                            _chessClocksWindowWhite?.Go();
-                            var clockTimeW = _chessClocksWindowWhite?.GetClockTime();
-                            var clockTimeB = _chessClocksWindowBlack?.GetClockTime();
-                            _chessClocksWindowWhite?.Go();
-                            _eChessBoard?.SetClock(clockTimeW.Hour, clockTimeW.Minute, clockTimeW.Second,
-                                                   clockTimeB.Hour, clockTimeB.Minute, clockTimeB.Second);
-                            _eChessBoard?.StartClock(true);
-                            _engineWindow?.GoCommand($"wtime {second} btime {second} movestogo 9");
-                        }
-                        else
-                        {
-                            var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
-                            var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
-                            if ((_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                              || (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement))
-                                {
-                                int wTimeInc = 0;
-                                int bTimeInc = 0;
-                                if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    wTime += _timeControlWhite.Value2 * 1000;
-                                    wTimeInc = _timeControlWhite.Value2 * 1000;
-                                }
-
-                                if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    bTime += _timeControlBlack.Value2 * 1000;
-                                    bTimeInc = _timeControlBlack.Value2 * 1000;
-                                }
-
-                              
-                                _chessClocksWindowWhite?.Go();
-                                var clockTimeW = _chessClocksWindowWhite?.GetClockTime();
-                                var clockTimeB = _chessClocksWindowBlack?.GetClockTime();
-                                _chessClocksWindowWhite?.Go();
-                                _eChessBoard?.SetClock(clockTimeW.Hour, clockTimeW.Minute, clockTimeW.Second,
-                                                       clockTimeB.Hour, clockTimeB.Minute, clockTimeB.Second);
-                                _eChessBoard?.StartClock(true);
-                                _engineWindow?.Go(wTime.ToString(), bTime.ToString(),
-                                    wTimeInc.ToString(), bTimeInc.ToString());
-                            }
-                            else
-                            {
-                                var clockTimeW = _chessClocksWindowWhite?.GetClockTime();
-                                var clockTimeB = _chessClocksWindowBlack?.GetClockTime();
-                                _chessClocksWindowWhite?.Go();
-                                _eChessBoard?.SetClock(clockTimeW.Hour, clockTimeW.Minute, clockTimeW.Second,
-                                                       clockTimeB.Hour, clockTimeB.Minute, clockTimeB.Second);
-                                _eChessBoard?.StartClock(true);
-                                _engineWindow?.Go(wTime.ToString(), bTime.ToString());
-                            }
-
-                        }
+                        GoTimeForWhiteEngine();
+                     
                     }
                     else
                     {
@@ -7949,75 +7917,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     
                     if (_currentAction == CurrentAction.InRunningGame)
                     {
-                        if (_timeControlWhite.TimeControlType == TimeControlEnum.AverageTimePerMove || _timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                        {
-                            int second = 0;
-                            if (_timeControlWhite.TimeControlType == TimeControlEnum.Adapted)
-                            {
-                                var totalSeconds = _chessClocksWindowWhite.GetElapsedTime().TotalSeconds;
-                                second = totalSeconds * 1000 / chessBoardFullMoveNumber * 8;
-                                if (second == 0)
-                                {
-                                    second = _timeControlWhite.Value1 * 8 * 1000;
-                                }
-                            }
-                            else
-                            {
-                                second = _timeControlWhite.Value1 * 8 * 1000;
-                            }
-                            if (!_timeControlWhite.AverageTimInSec)
-                            {
-                                second *= 60;
-                            }
-                            _chessClocksWindowBlack?.Go();
-                            var clockTimeW = _chessClocksWindowWhite?.GetClockTime();
-                            var clockTimeB = _chessClocksWindowBlack?.GetClockTime();
-                            _eChessBoard?.SetClock(clockTimeW.Hour, clockTimeW.Minute, clockTimeW.Second,
-                                                   clockTimeB.Hour, clockTimeB.Minute, clockTimeB.Second);
-                            _eChessBoard?.StartClock(false);
-                            _engineWindow?.GoCommand($"wtime {second} btime {second} movestogo 9");
-                        }
-                        else
-                        {
-                            var wTime = _chessClocksWindowWhite.GetClockTime().TotalSeconds * 1000;
-                            var bTime = _chessClocksWindowBlack.GetClockTime().TotalSeconds * 1000;
-                            if ((_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                || (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement))
-                            {
-                                int wTimeInc = 0;
-                                int bTimeInc = 0;
-                                if (_timeControlWhite.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    wTime += _timeControlWhite.Value2 * 1000;
-                                    wTimeInc = _timeControlWhite.Value2 * 1000;
-                                }
-
-                                if (_timeControlBlack.TimeControlType == TimeControlEnum.TimePerGameIncrement)
-                                {
-                                    bTime += _timeControlBlack.Value2 * 1000;
-                                    bTimeInc = _timeControlBlack.Value2 * 1000;
-                                }
-                                _chessClocksWindowBlack?.Go();
-                                var clockTimeW = _chessClocksWindowWhite?.GetClockTime();
-                                var clockTimeB = _chessClocksWindowBlack?.GetClockTime();
-                                _eChessBoard?.SetClock(clockTimeW.Hour, clockTimeW.Minute, clockTimeW.Second,
-                                                       clockTimeB.Hour, clockTimeB.Minute, clockTimeB.Second);
-                                _eChessBoard?.StartClock(false);
-                                _engineWindow?.Go(wTime.ToString(), bTime.ToString(),
-                                    wTimeInc.ToString(), bTimeInc.ToString());
-                            }
-                            else
-                            {
-                                var clockTimeW = _chessClocksWindowWhite?.GetClockTime();
-                                var clockTimeB = _chessClocksWindowBlack?.GetClockTime();
-                                _eChessBoard?.SetClock(clockTimeW.Hour, clockTimeW.Minute, clockTimeW.Second,
-                                                       clockTimeB.Hour, clockTimeB.Minute, clockTimeB.Second);
-                                _eChessBoard?.StartClock(false);
-                                _chessClocksWindowBlack?.Go();
-                                _engineWindow?.Go(wTime.ToString(), bTime.ToString());
-                            }
-
-                        }
+                        GoTimeForBlackEngine();
+                    
                     }
                     else
                     {
@@ -9829,8 +9730,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             _fileLogger?.Log($"Set white clock: {split[0]}:{split[1].Substring(0, 2)}");
                             Dispatcher?.Invoke(() =>
                             {
-                                _chessClocksWindowWhite.CorrectTime(
-                                    0, int.Parse(split[0]), int.Parse(split[1].Substring(0, 2)));
+                                _chessClocksWindowWhite.CorrectTime(0, int.Parse(split[0]), int.Parse(split[1].Substring(0, 2)));
                             });
 
                         }
@@ -9842,13 +9742,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             _fileLogger?.Log($"Set black clock: {split[0]}:{split[1].Substring(0, 2)}");
                             Dispatcher?.Invoke(() =>
                             {
-                                _chessClocksWindowBlack.CorrectTime(
-                                    0, int.Parse(split[0]), int.Parse(split[1].Substring(0, 2)));
+                                _chessClocksWindowBlack.CorrectTime(0, int.Parse(split[0]), int.Parse(split[1].Substring(0, 2)));
                             });
 
                         }
-
-                       
                     }
                     catch (Exception ex)
                     {

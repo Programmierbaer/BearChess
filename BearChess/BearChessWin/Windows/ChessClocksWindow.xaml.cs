@@ -55,6 +55,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             digitalNumberUserControlSec2.SetColor(inversColor);
             delimiterUserControl1.SetColor(inversColor);
             delimiterUserControl2.SetColor(inversColor);
+            textBlockInfo.Foreground = new SolidColorBrush(inversColor);
             Title = "Clock " + capture;
             _thread = new Thread(updateTime) { IsBackground = true };
             _thread.Start();
@@ -140,6 +141,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetTooltip(string tooltip)
         {
             ToolTip = tooltip;
+        }
+
+        public void SetInfo(string info)
+        {
+            textBlockInfo.Text = info;
         }
 
         public void Reset()

@@ -130,6 +130,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 timeControl.Value1 = 5;
                 timeControl.Value2 = 0;
             }
+            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Depth"))
+            {
+                timeControl.TimeControlType = TimeControlEnum.Depth;
+                timeControl.Value1 = numericUpDownUserControlDepth.Value;
+                timeControl.Value2 = 0;
+            }
+            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Nodes"))
+            {
+                timeControl.TimeControlType = TimeControlEnum.Nodes;
+                timeControl.Value1 = numericUpDownUserControlNodes.Value;
+                timeControl.Value2 = 0;
+            }
+            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Exact"))
+            {
+                timeControl.TimeControlType = TimeControlEnum.Movetime;
+                timeControl.Value1 = numericUpDownUserControlExactTime.Value;
+                timeControl.Value2 = 0;
+            }
 
             timeControl.AllowTakeBack = false;
             if (timeControl.TimeControlType == TimeControlEnum.Adapted)
@@ -182,8 +200,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[4];
             }
+            if (timeControl.TimeControlType == TimeControlEnum.Depth)
+            {
+                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[5];
+                numericUpDownUserControlDepth.Value = timeControl.Value1;
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Nodes)
+            {
+                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[6];
+                numericUpDownUserControlNodes.Value = timeControl.Value1;
+            }
+            if (timeControl.TimeControlType == TimeControlEnum.Movetime)
+            {
+                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[7];
+                numericUpDownUserControlExactTime.Value = timeControl.Value1;
+            }
 
-            
             radioButtonSecond.IsChecked = timeControl.AverageTimInSec;
             radioButtonMinute.IsChecked = !timeControl.AverageTimInSec;
             
@@ -272,6 +304,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderTimePerGameWithIncrement.Visibility = Visibility.Collapsed;
             borderTimePerGivenMoves.Visibility = Visibility.Collapsed;
             borderAverageTimePerMove.Visibility = Visibility.Collapsed;
+            borderDepth.Visibility = Visibility.Collapsed;
+            borderNodes.Visibility = Visibility.Collapsed;
+            borderExactTime.Visibility = Visibility.Collapsed;
             if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game with increment"))
             {
                 borderTimePerGameWithIncrement.Visibility = Visibility.Visible;
@@ -293,6 +328,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (comboBoxTimeControl.SelectedItem.ToString().Contains("Average time per move"))
             {
                 borderAverageTimePerMove.Visibility = Visibility.Visible;
+            }
+            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Depth"))
+            {
+                borderDepth.Visibility = Visibility.Visible;
+            }
+            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Nodes"))
+            {
+                borderNodes.Visibility = Visibility.Visible;
+            }
+            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Exact"))
+            {
+                borderExactTime.Visibility = Visibility.Visible;
             }
         }
 

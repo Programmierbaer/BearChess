@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" FontSize="35" FontWeight="DemiBold" ResizeMode="NoResize" WindowStyle="ToolWindow"
-        Title="Clock" Height="90" Width="200" Closing="ChessClockSimpleWindow_OnClosing" FontFamily="Square721 BT"> 
+        mc:Ignorable="d" FontSize="35" FontWeight="DemiBold" SizeToContent="Height" ResizeMode="NoResize" WindowStyle="ToolWindow"
+        Title="Clock"  Width="200" Closing="ChessClockSimpleWindow_OnClosing" FontFamily="Square721 BT"> 
     <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,1,0,5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"></ColumnDefinition>
@@ -16,13 +16,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Border Margin="5,0,5,0" Name="borderWarning" Height="5" Grid.Row="0" Grid.ColumnSpan="5" Background="Red" Visibility="Hidden"/>
+        <Border Margin="5,0,5,0" Name="borderWarning" Height="5" Grid.Row="0" Grid.ColumnSpan="5" Background="Red" Visibility="Visible"/>
         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Row="1" Grid.Column="0" Margin="0" Name="textBlockHour1" FontFamily="Square721 BT">00</TextBlock>
         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"  Grid.Column="1" Margin="0" Name="textBlock1" FontFamily="Square721 BT">:</TextBlock>
         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"  Grid.Column="2" Margin="0" Name="textBlockMin1" FontFamily="Square721 BT">00</TextBlock>
         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"  Grid.Column="3" Margin="0" Name="textBlock2" FontFamily="Square721 BT" >:</TextBlock>
         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"  Grid.Column="4" Margin="0"  Name="textBlockSec1" FontFamily="Square721 BT">00</TextBlock>
+        <TextBlock Name="textBlockInfo" Margin="5,0,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" FontSize="12" FontWeight="Normal" />
 
     </Grid>
 </Window>

@@ -142,6 +142,9 @@
                             <ComboBoxItem>Time per given moves</ComboBoxItem>
                             <ComboBoxItem>Average time per move</ComboBoxItem>
                             <ComboBoxItem>Adapted time</ComboBoxItem>
+                            <ComboBoxItem>Depth</ComboBoxItem>
+                            <ComboBoxItem>Nodes</ComboBoxItem>
+                            <ComboBoxItem>Exact time per move</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
 
@@ -196,7 +199,33 @@
                                      GroupName="averageTime" Content="min." />
                     </StackPanel>
                 </Border>
-
+                <Border Name="borderDepth" Grid.Column="1" Grid.Row="4" BorderBrush="Gray" BorderThickness="0"
+                        Margin="5"
+                        Visibility="Collapsed" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlDepth" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">plies</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderNodes" Grid.Column="1" Grid.Row="4" BorderBrush="Gray" BorderThickness="0"
+                        Margin="5"
+                        Visibility="Collapsed" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlNodes" Height="40"
+                                                        MinValue="1" MaxValue="999999999" Value="1" />
+                        <Label VerticalAlignment="Center">nodes</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderExactTime" Grid.Column="1" Grid.Row="4" BorderBrush="Gray" BorderThickness="0"
+                        Margin="5"
+                        Visibility="Collapsed" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlExactTime" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">sec.</Label>
+                    </StackPanel>
+                </Border>
                 <Grid Name="gridTimeControl2" Grid.Column="0" Grid.Row="5" Visibility="Hidden" Margin="5">
                     <StackPanel Orientation="Horizontal" Margin="5">
                         <TextBlock VerticalAlignment="Center" Text="Time control &#x265A;:" Width="90"></TextBlock>
@@ -207,6 +236,9 @@
                             <ComboBoxItem>Time per given moves</ComboBoxItem>
                             <ComboBoxItem>Average time per move</ComboBoxItem>
                             <ComboBoxItem>Adapted time</ComboBoxItem>
+                            <ComboBoxItem>Depth</ComboBoxItem>
+                            <ComboBoxItem>Nodes</ComboBoxItem>
+                            <ComboBoxItem>Exact time per move</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
                 </Grid>
@@ -259,7 +291,33 @@
                                      GroupName="averageTime" Content="min." />
                     </StackPanel>
                 </Border>
-
+                <Border Name="borderDepth2" Grid.Column="1" Grid.Row="5" BorderBrush="Gray" BorderThickness="0"
+                        Margin="5"
+                        Visibility="Collapsed" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlDepth2" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">plies</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderNodes2" Grid.Column="1" Grid.Row="5" BorderBrush="Gray" BorderThickness="0"
+                        Margin="5"
+                        Visibility="Collapsed" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlNodes2" Height="40"
+                                                        MinValue="1" MaxValue="999999999" Value="1" />
+                        <Label VerticalAlignment="Center">nodes</Label>
+                    </StackPanel>
+                </Border>
+                <Border Name="borderExactTime2" Grid.Column="1" Grid.Row="5" BorderBrush="Gray" BorderThickness="0"
+                        Margin="5"
+                        Visibility="Collapsed" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlExactTime2" Height="40"
+                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center">sec.</Label>
+                    </StackPanel>
+                </Border>
                 <StackPanel Grid.Row="6" Grid.Column="1">
                     <CheckBox Name="checkBoxTournamentMode" Margin="5,5,5,5" VerticalAlignment="Center"
                               Unchecked="CheckBoxAllowTournament_OnUnchecked"

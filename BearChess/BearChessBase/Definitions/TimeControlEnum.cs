@@ -9,6 +9,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
         TimePerGameIncrement,
         TimePerMoves,
         AverageTimePerMove,
-        Adapted
+        Adapted,
+        Depth,
+        Nodes,
+        Movetime
     }
 }
