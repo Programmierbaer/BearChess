@@ -1653,11 +1653,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"movetime {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"movetime {_timeControlWhite.Value1*1000}");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"movetime {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"movetime {_timeControlWhite.Value1*1000}");
                     }
 
 
@@ -1867,11 +1867,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"movetime {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE, $"movetime {_timeControlWhite.Value1*1000}");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"movetime {_timeControlWhite.Value1}");
+                        _engineWindow?.GoCommand(Fields.COLOR_WHITE, $"movetime {_timeControlWhite.Value1*1000}");
                     }
 
 
@@ -4774,7 +4774,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                              //   _chessClocksWindowWhite?.Go();
                                 //_eChessBoard?.StartClock(true);
                             }
-                            GoTimeForWhiteEngine();
+                            if (!_currentGame.WhiteConfig.IsPlayer)
+                            {
+                                GoTimeForWhiteEngine();
+                            }                           
                         }
                         
                     }
@@ -4821,7 +4824,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                              //   _chessClocksWindowBlack?.Go();
                                 //_eChessBoard?.StartClock(false);
                             }
-                            GoTimeForBlackEngine();
+                            if (!_currentGame.BlackConfig.IsPlayer)
+                            {
+                                GoTimeForBlackEngine();
+                            }
+                        
                         }
                         
                     }
@@ -6722,7 +6729,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _chessClocksWindowWhite?.Stop();
                     _chessClocksWindowBlack?.Stop();
                     _eChessBoard?.StopClock();
-                    if (_currentGame != null)
+                    if (_currentGame != null && _autoSaveGames)
                     {
                         AutoSaveGame();
                     }
