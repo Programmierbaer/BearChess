@@ -1516,11 +1516,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(false);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves($"wtime {second} btime {second} movestogo 9");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_BLACK, $"wtime {second} btime {second} movestogo 9");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand($"wtime {second} btime {second} movestogo 9");
+                        _engineWindow?.GoCommand(Fields.COLOR_BLACK, $"wtime {second} btime {second} movestogo 9");
                     }
 
                     break;
@@ -1721,11 +1721,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _eChessBoard?.StartClock(true);
                     if (goWithMoves)
                     {
-                        _engineWindow?.GoCommandWithMoves($"wtime {second} btime {second} movestogo 9");
+                        _engineWindow?.GoCommandWithMoves(Fields.COLOR_WHITE,$"wtime {second} btime {second} movestogo 9");
                     }
                     else
                     {
-                        _engineWindow?.GoCommand($"wtime {second} btime {second} movestogo 9");
+                        _engineWindow?.GoCommand(Fields.COLOR_WHITE,$"wtime {second} btime {second} movestogo 9");
                     }
 
                     break;
