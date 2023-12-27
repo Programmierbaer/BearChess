@@ -126,8 +126,8 @@ namespace www.SoLaNoSoft.com.BearChessBase
                     string messChessLevelFileName = Path.Combine(fi.DirectoryName, "Level", "English.txt");
                     try
                     {
-                        var messChessLevelReader =
-                            new MessChessLevelReader(bearChessFileName, messChessLevelFileName, CommandParameter);
+                        var strings = CommandParameter.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                        var messChessLevelReader = new MessChessLevelReader(bearChessFileName, messChessLevelFileName, strings[0]);
                         MessChessLevels = messChessLevelReader.GetLevels;
                         MessChessLevelInfo = messChessLevelReader.GetMessChessLevels;
                         MessChessLevelsAreIncomplete = messChessLevelReader.LevelsAreIncomplete;
