@@ -227,6 +227,10 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             Information = Constants.DGT;
         }
 
+        public override void SetEngineColor(int color)
+        {
+            //
+        }
 
         public override void Reset()
         {

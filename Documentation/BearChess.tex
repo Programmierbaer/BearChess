@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.2.0}
+\fancyhead[R]{Version 1.0.3.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{10.12.2023} 
+\date{27.12.2023} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -44,9 +44,9 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
+BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{ChessUp}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
 
-I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc or iChessOne. If something does not work, the companies are not responsible for it.\\
+I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc or iChessOne or Bryght Labs. If something does not work, the companies are not responsible for it.\\
 
 Many thanks to Ralf Schäfer and Volker Böhm for the use of their engine Spike (\url{http://spike.lazypics.de/index.html}).\\
 
@@ -83,6 +83,7 @@ BearChess offers among others the following functions:
 	  \item Play with \textbf{Square Off Pro} chessboard.	  	  
 	  \item Play with \textbf{Chessnut Air} chessboard.	  	  	  
 	  \item Play with \textbf{iChessOne} chessboard.	  	  	  	  
+      \item Play with \textbf{ChessUp} chessboard.	  	  	  	  	  
 	  \item Play with \textbf{NOVAG Citrine/UCB} chessboard.
 	  \item Play with \textbf{Saitek OSA} chessboard.	  
   	  \item Play against human beings or UCI engines.
@@ -491,7 +492,7 @@ If you don't find the right avatar, click on the small folder icon and you can s
 
 \subsubsection{Install MessChess engine}
 Franz Huber provides emulator software to play against old chess computers as UCI engine (look at \url{https://fhub.jimdofree.com/}).\\
-If you have downloaded und unzipped the latest version of CB-Emu, select the MessChess.exe file from the MessChess subfolder as the new engine. BearChess reads the Engines.lst file and ask you to select one or more chess computer emulations.
+If you have downloaded and unzipped the latest version of CB-Emu, select the MessChess.exe file from the MessChess subfolder as the new engine. BearChess reads the Engines.lst file and ask you to select one or more chess computer emulations.
 
 \begin{figure}[H]
 	\centering
@@ -526,6 +527,18 @@ There are only some configuration options. In the bottom line you can see the re
 	\caption{Configure}
 	\label{fig:MessChess3}
 \end{figure}
+The possible levels are very different for the emulations and require reading the operating instructions of the real chess computer. 
+Fortunately, there is a file in the MessChess subdirectory "Level" which describes the possible levels. 
+BearChess contains an additional file to provide a combo box with the possible levels from this information.
+But not all levels can be displayed via a combo box. The combo box is therefore not always complete or even present. To see a description of all possible levels, click on the "Show Levels" button.\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MessChess6.png}
+	\caption{Show all levels for Mephisto Mirage}
+	\label{fig:MessChess6}
+\end{figure}
+
 
 If you need to set some more options, see \textbf{\ref{WaitForANewgame}  \nameref{WaitForANewgame}} on page \pageref{WaitForANewgame}.
 
@@ -983,7 +996,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{iChessOne}, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, iChessOne, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth or Bluetooth LE. DGT Pegasus and Square Off Pro communicate only via Bluetooth. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Pro communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
+BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{iChessOne}, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{ChessUp}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, iChessOne, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth or Bluetooth LE. DGT Pegasus, ChessUp and Square Off Pro communicate only via Bluetooth LE. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Pro communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
 For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
 In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
@@ -1236,7 +1249,7 @@ You can configure how iChessOne reports changes on the board to BearChess. Eithe
 
 \subsubsection{Battery Level {\color{red}\textbf{*}} }
  
-The final version of iChessOne will have a built-in battery. BearChess will be able to display the battery level in the next version.
+The final version of iChessOne will have a built-in battery. BearChess will be able to display the battery level in one of the next version.
 
 \subsubsection{LEDs}
 
@@ -1562,7 +1575,7 @@ Each pawn represents a piece on a field. Especially at the beginning, a review i
 No configuration is required for your Chessnut Air/Pro chessboard.\\
 Chessnut Air/Pro supports USB and Bluetooth LE connections. You cannot use Bluetooth LE when the board is connected to your computer with an USB cable.\\
 For a USB connection, the connection is not simulated as a COM port, but as a Human Interface Device (HID).\\
-{\color{red}*} BearChess cannot distinguish whether they are connected to an Air or Pro.
+{\color{red}*} BearChess cannot distinguish whether they are connected to an Air/Air+ or Pro but between Air and Air+.
 
 \begin{figure}[H]
 	\centering
@@ -1635,6 +1648,26 @@ Square off Pro has no real piece recognition and can only give the information p
 \end{figure}
 
 Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
+
+\subsection{Connect ChessUp} \label{ConnectChessUp}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{ChessUp1.png}
+	\caption{Connect to ChessUp }
+	\label{fig:ChessUp1}
+\end{figure}
+
+No configuration is required for your ChessUp chessboard. ChessUp supports only Bluetooth LE connection.\\ 
+ChessUp only allows limited access to the board for third party programs and the functionality is limited. ChessUp does not support the withdrawal of a move. The help function is limited to displaying the valid moves, but not their evaluation. Under promotion is currently not supported by BearChess.\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{ChessUp2.png}
+	\caption{Connected via Bluetooth LE}
+	\label{fig:ChessUp2}
+\end{figure}
+
+
 
 \subsection{Configure NOVAG Citrine} \label{ConfigureNovagCitrine}
 
@@ -1882,6 +1915,7 @@ If you play in tournament mode, no auxiliary information (score, best line) is d
 \subsection{Allow to take a move back}
 It is worth activating this option for a training session or when playing against a strong engine. If you are using an electronic chessboard, just take back the last move. The LEDs show you the next previous move. Follow them until you make the right move.\\
 {\color{red}\textbf{*}} For Saitek or NOVAG boards, BearChess cannot prevent a move back.\\
+{\color{red}\textbf{*}} ChessUp does not support the withdrawal of a move.\\
 If you are not using an electronic chessboard, you can use the move controls below the board.
 
 \begin{figure}[H]
@@ -1915,9 +1949,9 @@ For your convenience, you can configure and save a game definition that will be 
 
 
 \subsection{Request for help}
-If you play a game and you have "Show move when help is request" activated. raise your king for a short time and set it down again to see the best move on the board.\\
+If you play a game and you have "Show move when help is request" activated, raise your king for a short time and set it down again to see the best move on the board.\\
 Do it again to stop showing the best move.\\
-{\color{red}\textbf{*}} This is not supported DGT e-Board, Square Off Pro, NOVAG and Saitek OSA boards
+{\color{red}\textbf{*}} This is not supported on DGT e-Board, Square Off Pro, ChessUp, NOVAG and Saitek OSA boards.
 
 \section{Move list}
 The move list shows all moves of your game.
@@ -2091,7 +2125,7 @@ You can achieve all this with the analysis mode.\\
 
 \subsection{With electronic chessboard}
 
-You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. TabuTronic Sentio, Millennium eOne, DGT Pegasus, Square Off Pro, NOVAG boards and Saitke bords has not. Connect your electronic chessboard before you start the analysis mode.\\ 
+You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. TabuTronic Sentio, Millennium eOne, DGT Pegasus, ChessUp, Square Off Pro, NOVAG boards and Saitke bords has not. Connect your electronic chessboard before you start the analysis mode.\\ 
 When you start the analysis mode, you will be asked to select a supporting analysis engine.
 
 \begin{figure}[H]
@@ -2509,7 +2543,7 @@ Setup a new position is very easy. You can do it with or without the support of 
 
 \textbf{First connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.
 The small board starts with the current position.\\
-\textbf{{\color{red}*}} When a TabuTronic Sentio, DGT Pegasus, Millennium eOne or Square Off Pro board is connected, the behavior is as if no board is connected.
+\textbf{{\color{red}*}} When a TabuTronic Sentio, DGT Pegasus, ChessUp, Millennium eOne or Square Off Pro board is connected, the behavior is as if no board is connected.
 
 \begin{figure}[H]
 	\centering
@@ -2539,7 +2573,7 @@ Don't forget to set the castling rights and current color.
 \subsection{Without support of an electronic chessboard}
 
 \textbf{First} ensure you are \textbf{not connect} to your electronic chessboard before you run the setup. This is important, because the further behaviour of the program depends on it.\\
-If a TabuTronic Sentio, DGT Pegasus, Square Off Pro or Millennium eOne is connected, they do not need to disconnect. You will be prompted at the end to place the figures correctly. \\
+If a TabuTronic Sentio, DGT Pegasus, ChessUp, Square Off Pro or Millennium eOne is connected, they do not need to disconnect. You will be prompted at the end to place the figures correctly. \\
 The small board starts with the current position.
 
 \begin{figure}[H]
@@ -2584,7 +2618,7 @@ Don't forget to set the castling rights and current color.
 \end{itemize}
 
 
-If a Millennium eOne, DGT Pegasus or Square Off Pro board ist connected you must set and confirm the new position on your board.
+If a Millennium eOne, DGT Pegasus, ChessUp or Square Off Pro board ist connected you must set and confirm the new position on your board.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{ConfirmPosition.png}
@@ -2963,9 +2997,9 @@ Even if you are not playing a game and are on mode "Easy playing", just load som
 All your configration settings for BearChess is not stored in the directory from which you start BearChess. For an installation of a new version of BearChess you can delete the complete BearChess directory and unpack the new version there. Or you unpack the new version in a separate directory and still have the same configuration.
 
 \subsection{Usage of "Buddy" and "BearChess" engines} \label{BuddyBearChessEngines}
-BearChess is delivered without its own engine. However, it can use engines for internal tasks.\\
+BearChess is delivered with its own engine Spike. However, it can use other engines for internal tasks.\\
 The task of a "Buddy" engine is to be able to make move suggestions during a game. To do this, it calculates in parallel on the current position on the board to make a move proposal when the king piece is briefly raised.\\
-The task of a "BearChess" engine is to quickly give an evaluation for all possible moves when a piece is raised.
+The task of a "BearChess" engine (default for Spike if no other engine is defined for that task) is to quickly give an evaluation for all possible moves when a piece is raised.
 
 \subsection{MessChess engines}
 These engines simluate a chess computer the configuration is limited to the capabilities of them. Not everything that is possible with normal engines can be done here. 
@@ -2978,6 +3012,9 @@ For the first time, the engine assumes that all chessmen are on their initial po
 
 \subsection{Certabo: Pawn conversion to a queen}
 If you have performed the calibration without extra queens and are performing a pawn conversion with a extra queen on your board for the first time, the program needs a few seconds to identify the new piece. Please wait until the LEDs are off. The new piece code is stored. There is no delay next time.
+
+\subsection{TabuTronic Cerno: Calibration}
+For the first time, the engine assumes that all chessmen are on their initial position and the extra queens on d3 (white queen) and d6 (black queen).
 
 \subsection{TabuTronic Sentio: Piece recognition}
 The TabuTronic Sentio board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible.
@@ -2995,10 +3032,11 @@ That is why some functions are no longer possible with this board and the stabil
 \subsection{iChessOne}
 The communication with the iChessOne was implemented with a developer version of the board. Despite intensive exchange with the developers of iChessOne, it is possible that corrections are still necessary.
 
+\subsection{ChessUp}
+ChessUp only allows limited access to the board for third party programs and the functionality is limited. For example, the LEDs of the individual fields cannot be controlled. The board only allows correct positions or moves within a chess game. Therefore, from BearChess point of view, the board is only suitable for playing a game against an engine or on FICS. ChessUp does not support the withdrawal of a move. The help function is limited to displaying the valid moves, but not their evaluation. Under promotion is currently not supported by BearChess.
 
 \subsection{Electronic chessboard and engine duels}
 When two engines play against each other, all moves are ignored by the electronic chess board.
-
 
 \subsection{FICS and game types}
 BearChess supports only lightning, blitz and standard games. Bughouse, Crazyhouse, Wild and Suicide chess is not supported.
@@ -3061,6 +3099,14 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+
+\subsection*{Version 1.0.2.0 $\Rightarrow$  1.0.3.0}
+\begin{itemize}		
+	\item {\color{blue}New}: Integration of ChessUp.
+	\item {\color{blue}New}: Select levels for MessChess engines.
+	\item {\color{red}Fix}: Calculation of the number of games in a tournament with an odd number of participants.
+\end{itemize}
 
 
 \subsection*{Version 1.0.1.0 $\Rightarrow$  1.0.2.0}

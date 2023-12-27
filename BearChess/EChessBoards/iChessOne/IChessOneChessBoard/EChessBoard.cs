@@ -33,7 +33,11 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
         private readonly string _statusOffCmd = "CSOFF";
         private readonly string _advancedColor = "EL";
 
-      
+
+        public override void SetEngineColor(int color)
+        {
+            //
+        }
 
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
@@ -101,7 +105,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
             _logger = logger;
             
             MultiColorLEDs = true;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             lock (_lock)
             {
@@ -116,7 +120,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
         public EChessBoard(ILogging logger)
         {
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             Information = "iChessOne";
             MultiColorLEDs = true;

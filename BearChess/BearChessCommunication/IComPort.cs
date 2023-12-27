@@ -4,6 +4,7 @@
     public interface IComPort
     {
         string PortName { get; }
+        string DeviceName { get; }
         string Baud { get; }
         void Open();
         void Close();
@@ -17,6 +18,8 @@
         int ReadTimeout { get; set; }
         int WriteTimeout { get; set; }
         void ClearBuffer();
+
+        string ReadBattery();
 
         bool RTS { get; set; }
         bool DTR { get; set; }

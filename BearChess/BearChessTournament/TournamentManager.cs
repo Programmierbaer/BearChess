@@ -44,9 +44,9 @@ namespace www.SoLaNoSoft.com.BearChessTournament
 
         public CurrentTournament LoadByGame(int gameId)
         {
-            var loadTournamentbyGame = _database.LoadTournamentByGame(gameId);
-            _currentTournament = loadTournamentbyGame.CurrentTournament;
-            _tournamentId = loadTournamentbyGame.TournamentId;
+            var loadTournamentByGame = _database.LoadTournamentByGame(gameId);
+            _currentTournament = loadTournamentByGame.CurrentTournament;
+            _tournamentId = loadTournamentByGame.TournamentId;
             FillPairing();
             return _currentTournament;
 
@@ -171,7 +171,8 @@ namespace www.SoLaNoSoft.com.BearChessTournament
             {
                 int extraGame = numberOfPlayers % 2 == 0 ? 0 : 1;
                 
-                return (numberOfPlayers / 2 * (numberOfPlayers - 1) + extraGame) * cycles;
+                return numberOfPlayers * (numberOfPlayers - 1) / 2 * cycles;
+                // return ((numberOfPlayers) / 2 * (numberOfPlayers - 1) + extraGame ) * cycles;
             }
 
             if (tournamentType == TournamentTypeEnum.Gauntlet)

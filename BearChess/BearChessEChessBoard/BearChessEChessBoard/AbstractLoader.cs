@@ -12,6 +12,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected string Name { get; }
         protected bool Check { get; }
 
+
+
         public event EventHandler<string> MoveEvent;
         public event EventHandler<string> DataEvent;
         public event EventHandler<string> FenEvent;
@@ -64,6 +66,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
             Configuration = ReadConfiguration();
             Init(basePath);
+        }
+
+        public void SetEngineColor(int color)
+        {
+            _eChessBoard?.SetEngineColor(color);
         }
 
         private void Init(string basePath)

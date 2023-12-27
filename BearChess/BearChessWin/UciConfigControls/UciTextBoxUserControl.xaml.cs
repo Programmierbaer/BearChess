@@ -13,6 +13,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _fileDialog;
         
         public UciConfigValue ConfigValue { get; }
+
+        public void SetInputValue(string inputValue)
+        {
+            textBoxValue.Text = inputValue;
+        }
     
         public void ResetToDefault()
         {

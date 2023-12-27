@@ -12,6 +12,9 @@
         public const string SquareOff = "Square Off";
         public const string SquareOffPro = "Square Off Pro";
         public const string ChessnutAir = "Chessnut Air";
+        public const string ChessnutAirPlus = "Chessnut Air+";
+        public const string ChessnutPro = "Chessnut Pro";
+        public const string ChessUp = "ChessUp";
         public const string IChessOne = "iChessOne";
         public const string UCB = "UCB";
         public const string OSA = "Saitek OSA";

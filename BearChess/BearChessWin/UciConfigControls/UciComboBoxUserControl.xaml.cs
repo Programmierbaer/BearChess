@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -7,6 +8,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class UciComboBoxUserControl : UserControl, IUciConfigUserControl
     {
+
+        public event EventHandler<string> SelectionChanged;
 
         public UciConfigValue ConfigValue { get; }
 
@@ -58,6 +61,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (ConfigValue != null)
             {
                 ConfigValue.CurrentValue = comboBox.SelectedItem.ToString();
+                SelectionChanged?.Invoke(sender,ConfigValue.CurrentValue);
             }
         }
     }

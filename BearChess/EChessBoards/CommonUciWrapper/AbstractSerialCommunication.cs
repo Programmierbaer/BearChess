@@ -58,7 +58,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
         public string BoardInformation { get; private set; }
 
+        public string DeviceName =>  _comPort==null ? string.Empty : _comPort.DeviceName;
+
         public bool UseChesstimation { get; set; }
+
+        public string BatteryLevel => _comPort == null ? "---" : _comPort.ReadBattery();
 
 
         protected AbstractSerialCommunication(ILogging logger, string portName, string boardName) : this(logger, portName, string.Empty, boardName)
@@ -311,7 +315,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             foreach (var deviceId in SerialBTLECommunicationTools.DeviceIdList)
                             {
                                 _logger?.LogDebug($"S: Check for id {deviceId}");
-                                _comPort = new BTLEComPort(deviceId, _logger);
+                                _comPort = new BTLEComPort(deviceId.ID, deviceId.Name, _logger);
                                 if (!_comPort.IsOpen)
                                 {
                                     _comPort.Open();
@@ -454,7 +458,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             }
                         }
 
-                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault(),_logger);
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID,firstOrDefault.Name, _logger);
                         SerialBTLECommunicationTools.StopWatching();
                     }
 
@@ -465,12 +470,14 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (_useHID && comPort.StartsWith("H"))
                     {
 
-                        _comPort = HIDComPort.GetComPort(0x2D80, 0xFF00);
+                        _comPort = HIDComPort.GetComPort(0x2D80, 0xFF00, Constants.ChessnutAir);
                         if (_comPort == null)
                         {
                             _logger?.LogInfo("No HID port for Chessnut Air");
                             return false;
                         }
+
+                        
                     }
 
                     if (_useBluetooth && comPort.StartsWith("B"))
@@ -491,7 +498,34 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             }
                         }
 
-                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault(),_logger);
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _logger);
+                        SerialBTLECommunicationTools.StopWatching();
+                    }
+                }
+                if (_boardName.Equals(Constants.ChessUp, StringComparison.OrdinalIgnoreCase))
+                {
+                   
+                    if (_useBluetooth && comPort.StartsWith("B"))
+                    {
+                        int counter = 0;
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "ChessUp" }))
+                        {
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count == 0)
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo("No BTLE port for ChessUp");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _logger);
                         SerialBTLECommunicationTools.StopWatching();
                     }
                 }
@@ -501,7 +535,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (_useHID && comPort.StartsWith("H"))
                     {
 
-                        _comPort = HIDComPort.GetComPort(0x2D80, 0xFF00);
+                        _comPort = HIDComPort.GetComPort(0x2D80, 0xFF00, Constants.IChessOne);
                         if (_comPort == null)
                         {
                             _logger?.LogInfo("No HID port for IChessOne");
@@ -527,7 +561,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             }
                         }
 
-                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault(),_logger);
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _logger);
                         SerialBTLECommunicationTools.StopWatching();
                     }
                     else
@@ -557,7 +592,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             }
                         }
 
-                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault(), _logger);
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _logger);
                         SerialBTLECommunicationTools.StopWatching();
                     }
 
@@ -583,7 +619,8 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             }
                         }
 
-                        _comPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault(), _logger);
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _logger);
                         SerialBTLECommunicationTools.StopWatching();
                     }
 
@@ -715,6 +752,16 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 _logger?.LogInfo($"S: Open COM-Port {portName}");
                                 CurrentComPort = portName.StartsWith("B") ? "BTLE" : portName;
                                 BoardInformation = Constants.ChessnutAir;
+                                return true;
+                            }
+                        }
+                        if (_boardName.Equals(Constants.ChessUp, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                CurrentComPort = portName.StartsWith("B") ? "BTLE" : portName;
+                                BoardInformation = Constants.ChessUp;
                                 return true;
                             }
                         }

@@ -19,6 +19,8 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
         public bool IsOpen => _client != null && _client.Connected;
 
         public string PortName => "BT";
+
+        public string DeviceName => string.Empty;
         public string Baud => string.Empty;
 
         public int ReadTimeout { get; set; }
@@ -32,6 +34,10 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
         public void ClearBuffer()
         {
             //
+        }
+        public string ReadBattery()
+        {
+            return "---";
         }
 
         public bool RTS { get; set; }

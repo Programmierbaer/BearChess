@@ -18,6 +18,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         // https://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport
         public string PortName { get; }
         public string Baud { get; }
+        public string DeviceName => string.Empty;
 
         private readonly SerialPort _serialPort;
         private readonly ConcurrentQueue<byte> _allBytes = new ConcurrentQueue<byte>();
@@ -66,6 +67,11 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         }
 
         public bool IsOpen => _serialPort.IsOpen;
+
+        public string ReadBattery()
+        {
+            return "100";
+        }
 
         public string ReadLine()
         {

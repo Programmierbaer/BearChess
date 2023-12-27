@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Linq;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -104,6 +105,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 optionsLength++;
             }
+
+            if (uciInfo.IsMessChessEngine)
+            {
+                optionsLength++;
+            }
+
+            string currentMessChessLevel = string.Empty;
             foreach (var option in uciInfo.Options)
             {
                 if (option.StartsWith("option name UCI_EngineAbout", StringComparison.OrdinalIgnoreCase))
@@ -131,9 +139,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         oName = oName + optionSplit[i] + " ";
                     }
+                  
                     if (option.StartsWith($"option name {oName.Trim()} type"))
                     {
                         currentValue = optionSplit[optionSplit.Length - 1];
+                      
                         break;
                     }
                 }
@@ -145,8 +155,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     prevColIndex = colIndex;
                     rowIndex = 0;
                 }
+                if (option.Trim().StartsWith("Level"))
+                {
+                    currentMessChessLevel = currentValue;
+                }
                 AddControl(option, currentValue, colIndex, rowIndex);
                 rowIndex++;
+            }
+            if (uciInfo.IsMessChessEngine)
+            {
+                AddMessChessLevelsControl(uciInfo, currentMessChessLevel, colIndex, rowIndex);
             }
         }
 
@@ -196,6 +214,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
+         
             return uciInfo;
         }
 
@@ -210,10 +229,71 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
                 IUciConfigUserControl uciConfigUserControl = gridMainChild as IUciConfigUserControl;
+                if (uciConfigUserControl.ConfigValue.Ignore)
+                {
+                    continue;
+                }
                 result.Add(uciConfigUserControl.ConfigValue);
             }
 
             return result.ToArray();
+        }
+
+        private void AddMessChessLevelsControl(UciInfo uciInfo, string currentValue, int colIndex, int rowIndex)
+        {
+            uciInfo.ReadMessChessLevels(Path.Combine(_configuration.BinPath, Configuration.MESSCHESS_LEVELS_FILE));
+            if (!uciInfo.MessChessLevelsAreManual)
+            {
+                UciConfigValue uciConfigValue = new UciConfigValue();
+                uciConfigValue.CurrentValue = currentValue;
+                uciConfigValue.OptionType = "combo";
+                uciConfigValue.Ignore = true;
+                foreach (UIElement gridMainChild in gridMain.Children)
+                {
+                    if (gridMainChild is UciTextBoxUserControl)
+                    {
+                        currentValue = ((UciTextBoxUserControl)gridMainChild).ConfigValue.CurrentValue;
+                        break;
+                    }
+
+                    if (gridMainChild is UciNumericUpDownUserControl)
+                    {
+                        if (((UciNumericUpDownUserControl)gridMainChild).ConfigValue.OptionName.StartsWith("Level"))
+                        {
+                            currentValue = ((UciNumericUpDownUserControl)gridMainChild).ConfigValue.CurrentValue;
+                            break;
+                        }
+
+                    }
+                }
+
+                for (int i = 0; i < uciInfo.MessChessLevels.Length; i = i + 2)
+                {
+                    if (currentValue.Equals(uciInfo.MessChessLevels[i]))
+                    {
+                        uciConfigValue.CurrentValue =
+                            $"{uciInfo.MessChessLevels[i]} : {uciInfo.MessChessLevels[i + 1]}";
+                    }
+
+                    uciConfigValue.AddComboItem($"{uciInfo.MessChessLevels[i]} : {uciInfo.MessChessLevels[i + 1]}");
+                }
+
+                AddCombo(uciConfigValue, colIndex, rowIndex);
+                rowIndex++;
+            }
+            else
+            {
+                rowIndex++;
+                gridMain.RowDefinitions.Add(new RowDefinition()
+                {
+                    Height = GridLength.Auto
+                });
+            }
+   
+            var uciButtonUserControl = new UciButtonUserControl(_uciInfo.MessChessLevelInfo, this);
+            Grid.SetRow(uciButtonUserControl, rowIndex);
+            Grid.SetColumn(uciButtonUserControl, colIndex);
+            gridMain.Children.Add(uciButtonUserControl);
         }
 
         private void AddControl(string option, string currentValue, int colIndex, int rowIndex)
@@ -477,6 +557,39 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Grid.SetColumn(uciComboBoxUserControl, colIndex + 1);
             gridMain.Children.Add(textBlock);
             gridMain.Children.Add(uciComboBoxUserControl);
+            if (_uciInfo.IsMessChessEngine)
+            {
+                uciComboBoxUserControl.SelectionChanged += UciComboBoxUserControl_SelectionChanged;
+            }
+        }
+
+        private void UciComboBoxUserControl_SelectionChanged(object sender, string e)
+        {
+            if (_uciInfo.IsMessChessEngine)
+            {
+                for (int i = 0; i < _uciInfo.MessChessLevels.Length; i = i + 2)
+                {
+                    if (e.StartsWith(_uciInfo.MessChessLevels[i]))
+                    {
+                        foreach (UIElement gridMainChild in gridMain.Children)
+                        {
+                            if (gridMainChild is UciTextBoxUserControl)
+                            {
+                                ((UciTextBoxUserControl)gridMainChild).SetInputValue(_uciInfo.MessChessLevels[i]);
+                                break;
+                            }
+                            if (gridMainChild is UciNumericUpDownUserControl)
+                            {
+                                if (((UciNumericUpDownUserControl)gridMainChild).ConfigValue.OptionName.StartsWith("Level"))
+                                {
+                                    ((UciNumericUpDownUserControl)gridMainChild).SetInputValue(_uciInfo.MessChessLevels[i]);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void AddCheckBox(UciConfigValue uciConfigValue, int colIndex, int rowIndex)

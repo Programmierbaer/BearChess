@@ -147,6 +147,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract bool Calibrate();
         public abstract void SendInformation(string message);
 
+        public void SetEngineColor(int color)
+        {
+            _board?.SetEngineColor(color);
+        }
+
         public void RequestDump()
         {
             _board?.RequestDump();
@@ -591,6 +596,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             string potentialMove = string.Empty;
             string changedFenHelper = string.Empty;
             string batteryLevel = string.Empty;
+            string batteryStatus = string.Empty;
             _fileLogger?.LogDebug("AB: Handle board");
             while (!_stopCommunication)
             {
@@ -605,7 +611,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     waitForFen = fen;
                     _fileLogger?.LogDebug($"AB: Wait for fen: {waitForFen}");
                 }
-
+                if (!batteryLevel.Equals(_board?.BatteryLevel) || (!batteryStatus.Equals(_board?.BatteryStatus)))
+                {
+                    batteryLevel = _board?.BatteryLevel;
+                    batteryStatus = _board?.BatteryStatus;
+                    BatteryChangedEvent?.Invoke(this, null);
+                }
                 var piecesFen = GetPiecesFenAndSetLedsForInvalidField(!string.IsNullOrWhiteSpace(waitForFen)) ??
                                 _board?.GetPiecesFen();
                 if (piecesFen == null)
@@ -663,11 +674,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     BasePositionEvent?.Invoke(this, null);
                 }
 
-                if (!batteryLevel.Equals(_board?.BatteryLevel))
-                {
-                    batteryLevel = _board?.BatteryLevel;
-                    BatteryChangedEvent?.Invoke(this, null);
-                }
+               
 
                 if (!string.IsNullOrWhiteSpace(waitForFen))
                 {

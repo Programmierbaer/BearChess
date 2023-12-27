@@ -5,6 +5,8 @@
         string CurrentComPort { get; }
         string CurrentBaud { get; }
 
+        string DeviceName { get; }
+
         /// <summary>
         /// Indicates if the communication is active to send and receive data
         /// </summary>
@@ -91,5 +93,7 @@
         string BoardInformation { get; }
 
         bool UseChesstimation { get; set; }
+
+        string BatteryLevel { get; }
     }
 }

@@ -10,8 +10,12 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
     public class HIDComPort : IComPort
     {
         public string PortName => "HID";
+
+        public string DeviceName => _deviceName;
+
         public string Baud => string.Empty;
         private readonly DeviceHandling _device = null;
+        private string _deviceName;
 
 
         //private static ushort vendorId = 0x2D80;
@@ -23,21 +27,23 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         private bool _stopReading;
         private bool _isOpen;
 
-        public static IComPort GetComPort(ushort vendorId, ushort usagePage)
+        public static IComPort GetComPort(ushort vendorId, ushort usagePage, string deviceName)
         {
             var deviceHandling = new DeviceHandling();
             var findDevice = deviceHandling.FindReadDevice(vendorId);
             if (findDevice && deviceHandling.FindWriteDevice(vendorId, usagePage))
             {
-                return new HIDComPort(deviceHandling);
+                
+                return new HIDComPort(deviceHandling,deviceName);
             }
             return null;
         }
 
-        public HIDComPort(DeviceHandling device)
+        public HIDComPort(DeviceHandling device, string deviceName)
         {
             _isOpen = false;
             _device = device;
+            _deviceName = deviceName;
         }
 
 
@@ -127,6 +133,11 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         public void ClearBuffer()
         {
          //
+        }
+
+        public string ReadBattery()
+        {
+            return "---";
         }
 
         public bool RTS { get; set; }

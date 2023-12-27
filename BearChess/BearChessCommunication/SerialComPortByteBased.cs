@@ -21,6 +21,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         private int _serialPortWriteTimeout;
         private int _serialPortReadTimeout;
         private ConcurrentQueue<int> _data = new ConcurrentQueue<int>();
+        public string DeviceName => string.Empty;
 
         public SerialComPortByteBased(string comport, int baud, Parity parity, ILogging logging)
         {
@@ -112,6 +113,11 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         }
 
         public bool IsOpen => _serialPort != null && _serialPort.IsOpen;
+        public string ReadBattery()
+        {
+            return "---";
+        }
+
 
         public string ReadLine()
         {

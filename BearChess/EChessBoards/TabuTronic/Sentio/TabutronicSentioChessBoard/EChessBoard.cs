@@ -86,7 +86,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
           
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             PieceRecognition = false;
             SelfControlled = true;
@@ -114,7 +114,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
         public EChessBoard(ILogging logger)
         {
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             Information = Constants.TabutronicSentio;
             _fromField = string.Empty;
@@ -765,6 +765,11 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
         }
 
         public override void SetCurrentColor(int currentColor)
+        {
+            //
+        }
+
+        public override void SetEngineColor(int color)
         {
             //
         }

@@ -14,6 +14,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public string MaxValue { get; set; }
         public string[] ComboItems => _comboItems.ToArray();
 
+        public bool Ignore { get; set; }
+
         public UciConfigValue()
         {
             OptionName = string.Empty;
@@ -22,6 +24,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             MinValue = string.Empty;
             MaxValue = string.Empty;
             CurrentValue = string.Empty;
+            Ignore = false;
         }
 
         public void AddComboItem(string comboItem)

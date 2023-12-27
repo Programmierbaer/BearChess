@@ -12,6 +12,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
     {
         public string PortName { get; }
         public string Baud { get; }
+        public string DeviceName => string.Empty;
 
         private readonly SerialPort _serialPort;
 
@@ -94,6 +95,10 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         }
 
         public bool IsOpen => _serialPort != null && _serialPort.IsOpen;
+        public string ReadBattery()
+        {
+            return "---";
+        }
 
         public string ReadLine()
         {

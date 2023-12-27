@@ -1031,6 +1031,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 _figures[field] = new BlackKingFigure(this, field);
                 _kingPosition[Fields.COLOR_BLACK] = field;
             }
+
+            if (figureId == FigureId.NO_PIECE)
+            {
+                _figures[field] = new NoFigure(this, field);
+            }
             CurrentFigureList.Add(field);
 
         }

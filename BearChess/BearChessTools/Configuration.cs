@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Xml.Serialization;
 using InTheHand.Net;
 using www.SoLaNoSoft.com.BearChessBase;
@@ -35,7 +36,11 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public const string STARTUP_WHITE_ENGINE_ID = "startupWhite.uci";
         public const string STARTUP_BLACK_ENGINE_ID = "startupBlack.uci";
 
+        public const string MESSCHESS_LEVELS_FILE = "MessChessLevels.txt";
+
         public string FolderPath { get; }
+
+        public string BinPath { get; }
 
         public static Configuration Instance
         {
@@ -51,6 +56,8 @@ namespace www.SoLaNoSoft.com.BearChessTools
         private Configuration()
         {
             FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.BearChess);
+            var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
+            BinPath = fileInfo.DirectoryName;
             if (!Directory.Exists(FolderPath))
             {
                 try

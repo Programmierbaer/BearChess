@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
@@ -30,18 +32,23 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         private readonly string _iChessOneService         = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _iChessOneServiceWrite    = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _iChessOneServiceRead     = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _chessUpServiceWrite      = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _chessUpServiceRead       = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _batteryRead              = "Battery";
         private readonly string _deviceId;
         private readonly ILogging _logging;
         private BluetoothLEDevice _bluetoothLeDevice = null;
         private GattCharacteristic _writeCharacteristic = null;
         private GattCharacteristic _readCharacteristic = null;
         private GattCharacteristic _readCharacteristicC = null;
+        private GattCharacteristic _readBatteryCharacteristic = null;
         private GattDeviceService _service = null;
         private readonly ConcurrentQueue<byte[]> _byteArrayQueue = new ConcurrentQueue<byte[]>();
         private readonly ConcurrentQueue<byte> _byteQueue = new ConcurrentQueue<byte>();
 
         private static readonly Guid ResultCharacteristicUuid = Guid.Parse("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
-
+        private List<BluetoothLEAttributeDisplay> ServiceCollection = new List<BluetoothLEAttributeDisplay>();
+        
         #region Error Codes
         //readonly int E_BLUETOOTH_ATT_WRITE_NOT_PERMITTED = unchecked((int)0x80650003);
         //readonly int E_BLUETOOTH_ATT_INVALID_PDU = unchecked((int)0x80650004);
@@ -52,17 +59,25 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         private List<string> _allServices;
         private List<string> _allReadCharServices;
         private List<string> _allWriteCharServices;
+        private string _deviceName = string.Empty;
+        private string _batteryValue = "---";
+        private static object _lock = new object();
 
         public string PortName => "BTLE";
         public string Baud => string.Empty;
 
-        public BTLEComPort(string deviceId, ILogging logging)
+        public string DeviceName => _deviceName;
+
+
+
+        public BTLEComPort(string deviceId,string deviceName, ILogging logging)
         {
             _deviceId = deviceId;
             _logging = logging;
-            _allServices = new List<string>() { _pegasusService, _mChessLinkService, _chessnutAirServiceR, _chessnutAirServiceW, _iChessOneService,_iChessOneServiceRead,_iChessOneServiceWrite };
-            _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead, _squareOffProServiceRead, _chessnutAirServiceRead, _chessnutAirServiceReadC, _iChessOneServiceRead };
-            _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite, _squareOffProServiceWrite, _chessnutAirServiceWrite, _iChessOneServiceWrite };
+            _deviceName = deviceName;
+            _allServices = new List<string>() { _pegasusService, _mChessLinkService, _chessnutAirServiceR, _chessnutAirServiceW, _iChessOneService,_iChessOneServiceRead,_iChessOneServiceWrite, _chessUpServiceRead , _chessUpServiceWrite };
+            _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead, _squareOffProServiceRead, _chessnutAirServiceRead, _chessnutAirServiceReadC, _iChessOneServiceRead, _chessUpServiceRead};
+            _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite, _squareOffProServiceWrite, _chessnutAirServiceWrite, _iChessOneServiceWrite, _chessUpServiceWrite };
 
         }
 
@@ -84,14 +99,24 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
         public void Open()
         {
-
+            ServiceCollection.Clear();
             _bluetoothLeDevice = AsyncHelper.RunSync(async () => await BluetoothLEDevice.FromIdAsync(_deviceId));
             if (_bluetoothLeDevice != null)
             {
-                
+
                 GattDeviceServicesResult result = AsyncHelper.RunSync(async () => await _bluetoothLeDevice.GetGattServicesAsync(BluetoothCacheMode.Cached));
                 if (result.Status == GattCommunicationStatus.Success)
                 {
+                    _readBatteryCharacteristic = null;
+                    foreach (var service in _bluetoothLeDevice.GattServices)
+                    {
+                        var bluetoothLeAttributeDisplay = new BluetoothLEAttributeDisplay(service);
+                        if (bluetoothLeAttributeDisplay.Name.StartsWith(_batteryRead, StringComparison.OrdinalIgnoreCase))
+                        {
+                            _readBatteryCharacteristic = bluetoothLeAttributeDisplay.service.GetAllCharacteristics().FirstOrDefault();
+                            break;
+                        }
+                    }
                     var services = result.Services;
                     _readCharacteristic = null;
                     _readCharacteristicC = null;
@@ -107,6 +132,8 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                                 BluetoothCacheMode.Cached));
                             foreach (var gattCharacteristic in readOnlyList.Characteristics)
                             {
+                                var bluetoothLeAttributeDisplay = new BluetoothLEAttributeDisplay(gattCharacteristic);
+                                var name = bluetoothLeAttributeDisplay.Name;
                                 var gattChar = gattCharacteristic.Uuid.ToString("D").ToUpper();
                                 if (_allReadCharServices.Contains(gattChar))
                                 {
@@ -138,9 +165,33 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 }
                 GattCommunicationStatus status = AsyncHelper.RunSync(async () => await _readCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
                                                                          GattClientCharacteristicConfigurationDescriptorValue.Notify));
-                if (_readCharacteristicC!=null)
-                 status = AsyncHelper.RunSync(async () => await _readCharacteristicC.WriteClientCharacteristicConfigurationDescriptorAsync(
-                    GattClientCharacteristicConfigurationDescriptorValue.Notify));
+                if (_readBatteryCharacteristic != null)
+                {
+                    
+                    GattReadResult result = AsyncHelper.RunSync(async () => await _readBatteryCharacteristic.ReadValueAsync(BluetoothCacheMode.Uncached));
+                    if (result.Status == GattCommunicationStatus.Success)
+                    {
+                        CryptographicBuffer.CopyToByteArray(result.Value, out var data);
+                        if (data != null)
+                        {
+                            try
+                            {
+                                lock (_lock)
+                                {
+                                    _batteryValue = data[0].ToString();
+                                }
+                            }
+                            catch
+                            {
+                                //
+                            }
+
+                        }
+                    }
+                    status = AsyncHelper.RunSync(async () => await _readBatteryCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
+                        GattClientCharacteristicConfigurationDescriptorValue.Notify));
+                    _readBatteryCharacteristic.ValueChanged += _readBatteryCharacteristic_ValueChanged;
+                }
             }
 
             while (_byteArrayQueue.TryDequeue(out byte[] _)) ;
@@ -174,8 +225,28 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 }
             }
         }
+        private void _readBatteryCharacteristic_ValueChanged(GattCharacteristic sender, GattValueChangedEventArgs args)
+        {
+            CryptographicBuffer.CopyToByteArray(args.CharacteristicValue, out var data);
+            if (data != null)
+            {
+                try
+                {
+                    lock (_lock)
+                    {
+                        _batteryValue = data[0].ToString();
+                        _logging?.LogDebug($"battery changed {_batteryValue}");
+                    }
+                }
+                catch
+                {
+                     //
+                }
+                
+            }
+        }
 
-       
+
         public void Close()
         {
             if (_readCharacteristic != null)
@@ -189,6 +260,12 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 _readCharacteristicC = null;
             }
 
+            if (_readBatteryCharacteristic != null)
+            {
+                _readBatteryCharacteristic.ValueChanged -= _readBatteryCharacteristic_ValueChanged;
+                _readBatteryCharacteristic = null;
+            }
+
 
             _writeCharacteristic = null;
             while (_byteArrayQueue.TryDequeue(out byte[] _));
@@ -198,6 +275,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             _bluetoothLeDevice?.Dispose();
         }
 
+        // public bool IsOpen => _readCharacteristic != null && _writeCharacteristic != null && _service.Device.ConnectionStatus==BluetoothConnectionStatus.Connected;
         public bool IsOpen => _readCharacteristic != null && _writeCharacteristic != null;
 
         public string ReadLine()
@@ -235,7 +313,22 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
         public void Write(string message)
         {
-
+            if (!IsOpen)
+            {
+                return;
+            }
+            var fromByteArray = CryptographicBuffer.DecodeFromHexString(message);
+            try
+            {
+                AsyncHelper.RunSync(async () =>
+                {
+                    GattWriteResult result = await _writeCharacteristic.WriteValueWithResultAsync(fromByteArray);
+                });
+            }
+            catch (Exception)
+            {
+                //
+            }
         }
 
         public void WriteLine(string command)
@@ -284,6 +377,14 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         {
             while (_byteArrayQueue.TryDequeue(out byte[] _));
             while (_byteQueue.TryDequeue(out byte _));
+        }
+
+        public string ReadBattery()
+        {
+            lock (_lock)
+            {
+                return _batteryValue;
+            }
         }
 
         public bool RTS { get; set; }

@@ -131,6 +131,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         bool PlayingWithWhite { get; }
 
+        void SetEngineColor(int color);
+
         /// <summary>
         /// Move made on board by user
         /// </summary>

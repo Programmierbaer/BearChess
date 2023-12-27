@@ -19,6 +19,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         public string Baud { get; }
 
         private SerialPort _serialPort;
+        public string DeviceName => string.Empty;
 
         public SerialComPort(string comport, int baud, Parity parity, ILogging logging)
         {
@@ -80,6 +81,10 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         }
 
         public bool IsOpen => _serialPort !=null && _serialPort.IsOpen;
+        public string ReadBattery()
+        {
+            return "---";
+        }
 
         public string ReadLine()
         {

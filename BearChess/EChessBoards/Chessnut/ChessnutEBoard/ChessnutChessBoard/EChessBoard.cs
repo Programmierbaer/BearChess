@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
@@ -80,10 +81,10 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             _useBluetooth = configuration.UseBluetooth;
             _showMoveLine = configuration.ShowMoveLine;
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
-            Information = "Chessnut Air";
+            Information = Constants.ChessnutAir;
             var thread = new Thread(FlashLeds) { IsBackground = true };
             thread.Start();
         }
@@ -91,10 +92,10 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         {
             _useBluetooth = useBluetooth;
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
-            Information = "Chessnut Air";
+            Information = Constants.ChessnutAir;
             var thread = new Thread(FlashLeds) { IsBackground = true };
             thread.Start();
         }
@@ -131,7 +132,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         public EChessBoard(ILogging logger)
         {
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             Information = "Chessnut Air";
         }
@@ -295,6 +296,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             {
                 return;
             }
+            Information = _serialCommunication.DeviceName;
             _serialCommunication.Send(_startReading);
         }
 
@@ -505,6 +507,11 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         public override void SetCurrentColor(int currentColor)
         {
             //
+        }
+
+        public override void SetEngineColor(int color)
+        {
+           //
         }
 
         public override event EventHandler BasePositionEvent;

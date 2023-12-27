@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessBase
 {
@@ -15,6 +16,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         private string _fileName;
 
         private int _playerElo;
+
         public string Id { get; set; }
         public string Name { get; set; }
         public string OriginName { get; set; }
@@ -30,6 +32,20 @@ namespace www.SoLaNoSoft.com.BearChessBase
             {
                 _fileName = value;
                 CheckIsValidForAnalysis();
+                try
+                {
+                    if (IsMessChessEngine)
+                    {
+                        MessChessLevels  = Array.Empty<string>();
+                        MessChessLevelInfo = string.Empty;
+                        MessChessLevelsAreIncomplete = false;
+                        MessChessLevelsAreManual = false;
+                    }
+                }
+                catch
+                {
+                    //
+                }
             }
         }
 
@@ -52,9 +68,22 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool IsActive { get; set; }
         public bool IsBuddy { get; set; }
         public bool IsProbing { get; set; }
-
         public bool IsInternalBearChessEngine { get; set; }
         public bool IsInternalChessEngine { get; set; }
+        public bool IsMessChessEngine { get; set; }
+
+        [XmlIgnore]
+        public string[] MessChessLevels { get; set; }
+
+        [XmlIgnore] 
+        public string MessChessLevelInfo { get; set; }
+
+        [XmlIgnore] 
+        public bool MessChessLevelsAreIncomplete { get; private set; }
+
+        [XmlIgnore]
+        public bool MessChessLevelsAreManual { get; private set; }
+
 
         public UciInfo()
         {
@@ -75,11 +104,41 @@ namespace www.SoLaNoSoft.com.BearChessBase
             IsBuddy = false;
             IsProbing = false;
             IsInternalBearChessEngine = false;
+            IsMessChessEngine = false;
+            MessChessLevels = Array.Empty<string>();
+            MessChessLevelInfo = string.Empty;
+            MessChessLevelsAreIncomplete = false;
+            MessChessLevelsAreManual = false;
         }
 
         public UciInfo(string fileName) : this()
         {
             FileName = fileName;
+        }
+
+        public void ReadMessChessLevels(string bearChessFileName)
+        {
+            if (IsMessChessEngine)
+            {
+                FileInfo fi = new FileInfo(FileName);
+                if (fi.Exists)
+                {
+                    string messChessLevelFileName = Path.Combine(fi.DirectoryName, "Level", "English.txt");
+                    try
+                    {
+                        var messChessLevelReader =
+                            new MessChessLevelReader(bearChessFileName, messChessLevelFileName, CommandParameter);
+                        MessChessLevels = messChessLevelReader.GetLevels;
+                        MessChessLevelInfo = messChessLevelReader.GetMessChessLevels;
+                        MessChessLevelsAreIncomplete = messChessLevelReader.LevelsAreIncomplete;
+                        MessChessLevelsAreManual = messChessLevelReader.LevelsAreManual;
+                    }
+                    catch
+                    {
+                        //
+                    }
+                }
+            }
         }
 
         public void AddOption(string option)
@@ -113,6 +172,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             var uciElo = OptionValues.FirstOrDefault(f => f.StartsWith("setoption name UCI_Elo"));
             return uciElo != null;
         }
+
 
         public int GetConfiguredElo()
         {
@@ -227,10 +287,12 @@ namespace www.SoLaNoSoft.com.BearChessBase
         private void CheckIsValidForAnalysis()
         {
             ValidForAnalysis = true;
-          
+            IsMessChessEngine = false;
+
             if (FileName.EndsWith("MessChess.exe", StringComparison.OrdinalIgnoreCase))
             {
                 ValidForAnalysis = false;
+                IsMessChessEngine = true;
                 return;
             }
 
@@ -242,6 +304,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
                     if (allText.IndexOf("MessChess", StringComparison.OrdinalIgnoreCase) >= 0)
                     {
                         ValidForAnalysis = false;
+                        IsMessChessEngine = true;
                     }
                 }
                 catch

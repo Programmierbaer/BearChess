@@ -77,7 +77,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _serialCommunication.UseChesstimation = useChesstimation;
             _calibrateStorage = new CalibrateStorage(basePath, _useChesstimation);
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             PieceRecognition = true;
             SelfControlled = false;
@@ -96,7 +96,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         public EChessBoard(ILogging logger)
         {
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             Information = Constants.Certabo;
         }
@@ -743,6 +743,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         }
 
         public override void SetCurrentColor(int currentColor)
+        {
+            //
+        }
+
+        public override void SetEngineColor(int color)
         {
             //
         }

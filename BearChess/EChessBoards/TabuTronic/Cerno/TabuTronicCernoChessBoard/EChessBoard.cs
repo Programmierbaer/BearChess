@@ -74,7 +74,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
             _calibrateStorage = new CalibrateStorage(basePath);
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             PieceRecognition = true;
             SelfControlled = false;
@@ -93,7 +93,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
         public EChessBoard(ILogging logger)
         {
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             Information = Constants.TabutronicCerno;
         }
@@ -740,6 +740,11 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
         }
 
         public override void SetCurrentColor(int currentColor)
+        {
+            //
+        }
+
+        public override void SetEngineColor(int color)
         {
             //
         }

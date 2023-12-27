@@ -758,7 +758,18 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                 
+                    <MenuItem Header="ChessUp" Name="menuItemChessUp">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/ChessUp.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToChessUp" Header="Connect"
+                                  Click="MenuItemConnectChessUp_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/connect.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                    </MenuItem>
                     <MenuItem Visibility="Collapsed" Header="Test COM" Name="menuItemTestComPort"
                               Click="MenuItemTestComPort_OnClick" />
                     <Separator />

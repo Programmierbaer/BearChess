@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AsyncHelper.cs" />
     <Compile Include="BTLEComPort.cs" />
+    <Compile Include="DisplayHelper.cs" />
     <Compile Include="HIDComPort.cs" />
     <Compile Include="SerialBTLECommunicationTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

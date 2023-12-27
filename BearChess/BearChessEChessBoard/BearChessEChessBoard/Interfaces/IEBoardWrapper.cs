@@ -104,6 +104,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         void SetCurrentColor(int currentColor);
 
+        void SetEngineColor(int color);
+
         void RequestDump();
 
         void PlayWithWhite(bool withWhite);

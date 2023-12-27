@@ -19,6 +19,11 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
             //
         }
 
+        public override void SetEngineColor(int color)
+        {
+            //
+        }
+
         public override event EventHandler BasePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;

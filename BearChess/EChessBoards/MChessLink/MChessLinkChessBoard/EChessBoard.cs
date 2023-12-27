@@ -171,7 +171,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             _serialCommunication.UseChesstimation = useChesstimation;
             Version = string.Empty;
             _eprom = string.Empty;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
             IsConnected = EnsureConnection();
             if (useChesstimation)
@@ -191,7 +191,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         public EChessBoard(ILogging logger)
         {
             _logger = logger;
-            BatteryLevel = "100";
+            BatteryLevel = "---";
             BatteryStatus = "Full";
         }
 
@@ -563,6 +563,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         }
 
         public override void SetCurrentColor(int currentColor)
+        {
+            //
+        }
+
+        public override void SetEngineColor(int color)
         {
             //
         }

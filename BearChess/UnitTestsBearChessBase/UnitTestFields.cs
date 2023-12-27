@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
@@ -7,6 +8,20 @@ namespace UnitTestsBearChessBase
     [TestClass]
     public class UnitTestFields
     {
+
+
+        [TestMethod]
+        public void TestFieldCodeConverter()
+        {
+            var fieldNumber = Fields.GetFieldNumber("A1");
+            byte code = (byte)Array.IndexOf(Fields.BoardFields, fieldNumber);
+            Assert.IsTrue(code==0,"A1 ist 0");
+            fieldNumber = Fields.GetFieldNumber("E2");
+             code = (byte)Array.IndexOf(Fields.BoardFields, fieldNumber);
+            Assert.IsTrue(code == 12, "E4 ist 12");
+        }
+
+
         [TestMethod]
         public void TestFieldChangeHelper()
         {

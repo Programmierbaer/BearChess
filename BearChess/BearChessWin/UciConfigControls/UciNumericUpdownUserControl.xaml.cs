@@ -10,6 +10,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public UciConfigValue ConfigValue { get; }
 
+        public void SetInputValue(string inputValue)
+        {
+
+            if (int.TryParse(inputValue, out int val))
+            {
+                numericUpDownUserControl.Value = val;
+            }
+        }
+
         public UciNumericUpDownUserControl()
         {
             InitializeComponent();

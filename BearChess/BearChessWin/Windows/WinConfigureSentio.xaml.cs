@@ -65,7 +65,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 comPortSearchWindow.Close();
                 if (btComPort.Length > 0)
                 {
-                    var btleComPort = new BTLEComPort(SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault(), _fileLogger);
+                    var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                    var btleComPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _fileLogger);
                     btleComPort.Open();
                 }
 

@@ -120,6 +120,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void DisplayOnClock(string display);
 
         void SetCurrentColor(int currentColor);
+        void SetEngineColor(int color);
 
         event EventHandler BasePositionEvent;
         event EventHandler HelpRequestedEvent;

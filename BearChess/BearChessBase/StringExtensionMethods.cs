@@ -14,6 +14,11 @@ namespace www.SoLaNoSoft.com.BearChessBase
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
 
+        public static string RemoveSpaces(this string line)
+        {
+            return string.Join(" ", line.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
+        }
+
         public static int GetDeterministicHashCode(this string str)
         {
             unchecked

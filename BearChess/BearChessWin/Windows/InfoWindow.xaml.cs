@@ -11,5 +11,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             InitializeComponent();
         }
+
+        public InfoWindow(string info) : this()
+        {
+            TextBlockInfo.Text = info;
+        }
     }
 }
