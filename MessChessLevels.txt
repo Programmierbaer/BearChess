@@ -3,15 +3,14 @@ Important: Lines with "#" must not be modified!
 #academy#academyd#academyg#academyga#academygb#academytt#
 #milano#milanoa#mrisc#mrisc2#nshort#polgar#polgara#polgar10#polgar101#
 #milano10#milanoa10#mrisc_28#mrisc2_28#nshort10#nshort20#
-Levels: ?
-NORMAL m:ss                             time/move (m=0-9, ss=00-59)
-TOUR zz IN h:mm (or: TURN)              moves/time (zz=00-99, h=0-9, mm=00-59)
-BLITZ h:mm h:mm                         time/game (h=0-9, mm=00-59), Player - Computer
-PLY-DEPTH n (or: RECHENTIEFE)           search depth n plies (n=0-99)
-MATE IN n (or: MATT)                    mate in n moves (n=1-8)
-ELO-TOUR nnnn (or: ELO TURNIER)         Elo setting for tournament chess (40 moves/2 hrs)
-ELO-ACTIVE nnnn (or: ELO AKTIV)         Elo setting for active chess (30 min/game)
-                                        (nnnn=0000-2999)
+Levels: #
+NORMAL#m:ss                             time/move (m=0-9, ss=00-59)
+TOUR#zz#IN#h:mm (or: TURN)              moves/time (zz=00-99, h=0-9, mm=00-59)
+BLITZ#h:mm#h:mm                         time/game (h=0-9, mm=00-59), Player - Computer
+PLY-DEPTH#n# (or: RECHENTIEFE)          search depth n plies (n=0-99)
+MATE#IN#n (or: MATT)                    mate in n moves (n=1-8)
+ELO-TOUR#nnnn (or: ELO TURNIER)         Elo setting for tournament chess (40 moves/2 hrs)
+ELO-ACTIVE#nnnn (or: ELO AKTIV)         Elo setting for active chess (30 min/game) (nnnn=0000-2999)
 INFINITE (or: ANALYSE, UNBEGRENZT, UNENDLICH)
 
 #alm16#alm16a#alm32#alm32_oc#port16#port32#port32a#port32b#port32t#port32_oc#
@@ -340,11 +339,11 @@ Levels: #
 8
 
 #ccmk5#ccmk6#
-Levels: ?
+Levels: #
 n                               sec/move (n=0-999)
-SPEED n (or: BLITZ)             sec/move (SPEED mode)
-TOURN zz/mm ... (or: TURN)      moves/min (max. 8 time controls), zz=1-999, mm=1-999
-MATE n (or: MATT, PROBLEM)      mate in n moves (n=1-7)
+SPEED#n (or: BLITZ)             sec/move (SPEED mode)
+TOURN#zz/mm ... (or: TURN)      moves/min (max. 8 time controls), zz=1-999, mm=1-999
+MATE#n (or: MATT, PROBLEM)      mate in n moves (n=1-7)
 
 #cexpert#
 Levels: #
@@ -1196,7 +1195,6 @@ Levels:
 8       analysis
 
 #ggm#
-Levels: ?
 Levels: boris25
 0       0-1 sec/move
 1       8-15 sec/move
@@ -1872,7 +1870,47 @@ EA#7    40 moves in 120 min with "permanent brain" OFF!
 EA#8    40 moves in 150 min with "permanent brain" OFF!
 
 #premiere#
-Levels: ?
+Levels: #
+a1      60 moves in 5 min       5 sec/move
+a2      60 moves in 10 min      10 sec/move
+a3      60 moves in 15 min      15 sec/move
+a4      60 moves in 30 min      30 sec/move
+a5      60 moves in 60 min      1 min/move
+a6      30 moves in 60 min      2 min/move
+a7      40 moves in 2 hrs       3 min/move
+a8      40 moves in 2.5 hrs     3.5 min/move
+
+b1      5 min/game
+b2      10 min/game
+b3      15 min/game
+b4      20 min/game
+b5      30 min/game
+b6      1 hr/game
+b7      2 hrs/game
+b8      3 hrs/game
+    
+
+e1   analysis (all the same)
+
+g1    search depth 1 ply
+g2    search depth 2 plies
+g3    search depth 3 plies
+g4    search depth 4 plies
+g5    search depth 5 plies
+g6    search depth 6 plies
+g7    search depth 7 plies
+g8    search depth 8 plies
+
+h1          mate in 1 move
+h2          mate in 2 moves
+h3          mate in 3 moves
+h4          mate in 4 moves
+h5          mate in 5 moves
+h6          mate in 6 moves
+h7          mate in 7 moves
+h8          mate in 8 moves
+
+
 
 #prodigy#prodigy0#
 Levels:
