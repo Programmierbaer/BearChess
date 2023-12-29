@@ -18,19 +18,19 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public bool LevelsAreIncomplete { get; private set; }
         public bool LevelsAreManual { get; private set; }
 
-        public MessChessLevelReader(string bearChessFileName, string messChessFileName, string emulationCode)
+        public MessChessLevelReader(string bearChessFileName, string messChessFileName, string emulationCode, string levelCode)
         {
             if (File.Exists(bearChessFileName))
             {
-                ReadBearChessChessLevel(bearChessFileName,emulationCode);
+                ReadBearChessChessLevel(bearChessFileName,emulationCode, levelCode);
             }
             if (File.Exists(messChessFileName))
             {
-                ReadMessChessLevel(messChessFileName, emulationCode);
+                ReadMessChessLevel(messChessFileName, emulationCode, levelCode);
             }
         }
 
-        private void ReadMessChessLevel(string fileName, string emulationCode)
+        private void ReadMessChessLevel(string fileName, string emulationCode, string levelCode)
         {
             bool readingCode = false;
             bool readingLevel = false;
@@ -46,10 +46,27 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
                 if (readingCode && !line.StartsWith("#"))
                 {
-                    readingLevel = true;
+                    if (string.IsNullOrWhiteSpace(levelCode))
+                    {
+                        readingLevel = true;
+                        _messChessLevel += line + Environment.NewLine;
+                        continue;
+                    }
+
+                    if (line.StartsWith("Levels:") && line.Contains(levelCode))
+                    {
+                        readingLevel = true;
+                        _messChessLevel += line + Environment.NewLine;
+                        continue;
+                    }
                 }
 
                 if (readingLevel && line.StartsWith("#"))
+                {
+                    return;
+                }
+
+                if (readingLevel && line.StartsWith("Levels:"))
                 {
                     return;
                 }
@@ -63,7 +80,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
         }
 
-        private void ReadBearChessChessLevel(string fileName, string emulationCode)
+        private void ReadBearChessChessLevel(string fileName, string emulationCode, string levelCode)
         {
             bool readingCode = false;
             bool readingLevel = false;
@@ -77,20 +94,37 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     continue;
                 }
 
-                if (readingCode && line.StartsWith("Levels:"))
+                if (readingCode && !readingLevel && line.StartsWith("Levels:"))
                 {
-                    readingLevel = true;
-                    LevelsAreIncomplete = line.Contains("#");
-                    LevelsAreManual = line.Contains("?");
-                    if (LevelsAreManual)
+                    if (string.IsNullOrWhiteSpace(levelCode))
                     {
-                        return;
+                        readingLevel = true;
+                        LevelsAreIncomplete = line.Contains("#");
+                        LevelsAreManual = line.Contains("?");
+                        if (LevelsAreManual)
+                        {
+                            return;
 
+                        }
                     }
+                    else
+                    {
+                        if (line.StartsWith("Levels:") && line.Contains(levelCode))
+                        {
+                            readingLevel = true;
+                            LevelsAreIncomplete = line.Contains("#");
+                            LevelsAreManual = line.Contains("?");
+                        }
+                    }
+
                     continue;
                 }
 
                 if (readingLevel && line.StartsWith("#"))
+                {
+                    return;
+                }
+                if (readingLevel && line.StartsWith("Levels:"))
                 {
                     return;
                 }

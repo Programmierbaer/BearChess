@@ -127,7 +127,13 @@ namespace www.SoLaNoSoft.com.BearChessBase
                     try
                     {
                         var strings = CommandParameter.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                        var messChessLevelReader = new MessChessLevelReader(bearChessFileName, messChessLevelFileName, strings[0]);
+                        string levelCode = string.Empty;
+                        if (strings.Length > 1 && !strings[1].StartsWith("-"))
+                        {
+                            levelCode = strings[1];
+                        }
+                        var messChessLevelReader =
+                            new MessChessLevelReader(bearChessFileName, messChessLevelFileName, strings[0], levelCode);
                         MessChessLevels = messChessLevelReader.GetLevels;
                         MessChessLevelInfo = messChessLevelReader.GetMessChessLevels;
                         MessChessLevelsAreIncomplete = messChessLevelReader.LevelsAreIncomplete;

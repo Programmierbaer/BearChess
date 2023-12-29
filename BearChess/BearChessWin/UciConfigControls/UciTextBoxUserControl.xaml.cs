@@ -36,6 +36,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
            
             textBoxValue.Text = configValue.CurrentValue;
             textBoxValue.ToolTip = string.IsNullOrWhiteSpace(configValue.CurrentValue) ? null : configValue.CurrentValue;
+            if (configValue.InputWidth > 0)
+            {
+                textBoxValue.Width = configValue.InputWidth;
+            }
             ConfigValue = configValue;
             if (configValue.OptionName.ToLower().Contains("file"))
             {

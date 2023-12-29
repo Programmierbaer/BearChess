@@ -101,6 +101,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             int rowIndex = 0;
             int colIndex = 0;
             int prevColIndex = 0;
+            int inputWidth = 0;
             if ((uciInfo.Options.Length % 2) != 0)
             {
                 optionsLength++;
@@ -155,11 +156,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     prevColIndex = colIndex;
                     rowIndex = 0;
                 }
-                if (option.Trim().StartsWith("Level"))
+                if (uciInfo.IsMessChessEngine && option.Trim().Contains("Level"))
                 {
-                    currentMessChessLevel = currentValue;
+                    inputWidth = 240;
                 }
-                AddControl(option, currentValue, colIndex, rowIndex);
+                AddControl(option, currentValue, colIndex, rowIndex, inputWidth);
                 rowIndex++;
             }
             if (uciInfo.IsMessChessEngine)
@@ -272,10 +273,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (currentValue.Equals(uciInfo.MessChessLevels[i]))
                     {
                         uciConfigValue.CurrentValue =
-                            $"{uciInfo.MessChessLevels[i]} : {uciInfo.MessChessLevels[i + 1]}";
+                            $"{uciInfo.MessChessLevels[i]} -> {uciInfo.MessChessLevels[i + 1]}";
                     }
 
-                    uciConfigValue.AddComboItem($"{uciInfo.MessChessLevels[i]} : {uciInfo.MessChessLevels[i + 1]}");
+                    uciConfigValue.AddComboItem($"{uciInfo.MessChessLevels[i]} -> {uciInfo.MessChessLevels[i + 1]}");
                 }
 
                 AddCombo(uciConfigValue, colIndex, rowIndex);
@@ -296,7 +297,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             gridMain.Children.Add(uciButtonUserControl);
         }
 
-        private void AddControl(string option, string currentValue, int colIndex, int rowIndex)
+        private void AddControl(string option, string currentValue, int colIndex, int rowIndex, int inputWidth)
         {
             var optionSplit = option.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             if (optionSplit.Length < 3
@@ -307,6 +308,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             UciConfigValue uciConfigValue = new UciConfigValue {CurrentValue = currentValue};
+            uciConfigValue.InputWidth = inputWidth;
 
             var i = 2;
             do

@@ -972,6 +972,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                             IsThinking = false,
                             IsMove = invalidFields.Count == 0,
                             IsError = invalidFields.Count > 0,
+                            IsProbing = false,
                             DisplayString = string.Empty
 
                         };
@@ -1023,6 +1024,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                             IsThinking = false,
                             IsMove = invalidFields.Count == 0,
                             IsError = true,
+                            IsProbing = false,
                             DisplayString = string.Empty
 
                         };

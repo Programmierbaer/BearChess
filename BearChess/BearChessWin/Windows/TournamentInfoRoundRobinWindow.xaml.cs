@@ -194,8 +194,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlock2.Text += " ½";
                 _results[pairing[0]] += (decimal) 0.5;
                 _results[pairing[1]] += (decimal) 0.5;
-                _resultsDetails[pairing[0], pairing[1]] += " ½";
-                _resultsDetails[pairing[1], pairing[0]] += " ½";
+                _resultsDetails[pairing[0], pairing[1]] += " "+ 0x00BD;
+                _resultsDetails[pairing[1], pairing[0]] += " "+ 0x00BD;
             }
             else
             {

@@ -4846,7 +4846,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             {
                                 if (!_pausedGame)
                                 {
-                                    //   _chessClocksWindowWhite?.Go();
+                                      _chessClocksWindowWhite?.Go();
                                     //_eChessBoard?.StartClock(true);
                                 }
 
@@ -4900,7 +4900,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             {
                                 if (!_pausedGame)
                                 {
-                                    //   _chessClocksWindowBlack?.Go();
+                                      _chessClocksWindowBlack?.Go();
                                     //_eChessBoard?.StartClock(false);
                                 }
 
@@ -6134,11 +6134,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DisconnectFromChessnutAir()
         {
+            _eChessBoard.ProbeMoveEvent -= EChessBoard_ProbeMoveEvent;
             DisconnectFromEBoard(menuItemConnectToChessnutAirBoard,"Chessnut Air/Pro");
         }
 
         private void DisconnectFromIChessOne()
         {
+            _eChessBoard.ProbeMoveEvent -= EChessBoard_ProbeMoveEvent;
             DisconnectFromEBoard(menuItemConnectToIChessOneBoard, "iChessOne");
         }
 
@@ -6702,6 +6704,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DisconnectFromTabutronicCerno()
         {
+            _eChessBoard.ProbeMoveEvent -= EChessBoard_ProbeMoveEvent;
             DisconnectFromEBoard(menuItemConnectToCerno, "Tabutronic Cerno");
         }
 
@@ -6713,6 +6716,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard.FenEvent += EChessBoardFenEvent;
             _eChessBoard.BasePositionEvent += EChessBoardBasePositionEvent;
             _eChessBoard.AwaitedPosition += EChessBoardAwaitedPositionEvent;
+            _eChessBoard.ProbeMoveEvent += EChessBoard_ProbeMoveEvent;
             if (!_eChessBoard.IsConnected)
             {
                 DisconnectFromCertabo();
@@ -10590,11 +10594,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             menuItemUCBBoard.IsEnabled = false;
             menuItemCitrineBoard.IsEnabled = false;
             menuItemSaitek.IsEnabled = false;
-            menuItemTabutronic.IsEnabled = false;
+            menuItemCerno.IsEnabled = false;
+            menuItemSentio.IsEnabled = false;
             menuItemDGT.IsEnabled = false;
             menuItemNovagBoard.IsEnabled = false;
             menuItemChessnutAirBoard.IsEnabled = false;
-            menuItemConnectToChessUp.IsEnabled = false;
+            menuItemChessUp.IsEnabled = false;
+            menuItemIChessOneBoard.IsEnabled = false;
         }
 
         private void EnableConnectItems()
@@ -10614,7 +10620,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             menuItemDGT.IsEnabled = true;
             menuItemNovagBoard.IsEnabled = true;
             menuItemIChessOneBoard.IsEnabled = true;
-            menuItemConnectToChessUp.IsEnabled = true;
+            menuItemChessUp.IsEnabled = true;
         }
     }
 }

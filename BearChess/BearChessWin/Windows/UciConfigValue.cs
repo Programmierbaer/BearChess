@@ -16,6 +16,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public bool Ignore { get; set; }
 
+        public int InputWidth { get; set; }
+
         public UciConfigValue()
         {
             OptionName = string.Empty;
@@ -25,6 +27,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             MaxValue = string.Empty;
             CurrentValue = string.Empty;
             Ignore = false;
+            InputWidth = 0;
         }
 
         public void AddComboItem(string comboItem)
