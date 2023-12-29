@@ -80,8 +80,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var textBlock2 = new TextBlock { Margin = new Thickness(5) };
             if (result.Contains("/"))
             {
-                textBlock1.Text = "½";
-                textBlock2.Text = "½";
+                //   _resultsDetails[pairing[0], pairing[1]] += " "+ 0x00BD;
+                // _resultsDetails[pairing[1], pairing[0]] += " "+ 0x00BD;
+                textBlock1.Text = "\u00BD" ;
+                textBlock2.Text = "\u00BD";
                 _results[0] = _results[0] + (decimal)0.5;
                 _results[1] = _results[1] + (decimal)0.5;
             }

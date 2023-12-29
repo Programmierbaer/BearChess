@@ -190,12 +190,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (result.Contains("/"))
             {
-                textBlock1.Text += " ½";
-                textBlock2.Text += " ½";
+                textBlock1.Text += $" "+'\u00BD';
+                textBlock2.Text += $" "+'\u00BD';
                 _results[pairing[0]] += (decimal) 0.5;
                 _results[pairing[1]] += (decimal) 0.5;
-                _resultsDetails[pairing[0], pairing[1]] += " "+ 0x00BD;
-                _resultsDetails[pairing[1], pairing[0]] += " "+ 0x00BD;
+                _resultsDetails[pairing[0], pairing[1]] += $" "+'\u00BD'; 
+                _resultsDetails[pairing[1], pairing[0]] += $" "+'\u00BD';
             }
             else
             {
