@@ -125,5 +125,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         event EventHandler BasePositionEvent;
         event EventHandler HelpRequestedEvent;
         event EventHandler<string> DataEvent;
+        void AcceptProbingMoves(bool acceptProbingMoves);
     }
 }

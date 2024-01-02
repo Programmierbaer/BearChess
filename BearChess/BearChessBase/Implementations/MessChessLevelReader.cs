@@ -84,7 +84,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             bool readingCode = false;
             bool readingLevel = false;
-            var readAllLines = File.ReadAllLines(fileName,Encoding.UTF8);
+            var readAllLines = File.ReadAllLines(fileName,Encoding.Default);
             _allLevels.Clear();
             foreach (var line in readAllLines)
             {

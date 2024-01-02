@@ -242,6 +242,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         public bool MultiColorLEDs => _board?.MultiColorLEDs ?? false;
+        public void AcceptProbingMoves(bool acceptProbingMoves)
+        {
+            _board?.AcceptProbingMoves(acceptProbingMoves);
+        }
 
         public void StopClock()
         {
@@ -671,6 +675,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 if (_forcedBasePosition || (piecesFen.Invalid && _piecesFenBasePosition))
                 {
                     _forcedBasePosition = false;
+                    SetAllLedsOff(true);
                     BasePositionEvent?.Invoke(this, null);
                 }
 
@@ -976,7 +981,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                             DisplayString = string.Empty
 
                         };
-                        if (_configuration.ShowPossibleMoves && setLeDsParameter.IsMove &&
+                        if ((_configuration.ShowPossibleMoves || _configuration.ShowPossibleMovesEval) && setLeDsParameter.IsMove &&
                             setLeDsParameter.FieldNames.Length == 1 && !waitMove)
                         {
                             List<string> hintFields = new List<string> { setLeDsParameter.FieldNames[0] };

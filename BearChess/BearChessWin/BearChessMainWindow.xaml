@@ -667,7 +667,7 @@
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Header="Chessnut Air/Pro" Name="menuItemChessnutAirBoard">
+                    <MenuItem Header="Chessnut Air/Air+/Pro" Name="menuItemChessnutAirBoard">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/chessnut.png" />
                         </MenuItem.Icon>
@@ -675,6 +675,12 @@
                                   Click="MenuItemConnectChessnutAirBoard_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/connect.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemConfigureChessnutAir" Header="Configure..."
+                                  Click="MenuItemConfigureChessnutAir_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/cog.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemBluetoothChessnutAir" Header="Bluetooth LE"
@@ -685,22 +691,7 @@
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemShowMoveLineChessnutAir" Header="Show move line"
-                                  ToolTip="Activate all LEDs along the move"
-                                  Click="MenuItemShowMoveLineChesssnutAir_OnClick">
-                            <MenuItem.Icon>
-                                <Image Name="imageChessnutAirShowMoveLine" Source="Assets/Icons/tick.png"
-                                       Visibility="Hidden" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Name="menuItemShowOwnMoveChessnutAir" Header="Show own move"
-                                  ToolTip="Show your own moves"
-                                  Click="MenuItemShowOwnMoveChesssnutAir_OnClick">
-                            <MenuItem.Icon>
-                                <Image Name="imageChessnutAirShowOwnMove" Source="Assets/Icons/tick.png"
-                                       Visibility="Hidden" />
-                            </MenuItem.Icon>
-                        </MenuItem>
+                        
                     </MenuItem>
                     <MenuItem Header="NOVAG" Name="menuItemNovagBoard" Visibility="Visible">
                         <MenuItem.Icon>

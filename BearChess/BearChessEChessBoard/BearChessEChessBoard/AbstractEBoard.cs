@@ -16,6 +16,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected bool _stopReading = false;
         protected volatile bool _stopAll = false;
         protected bool _ignoreReading = false;
+        protected bool _acceptProbingMoves = false;
 
 
         public bool IsCalibrated { get; protected set; }
@@ -77,6 +78,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void Stop(bool stop)
         {
             _stopReading = stop;
+            AcceptProbingMoves(false);
         }
 
         public void Ignore(bool ignore)
@@ -103,6 +105,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract event EventHandler HelpRequestedEvent;
 
         public abstract event EventHandler<string> DataEvent;
+        public void AcceptProbingMoves(bool acceptProbingMoves)
+        {
+            _acceptProbingMoves = acceptProbingMoves;
+        }
 
         public void SetDemoMode(bool inDemoMode)
         {

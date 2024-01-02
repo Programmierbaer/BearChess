@@ -48,39 +48,38 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         private readonly Dictionary<string, int> unKnowCodeCounter = new Dictionary<string, int>();
         private readonly byte[] _lastSendBytes = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        public static byte ColA = 0x1;
-        public static byte ColB = 0x1 << 1;
-        public static byte ColC = 0x1 << 2;
-        public static byte ColD = 0x1 << 3;
-        public static byte ColE = 0x1 << 4;
-        public static byte ColF = 0x1 << 5;
-        public static byte ColG = 0x1 << 6;
-        public static byte ColH = 0x1 << 7;
-        public static byte[] AllOff = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        public static byte[] AllOn = { 255, 255, 255, 255, 255, 255, 255, 255 };
+        private static readonly byte ColA = 0x1;
+        private static readonly byte ColB = 0x1 << 1;
+        private static readonly byte ColC = 0x1 << 2;
+        private static readonly byte ColD = 0x1 << 3;
+        private static readonly byte ColE = 0x1 << 4;
+        private static readonly byte ColF = 0x1 << 5;
+        private static readonly byte ColG = 0x1 << 6;
+        private static readonly byte ColH = 0x1 << 7;
+        private static readonly byte[] AllOff = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        private static readonly byte[] AllOn = { 255, 255, 255, 255, 255, 255, 255, 255 };
         private bool _flashLeds;
-        private ConcurrentQueue<string[]> _flashFields = new ConcurrentQueue<string[]>();
+        private readonly ConcurrentQueue<string[]> _flashFields = new ConcurrentQueue<string[]>();
+        private readonly ConcurrentQueue<ProbingMove[]> _probingFields = new ConcurrentQueue<ProbingMove[]>();
         private bool _release = false;
-        private bool _useChesstimation;
         private readonly bool _showMoveLine;
+        private readonly bool _useChesstimation;
+        private readonly EChessBoardConfiguration _boardConfiguration;
 
-        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration, bool useChesstimation) :
-            this (basePath,logger,configuration.PortName,configuration.UseBluetooth,useChesstimation)
+        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration, bool useChesstimation)
         {
+            _boardConfiguration = configuration;
             _showMoveLine = configuration.ShowMoveLine;
-        }
-        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, bool useChesstimation)
-        {
-            _useBluetooth = useBluetooth;
             _useChesstimation = useChesstimation;
-            _serialCommunication = new SerialCommunication(logger, portName,useBluetooth);
-            _serialCommunication.UseChesstimation = useChesstimation;
-            _calibrateStorage = new CalibrateStorage(basePath, _useChesstimation);
+            _useBluetooth = configuration.UseBluetooth;
+            _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
+            _calibrateStorage = new CalibrateStorage(basePath,_useChesstimation);
             _logger = logger;
             BatteryLevel = "---";
             BatteryStatus = "Full";
             PieceRecognition = true;
             SelfControlled = false;
+            MultiColorLEDs = true;
             var calibrationData = _calibrateStorage.GetCalibrationData();
             if (!string.IsNullOrWhiteSpace(calibrationData.BasePositionCodes))
             {
@@ -88,10 +87,15 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                 IsCalibrated = Calibrate(calibrationData);
             }
             IsConnected = EnsureConnection();
-            Information = useChesstimation ? Constants.Chesstimation : Constants.Certabo;
+            Information = _useChesstimation ? Constants.Chesstimation : Constants.Certabo;
             var thread = new Thread(FlashLeds) { IsBackground = true };
             thread.Start();
+            var probingThread = new Thread(ShowProbingMoves) { IsBackground = true };
+            probingThread.Start();
+            _acceptProbingMoves = true;
         }
+
+
 
         public EChessBoard(ILogging logger)
         {
@@ -109,7 +113,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override bool CheckComPort(string portName)
         {
-            _serialCommunication = new SerialCommunication( _logger, portName, _useBluetooth);
+            _serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth);
             _serialCommunication.UseChesstimation = _useChesstimation;
             if (_serialCommunication.CheckConnect(portName))
             {
@@ -124,6 +128,64 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         public override bool CheckComPort(string portName, string baud)
         {
             return CheckComPort(portName);
+        }
+
+        private void ShowProbingMoves()
+        {
+            bool switchSide = false;
+
+            while (!_release)
+            {
+                if (_probingFields.TryPeek(out ProbingMove[] fields))
+                {
+                    if (!_acceptProbingMoves)
+                    {
+                        _probingFields.TryDequeue(out _);
+                        // SetAllLedsOff(true);
+                        continue;
+                    }
+                    var probingMove = fields.OrderByDescending(f => f.Score).First();
+                    byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    if (switchSide)
+                    {
+                        foreach (var field in fields)
+                        {
+                            if (field.FieldName.Equals(probingMove.FieldName))
+                            {
+                                continue;
+                            }
+
+                            if (_boardConfiguration.ShowPossibleMoves)
+                            {
+                                result = UpdateLedsForField(field.FieldName, result);
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (var field in fields)
+                        {
+                            if (_boardConfiguration.ShowPossibleMovesEval && field.FieldName.Equals(probingMove.FieldName))
+                            {
+                                result = UpdateLedsForField(field.FieldName, result);
+                            }
+
+                            if (_boardConfiguration.ShowPossibleMoves)
+                            {
+                                result = UpdateLedsForField(field.FieldName, result);
+                            }
+                        }
+                    }
+                    switchSide = !switchSide;
+                    _serialCommunication.Send(result);
+                    Thread.Sleep(1200);
+                    continue;
+                }
+
+
+                Thread.Sleep(10);
+            }
         }
 
         private void FlashLeds()
@@ -146,7 +208,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     }
                     switchSide = !switchSide;
                     _serialCommunication.Send(result);
-                    Thread.Sleep(500);
+                    Thread.Sleep(1200);
+                    continue;
 
                 }
 
@@ -156,69 +219,89 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
-            if (!EnsureConnection())
             {
-                return;
-            }
-            _flashFields.TryDequeue(out _);
-            if (ledsParameter.FieldNames.Length == 0)
-            {
-                ledsParameter.FieldNames = ledsParameter.InvalidFieldNames.ToArray();
-            }
-            if (ledsParameter.FieldNames.Length < 1)
-            {
-                return;
-            }
-            lock (_locker)
-            {
-                var joinedString = string.Join(" ", ledsParameter.FieldNames);
-                if (ledsParameter.IsThinking)
+                if (!EnsureConnection())
                 {
-                    _prevLedField = _prevLedField == 1 ? 0 : 1;
+                    return;
                 }
-                else
+                // _logger?.LogDebug($"B: set LEDs for {ledsParameter}");
+                _flashFields.TryDequeue(out _);
+
+                if (ledsParameter.FieldNames.Length == 0)
                 {
-                    if (_prevJoinedString.Equals(joinedString))
-                    {
-                        return;
-                    }
+                    ledsParameter.FieldNames = ledsParameter.InvalidFieldNames.ToArray();
                 }
-                _logger?.LogDebug($"B: set leds for {joinedString}");
-                if (ledsParameter.IsThinking && ledsParameter.FieldNames.Length > 1)
+
+
+                if (ledsParameter.FieldNames.Length < 1)
                 {
-                    _flashFields.Enqueue(ledsParameter.FieldNames);
                     return;
                 }
 
-                _prevJoinedString = joinedString;
-
-                byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
-                Array.Copy(AllOff, result, AllOff.Length);
-                if (ledsParameter.IsThinking && ledsParameter.FieldNames.Length == 2)
+                lock (_locker)
                 {
-                    result = UpdateLedsForField(ledsParameter.FieldNames[_prevLedField], result);
-                }
-                else
-                {
-                    if (ledsParameter.FieldNames.Length == 2 && _showMoveLine)
+                    if (ledsParameter.IsProbing && (_boardConfiguration.ShowPossibleMoves || _boardConfiguration.ShowPossibleMovesEval))
                     {
-                        string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
-                        foreach (string fieldName in moveLine)
-                        {
-                            result = UpdateLedsForField(fieldName, result);
-                        }
+                        _logger?.LogDebug($"B: set LEDs for probing {ledsParameter}");
+                        _probingFields.TryDequeue(out _);
+                        _probingFields.Enqueue(ledsParameter.ProbingMoves);
+                        return;
+                    }
+
+                    var joinedString = string.Join(" ", ledsParameter.FieldNames);
+                    if (ledsParameter.IsThinking)
+                    {
+                        _prevLedField = _prevLedField == 1 ? 0 : 1;
                     }
                     else
                     {
-                        foreach (string fieldName in ledsParameter.FieldNames)
+                        if (_prevJoinedString.Equals(joinedString))
                         {
-                            result = UpdateLedsForField(fieldName, result);
+                            return;
                         }
                     }
-                }
 
-                Array.Copy(result, _lastSendBytes, result.Length);
-                _serialCommunication.Send(result);
+                    _logger?.LogDebug($"B: set LEDs for {ledsParameter}");
+
+                    if (ledsParameter.IsThinking && ledsParameter.FieldNames.Length > 1)
+                    {
+                        _probingFields.TryDequeue(out _);
+                        _flashFields.Enqueue(ledsParameter.FieldNames);
+                        return;
+                    }
+
+                    _prevJoinedString = joinedString;
+
+                    byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    Array.Copy(AllOff, result, AllOff.Length);
+                    if (ledsParameter.IsThinking && ledsParameter.FieldNames.Length == 2)
+                    {
+                        result = UpdateLedsForField(ledsParameter.FieldNames[_prevLedField], result);
+                    }
+                    else
+                    {
+                        //if (ledsParameter.FieldNames.Length == 2 && _showMoveLine && !ledsParameter.IsError)
+                        if (ledsParameter.FieldNames.Length == 2 && _showMoveLine && !ledsParameter.IsProbing)
+                        {
+                            string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0],
+                                ledsParameter.FieldNames[1]);
+                            foreach (string fieldName in moveLine)
+                            {
+                                result = UpdateLedsForField(fieldName, result);
+                            }
+                        }
+                        else
+                        {
+                            foreach (string fieldName in ledsParameter.FieldNames)
+                            {
+                                result = UpdateLedsForField(fieldName, result);
+                            }
+                        }
+                    }
+
+                    Array.Copy(result, _lastSendBytes, result.Length);
+                    _serialCommunication.Send(result);
+                }
             }
         }
 
@@ -233,8 +316,10 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             lock (_locker)
             {
                 _logger?.LogDebug("B: Send all off");
+                _probingFields.TryDequeue(out _);
+                _flashFields.TryDequeue(out _);
                 _serialCommunication.ClearToBoard();
-                _serialCommunication.Send(AllOff);
+                _serialCommunication.Send(AllOff, forceOff);
                 _prevJoinedString = string.Empty;
             }
         }
@@ -249,6 +334,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             lock (_locker)
             {
                 _logger?.LogDebug("B: Send all on");
+                _probingFields.TryDequeue(out _);
+                _flashFields.TryDequeue(out _);
                 _serialCommunication.Send(AllOn);
             }
         }
@@ -280,10 +367,10 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         public override void FlashMode(EnumFlashMode flashMode)
         {
-            _flashLeds = flashMode != EnumFlashMode.NoFlash;
+            _flashLeds = flashMode == EnumFlashMode.FlashSync;
         }
 
-       
+
         public override void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
             // ignore
@@ -298,12 +385,12 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
             _logger?.LogDebug("B: start calibrate ");
             SetLedForFields(new SetLEDsParameter()
-                            {
-                                FieldNames = new[] { "A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7", "D3", "D6" },
-                                Promote = string.Empty,
-                                IsThinking = false,
-                                IsMove = false,
-                                DisplayString = string.Empty
+            {
+                FieldNames = new[] { "A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8", "A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7", "D3", "D6" },
+                Promote = string.Empty,
+                IsThinking = false,
+                IsMove = false,
+                DisplayString = string.Empty
             });
             var boardData = _serialCommunication.GetCalibrateData();
             _logger?.LogDebug($"B: calibrate data: {boardData}");
@@ -548,7 +635,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     var piecesFen = GetPiecesFen(dataArray);
                     if (FenCodes.BasePosition.StartsWith(piecesFen))
                     {
-                     
+
                         return new DataFromBoard(piecesFen.Contains(UnknownPieceCode) ? UnknownPieceCode : piecesFen,
                                                  boardData.Repeated);
                     }
@@ -556,7 +643,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     piecesFen = GetPiecesFen(dataArray);
                     if (FenCodes.BasePosition.StartsWith(piecesFen))
                     {
-                     
+
                         return new DataFromBoard(piecesFen.Contains(UnknownPieceCode) ? UnknownPieceCode : piecesFen,
                                                  boardData.Repeated);
                     }
@@ -713,13 +800,15 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
         protected override void SetToNewGame()
         {
-            //
+            _probingFields.TryDequeue(out _);
+            SetAllLedsOff(true);
         }
 
-       
+
         public override void Release()
         {
             _release = true;
+            _probingFields.TryDequeue(out _);
         }
 
         public override void SetFen(string fen)
@@ -763,6 +852,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 
 
         #region private
+
+
 
         private bool Calibrate(CalibrateData codes)
         {
@@ -874,6 +965,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             return true;
         }
 
+        private byte[] GetLedForFields(string fromFieldName, string toFieldName)
+        {
+            return UpdateLedsForField(toFieldName, UpdateLedsForField(fromFieldName, AllOff));
+        }
+
         private byte[] UpdateLedsForField(string fieldName, byte[] current)
         {
             // Exact two letters expected, e.g. "E2"
@@ -983,8 +1079,6 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             }
             return string.Empty;
         }
-
-       
 
         #endregion
 

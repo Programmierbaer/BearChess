@@ -38,6 +38,11 @@ TURN#7          50 moves in 2.5 hrs     rest of game in 30 min
 TURN#8          40 moves in 2.5 hrs     then 16 moves in 1 hr
 TURN#9          30 moves in 1.5 hrs     rest of game in 30 min
 
+PROGR#zz/hh:mm ...      moves/time (max. 4 time controls: 2 for Computer + 2 for Player)
+ANFÄN#n         Computer doesn't always play the best move (n=0-9)
+HANDC#n         Computer adjusts to Player time by a factor (n=0-9)
+TIEFE#n         search depth n plies (n=0-30)
+MATT#n          mate in n moves (n=1-16)
 DAUER           analysis
 
 #amsterd#amsterda#dallas16#dallas16a#dallas32#dallas32a#glasgow#glasgow_o#glasgow_t#
@@ -49,6 +54,8 @@ Levels: #
 4               1 min/move
 5               2 min/move
 6               40 moves in 2 hrs
+7#hh:mm:ss      time/game (hh=00-99, mm=00-59, ss=00-59)
+8#hh:mm:ss      time/move (hh=00-99, mm=00-59, ss=00-59)
 9               analysis
 
 #analystb#analystc1#analystc2#analystc3#analystd1#analystd2#analystdp#
@@ -165,14 +172,16 @@ TURN#7          50 moves in 2.5 hrs     rest of game in 30 min
 TURN#8          40 moves in 2.5 hrs     then 16 moves in 1 hr
 TURN#9          30 moves in 1.5 hrs     rest of game in 30 min
 
+PROGR#zz/hh:mm ...      moves/time (max. 4 time controls: 2 for Computer + 2 for Player)
+ANFÄN#n         Computer doesn't always play the best move (n=0-9)
+HANDC#n         Computer adjusts to Player time by a factor (n=0-9)
+TIEFE#n         search depth n plies (n=0-30)
+MATT#n          mate in n moves (n=1-16)
 DAUER           analysis
 
 #boris#borisa#borisdpl#
-Levels: ?
-hhmmss  average computing time, z.B.:
-        5 = 5 sec
-        100 = 1 min
-        10505 = 1 hr 5 min 5 sec
+Levels: #
+hhmmss  average computing time/move
 
 #bup#bupa#
 Levels:
@@ -192,7 +201,7 @@ pl#6    infinite
 
 #cc1#cc1x#
 Levels: ?
-nur eine einzige Stufe!
+only one level!
 
 #cc10#cc10a#
 Levels:
@@ -259,32 +268,32 @@ d6      beginner levels with reduced strength
 d7      beginner levels with reduced strength
 d8      beginner levels with reduced strength
 
-e1      20 moves in 30 min  Rest in 30 min
-e2      20 moves in 30 min  then 20 moves in 30 min
-e3      20 moves in 40 min  then 20 moves in 40 min
-e4      25 moves in 60 min  then 25 moves in 60 min
-e5      30 moves in 45 min  then 30 moves in 45 min
-e6      30 moves in 60 min  Rest in 30 min
-e7      30 moves in 60 min  then 30 moves in 60 min
-e8      30 moves in 70 min  then 30 moves in 70 min
+e1      20 moves in 30 min      rest of game in 30 min
+e2      20 moves in 30 min      then 20 moves in 30 min
+e3      20 moves in 40 min      then 20 moves in 40 min
+e4      25 moves in 60 min      then 25 moves in 60 min
+e5      30 moves in 45 min      then 30 moves in 45 min
+e6      30 moves in 60 min      rest of game in 30 min
+e7      30 moves in 60 min      then 30 moves in 60 min
+e8      30 moves in 70 min      then 30 moves in 70 min
 
-f1      30 moves in 75 min  then 30 moves in 75 min
-f2      30 moves in 80 min  then 30 moves in 80 min
-f3      30 moves in 90 min  then 10 moves in 30 min
-f4      30 moves in 100 min then 30 moves in 100 min
-f5      35 moves in 90 min  Rest in 15 min
-f6      40 moves in 40 min  then 20 moves in 20 min
-f7      40 moves in 60 min  then 20 moves in 30 min
-f8      40 moves in 80 min  then 20 moves in 40 min
+f1      30 moves in 75 min      then 30 moves in 75 min
+f2      30 moves in 80 min      then 30 moves in 80 min
+f3      30 moves in 90 min      then 10 moves in 30 min
+f4      30 moves in 100 min     then 30 moves in 100 min
+f5      35 moves in 90 min      rest of game in 15 min
+f6      40 moves in 40 min      then 20 moves in 20 min
+f7      40 moves in 60 min      then 20 moves in 30 min
+f8      40 moves in 80 min      then 20 moves in 40 min
 
-g1      40 moves in 90 min  then 20 moves in 45 min
-g2      40 moves in 100 min  then 20 moves in 50 min
-g3      40 moves in 105 min  Rest in 15 min
-g4      45 moves in 120 min  then 23 moves in 60 min
-g5      55 moves in 90 min  then 25 moves in 45 min
-g6      50 moves in 100 min  then 25 moves in 50 min
-g7      50 moves in 120 min  then 25 moves in 60 min
-g8      60 moves in 60 min  then 30 moves in 30 min
+g1      40 moves in 90 min      then 20 moves in 45 min
+g2      40 moves in 100 min     then 20 moves in 50 min
+g3      40 moves in 105 min     rest of game in 15 min
+g4      45 moves in 120 min     then 23 moves in 60 min
+g5      55 moves in 90 min      then 25 moves in 45 min
+g6      50 moves in 100 min     then 25 moves in 50 min
+g7      50 moves in 120 min     then 25 moves in 60 min
+g8      60 moves in 60 min      then 30 moves in 30 min
 
 h1      search depth 1 ply
 h2      search depth 2 plies
@@ -312,11 +321,8 @@ Levels:
 7       3 min/move
 
 #ccdelta1#ccdelta1x#ssystem3#ssystem4#
-Levels: ?
-hhmmss  average computing time, e.g.:
-        5 = 5 sec
-        100 = 1 min
-        10505 = 1 hr 5 min 5 sec
+Levels: #
+hhmmss  average computing time/move
 
 #ccmk1#
 Levels:
@@ -363,6 +369,7 @@ Levels: #
 13      40 moves in 100 min     2.5 min/move
 14      45 moves in 150 min     3.3 min/move
 
+-n      search depth n plies (n=1-14)
 0       analysis
 
 #cfortea#cforteb#
@@ -383,6 +390,9 @@ b4      40 moves in 60 min      90 sec/move
 b5      40 moves in 100 min     2.5 min/move
 b6      45 moves in 150 min     3.3 min/move
 b7      40 moves in 12 hrs      18 min/move
+
+b8#zz/hh:mm             moves/time (zz=00-99, hh=00-99, mm=00-59)
+b8#zz/hh:mm#zz/hh:mm    moves/time (White - Black)
 
 #ch2001#ch2001_8#
 Levels:
@@ -750,6 +760,9 @@ Levels: #
 7       3.75 min/move   40 moves in 2.5 hrs
 8       6 min/move      30 moves in 3 hrs
 
+E#zz/h:mm#zz/h:mm       moves/time (time control 1, time control 2)
+F#h:mm#h:mm             time/game (Player - Computer)
+
 G       mate search
 H       analysis
 
@@ -784,6 +797,9 @@ b5      40 moves in 100 min     2.5 min/move
 b6      45 moves in 150 min     3.3 min/move
 b7      40 moves in 9 hrs       13.5 min/move
 b8      20 moves in 9 hrs       27 min/move
+
+b8#zz/h:mm:ss                   moves/time (zz=00-99, h=0-9, mm=00-59, ss=00-59)
+b8#zz/h:mm:ss#zz/h:mm:ss        moves/time (White - Black)
 
 c1      3 min/game
 c2      5 min/game
@@ -858,7 +874,7 @@ G       1 hr/move
 H       mate in 1-4 moves       Problem
 
 #europa#
-Levels:
+Levels: #
 a1      2 sec/move
 a2      5 sec/move
 a3      15 sec/move
@@ -889,9 +905,6 @@ c8      search depth 8 plies
 d1      analysis
 
 e1      mate in 1-6 moves
-
-Remark:
-Pressing a1-c8 twice switches "permanent brain" OFF!
 
 #exechess#
 Levels:
@@ -941,7 +954,11 @@ b6      1 hr/game
 b7      2 hrs/game
 b8      3 hrs/game
 
-d1   analysis
+c#h:mm/zz                       time control 1 (time/moves), h=0-9, mm=00-99, zz=00-99
+c#h:mm/zz#h:mm/zz               time control 1, time control 2
+c#h:mm/zz#h:mm/zz#h:mm/zz       time control 1, time control 2, time control 3
+
+d1      analysis (all the same)
 
 g1      search depth 1 ply
 g2      search depth 2 plies
@@ -976,6 +993,15 @@ a8      30 moves in 3 hrs       6 min/move
 
 b1      analysis
 
+b2#h:mm#h:mm                    time/game (Player - Computer), h=0-9, mm=00-99
+b3#h:mm/zz                      time control 1 (time/moves),  h=0-9, mm=00-99, zz=00-99
+b3#h:mm/zz#h:mm/zz              time control 1, time control 2
+b3#h:mm/zz#h:mm/zz#h:mm/zz      time control 1, time control 2, time control 3
+b4#n                            search depth n ("iterative"), n=0-99
+b5#n                            search depth n ("non-iterative"), n=0-99
+b6#n                            mate in n, n=0-99
+b7#m:ss                         time/move, m=0-9, ss=00-99
+
 #feagv2#feagv3#feagv4#feagv5#feagv6#feagv7#feagv7a#feagv9#feagv10#feagv11#
 #feagv6oc#feagv7oc#feagv7aoc#feagv9oc#
 Levels: #
@@ -997,7 +1023,11 @@ b6      1 hr/game
 b7      2 hrs/game
 b8      3 hrs/game
 
-e1  analysis
+c#h:mm/zz                       time control 1 (time/moves), h=0-9, mm=00-99, zz=00-99
+c#h:mm/zz#h:mm/zz               time control 1, time control 2
+c#h:mm/zz#h:mm/zz#h:mm/zz ...   time control 1, time control 2, time control 3-4
+
+e1      analysis (all the same)
 
 g1      search depth 1 ply
 g2      search depth 2 plies
@@ -1037,6 +1067,15 @@ a7      40 moves in 2.5 hrs     3.75 min/move
 a8      30 moves in 3 hrs       6 min/move
 
 b1      analysis
+
+b2#h:mm#h:mm                    time/game (Player - Computer), h=0-9, mm=00-99
+b3#h:mm/zz                      time control 1 (time/moves),  h=0-9, mm=00-99, zz=00-99
+b3#h:mm/zz#h:mm/zz              time control 1, time control 2
+b3#h:mm/zz#h:mm/zz#h:mm         time control 1, time control 2, rest of game
+b4#n                            search depth n ("iterative"), n=0-99
+b5#n                            search depth n ("non-iterative"), n=0-99
+b6#n                            mate in n, n=0-99
+b7#m:ss                         time/move, m=0-9, ss=00-99
 
 #feldo#
 Levels:
@@ -1227,7 +1266,7 @@ Levels: gruen / gruens / morphy / sandy
 7       30 moves in 1 hr
 8       20 moves in 1 hr
 
-Levels: steinitz
+Levels: steinitz / steinitza / steinitzb
 0       mate search
 1       5 sec/move              60 moves in 5 min
 2       15 sec/move             60 moves in 15 min
@@ -1239,9 +1278,9 @@ Levels: steinitz
 8       40 moves in 2 hrs
 9       analysis
 
-10 zz/mm zz/mm  time control 1, rest of game (zz=1-999 moves, mm=1-999 min)
-10 zz/mm        time control 1, rest of game unchanged (default=20/30)
 10              time controls unchanged (default=40/60 20/30)
+10#zz/mm        time control 1, rest of game unchanged (default=20/30)
+10#zz/mm#zz/mm  time control 1, rest of game (zz=1-999 moves, mm=1-999 min)
 
 #im01#
 Levels:
@@ -1286,12 +1325,12 @@ Levels:
 13      4 hrs/move
 
 #intel02#
-Levels: chess ?
+Levels: chess
 1       4 sec/move
 2       8 sec/move
 3       30 sec/move
 
-Levels: chess2 ?
+Levels: chess2
 1       4 sec/move
 2       8 sec/move
 3       30 sec/move
@@ -1383,7 +1422,6 @@ b8      mate in 4 moves
 
 #mephisto2#mephisto2a#mephisto2e#mmirage#
 Levels: #
-
 a1              1-3 sec/move
 a2              7 sec/move
 a3              20 sec/move
@@ -1391,6 +1429,8 @@ a4              45 sec/move
 a5              90 sec/move     (40 moves in 1 hr)
 a6              3 min/move      (40 moves in 2 hrs)
 a7              10 min/move
+a8#mmss         time/move       (mm=00-59, ss=00-59)
+a8#0000         infinite
 
 e1      mate in 1 move
 e2      mate in 2 moves
@@ -1415,11 +1455,19 @@ Levels:
 9       1-5 days
 
 #miniscc#miniscco#
-Levels: #
+Levels: miniscc / miniscco
 1       5-22 sec/move
 2       10-35 sec/move
 3       30-100 sec/move
 4       analysis
+
+Levels: cac
+1
+2
+3
+4
+5
+6
 
 #mm2#mm2a#mm2b#mm2c#mm2d#mm2e#
 Levels:
@@ -1501,6 +1549,7 @@ Levels: #
 5       2 min/move
 6       3 min/move      (40 moves in 2 hrs)
 7       6 min/move
+8#sss   sss sec/move    (sss=000-999)
 9       infinite
 
 #modena#modenaa#modenab#modena_8#modenaa_8#modenab_8#
@@ -1579,6 +1628,9 @@ Levels: #
 4                       1 min/move
 5                       2 min/move
 6                       40 moves in 2 hrs (3 min/move)
+7#hh:mm:ss              time/game, hh=00-99, mm=00-59, ss=00-59
+7#hh:mm:ss#hh:mm:ss     time/game (Computer - Player)
+8#hh:mm:ss              time/move
 9                       infinite
 
 #montec#monteca#montec2#
@@ -1705,6 +1757,10 @@ tou4    60 moves in 2 hrs
 tou5    60 moves in 2.5 hrs
 tou6    60 moves in 3 hrs
 
+tou7#zz/hh:mm                   time control 1: zz moves in hh:mm (zz=01-99)
+tou8#zz/hh:mm#zz/hh:mm          time control 1, time control 2
+tou9#zz/hh:mm#hh:mm             time control 1, rest of game
+
 bli0    2 min/game
 bli1    3 min/game
 bli2    5 min/game
@@ -1713,6 +1769,9 @@ bli4    10 min/game
 bli5    15 min/game
 bli6    20 min/game
 bli7    30 min/game
+
+bli8#hh:mm:ss                   time/game (hh=00-99, mm=00-59, ss=00-59)
+bli9#hh:mm:ss#hh:mm:ss          time/game (Computer - Player)
 
 beg0          about 2 sec/move, Computer doesn't always play the best move,
 beg1          about 2 sec/move, Computer doesn't always play the best move,
@@ -1739,12 +1798,12 @@ mat9          mate in 9 moves
 inf           infinite
 
 #montreux#risc2500#risc2500a#
-Levels: ?
-ss sec/move             time/move (ss=0-999)
-zz/h:mm moves/hrs       moves/time (zz=0-99, h=0-9, mm=00-59)
-mm min/game             time/game (mm=0-99)
-n ply                   search depth n plies (n=0-99)
-n mate                  mate in n moves (n=0-99)
+Levels: #
+ss#sec/move             time/move (ss=0-999)
+zz/h:mm#moves/hrs       moves/time (zz=0-99, h=0-9, mm=00-59)
+mm#min/game             time/game (mm=0-99)
+n#ply                   search depth n plies (n=0-99)
+n#mate                  mate in n moves (n=0-99)
 analysis                analysis
 
 #nmicro#nmicro2#nocto#npresto#
@@ -1870,7 +1929,8 @@ EA#7    40 moves in 120 min with "permanent brain" OFF!
 EA#8    40 moves in 150 min with "permanent brain" OFF!
 
 #premiere#
-Levels: #
+Levels:
+Program Avantgarde 2265
 a1      60 moves in 5 min       5 sec/move
 a2      60 moves in 10 min      10 sec/move
 a3      60 moves in 15 min      15 sec/move
@@ -1888,29 +1948,86 @@ b5      30 min/game
 b6      1 hr/game
 b7      2 hrs/game
 b8      3 hrs/game
-    
 
-e1   analysis (all the same)
+c#h:mm/zz                       time control 1 (time/moves), h=0-9, mm=00-99, zz=00-99
+c#h:mm/zz#h:mm/zz               time control 1, time control 2
+c#h:mm/zz#h:mm/zz#h:mm/zz ...   time control 1, time control 2, time control 3-4
 
-g1    search depth 1 ply
-g2    search depth 2 plies
-g3    search depth 3 plies
-g4    search depth 4 plies
-g5    search depth 5 plies
-g6    search depth 6 plies
-g7    search depth 7 plies
-g8    search depth 8 plies
+e1      analysis (all the same)
 
-h1          mate in 1 move
-h2          mate in 2 moves
-h3          mate in 3 moves
-h4          mate in 4 moves
-h5          mate in 5 moves
-h6          mate in 6 moves
-h7          mate in 7 moves
-h8          mate in 8 moves
+g1      search depth 1 ply
+g2      search depth 2 plies
+g3      search depth 2 plies
+g4      search depth 2 plies
+g5      search depth 2 plies
+g6      search depth 2 plies
+g7      search depth 2 plies
+g8      search depth 2 plies
 
+h1      mate in 1 move
+h2      mate in 2 moves
+h3      mate in 3 moves
+h4      mate in 4 moves
+h5      mate in 5 moves
+h6      mate in 6 moves
+h7      mate in 7 moves
+h8      mate in 8 moves
 
+Program Vancouver 16 Bit
+a1      2 sec/move
+a2      5 sec/move
+a3      10 sec/move
+a4      15 sec/move
+a5      30 sec/move
+a6      1 min/move
+a7      2 min/move
+a8      3 min/move
+
+b1      40 moves in 2 hrs
+b2      50 moves in 2.5 hrs
+b3      40 moves in 2 hrs       rest of game in 1 hr
+b4      40 moves in 2 hrs       rest of game in 30 min
+b5      50 moves in 2 hrs       then 20 moves in 1 hr
+b6      40 moves in 1.75 hrs    rest of game in 15 min
+b7      35 moves in 1.75 hrs
+b8      50 moves in 2.5 hrs     rest of game in 30 min
+
+c1      2 min/game
+c2      5 min/game
+c3      10 min/game
+c4      15 min/game
+c5      20 min/game
+c6      30 min/game
+c7      45 min/game
+c8      60 min/game
+
+d1      Computer doesn't always play the best move
+d2      Computer doesn't always play the best move
+d3      Computer doesn't always play the best move
+d4      Computer doesn't always play the best move
+d5      Computer doesn't always play the best move
+d6      Computer doesn't always play the best move
+d7      Computer doesn't always play the best move
+d8      Computer doesn't always play the best move
+
+e1      Computer adjusts to Player time by factor
+e2      Computer adjusts to Player time by factor
+e3      Computer adjusts to Player time by factor
+e4      Computer adjusts to Player time by factor
+e5      Computer adjusts to Player time by factor
+e6      Computer adjusts to Player time by factor
+e7      Computer adjusts to Player time by factor
+e8      Computer adjusts to Player time by factor
+
+f1#nn   mate in nn moves (nn=01-16)
+
+f2#nn   search depth nn plies (nn=00-29)
+
+f3      infinite
+
+g#h:mm/zz                       time control 1 (time/moves), h=0-9, mm=00-99, zz=00-99
+g#h:mm/zz#h:mm/zz               time control 1, time control 2
+g#h:mm/zz#h:mm/zz#h:mm ...      time control 1, time control 2, time control 3-6
 
 #prodigy#prodigy0#
 Levels:
@@ -2016,6 +2133,9 @@ Levels: #
 36      20 min/game
 37      30 min/game
 
+38#hh:mm:ss             time/game (hh=00-99, mm=00-59, ss=00-59)
+39#hh:mm:ss#hh:mm:ss    time/game (Computer - Player)
+
 40      40 moves in 120 min
 41      40 moves in 150 min
 42      50 moves in 120 min
@@ -2026,6 +2146,28 @@ Levels: #
 47      60 moves in 120 min
 48      60 moves in 150 min
 49      60 moves in 180 min
+
+50#hh:mm:ss                             time/move (hh=00-99, mm=00-59, ss=00-59)
+51#hh:mm:ss#hh:mm:ss                    time/move (Computer - Player)
+52#zz/hh:mm                             time control 1: zz moves in hh:mm (zz=01-99)
+53#zz/hh:mm#zz/hh:mm                    time control 1: zz moves in hh:mm (Computer - Player)
+54#zz/hh:mm#zz/hh:mm                    time control 1, time control 2
+55#zz/hh:mm#zz/hh:mm#zz/hh:mm#zz/hh:mm  time control 1, time control 2 (Computer - Player)
+56#zz/hh:mm#hh:mm                       time control 1, rest of game
+57#zz/hh:mm#hh:mm#zz/hh:mm#hh:mm        time control 1, rest of game (Computer - Player)
+
+61      mate in 1 move
+62      mate in 2 moves
+63      mate in 3 moves
+64      mate in 4 moves
+65      mate in 5 moves
+66      mate in 6 moves
+67      mate in 7 moves
+68      mate in 8 moves
+69      mate in 9 moves
+70      mate in 10 moves
+71      mate in 11 moves
+72      mate in 12 moves
 
 80      1 ply "brute-force",    7 plies "selective"
 81      1 ply "brute-force",    8 plies "selective"
@@ -2097,7 +2239,7 @@ Levels: #
 8
 
 #schess#
-Levels:
+Levels: schess / csss / strong
 1       2 sec/move
 2       15 sec/move
 3       30 sec/move
@@ -2274,6 +2416,9 @@ b6      45 moves in 150 min     3.3 min/move
 b7      40 moves in 12 hrs      18 min/move
 b8      40 moves in 10 min      15 sec/move
 
+b8#zz/hh:mm             moves/time (zz=00-99, hh=00-99, mm=00-59)
+b8#zz/hh:mm#zz/hh:mm    moves/time (White - Black)
+
 c1      3 min/game
 c2      5 min/game
 c3      10 min/game
@@ -2299,6 +2444,31 @@ e5      5 hrs/move
 e6      6 hrs/move
 e7      8 hrs/move
 e8      10 hrs/move
+
+f1      beginner levels
+f2      beginner levels
+f3      beginner levels
+f4      beginner levels
+f5      beginner levels
+
+f6      search depth 1 ply
+f7      search depth 2 plies
+f8      search depth 3 plies
+g1      search depth 4 plies
+g2      search depth 5 plies
+g3      search depth 6 plies
+g4      search depth 7 plies
+g5      search depth 8 plies
+g6      search depth 9 plies
+g7      search depth 10 plies
+g8      search depth 11 plies
+h1      search depth 12 plies
+h2      search depth 13 plies
+h3      search depth 14 plies
+h4      search depth 15 plies
+h5      search depth 16 plies
+h6      search depth 17 plies
+h7      search depth 18 plies
 
 #sgalaxyb#
 Levels:
@@ -2528,6 +2698,9 @@ Levels: #
 15      3 min  5 sec/move
 16      3 min 45 sec/move
 
+17#zz/mm        moves/min (zz=0-99, 0 means all moves, mm=0-199)
+17#zz/mm#zz/mm  moves/min (time control 1, time control 2)
+
 #ssensor4#
 Levels:
 1       1 sec/move
@@ -2616,12 +2789,12 @@ h7      mate in 7 moves
 h8      mate in 8 moves
 
 #tascr30#tascr30a#tascr30b#tascr30g#tascr40#tascr40a#tascr40b#tascr40g#
-Levels: ?
-ss sec/move             time/move (ss=0-999)
-zz/h:mm moves/hrs       moves/time (zz=0-99, h=0-9, mm=00-59)
-mm min/game             time/game (mm=0-99)
-n ply                   search depth n plies (n=0-99)
-n mate                  mate in n moves (n=0-99)
+Levels: #
+ss#sec/move             time/move (ss=0-999)
+zz/h:mm#moves/hrs       moves/time (zz=0-99, h=0-9, mm=00-59)
+mm#min/game             time/game (mm=0-99)
+n#ply                   search depth n plies (n=0-99)
+n#mate                  mate in n moves (n=0-99)
 infinite                analysis
 
 #tchess#

@@ -235,5 +235,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         void DisplayOnClock(string display);
 
+        void AcceptProbingMoves(bool acceptProbingMoves);
+
     }
 }

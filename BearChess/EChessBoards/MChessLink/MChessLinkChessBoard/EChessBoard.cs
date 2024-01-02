@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -149,25 +152,25 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         private bool _lowerRight = true;
         private EnumFlashMode _flashMode = EnumFlashMode.FlashAsync;
         private readonly bool _showMoveLine;
+        private readonly ConcurrentQueue<ProbingMove[]> _probingFields = new ConcurrentQueue<ProbingMove[]>();
+        private bool _release = false;
         private string _eprom { get; set; }
+        private readonly EChessBoardConfiguration _boardConfiguration;
 
 
         public string Version { get; private set; }
         
-        public EChessBoard(ILogging logger, string portName) : this(logger,portName, false)
-        {
-        }
+     
 
-        public EChessBoard(ILogging logger, EChessBoardConfiguration configuration, bool useChesstimation) : this(logger, configuration.PortName, useChesstimation)
-        {
-            _showMoveLine = configuration.ShowMoveLine;
-        }
-
-        public EChessBoard(ILogging logger, string portName, bool useChesstimation)
+        public EChessBoard(ILogging logger, EChessBoardConfiguration configuration, bool useChesstimation) 
         {
             _useChesstimation = useChesstimation;
+            _showMoveLine = configuration.ShowMoveLine;
+            _boardConfiguration = configuration;
+            _boardConfiguration.ShowPossibleMovesEval = true;
+            _boardConfiguration.ShowPossibleMoves = true;
             _logger = logger;
-            _serialCommunication = new SerialCommunication(logger, portName);
+            _serialCommunication = new SerialCommunication(logger, configuration.PortName);
             _serialCommunication.UseChesstimation = useChesstimation;
             Version = string.Empty;
             _eprom = string.Empty;
@@ -182,17 +185,63 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 Information = "Millennium " + _serialCommunication.BoardInformation;
             }
-            PieceRecognition =   _serialCommunication.BoardInformation != Constants.MeOne && !_serialCommunication.BoardInformation.Contains(Constants.Chesstimation)
-                                     && !_serialCommunication.BoardInformation.Contains((Constants.Elfacun));
+            PieceRecognition = _serialCommunication.BoardInformation != Constants.MeOne && !_serialCommunication.BoardInformation.Contains(Constants.Chesstimation)
+                && !_serialCommunication.BoardInformation.Contains((Constants.Elfacun));
             SelfControlled = false;
-           
+            MultiColorLEDs = PieceRecognition;
+            var probingThread = new Thread(ShowProbingMoves) { IsBackground = true };
+            probingThread.Start();
+            _acceptProbingMoves = true;
         }
+
 
         public EChessBoard(ILogging logger)
         {
             _logger = logger;
             BatteryLevel = "---";
             BatteryStatus = "Full";
+        }
+
+        private void ShowProbingMoves()
+        {
+            
+            List<string> showFields = new List<string>();
+            string ledForFields = string.Empty;
+            while (!_release)
+            {
+                if (_probingFields.TryPeek(out ProbingMove[] fields))
+                {
+                    if (!_acceptProbingMoves)
+                    {
+                        _probingFields.TryDequeue(out _);
+                        // SetAllLedsOff(true);
+                        continue;
+                    }
+                    showFields.Clear();
+                    var probingMove = fields.OrderByDescending(f => f.Score).First();
+                    {
+                        foreach (var field in fields)
+                        {
+                            if (_boardConfiguration.ShowPossibleMoves)
+                            {
+                                showFields.Add(field.FieldName);
+                            }
+                        }
+                        
+                    }
+                    if (showFields.Count > 0)
+                    {
+                        ledForFields = GetLedForProbingFields(showFields.ToArray(), _boardConfiguration.ShowPossibleMovesEval ? probingMove.FieldName: string.Empty,true);
+                        _serialCommunication.Send(_lastSendLeds = $"L22{ledForFields}");
+                    }
+
+                    Thread.Sleep(100);
+                    continue;
+                }
+
+
+                Thread.Sleep(10);
+            }
         }
 
         public override void Reset()
@@ -312,8 +361,16 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 return;
             }
+            if (ledsParameter.IsProbing && (_boardConfiguration.ShowPossibleMoves || _boardConfiguration.ShowPossibleMovesEval))
+            {
+                _logger?.LogDebug($"B: set LEDs for probing {ledsParameter}");
+                _probingFields.TryDequeue(out _);
+                _probingFields.Enqueue(ledsParameter.ProbingMoves);
+                return;
+            }   
 
             string ledForFields;
+            _probingFields.TryDequeue(out _);
             if ((ledsParameter.FieldNames.Length == 2) && _showMoveLine)
             {
                 string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
@@ -349,8 +406,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 return;
             }
-
-           // lock (_locker)
+            _probingFields.TryDequeue(out _);
+            // lock (_locker)
             {           
                 _serialCommunication.Send("X");
             }
@@ -362,7 +419,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 return;
             }
-
+            _probingFields.TryDequeue(out _);
             //  lock (_locker)
             {
                 if (!_useChesstimation)
@@ -521,6 +578,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         {
             lock (_locker)
             {
+                _probingFields.TryDequeue(out _);
                 if (!PieceRecognition)
                 {
                     _serialCommunication.Send("S");
@@ -532,7 +590,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void Release()
         {
-            //
+            _release = true;
+            _probingFields.TryDequeue(out _);
         }
 
         public override void SetFen(string fen)
@@ -621,6 +680,77 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         {
             var codes = string.Empty;
             return codes.PadLeft(162, '0');
+        }
+
+        private string GetLedForProbingFields(string[] fieldNames, string probingField, bool thinking)
+        {
+            var codes = string.Empty;
+            var toCode = "CC";
+            var fromCode = "FF";
+
+            for (var i = 0; i < 81; i++)
+            {
+                var code = "00";
+                for (var j = 0; j < fieldNames.Length; j++)
+                {
+                    if (_playWithWhite)
+                    {
+                        if (_upperRight && _ledUpperRightToField[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
+                            break;
+                        }
+
+                        if (_upperLeft && _ledUpperLeftToField[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
+                            break;
+                        }
+
+                        if (_lowerRight && _ledLowerRightToField[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
+                            break;
+                        }
+
+                        if (_lowerLeft && _ledLowerLeftToField[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (_upperRight && _ledUpperRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
+                            break;
+                        }
+
+
+                        if (_upperLeft && _ledUpperLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
+                            break;
+                        }
+
+                        if (_lowerRight && _ledLowerRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
+                            break;
+                        }
+
+                        if (_lowerLeft && _ledLowerLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        {
+                            code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
+                            break;
+                        }
+                    }
+                }
+                codes += code;
+            }
+
+            return _useChesstimation ? codes.Replace("FFFFFFFF", "FFF00FFF") : codes;
         }
 
         private string GetLedForFields(string[] fieldNames, bool thinking)

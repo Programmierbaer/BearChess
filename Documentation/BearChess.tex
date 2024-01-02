@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.3.3}
+\fancyhead[R]{Version 1.0.4.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{29.12.2023} 
+\date{02.01.2024} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -81,7 +81,7 @@ BearChess offers among others the following functions:
  	  \item Play with \textbf{DGT e-Board} or \textbf{Revelation}.	  
 	  \item Play with \textbf{DGT Pegasus} chessboard.	  
 	  \item Play with \textbf{Square Off Pro} chessboard.	  	  
-	  \item Play with \textbf{Chessnut Air} chessboard.	  	  	  
+	  \item Play with \textbf{Chessnut Air/Air+/Pro} chessboard.	  	  	  
 	  \item Play with \textbf{iChessOne} chessboard.	  	  	  	  
       \item Play with \textbf{ChessUp} chessboard.	  	  	  	  	  
 	  \item Play with \textbf{NOVAG Citrine/UCB} chessboard.
@@ -300,10 +300,10 @@ BearChess can handle Polyglot and Arena opening books. Read more on chapter \tex
 	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
 	\item  \includegraphics[scale=0.3]{dgt48.png} \textbf{DGT} connect to DGT e-Boards, DGT Revelation or DGT Pegasus chessboard.	
 	\item  \includegraphics[scale=0.05]{squareoff.png} \textbf{Square Off Pro} connect to Square Off Pro chessboard.		
-	\item  \includegraphics[scale=0.1]{chessnut.png} \textbf{Chessnut Air/Pro} connect to Chessnut Air/Pro chessboard.		
+	\item  \includegraphics[scale=0.1]{chessnut.png} \textbf{Chessnut Air/Air+/Pro} connect to Chessnut Air/Air+/Pro chessboard.		
 	\item  \includegraphics[scale=0.3]{novag48.PNG} \textbf{NOVAG} connect to NOVAG Citrine or NOVAG UCB chessboard.			
     \item  \includegraphics[scale=0.4]{Saitek_logo.PNG} \textbf{Saitek OSA} connect to Saitek chessboards with supports OSA protocol.		
-    \item  \includegraphics[scale=0.4]{Saitek_logo.PNG} \textbf{iChessOne} connect to iChessOne chessboard 
+    \item  \includegraphics[scale=0.4]{ChessUp.png} \textbf{ChessUp} connect to ChessUp chessboard.
 	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
 	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
     \item \textbf{Show next move in game analysis mode} displays the next move on your electronic chessboard.
@@ -580,7 +580,7 @@ A buddy engine is the default engine if you request help during a game (see \tex
 \subsection{Define a BearChess engine} \label{BearChessEngine}
 
 To define an installed engine as BearChess engine, select an engine open the context menue with a right-mouse-click.\\
-{\color{red}\textbf{*}} Currently, a BearChess engine is only used in conjunction with an iChessOne chessboard (see \textbf{\ref{ConfigureIChessOne}  \nameref{ConfigureIChessOne}} on page \pageref{ConfigureIChessOne} and \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}).
+{\color{red}\textbf{*}} Currently, a BearChess engine is used in conjunction with an iChessOne, Chessnut Air, Certabo, TabuTronic Cerno or Millennium ChessLink chessboard (see  \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}).
 
 \begin{figure}[H]
 	\centering
@@ -1028,6 +1028,15 @@ Read chapter \textbf{\ref{CertaboBluetooth}  \nameref{CertaboBluetooth}} on page
 	\label{fig:Certabo2}
 \end{figure}
 
+There are several options available.
+\begin{itemize}
+	\item \textbf{Activate all LEDs along the move} activates all LEDs along the from and to fields of a move.
+	\item \textbf{Show own moves} activate the LEDs of your last move.
+	\item \textbf{Show all moves for the selected figure} activates the LEDs for all fields on which the currently raised figure can be placed.
+	\item \textbf{Show the best move for the selected figure} flashes the field that would be best for the currently raised figure. This does not mean that this is necessarily a good move. It is just the best option for the figure.
+\end{itemize}
+
+
 Select the COM port (BT for Bluetooth) if you know it or use the <auto> selection. 
 Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
 
@@ -1359,10 +1368,18 @@ Read chapter \textbf{\ref{Bluetooth}  \nameref{Bluetooth}} on page \pageref{Blue
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.9]{MillenniumChessLink2.png}
+	\includegraphics[scale=1.0]{MillenniumChessLink2.png}
 	\caption{Configure Millennium ChessLink}
 	\label{fig:MillenniumChessLink2}
 \end{figure}
+
+There are several options available.
+\begin{itemize}
+	\item \textbf{Activate all LEDs along the move} activates all LEDs along the from and to fields of a move.
+	\item \textbf{Show own moves} activate the LEDs of your last move.
+	\item \textbf{Show all moves for the selected figure} activates the LEDs for all fields on which the currently raised figure can be placed.
+	\item \textbf{Show the best move for the selected figure} flashes the field that would be best for the currently raised figure. This does not mean that this is necessarily a good move. It is just the best option for the figure.
+\end{itemize}
 
 Select the COM port if you know it or use the <auto> selection.
 Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
@@ -1522,7 +1539,7 @@ During this time or if you connect for the first time, Windows may ask you to co
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{Pegasus1.png}
-	\caption{Connect to DGT Pegasus }
+	\caption{Connect to DGT Pegasus}
 	\label{fig:Pegasus1}
 \end{figure}
 
@@ -1564,16 +1581,39 @@ DGT Pegasus has no real piece recognition and can only give the information per 
 
 Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
 
-\subsection{Connect Chessnut Air/Pro} \label{ConnectChessnutAir}
+\subsection{Configure Chessnut Air/Air+/Pro} \label{ConfigureChessnutAir}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{ChessnutAir5.png}
+	\caption{Open a window to configure Chessnut Air/Air+/Pro}
+	\label{fig:ChessnutAir5}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{ChessnutAir6.png}
+	\caption{Configure Chessnut Air/Air+/Pro}
+	\label{fig:ChessnutAir6}
+\end{figure}
+
+There are several options available.
+\begin{itemize}
+	\item \textbf{Activate all LEDs along the move} activates all LEDs along the from and to fields of a move.
+	\item \textbf{Show own moves} activate the LEDs of your last move.
+	\item \textbf{Show all moves for the selected figure} activates the LEDs for all fields on which the currently raised figure can be placed.
+	\item \textbf{Show the best move for the selected figure} flashes the field that would be best for the currently raised figure. This does not mean that this is necessarily a good move. It is just the best option for the figure.
+\end{itemize}
+
+\subsubsection{Connect Chessnut Air/Air+/Pro} \label{ConnectChessnutAir}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{ChessnutAir1.png}
-	\caption{Connect to Chessnut Air/Pro) }
+	\caption{Connect to Chessnut Air/Air+/Pro}
 	\label{fig:ChessnutAir1}
 \end{figure}
 
-No configuration is required for your Chessnut Air/Pro chessboard.\\
-Chessnut Air/Pro supports USB and Bluetooth LE connections. You cannot use Bluetooth LE when the board is connected to your computer with an USB cable.\\
+Chessnut Air/Air+/Pro supports USB and Bluetooth LE connections. You cannot use Bluetooth LE when the board is connected to your computer with an USB cable.\\
 For a USB connection, the connection is not simulated as a COM port, but as a Human Interface Device (HID).\\
 {\color{red}*} BearChess cannot distinguish whether they are connected to an Air/Air+ or Pro but between Air and Air+.
 
@@ -1951,7 +1991,7 @@ For your convenience, you can configure and save a game definition that will be 
 \subsection{Request for help}
 If you play a game and you have "Show move when help is request" activated, raise your king for a short time and set it down again to see the best move on the board.\\
 Do it again to stop showing the best move.\\
-{\color{red}\textbf{*}} This is not supported on DGT e-Board, Square Off Pro, ChessUp, NOVAG and Saitek OSA boards.
+{\color{red}\textbf{*}} This is not supported on DGT e-Board, DGT Pegasus, Square Off Pro, ChessUp, NOVAG and Saitek OSA boards.
 
 \section{Move list}
 The move list shows all moves of your game.
@@ -2998,8 +3038,9 @@ All your configration settings for BearChess is not stored in the directory from
 
 \subsection{Usage of "Buddy" and "BearChess" engines} \label{BuddyBearChessEngines}
 BearChess is delivered with its own engine Spike. However, it can use other engines for internal tasks.\\
-The task of a "Buddy" engine is to be able to make move suggestions during a game. To do this, it calculates in parallel on the current position on the board to make a move proposal when the king piece is briefly raised.\\
-The task of a "BearChess" engine (default for Spike if no other engine is defined for that task) is to quickly give an evaluation for all possible moves when a piece is raised.
+The task of a "Buddy" engine is to be able to make move suggestions during a game. To do this, it calculates in parallel on the current position on the board to make a move proposal when the king piece is briefly raised. The "Buddy" engine is therefore exclusively concerned with calculating the current position.\\
+The task of a "BearChess" engine (default for Spike if no other engine is defined for that task) is to quickly give an evaluation for all possible moves when a piece is raised. The "BearChess" engine therefore constantly changes the calculation to obtain an evaluation for the moves of the current piece.\\
+This can mean, especially if different engines are in use, that "Buddy" and "BearChess" provide different information. 
 
 \subsection{MessChess engines}
 These engines simluate a chess computer the configuration is limited to the capabilities of them. Not everything that is possible with normal engines can be done here. 
@@ -3099,6 +3140,14 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 1.0.3.3 $\Rightarrow$  1.0.4.0}
+\begin{itemize}		
+    \item {\color{blue}New}: Show possible and best moves for Certabo, TabuTronic boards, Chessnut and Millennium ChessLink.
+    \item {\color{red}Fix}: Connection to DGT Pegasus.
+	\item {\color{red}Fix}: PGN result tag for "drawn game".
+\end{itemize}
+
 
 \subsection*{Version 1.0.3.2 $\Rightarrow$  1.0.3.3}
 \begin{itemize}		

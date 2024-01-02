@@ -380,6 +380,9 @@
     <Compile Include="Windows\WinConfigureCertabo.xaml.cs">
       <DependentUpon>WinConfigureCertabo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\WinConfigureChessnut.xaml.cs">
+      <DependentUpon>WinConfigureChessnut.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\WinConfigureCitrine.xaml.cs">
       <DependentUpon>WinConfigureCitrine.xaml</DependentUpon>
     </Compile>
@@ -734,6 +737,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\WinConfigureCertabo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WinConfigureChessnut.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

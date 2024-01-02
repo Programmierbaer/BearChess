@@ -394,6 +394,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.DisplayOnClock(display);
         }
 
+        public void AcceptProbingMoves(bool acceptProbingMoves)
+        {
+            _eChessBoard.AcceptProbingMoves(acceptProbingMoves);
+        }
+
         #region private
 
         private void EChessBoard_MoveEvent(object sender, string move)

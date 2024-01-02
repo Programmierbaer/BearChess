@@ -21,6 +21,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusLoader
 
         public PegasusLoader(string folderPath) : base(folderPath, EBoardName)
         {
+            
         }
 
 
@@ -31,6 +32,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusLoader
                 return new PegasusImpl(Name, basePath);
             }
 
+            configuration.PortName = "BTLE";
             var eBoardWrapper = new PegasusImpl(Name, basePath, configuration);
 
             return eBoardWrapper;

@@ -29,6 +29,10 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         public static byte ColB = 0x1 << 6;
         public static byte ColA = 0x1 << 7;
 
+        public override event EventHandler BasePositionEvent;
+        public override event EventHandler<string> DataEvent;
+        public override event EventHandler HelpRequestedEvent;
+
         private readonly Dictionary<string, string> _codeToFen = new Dictionary<string, string>()
         {
             { "0", "." },
@@ -75,30 +79,27 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         private readonly byte[] _allLEDSOn = { 0x0A, 0x08, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 
         private ConcurrentQueue<string[]> _flashFields = new ConcurrentQueue<string[]>();
+        private readonly ConcurrentQueue<ProbingMove[]> _probingFields = new ConcurrentQueue<ProbingMove[]>();
+        private readonly EChessBoardConfiguration _boardConfiguration;
 
         public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
         {
+            _boardConfiguration = configuration;
             _useBluetooth = configuration.UseBluetooth;
             _showMoveLine = configuration.ShowMoveLine;
             _logger = logger;
+            MultiColorLEDs = true;
             BatteryLevel = "---";
             BatteryStatus = "Full";
             _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
             Information = Constants.ChessnutAir;
             var thread = new Thread(FlashLeds) { IsBackground = true };
             thread.Start();
+            var probingThread = new Thread(ShowProbingMoves) { IsBackground = true };
+            probingThread.Start();
+            _acceptProbingMoves = true;
         }
-        public EChessBoard(string basePath, ILogging logger,string portName, bool useBluetooth)
-        {
-            _useBluetooth = useBluetooth;
-            _logger = logger;
-            BatteryLevel = "---";
-            BatteryStatus = "Full";
-            _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
-            Information = Constants.ChessnutAir;
-            var thread = new Thread(FlashLeds) { IsBackground = true };
-            thread.Start();
-        }
+     
 
         private void FlashLeds()
         {
@@ -128,6 +129,66 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                 Thread.Sleep(500);
             }
         }
+        private void ShowProbingMoves()
+        {
+            bool switchSide = false;
+
+            while (!_release)
+            {
+                if (_probingFields.TryPeek(out ProbingMove[] fields))
+                {
+                    if (!_acceptProbingMoves)
+                    {
+                        _probingFields.TryDequeue(out _);
+                        // SetAllLedsOff(true);
+                        continue;
+                    }
+                    var probingMove = fields.OrderByDescending(f => f.Score).First();
+                    byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
+                    if (switchSide)
+                    {
+                        foreach (var field in fields)
+                        {
+                            if (field.FieldName.Equals(probingMove.FieldName))
+                            {
+                                continue;
+                            }
+
+                            if (_boardConfiguration.ShowPossibleMoves)
+                            {
+                                result = UpdateLedsForField(field.FieldName, result);
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (var field in fields)
+                        {
+                            if (_boardConfiguration.ShowPossibleMovesEval && field.FieldName.Equals(probingMove.FieldName))
+                            {
+                                result = UpdateLedsForField(field.FieldName, result);
+                            }
+
+                            if (_boardConfiguration.ShowPossibleMoves)
+                            {
+                                result = UpdateLedsForField(field.FieldName, result);
+                            }
+                        }
+                    }
+                    switchSide = !switchSide;
+                    List<byte> inits = new List<byte>() { 0x0A, 0x08 };
+                    inits.AddRange(result);
+                    _serialCommunication.Send(inits.ToArray());
+                    Thread.Sleep(500);
+                    continue;
+                }
+
+
+                Thread.Sleep(10);
+            }
+        }
+
 
         public EChessBoard(ILogging logger)
         {
@@ -166,6 +227,13 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             }
             var joinedString = string.Join(" ", fieldNames);
             _flashFields.TryDequeue(out _);
+            if (ledsParameter.IsProbing && (_boardConfiguration.ShowPossibleMoves || _boardConfiguration.ShowPossibleMovesEval))
+            {
+                _logger?.LogDebug($"B: set LEDs for probing {ledsParameter}");
+                _probingFields.TryDequeue(out _);
+                _probingFields.Enqueue(ledsParameter.ProbingMoves);
+                return;
+            }
             if (ledsParameter.IsThinking)
             {
                 _prevLedField = _prevLedField == 1 ? 0 : 1;
@@ -247,6 +315,8 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             {
                 return;
             }
+            _probingFields.TryDequeue(out _);
+            _flashFields.TryDequeue(out _);
             _serialCommunication.Send(_allLEDSOff);
         }
 
@@ -256,7 +326,10 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             {
                 return;
             }
+            _probingFields.TryDequeue(out _);
+            _flashFields.TryDequeue(out _);
             _serialCommunication.Send(_allLEDSOn);
+
         }
 
         public override void DimLeds(bool dimLeds)
@@ -321,7 +394,6 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             {
                 return new DataFromBoard(string.Empty);
             }
-
 
             bool readingOne = false;
             bool reading243D = false;
@@ -471,12 +543,14 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         protected override void SetToNewGame()
         {
             //
+            _probingFields.TryDequeue(out _);
         }
 
      
         public override void Release()
         {
             _release = true;
+            _probingFields.TryDequeue(out _);
         }
 
         public override void SetFen(string fen)
@@ -512,11 +586,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         public override void SetEngineColor(int color)
         {
            //
-        }
-
-        public override event EventHandler BasePositionEvent;
-        public override event EventHandler<string> DataEvent;
-        public override event EventHandler HelpRequestedEvent;
+        }     
 
         public override void SpeedLeds(int level)
         {

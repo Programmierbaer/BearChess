@@ -109,6 +109,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             {
                 return;
             }
+
+            if (keyWord.StartsWith("Result") && keyValue.StartsWith("1/2"))
+            {
+                keyValue = "1/2-1/2";
+            }
             _userDefined[keyWord] = keyValue.Replace("\"",string.Empty).Trim();
         }
 
@@ -176,7 +181,15 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                 }
                 else
                 {
-                    sb.AppendLine($"[{s} \"{GetValue(s)}\"]");
+                    var value = GetValue(s);
+                    if (s.Equals("Result"))
+                    {
+                        if (value.StartsWith("1/2"))
+                        {
+                            value = "1/2-1/2";
+                        }
+                    }
+                    sb.AppendLine($"[{s} \"{value}\"]");
                 }
             }
             foreach (var key in _userDefined.Keys)

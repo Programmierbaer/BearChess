@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -316,7 +317,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
                     if (File.Exists(enginesList))
                     {
-                        var readAllLines = File.ReadAllLines(enginesList);
+                        var readAllLines = File.ReadAllLines(enginesList,Encoding.Default);
                         parameterSelectionWindow.ShowList(readAllLines);
                     }
                     parameterSelectionWindow.SetLabel("Engine:");

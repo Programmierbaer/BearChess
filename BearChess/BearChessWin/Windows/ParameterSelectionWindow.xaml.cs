@@ -46,17 +46,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void ShowList(string[] listValues)
         {
             _selections.Clear();
+          
             foreach (var value in listValues)
             {
                 _selections.Add(new ParameterSelection(value));
             }
             BuildFilter();
-            _parameterSelections.Clear();
+
+           
         }
 
         private void BuildFilter()
         {
-
+            _parameterSelections.Clear();
             if (textBoxFilter.Text.Trim().Length > 0)
             {
 
@@ -69,9 +71,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 listBoxEngines.ItemsSource = _selections.OrderBy(s => s.ParameterDisplay);
             }
-            //            
+            
+            listBoxEngines.SelectedIndex = -1;
             listBoxEngines.SelectedIndex = 0;
-
         }
 
         public void ShowParameterButton(bool show)
@@ -99,6 +101,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             textBoxText.Text = _parameterSelections.Count>0 ?  _parameterSelections.First().ParameterDisplay : string.Empty;
             SelectedFile = string.Empty;
+            if (!_parameterSelections.Any() && listBoxEngines.Items.Count>0)
+            {
+                _parameterSelections.Add((ParameterSelection)listBoxEngines.Items[0]);
+            }
         }
 
         private void ButtonParameter_OnClick(object sender, RoutedEventArgs e)

@@ -188,5 +188,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void DisplayOnClock(string display);
 
         bool MultiColorLEDs { get; }
+
+        void AcceptProbingMoves(bool acceptProbingMoves);
     }
 }

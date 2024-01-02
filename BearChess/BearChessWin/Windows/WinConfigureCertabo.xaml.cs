@@ -59,6 +59,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.UseChesstimation = useChesstimation;
             checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
             checkBoxOwnMoves.IsChecked = _eChessBoardConfiguration.ShowOwnMoves;
+            checkBoxPossibleMoves.IsChecked = _eChessBoardConfiguration.ShowPossibleMoves;
+            checkBoxBestMove.IsChecked = _eChessBoardConfiguration.ShowPossibleMovesEval;
             _allPortNames = new List<string> { "<auto>" };
             if (_useBluetooth)
             {
@@ -108,6 +110,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.PortName = comboBoxComPorts.SelectionBoxItem.ToString();
             _eChessBoardConfiguration.ShowMoveLine = checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value;
             _eChessBoardConfiguration.ShowOwnMoves = checkBoxOwnMoves.IsChecked.HasValue && checkBoxOwnMoves.IsChecked.Value;
+            _eChessBoardConfiguration.ShowPossibleMoves = checkBoxPossibleMoves.IsChecked.HasValue && checkBoxPossibleMoves.IsChecked.Value;
+            _eChessBoardConfiguration.ShowPossibleMovesEval = checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -213,6 +217,40 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _fileLogger?.LogError(ex);
             }
+        }
+
+        private void CheckBoxOwnMoves_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            checkBoxBestMove.IsEnabled = true;
+            checkBoxPossibleMoves.IsEnabled = true;
+        }
+
+        private void CheckBoxOwnMoves_OnChecked(object sender, RoutedEventArgs e)
+        {
+            checkBoxBestMove.IsEnabled = false;
+            checkBoxPossibleMoves.IsEnabled = false;
+        }
+
+        private void CheckBoxPossibleMoves_OnChecked(object sender, RoutedEventArgs e)
+        {
+            checkBoxOwnMoves.IsEnabled = false;
+            checkBoxOwnMoves.IsChecked = false;
+        }
+
+        private void CheckBoxPossibleMoves_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            checkBoxOwnMoves.IsEnabled = !checkBoxBestMove.IsChecked.Value;
+        }
+
+        private void CheckBoxBesteMove_OnChecked(object sender, RoutedEventArgs e)
+        {
+            checkBoxOwnMoves.IsEnabled = false;
+            checkBoxOwnMoves.IsChecked = false;
+        }
+
+        private void CheckBoxBesteMove_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            checkBoxOwnMoves.IsEnabled = !checkBoxPossibleMoves.IsChecked.Value;
         }
 
     }

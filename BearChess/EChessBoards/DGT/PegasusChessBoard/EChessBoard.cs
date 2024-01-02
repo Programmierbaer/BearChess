@@ -114,7 +114,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             BatteryStatus = "";
             PieceRecognition = false;
             SelfControlled = false;
-            Information = string.Empty;
+            Information = Constants.Pegasus;
             IsConnected = EnsureConnection();
             _serialCommunication.Send(_initialize);
             _serialCommunication.Send(_resetBoard);
@@ -144,7 +144,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             BatteryStatus = "";
             PieceRecognition = false;
             SelfControlled = false;
-            Information = string.Empty;
+            Information = Constants.Pegasus;
         }
 
 
@@ -178,8 +178,6 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             }
 
             _lastSendFields = sendFields;
-            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} IsThinking: {ledsParameter.IsThinking}");
-
             _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} IsThinking: {ledsParameter.IsThinking}");
             if (ledsParameter.IsThinking && fieldNamesLength > 1)
             {

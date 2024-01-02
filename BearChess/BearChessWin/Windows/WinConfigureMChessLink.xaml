@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         Icon="../Assets/Icons/Millennium ChessLink.png"
-        Title="Configure Millennium ChessLink" Height="600" Width="390" SizeToContent="WidthAndHeight">
+        Title="Configure Millennium ChessLink" Height="690" Width="390" SizeToContent="WidthAndHeight">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -188,7 +188,9 @@
         <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" >
             <StackPanel >
                 <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
-                <CheckBox Margin="5" Name="checkBoxOwnMoves">Show own moves</CheckBox>
+                <CheckBox Margin="5" Name="checkBoxOwnMoves" ToolTip="This selection is exclusive to the following two options"  Checked="CheckBoxOwnMoves_OnChecked" Unchecked="CheckBoxOwnMoves_OnUnchecked">Show own moves</CheckBox>
+                <CheckBox Margin="5" Name="checkBoxPossibleMoves" ToolTip="This selection is exclusive to 'Show own moves'" Unchecked="CheckBoxPossibleMoves_OnUnchecked" Checked="CheckBoxPossibleMoves_OnChecked">Show all moves for the selected figure</CheckBox>
+                <CheckBox Margin="5" Name="checkBoxBestMove" ToolTip="This selection is exclusive to 'Show own moves'" Unchecked="CheckBoxBesteMove_OnUnchecked" Checked="CheckBoxBesteMove_OnChecked">Show the best move for the selected figure</CheckBox>
             </StackPanel>
         </Border>
         <Border Name="borderChesstimation" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" IsEnabled="False">
