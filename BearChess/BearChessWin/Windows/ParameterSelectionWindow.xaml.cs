@@ -132,7 +132,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ListBoxEngines_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (SelectedEngines.Length>0 && e.OriginalSource is TextBlock)
+            if (SelectedEngines.Length > 0 && (e.OriginalSource is TextBlock) || (e.OriginalSource is Border))
             {
                 DialogResult = true;
             }
