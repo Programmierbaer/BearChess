@@ -1585,9 +1585,6 @@
     <Resource Include="Assets\tabutronic_logo_def.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Supreme.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\TabuTronic\bishopB.png" />
     <Resource Include="Assets\TabuTronic\bishopW.png" />
     <Resource Include="Assets\TabuTronic\kingB.png" />
@@ -1604,10 +1601,6 @@
   <ItemGroup>
     <Resource Include="Assets\TabuTronic\black.png" />
     <Resource Include="Assets\TabuTronic\white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\TabutronicCerno.png" />
-    <Resource Include="Assets\TabutronicSentio.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\text_replace.png" />
@@ -1666,16 +1659,22 @@
     <Resource Include="Assets\Icons\arrow_refresh.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\ChessUp.png" />
+    <Resource Include="Assets\Supreme.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\ChessUpInfo.png" />
+    <Resource Include="Assets\TabutronicCerno.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\ChessnutAirPlus.png" />
+    <Resource Include="Assets\TabutronicSentio.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\ChessnutAirPro.png" />
+    <Resource Include="Assets\ChessUpInfo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ChessnutAirPlus.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ChessnutAirPro.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

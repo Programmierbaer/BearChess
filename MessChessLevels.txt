@@ -1928,52 +1928,8 @@ EA#6    40 moves in 100 min with "permanent brain" OFF!
 EA#7    40 moves in 120 min with "permanent brain" OFF!
 EA#8    40 moves in 150 min with "permanent brain" OFF!
 
-#premiere#
+#premiere1#
 Levels:
-Program Avantgarde 2265
-a1      60 moves in 5 min       5 sec/move
-a2      60 moves in 10 min      10 sec/move
-a3      60 moves in 15 min      15 sec/move
-a4      60 moves in 30 min      30 sec/move
-a5      60 moves in 60 min      1 min/move
-a6      30 moves in 60 min      2 min/move
-a7      40 moves in 2 hrs       3 min/move
-a8      40 moves in 2.5 hrs     3.5 min/move
-
-b1      5 min/game
-b2      10 min/game
-b3      15 min/game
-b4      20 min/game
-b5      30 min/game
-b6      1 hr/game
-b7      2 hrs/game
-b8      3 hrs/game
-
-c#h:mm/zz                       time control 1 (time/moves), h=0-9, mm=00-99, zz=00-99
-c#h:mm/zz#h:mm/zz               time control 1, time control 2
-c#h:mm/zz#h:mm/zz#h:mm/zz ...   time control 1, time control 2, time control 3-4
-
-e1      analysis (all the same)
-
-g1      search depth 1 ply
-g2      search depth 2 plies
-g3      search depth 2 plies
-g4      search depth 2 plies
-g5      search depth 2 plies
-g6      search depth 2 plies
-g7      search depth 2 plies
-g8      search depth 2 plies
-
-h1      mate in 1 move
-h2      mate in 2 moves
-h3      mate in 3 moves
-h4      mate in 4 moves
-h5      mate in 5 moves
-h6      mate in 6 moves
-h7      mate in 7 moves
-h8      mate in 8 moves
-
-Program Vancouver 16 Bit
 a1      2 sec/move
 a2      5 sec/move
 a3      10 sec/move
@@ -2028,6 +1984,50 @@ f3      infinite
 g#h:mm/zz                       time control 1 (time/moves), h=0-9, mm=00-99, zz=00-99
 g#h:mm/zz#h:mm/zz               time control 1, time control 2
 g#h:mm/zz#h:mm/zz#h:mm ...      time control 1, time control 2, time control 3-6
+
+#premiere2#
+Levels:
+a1      60 moves in 5 min       5 sec/move
+a2      60 moves in 10 min      10 sec/move
+a3      60 moves in 15 min      15 sec/move
+a4      60 moves in 30 min      30 sec/move
+a5      60 moves in 60 min      1 min/move
+a6      30 moves in 60 min      2 min/move
+a7      40 moves in 2 hrs       3 min/move
+a8      40 moves in 2.5 hrs     3.5 min/move
+
+b1      5 min/game
+b2      10 min/game
+b3      15 min/game
+b4      20 min/game
+b5      30 min/game
+b6      1 hr/game
+b7      2 hrs/game
+b8      3 hrs/game
+
+c#h:mm/zz                       time control 1 (time/moves), h=0-9, mm=00-99, zz=00-99
+c#h:mm/zz#h:mm/zz               time control 1, time control 2
+c#h:mm/zz#h:mm/zz#h:mm/zz ...   time control 1, time control 2, time control 3-4
+
+e1      analysis (all the same)
+
+g1      search depth 1 ply
+g2      search depth 2 plies
+g3      search depth 2 plies
+g4      search depth 2 plies
+g5      search depth 2 plies
+g6      search depth 2 plies
+g7      search depth 2 plies
+g8      search depth 2 plies
+
+h1      mate in 1 move
+h2      mate in 2 moves
+h3      mate in 3 moves
+h4      mate in 4 moves
+h5      mate in 5 moves
+h6      mate in 6 moves
+h7      mate in 7 moves
+h8      mate in 8 moves
 
 #prodigy#prodigy0#
 Levels:

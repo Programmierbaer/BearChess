@@ -38,17 +38,17 @@
         <Image DockPanel.Dock="Top" Source="../Assets/pegasus.jpeg" Width="150" Name="imagePegasus" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/dgt.jpg" Width="150" Name="imageDGT" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/chessnutair.jpg" Width="150" Name="imageChessnutAir" Visibility="Collapsed"></Image>
-        <Image DockPanel.Dock="Top" Source="../Assets/ChessnutAirPlus.png" Width="150" Name="imageChessnutAirPlus" Visibility="Collapsed"></Image>
-        <Image DockPanel.Dock="Top" Source="../Assets/ChessnutAirPro.png" Width="150" Name="imageChessnutAirPro" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/ChessnutAirPlus.jpg" Width="150" Name="imageChessnutAirPlus" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/ChessnutAirPro.jpg" Width="150" Name="imageChessnutAirPro" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/squareoffpro.jpeg" Width="150" Name="imageSquareOffPro" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/novag-citrine.jpeg" Width="150" Name="imageCitrine" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/novag-ucb.jpeg" Width="150" Name="imageUCB" Visibility="Collapsed"></Image>
-        <Image DockPanel.Dock="Top" Source="../Assets/TabutronicCerno.png" Width="150" Name="imageTabutronicCerno" Visibility="Collapsed"></Image>
-        <Image DockPanel.Dock="Top" Source="../Assets/TabutronicSentio.png" Width="150" Name="imageTabutronicSentio" Visibility="Collapsed"></Image>
-        <Image DockPanel.Dock="Top" Source="../Assets/Supreme.png" Width="150" Name="imageSupreme" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/TabutronicCerno.jpg" Width="150" Name="imageTabutronicCerno" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/TabutronicSentio.jpg" Width="150" Name="imageTabutronicSentio" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/Supreme.jpg" Width="150" Name="imageSupreme" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/MephistoExclusive.png" Width="150" Name="imageMephistoExclusive" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/iChessOne.png" Width="150" Name="imageIChessOne" Visibility="Collapsed"></Image>
-        <Image DockPanel.Dock="Top" Source="../Assets/ChessUpInfo.png" Width="150" Name="imageChessUp" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/ChessUpInfo.jpg" Width="150" Name="imageChessUp" Visibility="Collapsed"></Image>
         <Button DockPanel.Dock="Bottom" Margin="5" HorizontalAlignment="Left" Width="32"
                 Height="32" 
                 Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">
