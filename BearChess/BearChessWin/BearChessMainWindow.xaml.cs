@@ -530,6 +530,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             _useBluetoothChessnutAir = bool.Parse(_configuration.GetConfigValue("usebluetoothChessnutAir", "true"));
             imageChessnutAirBluetooth.Visibility = _useBluetoothChessnutAir ? Visibility.Visible : Visibility.Hidden;
+            var eChessBoardConfiguration = ChessnutAirLoader.Load(_configuration.FolderPath);
+            if (eChessBoardConfiguration != null)
+            {
+                eChessBoardConfiguration.UseBluetooth = _useBluetoothChessnutAir;
+                eChessBoardConfiguration.PortName = _useBluetoothChessnutAir ? "BTLE" : "HDI";
+                ChessnutAirLoader.Save(_configuration.FolderPath,eChessBoardConfiguration);
+            }
 
             _useBluetoothIChessOne = bool.Parse(_configuration.GetConfigValue("usebluetoothIChessOne", "true"));
             imageIChessOneBluetooth.Visibility = _useBluetoothIChessOne ? Visibility.Visible : Visibility.Hidden;
@@ -9965,7 +9972,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _useBluetoothChessnutAir = !_useBluetoothChessnutAir;
             _configuration.SetConfigValue("usebluetoothChessnutAir", _useBluetoothChessnutAir.ToString());
-            imageChessnutAirBluetooth.Visibility = _useBluetoothChessnutAir ? Visibility.Visible : Visibility.Hidden;           
+            imageChessnutAirBluetooth.Visibility = _useBluetoothChessnutAir ? Visibility.Visible : Visibility.Hidden;
         }
 
      

@@ -119,6 +119,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             try
             {
+                var fileInfo = new FileInfo(fileName);
+                if (!Directory.Exists(fileInfo.DirectoryName))
+                {
+                    Directory.CreateDirectory(fileInfo.DirectoryName);
+                    Directory.CreateDirectory(Path.Combine(fileInfo.DirectoryName, "log"));
+                }
+
                 configuration.FileName = fileName;
                 XmlSerializer serializer = new XmlSerializer(typeof(EChessBoardConfiguration));
                 TextWriter textWriter = new StreamWriter(fileName, false);

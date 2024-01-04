@@ -32,6 +32,15 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutAirLoader
             var eBoardWrapper = new ChessnutAirImpl(Name, basePath, configuration);
             return eBoardWrapper;
         }
+
+        public static EChessBoardConfiguration Load(string basePath)
+        {
+            string fileName = Path.Combine(basePath, Constants.ChessnutAir,
+                $"{Constants.ChessnutAir}Cfg.xml");
+            return EChessBoardConfiguration.Load(fileName);
+            
+        }
+
         public static void Save(string basePath, bool useBluetooth, bool showMoveLine, bool showOwnMove)
         {
             string fileName = Path.Combine(basePath, Constants.ChessnutAir,
@@ -40,6 +49,14 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutAirLoader
             eChessBoardConfiguration.UseBluetooth = useBluetooth;
             eChessBoardConfiguration.ShowMoveLine = showMoveLine;
             eChessBoardConfiguration.ShowOwnMoves = showOwnMove;
+            eChessBoardConfiguration.PortName = useBluetooth ? "BTLE" : "HDI";
+            EChessBoardConfiguration.Save(eChessBoardConfiguration, fileName);
+        }
+
+        public static void Save(string basePath, EChessBoardConfiguration eChessBoardConfiguration)
+        {
+            string fileName = Path.Combine(basePath, Constants.ChessnutAir,
+                $"{Constants.ChessnutAir}Cfg.xml");
             EChessBoardConfiguration.Save(eChessBoardConfiguration, fileName);
         }
     }
