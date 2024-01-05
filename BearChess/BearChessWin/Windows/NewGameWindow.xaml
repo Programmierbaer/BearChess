@@ -293,7 +293,7 @@
                                      GroupName="averageTime2" Content="min." />
                     </StackPanel>
                 </Border>
-                <Border Name="borderDepth2" Grid.Column="1" Grid.Row="2" BorderBrush="Gray" BorderThickness="0"
+                <Border Name="borderDepth2" Grid.Column="1" Grid.Row="3" BorderBrush="Gray" BorderThickness="0"
                         Margin="5"
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -302,7 +302,7 @@
                         <Label VerticalAlignment="Center">plies</Label>
                     </StackPanel>
                 </Border>
-                <Border Name="borderNodes2" Grid.Column="1" Grid.Row="2" BorderBrush="Gray" BorderThickness="0"
+                <Border Name="borderNodes2" Grid.Column="1" Grid.Row="3" BorderBrush="Gray" BorderThickness="0"
                         Margin="5"
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -311,7 +311,7 @@
                         <Label VerticalAlignment="Center">nodes</Label>
                     </StackPanel>
                 </Border>
-                <Border Name="borderExactTime2" Grid.Column="1" Grid.Row="2" BorderBrush="Gray" BorderThickness="0"
+                <Border Name="borderExactTime2" Grid.Column="1" Grid.Row="3" BorderBrush="Gray" BorderThickness="0"
                         Margin="5"
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
