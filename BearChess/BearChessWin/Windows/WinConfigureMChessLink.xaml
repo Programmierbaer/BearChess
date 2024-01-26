@@ -185,18 +185,39 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" >
-            <StackPanel >
+        <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1">
+            <StackPanel>
                 <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
-                <CheckBox Margin="5" Name="checkBoxOwnMoves" ToolTip="This selection is exclusive to the following two options"  Checked="CheckBoxOwnMoves_OnChecked" Unchecked="CheckBoxOwnMoves_OnUnchecked">Show own moves</CheckBox>
-                <CheckBox Margin="5" Name="checkBoxPossibleMoves" ToolTip="This selection is exclusive to 'Show own moves'" Unchecked="CheckBoxPossibleMoves_OnUnchecked" Checked="CheckBoxPossibleMoves_OnChecked">Show all moves for the selected figure</CheckBox>
-                <CheckBox Margin="5" Name="checkBoxBestMove" ToolTip="This selection is exclusive to 'Show own moves'" Unchecked="CheckBoxBesteMove_OnUnchecked" Checked="CheckBoxBesteMove_OnChecked">Show the best move for the selected figure</CheckBox>
+                <CheckBox Margin="5" Name="checkBoxOwnMoves"
+                          ToolTip="This selection is exclusive to the following two options"
+                          Checked="CheckBoxOwnMoves_OnChecked" Unchecked="CheckBoxOwnMoves_OnUnchecked">
+                    Show own moves
+                </CheckBox>
+                <CheckBox Margin="5" Name="checkBoxPossibleMoves"
+                          ToolTip="This selection is exclusive to 'Show own moves'"
+                          Unchecked="CheckBoxPossibleMoves_OnUnchecked" Checked="CheckBoxPossibleMoves_OnChecked">
+                    Show all moves for the selected figure
+                </CheckBox>
+                <CheckBox Margin="5" Name="checkBoxBestMove" ToolTip="This selection is exclusive to 'Show own moves'"
+                          Unchecked="CheckBoxBesteMove_OnUnchecked" Checked="CheckBoxBesteMove_OnChecked">
+                    Show the best move for the selected figure
+                </CheckBox>
+                <CheckBox Margin="5" Name="checkBoxCurrentValue" Unchecked="CheckBoxCurrentValue_OnUnchecked" Checked="CheckBoxCurrentValue_OnChecked">Show valuation</CheckBox>
+
+                <StackPanel Name="stackPanelValuation" Margin="15,5" Orientation="Horizontal">
+                    <RadioButton Name="radioButtonValueLeft" GroupName="Valuation" Margin="5">Left</RadioButton>
+                    <RadioButton Name="radioButtonValueLeftRight" GroupName="Valuation" Margin="5">Left/Right</RadioButton>
+                    <RadioButton Name="radioButtonValueBottom" GroupName="Valuation" IsChecked="True" Margin="5">Bottom</RadioButton>
+                    <RadioButton Name="radioButtonValueBottomTop" GroupName="Valuation" Margin="5">Bottom/Top</RadioButton>
+                </StackPanel>
+
             </StackPanel>
         </Border>
-        <Border Name="borderChesstimation" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" IsEnabled="False">
+        <Border Name="borderChesstimation" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1"
+                IsEnabled="False">
             <StackPanel Orientation="Vertical">
-            <TextBlock TextWrapping="Wrap" Margin="5,5,5,0">Using a Chesstimation module by Andreas Petersik</TextBlock>
-            <TextBlock TextWrapping="Wrap" Margin="5,0,5,5">or a Elfacun module by 'inmbolmie'</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,5,5,0">Using a Chesstimation module by Andreas Petersik</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,0,5,5">or a Elfacun module by 'inmbolmie'</TextBlock>
             </StackPanel>
         </Border>
         <DockPanel Margin="0,0,0,5">

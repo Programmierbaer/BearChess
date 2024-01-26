@@ -3,6 +3,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin.UserControls
 {
@@ -108,7 +109,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.UserControls
             {
                 sb.AppendLine(((TextBlock) item).Text);
             }
-            Clipboard.SetText(sb.ToString());
+            ClipboardHelper.SetText(sb.ToString());
         }
     }
 }

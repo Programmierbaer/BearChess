@@ -139,7 +139,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var engineInfoUserControls = stackPanelEngines.Children.Cast<EngineInfoUserControl>().ToList();
             foreach (var engineInfoUserControl in engineInfoUserControls)
             {
-                engineInfoUserControl.ShowInfo(fromEngine, tournamentMode);
+                engineInfoUserControl.ShowInfo(fromEngine, tournamentMode,Fields.COLOR_EMPTY);
             }
         }
 
@@ -945,7 +945,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
 
-            _loadedEnginesControls[e.Name].ShowInfo(e.FromEngine, _timeControl != null && _timeControl.TournamentMode);
+            _loadedEnginesControls[e.Name].ShowInfo(e.FromEngine, _timeControl != null && _timeControl.TournamentMode,e.Color);
 
 
             if (e.FromEngine.StartsWith("bestmove"))

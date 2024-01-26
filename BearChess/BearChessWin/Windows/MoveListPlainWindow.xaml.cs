@@ -560,7 +560,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 pgnGame.AddMove(move);
             }
-            Clipboard.SetText(pgnGame.GetGame());
+            ClipboardHelper.SetText(pgnGame.GetGame());
         }
 
         private void ButtonExtend_OnClick(object sender, RoutedEventArgs e)

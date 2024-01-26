@@ -43,12 +43,14 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.EBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new ChessBoard.EChessBoard(_basePath, _fileLogger, _configuration);
+            return new ChessBoard.ESentioChessBoard(_basePath, _fileLogger, _configuration);
+            //return new ChessBoard.ESentioChessBoard(_basePath, _fileLogger, _configuration);
         }
 
         protected override IEBoard GetEBoard(bool check)
         {
-            return new ChessBoard.EChessBoard(_fileLogger);
+            return new ChessBoard.ESentioChessBoard(_fileLogger);
+            //return new ChessBoard.EChessBoard(_fileLogger);
         }
 
         public override bool Calibrate()

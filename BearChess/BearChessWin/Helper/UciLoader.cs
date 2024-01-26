@@ -63,12 +63,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             public string FromEngine { get; }
             public bool ProbingEngine { get; }
 
-            public EngineEventArgs(string name,  string fromEngine, bool probingEngine)
+            public int Color { get; }
+
+            public EngineEventArgs(string name,  string fromEngine, bool probingEngine, int color)
             {
               
                 Name = name;
                 FromEngine = fromEngine;
                 ProbingEngine = probingEngine;
+                Color = color;
             }
         }
 
@@ -89,6 +92,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _initFen;
         private  RECT _rect;
         private int _windowPosDelta = 0;
+        private int _currentColor = Fields.COLOR_EMPTY;
         public bool IsTeddy => _uciInfo.AdjustStrength;
         public bool IsBuddy => _uciInfo.IsBuddy;
         public bool IsProbing => _uciInfo.IsProbing;
@@ -335,6 +339,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         
 
+            
+            _currentColor = fen.Contains("w") ? Fields.COLOR_WHITE : Fields.COLOR_BLACK;
+            
             _initFen = fen;
             SendToEngine(string.IsNullOrWhiteSpace(moves)
                              ? $"position fen {fen}"
@@ -452,7 +459,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 Thread.Sleep(100);
                 _logger?.LogDebug($"make move with book move: {_bookMove.FromField}{_bookMove.ToField}");
                 OnEngineReadingEvent(
-                    new EngineEventArgs(_uciInfo.Name, $"bestmove {_bookMove.FromField}{_bookMove.ToField}", false));
+                    new EngineEventArgs(_uciInfo.Name, $"bestmove {_bookMove.FromField}{_bookMove.ToField}", false, _currentColor));
             }
         }
 
@@ -494,7 +501,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 Thread.Sleep(100);
                 _logger?.LogDebug($"go with book move: {_bookMove.FromField}{_bookMove.ToField}");
-                OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, $"bestmove {_bookMove.FromField}{_bookMove.ToField}",false));
+                OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, $"bestmove {_bookMove.FromField}{_bookMove.ToField}",false, _currentColor));
             }
         }
 
@@ -526,7 +533,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 Thread.Sleep(100);
                 _logger?.LogDebug($"Go with book move: {_bookMove.FromField}{_bookMove.ToField}");
-                OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, $"bestmove {_bookMove.FromField}{_bookMove.ToField}", false));
+                OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, $"bestmove {_bookMove.FromField}{_bookMove.ToField}", false, _currentColor));
             }
         }
 
@@ -684,7 +691,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                     waitingFor = string.Empty;
                     _logger?.LogDebug($"<< {readToEnd}");
-                    OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, readToEnd, _uciInfo.IsProbing));
+                    OnEngineReadingEvent(new EngineEventArgs(_uciInfo.Name, readToEnd, _uciInfo.IsProbing, _currentColor));
                 }
             }
             catch (Exception ex)

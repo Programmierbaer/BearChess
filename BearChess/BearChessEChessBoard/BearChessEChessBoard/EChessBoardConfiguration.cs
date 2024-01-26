@@ -16,6 +16,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool ClockShowOnlyMoves { get; set; }
         public bool ClockSwitchSide { get; set; }
         public bool ClockUpperCase { get; set; }
+        public bool ClockBeep { get; set; }
+        public int BeepDuration { get; set; }
         public bool LongMoveFormat { get; set; }
         public int ScanTime { get; set; }
         public int Debounce { get; set; }
@@ -59,7 +61,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             ShowPossibleMovesEval = false;
             ShowOwnMoves = true;
             ShowHintMoves = true;
-            
+            ClockBeep = false;
+            BeepDuration = 1;
+
         }
 
         public static EChessBoardConfiguration Load(string fileName)
@@ -82,6 +86,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.UseBluetooth = savedConfig.UseBluetooth;
                     configuration.ClockShowOnlyMoves = savedConfig.ClockShowOnlyMoves;
                     configuration.UseClock = savedConfig.UseClock;
+                    configuration.ClockBeep = savedConfig.ClockBeep;
+                    configuration.BeepDuration = savedConfig.BeepDuration;
                     configuration.ClockSwitchSide = savedConfig.ClockSwitchSide;
                     configuration.ClockUpperCase = savedConfig.ClockUpperCase;
                     configuration.LongMoveFormat = savedConfig.LongMoveFormat;

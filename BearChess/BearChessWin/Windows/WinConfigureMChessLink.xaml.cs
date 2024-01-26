@@ -26,6 +26,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private List<string> _allPortNames;
         private MChessLinkLoader _loader;
         private readonly ILogging _fileLogger;
+        private ExtendedEChessBoardConfiguration _extendedEChessBoardConfiguration;
 
         public WinConfigureMChessLink(Configuration configuration, bool useBluetoothClassic, bool useBluetoothLE, bool useChesstimation)
         {
@@ -54,6 +55,33 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxOwnMoves.IsChecked = _eChessBoardConfiguration.ShowOwnMoves;
             checkBoxPossibleMoves.IsChecked = _eChessBoardConfiguration.ShowPossibleMoves;
             checkBoxBestMove.IsChecked = _eChessBoardConfiguration.ShowPossibleMovesEval;
+            _extendedEChessBoardConfiguration = _eChessBoardConfiguration.ExtendedConfig.FirstOrDefault();
+            if (_extendedEChessBoardConfiguration != null  && _extendedEChessBoardConfiguration.DimEvalAdvantage != 4)
+            {
+                checkBoxCurrentValue.IsChecked = _extendedEChessBoardConfiguration.ShowEvaluationValue;
+                if (_extendedEChessBoardConfiguration.DimEvalAdvantage == 0)
+                {
+                    radioButtonValueLeft.IsChecked = true;
+                }
+                if (_extendedEChessBoardConfiguration.DimEvalAdvantage == 1)
+                {
+                    radioButtonValueLeftRight.IsChecked = true;
+                }
+                if (_extendedEChessBoardConfiguration.DimEvalAdvantage == 2)
+                {
+                    radioButtonValueBottom.IsChecked = true;
+                }
+                if (_extendedEChessBoardConfiguration.DimEvalAdvantage == 3)
+                {
+                    radioButtonValueBottomTop.IsChecked = true;
+                }
+            }
+            else
+            {
+                checkBoxCurrentValue.IsChecked = false;
+                radioButtonValueBottom.IsChecked = true;
+            }
+            stackPanelValuation.IsEnabled = checkBoxCurrentValue.IsChecked.Value;
             if (useBluetoothClassic || useBluetoothLE) 
             { 
 
@@ -141,6 +169,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.ShowOwnMoves = checkBoxOwnMoves.IsChecked.HasValue && checkBoxOwnMoves.IsChecked.Value;
             _eChessBoardConfiguration.ShowPossibleMoves = checkBoxPossibleMoves.IsChecked.HasValue && checkBoxPossibleMoves.IsChecked.Value;
             _eChessBoardConfiguration.ShowPossibleMovesEval = checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
+            _eChessBoardConfiguration.ExtendedConfig[0].ShowEvaluationValue = checkBoxCurrentValue.IsChecked.HasValue && checkBoxCurrentValue.IsChecked.Value;
+            if (radioButtonValueLeft.IsChecked.HasValue && radioButtonValueLeft.IsChecked.Value)
+            {
+                _eChessBoardConfiguration.ExtendedConfig[0].DimEvalAdvantage = 0;
+            }
+            if (radioButtonValueLeftRight.IsChecked.HasValue && radioButtonValueLeftRight.IsChecked.Value)
+            {
+                _eChessBoardConfiguration.ExtendedConfig[0].DimEvalAdvantage = 1;
+            }
+            if (radioButtonValueBottom.IsChecked.HasValue && radioButtonValueBottom.IsChecked.Value)
+            {
+                _eChessBoardConfiguration.ExtendedConfig[0].DimEvalAdvantage = 2;
+            }
+            if (radioButtonValueBottomTop.IsChecked.HasValue && radioButtonValueBottomTop.IsChecked.Value)
+            {
+                _eChessBoardConfiguration.ExtendedConfig[0].DimEvalAdvantage = 3;
+            }
+
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -410,5 +456,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxOwnMoves.IsEnabled = !checkBoxPossibleMoves.IsChecked.Value;
         }
 
+        private void CheckBoxCurrentValue_OnChecked(object sender, RoutedEventArgs e)
+        {
+            stackPanelValuation.IsEnabled = true;
+        }
+
+        private void CheckBoxCurrentValue_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            stackPanelValuation.IsEnabled = false;
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -218,7 +219,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCopyPosition_OnClick(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(textBoxFenPosition.Text);
+            ClipboardHelper.SetText(textBoxFenPosition.Text);
 
         }
 

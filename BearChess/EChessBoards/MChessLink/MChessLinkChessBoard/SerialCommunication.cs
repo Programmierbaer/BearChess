@@ -195,17 +195,36 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                         }
 
                         _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
-                        if (readLine.Contains("s"))
+                        if (readLine.Contains("s") || !string.IsNullOrWhiteSpace(lastReadToSend))
                         {
                             lock (_locker)
                             {
-                                string tmpLine = readLine.Substring(readLine.LastIndexOf("s", StringComparison.Ordinal));
+                                string tmpLine = string.Empty;
+                                if (!string.IsNullOrWhiteSpace(lastReadToSend))
+                                {
+                                    try
+                                    {
+                                        tmpLine = lastReadToSend + readLine.Substring(0, 67 - lastReadToSend.Length);
+                                        _logger?.LogDebug($"SC: combined tmp line: {tmpLine}");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        _logger?.LogError($"SC: combined tmp line: {tmpLine} + {readLine}");
+                                    }
+
+                                    lastReadToSend = string.Empty;
+                                }
+                                else
+                                {
+                                    tmpLine = readLine.Substring(readLine.LastIndexOf("s", StringComparison.Ordinal));
+                                }
 
                                 while (true)
                                 {
                                     var startIndex = tmpLine.IndexOf("s", StringComparison.Ordinal);
                                     if (tmpLine.Length < startIndex + 67)
                                     {
+                                        lastReadToSend = tmpLine.Substring(startIndex);
                                         break;
                                     }
 

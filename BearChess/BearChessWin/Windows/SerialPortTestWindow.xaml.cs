@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using WebSocketSharp;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -8,6 +9,7 @@ using System.Windows.Documents;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -16,6 +18,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class SerialPortTestWindow : Window
     {
+        private WebSocket webSocket;
         private readonly string[] _ledUpperLeftToField =
       {
             "", "", "", "", "", "", "", "", "",
@@ -281,7 +284,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCopy_OnClick(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(_allLines.ToString());
+            ClipboardHelper.SetText(_allLines.ToString());
         }
 
         private void CheckBoxRTS_OnChecked(object sender, RoutedEventArgs e)
@@ -360,6 +363,43 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonGet_OnClick(object sender, RoutedEventArgs e)
         {
            textBoxSend.Text = "L22"+ GetLedForFields(textBoxFrom.Text.Split(",".ToCharArray()), false);
+        }
+
+        private void buttonConnectIP_Click(object sender, RoutedEventArgs e)
+        {
+            //var url = new Uri(textBoxAddress.Text);
+            try
+            {
+                webSocket = new WebSocket($"ws://{textBoxAddress.Text}");
+                webSocket.OnMessage += WebSocket_OnMessage;
+                webSocket.Connect();
+                webSocket.Send("fen");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+
+
+
+
+        }
+
+        private void WebSocket_OnMessage(object sender, MessageEventArgs e)
+        {
+            Dispatcher?.Invoke(() =>
+            {
+                listBoxLog.Items.Add($"{e.Data}");
+                ;
+                listBoxLog.ScrollIntoView(listBoxLog.Items.GetItemAt(listBoxLog.Items.Count - 1));
+                _allLines.AppendLine($"{DateTime.UtcNow:o} {e.Data}");
+            });
+        }
+
+        private void buttonDisConnectIP_Click(object sender, RoutedEventArgs e)
+        {
+            webSocket.Close();
         }
     }
 }

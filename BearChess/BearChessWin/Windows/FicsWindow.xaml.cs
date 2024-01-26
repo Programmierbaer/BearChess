@@ -1315,7 +1315,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 sb.AppendLine(((TextBlock)item).Text);
             }
 
-            Clipboard.SetText(sb.ToString());
+            ClipboardHelper.SetText(sb.ToString());
         }
 
         public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType)

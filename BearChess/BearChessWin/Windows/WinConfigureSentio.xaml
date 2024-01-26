@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="Height"
-        Title="Configure TabuTronic Sentio Chessboard" Height="230" Width="390" Icon="../Assets/tabutronic_logo_def.png">
+        Title="Configure TabuTronic Sentio Chessboard" Height="280" Width="390" Icon="../Assets/tabutronic_logo_def.png">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -49,7 +49,9 @@
         <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" >
             <StackPanel >
                 <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
-                <CheckBox Visibility="Collapsed" Margin="5" Name="checkBoxOwnMoves">Show own moves</CheckBox>
+                <CheckBox Visibility="Visible" Margin="5" Name="checkBoxOwnMoves" Checked="CheckBoxOwnMoves_OnChecked" Unchecked="CheckBoxOwnMoves_OnUnchecked">Show own moves</CheckBox>
+                <CheckBox Visibility="Visible"  Margin="5" Name="checkBoxPossibleMoves" ToolTip="This selection is exclusive to 'Show own moves'" Unchecked="CheckBoxPossibleMoves_OnUnchecked" Checked="CheckBoxPossibleMoves_OnChecked" >Show all moves for the selected figure</CheckBox>
+                <CheckBox  Visibility="Visible" Margin="5" Name="checkBoxBestMove" ToolTip="This selection is exclusive to 'Show own moves'" Checked="CheckBoxBestMove_OnChecked" Unchecked="CheckBoxBestMove_OnUnchecked" >Show the best move for the selected figure</CheckBox>
             </StackPanel>
         </Border>
         <Grid>

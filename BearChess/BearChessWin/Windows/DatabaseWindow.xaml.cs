@@ -500,7 +500,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
                 {
-                    Clipboard.SetText(_database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame());
+                    ClipboardHelper.SetText(_database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame());
                 }
             }
             catch (Exception ex)

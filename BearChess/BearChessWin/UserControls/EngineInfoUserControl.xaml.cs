@@ -237,13 +237,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _fenPosition = string.Empty;
         }
 
-        public void ShowInfo(string infoLine, bool tournamentMode)
+        public void ShowInfo(string infoLine, bool tournamentMode, int color)
         {
             if (!_stopVisible)
             {
                 return;
             }
-
+            if (Color==Fields.COLOR_EMPTY)
+            {
+                _currentColor = color;
+            }
             try
             {
                 if (_stopInfo || infoLine.Contains("bestmove"))
@@ -427,7 +430,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                         score = score * -1;
                                     }
 
-                                    scoreString = score.ToString(CultureInfo.InvariantCulture);
+                                    scoreString = string.Format("{0:0.00}",score).Replace(",",".");
                                 }
 
                                 continue;

@@ -13,6 +13,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 {
     public class EChessBoard : AbstractEBoard
     {
+        private class LedCorner
+        {
+            public bool UpperLeft = true;
+            public bool UpperRight = true;
+            public bool LowerLeft = true;
+            public bool LowerRight = true;
+        }
+
         private readonly bool _useChesstimation;
 
         private readonly string[] _ledToField =
@@ -146,22 +154,20 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         private bool _flashSync = false;
         private string _lastSendLeds;
-        private bool _upperLeft = true;
-        private bool _upperRight = true;
-        private bool _lowerLeft = true;
-        private bool _lowerRight = true;
         private EnumFlashMode _flashMode = EnumFlashMode.FlashAsync;
         private readonly bool _showMoveLine;
         private readonly ConcurrentQueue<ProbingMove[]> _probingFields = new ConcurrentQueue<ProbingMove[]>();
         private bool _release = false;
         private string _eprom { get; set; }
         private readonly EChessBoardConfiguration _boardConfiguration;
+        private int _currentEvalColor;
+        private string _currentEval = "0";
+        private readonly int _currentColor;
+        private LedCorner _ledCorner;
 
 
         public string Version { get; private set; }
         
-     
-
         public EChessBoard(ILogging logger, EChessBoardConfiguration configuration, bool useChesstimation) 
         {
             _useChesstimation = useChesstimation;
@@ -192,6 +198,8 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             var probingThread = new Thread(ShowProbingMoves) { IsBackground = true };
             probingThread.Start();
             _acceptProbingMoves = true;
+            _currentColor = Fields.COLOR_WHITE;
+            _ledCorner = new LedCorner() { UpperLeft = true, LowerLeft = true, LowerRight = true, UpperRight = true };
         }
 
 
@@ -375,12 +383,12 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
                 _logger.LogDebug($"Extend move line: {string.Join(" ", moveLine)} ");
-                ledForFields = GetLedForFields(moveLine, ledsParameter.IsThinking);
+                ledForFields = GetLedForFields(moveLine, ledsParameter.IsThinking,_ledCorner);
             }
             else
             {
 
-                ledForFields = GetLedForFields(ledsParameter.FieldNames, ledsParameter.IsThinking);
+                ledForFields = GetLedForFields(ledsParameter.FieldNames, ledsParameter.IsThinking,_ledCorner);
             }
 
             if (!string.IsNullOrWhiteSpace(_lastSendLeds) && _lastSendLeds.Equals($"L22{ledForFields}"))
@@ -410,6 +418,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             // lock (_locker)
             {           
                 _serialCommunication.Send("X");
+            }
+            if (!forceOff && _boardConfiguration.ExtendedConfig[0].ShowEvaluationValue)
+            {
+                ShowCurrentColorInfos();
             }
         }
 
@@ -483,10 +495,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void SetLedCorner(bool upperLeft, bool upperRight, bool lowerLeft, bool lowerRight)
         {
-            _upperLeft = upperLeft;
-            _upperRight = upperRight;
-            _lowerLeft = lowerLeft;
-            _lowerRight = lowerRight;
+            _ledCorner = new LedCorner() { UpperLeft = upperLeft, LowerLeft = lowerLeft, LowerRight = lowerRight, UpperRight = upperRight };
         }
 
         public override void Calibrate()
@@ -495,6 +504,9 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 _serialCommunication.Send("S");
                 IsCalibrated = true;
+                SetAllLedsOn();
+                Thread.Sleep(1500);
+                SetAllLedsOff(true);
             }
         }
 
@@ -505,7 +517,17 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void AdditionalInformation(string information)
         {
-            //
+            var strings = information.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
+            if (strings.Length == 0)
+            {
+                return;
+            }
+            _logger?.LogDebug($"Additional information: {information}");
+            if (strings[0].StartsWith("SCORE:", StringComparison.InvariantCultureIgnoreCase))
+            {
+                _currentEvalColor = int.Parse(strings[1]);
+                _currentEval = strings[2];
+            }
         }
 
         public override void RequestDump()
@@ -579,6 +601,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             lock (_locker)
             {
                 _probingFields.TryDequeue(out _);
+                _currentEval = "0";
                 if (!PieceRecognition)
                 {
                     _serialCommunication.Send("S");
@@ -602,6 +625,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 {
                     var chessLinkFen = FenConversions.GetChessLinkFen(fen);
                     _serialCommunication.Send($"G{chessLinkFen}");
+                    _currentEval = "0";
                 }
             }
         }
@@ -695,25 +719,25 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 {
                     if (_playWithWhite)
                     {
-                        if (_upperRight && _ledUpperRightToField[i].Contains(fieldNames[j].ToLower()))
+                        if (_ledCorner.UpperRight && _ledUpperRightToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
                             break;
                         }
 
-                        if (_upperLeft && _ledUpperLeftToField[i].Contains(fieldNames[j].ToLower()))
+                        if (_ledCorner.UpperLeft && _ledUpperLeftToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
                             break;
                         }
 
-                        if (_lowerRight && _ledLowerRightToField[i].Contains(fieldNames[j].ToLower()))
+                        if (_ledCorner.LowerRight && _ledLowerRightToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
                             break;
                         }
 
-                        if (_lowerLeft && _ledLowerLeftToField[i].Contains(fieldNames[j].ToLower()))
+                        if (_ledCorner.LowerLeft && _ledLowerLeftToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
                             break;
@@ -721,26 +745,26 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     }
                     else
                     {
-                        if (_upperRight && _ledUpperRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        if (_ledCorner.UpperRight && _ledUpperRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
                             break;
                         }
 
 
-                        if (_upperLeft && _ledUpperLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        if (_ledCorner.UpperLeft && _ledUpperLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
                             break;
                         }
 
-                        if (_lowerRight && _ledLowerRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        if (_ledCorner.LowerRight && _ledLowerRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
                             break;
                         }
 
-                        if (_lowerLeft && _ledLowerLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        if (_ledCorner.LowerLeft && _ledLowerLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = !fieldNames[j].Equals(probingField) ? fromCode : toCode;
                             break;
@@ -753,7 +777,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             return _useChesstimation ? codes.Replace("FFFFFFFF", "FFF00FFF") : codes;
         }
 
-        private string GetLedForFields(string[] fieldNames, bool thinking)
+        private string GetLedForFields(string[] fieldNames, bool thinking, LedCorner ledCorner)
         {
             var codes = string.Empty;
             var toCode = string.Empty;
@@ -795,25 +819,25 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 {
                     if (_playWithWhite)
                     {
-                        if (_upperRight && _ledUpperRightToField[i].Contains(fieldNames[j].ToLower()))
+                        if (ledCorner.UpperRight && _ledUpperRightToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
                             break;
                         }
 
-                        if (_upperLeft && _ledUpperLeftToField[i].Contains(fieldNames[j].ToLower()))
+                        if (ledCorner.UpperLeft  && _ledUpperLeftToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
                             break;
                         }
 
-                        if (_lowerRight && _ledLowerRightToField[i].Contains(fieldNames[j].ToLower()))
+                        if (ledCorner.LowerRight && _ledLowerRightToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
                             break;
                         }
 
-                        if (_lowerLeft && _ledLowerLeftToField[i].Contains(fieldNames[j].ToLower()))
+                        if (ledCorner.LowerLeft  && _ledLowerLeftToField[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
                             break;
@@ -821,26 +845,26 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     }
                     else
                     {
-                        if (_upperRight && _ledUpperRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        if (ledCorner.UpperRight && _ledUpperRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
                             break;
                         }
 
 
-                        if (_upperLeft && _ledUpperLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        if (ledCorner.UpperLeft && _ledUpperLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
                             break;
                         }
 
-                        if (_lowerRight && _ledLowerRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        if (ledCorner.LowerRight && _ledLowerRightToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
                             break;
                         }
 
-                        if (_lowerLeft && _ledLowerLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
+                        if (ledCorner.LowerLeft && _ledLowerLeftToFieldInvert[i].Contains(fieldNames[j].ToLower()))
                         {
                             code = j == 0 ? fromCode : toCode;
                             break;
@@ -851,6 +875,322 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
 
             return _useChesstimation ? codes.Replace("FFFFFFFF", "FFF00FFF") : codes;
+        }
+
+        private string GetEvalFieldName(int index, decimal eval)
+        {
+            var dimEvalAdvantage = _boardConfiguration.ExtendedConfig[0].DimEvalAdvantage;
+            
+            if (index == 1)
+            {
+                if (dimEvalAdvantage == 0)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "A1" : "A8";
+                    return eval > 0 ? "A8" : "A1";
+                }
+                if (dimEvalAdvantage == 1)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "H1" : "A8";
+                    return eval > 0 ? "A8" : "H1";
+                }
+                if (dimEvalAdvantage == 2)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "A1" : "H1";
+                    return eval > 0 ? "H1" : "A1";
+                }
+                if (dimEvalAdvantage == 3)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "A1" : "H8";
+                    return eval > 0 ? "H1" : "A1";
+                }
+            }
+            if (index == 2)
+            {
+                if (dimEvalAdvantage == 0)
+                {
+                    if (_playWithWhite) 
+                        return eval > 0 ? "A2" : "A7";
+                    return eval > 0 ? "A7" : "A2";
+                }
+                if (dimEvalAdvantage == 1)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "H2" : "A7";
+                    return eval > 0 ? "A7" : "H2";
+                }
+                if (dimEvalAdvantage == 2)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "B1" : "G1";
+                    return eval > 0 ? "G1" : "B1";
+                }
+                if (dimEvalAdvantage == 3)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "B1" : "G8";
+                    return eval > 0 ? "G8" : "B1";
+                }
+            }
+
+            if (index == 3)
+            {
+                if (dimEvalAdvantage == 0)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "A3" : "A6";
+                    return eval > 0 ? "A6" : "A3";
+                }
+                if (dimEvalAdvantage == 1)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "H3" : "A6";
+                    return eval > 0 ? "A6" : "H3";
+                }
+                if (dimEvalAdvantage == 2)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "C1" : "F1";
+                    return eval > 0 ? "F1" : "C1";
+                }
+                if (dimEvalAdvantage == 3)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "C1" : "F8";
+                    return eval > 0 ? "F8" : "C1";
+                }
+            }
+
+            if (index == 4)
+            {
+                if (dimEvalAdvantage == 0)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "A4" : "A5";
+                    return eval > 0 ? "A5" : "A4";
+                }
+                if (dimEvalAdvantage == 1)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "H4" : "A5";
+                    return eval > 0 ? "A5" : "H4";
+                }
+                if (dimEvalAdvantage == 2)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "D1" : "E1";
+                    return eval > 0 ? "E1" : "D1";
+                }
+                if (dimEvalAdvantage == 3)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "D1" : "E8";
+                    return eval > 0 ? "E8" : "D1";
+                }
+            }
+
+            if (index == 5)
+            {
+                if (dimEvalAdvantage == 0)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "A5" : "A4";
+                    return eval > 0 ? "A4" : "A5";
+                }
+                if (dimEvalAdvantage == 1)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "H5" : "A4";
+                    return eval > 0 ? "A4" : "H5";
+                }
+                if (dimEvalAdvantage == 2)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "E1" : "D1";
+                    return eval > 0 ? "D1" : "E1";
+                }
+                if (dimEvalAdvantage == 3)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "E1" : "D8";
+                    return eval > 0 ? "D8" : "E1";
+                }
+            }
+            if (index == 6)
+            {
+                if (dimEvalAdvantage == 0)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "A6" : "A3";
+                    return eval > 0 ? "A3" : "A6";
+                }
+                if (dimEvalAdvantage == 1)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "H6" : "A3";
+                    return eval > 0 ? "A3" : "H6";
+                }
+                if (dimEvalAdvantage == 2)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "F1" : "C1";
+                    return eval > 0 ? "C1" : "F1";
+                }
+                if (dimEvalAdvantage == 3)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "F1" : "C8";
+                    return eval > 0 ? "C8" : "F1";
+                }
+            }
+            if (index == 7)
+            {
+                if (dimEvalAdvantage == 0)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "A7" : "A2";
+                    return eval > 0 ? "A2" : "A7";
+                }
+                if (dimEvalAdvantage == 1)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "H7" : "A2";
+                    return eval > 0 ? "A2" : "H7";
+                }
+                if (dimEvalAdvantage == 2)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "G1" : "B1";
+                    return eval > 0 ? "B1" : "G1";
+                }
+                if (dimEvalAdvantage == 3)
+                {
+                    if (_playWithWhite)
+                        return eval > 0 ? "G1" : "B8";
+                    return eval > 0 ? "B8" : "G1";
+                }
+            }
+
+
+            return "A1";
+        }
+
+        private LedCorner GetLedCorner(decimal eval)
+        {
+            var dimEvalAdvantage = _boardConfiguration.ExtendedConfig[0].DimEvalAdvantage;
+            LedCorner ledCorner = new LedCorner()
+            {
+                LowerLeft = false,
+                LowerRight = false,
+                UpperRight = false,
+                UpperLeft = false
+            };
+            if (eval > 0)
+            {
+                if (dimEvalAdvantage == 0)
+                {
+                    ledCorner.LowerLeft = true;
+                }
+                if (dimEvalAdvantage == 1)
+                {
+                    ledCorner.LowerRight = true;
+                }
+                if (dimEvalAdvantage == 2)
+                {
+                    ledCorner.LowerLeft = true;
+                }
+                if (dimEvalAdvantage == 0)
+                {
+                    ledCorner.LowerLeft = true;
+                }
+            }
+            if (eval < 0)
+            {
+                if (dimEvalAdvantage == 0)
+                {
+                    ledCorner.UpperLeft = true;
+                }
+                if (dimEvalAdvantage == 1)
+                {
+                    ledCorner.UpperLeft = true;
+                }
+                if (dimEvalAdvantage == 2)
+                {
+                    ledCorner.LowerRight = true;
+                }
+                if (dimEvalAdvantage == 0)
+                {
+                    ledCorner.UpperLeft = true;
+                }
+            }
+
+            return ledCorner;
+        }
+
+        private void ShowCurrentColorInfos()
+        {
+            if (decimal.TryParse(_currentEval.Replace(".", ","), out decimal eval))
+            {
+                string toField = string.Empty;
+                string fromField = string.Empty;
+                LedCorner ledCorner = null;
+                if (_currentColor == Fields.COLOR_WHITE)
+                {
+                    if (eval > -1 && eval < 1)
+                    {
+                        return;
+                    }
+
+                    ledCorner = GetLedCorner(eval);
+
+                    if (eval >= 1 || eval <= -1)
+                    {
+                        fromField = GetEvalFieldName(1,eval);
+                        toField = GetEvalFieldName(1, eval);
+                    }
+
+                    if (eval >= 2 || eval <= -2)
+                    {
+                        toField = GetEvalFieldName(2, eval);
+                    }
+
+                    if (eval >= 3 || eval <= -3)
+                    {
+                        toField = GetEvalFieldName(3, eval);
+                    }
+
+                    if (eval >= 4 || eval <= -4)
+                    {
+                        toField = GetEvalFieldName(4, eval);
+                    }
+
+                    if (eval >= 5 || eval <= -5)
+                    {
+                        toField = GetEvalFieldName(5, eval);
+                    }
+
+                    if (eval >= 6 || eval <= -6)
+                    {
+                        toField = GetEvalFieldName(6, eval);
+                    }
+
+                    if (eval >= 7 || eval <= -7)
+                    {
+                        toField = GetEvalFieldName(7, eval);
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(fromField))
+                {
+                    string[] moveLine = MoveLineHelper.GetMoveLine(fromField, toField);
+                    _logger.LogDebug($"Extend move line: {string.Join(" ", moveLine)} ");
+                    string ledForFields = GetLedForFields(moveLine, false, ledCorner);
+                    _serialCommunication.Send($"L22{ledForFields}");
+                }
+            }
         }
     }
 }

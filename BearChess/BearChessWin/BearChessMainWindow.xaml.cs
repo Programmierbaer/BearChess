@@ -85,8 +85,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _mateIndex = 0;
                 }
 
-                LoseByMate = _allMates.All(s => s < 0);
-                WinByMate = _allMates.All(s => s > 0);
+                LoseByMate = allowScore && _allMates.All(s => s < 0);
+                WinByMate = allowScore && _allMates.All(s => s > 0);
             }
 
             public void NewScore(decimal score)
@@ -4019,13 +4019,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 pgnGame.AddMove(move);
             }
-            Clipboard.SetText(pgnGame.GetGame());
+            ClipboardHelper.SetText(pgnGame.GetGame());
 
         }
 
         private void MenuItemGamesPaste_OnClick(object sender, RoutedEventArgs e)
         {
-            var text = Clipboard.GetText();
+            var text = ClipboardHelper.GetText();
             bool startFromBasePosition = true;
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -4430,7 +4430,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 string isInCheck = string.Empty;
                 if (_chessBoard.MoveIsValid(fromField, toField))
                 {
-
                     if (_timeControlWhite.TournamentMode)
                     {
                         Dispatcher?.Invoke(() =>
@@ -4633,6 +4632,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                             Promote = promote,
                             IsMove = true,
+                            IsEngineMove = true,
                             DisplayString =
                                 _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType)
                         });
@@ -4706,6 +4706,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                                 Promote = promote,
                                 IsMove = true,
+                                IsEngineMove = true,
                                 DisplayString =
                                     _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType)
                             });
@@ -4798,6 +4799,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                             Promote = promote,
                             IsMove = true,
+                            IsEngineMove = true,
                             DisplayString =
                                 _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType)
                         });
@@ -5564,7 +5566,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     return;
                 }
 
-                _engineMatchScore[keyCollection[0]].Final(_allowEarly,_earlyEvaluation);
+                _engineMatchScore[keyCollection[0]].Final(_allowEarly, _earlyEvaluation);
                 _engineMatchScore[keyCollection[1]].Final(_allowEarly, _earlyEvaluation);
                 if (_engineMatchScore[keyCollection[0]].LoseByMate || _engineMatchScore[keyCollection[0]].LoseByScore)
                 {
@@ -6614,6 +6616,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void DisconnectFromTabutronicSentio()
         {
             _eChessBoard.HelpRequestedEvent -= EChessBoardHelpRequestedEvent;
+            _eChessBoard.ProbeMoveEvent -= EChessBoard_ProbeMoveEvent;
+            _eChessBoard.ProbeMoveEndingEvent -= EChessBoard_ProbeMoveEndingEvent;
             DisconnectFromEBoard(menuItemConnectToSentio, "Tabutronic Sentio");
         }
         private void ConnectToTabutronicSentio()
@@ -6625,6 +6629,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard.BasePositionEvent += EChessBoardBasePositionEvent;
             _eChessBoard.AwaitedPosition += EChessBoardAwaitedPositionEvent;
             _eChessBoard.HelpRequestedEvent += EChessBoardHelpRequestedEvent;
+            _eChessBoard.ProbeMoveEvent += EChessBoard_ProbeMoveEvent;
+            _eChessBoard.ProbeMoveEndingEvent += EChessBoard_ProbeMoveEndingEvent;
             if (!_eChessBoard.IsConnected)
             {
                 DisconnectFromTabutronicSentio();

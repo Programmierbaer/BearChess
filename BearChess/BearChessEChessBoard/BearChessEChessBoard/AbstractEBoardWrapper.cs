@@ -995,7 +995,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
                             if (hintFields.Count() > 1)
                             {
-                                _fileLogger?.LogDebug($"AB: ProbeMoveEvent for  {string.Join(" ", hintFields)} ");
+                                //_fileLogger?.LogDebug($"AB: ProbeMoveEvent for  {string.Join(" ", hintFields)} ");
                                 ProbeMoveEvent?.Invoke(this, hintFields.ToArray());
                             }
                         }

@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.4.3}
+\fancyhead[R]{Version 1.0.5.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{05.01.2024} 
+\date{26.01.2024} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -1171,12 +1171,21 @@ Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{Sentio2.png}
-	\caption{Select COM port}
+	\caption{Configure TabuTronic Sentio}
 	\label{fig:Sentio2}
 \end{figure}
 
 Select the COM port if you know it or use the <auto> selection. 
-Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
+Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.\\
+There are several options available.
+\begin{itemize}
+	\item \textbf{Activate all LEDs along the move} activates all LEDs along the from and to fields of a move.
+	\item \textbf{Show own moves} activate the LEDs of your last move.
+	\item \textbf{Show all moves for the selected figure} activates the LEDs for all fields on which the currently raised figure can be placed.
+	\item \textbf{Show the best move for the selected figure} flashes the field that would be best for the currently raised figure. This does not mean that this is necessarily a good move. It is just the best option for the figure.
+\end{itemize}
+
+{\color{red}\textbf{Note:}} Although the Sentio board has no real figure recognition, the handling will be simplified in further BearChess versions, e.g. to get closer to the Cerno.
 
 \subsubsection{Configure Bluetooth} \label{SentioBluetooth}
 
@@ -1379,6 +1388,13 @@ There are several options available.
 	\item \textbf{Show own moves} activate the LEDs of your last move.
 	\item \textbf{Show all moves for the selected figure} activates the LEDs for all fields on which the currently raised figure can be placed.
 	\item \textbf{Show the best move for the selected figure} flashes the field that would be best for the currently raised figure. This does not mean that this is necessarily a good move. It is just the best option for the figure.
+	\item \textbf{Show valuation} activate the LEDs to indicate the current valuation. The radio buttons can be used to determine which LEDs are used.
+	\begin{itemize}
+		\item \textbf{Left} The LEDs on the left-hand side indicate the rating. If you have an advantage, the LEDs start from the bottom edge. If you are at a disadvantage, the LEDs start at the top.
+		\item \textbf{Left/Right} The LEDs on the left-hand and right-hand side indicate the rating. If you have an advantage, the LEDs start from the right-hand side. If you are at a disadvantage, the LEDs start from the left-hand side.
+		\item \textbf{Bottom} The LEDs on the bottom line indicate the rating. If you have an advantage, the LEDs start from the left. If you are at a disadvantage, the LEDs start from the right.
+		\item \textbf{Bottom/Top} The LEDs on the bottom and top line indicate the rating. If you have an advantage, the LEDs start from the left on the bottom line. If you are at a disadvantage, the LEDs start from the right on the top line.		
+	\end{itemize}
 \end{itemize}
 
 Select the COM port if you know it or use the <auto> selection.
@@ -1518,6 +1534,7 @@ You can use an external clock (DGT3000, DGTPi) or the Revelation display to disp
 	\item Activate "Show only moves" if you do not want to display your time on the clock.
 	\item Select how you want the moves to be displayed on the clock.
     \item Activate "Upper case" if you want the chess moves  to be in capital letters.
+    \item Activated "Beep on move" makes a sound on the clock when the engine has made a move. You can set the duration between 1 and 32 units.
 \end{itemize}
 
 
@@ -3140,6 +3157,18 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 1.0.4.3 $\Rightarrow$  1.0.5.0}
+\begin{itemize}		
+	\item {\color{blue}New}: Extended configuration options for the Millennium Chesslink.
+	\item {\color{blue}New}: Extended configuration options and handling for the TabuTronic Sentio boards.
+	\item {\color{blue}New}: Beep on DGT Clock.
+	\item {\color{teal}Changes}: Premature termination of the game when mate is announced.
+    \item {\color{teal}Changes}: Display of valuations.
+    \item {\color{teal}Changes}: Program code for handling TabuTronic Sentio boards revised.
+    \item {\color{red}Fix}: Move detection at Millennium Chesslink.
+	\item {\color{red}Fix}: Clipboard handling.
+\end{itemize}
 
 \subsection*{Version 1.0.4.2 $\Rightarrow$  1.0.4.3}
 \begin{itemize}		

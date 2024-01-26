@@ -157,18 +157,18 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         private bool _readingBlackTime = false;
         private int _readingClockIndex = 0;
         private int _currentColor;
+        private readonly EChessBoardConfiguration _boardConfiguration;
 
 
-        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth, bool useClock, bool showOnlyMoves, bool switchClockSide, bool clockUpperCase)
+        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
         {
-            _useBluetooth = useBluetooth;
-            _useClock = useClock;
-            _clockUpperCase = clockUpperCase;
-            _showOnlyMoves = showOnlyMoves;
-            _switchClockSide = switchClockSide;
-            _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
-            //_serialCommunication = new SerialCommunication(new FileLogger(Path.Combine(basePath, "log", $"DGTSC_1.log"), 10, 10), portName, useBluetooth);
-
+            _boardConfiguration = configuration;
+            _useBluetooth = _boardConfiguration.UseBluetooth;
+            _useClock = _boardConfiguration.UseClock;
+            _clockUpperCase = _boardConfiguration.ClockUpperCase;
+            _showOnlyMoves = _boardConfiguration.ClockShowOnlyMoves;
+            _switchClockSide = _boardConfiguration.ClockSwitchSide;
+            _serialCommunication = new SerialCommunication(logger, _boardConfiguration.PortName, _useBluetooth);
             _logger = logger;
             BatteryLevel = "--";
             BatteryStatus = "";
@@ -183,6 +183,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             var clockThread = new Thread(HandlingClockMessages) { IsBackground = true };
             clockThread.Start();
         }
+
 
         private void HandlingClockMessages()
         {
@@ -205,8 +206,15 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
                     counter = 0;
                     if (_clockQueue.TryDequeue(out List<byte> sendList))
                     {
-                        _logger?.LogDebug($"DGT: Handle clock: {ConvertFromRead(sendList.ToArray())}"); 
-                        _serialCommunication.Send(sendList.ToArray());
+                        _logger?.LogDebug($"DGT: Handle clock: {ConvertFromRead(sendList.ToArray())}");
+                        try
+                        {
+                            _serialCommunication.Send(sendList.ToArray());
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger?.LogError($"DGT: Handle clock: {ex.Message}");
+                        }
                     }
                 }
                 Thread.Sleep(100);
@@ -302,6 +310,11 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             if (ledsParameter.IsMove && ledsParameter.FieldNames.Length == 2)
             {
                 SendDisplayToClock(_clockUpperCase ? ledsParameter.DisplayString.ToUpper() : ledsParameter.DisplayString);
+                if (ledsParameter.IsEngineMove)
+                {
+                    SendClockBeep();
+                }
+                
             }
             if (_useBluetooth)
             {
@@ -758,16 +771,19 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
 
         private void SendClockBeep()
         {
-            List<byte> allBytes = new List<byte>
-                                  {
-                                      DGT_CLOCK_MESSAGE,
-                                      0x04,
-                                      DGT_CMD_CLOCK_START_MESSAGE,
-                                      DGT_CMD_CLOCK_BEEP,
-                                      16,
-                                      DGT_CMD_CLOCK_END_MESSAGE
-                                  };
-            _clockQueue.Enqueue(allBytes);
+            if (_boardConfiguration.ClockBeep)
+            {
+                List<byte> allBytes = new List<byte>
+                {
+                    DGT_CLOCK_MESSAGE,
+                    0x04,
+                    DGT_CMD_CLOCK_START_MESSAGE,
+                    DGT_CMD_CLOCK_BEEP,
+                    (byte)_boardConfiguration.BeepDuration,
+                    DGT_CMD_CLOCK_END_MESSAGE
+                };
+                _clockQueue.Enqueue(allBytes);
+            }
         }
 
         private void SendClockRequestVersion()

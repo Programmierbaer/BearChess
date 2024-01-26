@@ -81,7 +81,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                             _logger?.LogDebug($"SC: As byte array: {s}");
                             _comPort.Write(data.Data, 0, data.Data.Length);
                             //_logger?.LogDebug($"SC: bytes send");
-                            //  Thread.Sleep(15);
+                              Thread.Sleep(50);
 
                         }
 

@@ -28,6 +28,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string Promote;
         public bool IsThinking;
         public bool IsMove;
+        public bool IsEngineMove;
         public bool IsTakeBack;
         public bool IsError;
         public bool IsOwnMove;
@@ -46,6 +47,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             DisplayString = string.Empty;
             IsThinking = false;
             IsMove = false;
+            IsEngineMove = false;
             IsTakeBack = false;
             IsError = false;
             IsOwnMove = false;
