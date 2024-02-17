@@ -874,14 +874,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _loadedEngines[uciInfo.Name].UciEngine.SetFen(fenPosition, string.Empty);
                 }
 
-                //foreach (var playedMove in playedMoves)
-                //{
-                //    _loadedEngines[uciInfo.Name].UciEngine.MakeMove(playedMove.FromFieldName.ToLower(),
-                //                                                    playedMove.ToFieldName.ToLower(),
-                //                                                    FigureId.FigureIdToFenCharacter[
-                //                                                        playedMove.PromotedFigure]);
-                //}
-
+              
                 stackPanelEngines.Children.Add(engineInfoUserControl);
                 if (!string.IsNullOrWhiteSpace(_lastCommand))
                 {

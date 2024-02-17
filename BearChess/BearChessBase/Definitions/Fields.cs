@@ -267,7 +267,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
             {"G8","B1"},
             {"H8","A1"},
         };
-        private static readonly Dictionary<int, int> FieldToRow = new Dictionary<int, int>
+        public static readonly Dictionary<int, int> FieldToRow = new Dictionary<int, int>
                                                                   {
                                                                       {FA1, 1},
                                                                       {FB1, 1},

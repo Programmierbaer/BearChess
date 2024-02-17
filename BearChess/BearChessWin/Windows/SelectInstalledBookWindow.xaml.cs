@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.CTG;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -80,7 +81,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonInstall_OnClick(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog { Filter = "All books|*.abk;*.bin|Polyglot book|*.bin|Arena book|*.abk" };
+            var openFileDialog = new OpenFileDialog { Filter = "All books|*.abk;*.bin;*.ctg|Polyglot book|*.bin|ChessBase book|*.ctg|Arena book|*.abk" };
             var showDialog = openFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
@@ -103,7 +104,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                             FileName = openFileDialog.FileName,
                                             Size = fileInfo.Length,
                                             PositionsCount = openingBook.PositionsCount,
-                                            MovesCount = openingBook.MovesCount
+                                            MovesCount = openingBook.MovesCount,
+                                            GamesCount = openingBook.GamesCount
                                         };
                     XmlSerializer serializer = new XmlSerializer(typeof(BookInfo));
                     TextWriter textWriter = new StreamWriter(Path.Combine(_bookPath,bookInfo.Id + ".book"), false);

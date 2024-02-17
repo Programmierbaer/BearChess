@@ -5,7 +5,9 @@ using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.CTG;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 
@@ -20,6 +22,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private  OpeningBook _openingBook;
         private readonly List<string> _allMoves = new List<string>();
         private readonly ConcurrentQueue<string> _concurrentFenPositions = new ConcurrentQueue<string>();
+        private DisplayFigureType _displayFigureType;
+        private DisplayMoveType _displayMoveType;
+        private DisplayCountryType _displayCountryType;
+
 
         public event EventHandler<IBookMoveBase> SelectedMoveChanged;
 
@@ -35,9 +41,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Title += $" {bookInfo1.Name}";
             Top = _configuration.GetWinDoubleValue("BookWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight,SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("BookWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
-            _openingBook = new OpeningBook();
+       
+            _displayFigureType = (DisplayFigureType)Enum.Parse(typeof(DisplayFigureType),
+                _configuration.GetConfigValue(
+                    "DisplayFigureTypeBooks",
+                    DisplayFigureType.Symbol.ToString()));
+            _displayMoveType = (DisplayMoveType)Enum.Parse(typeof(DisplayMoveType),
+                _configuration.GetConfigValue(
+                    "DisplayMoveTypeBooks",
+                    DisplayMoveType.FromToField.ToString()));
+            _displayCountryType = (DisplayCountryType)Enum.Parse(typeof(DisplayCountryType),
+                _configuration.GetConfigValue(
+                    "DisplayCountryTypeBooks",
+                    DisplayCountryType.GB.ToString()));
+            _openingBook = new OpeningBook(_displayFigureType, _displayMoveType, _displayCountryType);
             _openingBook.LoadBook(bookInfo1.FileName, false);
-            SetMoves(_openingBook.GetMoveList());
+         //   SetMoves(_openingBook.GetMoveList());
             var thread = new Thread(ReadFenPositions)
                          {
                              IsBackground = true
@@ -67,7 +86,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void ClearMoves()
         {
             _allMoves.Clear();
-            dataGridMoves.ItemsSource = _openingBook.GetMoveList();
+            dataGridMoves.ItemsSource = _openingBook.GetMoveList(FenCodes.BasePosition,true);
         }
 
         public void SetMoves(string fenPosition)
@@ -76,6 +95,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _concurrentFenPositions.Enqueue(fenPosition);
             }
+        }
+
+        public void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType,
+            DisplayCountryType countryType)
+        {
+            _displayFigureType = figureType;
+            _displayMoveType = moveType;
+            _displayCountryType = countryType;
+            _openingBook.SetDisplayTypes(_displayFigureType, _displayMoveType, _displayCountryType);
         }
 
         private void ReadFenPositions()

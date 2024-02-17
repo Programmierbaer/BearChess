@@ -12,6 +12,10 @@
         public uint NoOfGames { get; }
         public uint NoOfWins { get; }
         public uint NoOfLoss { get; }
+        public int Recommendations { get; set; }
+        public string Annotation { get; set; }
+        public string Commentary { get; set; }
+        public string MoveText { get; set; }
         public uint NoOfDraws { get; }
         public string FenPosition { get; set; }
 
@@ -42,6 +46,10 @@
                 uint zahl3 = (uint)zahl + (uint)zahl2;
                 Weight = zahl3 * weight;
             }
+            MoveText = $"{fromField}{toField}";
+            Recommendations = 0;
+            Annotation = string.Empty;
+            Commentary = string.Empty;
         }
     }
 }

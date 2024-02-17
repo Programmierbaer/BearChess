@@ -17,6 +17,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
     public class BTLEComPort : IComPort
     {
         private readonly string _pegasusService           = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _certaboService           = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _mChessLinkService        = "49535343-FE7D-4AE5-8FA9-9FAFD205E455";
         private readonly string _chessnutAirServiceR      = "1B7E8261-2877-41C3-B46E-CF057C562023";
         private readonly string _chessnutAirServiceW      = "1B7E8271-2877-41C3-B46E-CF057C562023";
@@ -24,6 +25,8 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         private readonly string _mChessLinkServiceRead    = "49535343-1E4D-4BD9-BA61-23C647249616";
         private readonly string _pegasusServiceWrite      = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _pegasusServiceRead       = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _certaboServiceWrite      = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _certaboServiceRead       = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _squareOffProServiceWrite = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _squareOffProServiceRead  = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _chessnutAirServiceWrite  = "1B7E8272-2877-41C3-B46E-CF057C562023";

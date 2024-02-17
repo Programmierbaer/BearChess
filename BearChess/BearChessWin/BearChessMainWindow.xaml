@@ -288,6 +288,12 @@
                             <Image Source="Assets/Icons/books_stack.png" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Name="menuItemConfigureNotationBooks" Header="Notation..."
+                              Click="MenuItemConfigureNotationBooks_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/text_list_numbers.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Settings">
                     <MenuItem Name="menuItemConfigBearChess" Header="BearChess..." Click="MenuItemConfigBearChess_OnClick">
@@ -471,6 +477,13 @@
                                   Click="MenuItemBluetoothCertabo_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Visibility="Collapsed" Name="menuItemBluetoothLECertabo" Header="Bluetooth LE"
+                                  ToolTip="Connect via Bluetooth LE"
+                                  Click="MenuItemBluetoothLECertabo_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageCertaboBluetoothLE" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemChesstimationCertabo" Header="Chesstimation module"

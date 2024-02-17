@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.5.0}
+\fancyhead[R]{Version 1.0.6.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{26.01.2024} 
+\date{17.02.2024} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -95,7 +95,7 @@ BearChess offers among others the following functions:
   	  \item \textbf{Analyse} your games or trainings with the help of electronic chessboards.
   	  \item Use multiple chess engines at the same time for playing and analysing.
   	  \item Engine \textbf{duels} and \textbf{tournaments}.
-  	  \item Support for Polyglot and Arena opening books.
+  	  \item Support for Polyglot, Arena and CTG opening books.
   	  \item Save and load your games.
   	  \item Load games from "The Week in Chess"
   	  \item Individual chessmen and board fields.
@@ -258,7 +258,7 @@ Read more on chapter \textbf{\ref{loadEngines}  \nameref{loadEngines}} on page \
 \begin{itemize}
 	\item \includegraphics[scale=0.5]{books_stack.png} \textbf{Load \& manage opening books} opens a new window in which you can install or load  your opening books.
 \end{itemize}
-BearChess can handle Polyglot and Arena opening books. Read more on chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pageref{OpeningBooks}.
+BearChess can handle Polyglot, Arena and CTG opening books. Read more on chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pageref{OpeningBooks}.
 
 \subsection{Settings}
 \begin{figure}[H]
@@ -630,7 +630,7 @@ If you like to load an engine at startup, you can add a command line parameter \
 	\label{fig:LoadManageBooks1}
 \end{figure}
 
-BearChess does not include opening books. Click on "Load \& manage opening books" to install one. "\textit{Install}" means to make a opening book known BearChess, not to install it on your computer. BearChess supports Polyglot and Arena opening books.\\
+BearChess does not include opening books. Click on "Load \& manage opening books" to install one. "\textit{Install}" means to make a opening book known BearChess, not to install it on your computer. BearChess supports Polyglot, Arena and CTG opening books.\\
 
 \begin{figure}[H]
 	\centering
@@ -661,20 +661,27 @@ A new window opens and shows the current possible moves found in the book.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{OpeningBook.png}
-	\caption{Loaded opening book on base position }
+	\caption{Loaded polyglot opening book on base position }
 	\label{fig:OpeningBook}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{OpeningBook1.png}
+	\caption{Loaded CTG opening book on base position }
+	\label{fig:OpeningBook1}
 \end{figure}
 
 You can load more than one book. Every book has its own window and is synchronized with the current position on the chessboard.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{OpeningBook2.png}
+	\includegraphics[scale=0.7]{OpeningBook2.png}
 	\caption{Loaded opening books }
 	\label{fig:OpeningBook2}
 \end{figure}
 
-{\color{red}\textbf{*}} So far, the possibilities are still very limited with the opening books. This will improve in the next versions. 
+{\color{red}\textbf{*}} So far, the possibilities are still limited with the opening books. This will improve in the next versions. 
 
 \section{Configure BearChess} \label{ConfigureBearChess}
 
@@ -3135,7 +3142,8 @@ The electronic chessboards work with different drivers for the COM interface. Du
 	\item Take back moves does not work if the engine is still in the BearChess opening library.
 \end{itemize}
 
-
+\section{Acknowledgments}
+The code for the CTG opening book is very much based on the Java code by Peter Österlund in DroidFish.
 
 \section{Next Steps}
 
@@ -3157,6 +3165,12 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 1.0.5.0 $\Rightarrow$  1.0.6.0}
+\begin{itemize}			
+	\item {\color{blue}New}: Support of CTG opening books.
+	\item {\color{teal}Changes}: Optimized handling of polyglot opening books.
+\end{itemize}
 
 \subsection*{Version 1.0.4.3 $\Rightarrow$  1.0.5.0}
 \begin{itemize}		

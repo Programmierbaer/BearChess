@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.CTG;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {

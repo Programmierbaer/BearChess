@@ -312,7 +312,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _allMoves.Clear();
             _allMoves.Add("position startpos moves");
             SendToEngine("ucinewgame");
-            _bookMove = _lookForBookMoves ? _openingBook?.GetMove(new PolyglotBookMove(string.Empty,string.Empty,0)) : null;
+            _bookMove = _lookForBookMoves ? _openingBook?.GetMove(FenCodes.BasePosition) : null;
             IsReady();
             if (_uciInfo.WaitForStart && ownerWindow!=null)
             {

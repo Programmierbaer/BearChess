@@ -32,7 +32,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
-        public WinConfigureCertabo(Configuration configuration, bool useBluetooth, bool useChesstimation)
+        public WinConfigureCertabo(Configuration configuration, bool useBluetooth, bool useBluetoothLE, bool useChesstimation)
         {
             _configuration = configuration;
             _useBluetooth = useBluetooth;
@@ -62,12 +62,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxPossibleMoves.IsChecked = _eChessBoardConfiguration.ShowPossibleMoves;
             checkBoxBestMove.IsChecked = _eChessBoardConfiguration.ShowPossibleMovesEval;
             _allPortNames = new List<string> { "<auto>" };
-            if (_useBluetooth)
+            if (_useBluetooth || useBluetoothLE)
             {
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 _portNames = SerialCommunicationTools
-                             .GetBTComPort(CertaboLoader.EBoardName, configuration, _fileLogger, true, false, useChesstimation).ToList();
+                             .GetBTComPort(CertaboLoader.EBoardName, configuration, _fileLogger, _useBluetooth, useBluetoothLE, useChesstimation).ToList();
                 comPortSearchWindow.Close();
 
             }
@@ -90,7 +90,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             _calibrateFileName = Path.Combine(_configuration.FolderPath, CertaboLoader.EBoardName, "calibrate.xml");
            
-            _eChessBoardConfiguration.UseBluetooth = useBluetooth;
+            _eChessBoardConfiguration.UseBluetooth = useBluetooth || useBluetoothLE;
             textBlockCalibrate.Text = useChesstimation || File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
             if (_portNames.Count == 0)

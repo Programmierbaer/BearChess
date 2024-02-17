@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace www.SoLaNoSoft.com.BearChessBase.Implementations
+namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
 {
     [Serializable]
     public class BookInfo
@@ -11,5 +11,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public long Size { get; set; }
         public int PositionsCount { get; set; }
         public int MovesCount { get; set; }
+        public int GamesCount { get; set; }
     }
 }

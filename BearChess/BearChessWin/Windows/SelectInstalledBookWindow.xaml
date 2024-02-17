@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Icon="../Assets/Icons/book_open.png"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterOwner"
-        Title="Load &amp; Manage Opening Books" Height="250" Width="600">
+        Title="Load &amp; Manage Opening Books" Height="250" Width="650">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -28,6 +28,9 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding MovesCount}" Width="Auto">
                     <DataGridTextColumn.Header>Moves</DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding GamesCount}" Width="Auto">
+                    <DataGridTextColumn.Header>Games</DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Size}" Width="Auto">
                     <DataGridTextColumn.Header>Size (bytes)</DataGridTextColumn.Header>

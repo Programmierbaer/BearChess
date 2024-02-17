@@ -254,5 +254,82 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
               return $"{figureOnField}{fromField}{captureSign}{toField}";
             return $"{figureOnField}{captureSign}{toField}";
         }
+
+        public string GetMoveString(string move)
+        {
+            if (string.IsNullOrWhiteSpace(move))
+            {
+                return string.Empty;
+            }
+
+            var captureSign = _displayMoveType == DisplayMoveType.FromToField ? "-" : string.Empty;
+            var fromField = move.Substring(0, 2);
+            var toField = move.Substring(2, 2);
+            if (!_allFields.ContainsKey(fromField))
+            {
+                return string.Empty;
+            }
+
+            var figureOnField = _allFields[fromField];
+            if (string.IsNullOrWhiteSpace(figureOnField))
+            {
+                return string.Empty;
+            }
+
+            if (_allFields.ContainsKey(toField))
+            {
+                if (!_allFields[toField].Equals(""))
+                {
+                    captureSign = "x";
+                }
+            }
+
+         
+            if (figureOnField.Equals(FenCodes.WhiteKing))
+            {
+                if (fromField.Equals("e1") && toField.Equals("g1"))
+                {
+
+                    return "0-0";
+                }
+
+                if (fromField.Equals("e1") && toField.Equals("c1"))
+                {
+                    return "0-0-0";
+                }
+            }
+
+            if (figureOnField.Equals(FenCodes.BlackKing))
+            {
+                if (fromField.Equals("e8") && toField.Equals("g8"))
+                {
+                    return "0-0";
+                }
+
+                if (fromField.Equals("e8") && toField.Equals("c8"))
+                {
+                    return "0-0-0";
+                }
+            }
+
+            if (figureOnField.Equals("p", StringComparison.OrdinalIgnoreCase))
+            {
+                figureOnField = _displayMoveType == DisplayMoveType.FromToField ? string.Empty : captureSign == "x" ? fromField.Substring(0, 1) : string.Empty;
+            }
+            else
+            {
+                if (_displayFigureType == DisplayFigureType.Symbol)
+                {
+                    figureOnField = FontConverter.ConvertFont(figureOnField, string.Empty);
+                }
+                else
+                {
+                    figureOnField = DisplayCountryHelper.CountryLetter(figureOnField, _displayCountryType).ToUpper();
+                }
+            }
+            if (_displayMoveType == DisplayMoveType.FromToField)
+                return $"{figureOnField}{fromField}{captureSign}{toField}";
+            return $"{figureOnField}{captureSign}{toField}";
+        }
     }
 }

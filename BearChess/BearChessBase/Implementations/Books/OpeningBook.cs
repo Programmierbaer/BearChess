@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.CTG;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
     public class OpeningBook
     {
+        private  DisplayFigureType _displayFigureType = DisplayFigureType.Letter;
+        private  DisplayMoveType _displayMoveType =DisplayMoveType.FromToField;
+        private  DisplayCountryType _displayCountryType=DisplayCountryType.GB;
 
         public enum VariationsEnum
         {
@@ -18,10 +22,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         private AbkReader _abkReader;
         private PolyglotReader _polyglotReader;
+        private CTGReader _ctgReader;
         private VariationsEnum _variation = VariationsEnum.Flexible;
 
         private readonly IBookMoveBase _emptyMove = new PolyglotBookMove(string.Empty, string.Empty, 0);
         private static readonly Random LineRandomness = new Random();
+
 
         public string FileName { get; private set; }
 
@@ -31,8 +37,20 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public int PositionsCount { get; private set; }
         public int MovesCount { get; private set; }
+        public int GamesCount { get; private set; }
 
-       
+        public OpeningBook()
+        {
+            
+        }
+    
+        public OpeningBook(DisplayFigureType displayFigureType, DisplayMoveType displayMoveType, DisplayCountryType displayCountryType)
+        {
+            _displayFigureType = displayFigureType;
+            _displayMoveType = displayMoveType;
+            _displayCountryType = displayCountryType;
+        }
+
         public bool LoadBook(string fileName, bool checkFile)
         {
             Available = false;
@@ -41,6 +59,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 Available = false;
                 _abkReader = null;
                 _polyglotReader = null;
+                _ctgReader = null;
                 return false;
             }
             FileName = fileName;
@@ -48,6 +67,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 AcceptFenPosition = true;
                 _abkReader = null;
+                _ctgReader = null;
                 Available = LoadPolyglot(checkFile);
             }
 
@@ -55,7 +75,15 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 AcceptFenPosition = false;
                 _polyglotReader = null;
+                _ctgReader = null;
                 Available = LoadArena();
+            }
+            if (FileName.EndsWith(".ctg", StringComparison.OrdinalIgnoreCase))
+            {
+                AcceptFenPosition = true;
+                _polyglotReader = null;
+                _abkReader = null;
+                Available = LoadCTG(checkFile);
             }
 
             return Available;
@@ -88,10 +116,26 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
             if (string.IsNullOrWhiteSpace(previousMove.FromField))
             {
-                return GetMove(_abkReader != null ? _abkReader.FirstMoves() : _polyglotReader.GetMoves(FenCodes.BasePosition));
+                if (_abkReader!=null)
+                {
+                    return GetMove(_abkReader.FirstMoves());
+                }
+                if (_polyglotReader != null)
+                {
+                    return GetMove(FenCodes.BasePosition);
+                }
+                return GetMove(_ctgReader.GetMoves(FenCodes.BasePosition));
             }
+            if (_abkReader != null)
+            {
+                return GetMove((IArenaBookMove)previousMove);
+            }
+            if (_polyglotReader != null)
+            {
+                return GetMove(previousMove.FenPosition);
+            }
+            return GetMove(_ctgReader.GetMoves(previousMove.FenPosition));
 
-            return GetMove(_abkReader != null ? _abkReader.GetMoves((IArenaBookMove)previousMove) : _polyglotReader.GetMoves(previousMove.FenPosition));
         }
 
         public IBookMoveBase GetMove(string fenPosition)
@@ -104,7 +148,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 return GetMove((IArenaBookMove)_emptyMove);
             }
-            return GetMove(_polyglotReader != null ? _polyglotReader.GetMoves(fenPosition) : Array.Empty<IBookMoveBase>());
+            if (_polyglotReader != null)
+            {
+                return GetMove(_polyglotReader.GetMoves(fenPosition));
+            }
+            return GetMove(_ctgReader.GetMoves(fenPosition));            
         }
 
         public IBookMoveBase GetMove(string[] moveList)
@@ -173,20 +221,39 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         {
             if (string.IsNullOrWhiteSpace(previousMove.FromField))
             {
-                return _abkReader != null ? _abkReader.FirstMoves() : _polyglotReader.GetMoves(FenCodes.BasePosition);
+                if (_abkReader != null)
+                {
+                    return _abkReader.FirstMoves();
+                }
+                if (_polyglotReader != null)
+                {
+                    return _polyglotReader.GetMoves(FenCodes.BasePosition);
+                }
+                return _ctgReader.GetMoves(FenCodes.BasePosition);
             }
 
-            var bookMoves = _abkReader != null
-                                ? _abkReader.GetMoves(previousMove)
-                                : _polyglotReader.GetMoves(previousMove.FenPosition);
-            if (checkCastle)
+            IBookMoveBase[] bookMoves = null;
+            if (_abkReader != null)
+                bookMoves = _abkReader.GetMoves(previousMove);
+            if (_polyglotReader != null)
+                bookMoves = _polyglotReader.GetMoves(previousMove.FenPosition);
+            if (_ctgReader != null)
+                bookMoves = _ctgReader.GetMoves(previousMove.FenPosition);
+            if (bookMoves == null)
+                bookMoves = Array.Empty<IBookMoveBase>();
+            // if (checkCastle)
             {
+                var fastChessBoard = new FastChessBoard();
+                fastChessBoard.SetDisplayTypes(_displayFigureType,_displayMoveType,_displayCountryType);
+                fastChessBoard.Init(previousMove.FenPosition, Array.Empty<string>());
                 var chessBoard = new ChessBoard();
                 chessBoard.Init();
                 chessBoard.NewGame();
                 chessBoard.SetPosition(previousMove.FenPosition);
                 foreach (var bookMove in bookMoves)
                 {
+                    bookMove.MoveText = fastChessBoard.GetMoveString($"{bookMove.FromField}{bookMove.ToField}");
+                    bookMove.MoveText += $"{bookMove.Annotation} ";
                     if (bookMove.FromField.Equals("e1") && bookMove.ToField.Equals("h1"))
                     {
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
@@ -231,18 +298,26 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public IBookMoveBase[] GetMoveList(string fenPosition, bool checkCastle)
         {
-            var bookMoves = 
-            _polyglotReader != null
-                ? _polyglotReader.GetMoves(fenPosition)
-                : Array.Empty<IBookMoveBase>();
-            if (checkCastle)
+            IBookMoveBase[] bookMoves = null;
+            if (_polyglotReader != null)
+                bookMoves = _polyglotReader.GetMoves(fenPosition);
+            if (_ctgReader != null)
+                bookMoves = _ctgReader.GetMoves(fenPosition);
+            if (bookMoves==null)
+                bookMoves = Array.Empty<IBookMoveBase>();
+            if (bookMoves.Length>0)
             {
+                var fastChessBoard = new FastChessBoard();
+                fastChessBoard.SetDisplayTypes(_displayFigureType, _displayMoveType, _displayCountryType);
                 var chessBoard = new ChessBoard();
-                chessBoard.Init();
+                fastChessBoard.Init(fenPosition,Array.Empty<string>());
                 chessBoard.NewGame();
                 chessBoard.SetPosition(fenPosition);
                 foreach (var bookMove in bookMoves)
                 {
+                    bookMove.MoveText = fastChessBoard.GetMoveString($"{bookMove.FromField}{bookMove.ToField}");
+
+                    bookMove.MoveText += $"{bookMove.Annotation} ";
                     if (bookMove.FromField.Equals("e1") && bookMove.ToField.Equals("h1"))
                     {
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
@@ -250,6 +325,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         {
                             bookMove.ToField = "g1";
                         }
+
+                    
                     }
 
                     if (bookMove.FromField.Equals("e1") && bookMove.ToField.Equals("a1"))
@@ -259,6 +336,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         {
                             bookMove.ToField = "c1";
                         }
+                    
                     }
 
                     if (bookMove.FromField.Equals("e8") && bookMove.ToField.Equals("h8"))
@@ -268,6 +346,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         {
                             bookMove.ToField = "g8";
                         }
+                    
                     }
 
                     if (bookMove.FromField.Equals("e8") && bookMove.ToField.Equals("a8"))
@@ -277,9 +356,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         {
                             bookMove.ToField = "c8";
                         }
+                    
                     }
-
                 }
+                
             }
 
             return bookMoves;
@@ -305,7 +385,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 return new IBookMoveBase[] { moves[0]};
             }
-            long sumWeights = moves.Sum(w => w.Weight);
+            float sumWeights = moves.Sum(w => w.Weight);
             if (sumWeights == 0)
             {
                 sumWeights = 1;
@@ -318,7 +398,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     continue;
 
                 }
-                long moveWeight = 100 * bookMove.Weight / sumWeights;
+                float moveWeight = 100 * bookMove.Weight / sumWeights;
                 if (_variation == VariationsEnum.Flexible && moveWeight <= 5)
                 {
                     continue;
@@ -378,7 +458,30 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
             return true;
         }
-        
+
+        private bool LoadCTG(bool checkFile)
+        {
+            _ctgReader = new CTGReader();
+            _ctgReader.ReadFile(FileName);
+            if (checkFile)
+            {
+                var bookMoves = _ctgReader.GetMoves(FenCodes.BasePosition);
+                PositionsCount = _ctgReader.PositionsCount;
+                MovesCount = _ctgReader.MovesCount;
+                GamesCount = _ctgReader.GamesCount;
+                return bookMoves != null && bookMoves.Length != 0;
+            }
+
+            return true;
+        }
+
         #endregion
+
+        public void SetDisplayTypes(DisplayFigureType displayFigureType, DisplayMoveType displayMoveType, DisplayCountryType displayCountryType)
+        {
+            _displayFigureType = displayFigureType;
+            _displayMoveType = displayMoveType;
+            _displayCountryType = displayCountryType;
+        }
     }
 }

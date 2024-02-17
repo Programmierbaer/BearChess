@@ -233,6 +233,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         private byte[] _book = null;
 
         private readonly Dictionary<ulong, List<IBookMoveBase>> _keyToBookMoves = new Dictionary<ulong, List<IBookMoveBase>>();
+        private string _fileName;
 
         public bool HasHeader { get; private set; }
 
@@ -271,6 +272,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public void ReadFile(string fileName)
         {
+            _fileName = string.Empty;
             FileInfo fileInfo = new FileInfo(fileName);
             if (!fileInfo.Exists)
             {
@@ -279,6 +281,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 return;
             }
 
+            _fileName = fileName;
             try
             {
                 _book = File.ReadAllBytes(fileName);
@@ -295,9 +298,17 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public IBookMoveBase[] GetMoves(string fenPosition)
         {
-            if (_book == null)
+            if (_book == null || _book.Length==0)
             {
-                return Array.Empty<IBookMoveBase>();
+                if (string.IsNullOrWhiteSpace(_fileName))
+                {
+                    return Array.Empty<IBookMoveBase>();
+                }
+                ReadFile(_fileName);
+                if (_book == null)
+                {
+                    return Array.Empty<IBookMoveBase>();
+                }
             }
 
             try
@@ -309,82 +320,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     return move.OrderByDescending(r => r.Weight).ToArray();
                 }
 
-                if (_keyToBookMoves.Count > 0)
-                {
-                    return Array.Empty<IBookMoveBase>();
-                }
-
+            
                 const string rank = "12345678";
                 const string file = "abcdefgh";
-                //var target = new byte[16];
-                //var targetKey = new byte[8];
-                //var targetMove = new byte[2];
-                //var targetWeight = new byte[2];
-                //Parallel.For(0, (_book.Length - 16) / 16, jj =>
-                //{
-                //    var target = new byte[16];
-                //    var targetKey = new byte[8];
-                //    var targetMove = new byte[2];
-                //    var targetWeight = new byte[2];
-                //    int i = jj * 16;
-                //    Array.Copy(_book, i, target, 0, 16);
-                //    Array.Copy(target, 0, targetKey, 0, 8);
-                //    ulong bookKey = BitConverter.ToUInt64(targetKey.Reverse().ToArray(), 0);
-                //    //if (!bookKey.Equals(key))
-                //    //{
-                //    //    continue;
-                //    //}
-
-                //    Array.Copy(target, 8, targetMove, 0, 2);
-                //    Array.Copy(target, 10, targetWeight, 0, 2);
-                //    ushort weight = BitConverter.ToUInt16(targetWeight.Reverse().ToArray(), 0);
-                //    var bitArray = new BitArray(targetMove.Reverse().ToArray());
-                //    int toFile = 0;
-                //    int toRank = 0;
-                //    int fromFile = 0;
-                //    int fromRank = 0;
-                //    for (int j = 0; j < 3; j++)
-                //    {
-                //        if (bitArray[j])
-                //        {
-                //            toFile |= 1 << j;
-                //        }
-                //    }
-
-                //    for (int j = 3; j < 6; j++)
-                //    {
-                //        if (bitArray[j])
-                //        {
-                //            toRank |= 1 << (j - 3);
-                //        }
-                //    }
-
-                //    for (int j = 6; j < 9; j++)
-                //    {
-                //        if (bitArray[j])
-                //        {
-                //            fromFile |= 1 << (j - 6);
-                //        }
-                //    }
-
-                //    for (int j = 9; j < 12; j++)
-                //    {
-                //        if (bitArray[j])
-                //        {
-                //            fromRank |= 1 << (j - 9);
-                //        }
-                //    }
-                //    lock (_lock)
-                //    {
-                //        if (!_keyToBookMoves.ContainsKey(bookKey))
-                //        {
-                //            _keyToBookMoves[bookKey] = new List<IBookMoveBase>();
-                //        }
-                //        _keyToBookMoves[bookKey].Add(new PolyglotBookMove($"{file[fromFile]}{rank[fromRank]}", $"{file[toFile]}{rank[toRank]}", weight));
-                //    }
-                //});
+              
                 DateTime start = DateTime.Now;
-                Dictionary<ulong, List<IBookMoveBase>> keyToBookMoves1 = new Dictionary<ulong, List<IBookMoveBase>>();
                 Dictionary<ulong, List<IBookMoveBase>> keyToBookMoves2 = new Dictionary<ulong, List<IBookMoveBase>>();
                 var task1 = Task.Run(() =>
                 {
@@ -398,6 +338,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         Array.Copy(_book, i, target, 0, 16);
                         Array.Copy(target, 0, targetKey, 0, 8);
                         ulong bookKey = BitConverter.ToUInt64(targetKey.Reverse().ToArray(), 0);
+                        if (!key.Equals(bookKey))
+                        {
+                            continue;
+                        }
                         Array.Copy(target, 8, targetMove, 0, 2);
                         Array.Copy(target, 10, targetWeight, 0, 2);
                         ushort weight = BitConverter.ToUInt16(targetWeight.Reverse().ToArray(), 0);
@@ -459,7 +403,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     {
                         Array.Copy(_book, i, target, 0, 16);
                         Array.Copy(target, 0, targetKey, 0, 8);
-                        ulong bookKey = BitConverter.ToUInt64(targetKey.Reverse().ToArray(), 0);                      
+                        ulong bookKey = BitConverter.ToUInt64(targetKey.Reverse().ToArray(), 0);
+                        if (!key.Equals(bookKey))
+                        {
+                            continue;
+                        }
                         Array.Copy(target, 8, targetMove, 0, 2);
                         Array.Copy(target, 10, targetWeight, 0, 2);
                         ushort weight = BitConverter.ToUInt16(targetWeight.Reverse().ToArray(), 0);
@@ -511,63 +459,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     }
                 });
 
-                //for (int i = 0; i < _book.Length - 16; i += 16)
-                //{
-                //    Array.Copy(_book, i, target, 0, 16);
-                //    Array.Copy(target, 0, targetKey, 0, 8);
-                //    ulong bookKey = BitConverter.ToUInt64(targetKey.Reverse().ToArray(), 0);
-                //    //if (!bookKey.Equals(key))
-                //    //{
-                //    //    continue;
-                //    //}
-
-                //    Array.Copy(target, 8, targetMove, 0, 2);
-                //    Array.Copy(target, 10, targetWeight, 0, 2);
-                //    ushort weight = BitConverter.ToUInt16(targetWeight.Reverse().ToArray(), 0);
-                //    var bitArray = new BitArray(targetMove.Reverse().ToArray());
-                //    int toFile = 0;
-                //    int toRank = 0;
-                //    int fromFile = 0;
-                //    int fromRank = 0;
-                //    for (int j = 0; j < 3; j++)
-                //    {
-                //        if (bitArray[j])
-                //        {
-                //            toFile |= 1 << j;
-                //        }
-                //    }
-
-                //    for (int j = 3; j < 6; j++)
-                //    {
-                //        if (bitArray[j])
-                //        {
-                //            toRank |= 1 << (j - 3);
-                //        }
-                //    }
-
-                //    for (int j = 6; j < 9; j++)
-                //    {
-                //        if (bitArray[j])
-                //        {
-                //            fromFile |= 1 << (j - 6);
-                //        }
-                //    }
-
-                //    for (int j = 9; j < 12; j++)
-                //    {
-                //        if (bitArray[j])
-                //        {
-                //            fromRank |= 1 << (j - 9);
-                //        }
-                //    }
-
-                //    if (!_keyToBookMoves.ContainsKey(bookKey))
-                //    {
-                //        _keyToBookMoves[bookKey] = new List<IBookMoveBase>();
-                //    }
-                //    _keyToBookMoves[bookKey].Add(new PolyglotBookMove($"{file[fromFile]}{rank[fromRank]}", $"{file[toFile]}{rank[toRank]}", weight));
-
-                //}
+             
                 Task.WaitAll(new Task[] { task1, task2 });
                 foreach (ulong key1 in keyToBookMoves2.Keys) {
                     if (_keyToBookMoves.ContainsKey(key1))

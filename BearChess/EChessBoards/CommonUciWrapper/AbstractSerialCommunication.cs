@@ -332,7 +332,28 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
 
                 if (_boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (comPort.Equals("BT"))
+                    if (comPort.Equals("BTLE"))
+                    {
+                        int counter = 0;
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "Certabo" }))
+                        {
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count == 0)
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo("No BTLE port for Certabo");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _logger);
+                        SerialBTLECommunicationTools.StopWatching();
+                    }else if (comPort.Equals("BT"))
                     {
                         _comPort = new BTComPort(_boardName,null, UseChesstimation);
                         if (!((BTComPort)_comPort).EndPointFound)

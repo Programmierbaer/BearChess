@@ -180,6 +180,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _useBluetoothLEChessLink;
         private bool _useChesstimationChessLink;
         private bool _useBluetoothCertabo;
+        private bool _useBluetoothLECertabo;
         private bool _useChesstimationCertabo;
         private bool _useBluetoothTabuTronicCerno;
         private bool _useBluetoothTabuTronicSentio;
@@ -512,6 +513,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             
             _useBluetoothCertabo = bool.Parse(_configuration.GetConfigValue("usebluetoothCertabo", "false"));
             imageCertaboBluetooth.Visibility = _useBluetoothCertabo ? Visibility.Visible : Visibility.Hidden;
+
+            _useBluetoothLECertabo = bool.Parse(_configuration.GetConfigValue("usebluetoothLECertabo", "false"));
+            imageCertaboBluetoothLE.Visibility = _useBluetoothLECertabo ? Visibility.Visible : Visibility.Hidden;
 
             _useChesstimationCertabo = bool.Parse(_configuration.GetConfigValue("usechesstimationCertabo", "false"));
             imageCertaboChesstimation.Visibility = _useChesstimationCertabo ? Visibility.Visible : Visibility.Hidden;
@@ -1993,6 +1997,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     });
                 _materialWindow?.ShowMaterial(_chessBoard.GetFigures(Fields.COLOR_WHITE), _chessBoard.GetFigures(Fields.COLOR_BLACK),_chessBoard.GetPlayedMoveList());
                 _databaseWindow?.FilterByFen(position);
+                _bookWindows.ForEach(b =>
+                {
+                    b.SetMoves(position);
+                    // b.AddMove($"{fromFieldFieldName}{toFieldFieldName}");
+                });
                 return;
             }
 
@@ -6586,9 +6595,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockEBoard.Text = _useChesstimationCertabo ? $"Connected to Chesstimation module ({currentComPort})"
                                        : $"Connected to Certabo chessboard ({currentComPort})";
             
-            if (_useBluetoothCertabo)
+            if (_useBluetoothCertabo || _useBluetoothLECertabo)
             {
-                imageBT.Visibility = currentComPort.Equals("BT", StringComparison.OrdinalIgnoreCase)
+                imageBT.Visibility = currentComPort.StartsWith("BT", StringComparison.OrdinalIgnoreCase)
                                          ? Visibility.Visible
                                          : Visibility.Hidden;
             }
@@ -7240,7 +7249,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 reConnect = true;
             }
 
-            var winConfigureCertabo = new WinConfigureCertabo(_configuration, _useBluetoothCertabo, _useChesstimationCertabo) {Owner = this};
+            var winConfigureCertabo = new WinConfigureCertabo(_configuration, _useBluetoothCertabo, _useBluetoothLECertabo, _useChesstimationCertabo) {Owner = this};
             var showDialog = winConfigureCertabo.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -7534,7 +7543,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 });
                 return;
             }
-
+          
             if (_currentAction == CurrentAction.InGameAnalyseMode)
             {
                 if (_currentAnalyseMode == CurrentAnalyseMode.SavedGameAnalyseMode)
@@ -7579,7 +7588,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _moveListWindow?.MarkMove(databaseGameFenIndex.MoveIndex + 1,
                                               databaseGameFenIndex.Move.FigureColor);
                 }
-                
+                _bookWindows.ForEach(b =>
+                {
+                    b.SetMoves(fenPosition);
+                    // b.AddMove($"{fromFieldFieldName}{toFieldFieldName}");
+                });
             });
         }
 
@@ -10422,6 +10435,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                             _movesConfigWindow.GetDisplayMoveType(), _movesConfigWindow.GetDisplayCountryType());
         }
 
+        private void MovesConfigWindow_SetupBookChangedEvent(object sender, EventArgs e)
+        {
+            var fenPosition = _chessBoard.GetFenPosition();
+            _bookWindows.ForEach(b =>
+            {
+                b.SetDisplayTypes(_movesConfigWindow.GetDisplayFigureType(),
+                    _movesConfigWindow.GetDisplayMoveType(), _movesConfigWindow.GetDisplayCountryType());
+                b.SetMoves(fenPosition);
+            });
+            
+        }
+
         private void MenuItemChesstimationCertabo_OnClick(object sender, RoutedEventArgs e)
         {
             _useChesstimationCertabo = !_useChesstimationCertabo;
@@ -10664,6 +10689,54 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 ConnectToChessnutAir();
             }
+        }
+
+        private void MenuItemBluetoothLECertabo_OnClick(object sender, RoutedEventArgs e)
+        {
+            _useBluetoothLECertabo = !_useBluetoothLECertabo;
+            _configuration.SetConfigValue("usebluetoothLECertabo", _useBluetoothLECertabo.ToString());
+            imageCertaboBluetoothLE.Visibility = _useBluetoothLECertabo ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        private void MenuItemConfigureNotationBooks_OnClick(object sender, RoutedEventArgs e)
+        {
+            var displayFigureType = (DisplayFigureType)Enum.Parse(typeof(DisplayFigureType),
+                _configuration.GetConfigValue(
+                    "DisplayFigureTypeBooks",
+                    DisplayFigureType.Symbol.ToString()));
+            var displayMoveType = (DisplayMoveType)Enum.Parse(typeof(DisplayMoveType),
+                _configuration.GetConfigValue(
+                    "DisplayMoveTypeBooks",
+                    DisplayMoveType.FromToField.ToString()));
+            var displayCountryType = (DisplayCountryType)Enum.Parse(typeof(DisplayCountryType),
+                _configuration.GetConfigValue(
+                    "DisplayCountryTypeBooks",
+                    DisplayCountryType.GB.ToString()));
+
+            _movesConfigWindow = new MovesConfigWindow(displayMoveType, displayFigureType, displayCountryType)
+            {
+                Owner = this
+            };
+            _movesConfigWindow.SetupChangedEvent += MovesConfigWindow_SetupBookChangedEvent;
+            var showDialog = _movesConfigWindow.ShowDialog();
+            if (showDialog.HasValue && showDialog.Value)
+            {
+                _configuration.SetConfigValue("DisplayFigureTypeBooks",
+                    _movesConfigWindow.GetDisplayFigureType().ToString());
+                _configuration.SetConfigValue("DisplayMoveTypeBooks", _movesConfigWindow.GetDisplayMoveType().ToString());
+                _configuration.SetConfigValue("DisplayCountryTypeBooks", _movesConfigWindow.GetDisplayCountryType().ToString());
+            }
+            else
+            {
+                var fenPosition = _chessBoard.GetFenPosition();
+                _bookWindows.ForEach(b =>
+                {
+                    b.SetDisplayTypes(displayFigureType, displayMoveType, displayCountryType);
+                    b.SetMoves(fenPosition);
+                });
+            }
+            _movesConfigWindow.SetupChangedEvent -= MovesConfigWindow_SetupBookChangedEvent;
+            _movesConfigWindow = null;
         }
     }
 }
