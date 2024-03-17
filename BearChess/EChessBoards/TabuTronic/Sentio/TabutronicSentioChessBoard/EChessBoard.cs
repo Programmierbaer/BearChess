@@ -74,17 +74,13 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
         private bool _beginHelpRequested;
         private int _helpRequestedField;
         private readonly bool _showMoveLine;
+        private readonly EChessBoardConfiguration _boardConfiguration;
 
-        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration) :
-            this(basePath, logger, configuration.PortName, configuration.UseBluetooth)
+        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration) 
         {
-            _showMoveLine = configuration.ShowMoveLine;
-        }
-        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth)
-        {
-            _useBluetooth = useBluetooth;
-            _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
-          
+            _boardConfiguration = configuration;
+            _useBluetooth = configuration.UseBluetooth; ;
+            _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
             _logger = logger;
             BatteryLevel = "---";
             BatteryStatus = "Full";
@@ -108,8 +104,9 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             _takeBackLeds.Clear();
             _thinkingLeds.Clear();
             _deBounce = 20;
-        
+            _showMoveLine = configuration.ShowMoveLine;
         }
+       
 
         public EChessBoard(ILogging logger)
         {
@@ -140,7 +137,14 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             _serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth);
             if (_serialCommunication.CheckConnect(portName))
             {
-                var readLine = _serialCommunication.GetRawFromBoard(string.Empty);
+                string readLine = string.Empty;
+                int count = 0;
+                while (string.IsNullOrWhiteSpace(readLine) && count < 10)
+                {
+                    readLine = _serialCommunication.GetRawFromBoard(string.Empty);
+                    count++;
+                    Thread.Sleep(10);
+                }
                 _serialCommunication.DisConnectFromCheck();
                 return readLine.Length > 0;
             }

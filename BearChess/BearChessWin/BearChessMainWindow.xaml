@@ -479,7 +479,7 @@
                                 <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Visibility="Collapsed" Name="menuItemBluetoothLECertabo" Header="Bluetooth LE"
+                        <MenuItem Visibility="Visible" Name="menuItemBluetoothLECertabo" Header="Bluetooth LE"
                                   ToolTip="Connect via Bluetooth LE"
                                   Click="MenuItemBluetoothLECertabo_OnClick">
                             <MenuItem.Icon>
@@ -523,6 +523,13 @@
                                            Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
+                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLECerno" Header="Bluetooth LE"
+                                      ToolTip="Connect via Bluetooth LE"
+                                      Click="MenuItemBluetoothLECerno_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageCernoBluetoothLE" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
                         <MenuItem Name="menuItemSentio" Header="Sentio">
                             <MenuItem.Icon>
@@ -546,6 +553,13 @@
                                 <MenuItem.Icon>
                                     <Image Name="imageSentioBluetooth" Source="Assets/Icons/tick.png"
                                            Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLESentio" Header="Bluetooth LE"
+                                      ToolTip="Connect via Bluetooth LE"
+                                      Click="MenuItemBluetoothLESentio_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageSentioBluetoothLE" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
@@ -704,7 +718,23 @@
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        
+                    </MenuItem>
+                    <MenuItem Header="House of Staunton" Name="menuItemZmartfun" Visibility="Visible">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/hos.png" />
+                        </MenuItem.Icon>
+                        <MenuItem Name="menuItemConnectToZmartfun" Header="Connect"
+                                Click="MenuItemConnectHoSBoard_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/connect.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Visibility="Collapsed" Name="menuItemConfigureZmartfun" Header="Configure..."
+                                Click="MenuItemConfigureZmartfun_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/cog.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                     <MenuItem Header="NOVAG" Name="menuItemNovagBoard" Visibility="Visible">
                         <MenuItem.Icon>
@@ -816,7 +846,7 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     </MenuItem>
-                    <!-- <MenuItem Name="menuItemEChessBoardTest" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />   -->
+                    <MenuItem Name="menuItemEChessBoardTest" Visibility="Collapsed" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  
                 </MenuItem>
                 <MenuItem Header="Windows">
                     <MenuItem Header="Show">

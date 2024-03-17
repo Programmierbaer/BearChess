@@ -89,11 +89,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
         private readonly List<string> _thinkingLeds = new List<string>();
         private readonly ConcurrentQueue<ProbingMove[]> _probingFields = new ConcurrentQueue<ProbingMove[]>();
         private string _startFenPosition = string.Empty;
+        private readonly bool _useBluetooth;
 
         public ESentioChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
         {
             _configuration = configuration;
-             
+            _useBluetooth = configuration.UseBluetooth; ;
             _serialCommunication = new SerialCommunication(logger, _configuration.PortName, _configuration.UseBluetooth);
 
             _logger = logger;
@@ -186,10 +187,17 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
      
         public override bool CheckComPort(string portName)
         {
-            _serialCommunication = new SerialCommunication(_logger, portName, _configuration.UseBluetooth);
+            _serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth);
             if (_serialCommunication.CheckConnect(portName))
             {
-                var readLine = _serialCommunication.GetRawFromBoard(string.Empty);
+                string readLine = string.Empty;
+                int count = 0;
+                while (string.IsNullOrWhiteSpace(readLine) && count < 10)
+                {
+                    readLine = _serialCommunication.GetRawFromBoard(string.Empty);
+                    count++;
+                    Thread.Sleep(10);
+                }
                 _serialCommunication.DisConnectFromCheck();
                 return readLine.Length > 0;
             }
@@ -297,7 +305,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             }
 
             _serialCommunication.ClearToBoard();
-            _serialCommunication.Send(AllOff,forceOff,"All off");
+            _serialCommunication.Send(AllOff, forceOff, "All off");
         }
 
         public override void SetAllLedsOn()

@@ -114,11 +114,19 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             _serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth);
             if (_serialCommunication.CheckConnect(portName))
             {
-                var readLine = _serialCommunication.GetRawFromBoard(string.Empty);
+                string readLine = string.Empty;
+                int count = 0;
+                while (string.IsNullOrWhiteSpace(readLine) && count < 10)
+                {
+                    readLine = _serialCommunication.GetRawFromBoard(string.Empty);
+                    count++;
+                    Thread.Sleep(10);
+                }
+
                 _serialCommunication.DisConnectFromCheck();
                 return readLine.Length > 0;
             }
-
+            _serialCommunication.DisConnectFromCheck();
             return false;
         }
 
@@ -603,26 +611,35 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                 }
 
                 //var dataArray = boardData.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                List<string> allData = new List<string>();
+                allData.AddRange(boardData.FromBoard.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
                 var dataArray = boardData.FromBoard.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                 var retries = 0;
                 while (retries < 10)
                 {
-                    if (dataArray.Length < 320)
+                    if (allData.Count < 320)
                     {
                         boardData = _serialCommunication.GetFromBoard();
-                        dataArray = boardData.FromBoard.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                        allData.AddRange(boardData.FromBoard.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
                         retries++;
                         continue;
                     }
+                    //if (dataArray.Length < 320)
+                    //{
+                    //    boardData = _serialCommunication.GetFromBoard();
+                    //    dataArray = boardData.FromBoard.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    //    retries++;
+                    //    continue;
+                    //}
 
                     break;
                 }
 
+                dataArray = allData.ToArray();
                 if (dataArray.Length < 320)
                 {
                     return new DataFromBoard(UnknownPieceCode, boardData.Repeated);
                 }
-
                 var codes = new string[40];
                 var fenLine = string.Empty;
                 string[] unknownCodes;
@@ -1075,7 +1092,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             {
                 return _boardCodesToChessPiece[code];
             }
-            return string.Empty;
+            return UnknownPieceCode;
         }
 
         #endregion

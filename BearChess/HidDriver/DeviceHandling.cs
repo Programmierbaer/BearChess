@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.HidDriver
 {
     public class DeviceHandling
     {
+        private readonly ILogging _logger;
 
+        public DeviceHandling(ILogging logger)
+        {
+            _logger = logger;
+        }
         public void Write(byte[] data)
         {
             if (!Definitions.HIDWriteData.State)
@@ -69,7 +76,14 @@ namespace www.SoLaNoSoft.com.BearChess.HidDriver
                 return string.Empty;
             }
 
-            return Definitions.HIDReadData.Device[Definitions.HIDReadData.iDevice].Product;
+            try
+            {
+                return Definitions.HIDReadData.Device[Definitions.HIDReadData.iDevice].Product;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
 
         public int GetSerialNumber()
@@ -121,21 +135,24 @@ namespace www.SoLaNoSoft.com.BearChess.HidDriver
             {
                 return Definitions.HIDReadData.State;
             }
-
+            _logger?.LogDebug($"HID: FindReadDevice for vendor id {vendorID}");
             var numberOfDevices = GetNumberOfDevices();
+            _logger?.LogDebug($"HID: Number of devices: {numberOfDevices}");
             Definitions.HIDReadData.Device = new Definitions.HID_DEVICE[numberOfDevices];
             FindKnownHIDDevices(ref Definitions.HIDReadData.Device);
 
-            for (var Index = 0; Index < numberOfDevices; Index++)
+            for (var index = 0; index < numberOfDevices; index++)
             {
-
-                if (Definitions.HIDReadData.Device[Index].Attributes.VendorID == vendorID)
+                _logger?.LogDebug($"HID: {index}. vendor id: {Definitions.HIDReadData.Device[index].Attributes.VendorID}");
+                _logger?.LogDebug($"HID: {index}. manufacturer: {Definitions.HIDReadData.Device[index].Manufacturer}");
+                _logger?.LogDebug($"HID: {index}. product: {Definitions.HIDReadData.Device[index].Product}");
+                if (Definitions.HIDReadData.Device[index].Attributes.VendorID == vendorID)
                 {
-                    if (productID==0 || Definitions.HIDReadData.Device[Index].Attributes.ProductID == productID)
+                    if (productID==0 || Definitions.HIDReadData.Device[index].Attributes.ProductID == productID)
                     {
-                        Definitions.HIDReadData.ProductID = Definitions.HIDReadData.Device[Index].Attributes.ProductID;
+                        Definitions.HIDReadData.ProductID = Definitions.HIDReadData.Device[index].Attributes.ProductID;
                         Definitions.HIDReadData.VendorID = vendorID;
-                        Definitions.HIDReadData.iDevice = Index;
+                        Definitions.HIDReadData.iDevice = index;
                         Definitions.HIDReadData.State = true;
                         break;
                     }
@@ -153,14 +170,17 @@ namespace www.SoLaNoSoft.com.BearChess.HidDriver
             {
                 return Definitions.HIDWriteData.State;
             }
-
+            _logger?.LogDebug($"HID: FindWriteDevice for vendor id {vendorID} and usage page {usagePage}");
             var numberOfDevices = GetNumberOfDevices();
+            _logger?.LogDebug($"HID: Number of devices: {numberOfDevices}");
             Definitions.HIDWriteData.Device = new Definitions.HID_DEVICE[numberOfDevices];
             FindKnownHIDDevices(ref Definitions.HIDWriteData.Device);
 
             for (var index = 0; index < numberOfDevices; index++)
             {
-
+                _logger?.LogDebug($"HID: {index}. vendor id: {Definitions.HIDWriteData.Device[index].Attributes.VendorID} usagePage: {Definitions.HIDWriteData.Device[index].Caps.UsagePage} ");
+                _logger?.LogDebug($"HID: {index}. manufacturer: {Definitions.HIDWriteData.Device[index].Manufacturer}");
+                _logger?.LogDebug($"HID: {index}. product: {Definitions.HIDWriteData.Device[index].Product}");
                 if ((Definitions.HIDWriteData.Device[index].Attributes.VendorID == vendorID) &&
                     (Definitions.HIDWriteData.Device[index].Attributes.ProductID == Definitions.HIDReadData.ProductID) &&
                     (Definitions.HIDWriteData.Device[index].Caps.UsagePage == usagePage) )

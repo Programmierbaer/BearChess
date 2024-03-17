@@ -30,10 +30,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
-        public WinConfigureSentio(Configuration configuration, bool useBluetooth)
+        public WinConfigureSentio(Configuration configuration, bool useBluetooth, bool useBluetoothLE)
         {
             _configuration = configuration;
-            _useBluetooth = useBluetooth;
+            _useBluetooth = useBluetooth || useBluetoothLE;
             InitializeComponent();
             _fileName = Path.Combine(_configuration.FolderPath, TabutronicSentioLoader.EBoardName,
                                                 $"{TabutronicSentioLoader.EBoardName}Cfg.xml");
@@ -60,7 +60,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 _portNames = SerialCommunicationTools
-                             .GetBTComPort(TabutronicSentioLoader.EBoardName, configuration, _fileLogger, true, false, false).ToList();
+                             .GetBTComPort(TabutronicSentioLoader.EBoardName, configuration, _fileLogger, useBluetooth, useBluetoothLE, false).ToList();
                 var btComPort = SerialBTLECommunicationTools.GetBTComPort(Constants.TabutronicSentio);
                 comPortSearchWindow.Close();
                 if (btComPort.Length > 0)

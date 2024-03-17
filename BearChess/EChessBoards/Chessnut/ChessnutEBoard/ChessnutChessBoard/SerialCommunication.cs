@@ -98,7 +98,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                 catch (Exception ex)
                 {
                     withConnection = false;
-                    string port = _useBluetooth ? "BTLE" : "USB";
+                    string port = _useBluetooth ? "BTLE" : "HID";
                     _logger?.LogError($"SC: Error with {port} port: {convertFromRead} ");
                     _logger?.LogError($"SC: Error with {port} port: {ex.Message} ");
 
@@ -198,8 +198,9 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                 catch (Exception ex)
                 {
                     withConnection = false;
-                    _logger?.LogError($"SC: Error with BTLE port: {readLine} ");
-                    _logger?.LogError($"SC: Error with BTLE port: {ex.Message} ");
+                    string port = _useBluetooth ? "BTLE" : "HID";
+                    _logger?.LogError($"SC: Error with {port} port: {readLine} ");
+                    _logger?.LogError($"SC: Error with {port} port: {ex.Message} ");
                     //break;
                 }
             }

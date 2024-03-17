@@ -8,6 +8,8 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 {
+
+
     public class SerialComportForByteArray : IComPort
     {
         public string PortName { get; }

@@ -13,7 +13,7 @@ namespace UnitTestsBearChessBase
         [TestMethod]
         public void FindDevices()
         {
-            var deviceHandling = new DeviceHandling();
+            var deviceHandling = new DeviceHandling(null);
             var numberOfDevices = deviceHandling.GetNumberOfDevices();
             Assert.IsNotNull(numberOfDevices);
         }
@@ -22,7 +22,7 @@ namespace UnitTestsBearChessBase
         [TestMethod]
         public void FindChessnutDevice()
         {
-            var deviceHandling = new DeviceHandling();
+            var deviceHandling = new DeviceHandling(null);
             var findDeviceNumber = deviceHandling.FindReadDevice(vendorId, usagePage);
             Assert.IsTrue(findDeviceNumber);
             var manufacturer = deviceHandling.GetManufacturer();

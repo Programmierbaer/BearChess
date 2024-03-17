@@ -46,5 +46,11 @@
     <Compile Include="DeviceHandling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BearChessBase\BearChessBase.csproj">
+      <Project>{72BAD856-2F5E-45DB-9FF1-42D68A4998F5}</Project>
+      <Name>BearChessBase</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

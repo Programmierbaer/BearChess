@@ -31,6 +31,7 @@ using www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.Loader;
 using www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.Loader;
 using www.SoLaNoSoft.com.BearChess.UCBLoader;
 using www.SoLaNoSoft.com.BearChess.ChessUpLoader;
+using www.SoLaNoSoft.com.BearChess.HoSLoader;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -181,6 +182,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _useChesstimationChessLink;
         private bool _useBluetoothCertabo;
         private bool _useBluetoothLECertabo;
+        private bool _useBluetoothLETabuTronicCerno;
+        private bool _useBluetoothLETabuTronicSentio;
         private bool _useChesstimationCertabo;
         private bool _useBluetoothTabuTronicCerno;
         private bool _useBluetoothTabuTronicSentio;
@@ -300,8 +303,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration = Configuration.Instance;
             Top = _configuration.GetWinDoubleValue("MainWinTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("MainWinLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
-            Width = _configuration.GetDoubleValue("MainWinWidth","0");
-            Height = _configuration.GetDoubleValue("MainWinHeight","0");
+            Width = _configuration.GetDoubleValue("MainWinWidth", "0");
+            Height = _configuration.GetDoubleValue("MainWinHeight", "0");
 
             if (Top == 0 && Left == 0)
             {
@@ -484,10 +487,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 buttonConnect.ToolTip = "Connect to UCB";
             }
-            if (_lastEBoard.Equals(Constants.ChessUp, StringComparison.OrdinalIgnoreCase))
-            {
-                buttonConnect.ToolTip = "Connect to ChessUp";
-            }
+           
 
             var clockStyleSimple = _configuration.GetConfigValue("clock", "simple").Equals("simple");
             imageBigTick.Visibility   = clockStyleSimple ? Visibility.Hidden : Visibility.Visible;
@@ -516,6 +516,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             _useBluetoothLECertabo = bool.Parse(_configuration.GetConfigValue("usebluetoothLECertabo", "false"));
             imageCertaboBluetoothLE.Visibility = _useBluetoothLECertabo ? Visibility.Visible : Visibility.Hidden;
+
+            _useBluetoothLETabuTronicCerno = bool.Parse(_configuration.GetConfigValue("usebluetoothLETabuTronicCerno", "false"));
+            imageCernoBluetoothLE.Visibility = _useBluetoothLETabuTronicCerno ? Visibility.Visible : Visibility.Hidden;
+
+            _useBluetoothLETabuTronicSentio = bool.Parse(_configuration.GetConfigValue("usebluetoothLETabuTronicSentio", "false"));
+            imageSentioBluetoothLE.Visibility = _useBluetoothLETabuTronicSentio ? Visibility.Visible : Visibility.Hidden;
 
             _useChesstimationCertabo = bool.Parse(_configuration.GetConfigValue("usechesstimationCertabo", "false"));
             imageCertaboChesstimation.Visibility = _useChesstimationCertabo ? Visibility.Visible : Visibility.Hidden;
@@ -3736,6 +3742,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 MenuItemConnectChessUp_OnClick(sender, e);
                 return;
             }
+            if (_lastEBoard.Equals(Constants.Zmartfun, StringComparison.OrdinalIgnoreCase))
+            {
+                MenuItemConnectHoSBoard_OnClick(sender, e);
+                return;
+            }
         }
 
         private void MenuItemClose_OnClick(object sender, RoutedEventArgs e)
@@ -6217,6 +6228,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             DisconnectFromEBoard(menuItemConnectToCitrineBoard,"Citrine");
         }
 
+
         private void ConnectToCitrine()
         {
 
@@ -6763,9 +6775,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                      _currentAction == CurrentAction.InGameAnalyseMode);
             var currentComPort = _eChessBoard?.GetCurrentComPort();
             textBlockEBoard.Text = $"Connected to TabuTronic Cerno chessboard ({currentComPort})";
-            imageBT.Visibility = currentComPort.Equals("BT", StringComparison.OrdinalIgnoreCase)
-                                     ? Visibility.Visible
-                                     : Visibility.Hidden;
+            if (_useBluetoothTabuTronicCerno || _useBluetoothLETabuTronicCerno)
+            {
+                imageBT.Visibility = currentComPort.StartsWith("BT", StringComparison.OrdinalIgnoreCase)
+                                         ? Visibility.Visible
+                                         : Visibility.Hidden;
+            }
+            else
+            {
+                imageBT.Visibility = Visibility.Hidden;
+
+            }
+
             _lastEBoard = Constants.TabutronicCerno;
             textBlockButtonConnect.Text = _lastEBoard;
             buttonConnect.Visibility = Visibility.Visible;
@@ -7269,6 +7290,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _useBluetoothCertabo = !_useBluetoothCertabo;
             _configuration.SetConfigValue("usebluetoothCertabo", _useBluetoothCertabo.ToString());
             imageCertaboBluetooth.Visibility = _useBluetoothCertabo ? Visibility.Visible : Visibility.Hidden;
+            _useBluetoothLECertabo = false;
+            _configuration.SetConfigValue("usebluetoothLECertabo", _useBluetoothLECertabo.ToString());
+            imageCertaboBluetoothLE.Visibility = Visibility.Hidden;
         }
 
         private void MenuItemConfigureChessLink_OnClick(object sender, RoutedEventArgs e)
@@ -7302,7 +7326,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MenuItemEChessBoardTest_OnClick(object sender, RoutedEventArgs e)
         {
             var eBoardTestWindow = new EBoardTestWindow(_configuration);
-            eBoardTestWindow.ShowDialog();
+            eBoardTestWindow.Show();
         }
 
 
@@ -10175,7 +10199,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 reConnect = true;
             }
 
-            var configureSentio = new WinConfigureSentio(_configuration, _useBluetoothTabuTronicSentio) { Owner = this };
+            var configureSentio = new WinConfigureSentio(_configuration, _useBluetoothTabuTronicSentio, _useBluetoothLETabuTronicSentio) { Owner = this };
             var showDialog = configureSentio.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -10195,6 +10219,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _useBluetoothTabuTronicSentio = !_useBluetoothTabuTronicSentio;
             _configuration.SetConfigValue("useBluetoothTabuTronicSentio", _useBluetoothTabuTronicSentio.ToString());
             imageSentioBluetooth.Visibility = _useBluetoothTabuTronicSentio ? Visibility.Visible : Visibility.Hidden;
+            _useBluetoothLETabuTronicSentio = false;
+            _configuration.SetConfigValue("usebluetoothLETabuTronicSentio", _useBluetoothLETabuTronicCerno.ToString());
+            imageSentioBluetoothLE.Visibility = Visibility.Hidden;
         }
 
         private void MenuItemConnectCerno_OnClick(object sender, RoutedEventArgs e)
@@ -10235,8 +10262,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 DisconnectFromTabutronicCerno();
                 reConnect = true;
             }
-
-            var winConfigureCerno = new WinConfigureCerno(_configuration, _useBluetoothTabuTronicCerno) { Owner = this };
+            var winConfigureCerno = new WinConfigureCerno(_configuration, _useBluetoothTabuTronicCerno, _useBluetoothLETabuTronicCerno) { Owner = this };
             var showDialog = winConfigureCerno.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -10255,6 +10281,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _useBluetoothTabuTronicCerno = !_useBluetoothTabuTronicCerno;
             _configuration.SetConfigValue("usebluetoothTabuTronicCerno", _useBluetoothTabuTronicCerno.ToString());
             imageCernoBluetooth.Visibility = _useBluetoothTabuTronicCerno ? Visibility.Visible : Visibility.Hidden;
+            _useBluetoothLETabuTronicCerno = false;
+            _configuration.SetConfigValue("usebluetoothLETabuTronicCerno", _useBluetoothLETabuTronicCerno.ToString());
+            imageCernoBluetoothLE.Visibility = Visibility.Hidden;
         }
 
         private void CommandBinding_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -10641,6 +10670,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             menuItemChessnutAirBoard.IsEnabled = false;
             menuItemChessUp.IsEnabled = false;
             menuItemIChessOneBoard.IsEnabled = false;
+            menuItemConnectToZmartfun.IsEnabled = false;
         }
 
         private void EnableConnectItems()
@@ -10661,6 +10691,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             menuItemNovagBoard.IsEnabled = true;
             menuItemIChessOneBoard.IsEnabled = true;
             menuItemChessUp.IsEnabled = true;
+            menuItemConnectToZmartfun.IsEnabled = true;
         }
 
         private void MenuItemConfigureChessnutAir_OnClick(object sender, RoutedEventArgs e)
@@ -10696,6 +10727,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _useBluetoothLECertabo = !_useBluetoothLECertabo;
             _configuration.SetConfigValue("usebluetoothLECertabo", _useBluetoothLECertabo.ToString());
             imageCertaboBluetoothLE.Visibility = _useBluetoothLECertabo ? Visibility.Visible : Visibility.Hidden;
+            _useBluetoothCertabo = false;
+            _configuration.SetConfigValue("usebluetoothCertabo", _useBluetoothCertabo.ToString());
+            imageCertaboBluetooth.Visibility = Visibility.Hidden;
+        }
+
+        private void MenuItemBluetoothLECerno_OnClick(object sender, RoutedEventArgs e)
+        {
+            _useBluetoothLETabuTronicCerno = !_useBluetoothLETabuTronicCerno;
+            _configuration.SetConfigValue("usebluetoothLETabuTronicCerno", _useBluetoothLETabuTronicCerno.ToString());
+            imageCernoBluetoothLE.Visibility = _useBluetoothLETabuTronicCerno ? Visibility.Visible : Visibility.Hidden;
+            _useBluetoothTabuTronicCerno = false;
+            _configuration.SetConfigValue("usebluetoothTabuTronicCerno", _useBluetoothTabuTronicCerno.ToString());
+            imageCernoBluetooth.Visibility = Visibility.Hidden;
+        }
+
+        private void MenuItemBluetoothLESentio_OnClick(object sender, RoutedEventArgs e)
+        {
+            _useBluetoothLETabuTronicSentio = !_useBluetoothLETabuTronicSentio;
+            _configuration.SetConfigValue("usebluetoothLETabuTronicSentio", _useBluetoothLETabuTronicSentio.ToString());
+            imageSentioBluetoothLE.Visibility = _useBluetoothLETabuTronicSentio ? Visibility.Visible : Visibility.Hidden;
+            _useBluetoothTabuTronicSentio = false;
+            _configuration.SetConfigValue("usebluetoothTabuTronicSentio", _useBluetoothTabuTronicCerno.ToString());
+            imageSentioBluetooth.Visibility = Visibility.Hidden;
         }
 
         private void MenuItemConfigureNotationBooks_OnClick(object sender, RoutedEventArgs e)
@@ -10738,5 +10792,112 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _movesConfigWindow.SetupChangedEvent -= MovesConfigWindow_SetupBookChangedEvent;
             _movesConfigWindow = null;
         }
+
+        private void DisconnectFromHoS()
+        {
+            _eChessBoard.ProbeMoveEvent -= EChessBoard_ProbeMoveEvent;
+            _eChessBoard.ProbeMoveEndingEvent -= EChessBoard_ProbeMoveEndingEvent;
+            DisconnectFromEBoard(menuItemConnectToZmartfun, Constants.Zmartfun);
+        }
+
+        private void ConnectToHoS()
+        {
+            _fileLogger?.LogInfo("Connect to HoS chessboard");
+            _eChessBoard = new HoSLoader(_configuration.FolderPath);
+            _eChessBoard.MoveEvent += EChessBoardMoveEvent;
+            _eChessBoard.FenEvent += EChessBoardFenEvent;
+            _eChessBoard.BasePositionEvent += EChessBoardBasePositionEvent;
+            _eChessBoard.AwaitedPosition += EChessBoardAwaitedPositionEvent;
+            _eChessBoard.ProbeMoveEvent += EChessBoard_ProbeMoveEvent;
+            _eChessBoard.ProbeMoveEndingEvent += EChessBoard_ProbeMoveEndingEvent;
+            if (!_eChessBoard.IsConnected)
+            {
+                DisconnectFromHoS();
+                MessageBox.Show("Check the connection to the chessboard", "Connection failed", MessageBoxButton.OK,
+                    MessageBoxImage.Error, MessageBoxResult.OK);
+                return;
+            }
+            menuItemConnectToZmartfun.Header = "Disconnect";
+            DisableConnectItems();
+            menuItemConnectToZmartfun.IsEnabled = true;
+            _eChessBoard.SetDemoMode(_currentAction == CurrentAction.InAnalyseMode ||
+                                     _currentAction == CurrentAction.InEasyPlayingMode ||
+                                     _currentAction == CurrentAction.InGameAnalyseMode);
+            var currentComPort = _eChessBoard?.GetCurrentComPort();
+            textBlockEBoard.Text = $"Connected to {Constants.Zmartfun} ({currentComPort})";
+            imageBT.Visibility = currentComPort.Equals("BTLE", StringComparison.OrdinalIgnoreCase)
+                ? Visibility.Visible
+                : Visibility.Hidden;
+            _lastEBoard = Constants.Zmartfun;
+            textBlockButtonConnect.Text = _lastEBoard;
+            buttonConnect.Visibility = Visibility.Visible;
+            imageConnect.Visibility = Visibility.Collapsed;
+            imageDisconnect.Visibility = Visibility.Visible;
+            _configuration.SetConfigValue("LastEBoard", _lastEBoard);
+            buttonConnect.ToolTip = $"Disconnect from {_lastEBoard}";
+            _eChessBoard.Calibrate();
+            if (_currentAction == CurrentAction.InRunningGame)
+            {
+                _eChessBoard.SetFen(_chessBoard.GetFenPosition(), string.Empty);
+            }
+            chessBoardUcGraphics.SetEBoardMode(true);
+            chessBoardUcGraphics.RepaintBoard(_chessBoard);
+        }
+
+        private void MenuItemConnectHoSBoard_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_currentAction == CurrentAction.InRunningGame)
+            {
+                return;
+            }
+            if (_eChessBoard != null)
+            {
+                DisconnectFromHoS();
+                textBlockWhiteKing.Visibility = Visibility.Collapsed;
+                textBlockBlackKing.Visibility = Visibility.Collapsed;
+                buttonRotate.Visibility = Visibility.Collapsed;
+                menuItemAnalyseAGame.IsEnabled = false;
+                return;
+            }
+
+            ConnectToHoS();
+            if (_eChessBoard != null)
+            {
+                textBlockWhiteKing.Visibility = _eChessBoard.PlayingWithWhite ? Visibility.Visible : Visibility.Collapsed;
+                textBlockBlackKing.Visibility = _eChessBoard.PlayingWithWhite ? Visibility.Collapsed : Visibility.Visible;
+                buttonRotate.Visibility = Visibility.Visible;
+                menuItemAnalyseAGame.IsEnabled = true;
+            }
+        }
+
+        private void MenuItemConfigureZmartfun_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_currentAction == CurrentAction.InRunningGame)
+            {
+                return;
+            }
+            var reConnect = false;
+            if (_eChessBoard != null)
+            {
+                DisconnectFromHoS();
+                reConnect = true;
+            }
+
+            var winConfigureChessnut = new WinConfigureChessnut(_configuration, _useBluetoothChessnutAir) { Owner = this };
+            var showDialog = winConfigureChessnut.ShowDialog();
+            if (showDialog.HasValue && showDialog.Value)
+            {
+                _lastEBoard = Constants.Zmartfun;
+                textBlockButtonConnect.Text = _lastEBoard;
+                buttonConnect.ToolTip = $"Connect to {_lastEBoard}";
+            }
+
+            if (reConnect)
+            {
+                ConnectToHoS();
+            }
+        }
+
+       
     }
 }

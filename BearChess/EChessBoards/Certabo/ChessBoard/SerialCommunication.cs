@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -124,12 +126,60 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     if (withConnection && !_pauseReading)
                     {
 
-
                         try
                         {
                             //_logger?.LogDebug($"SC: Readline.... ");
-                            var readLine = _comPort.ReadLine();
+                            string readLine = string.Empty;
+                            if (_comPort.PortName.Equals("BTLE"))
+                            {
+                                while (!_stopReading)
+                                {
+                                    string comReadLine = _comPort.ReadLine();
+                                    if (!string.IsNullOrWhiteSpace(comReadLine))
+                                    {
+                                        _logger?.LogDebug("Read from port:" + comReadLine);
 
+
+                                        var strings = comReadLine.Split(" ".ToCharArray());
+                                        foreach (var s in strings)
+                                        {
+                                            try
+                                            {
+                                                if (s.Equals("0") || s.Equals("255") || string.IsNullOrWhiteSpace(s))
+                                                {
+                                                    continue;
+                                                }
+
+                                                readLine += Convert.ToChar(Convert.ToInt32(s));
+                                            }
+                                            catch
+                                            {
+                                                //
+                                            }
+
+                                        }
+
+                                        if (readLine.Contains(Environment.NewLine))
+                                        {
+                                            //readLine = readLine.Substring(0, readLine.IndexOf(Environment.NewLine));
+                                            if (!string.IsNullOrWhiteSpace(readLine))
+                                            {
+                                                _dataFromBoard.Enqueue(
+                                                    readLine.Substring(0, readLine.IndexOf(Environment.NewLine))
+                                                            .Replace(":", string.Empty));
+                                            }
+
+                                            readLine = readLine.Substring(readLine.IndexOf(Environment.NewLine))
+                                                               .Replace(Environment.NewLine, string.Empty);
+                                        }
+                                    }
+                                    Thread.Sleep(10);
+                                }
+                            }
+                            else
+                            {
+                                readLine = _comPort.ReadLine();
+                            }
                             //_logger?.LogDebug($"SC: Read: {readLine} ");
                             //if (_dataFromBoard.Count > 20)
                             //{

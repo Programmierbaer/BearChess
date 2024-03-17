@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.6.0}
+\fancyhead[R]{Version 1.0.7.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{17.02.2024} 
+\date{17.03.2024} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -44,9 +44,10 @@ Another feature is the extended engine support. Read more in chapter \textbf{\re
 
 So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
 
-BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{ChessUp}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
+BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro},
+\textbf{House of Staunton} from Zmartfun, \textbf{ChessUp}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
 
-I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc or iChessOne or Bryght Labs. If something does not work, the companies are not responsible for it.\\
+I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc or iChessOne or Bryght Labs or ZMARTFUN. If something does not work, the companies are not responsible for it.\\
 
 Many thanks to Ralf Schäfer and Volker Böhm for the use of their engine Spike (\url{http://spike.lazypics.de/index.html}).\\
 
@@ -1003,7 +1004,7 @@ The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between b
 
 
 \section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{iChessOne}, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{ChessUp}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, iChessOne, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth or Bluetooth LE. DGT Pegasus, ChessUp and Square Off Pro communicate only via Bluetooth LE. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Pro communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
+BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{iChessOne}, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{ChessUp}, \textbf{ZMARTFUN}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, iChessOne, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth or Bluetooth LE. DGT Pegasus, ChessUp and Square Off Pro communicate only via Bluetooth LE. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Pro and House of Staunton from ZMARTFUN communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
 For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
 In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
@@ -1015,7 +1016,7 @@ In the classic variant, pairing is necessary and the connection is then made to 
 	\label{fig:Certabo1}
 \end{figure}
 
-Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the Bluetooth module from Certabo, you can also connect to the Certabo board via bluetooth. If you want to do this, check the option "Bluetooth" first, before opening the configuration window.\\
+Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the Bluetooth module from Certabo, you can also connect to the Certabo board via bluetooth. If you want to do this, activate the "Bluetooth Classic" option or, if you have the new Bluetooth module with BTLE support, first activate the "Bluetooth LE" option before opening the configuration window.\\
 If you are using a Chesstimation module, check the option first, before opening the configuration window.\\
 The piece recognition assumes that the USB port of the board is on the bottom right.
 
@@ -1075,7 +1076,7 @@ If you select <auto> and no board is found, you will receive the following error
 \textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can take some seconds until the right one is recognized.
 
 
-\subsubsection{Configure Bluetooth} \label{CertaboBluetooth}
+\subsubsection{Configure Bluetooth Classic} \label{CertaboBluetooth}
 
 If the "Bluetooth" option is set, the following window will be displayed for a short time if you open the configuration dialog.
 
@@ -1194,7 +1195,7 @@ There are several options available.
 
 {\color{red}\textbf{Note:}} Although the Sentio board has no real figure recognition, the handling will be simplified in further BearChess versions, e.g. to get closer to the Cerno.
 
-\subsubsection{Configure Bluetooth} \label{SentioBluetooth}
+\subsubsection{Configure Bluetooth Classic} \label{SentioBluetooth}
 
 If the "Bluetooth" option is set, the following window will be displayed for a short time if you open the configuration dialog.
 
@@ -1731,6 +1732,16 @@ ChessUp only allows limited access to the board for third party programs and the
 	\label{fig:ChessUp2}
 \end{figure}
 
+
+\subsection{Connect House of Staunton} \label{ConnectHOS}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{HOS1.png}
+	\caption{Connect to House of Staunton }
+	\label{fig:HOS1}
+\end{figure}
+
+No configuration is required for your House of Staunton chessboard.\\ 
 
 
 \subsection{Configure NOVAG Citrine} \label{ConfigureNovagCitrine}
@@ -3165,6 +3176,13 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 1.0.6.0 $\Rightarrow$  1.0.7.0}
+\begin{itemize}			
+	\item {\color{blue}New}: Integration of House of Staunton by ZMARTFUN.
+	\item {\color{blue}New}: Support of BTLE for Certabo and TabuTronic-Boards.
+\end{itemize}
+
 
 \subsection*{Version 1.0.5.0 $\Rightarrow$  1.0.6.0}
 \begin{itemize}			

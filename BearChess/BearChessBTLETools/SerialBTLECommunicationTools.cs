@@ -114,6 +114,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                     portName = device.Name;
                     DeviceIdList.Add(new BTLEDeviceIdList(device.Id, device.Name));
                 }
+                
                 if (device.Name.StartsWith("SQUARE OFF", StringComparison.OrdinalIgnoreCase))
                 {
                     portName = device.Name;

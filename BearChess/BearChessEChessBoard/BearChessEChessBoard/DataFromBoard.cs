@@ -5,6 +5,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     public class DataFromBoard
     {
         public string FromBoard { get; }
+       
         public ulong Repeated { get; }
         public bool PlayWithWhite { get; }
         public bool BasePosition { get; set; }

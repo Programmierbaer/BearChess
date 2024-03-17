@@ -9,7 +9,9 @@ using System.Windows.Documents;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
+
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -128,7 +130,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private IComPort _comPort;
         private Thread _readingThread;
         private StringBuilder _allLines = new StringBuilder();
-
+        private ClientPipe _clientPipe;
+        private string _currentPosition = string.Empty;
 
         public SerialPortTestWindow()
         {
@@ -239,7 +242,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
+                _clientPipe?.WriteString(textBoxSend.Text);
+                //_clientPipe?.WriteBytes(Encoding.ASCII.GetBytes(textBoxSend.Text));
                 _comPort?.Write(textBoxSend.Text);
+
             }
             // _comPort?.Write(textBoxSend.Text);
         }
@@ -400,6 +406,30 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void buttonDisConnectIP_Click(object sender, RoutedEventArgs e)
         {
             webSocket.Close();
+        }
+
+        private void buttonConnectPipe_Click(object sender, RoutedEventArgs e)
+        {
+
+            _clientPipe = new ClientPipe(".", "BearChessPipe", p => p.StartStringReaderAsync());
+         
+            try
+            {
+                _clientPipe.Connect(500);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void buttonDisConnectPipe_Click(object sender, RoutedEventArgs e)
+        {
+            if (_clientPipe != null)
+            {
+                _clientPipe.Close();
+                _clientPipe = null;
+            }
         }
     }
 }

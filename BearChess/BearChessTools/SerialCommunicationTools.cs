@@ -127,11 +127,11 @@ namespace www.SoLaNoSoft.com.BearChessTools
                     break;
                 case Constants.TabutronicCerno:
                     boardDevice = "raspberrypi";
-                    boardDevice2 = "raspberrypi";
+                    boardDevice2 = "Certabo";
                     break;
                 case Constants.TabutronicSentio:
                     boardDevice = "raspberrypi";
-                    boardDevice2 = "raspberrypi";
+                    boardDevice2 = "Certabo";
                     break;
                 default: boardDevice = string.Empty;
                     break;
@@ -344,6 +344,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 {
                     resultList.Add("BTLE");
                 }
+                if (boardName.Equals(Constants.TabutronicCerno, StringComparison.OrdinalIgnoreCase))
+                {
+                    resultList.Add("BTLE");
+                }
+                if (boardName.Equals(Constants.TabutronicSentio, StringComparison.OrdinalIgnoreCase))
+                {
+                    resultList.Add("BTLE");
+                }
             }
             if (boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))
             {
@@ -354,6 +362,14 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 return resultList.ToArray();
             }
             if (boardName.Equals(Constants.Certabo, StringComparison.OrdinalIgnoreCase))
+            {
+                return resultList.ToArray();
+            }
+            if (boardName.Equals(Constants.TabutronicCerno, StringComparison.OrdinalIgnoreCase))
+            {
+                return resultList.ToArray();
+            }
+            if (boardName.Equals(Constants.TabutronicSentio, StringComparison.OrdinalIgnoreCase))
             {
                 return resultList.ToArray();
             }

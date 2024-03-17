@@ -926,6 +926,10 @@
       <Project>{e5679ec7-d909-447b-bc28-2a158779db23}</Project>
       <Name>FicsClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HoSLoader\HoSLoader.csproj">
+      <Project>{48dcdb24-2b69-4f05-b41e-01a650b075aa}</Project>
+      <Name>HoSLoader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IChessOneLoader\IChessOneLoader.csproj">
       <Project>{f77d1637-7997-4cc9-a954-e928ef93eb40}</Project>
       <Name>IChessOneLoader</Name>
@@ -1678,6 +1682,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\ChessnutAirPro.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\hos.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

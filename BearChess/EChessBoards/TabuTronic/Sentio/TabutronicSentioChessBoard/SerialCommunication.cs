@@ -9,7 +9,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 {
     public class SerialCommunication : AbstractSerialCommunication
     {
-       
+
+        private Thread _sendingThread;
         public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.TabutronicSentio)
         {
             _useBluetooth = useBluetooth;
@@ -52,11 +53,36 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             return string.Empty;
         }
 
+        private void SendingToBoard()
+        {
+            while (!_stopReading || _byteDataToBoard.Count > 0)
+            {
+                while (_byteDataToBoard.Count > 1)
+                {
+                    _byteDataToBoard.TryDequeue(out _);
+                }
+
+                if (_byteDataToBoard.TryDequeue(out var data))
+                {
+
+                    var s = BitConverter.ToString(data.Data);
+                    _logger?.LogDebug($"SC: Send info: {data.Info}");
+                    _logger?.LogDebug($"SC: As byte array: {s}");
+                    _comPort.Write(data.Data, 0, data.Data.Length);
+                    //_logger?.LogDebug($"SC: bytes send");
+                    Thread.Sleep(50);
+
+                }
+            }
+        }
+
         protected override void Communicate()
         {
             _logger?.LogDebug("SC: Communicate");
             IsCommunicating = true;
             var withConnection = true;
+            //_sendingThread = new Thread(SendingToBoard) { IsBackground = true };
+            //_sendingThread.Start();
             while (!_stopReading || _byteDataToBoard.Count > 0)
             {
                 try
@@ -68,40 +94,118 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
                     if (withConnection && !_pauseReading)
                     {
-                        while (_byteDataToBoard.Count > 1)
-                        {
-                            _byteDataToBoard.TryDequeue(out _);
-                        }
-
-                        if (_byteDataToBoard.TryDequeue(out var data))
-                        {
-
-                            var s = BitConverter.ToString(data.Data);
-                            _logger?.LogDebug($"SC: Send info: {data.Info}");
-                            _logger?.LogDebug($"SC: As byte array: {s}");
-                            _comPort.Write(data.Data, 0, data.Data.Length);
-                            //_logger?.LogDebug($"SC: bytes send");
-                              Thread.Sleep(50);
-
-                        }
-
+                       
 
                         try
                         {
                             //_logger?.LogDebug($"SC: Readline.... ");
-                            var readLine = _comPort.ReadLine();
-                            var strings = readLine.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                            if (strings.Length > 0)
+                            string readLine = string.Empty;
+                            if (_comPort.PortName.Equals("BTLE"))
                             {
-                                readLine = strings[0];
-                            }
-                            //_logger?.LogDebug($"SC: Read: {readLine} ");
-                            if (_dataFromBoard.Count > 20)
-                            {
-                                _dataFromBoard.TryDequeue(out _);
-                            }
+                                while (!_stopReading)
+                                {
+                                    while (_byteDataToBoard.Count > 1)
+                                    {
+                                        _byteDataToBoard.TryDequeue(out _);
+                                    }
 
-                            _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty).Replace("\0",string.Empty));
+                                    if (_byteDataToBoard.TryDequeue(out var data))
+                                    {
+
+                                        var s = BitConverter.ToString(data.Data);
+                                        _logger?.LogDebug($"SC: Send info: {data.Info}");
+                                        _logger?.LogDebug($"SC: As byte array: {s}");
+                                        _comPort.Write(data.Data, 0, data.Data.Length);
+                                        //_logger?.LogDebug($"SC: bytes send");
+                                        Thread.Sleep(50);
+
+                                    }
+                                    string comReadLine = _comPort.ReadLine();
+                                    if (!string.IsNullOrWhiteSpace(comReadLine))
+                                    {
+                                     //  _logger?.LogDebug("Read from port:" + comReadLine);
+
+                                        var strings = comReadLine.Split(" ".ToCharArray());
+                                        foreach (var s in strings)
+                                        {
+                                            try
+                                            {
+                                                if (int.TryParse(s,out int code))
+                                                {
+
+                                                    if ((code!=10 && code!=13 && code < 32) || code>254)
+                                                    {
+                                                        continue;
+                                                    }
+                                                }
+                                                if (s.Equals("0") || s.Equals("255") || string.IsNullOrWhiteSpace(s))
+                                                {
+                                                    continue;
+                                                }
+
+                                                readLine += Convert.ToChar(Convert.ToInt32(s));
+                                            }
+                                            catch
+                                            {
+                                                //
+                                            }
+
+                                        }
+
+                                        if (readLine.Contains(Environment.NewLine))
+                                        {
+                                            //readLine = readLine.Substring(0, readLine.IndexOf(Environment.NewLine));
+                                            if (!string.IsNullOrWhiteSpace(readLine))
+                                            {
+                                                _dataFromBoard.Enqueue(
+                                                    readLine.Substring(0, readLine.IndexOf(Environment.NewLine))
+                                                            .Replace(":", string.Empty));
+                                            }
+
+                                            readLine = readLine.Substring(readLine.IndexOf(Environment.NewLine))
+                                                               .Replace(Environment.NewLine, string.Empty);
+                                        }
+                                    }
+                                    Thread.Sleep(10);
+                                }
+
+                                while (_byteDataToBoard.TryDequeue(out _));
+                            }
+                            else
+                            {
+                                while (_byteDataToBoard.Count > 1)
+                                {
+                                    _byteDataToBoard.TryDequeue(out _);
+                                }
+
+                                if (_byteDataToBoard.TryDequeue(out var data))
+                                {
+
+                                    var s = BitConverter.ToString(data.Data);
+                                    _logger?.LogDebug($"SC: Send info: {data.Info}");
+                                    _logger?.LogDebug($"SC: As byte array: {s}");
+                                    _comPort.Write(data.Data, 0, data.Data.Length);
+                                    //_logger?.LogDebug($"SC: bytes send");
+                                    Thread.Sleep(50);
+
+                                }
+                                readLine = _comPort.ReadLine();
+                                _logger?.LogDebug("SC: read from port:" + readLine);
+                                var strings = readLine.Split(Environment.NewLine.ToCharArray(),
+                                                             StringSplitOptions.RemoveEmptyEntries);
+                                if (strings.Length > 0)
+                                {
+                                    readLine = strings[0];
+                                }
+
+                                _logger?.LogDebug($"SC: Read: {readLine} ");
+                                if (_dataFromBoard.Count > 20)
+                                {
+                                    _dataFromBoard.TryDequeue(out _);
+                                }
+
+                                _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty).Replace("\0", string.Empty));
+                            }
 
                         }
                         catch (TimeoutException)

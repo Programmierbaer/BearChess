@@ -13,7 +13,11 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Visibility="Visible">
+            <Button Name="buttonConnectPipe" Width="100" Margin="5" Click="buttonConnectPipe_Click">Connect</Button>
+            <Button Name="buttonDisConnectPipe" Width="100" Margin="5" Click="buttonDisConnectPipe_Click">Disconnect</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Visibility="Collapsed">
             <TextBlock  Margin="5" >Address:</TextBlock>
             <TextBox Name="textBoxAddress" Width="150" Margin="5" >COM12</TextBox>
             <Button Name="buttonConnectIP" Width="100" Margin="5" Click="buttonConnectIP_Click">Connect</Button>

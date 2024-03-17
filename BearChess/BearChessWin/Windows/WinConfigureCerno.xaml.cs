@@ -22,6 +22,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         private readonly Configuration _configuration;
         private readonly bool _useBluetooth;
+        private readonly bool _useBluetoothLE;
         private readonly string _fileName;
         private readonly string _calibrateFileName;
         private readonly EChessBoardConfiguration _eChessBoardConfiguration;
@@ -31,10 +32,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
-        public WinConfigureCerno(Configuration configuration, bool useBluetooth)
+        public WinConfigureCerno(Configuration configuration, bool useBluetooth, bool useBluetoothLE)
         {
             _configuration = configuration;
             _useBluetooth = useBluetooth;
+            _useBluetoothLE = useBluetoothLE;
             InitializeComponent();
             _fileName = Path.Combine(_configuration.FolderPath, TabutronicCernoLoader.EBoardName,
                                      $"{TabutronicCernoLoader.EBoardName}Cfg.xml");
@@ -60,20 +62,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxPossibleMoves.IsChecked = _eChessBoardConfiguration.ShowPossibleMoves;
             checkBoxBestMove.IsChecked = _eChessBoardConfiguration.ShowPossibleMovesEval;
             _allPortNames = new List<string> { "<auto>" };
-            if (_useBluetooth)
+            if (_useBluetooth || useBluetoothLE)
             {
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 _portNames = SerialCommunicationTools
-                             .GetBTComPort(TabutronicCernoLoader.EBoardName, configuration, _fileLogger, true, false, _eChessBoardConfiguration.UseChesstimation).ToList();
-                var btComPort = SerialBTLECommunicationTools.GetBTComPort(Constants.TabutronicCerno);
+                             .GetBTComPort(TabutronicCernoLoader.EBoardName, configuration, _fileLogger, _useBluetooth, useBluetoothLE,false).ToList();
+              
                 comPortSearchWindow.Close();
-                if (btComPort.Length > 0)
-                {
-                    var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
-                    var btleComPort = new BTLEComPort(firstOrDefault.ID,firstOrDefault.Name,_fileLogger);
-                    btleComPort.Open();
-                }
+                
 
             }
             else
@@ -85,7 +82,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             comboBoxComPorts.ItemsSource = _allPortNames;
             comboBoxComPorts.SelectedIndex = 0;
             _calibrateFileName = Path.Combine(_configuration.FolderPath, TabutronicCernoLoader.EBoardName, "calibrate.xml");
-            _eChessBoardConfiguration.UseBluetooth = useBluetooth;
+            _eChessBoardConfiguration.UseBluetooth = useBluetooth || useBluetoothLE; ;
             textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
             if (_portNames.Count == 0)
