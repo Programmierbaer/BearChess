@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.7.0}
+\fancyhead[R]{Version 1.0.8.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{17.03.2024} 
+\date{14.04.2024} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -34,979 +34,981 @@ linkcolor=black
 \renewcommand{\abstractname}{Why yet another chess GUI?}
 
 \begin{document}
-\maketitle
-
-\begin{abstract}
-
-Many GUIs support electronic chessboards, but do not use the full potential that chessboards with piece recognition offer. They could be much better used for training or analysis of games and positions. Read more in chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode}.
-
-Another feature is the extended engine support. Read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}.
-
-So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
-
-BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro},
-\textbf{House of Staunton} from Zmartfun, \textbf{ChessUp}, \textbf{NOVAG} Citrine/UCB, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
-
-I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited. Inc or iChessOne or Bryght Labs or ZMARTFUN. If something does not work, the companies are not responsible for it.\\
-
-Many thanks to Ralf Schäfer and Volker Böhm for the use of their engine Spike (\url{http://spike.lazypics.de/index.html}).\\
-
-Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
-
-\end{abstract}
-
-\newpage
-\tableofcontents
-\newpage
-
-
-\section{Quick start}
-\begin{itemize}
-	\item Simply unpack the file BearChessWin.zip into a new folder.
-	\item Start BearChess with a double-click on \textbf{BearChessWin.exe}
-	\item Connect your electronic chessboard to your computer.
-	\item Set all chessmen to their start position.
-	\item Configure the electronic chessboard connection (\textbf{\ref{ElectronicChessBoard}  \nameref{ElectronicChessBoard}} on page \pageref{ElectronicChessBoard}).
-	\item Connect to the electronic chessboard.
-	\item Load a chess engine (\textbf{\ref{InstallEngine}  \nameref{InstallEngine}} on page \pageref{InstallEngine})
-	\item Start a game and make your first move on the electronic chessboard.
-\end{itemize}
-
-
-\section{Introduction}
-BearChess offers among others the following functions:
-\begin{enumerate}
-	  \item Play with \textbf{Certabo} chessboards.
-	  \item Play with \textbf{TabuTronics} chessboards.	  
-	  \item Play with \textbf{Millennium} chessboards via \textbf{ChessLink} modul or \textbf{eOne}.
- 	  \item Play with \textbf{DGT e-Board} or \textbf{Revelation}.	  
-	  \item Play with \textbf{DGT Pegasus} chessboard.	  
-	  \item Play with \textbf{Square Off Pro} chessboard.	  	  
-	  \item Play with \textbf{Chessnut Air/Air+/Pro} chessboard.	  	  	  
-	  \item Play with \textbf{iChessOne} chessboard.	  	  	  	  
-      \item Play with \textbf{ChessUp} chessboard.	  	  	  	  	  
-	  \item Play with \textbf{NOVAG Citrine/UCB} chessboard.
-	  \item Play with \textbf{Saitek OSA} chessboard.	  
-  	  \item Play against human beings or UCI engines.
-  	  \item Play with separate time controls for white and black.
-  	  \item Play online on Free Internet Chess Server (\textbf{FICS})
-  	  \item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs. Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
-  	  \item Use \textbf{Certabo Avatar} UCI engines.  	  
-  	  \item Use \textbf{MessChess} chess computer emulation by Franz Huber.  	    	  
-  	  \item \textbf{Analyse} your games or trainings with the help of electronic chessboards.
-  	  \item Use multiple chess engines at the same time for playing and analysing.
-  	  \item Engine \textbf{duels} and \textbf{tournaments}.
-  	  \item Support for Polyglot, Arena and CTG opening books.
-  	  \item Save and load your games.
-  	  \item Load games from "The Week in Chess"
-  	  \item Individual chessmen and board fields.
-\end{enumerate}
-
-BearChess follows the design of Single Document Interface (SDI). You can place different windows, e.g. chess engine output or chess move list, anywhere on your Windows desktop. If you close them or exit BearChess, the position is saved and set to the same position when reopening.\\ 
-If you click on the BearChess main screen, all other open windows are also brought to the foreground. If you hold down the Shift key and move the BearChess main screen, all other windows will also be moved synchronously.\\\\
-The version numbering follows the following scheme:\\ 
-"\textit{major release}"\textbf{.}""\textit{minor release}"\textbf{.}""\textit{sub release}"\textbf{.}""\textit{bug fix}"\\
-The \textit{minor release} is increased when new features are added. The \textit{sub release} is increased when minor features are added or improved. The last number is incremented if only errors were corrected.
-
-\subsection{Modes}
-BearChess is running in different modes. The current mode is displayed in the lower left corner.
-\begin{itemize}
+	\maketitle
 	
-	\item \textbf{Easy playing} This is the mode in the beginning. You just can simply start making your moves on the screen or on your electronic chessboard, almost without regard to the chess rules. In addition to support you can start chess programs or load opening books. But these only give hints, but do not play as opponents. This mode is automatically set if you are not playing in another mode. It is similar to the analyse mode but let you more easily start a new game from any position.
+	\begin{abstract}
+		
+		Many GUIs support electronic chessboards, but do not use the full potential that chessboards with piece recognition offer. They could be much better used for training or analysis of games and positions. Read more in chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode}.
+		
+		Another feature is the extended engine support. Read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}.
+		
+		So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
+		
+		BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro and Evo},
+		\textbf{House of Staunton} from Zmartfun, \textbf{ChessUp}, \textbf{NOVAG Citrine and UCB}, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
+		
+		I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited Inc.\ or iChessOne or Bryght Labs or ZMARTFUN. If something does not work, the companies are not responsible for it.\\
+		
+		Many thanks to Ralf Schäfer and Volker Böhm for the use of their engine Spike (\url{http://spike.lazypics.de/index.html}).\\
+		
+		Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
+		
+	\end{abstract}
+	
+	\newpage
+	\tableofcontents
+	\newpage
+	
+	
+	\section{Quick start}
+	\begin{itemize}
+		\item Simply unpack the file BearChessWin.zip into a new folder.
+		\item Start BearChess with a double-click on \textbf{BearChessWin.exe}
+		\item Connect your electronic chessboard to your computer.
+		\item Set all chessmen to their start position.
+		\item Configure the electronic chessboard connection (\textbf{\ref{ElectronicChessBoard}  \nameref{ElectronicChessBoard}} on page \pageref{ElectronicChessBoard}).
+		\item Connect to the electronic chessboard.
+		\item Load a chess engine (\textbf{\ref{InstallEngine}  \nameref{InstallEngine}} on page \pageref{InstallEngine})
+		\item Start a game and make your first move on the electronic chessboard.
+	\end{itemize}
+	
+	
+	\section{Introduction}
+	BearChess offers among others the following functions:
+	\begin{enumerate}
+		\item Play with \textbf{Certabo} chessboards.
+		\item Play with \textbf{TabuTronics} chessboards.	  
+		\item Play with \textbf{Millennium} chessboards via \textbf{ChessLink} modul or \textbf{eOne}.
+		\item Play with \textbf{DGT e-Board} or \textbf{Revelation}.	  
+		\item Play with \textbf{DGT Pegasus} chessboard.	  
+		\item Play with \textbf{Square Off Pro} chessboard.	  	  
+		\item Play with \textbf{Chessnut Air/Air+/Pro} chessboard.	  	  	  
+		\item Play with \textbf{iChessOne} chessboard.	  	  	  	  
+		\item Play with \textbf{ChessUp} chessboard.	  	  	  	  	  
+		\item Play with \textbf{NOVAG Citrine/UCB} chessboard.
+		\item Play with \textbf{Saitek OSA} chessboard.	  
+		\item Play against human beings or UCI engines.
+		\item Play with separate time controls for white and black.
+		\item Play online on Free Internet Chess Server (\textbf{FICS})
+		\item Play against an UCI engine in relaxed mode. "Teddy" will intervene in some places to give you a chance even against stronger chess programs. Read more in chapter \textbf{\ref{RelaxedMode}  \nameref{RelaxedMode}} on page \pageref{RelaxedMode}.  	  
+		\item Use \textbf{Certabo Avatar} UCI engines.  	  
+		\item Use \textbf{MessChess} chess computer emulation by Franz Huber.  	    	  
+		\item \textbf{Analyse} your games or trainings with the help of electronic chessboards.
+		\item Use multiple chess engines at the same time for playing and analysing.
+		\item Engine \textbf{duels} and \textbf{tournaments}.
+		\item Support for Polyglot, Arena and CTG opening books.
+		\item Save and load your games.
+		\item Load games from "The Week in Chess"
+		\item Individual chessmen and board fields.
+	\end{enumerate}
+	
+	BearChess follows the design of Single Document Interface (SDI). You can place different windows, e.g. chess engine output or chess move list, anywhere on your Windows desktop. If you close them or exit BearChess, the position is saved and set to the same position when reopening.\\ 
+	If you click on the BearChess main screen, all other open windows are also brought to the foreground. If you hold down the Shift key and move the BearChess main screen, all other windows will also be moved synchronously.\\\\
+	The version numbering follows the following scheme:\\ 
+	"\textit{major release}"\textbf{.}""\textit{minor release}"\textbf{.}""\textit{sub release}"\textbf{.}""\textit{bug fix}"\\
+	The \textit{minor release} is increased when new features are added. The \textit{sub release} is increased when minor features are added or improved. The last number is incremented if only errors were corrected.
+	
+	\subsection{Modes}
+	BearChess is running in different modes. The current mode is displayed in the lower left corner.
+	\begin{itemize}
+		
+		\item \textbf{Easy playing} This is the mode in the beginning. You just can simply start making your moves on the screen or on your electronic chessboard, almost without regard to the chess rules. In addition to support you can start chess programs or load opening books. But these only give hints, but do not play as opponents. This mode is automatically set if you are not playing in another mode. It is similar to the analyse mode but let you more easily start a new game from any position.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=1.0]{ModeEasyPlaying.png}
+			\caption{Easy playing}
+			\label{fig:ModeEasyPlaying}
+		\end{figure}
+		\item \textbf{Playing a game} This is the mode if you play against a chess engine or another player. Only valid chess moves are allowed and the game is time controlled.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=1.0]{ModePlayingAGame.png}
+			\caption{Playing a game}
+			\label{fig:ModePlayingAGame}
+		\end{figure}
+		\item \textbf{Analysing} If you select this mode you can make any chess moves or place the pieces as you like, almost without regard to the chess rules. This mode is recommended to analyse a game or positions. Try different variants on the board and let several chess programs analyse the positions simultaneously. 
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=1.0]{ModeAnalyzing.png}
+			\caption{Analysing}
+			\label{fig:ModeAnalyzing}
+		\end{figure}
+		\item \textbf{Analysing a game} If you have loaded a played game and connected to an electronic chessboard, you can analyze the game. Follow the played moves or make some variants and let them be analysed by different chess programs.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=1.0]{ModeAnalyzing.png}
+			\caption{Analysing}
+			\label{fig:ModeAnalyzingGame}
+		\end{figure}
+		\item \textbf{Setup Position} Build up a new starting position on the chessboard. It is easiest to set it up on the electronic chessboard.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=1.0]{ModeSetupPosition.png}
+			\caption{Setup Position}
+			\label{fig:ModeSetupPosition}
+		\end{figure}
+	\end{itemize}
+	
+	
+	\section{Main window}
+	
+	The first start of BearChess shows the following main window:
 	\begin{figure}[H]
 		\centering
-		\includegraphics[scale=1.0]{ModeEasyPlaying.png}
-		\caption{Easy playing}
-		\label{fig:ModeEasyPlaying}
+		\includegraphics[scale=0.7]{BearChess_MainWindow.png}
+		\caption{Main window}
+		\label{fig:MainWindow}
 	\end{figure}
-	\item \textbf{Playing a game} This is the mode if you play against a chess engine or another player. Only valid chess moves are allowed and the game is time controlled.
+	
+	Two buttons are active:
+	\begin{itemize}
+		\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png} rotates the board.
+		\item \includegraphics[scale=0.2]{bearchess_2.png} is an easy way to play a game.
+		Read more in chapter \textbf{\ref{easyStart}  \nameref{easyStart}} on page \pageref{easyStart}.
+	\end{itemize}
+	The symbols on the right side give information about the current color and the board rotaion.
+	\begin{itemize}
+		\item \includegraphics[scale=0.6]{WhiteClock.png} or \includegraphics[scale=0.6]{BlackClock.png} for current color.
+		\item \includegraphics[scale=0.3]{KingW.png}  or \includegraphics[scale=0.3]{KingB.png} for board rotation. 
+	\end{itemize}
+	
+	
+	\subsection{Actions}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[scale=1.0]{ModePlayingAGame.png}
-		\caption{Playing a game}
-		\label{fig:ModePlayingAGame}
+		\includegraphics[scale=1.0]{Actions.png}
+		\caption{Actions}
+		\label{fig:Actions}
 	\end{figure}
-	\item \textbf{Analysing} If you select this mode you can make any chess moves or place the pieces as you like, almost without regard to the chess rules. This mode is recommended to analyse a game or positions. Try different variants on the board and let several chess programs analyse the positions simultaneously. 
+	\begin{itemize}
+		\item \includegraphics[scale=0.6]{BearChessIcon.png} \textbf{Start a new game} opens a new window to select opponents and time control (see chapter \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent}).
+		
+		\item \includegraphics[scale=0.5]{robot.png} \textbf{Analysis} allows you to analyze games or positions with suppport of several chess engines (see chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode})
+		
+		\item \includegraphics[scale=0.5]{6-2-chess-png.png} \textbf{Duel} starts and manage duels (see chapter  \textbf{\ref{EngineDuel}  \nameref{EngineDuel}} on page \pageref{EngineDuel} ).
+		
+		\item \includegraphics[scale=0.5]{cup_gold.png} \textbf{Engine tournament} starts and manage engine tournaments (see chapter  \textbf{\ref{EngineTournamentl}  \nameref{EngineTournamentl}} on page \pageref{EngineTournamentl} ).
+		
+		\item \includegraphics[scale=0.03]{Chess_Board.png} see chapter \textbf{\ref{SetupPosition}  \nameref{SetupPosition}} on page \pageref{SetupPosition}.
+		
+		\item \includegraphics[scale=0.1]{FicsLogo.png} connects you with Free Internet Chess Server (FICS). See chapter \textbf{\ref{FICS}  \nameref{FICS}} on page \pageref{FICS}.	
+		
+		\item \textbf{Run startup game on start} immediately starts a new game when you start BearChess. For more information read chapter \textbf{\ref{startupgame}  \nameref{startupgame}} on page \pageref{startupgame}.
+		
+		\item \includegraphics[scale=0.5]{door_out.png} \textbf{Close} exits BearChess.
+	\end{itemize}
+	
+	\subsection{Games}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[scale=1.0]{ModeAnalyzing.png}
-		\caption{Analysing}
-		\label{fig:ModeAnalyzing}
+		\includegraphics[scale=1.0]{Games1.png}
+		\caption{Games}
+		\label{fig:Games}
 	\end{figure}
-	\item \textbf{Analysing a game} If you have loaded a played game and connected to an electronic chessboard, you can analyze the game. Follow the played moves or make some variants and let them be analysed by different chess programs.
-    \begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{ModeAnalyzing.png}
-	\caption{Analysing}
-	\label{fig:ModeAnalyzingGame}
-\end{figure}
-	\item \textbf{Setup Position} Build up a new starting position on the chessboard. It is easiest to set it up on the electronic chessboard.
+	\begin{itemize}
+		\item \includegraphics[scale=0.5]{diskette.png} \textbf{Save} your current game.
+		\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Games manager} opens a new window in which you can see and load all your previously saved games or import games from "The Week in Chess".
+		\item \includegraphics[scale=0.5]{clipboard_sign_out.png}  \textbf{Copy to clipboard} copy the current game (PGN) to your clipboard.	
+		\item \includegraphics[scale=0.5]{clipboard_sign.png}  \textbf{Paste from clipboard} loads a game (PGN) from your clipboard.
+		\item \includegraphics[scale=0.5]{cog.png}  \textbf{Settings} for show or hide duplicate games.
+		
+	\end{itemize}
+	All games are saved in a database file. Read more on chapter \textbf{\ref{games}  \nameref{games}} on page \pageref{games}.
+	
+	\subsection{Engines}
 	\begin{figure}[H]
 		\centering
-		\includegraphics[scale=1.0]{ModeSetupPosition.png}
-		\caption{Setup Position}
-		\label{fig:ModeSetupPosition}
+		\includegraphics[scale=1.0]{Engines.png}
+		\caption{Engines}
+		\label{fig:Engines}
 	\end{figure}
-\end{itemize}
-
-
-\section{Main window}
-
-The first start of BearChess shows the following main window:
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{BearChess_MainWindow.png}
-	\caption{Main window}
-	\label{fig:MainWindow}
-\end{figure}
-
-Two buttons are active:
-\begin{itemize}
-  \item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png} rotates the board.
-  \item \includegraphics[scale=0.2]{bearchess_2.png} is an easy way to play a game.
-Read more in chapter \textbf{\ref{easyStart}  \nameref{easyStart}} on page \pageref{easyStart}.
-\end{itemize}
-The symbols on the right side give information about the current color and the board rotaion.
-\begin{itemize}
-	\item \includegraphics[scale=0.6]{WhiteClock.png} or \includegraphics[scale=0.6]{BlackClock.png} for current color.
-	\item \includegraphics[scale=0.3]{KingW.png}  or \includegraphics[scale=0.3]{KingB.png} for board rotation. 
-\end{itemize}
-
-
-\subsection{Actions}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{Actions.png}
-	\caption{Actions}
-	\label{fig:Actions}
-\end{figure}
-\begin{itemize}
-	\item \includegraphics[scale=0.6]{BearChessIcon.png} \textbf{Start a new game} opens a new window to select opponents and time control (see chapter \textbf{\ref{SelectOpponent}  \nameref{SelectOpponent}} on page \pageref{SelectOpponent}).
+	\begin{itemize}
+		\item  \includegraphics[scale=0.5]{robot.png} \textbf{Load \& manage engines} opens a new window in which you can install, load or configure your chess engines.
+		\item  \includegraphics[scale=0.5]{user_comment.png} \textbf{Buddy engine} load the as buddy defined engine and configure the behaviour.
+		\item \textbf{Load last engine on start} if you always want to load immediately an engine when you start BearChess. It has no effect if you have activated the option "Run startup game on start".
+		\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
+		\item \textbf{Settings} configure what information you want to see from the engine, e.g. nodes per second.	
+	\end{itemize}
 	
-	\item \includegraphics[scale=0.5]{robot.png} \textbf{Analysis} allows you to analyze games or positions with suppport of several chess engines (see chapter \textbf{\ref{AnalyzeMode}  \nameref{AnalyzeMode}} on page \pageref{AnalyzeMode})
+	\subsubsection{Settings}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{engineSettings.png}
+		\caption{Engine Settings}
+		\label{fig:EngineSettings}
+	\end{figure}
 	
-	\item \includegraphics[scale=0.5]{6-2-chess-png.png} \textbf{Duel} starts and manage duels (see chapter  \textbf{\ref{EngineDuel}  \nameref{EngineDuel}} on page \pageref{EngineDuel} ).
+	\begin{itemize}
+		\item  \textbf{Show nodes (N)} How many nodes in the search tree were calculated.
+		\item \textbf{Show nodes per seconds (Nps)} How many nodes are calculated per second.
+		\item \textbf{Show hash} Utilization of the hash memory in percent.
+		\item \textbf{From the point of view of White} Always shows the evaluation value from white's point of view.
+		\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation...} Opens a configuration dialog to define the notation for the best move line.
+		\item \textbf{Switch MessChess window position} If you let \textbf{two} MessChess engines play against each other and the color changes, BearChess will also swap the window position so that the engines for black and white are in the correct order.
+	\end{itemize}
 	
-	\item \includegraphics[scale=0.5]{cup_gold.png} \textbf{Engine tournament} starts and manage engine tournaments (see chapter  \textbf{\ref{EngineTournamentl}  \nameref{EngineTournamentl}} on page \pageref{EngineTournamentl} ).
+	Read more on chapter \textbf{\ref{loadEngines}  \nameref{loadEngines}} on page \pageref{loadEngines}.
 	
-	\item \includegraphics[scale=0.03]{Chess_Board.png} see chapter \textbf{\ref{SetupPosition}  \nameref{SetupPosition}} on page \pageref{SetupPosition}.
+	\subsection{Books}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{Books.png}
+		\caption{Books}
+		\label{fig:Books}
+	\end{figure}
+	\begin{itemize}
+		\item \includegraphics[scale=0.5]{books_stack.png} \textbf{Load \& manage opening books} opens a new window in which you can install or load  your opening books.
+	\end{itemize}
+	BearChess can handle Polyglot, Arena and CTG opening books. Read more on chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pageref{OpeningBooks}.
 	
-	\item \includegraphics[scale=0.1]{FicsLogo.png} connects you with Free Internet Chess Server (FICS). See chapter \textbf{\ref{FICS}  \nameref{FICS}} on page \pageref{FICS}.	
+	\subsection{Settings}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{Settings.png}
+		\caption{Settings}
+		\label{fig:Settings}
+	\end{figure}
+	\begin{itemize}
+		\item  \includegraphics[scale=0.6]{BearChessIcon.png} \textbf{BearChess} opens a window where you can change some BearChess basic settings.  Read more on chapter \textbf{\ref{ConfigureBearChess}  \nameref{ConfigureBearChess}} on page \pageref{ConfigureBearChess}.
+		\item  \includegraphics[scale=0.9]{Board2DPieces32.png} \textbf{Board \& Pieces} opens a window where you can change the appearance of the chessboard and the pieces.  Read more on chapter \textbf{\ref{BoardAndPieces}  \nameref{BoardAndPieces}} on page \pageref{BoardAndPieces}.
+		\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png}  \textbf{Rotate board} if the board on the screen should automatically rotate for your color.
+		\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation/Moves} opens a windows where you can change the appearance of the notation, e.g. figurine or letters.
+		\item  \includegraphics[scale=0.5]{digit_separator.png}  \textbf{Clocks} switches between large and small clocks.
+		\item  \includegraphics[scale=0.5]{balance_unbalance.png}  \textbf{Captured pieces} shows the captured pieces window at startup or on demand and you can change the font size to small or big.
+		\item  \includegraphics[scale=0.5]{user_silhouette.png}  \textbf{Player} opens a dialog where you can give it a first and last name.	
+		\begin{figure}[H]
+			\centering
+			\includegraphics[scale=1.0]{Player.png}
+			\caption{Player}
+			\label{fig:Player}
+		\end{figure}	
+		\item  \includegraphics[scale=0.5]{sound.png}  \textbf{Sounds} opens a dialog where you can configure some tones that sound when the engine makes a move.
+		
+		\item \includegraphics[scale=0.1]{FicsLogo.png} configure your connection parameters for Free Internet Chess Server (FICS). See chapter \textbf{\ref{FICS}  \nameref{FICS}} on page \pageref{FICS}.		
+	\end{itemize}
 	
-	\item \textbf{Run startup game on start} immediately starts a new game when you start BearChess. For more information read chapter \textbf{\ref{startupgame}  \nameref{startupgame}} on page \pageref{startupgame}.
+	\subsection{Electronic Boards}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{ElectronicBoards.png}
+		\caption{Electronic Boards}
+		\label{fig:ElectronicBoards}
+	\end{figure}
+	\begin{itemize}
+		\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
+		\item  \includegraphics[scale=0.05]{tabutronic_logo_def.png} \textbf{TabuTronic} opens a window where you can configure and connect to TabuTronic chessboards (Cerno and Sentio). Read more on chapter \textbf{\ref{ConfigureTabuTronicCerno}  \nameref{ConfigureTabuTronicCerno}} on page \pageref{ConfigureTabuTronicCerno}.	or on chapter \textbf{\ref{ConfigureTabuTronicSentio}  \nameref{ConfigureTabuTronicSentio}} on page \pageref{ConfigureTabuTronicSentio}.	
+		\item  \includegraphics[scale=0.1]{iChessOneIcon.png} \textbf{iChessOne} opens a window in which you can configure and connect to iChessOne chessboards.  Read more on chapter \textbf{\ref{ConfigureIChessOne}  \nameref{ConfigureIChessOne}} on page \pageref{ConfigureIChessOne}.    
+		\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
+		\item  \includegraphics[scale=0.3]{dgt48.png} \textbf{DGT} connect to DGT e-Boards, DGT Revelation or DGT Pegasus chessboard.	
+		\item  \includegraphics[scale=0.05]{squareoff.png} \textbf{Square Off Pro} connect to Square Off Pro chessboard.		
+		\item  \includegraphics[scale=0.1]{chessnut.png} \textbf{Chessnut Air/Air+/Pro} connect to Chessnut Air/Air+/Pro chessboard.		
+		\item  \includegraphics[scale=0.3]{novag48.PNG} \textbf{NOVAG} connect to NOVAG Citrine or NOVAG UCB chessboard.			
+		\item  \includegraphics[scale=0.4]{Saitek_logo.PNG} \textbf{Saitek OSA} connect to Saitek chessboards with supports OSA protocol.		
+		\item  \includegraphics[scale=0.4]{ChessUp.png} \textbf{ChessUp} connect to ChessUp chessboard.
+		\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
+		\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
+		\item \textbf{Show next move in game analysis mode} displays the next move on your electronic chessboard.
+		\item \textbf{Engines} Configure the impact of engines
+		
+	\end{itemize}
 	
-	\item \includegraphics[scale=0.5]{door_out.png} \textbf{Close} exits BearChess.
-\end{itemize}
-
-\subsection{Games}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{Games1.png}
-	\caption{Games}
-	\label{fig:Games}
-\end{figure}
-\begin{itemize}
-	\item \includegraphics[scale=0.5]{diskette.png} \textbf{Save} your current game.
-	\item \includegraphics[scale=0.5]{file_manager.png}  \textbf{Games manager} opens a new window in which you can see and load all your previously saved games or import games from "The Week in Chess".
-	\item \includegraphics[scale=0.5]{clipboard_sign_out.png}  \textbf{Copy to clipboard} copy the current game (PGN) to your clipboard.	
-	\item \includegraphics[scale=0.5]{clipboard_sign.png}  \textbf{Paste from clipboard} loads a game (PGN) from your clipboard.
-	\item \includegraphics[scale=0.5]{cog.png}  \textbf{Settings} for show or hide duplicate games.
+	\subsubsection{Engines}
+	\begin{itemize}
+		\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
+		\item \textbf{Show current best move in game} displays the current best move of the engine on your electronic chessboard.	
+		\item \textbf{Show move from buddy when help is requested} displays the current best move of the analysis engine on your electronic chessboard when help is requested. To request help, raise your king for a short time and set it down again. To do this, you must be on the move and have an additional engine loaded for assistent (read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}).
+	\end{itemize}
 	
-\end{itemize}
-All games are saved in a database file. Read more on chapter \textbf{\ref{games}  \nameref{games}} on page \pageref{games}.
-
-\subsection{Engines}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{Engines.png}
-	\caption{Engines}
-	\label{fig:Engines}
-\end{figure}
-\begin{itemize}
-	\item  \includegraphics[scale=0.5]{robot.png} \textbf{Load \& manage engines} opens a new window in which you can install, load or configure your chess engines.
-	\item  \includegraphics[scale=0.5]{user_comment.png} \textbf{Buddy engine} load the as buddy defined engine and configure the behaviour.
-	\item \textbf{Load last engine on start} if you always want to load immediately an engine when you start BearChess. It has no effect if you have activated the option "Run startup game on start".
-	\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
-	\item \textbf{Settings} configure what information you want to see from the engine, e.g. nodes per second.	
-\end{itemize}
-
-\subsubsection{Settings}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{engineSettings.png}
-	\caption{Engine Settings}
-	\label{fig:EngineSettings}
-\end{figure}
-
-\begin{itemize}
-	\item  \textbf{Show nodes (N)} How many nodes in the search tree were calculated.
-	\item \textbf{Show nodes per seconds (Nps)} How many nodes are calculated per second.
-	\item \textbf{Show hash} Utilization of the hash memory in percent.
-	\item \textbf{From the point of view of White} Always shows the evaluation value from white's point of view.
-	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation...} Opens a configuration dialog to define the notation for the best move line.
-	\item \textbf{Switch MessChess window position} If you let \textbf{two} MessChess engines play against each other and the color changes, BearChess will also swap the window position so that the engines for black and white are in the correct order.
-\end{itemize}
-
-Read more on chapter \textbf{\ref{loadEngines}  \nameref{loadEngines}} on page \pageref{loadEngines}.
-
-\subsection{Books}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{Books.png}
-	\caption{Books}
-	\label{fig:Books}
-\end{figure}
-\begin{itemize}
-	\item \includegraphics[scale=0.5]{books_stack.png} \textbf{Load \& manage opening books} opens a new window in which you can install or load  your opening books.
-\end{itemize}
-BearChess can handle Polyglot, Arena and CTG opening books. Read more on chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pageref{OpeningBooks}.
-
-\subsection{Settings}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{Settings.png}
-	\caption{Settings}
-	\label{fig:Settings}
-\end{figure}
-\begin{itemize}
-	\item  \includegraphics[scale=0.6]{BearChessIcon.png} \textbf{BearChess} opens a window where you can change some BearChess basic settings.  Read more on chapter \textbf{\ref{ConfigureBearChess}  \nameref{ConfigureBearChess}} on page \pageref{ConfigureBearChess}.
-	\item  \includegraphics[scale=0.9]{Board2DPieces32.png} \textbf{Board \& Pieces} opens a window where you can change the appearance of the chessboard and the pieces.  Read more on chapter \textbf{\ref{BoardAndPieces}  \nameref{BoardAndPieces}} on page \pageref{BoardAndPieces}.
-	\item \includegraphics[scale=0.5]{arrow_rotate_anticlockwise.png}  \textbf{Rotate board} if the board on the screen should automatically rotate for your color.
-	\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation/Moves} opens a windows where you can change the appearance of the notation, e.g. figurine or letters.
-	\item  \includegraphics[scale=0.5]{digit_separator.png}  \textbf{Clocks} switches between large and small clocks.
-	\item  \includegraphics[scale=0.5]{balance_unbalance.png}  \textbf{Captured pieces} shows the captured pieces window at startup or on demand and you can change the font size to small or big.
-	\item  \includegraphics[scale=0.5]{user_silhouette.png}  \textbf{Player} opens a dialog where you can give it a first and last name.	
-    \begin{figure}[H]
-	   \centering
-    	\includegraphics[scale=1.0]{Player.png}
-	    \caption{Player}
- 	   \label{fig:Player}
+	\subsection{Windows}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{Windows.png}
+		\caption{Windows}
+		\label{fig:Windows}
+	\end{figure}
+	\begin{itemize}
+		\item \textbf{Show} brings clocks or move list windows to the foreground if they are currently not visible.
+		\item \textbf{Arrange} auto arange all windows to fit on your screen and not overlapping.
+		\item \textbf{Captured pieces} shows the captured pieces. Either all or as a difference. 
+	\end{itemize}
+	
+	\subsection{Info}
+	Opens a window where you can easily go to the path where all configuration is stored.
+	
+	\subsection{Help}
+	Opens this document.
+	
+	\section{Install, Configure and Load a chess engine} \label{loadEngines}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{LoadEngine.png}
+		\caption{Open "Load and manage UCI Engines" window}
+		\label{fig:LoadEngine}
+	\end{figure}
+	BearChess includes a chess engine, \textbf{Spike 1.4} by Ralf Schäfer and Volker Böhm (\url{http://spike.lazypics.de/index.html}).\\ You can install additional engines as much as you like. Click on "Load \& manage engines" to install and configure one. "\textit{Install}" means to make a chess program known to BearChess, not to install it on your computer. BearChess supports any UCI engine.\\
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{LoadManageEngine1.png}
+		\caption{Load and Manage UCI Engines}
+		\label{fig:LoadManageEngine1}
+	\end{figure}
+	
+	\begin{itemize}
+		\item \includegraphics[scale=0.5]{robot.png} Load selected engine.
+		\item \includegraphics[scale=0.5]{user_comment.png} Set selected engine as buddy.
+		\item \includegraphics[scale=0.5]{cog_edit.png} Configure selected engine.
+		\item \includegraphics[scale=0.5]{file_extension_exe.png} Install a new engine.
+		\item \includegraphics[scale=0.5]{cog_add.png} Opens a dialog for installing a new engine, which requires parameters to start.
+		\item \includegraphics[scale=0.5]{bin.png} Uninstall selected engine.
+		\item \includegraphics[scale=0.5]{door_out.png} Close the window.
+	\end{itemize}
+	You can modify "Spike 1.4 BearChess" but you cannot delete the engine.\\
+	"Citrine" and "Saitek OSA" are predefined engines for NOVAG Citrine and Saitek boards and cannot deleted.\\
+	
+	\subsection{Install a new engine} \label{InstallEngine}
+	
+	To install a new engine click on \includegraphics[scale=0.5]{file_extension_exe.png} and select an UCI engine file, e.g. the Wasp exe file. Or you just drag \& drop the exe file onto the button.\\
+	If the program needs parameters at the very beginning to be recognized as a UCI chess engine, then click on \includegraphics[scale=0.5]{cog_add.png} and fill out the dialog.\\
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{loadEngine3.png}
+		\caption{Load parameter}
+		\label{fig:LoadEngine4}
+	\end{figure}
+	Aonther way is described in chapter \textbf{\ref{ViaCMDFile}  \nameref{ViaCMDFile}} on page \pageref{ViaCMDFile}.\\
+	
+	If the file detected as UCI engine, confirm your selection.\\
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{uciConfirm.png}
+		\caption{Confirm UCI}
+		\label{fig:uciConfirm}
+	\end{figure}
+	Next, a configuration dialog box appears where you can configure the engine and give it a name.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{ConfigureWasp.png}
+		\caption{Engine configuration}
+		\label{fig:ConfigurWasp}
+	\end{figure}
+	The name is freely assignable, must be unique across all engines. But this way you can install the same engine several times with different configurations. The configuration values, names and possibilities are given by the engines. The first time these are the default values.
+	\begin{itemize}
+		\item \includegraphics[scale=0.5]{accept_button.png} Accept the changes
+		\item \includegraphics[scale=0.5]{file_extension_log.png} Opens the folder where the log and configration files for this engine are located
+		\item \includegraphics[scale=0.5]{undo.png} Reset to default values
+		\item \includegraphics[scale=0.5]{cancel.png} Cancel
+	\end{itemize}
+	The small \includegraphics[scale=0.3]{folder.png} button, e.g. 'OwnBook\_File', opens a file or directory selection dialog, depending on the configuration name (file, path, dir).\\
+	The configuration type 'button', e.g. 'Clear Hash', works only if the engine is loaded.
+	
+	\subsubsection{Wait for a new game} \label{WaitForANewgame}
+	For the MessChess programs it can be useful not to start immediately but to set parameters first, e.g. an opening book, which are not possible via the UCI configuration.\\
+	If you enable this option, every time you start a new game with this engine, a dialog will appear waiting for your confirmation.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{waitNewGame1.png}
+		\caption{Wait}
+		\label{fig:waitnewGame1}
+	\end{figure}
+	
+	If you set a countdown greater than 0 seconds, the confirmation is automatic.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{waitNewGame2.png}
+		\caption{Countdown}
+		\label{fig:waitnewGame2}
+	\end{figure}
+	
+	
+	
+	
+	\subsubsection{Assign a logo file}
+	The small \includegraphics[scale=0.3]{folder.png} button on the 'Logo:' line opens a file selection dialog where you can choose a logo file for this engine.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{logoFile.png}
+		\caption{Engine Logo file}
+		\label{fig:LogoFile}
+	\end{figure}
+	
+	\subsubsection{Add start parameter}
+	You can enter a start parameter if the engine needs one.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{engineParameter.png}
+		\caption{Engine Paramater}
+		\label{fig:EngineParameter}
+	\end{figure}
+	
+	\subsubsection{Use opening book}
+	Some engines come with their own opening book and you have an option to use them or not. You can also tell BearChess to use an opening book before the moves are calculated by the engines. You can configure how BearChess determines the book move. 
+	\begin{itemize}
+		\item \textbf{Best} Always chooses the best move
+		\item \textbf{Flexible} Selects one of the best moves
+		\item \textbf{Wide} Selects any book move
+	\end{itemize}
+	Look at chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pageref{OpeningBooks} how to install an opening book.
+	
+	\subsubsection{Install Certabo Avatar UCI Chess engine}
+	Certabo provides a special engine, called Avatar UCI Chess engine (look at \url{https://www.avataruci.org/}).\\
+	This engine is not intended for super strong players but tries to replicate your style. It learns from your games (you do not need many many thousand), it can start with some tens or hundreds. Certabo has a learning algohrithm which creates some weights and opening books emulating personality. Certabo created avatars of some players from the past and you can find them in the latest Certabo software. Just select Avatar as main engine and you will be prompted to choose the Avatar you want to play.\\
+	You can use this engine in BearChess too. 
+	If you have installed the latest Certabo software (Version 4.5 or above), select the avatar.exe file from the engines subfolder as the new engine. BearChess looks at the 'avatar\_weights' subfolder and asks you to select an avatar.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{avatar1.png}
+		\caption{Select an avatar}
+		\label{fig:Avatar1}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{avatar2.png}
+		\caption{Confirm}
+		\label{fig:Avatar2}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{avatar3.png}
+		\caption{Configure}
+		\label{fig:Avatar3}
+	\end{figure}
+	
+	There are no other configuration options. In the bottom line you can see the required parameters for the avatar engine.\\
+	If you don't find the right avatar, click on the small folder icon and you can select another avatar file, e.g. your personally created file from Certabo.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{avatar4.png}
+		\caption{Select your avatar}
+		\label{fig:Avatar4}
+	\end{figure}
+	
+	\subsubsection{Install MessChess engine}
+	Franz Huber provides emulator software to play against old chess computers as UCI engine (look at \url{https://fhub.jimdofree.com/}).\\
+	If you have downloaded and unzipped the latest version of CB-Emu, select the MessChess.exe file from the MessChess subfolder as the new engine. BearChess reads the Engines.lst file and ask you to select one or more chess computer emulations.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{MessChess1.png}
+		\caption{Select an emulation}
+		\label{fig:MessChess1}
+	\end{figure}
+	
+	You can select more than one engine to facilitate the installation of multiple emulations in one step. The filter input field allows you to reduce the list.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{MessChess5.png}
+		\caption{Filter the list}
+		\label{fig:MessChess5}
+	\end{figure}
+	
+	If you check the option "Skip error....", BearChess will not show an error if you try to install an already installed emulation.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{MessChess2.png}
+		\caption{Confirm}
+		\label{fig:MessChess2}
+	\end{figure}
+	
+	There are only some configuration options. In the bottom line you can see the required parameters for the engine.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{MessChess3.png}
+		\caption{Configure}
+		\label{fig:MessChess3}
+	\end{figure}
+	The possible levels are very different for the emulations and require reading the operating instructions of the real chess computer. 
+	Fortunately, there is a file in the MessChess subdirectory "Level" which describes the possible levels. 
+	BearChess contains an additional file to provide a combo box with the possible levels from this information.
+	But not all levels can be displayed via a combo box. The combo box is therefore not always complete or even present. To see a description of all possible levels, click on the "Show Levels" button.\\
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{MessChess6.png}
+		\caption{Show all levels for Mephisto Mirage}
+		\label{fig:MessChess6}
+	\end{figure}
+	
+	
+	If you need to set some more options, see \textbf{\ref{WaitForANewgame}  \nameref{WaitForANewgame}} on page \pageref{WaitForANewgame}.
+	
+	\subsubsection{Install an engine via CMD file} \label{ViaCMDFile}
+	If an engine needs special parameters or a parameter to be recognized as a UCI engine, you can use a CMD file instead of the EXE file. Write all required commands into the CMD file and install.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{LoadEngineCmd.png}
+		\caption{Load CMD file}
+		\label{fig:LoadCMDfile}
+	\end{figure}
+	
+	
+	\subsection{Configure an engine}
+	
+	To change the configuration of an installed engine click on \includegraphics[scale=0.5]{cog_edit.png}\\
+	The same configuration dialog box as during installation is shown where you can configure the engine or just change the name.
+	
+	\subsection{Additional configuration for an installed engine}
+	
+	If you want to save the same engine with a different configuration, e.g. an additional configuration with adjusted Elo strength, you can save the configuration under a different name.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{ConfigureWasp_2.png}
+		\caption{Save as new configuration}
+		\label{fig:LoadEngine3}
+	\end{figure}
+	Click on \includegraphics[scale=0.5]{cog_add.png} to save the configuration with a new name.\\
+	
+	
+	\subsection{Define a Buddy engine} \label{BuddyEngine}
+	
+	To define an installed engine as buddy, select an engine and click on \includegraphics[scale=0.5]{user_comment.png}\\
+	A buddy engine is the default engine if you request help during a game (see \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}).
+	
+	
+	\subsection{Define a BearChess engine} \label{BearChessEngine}
+	
+	To define an installed engine as BearChess engine, select an engine open the context menue with a right-mouse-click.\\
+	{\color{red}\textbf{*}} Currently, a BearChess engine is used in conjunction with an iChessOne, Chessnut Air, Certabo, TabuTronic Cerno or Millennium ChessLink chessboard (see  \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}).
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{BearChessEngine1.png}
+		\caption{Set as BearChess engine}
+		\label{fig:BearChessEngine1}
+	\end{figure}
+	
+	
+	\subsection{Load an engine}
+	
+	To load an installed engine, select an engine and click on \includegraphics[scale=0.5]{robot.png} or just double-click.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{LoadEngine2.png}
+		\caption{Some installed engines}
+		\label{fig:LoadEngine2}
+	\end{figure}
+	
+	
+	\subsubsection{Load a MessChess engine}
+	
+	When you load a MessChess engine the emulation window will appear too.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{MessChess4.png}
+		\caption{Academy}
+		\label{fig:MessChess4}
+	\end{figure}
+	Use only BearChess or your electronic chessboard to make any moves. You can use the emulaton window to set options, e.g. levels or time control.\\
+	{\color{red}\textbf{*}} When you play a game against a MessChess engine, the selected time control for the game cannot be transferred to the emulation. To avoid, that BearChess ends the game too early by timeout, you should select here only an average time per move.
+	
+	\subsubsection{Load an engine by command line}
+	If you like to load an engine at startup, you can add a command line parameter \textbf{-engine} folllowed by the engine name:
+	\begin{verbatim}
+		BearChessWin.exe -engine "Stockfish 12"
+	\end{verbatim}
+	{\color{red}\textbf{*}} The engine name must match the name in the list of installed engines.
+	
+	\section{Load and Manage Opening Books} \label{OpeningBooks}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{books.png}
+		\caption{Open Load and Manage Opening Books  }
+		\label{fig:LoadManageBooks1}
+	\end{figure}
+	
+	BearChess does not include opening books. Click on "Load \& manage opening books" to install one. "\textit{Install}" means to make a opening book known BearChess, not to install it on your computer. BearChess supports Polyglot, Arena and CTG opening books.\\
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{LoadManageBooks2.png}
+		\caption{Load and Manage Opening Books  }
+		\label{fig:LoadManageBooks2}
+	\end{figure}
+	
+	\begin{itemize}
+		\item \includegraphics[scale=0.5]{book_open.png} Load selected book
+		\item \includegraphics[scale=0.5]{book_add.png} Install a new book
+		\item \includegraphics[scale=0.5]{bin.png} Uninstall selected book
+		\item \includegraphics[scale=0.5]{door_out.png} Close the window
+	\end{itemize}
+	
+	To install a new opening book, click on \includegraphics[scale=0.5]{book_add.png} and select a book file. The file extension for Polyglot books is \textbf{bin} and for Arena is \textbf{abk}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{LoadManageBooks3.png}
+		\caption{Some installed books }
+		\label{fig:LoadManageBooks3}
+	\end{figure}
+	
+	To select an opening book, click on \includegraphics[scale=0.5]{book_open.png} or just double-click. 
+	A new window opens and shows the current possible moves found in the book.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{OpeningBook.png}
+		\caption{Loaded polyglot opening book on base position }
+		\label{fig:OpeningBook}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{OpeningBook1.png}
+		\caption{Loaded CTG opening book on base position }
+		\label{fig:OpeningBook1}
+	\end{figure}
+	
+	You can load more than one book. Every book has its own window and is synchronized with the current position on the chessboard.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{OpeningBook2.png}
+		\caption{Loaded opening books }
+		\label{fig:OpeningBook2}
+	\end{figure}
+	
+	{\color{red}\textbf{*}} So far, the possibilities are still limited with the opening books. This will improve in the next versions. 
+	
+	\section{Configure BearChess} \label{ConfigureBearChess}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{ConfigureBearChess.png}
+		\caption{Open window to configure BearChess}
+		\label{fig:ConfigureBearChess}
+	\end{figure}
+	
+	\subsection{Games}
+	\begin{itemize}
+		\item If you start a new game and the current position on your board is not the home position, the game will start from that position by default. Activate this option to always set the default to the home position.
+		\item Activate this option if you want finished games to be saved automatically.
+		\item Abort games\\To prevent pure engines games from continuing, although the rating clearly shows a winner, BearChess ends these games prematurely. For this, both engines must have determined the value of "Evaluation" (or greater) for at least 3 moves in a row. Here you can completely deactivate the premature termination of the game or change the limit value of the evaluation.
+	\end{itemize}
+	
+	\subsection{Internal}
+	BearChess writes a lot of log files which makes it easier for to detect problems or errors.
+	Disable this option if you do not wish to do so. Changing these options requires a restart of BearChess to make it take effect. Existing log files will not be deleted.
+	
+	
+	\section{Configure Board and Pieces} \label{BoardAndPieces}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{SettingsBoardAndPieces.png}
+		\caption{Open window to configure board and pieces }
+		\label{fig:SettingsBoardAndPieces}
+	\end{figure}
+	
+	To change the appearance of BearChess select "Board and Pieces". A new window opens where you can configure it. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{SettingsBoardAndPieces2.png}
+		\caption{Setup board and pieces }
+		\label{fig:SettingsBoardAndPieces2}
+	\end{figure}
+	
+	BearChess comes with several set of pieces and board colors. \textbf{Many thanks to Bryan Whitby and Certabo for permission to use their design.}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{SettingsBoardAndPieces3.png}
+		\caption{Pre-installed pieces }
+		\label{fig:SettingsBoardAndPieces3}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{SettingsBoardAndPieces4.png}
+		\caption{Pre-installed boards}
+		\label{fig:SettingsBoardAndPieces4}
+	\end{figure}
+	
+	
+	\begin{itemize}
+		\item \includegraphics[scale=0.5]{file_manager.png} Install new board colors or pieces
+		\item \includegraphics[scale=0.5]{bin.png} Uninstall board colors or pieces
+		\item \includegraphics[scale=0.5]{accept_button.png} Accept the changes
+		\item \includegraphics[scale=0.5]{cancel.png} Cancel
+	\end{itemize}
+	
+	
+	
+	
+	\subsection{Install new board colors and pieces}
+	BearChess uses png files for board colors and pieces.
+	
+	\subsubsection{New board colors}
+	Click on \includegraphics[scale=0.5]{file_manager.png} to select a directory where the files are located. BearChess accepts \verb|w.png| or \verb|white.png| for white fields and \verb|b.png| or \verb|black.png| for black fields.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{WoodPieces.png}
+		\caption{Example for wood fields }
+		\label{fig:WoodPieces}
+	\end{figure}
+	
+	If BearChess finds both files inside the directory, it builds an empty chessboard to confirm your choice. A name for your board is required.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{ConfirmBoard.png}
+		\caption{Confirm new board }
+		\label{fig:ConfirmBoard}
+	\end{figure}
+	
+	\subsubsection{New pieces}
+	There are two ways to install a new set of pieces. One png file for each piece or one png file with all pieces inside. \\
+	Click on \includegraphics[scale=0.5]{file_manager.png} to select a directory where the files are located.\\ \textbf{Important:} The png files must have a transparent background color, otherwise they would paint over the fields.
+	BearChess accepts following names for the different pieces:
+	\begin{itemize}
+		\item \textbf{White king:} \verb|KingW.png, WhiteKing.png, wk.png|
+		\item \textbf{Black king:} \verb|KingB.png, BlackKing.png, bk.png|
+		\item \textbf{White queen:} \verb|QueenW.png, WhiteQueen.png, wq.png|
+		\item \textbf{Black queen:} \verb|QueenB.png, BlackQueen.png, bq.png|
+		\item \textbf{White rook:} \verb|RookW.png, WhiteRook.png, wr.png|
+		\item \textbf{Black rook:} \verb|RookB.png, BlackRook.png, br.png|
+		\item \textbf{White bishop:} \verb|BishopW.png, WhiteBishop.png, wb.png|
+		\item \textbf{Black bishop:} \verb|BishopB.png, BlackBishop.png, bb.png|
+		\item \textbf{White knight:} \verb|KnightW.png, WhiteKnight.png, wn.png|
+		\item \textbf{Black knight:} \verb|KnightB.png, BlackKnight.png, bn.png|
+		\item \textbf{White pawn:} \verb|PawnW.png, WhitePawn.png, wp.png|
+		\item \textbf{Black pawn:} \verb|PawnB.png, BlackPawn.png, bp.png|
+	\end{itemize}
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{Pieces.png}
+		\caption{Example one png file for each piece}
+		\label{fig:Pieces}
+	\end{figure}
+	
+	If BearChess finds all files inside the directory, it builds a piece set to confirm your choice.\\
+	
+	If BearChess finds only one png file inside the directory, it assumes that this file contains all pieces at once.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=6.5]{Leipzig.png}
+		\caption{One png file with all pieces}
+		\label{fig:Leipzig}
+	\end{figure}
+	
+	The png must have the pieces in the order and colors shown above.\\
+	If you have one png file for all pieces, you can just drag \& drop the png file onto the
+	open file dialog icon. It avoids the effort to have a separate directory for each file.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{DropPieceSet.png}
+		\caption{Drop new pieces }
+		\label{fig:DropPieceSet}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{ConfirmPieces.png}
+		\caption{Confirm new pieces }
+		\label{fig:ConfirmPieces}
+	\end{figure}
+	
+	BearChess builds a piece set to confirm your choice. A name for your set is required.
+	Now you can combine your boards with your pieces.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{CombineBoardPieces.png}
+		\caption{Combine board and pieces by yoour own }
+		\label{fig:CombineBoardPieces}
+	\end{figure}
+	
+	\subsection{Show last/best move}
+	If the options "Show last move" and "Show best move" are activated, the last move and the currently best analysis move of an engine are marked on the board.
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{LastMoveArrow.png}
+		\caption{Last/best move as arrow}
+		\label{fig:LastMove2}
+	\end{figure}
+	
+	\subsection{Possible moves}
+	If the option "Show possible moves" activated, all possible moves are indicated by an arrow.
+	Either when the mouse pointer hovers over a target field or over a piece.
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{SettingsBoardAndPieces5.png}
+		\caption{Show possible moves for target field}
+		\label{fig:ShowPossibleMoves}
+	\end{figure}
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{SettingsBoardAndPieces6.png}
+		\caption{Show possible moves for pieces}
+		\label{fig:ShowPossibleMoves2}
+	\end{figure}
+	
+	You can define the arrow color.
+	
+	\subsection{Fast move input}
+	If the "Fast move input" option is activated, a move is selected when you click on a target field that is only valid for one piece, or you click on a piece that can only make one move.
+	
+	
+	\section{Configure Notation and Moves}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{NotationAndMoves1.png}
+		\caption{Opens a window to configure notation and moves }
+		\label{fig:NotationAndMoves}
+	\end{figure}
+	BearChess can display moves in different ways.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{NotationAndMoves2.png}
+		\caption{Configure notation and moves }
+		\label{fig:NotationAndMoves2}
+	\end{figure}
+	In long and short notation and with symbols or letters for the chessmen.
+	You can change the language for the letters by clicking on the country flag.
+	This has an effect on the move list and the output on the DGT chess clocks and Revelation respectively.
+	
+	\section{Configure clock style}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{ConfigureClocks.png}
+		\caption{Configure clocks }
+		\label{fig:ConfigureClocks}
+	\end{figure}
+	
+	BearChess offers two different clocks: small and big
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{SmallClocks.png}
+		\caption{Small clocks }
+		\label{fig:SmallClocks}
+	\end{figure}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.8]{BigClocks.png}
+		\caption{Big clocks }
+		\label{fig:BigClocks}
+	\end{figure}
+	
+	\section{Configure speech and sounds}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{Sounds2.png}
+		\caption{Sounds }
+		\label{fig:Sounds2}
+	\end{figure}
+	Opens a window where you can configure some sounds.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{Sounds1.png}
+		\caption{Speech and sound configuration}
+		\label{fig:Sounds1}
 	\end{figure}	
-	\item  \includegraphics[scale=0.5]{sound.png}  \textbf{Sounds} opens a dialog where you can configure some tones that sound when the engine makes a move.
 	
-    \item \includegraphics[scale=0.1]{FicsLogo.png} configure your connection parameters for Free Internet Chess Server (FICS). See chapter \textbf{\ref{FICS}  \nameref{FICS}} on page \pageref{FICS}.		
-\end{itemize}
-
-\subsection{Electronic Boards}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{ElectronicBoards.png}
-	\caption{Electronic Boards}
-	\label{fig:ElectronicBoards}
-\end{figure}
-\begin{itemize}
-	\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
-    \item  \includegraphics[scale=0.05]{tabutronic_logo_def.png} \textbf{TabuTronic} opens a window where you can configure and connect to TabuTronic chessboards (Cerno and Sentio). Read more on chapter \textbf{\ref{ConfigureTabuTronicCerno}  \nameref{ConfigureTabuTronicCerno}} on page \pageref{ConfigureTabuTronicCerno}.	or on chapter \textbf{\ref{ConfigureTabuTronicSentio}  \nameref{ConfigureTabuTronicSentio}} on page \pageref{ConfigureTabuTronicSentio}.	
-    \item  \includegraphics[scale=0.1]{iChessOneIcon.png} \textbf{iChessOne} opens a window in which you can configure and connect to iChessOne chessboards.  Read more on chapter \textbf{\ref{ConfigureIChessOne}  \nameref{ConfigureIChessOne}} on page \pageref{ConfigureIChessOne}.    
-	\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
-	\item  \includegraphics[scale=0.3]{dgt48.png} \textbf{DGT} connect to DGT e-Boards, DGT Revelation or DGT Pegasus chessboard.	
-	\item  \includegraphics[scale=0.05]{squareoff.png} \textbf{Square Off Pro} connect to Square Off Pro chessboard.		
-	\item  \includegraphics[scale=0.1]{chessnut.png} \textbf{Chessnut Air/Air+/Pro} connect to Chessnut Air/Air+/Pro chessboard.		
-	\item  \includegraphics[scale=0.3]{novag48.PNG} \textbf{NOVAG} connect to NOVAG Citrine or NOVAG UCB chessboard.			
-    \item  \includegraphics[scale=0.4]{Saitek_logo.PNG} \textbf{Saitek OSA} connect to Saitek chessboards with supports OSA protocol.		
-    \item  \includegraphics[scale=0.4]{ChessUp.png} \textbf{ChessUp} connect to ChessUp chessboard.
-	\item \textbf{Connect on startup} tries to connect on to the last connected chessboard when BearChess is started. 	
-	\item \textbf{Start a new game on base position} recognizes when you reset all the pieces to the base position during a game. In this case, a new game will be started automatically.
-    \item \textbf{Show next move in game analysis mode} displays the next move on your electronic chessboard.
-    \item \textbf{Engines} Configure the impact of engines
-
-\end{itemize}
-
-\subsubsection{Engines}
-\begin{itemize}
-   \item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
-	\item \textbf{Show current best move in game} displays the current best move of the engine on your electronic chessboard.	
-	\item \textbf{Show move from buddy when help is requested} displays the current best move of the analysis engine on your electronic chessboard when help is requested. To request help, raise your king for a short time and set it down again. To do this, you must be on the move and have an additional engine loaded for assistent (read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}).
-\end{itemize}
-
-\subsection{Windows}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{Windows.png}
-	\caption{Windows}
-	\label{fig:Windows}
-\end{figure}
-\begin{itemize}
-	\item \textbf{Show} brings clocks or move list windows to the foreground if they are currently not visible.
-	\item \textbf{Arrange} auto arange all windows to fit on your screen and not overlapping.
-	\item \textbf{Captured pieces} shows the captured pieces. Either all or as a difference. 
-\end{itemize}
-
-\subsection{Info}
-Opens a window where you can easily go to the path where all configuration is stored.
-
-\subsection{Help}
-Opens this document.
-
-\section{Install, Configure and Load a chess engine} \label{loadEngines}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{LoadEngine.png}
-	\caption{Open "Load and manage UCI Engines" window}
-	\label{fig:LoadEngine}
-\end{figure}
-BearChess includes a chess engine, \textbf{Spike 1.4} by Ralf Schäfer and Volker Böhm (\url{http://spike.lazypics.de/index.html}).\\ You can install additional engines as much as you like. Click on "Load \& manage engines" to install and configure one. "\textit{Install}" means to make a chess program known to BearChess, not to install it on your computer. BearChess supports any UCI engine.\\
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{LoadManageEngine1.png}
-	\caption{Load and Manage UCI Engines}
-	\label{fig:LoadManageEngine1}
-\end{figure}
-
-\begin{itemize}
-	\item \includegraphics[scale=0.5]{robot.png} Load selected engine.
-    \item \includegraphics[scale=0.5]{user_comment.png} Set selected engine as buddy.
-	\item \includegraphics[scale=0.5]{cog_edit.png} Configure selected engine.
-	\item \includegraphics[scale=0.5]{file_extension_exe.png} Install a new engine.
-    \item \includegraphics[scale=0.5]{cog_add.png} Opens a dialog for installing a new engine, which requires parameters to start.
-	\item \includegraphics[scale=0.5]{bin.png} Uninstall selected engine.
-	\item \includegraphics[scale=0.5]{door_out.png} Close the window.
-\end{itemize}
-You can modify "Spike 1.4 BearChess" but you cannot delete the engine.\\
-"Citrine" and "Saitek OSA" are predefined engines for NOVAG Citrine and Saitek boards and cannot deleted.\\
-
-\subsection{Install a new engine} \label{InstallEngine}
-
-To install a new engine click on \includegraphics[scale=0.5]{file_extension_exe.png} and select an UCI engine file, e.g. the Wasp exe file. Or you just drag \& drop the exe file onto the button.\\
-If the program needs parameters at the very beginning to be recognized as a UCI chess engine, then click on \includegraphics[scale=0.5]{cog_add.png} and fill out the dialog.\\
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{loadEngine3.png}
-	\caption{Load parameter}
-	\label{fig:LoadEngine4}
-\end{figure}
-Aonther way is described in chapter \textbf{\ref{ViaCMDFile}  \nameref{ViaCMDFile}} on page \pageref{ViaCMDFile}.\\
-
-If the file detected as UCI engine, confirm your selection.\\
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{uciConfirm.png}
-	\caption{Confirm UCI}
-	\label{fig:uciConfirm}
-\end{figure}
-Next, a configuration dialog box appears where you can configure the engine and give it a name.
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{ConfigureWasp.png}
-	\caption{Engine configuration}
-	\label{fig:ConfigurWasp}
-\end{figure}
-The name is freely assignable, must be unique across all engines. But this way you can install the same engine several times with different configurations. The configuration values, names and possibilities are given by the engines. The first time these are the default values.
-\begin{itemize}
-	\item \includegraphics[scale=0.5]{accept_button.png} Accept the changes
-	\item \includegraphics[scale=0.5]{file_extension_log.png} Opens the folder where the log and configration files for this engine are located
-	\item \includegraphics[scale=0.5]{undo.png} Reset to default values
-	\item \includegraphics[scale=0.5]{cancel.png} Cancel
-\end{itemize}
-The small \includegraphics[scale=0.3]{folder.png} button, e.g. 'OwnBook\_File', opens a file or directory selection dialog, depending on the configuration name (file, path, dir).\\
-The configuration type 'button', e.g. 'Clear Hash', works only if the engine is loaded.
-
-\subsubsection{Wait for a new game} \label{WaitForANewgame}
-For the MessChess programs it can be useful not to start immediately but to set parameters first, e.g. an opening book, which are not possible via the UCI configuration.\\
-If you enable this option, every time you start a new game with this engine, a dialog will appear waiting for your confirmation.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{waitNewGame1.png}
-	\caption{Wait}
-	\label{fig:waitnewGame1}
-\end{figure}
-
-If you set a countdown greater than 0 seconds, the confirmation is automatic.
-
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.9]{waitNewGame2.png}
-\caption{Countdown}
-\label{fig:waitnewGame2}
-\end{figure}
-
-
-
-
-\subsubsection{Assign a logo file}
-The small \includegraphics[scale=0.3]{folder.png} button on the 'Logo:' line opens a file selection dialog where you can choose a logo file for this engine.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{logoFile.png}
-	\caption{Engine Logo file}
-	\label{fig:LogoFile}
-\end{figure}
-
-\subsubsection{Add start parameter}
-You can enter a start parameter if the engine needs one.
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{engineParameter.png}
-	\caption{Engine Paramater}
-	\label{fig:EngineParameter}
-\end{figure}
-
-\subsubsection{Use opening book}
-Some engines come with their own opening book and you have an option to use them or not. You can also tell BearChess to use an opening book before the moves are calculated by the engines. You can configure how BearChess determines the book move. 
-\begin{itemize}
-	\item \textbf{Best} Always chooses the best move
-	\item \textbf{Flexible} Selects one of the best moves
-    \item \textbf{Wide} Selects any book move
-\end{itemize}
-Look at chapter \textbf{\ref{OpeningBooks}  \nameref{OpeningBooks}} on page \pageref{OpeningBooks} how to install an opening book.
-
-\subsubsection{Install Certabo Avatar UCI Chess engine}
-Certabo provides a special engine, called Avatar UCI Chess engine (look at \url{https://www.avataruci.org/}).\\
-This engine is not intended for super strong players but tries to replicate your style. It learns from your games (you do not need many many thousand), it can start with some tens or hundreds. Certabo has a learning algohrithm which creates some weights and opening books emulating personality. Certabo created avatars of some players from the past and you can find them in the latest Certabo software. Just select Avatar as main engine and you will be prompted to choose the Avatar you want to play.\\
-You can use this engine in BearChess too. 
-If you have installed the latest Certabo software (Version 4.5 or above), select the avatar.exe file from the engines subfolder as the new engine. BearChess looks at the 'avatar\_weights' subfolder and asks you to select an avatar.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{avatar1.png}
-	\caption{Select an avatar}
-	\label{fig:Avatar1}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{avatar2.png}
-	\caption{Confirm}
-	\label{fig:Avatar2}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{avatar3.png}
-	\caption{Configure}
-	\label{fig:Avatar3}
-\end{figure}
-
-There are no other configuration options. In the bottom line you can see the required parameters for the avatar engine.\\
-If you don't find the right avatar, click on the small folder icon and you can select another avatar file, e.g. your personally created file from Certabo.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{avatar4.png}
-	\caption{Select your avatar}
-	\label{fig:Avatar4}
-\end{figure}
-
-\subsubsection{Install MessChess engine}
-Franz Huber provides emulator software to play against old chess computers as UCI engine (look at \url{https://fhub.jimdofree.com/}).\\
-If you have downloaded and unzipped the latest version of CB-Emu, select the MessChess.exe file from the MessChess subfolder as the new engine. BearChess reads the Engines.lst file and ask you to select one or more chess computer emulations.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{MessChess1.png}
-	\caption{Select an emulation}
-	\label{fig:MessChess1}
-\end{figure}
-
-You can select more than one engine to facilitate the installation of multiple emulations in one step. The filter input field allows you to reduce the list.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{MessChess5.png}
-	\caption{Filter the list}
-	\label{fig:MessChess5}
-\end{figure}
-
-If you check the option "Skip error....", BearChess will not show an error if you try to install an already installed emulation.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{MessChess2.png}
-	\caption{Confirm}
-	\label{fig:MessChess2}
-\end{figure}
-
-There are only some configuration options. In the bottom line you can see the required parameters for the engine.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{MessChess3.png}
-	\caption{Configure}
-	\label{fig:MessChess3}
-\end{figure}
-The possible levels are very different for the emulations and require reading the operating instructions of the real chess computer. 
-Fortunately, there is a file in the MessChess subdirectory "Level" which describes the possible levels. 
-BearChess contains an additional file to provide a combo box with the possible levels from this information.
-But not all levels can be displayed via a combo box. The combo box is therefore not always complete or even present. To see a description of all possible levels, click on the "Show Levels" button.\\
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{MessChess6.png}
-	\caption{Show all levels for Mephisto Mirage}
-	\label{fig:MessChess6}
-\end{figure}
-
-
-If you need to set some more options, see \textbf{\ref{WaitForANewgame}  \nameref{WaitForANewgame}} on page \pageref{WaitForANewgame}.
-
-\subsubsection{Install an engine via CMD file} \label{ViaCMDFile}
-If an engine needs special parameters or a parameter to be recognized as a UCI engine, you can use a CMD file instead of the EXE file. Write all required commands into the CMD file and install.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{LoadEngineCmd.png}
-	\caption{Load CMD file}
-	\label{fig:LoadCMDfile}
-\end{figure}
-
-
-\subsection{Configure an engine}
-
-To change the configuration of an installed engine click on \includegraphics[scale=0.5]{cog_edit.png}\\
-The same configuration dialog box as during installation is shown where you can configure the engine or just change the name.
-
-\subsection{Additional configuration for an installed engine}
-
-If you want to save the same engine with a different configuration, e.g. an additional configuration with adjusted Elo strength, you can save the configuration under a different name.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{ConfigureWasp_2.png}
-	\caption{Save as new configuration}
-	\label{fig:LoadEngine3}
-\end{figure}
-Click on \includegraphics[scale=0.5]{cog_add.png} to save the configuration with a new name.\\
-
-
-\subsection{Define a Buddy engine} \label{BuddyEngine}
-
-To define an installed engine as buddy, select an engine and click on \includegraphics[scale=0.5]{user_comment.png}\\
-A buddy engine is the default engine if you request help during a game (see \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}).
-
-
-\subsection{Define a BearChess engine} \label{BearChessEngine}
-
-To define an installed engine as BearChess engine, select an engine open the context menue with a right-mouse-click.\\
-{\color{red}\textbf{*}} Currently, a BearChess engine is used in conjunction with an iChessOne, Chessnut Air, Certabo, TabuTronic Cerno or Millennium ChessLink chessboard (see  \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}).
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{BearChessEngine1.png}
-	\caption{Set as BearChess engine}
-	\label{fig:BearChessEngine1}
-\end{figure}
-
-
-\subsection{Load an engine}
-
-To load an installed engine, select an engine and click on \includegraphics[scale=0.5]{robot.png} or just double-click.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{LoadEngine2.png}
-	\caption{Some installed engines}
-	\label{fig:LoadEngine2}
-\end{figure}
-
-
-\subsubsection{Load a MessChess engine}
-
-When you load a MessChess engine the emulation window will appear too.
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{MessChess4.png}
-	\caption{Academy}
-	\label{fig:MessChess4}
-\end{figure}
-Use only BearChess or your electronic chessboard to make any moves. You can use the emulaton window to set options, e.g. levels or time control.\\
-{\color{red}\textbf{*}} When you play a game against a MessChess engine, the selected time control for the game cannot be transferred to the emulation. To avoid, that BearChess ends the game too early by timeout, you should select here only an average time per move.
-
-\subsubsection{Load an engine by command line}
-If you like to load an engine at startup, you can add a command line parameter \textbf{-engine} folllowed by the engine name:
-\begin{verbatim}
- BearChessWin.exe -engine "Stockfish 12"
-\end{verbatim}
-{\color{red}\textbf{*}} The engine name must match the name in the list of installed engines.
-
-\section{Load and Manage Opening Books} \label{OpeningBooks}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{books.png}
-	\caption{Open Load and Manage Opening Books  }
-	\label{fig:LoadManageBooks1}
-\end{figure}
-
-BearChess does not include opening books. Click on "Load \& manage opening books" to install one. "\textit{Install}" means to make a opening book known BearChess, not to install it on your computer. BearChess supports Polyglot, Arena and CTG opening books.\\
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{LoadManageBooks2.png}
-	\caption{Load and Manage Opening Books  }
-	\label{fig:LoadManageBooks2}
-\end{figure}
-
-\begin{itemize}
-	\item \includegraphics[scale=0.5]{book_open.png} Load selected book
-	\item \includegraphics[scale=0.5]{book_add.png} Install a new book
-	\item \includegraphics[scale=0.5]{bin.png} Uninstall selected book
-	\item \includegraphics[scale=0.5]{door_out.png} Close the window
-\end{itemize}
-
-To install a new opening book, click on \includegraphics[scale=0.5]{book_add.png} and select a book file. The file extension for Polyglot books is \textbf{bin} and for Arena is \textbf{abk}.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{LoadManageBooks3.png}
-	\caption{Some installed books }
-	\label{fig:LoadManageBooks3}
-\end{figure}
-
-To select an opening book, click on \includegraphics[scale=0.5]{book_open.png} or just double-click. 
-A new window opens and shows the current possible moves found in the book.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{OpeningBook.png}
-	\caption{Loaded polyglot opening book on base position }
-	\label{fig:OpeningBook}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{OpeningBook1.png}
-	\caption{Loaded CTG opening book on base position }
-	\label{fig:OpeningBook1}
-\end{figure}
-
-You can load more than one book. Every book has its own window and is synchronized with the current position on the chessboard.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{OpeningBook2.png}
-	\caption{Loaded opening books }
-	\label{fig:OpeningBook2}
-\end{figure}
-
-{\color{red}\textbf{*}} So far, the possibilities are still limited with the opening books. This will improve in the next versions. 
-
-\section{Configure BearChess} \label{ConfigureBearChess}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{ConfigureBearChess.png}
-	\caption{Open window to configure BearChess}
-	\label{fig:ConfigureBearChess}
-\end{figure}
-
-\subsection{Games}
-\begin{itemize}
-	\item If you start a new game and the current position on your board is not the home position, the game will start from that position by default. Activate this option to always set the default to the home position.
-	\item Activate this option if you want finished games to be saved automatically.
-	\item Abort games\\To prevent pure engines games from continuing, although the rating clearly shows a winner, BearChess ends these games prematurely. For this, both engines must have determined the value of "Evaluation" (or greater) for at least 3 moves in a row. Here you can completely deactivate the premature termination of the game or change the limit value of the evaluation.
-\end{itemize}
-
-\subsection{Internal}
-BearChess writes a lot of log files which makes it easier for to detect problems or errors.
-Disable this option if you do not wish to do so. Changing these options requires a restart of BearChess to make it take effect. Existing log files will not be deleted.
-
-
-\section{Configure Board and Pieces} \label{BoardAndPieces}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{SettingsBoardAndPieces.png}
-	\caption{Open window to configure board and pieces }
-	\label{fig:SettingsBoardAndPieces}
-\end{figure}
-
-To change the appearance of BearChess select "Board and Pieces". A new window opens where you can configure it. 
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{SettingsBoardAndPieces2.png}
-	\caption{Setup board and pieces }
-	\label{fig:SettingsBoardAndPieces2}
-\end{figure}
-
-BearChess comes with several set of pieces and board colors. \textbf{Many thanks to Bryan Whitby and Certabo for permission to use their design.}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{SettingsBoardAndPieces3.png}
-	\caption{Pre-installed pieces }
-	\label{fig:SettingsBoardAndPieces3}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{SettingsBoardAndPieces4.png}
-	\caption{Pre-installed boards}
-	\label{fig:SettingsBoardAndPieces4}
-\end{figure}
-
-
-\begin{itemize}
-	\item \includegraphics[scale=0.5]{file_manager.png} Install new board colors or pieces
-	\item \includegraphics[scale=0.5]{bin.png} Uninstall board colors or pieces
-	\item \includegraphics[scale=0.5]{accept_button.png} Accept the changes
-	\item \includegraphics[scale=0.5]{cancel.png} Cancel
-\end{itemize}
-
-
-
-
-\subsection{Install new board colors and pieces}
-BearChess uses png files for board colors and pieces.
-
-\subsubsection{New board colors}
-Click on \includegraphics[scale=0.5]{file_manager.png} to select a directory where the files are located. BearChess accepts \verb|w.png| or \verb|white.png| for white fields and \verb|b.png| or \verb|black.png| for black fields.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{WoodPieces.png}
-	\caption{Example for wood fields }
-	\label{fig:WoodPieces}
-\end{figure}
-
-If BearChess finds both files inside the directory, it builds an empty chessboard to confirm your choice. A name for your board is required.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{ConfirmBoard.png}
-	\caption{Confirm new board }
-	\label{fig:ConfirmBoard}
-\end{figure}
-
-\subsubsection{New pieces}
-There are two ways to install a new set of pieces. One png file for each piece or one png file with all pieces inside. \\
-Click on \includegraphics[scale=0.5]{file_manager.png} to select a directory where the files are located.\\ \textbf{Important:} The png files must have a transparent background color, otherwise they would paint over the fields.
-BearChess accepts following names for the different pieces:
-\begin{itemize}
-	\item \textbf{White king:} \verb|KingW.png, WhiteKing.png, wk.png|
-	\item \textbf{Black king:} \verb|KingB.png, BlackKing.png, bk.png|
-	\item \textbf{White queen:} \verb|QueenW.png, WhiteQueen.png, wq.png|
-	\item \textbf{Black queen:} \verb|QueenB.png, BlackQueen.png, bq.png|
-	\item \textbf{White rook:} \verb|RookW.png, WhiteRook.png, wr.png|
-	\item \textbf{Black rook:} \verb|RookB.png, BlackRook.png, br.png|
-	\item \textbf{White bishop:} \verb|BishopW.png, WhiteBishop.png, wb.png|
-	\item \textbf{Black bishop:} \verb|BishopB.png, BlackBishop.png, bb.png|
-	\item \textbf{White knight:} \verb|KnightW.png, WhiteKnight.png, wn.png|
-	\item \textbf{Black knight:} \verb|KnightB.png, BlackKnight.png, bn.png|
-	\item \textbf{White pawn:} \verb|PawnW.png, WhitePawn.png, wp.png|
-	\item \textbf{Black pawn:} \verb|PawnB.png, BlackPawn.png, bp.png|
-\end{itemize}
-
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{Pieces.png}
-	\caption{Example one png file for each piece}
-	\label{fig:Pieces}
-\end{figure}
-
-If BearChess finds all files inside the directory, it builds a piece set to confirm your choice.\\
-
-If BearChess finds only one png file inside the directory, it assumes that this file contains all pieces at once.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=6.5]{Leipzig.png}
-	\caption{One png file with all pieces}
-	\label{fig:Leipzig}
-\end{figure}
-
-The png must have the pieces in the order and colors shown above.\\
-If you have one png file for all pieces, you can just drag \& drop the png file onto the
-open file dialog icon. It avoids the effort to have a separate directory for each file.
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{DropPieceSet.png}
-	\caption{Drop new pieces }
-	\label{fig:DropPieceSet}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{ConfirmPieces.png}
-	\caption{Confirm new pieces }
-	\label{fig:ConfirmPieces}
-\end{figure}
-
-BearChess builds a piece set to confirm your choice. A name for your set is required.
-Now you can combine your boards with your pieces.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{CombineBoardPieces.png}
-	\caption{Combine board and pieces by yoour own }
-	\label{fig:CombineBoardPieces}
-\end{figure}
-
-\subsection{Show last/best move}
-If the options "Show last move" and "Show best move" are activated, the last move and the currently best analysis move of an engine are marked on the board.
-
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{LastMoveArrow.png}
-	\caption{Last/best move as arrow}
-	\label{fig:LastMove2}
-\end{figure}
-
-\subsection{Possible moves}
-If the option "Show possible moves" activated, all possible moves are indicated by an arrow.
-Either when the mouse pointer hovers over a target field or over a piece.
-
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{SettingsBoardAndPieces5.png}
-	\caption{Show possible moves for target field}
-	\label{fig:ShowPossibleMoves}
-\end{figure}
-
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{SettingsBoardAndPieces6.png}
-	\caption{Show possible moves for pieces}
-	\label{fig:ShowPossibleMoves2}
-\end{figure}
-
-You can define the arrow color.
-
-\subsection{Fast move input}
-If the "Fast move input" option is activated, a move is selected when you click on a target field that is only valid for one piece, or you click on a piece that can only make one move.
-
-
-\section{Configure Notation and Moves}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.9]{NotationAndMoves1.png}
-	\caption{Opens a window to configure notation and moves }
-	\label{fig:NotationAndMoves}
-\end{figure}
-BearChess can display moves in different ways.
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{NotationAndMoves2.png}
-	\caption{Configure notation and moves }
-	\label{fig:NotationAndMoves2}
-\end{figure}
-In long and short notation and with symbols or letters for the chessmen.
-You can change the language for the letters by clicking on the country flag.
-This has an effect on the move list and the output on the DGT chess clocks and Revelation respectively.
-
-\section{Configure clock style}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{ConfigureClocks.png}
-	\caption{Configure clocks }
-	\label{fig:ConfigureClocks}
-\end{figure}
-
-BearChess offers two different clocks: small and big
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{SmallClocks.png}
-	\caption{Small clocks }
-	\label{fig:SmallClocks}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.8]{BigClocks.png}
-	\caption{Big clocks }
-	\label{fig:BigClocks}
-\end{figure}
-
-\section{Configure speech and sounds}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{Sounds2.png}
-	\caption{Sounds }
-	\label{fig:Sounds2}
-\end{figure}
-Opens a window where you can configure some sounds.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{Sounds1.png}
-	\caption{Speech and sound configuration}
-	\label{fig:Sounds1}
-\end{figure}	
-
-Here you can set whether BearChess should announce moves or other events in your language or only play a sound when the engine makes a move, gives check or mates. Optionally you can also configure an individual sound file. Only wave files are supported. Only either voice output or playing sounds can be enabled.
-
-\subsection{Configure speech}
-
-\begin{itemize}
-  \item The "\textbf{Speech active}" checkbox activates speech output.
-  \item You can choose between two types of move announcements: The long version, e.g. "Knight from g1 to f3" or the short version "Knight f3".
-  \item If you activate the "Own move" checkbox, your moves will also be announced. This can be usefull for boards without LEDs to verify that the move is recognized by BearChess.
-  \item The "\textbf{Language}" table shows all the languages installed for the speech output. BearChess does not deliver any language files itself. Choose your preferred language. 
-\end{itemize}
-If you choose English or German, BearChess knows all required words for full support of both languages.\\
-If not or you want to change some words or you want BearChess to greet you individually, activate "Define your own translation" and click the button \includegraphics[scale=0.5]{world_edit.png}.
-
- \begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{Sounds3.png}
-	\caption{Define translation}
-	\label{fig:Sounds3}
-\end{figure}
-Just type the words in your language into the fields. For example, if you want to hear "mate" instead of "check mate", enter it in the field next to "check mate:".\\
-Or if your are Italian, enter all fields with your language, for example "re" for king and "donna" for queen.\\
-{\color{red}*} The speech output is asynchronous and does not slow down the game. However, all texts are always spoken. If there is a fast sequence of moves, the output may lag behind the game.
-
-\subsection{Configure sound}
-
-When the speech output is not active, you can activate some sound effects and also select your own wave files.
-
-\begin{itemize}
-	\item \includegraphics[scale=0.5]{sound.png} Play the sound
-	\item \includegraphics[scale=0.5]{file_extension_wav.png} Opens a files selection dialog for an individual sound file.
-	\item \includegraphics[scale=0.5]{delete.png} Removes the sound file selection.
-\end{itemize}
-
-
-\section{Show captured pieces}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{CapturedPieces1.png}
-	\caption{Show captured pieces }
-	\label{fig:CapturedPieces1}
-\end{figure}
-
-Opens a window that shows the captured pieces.
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{CapturedPieces2.png}
-	\caption{Show captured pieces on start }
-	\label{fig:CapturedPieces2}
-\end{figure}
-You can configure this window so that it is displayed at startup.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{CapturedPieces3.png}
-	\caption{Show all captured pieces }
-	\label{fig:CapturedPieces3}
-\end{figure}
-
-Figure \ref{fig:CapturedPieces3} shows all captured pieces.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=1.0]{CapturedPieces4.png}
-	\caption{Show captured pieces as difference}
-	\label{fig:CapturedPieces4}
-\end{figure}
-Figure \ref{fig:CapturedPieces4} shows the same information as difference.
-
-The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between both views.
-
-
-\section{Electronic chessboards} \label{ElectronicChessBoard}
-BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{iChessOne}, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro}, \textbf{ChessUp}, \textbf{ZMARTFUN}, \textbf{NOVAG} and \textbf{Saitek} boards. Certabo, TabuTronic, iChessOne, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth or Bluetooth LE. DGT Pegasus, ChessUp and Square Off Pro communicate only via Bluetooth LE. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Pro and House of Staunton from ZMARTFUN communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE.\\ 
-For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
-In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
+	Here you can set whether BearChess should announce moves or other events in your language or only play a sound when the engine makes a move, gives check or mates. Optionally you can also configure an individual sound file. Only wave files are supported. Only either voice output or playing sounds can be enabled.
+	
+	\subsection{Configure speech}
+	
+	\begin{itemize}
+		\item The "\textbf{Speech active}" checkbox activates speech output.
+		\item You can choose between two types of move announcements: The long version, e.g. "Knight from g1 to f3" or the short version "Knight f3".
+		\item If you activate the "Own move" checkbox, your moves will also be announced. This can be usefull for boards without LEDs to verify that the move is recognized by BearChess.
+		\item The "\textbf{Language}" table shows all the languages installed for the speech output. BearChess does not deliver any language files itself. Choose your preferred language. 
+	\end{itemize}
+	If you choose English or German, BearChess knows all required words for full support of both languages.\\
+	If not or you want to change some words or you want BearChess to greet you individually, activate "Define your own translation" and click the button \includegraphics[scale=0.5]{world_edit.png}.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{Sounds3.png}
+		\caption{Define translation}
+		\label{fig:Sounds3}
+	\end{figure}
+	Just type the words in your language into the fields. For example, if you want to hear "mate" instead of "check mate", enter it in the field next to "check mate:".\\
+	Or if your are Italian, enter all fields with your language, for example "re" for king and "donna" for queen.\\
+	{\color{red}*} The speech output is asynchronous and does not slow down the game. However, all texts are always spoken. If there is a fast sequence of moves, the output may lag behind the game.
+	
+	\subsection{Configure sound}
+	
+	When the speech output is not active, you can activate some sound effects and also select your own wave files.
+	
+	\begin{itemize}
+		\item \includegraphics[scale=0.5]{sound.png} Play the sound
+		\item \includegraphics[scale=0.5]{file_extension_wav.png} Opens a files selection dialog for an individual sound file.
+		\item \includegraphics[scale=0.5]{delete.png} Removes the sound file selection.
+	\end{itemize}
+	
+	
+	\section{Show captured pieces}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{CapturedPieces1.png}
+		\caption{Show captured pieces }
+		\label{fig:CapturedPieces1}
+	\end{figure}
+	
+	Opens a window that shows the captured pieces.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{CapturedPieces2.png}
+		\caption{Show captured pieces on start }
+		\label{fig:CapturedPieces2}
+	\end{figure}
+	You can configure this window so that it is displayed at startup.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{CapturedPieces3.png}
+		\caption{Show all captured pieces }
+		\label{fig:CapturedPieces3}
+	\end{figure}
+	
+	Figure \ref{fig:CapturedPieces3} shows all captured pieces.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=1.0]{CapturedPieces4.png}
+		\caption{Show captured pieces as difference}
+		\label{fig:CapturedPieces4}
+	\end{figure}
+	Figure \ref{fig:CapturedPieces4} shows the same information as difference.
+	
+	The button \includegraphics[scale=0.5]{balance_unbalance.png} switches between both views.
+	
+	
+	\section{Electronic chessboards} \label{ElectronicChessBoard}
+	BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{iChessOne}, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro and Evo}, \textbf{ChessUp}, \textbf{ZMARTFUN}, \textbf{NOVAG} and \textbf{Saitek} boards.
+	\\Certabo, TabuTronic, iChessOne, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth or Bluetooth LE. DGT Pegasus, ChessUp and Square Off Pro communicate only via Bluetooth LE. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Pro and House of Staunton from ZMARTFUN communicates via an USB port as a Human Interface Device (HID) or via Bluetooth LE. Chessnut Evo
+	communicates via Wi-Fi.\\ 
+	For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
+	In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
 
 \subsection{Configure Certabo boards} \label{ConfigureCertabo}
 \begin{figure}[H]
@@ -1306,7 +1308,6 @@ The next two options require an engine defined as "BearChess". See \textbf{\ref{
 \end{itemize}
 
 
-
 \subsubsection{Active LEDs}
 
 \begin{figure}[H]
@@ -1315,7 +1316,7 @@ The next two options require an engine defined as "BearChess". See \textbf{\ref{
 	\caption{Active LEDs }
 	\label{fig:iChessOne7}
 \end{figure}
-If you check "Activate all LEDs aliong the move", all fields are displayed that lie on the path between the from and target field. For example, a bishop move from F1 to C4 also activates squares E2 and D3.\\
+If you check "Activate all LEDs along the move", all fields are displayed that lie on the path between the from and target field. For example, a bishop move from F1 to C4 also activates squares E2 and D3.\\
 If "Show own moves" is not activated, no LEDs are displayed for the fields when you make a move (unless the move is invalid).
 
 \subsubsection{Test your LED configuration}
@@ -1609,7 +1610,7 @@ Each pawn represents a piece on a field. Especially at the beginning, a review i
 \subsection{Configure Chessnut Air/Air+/Pro} \label{ConfigureChessnutAir}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{ChessnutAir5.png}
+	\includegraphics[scale=0.7]{ChessnutAir5.png}
 	\caption{Open a window to configure Chessnut Air/Air+/Pro}
 	\label{fig:ChessnutAir5}
 \end{figure}
@@ -1633,7 +1634,7 @@ There are several options available.
 \subsubsection{Connect Chessnut Air/Air+/Pro} \label{ConnectChessnutAir}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{ChessnutAir1.png}
+	\includegraphics[scale=0.7]{ChessnutAir1.png}
 	\caption{Connect to Chessnut Air/Air+/Pro}
 	\label{fig:ChessnutAir1}
 \end{figure}
@@ -1664,6 +1665,131 @@ For a USB connection, the connection is not simulated as a COM port, but as a Hu
 	\includegraphics[scale=0.7]{ChessnutAir3.png}
 	\caption{Disconnected}
 	\label{fig:ChessnutAir3}
+\end{figure}
+
+
+\subsection{Configure Chessnut Evo} \label{ConfigureChessnutEvo}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{ChessnutEvo5.png}
+	\caption{Open a window to configure Chessnut Evo}
+	\label{fig:ChessnutEvo5}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{ChessnutEvo2.png}
+	\caption{Configure Chessnut Evo }
+	\label{fig:ChessnutEvo4}
+\end{figure}
+
+
+\subsubsection{LEDs}
+
+The Chessnut Evo offers multi-colored LEDs. This allows a much more detailed configuration. Each LED can combine three colors ({\color{red}red}, {\color{ForestGreen}green} and {\color{blue}blue}) in different proportions (0 = none to 15 = full) and display them in different brightness levels (0 = off to 15 = very bright).
+The following example defines the LED for the square from which you are to take the chess pieces, with a full proportion of  {\color{ForestGreen}green} and {\color{blue}blue}) and a brightness of 4.
+The LED for the target square is {\color{ForestGreen}green} with a brightness of 4.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne3.png}
+	\caption{Set LEDs }
+	\label{fig:ChessnutEvo6}
+\end{figure}
+In addition to "Move from" and "Move to", further information can be assigned to LEDs.
+\begin{itemize}
+	\item \textbf{Invalid} If chess pieces are on the wrong square or missing.
+	\item \textbf{Take back} When a move is to be reversed.
+	\item \textbf{Hint} For a suggestion move from an engine.
+	\item \textbf{Current color} The LED in the corner of field H1 or H8 shows which site is currently taking their turn.	       
+\end{itemize}
+
+The next option require an engine defined as "BearChess". See \textbf{\ref{BearChessEngine}  \nameref{BearChessEngine}} on page \pageref{BearChessEngine} and \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}.
+
+\begin{itemize}
+	\item \textbf{Possible moves} When you lift a chess piece, all possible target squares are displayed. In addition, they can be shown whether the target field is a good, bad or just playable move.
+\end{itemize}
+
+
+\subsubsection{Active LEDs}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne4.png}
+	\caption{Active LEDs }
+	\label{fig:ChessnutEvo7}
+\end{figure}
+If you check "Activate all LEDs along the move", all fields are displayed that lie on the path between the from and target field. For example, a bishop move from F1 to C4 also activates squares E2 and D3.\\
+If "Show own moves" is not activated, no LEDs are displayed for the fields when you make a move (unless the move is invalid).
+
+\subsubsection{Test your LED configuration}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne5.png}
+	\caption{Test your LEDs }
+	\label{fig:ChessnutEvo8}
+\end{figure}
+
+A click on \includegraphics[scale=0.4]{eye.png} connects to the board.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne6.png}
+	\caption{Test your LEDs }
+	\label{fig:ChessnutEvo9}
+\end{figure}
+The icon changes to \includegraphics[scale=0.4]{eye_half.png} and small \includegraphics[scale=0.3]{eye.png} appears besides every configuration option. Click on the small eyes shows you an example of the LED configuration on your board.
+
+\subsubsection{Save your LED configuration}
+You can configure and save as many configurations as you like. For example, different people can each define their favorite configuration. Or you want to have different configurations, whether you are playing a tournament game or training.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne7.png}
+	\caption{Save your configuration}
+	\label{fig:Chessnut10}
+\end{figure}
+
+\begin{itemize}
+	\item \includegraphics[scale=0.3]{accept_button.png} Saves your current configuration.
+	\item \includegraphics[scale=0.3]{cog_add.png} Saves your configuration with a new name.
+	\item \includegraphics[scale=0.3]{bin.png} Delete the current configuration. You cannot delete the configuration with the name "BearChess", but you can change it.
+	\item \includegraphics[scale=0.3]{cancel.png} Close the configuration without any changes.
+\end{itemize}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne8.png}
+	\caption{Select a configuration}
+	\label{fig:ChessnnutEvo11}
+\end{figure}
+
+\subsubsection{Connect Chessnut Evo} \label{ConnectChessnutEvo}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{ChessnutAir1.png}
+	\caption{Connect to Chessnut Evo}
+	\label{fig:ChessnutEvo1}
+\end{figure}
+
+Chessnut Evo supports connections via IP address. Your computer and the board must be in the same
+LAN.\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{ChessnutAir2.png}
+	\caption{Connected via IP address}
+	\label{fig:ChessnutEvo2}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{ChessnutAir3.png}
+	\caption{Disconnected}
+	\label{fig:ChessnutEvo3}
 \end{figure}
 
 
@@ -3176,6 +3302,13 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 1.0.7.0 $\Rightarrow$  1.0.8.0}
+\begin{itemize}			
+	\item {\color{blue}New}: Integration of Chessnut Evo.
+    \item {\color{teal}Changes}: Support CTG files up to 4GB.
+\end{itemize}
+
 
 \subsection*{Version 1.0.6.0 $\Rightarrow$  1.0.7.0}
 \begin{itemize}			

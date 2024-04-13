@@ -45,7 +45,36 @@ TIEFE#n         search depth n plies (n=0-30)
 MATT#n          mate in n moves (n=1-16)
 DAUER           analysis
 
-#amsterd#amsterda#dallas16#dallas16a#dallas32#dallas32a#glasgow#glasgow_o#glasgow_t#
+#accord#
+Levels:
+a1      5 sec/move
+a2      15 sec/move
+a3      30 sec/move
+a4      1 min/move
+a5      1.5 min/move
+a6      2 min/move
+a7      3 min/move
+a8      3.75 min/move
+
+b1      search depth 1 ply
+b2      search depth 2 plies
+b3      search depth 3 plies
+b4      search depth 4 plies
+b5      search depth 5 plies
+b6      search depth 6 plies
+b7      search depth 7 plies
+b8      search depth 8 plies
+
+c1      limited capture search max. 2 plies
+c2      limited capture search max. 3 plies
+c3      limited capture search max. 4 plies
+c4      limited capture search max. 5 plies
+c5      limited capture search max. 6 plies
+c6      limited capture search max. 7 plies
+c7      limited capture search max. 8 plies
+c8      limited capture search max. 9 plies
+
+#amsterd#amsterda#amsterdg#dallas16#dallas16a#dallas16g#dallas32#dallas32a#glasgow#glasgow_o#glasgow_t#
 Levels: #
 0               3 sec/move
 1               5 sec/move
@@ -408,6 +437,56 @@ Levels:
 10      adjustment to player level
 11      analysis
 12      mate search
+
+#chessac#
+Levels: #
+1-60    fun levels
+
+61      1 sec/move
+62      2 sec/move
+63      5 sec/move
+64      10 sec/move
+65      15 sec/move
+66      30 sec/move
+67      45 sec/move
+68      1 min/move
+69      2 min/move
+70      3 min/move
+
+71      40 moves in 1 hr 20 min
+72      40 moves in 1 hr 30 min
+73      35 moves in 1 hr 45 min
+74      40 moves in 1 hr 45 min
+75      35 moves in 1 hr 30 min
+76      40 moves in 2 hrs
+77      45 moves in 2 hrs 30 min
+78      50 moves in 2 hrs
+79      40 moves in 2 hrs 30 min
+80      40 moves in 3 hrs
+
+81      5 min/game
+82      7 min/game
+83      10 min/game
+84      15 min/game
+85      20 min/game
+86      30 min/game
+87      45 min/game
+88      60 min/game
+89      90 min/game
+90      100 min/game
+
+91      mate in 1 move
+92      mate in 2 moves
+93      mate in 3 moves
+94      mate in 4 moves
+95      mate in 5 moves
+96      mate in 6 moves
+97      mate in 7 moves
+98      mate in 8 moves
+
+99      tactical play (no time limit)
+
+100     infinite
 
 #chesskng#
 Levels: #
@@ -853,6 +932,51 @@ h6      search depth 17 plies
 h7      search depth 18 plies
 h8      search depth 19 plies
 
+#emirage#ivant#
+Levels: #
+1       computer plays at the same speed as the player
+
+2-6     search depth 5-1 plies
+
+7-36    fixed time 1 sec/move - 3 min/move
+7       1 sec/move
+11      5 sec/move
+16      10 sec/move
+21      20 sec/move
+23      30 sec/move
+28      1 min/move
+32      2 min/move
+36      3 min/move
+
+37-66   average time 1 sec/move - 3 min/move
+37      1 sec/move
+41      5 sec/move
+46      10 sec/move
+51      20 sec/move
+53      30 sec/move
+58      1 min/move
+62      2 min/move
+66      3 min/move
+
+67-89   2 - 120 min/game
+67      2 min/game
+70      5 min/game
+75      10 min/game
+76      15 min/game
+79      30 min/game
+85      1 hr/game
+87      1.5 hrs/game
+89      2 hrs/game
+
+90      60 moves in 60 min
+91      40 moves in 60 min
+92      20 moves in 120 min     then 20 moves in 60 min
+93      20 moves in 60 min
+
+94      infinite
+
+95-100  mate in 1-6 (search depth 1-6 plies with chess extensions)
+
 #enterp#starchess#
 Levels:
 1       1 sec/move
@@ -1002,7 +1126,7 @@ b5#n                            search depth n ("non-iterative"), n=0-99
 b6#n                            mate in n, n=0-99
 b7#m:ss                         time/move, m=0-9, ss=00-99
 
-#feagv2#feagv3#feagv4#feagv5#feagv6#feagv7#feagv7a#feagv9#feagv10#feagv11#
+#feagv2#feagv3#feagv4#feagv4a#feagv5#feagv6#feagv7#feagv7a#feagv7b#feagv9#feagv10#feagv11#
 #feagv6oc#feagv7oc#feagv7aoc#feagv9oc#
 Levels: #
 a1      60 moves in 5 min       5 sec/move
@@ -1047,7 +1171,7 @@ h6      mate in 6 moves
 h7      mate in 7 moves
 h8      mate in 8 moves
 
-#feas#feasbu#feasbua#feasgla#fepriv#fepriva#fpres#
+#feas#feasbu#feasbua#feasgla#feasglaa#feasglab#fepriv#fepriva#feprivb#fpres#
 #fpresa#fpresb#fpresc#fpresd#fprese#fpresbu#fpresgla#super9cc#
 #feasg#feas_4#feas_8#feasbug#feasbuag#feasbu_4#
 #feasbu_8#feasbua_4#feasbua_8#feasglag#feasgla_4#feasgla_8#feprivg#feprivag#
@@ -1184,7 +1308,7 @@ Levels:
 8       30 moves in 3 hrs       6 min/move
 9       analysis
 
-#galileo#leonardo#leonardoa#leonardob#renaissa#renaissaa#
+#galileo#leonardo#leonardoa#leonardob#renaissa#renaissaa#turbos24k#
 Levels:
 a1      1 sec/move
 a2      2 sec/move
@@ -1282,6 +1406,80 @@ Levels: steinitz / steinitza / steinitzb
 10#zz/mm        time control 1, rest of game unchanged (default=20/30)
 10#zz/mm#zz/mm  time control 1, rest of game (zz=1-999 moves, mm=1-999 min)
 
+#gk2000#
+Levels:
+a1      1 sec/move
+b1      2 sec/move
+c1      3 sec/move
+d1      5 sec/move
+e1      10 sec/move
+f1      15 sec/move
+g1      20 sec/move
+h1      30 sec/move
+
+a2      45 sec/move
+b2      1 min/move
+c2      1.5 min/move
+d2      2 min/move
+e2      3 min/move
+f2      5 min/move
+g2      10 min/move
+h2      infinite
+
+a3      40 moves in 1 hr 30 min
+b3      35 moves in 1 hr 45 min
+c3      40 moves in 1 hr 45 min
+d3      35 moves in 1 hr 30 min
+e3      40 moves in 2 hrs
+f3      45 moves in 2 hrs 30 min
+g3      50 moves in 2 hrs
+h3      40 moves in 3 hrs
+
+a4      5 min/game
+b4      10 min/game
+c4      15 min/game
+d4      20 min/game
+e4      30 min/game
+f4      45 min/game
+g4      60 min/game
+h4      90 min/game
+
+a5      1 sec/move
+b5      2 sec/move
+c5      3 sec/move
+d5      4 sec/move
+e5      5 sec/move
+f5      6 sec/move
+g5      7 sec/move
+h5      8 sec/move
+
+a6      mate in 1 move
+b6      mate in 2 moves
+c6      mate in 3 moves
+d6      mate in 4 moves
+e6      mate in 5 moves
+f6      mate in 6 moves
+g6      mate in 7 moves
+h6      mate in 8 moves
+
+a7      search depth 1 ply
+b7      search depth 2 plies
+c7      search depth 3 plies
+d7      search depth 4 plies
+e7      search depth 5 plies
+f7      search depth 6 plies
+g7      search depth 7 plies
+h7      search depth 8 plies
+
+a8      search depth 9 plies
+b8      search depth 10 plies
+c8      search depth 11 plies
+d8      search depth 12 plies
+e8      search depth 13 plies
+f8      search depth 14 plies
+g8      search depth 15 plies
+h8      search depth 16 plies
+
 #im01#
 Levels:
 1       5-15 sec/move
@@ -1343,7 +1541,7 @@ Levels:
 3       10 sec - 5 min/move
 4       1-30 min/move
 
-#megaiv#megaiva#megaiv_10#megaiva_10#
+#megaiv#megaiva#megaiv_10#megaiva_10#mega4#mega4a#
 Levels:
 a1      5 sec/move
 a2      10 sec/move
@@ -1399,6 +1597,62 @@ f5      mate in 5 moves
 f6      mate in 6 moves
 f7      mate in 7 moves
 f8      mate in 8 moves
+
+#mentor16#
+Levels:
+a1      40 moves in 2 min
+a2      40 moves in 3 min
+a3      40 moves in 5 min
+a4      40 moves in 7 min
+a5      40 moves in 10 min
+a6      40 moves in 15 min
+a7      40 moves in 20 min
+a8      40 moves in 30 min
+
+b1      40 moves in 40 min
+b2      40 moves in 50 min
+b3      40 moves in 60 min
+b4      40 moves in 90 min
+b5      40 moves in 100 min
+b6      40 moves in 120 min
+b7      40 moves in 150 min
+b8      infinite
+
+c1      5 min/game
+c2      10 min/game
+c3      15 min/game
+c4      20 min/game
+c5      30 min/game
+c6      60 min/game
+c7      90 min/game
+c8      120 min/game
+
+d1      5 sec/move
+d2      10 sec/move
+d3      15 sec/move
+d4      20 sec/move
+d5      30 sec/move
+d6      60 sec/move
+d7      90 sec/move
+d8      120 sec/move
+
+e1      search depth 1 ply
+e2      search depth 2 plies
+e3      search depth 3 plies
+e4      search depth 4 plies
+e5      search depth 5 plies
+e6      search depth 6 plies
+e7      search depth 7 plies
+e8      search depth 8 plies
+
+f1      beginner levels (search depth 1 ply)
+f2      beginner levels (search depth 1 ply)
+f3      beginner levels (search depth 1 ply)
+f4      beginner levels (search depth 1 ply)
+f5      beginner levels (search depth 1 ply)
+f6      beginner levels (search depth 1 ply)
+f7      beginner levels (search depth 1 ply)
+f8      beginner levels (search depth 1 ply)
 
 #mephisto#mephisto1x#mephistoj#
 Levels:
@@ -1817,7 +2071,57 @@ Levels:
 7       1-15 min/move
 8       5-20 min/move
 
-#nsnova#supremo#
+#nprimo#
+Levels:
+1       60 moves in 5 min
+2       60 moves in 30 min
+3       60 moves in 60 min
+4       45 moves in 90 min
+5       40 moves in 90 min
+6       40 moves in 100 min
+7       40 moves in 2 hrs
+8       40 moves in 2.5 hrs
+
+9       2 sec/move
+10      5 sec/move
+11      10 sec/move
+12      15 sec/move
+13      30 sec/move
+14      1 min/move
+15      2 min/move
+16      3 min/move
+
+17      3 min/game
+18      5 min/game
+19      10 min/game
+20      15 min/game
+21      30 min/game
+22      60 min/game
+23      90 min/game
+24      120 min/game
+
+25      search depth 1 ply
+26      search depth 2 plies
+27      search depth 3 plies
+28      search depth 4 plies
+29      search depth 5 plies
+30      search depth 6 plies
+31      search depth 7 plies
+32      search depth 8 plies
+33      search depth 9 plies
+34      search depth 10 plies
+35      search depth 11 plies
+36      search depth 12 plies
+37      search depth 13 plies
+38      search depth 14 plies
+39      search depth 15 plies
+40      search depth 16 plies
+41      search depth 17 plies
+42      search depth 18 plies
+43      search depth 19 plies
+44      search depth 20 plies
+
+#nsnova#nsnovaa#supremo#
 Levels:
 1       60 moves in 5 min
 2       60 moves in 30 min
@@ -1872,7 +2176,7 @@ Levels:
 47      1 sec/move (max. mate search 7 plies)
 48      1 sec/move (max. mate search 8 plies)
 
-#nsvip#nsvipa#nsvipb#nsvipc#
+#nsvip#nsvipa#nsvipb#nsvipc#nvip#
 Levels:
 TR#1    60 moves in 5 min
 TR#2    60 moves in 30 min
@@ -2029,6 +2333,80 @@ h6      mate in 6 moves
 h7      mate in 7 moves
 h8      mate in 8 moves
 
+#prisma#
+Levels:
+a1      1 sec/move
+a2      2 sec/move
+a3      5 sec/move
+a4      15 sec/move
+a5      30 sec/move
+a6      1 min/move
+a7      2 min/move
+a8      3 min/move
+
+b1      30 moves in 30 min
+b2      40 moves in 2 hrs       then 20 moves in 1 hr
+b3      40 moves in 2.5 hrs     then 16 moves in 1 hr
+b4      45 moves in 1.5 hrs     then 15 moves in 30 min
+b5      50 moves in 2.5 hrs     then 20 moves in 1 hr
+b6      deep search (1 hr/move)
+b7      analysis (max. 16 plies)
+b8      mate search (max. 16 moves)
+
+c1      5 min/game
+c2      7 min/game
+c3      10 min/game
+c4      15 min/game
+c5      20 min/game
+c6      30 min/game
+c7      60 min/game
+c8      90 min/game
+
+d1      beginner levels with reduced strength
+d2      beginner levels with reduced strength
+d3      beginner levels with reduced strength
+d4      beginner levels with reduced strength
+d5      beginner levels with reduced strength
+d6      beginner levels with reduced strength
+d7      beginner levels with reduced strength
+d8      beginner levels with reduced strength
+
+e1      20 moves in 30 min      rest of game in 30 min
+e2      20 moves in 30 min      then 20 moves in 30 min
+e3      20 moves in 40 min      then 20 moves in 40 min
+e4      25 moves in 60 min      then 25 moves in 60 min
+e5      30 moves in 45 min      then 30 moves in 45 min
+e6      30 moves in 60 min      rest of game in 30 min
+e7      30 moves in 60 min      then 30 moves in 60 min
+e8      30 moves in 70 min      then 30 moves in 70 min
+
+f1      30 moves in 75 min      then 30 moves in 75 min
+f2      30 moves in 80 min      then 30 moves in 80 min
+f3      30 moves in 90 min      then 10 moves in 30 min
+f4      30 moves in 100 min     then 30 moves in 100 min
+f5      35 moves in 90 min      rest of game in 15 min
+f6      40 moves in 40 min      then 20 moves in 20 min
+f7      40 moves in 60 min      then 20 moves in 30 min
+f8      40 moves in 80 min      then 20 moves in 40 min
+
+g1      40 moves in 90 min      then 20 moves in 45 min
+g2      40 moves in 100 min     then 20 moves in 50 min
+g3      40 moves in 105 min     rest of game in 15 min
+g4      45 moves in 120 min     then 23 moves in 60 min
+g5      55 moves in 90 min      then 25 moves in 45 min
+g6      50 moves in 100 min     then 25 moves in 50 min
+g7      50 moves in 120 min     then 25 moves in 60 min
+g8      60 moves in 60 min      then 30 moves in 30 min
+
+h1      search depth 1 ply
+h2      search depth 2 plies
+h3      search depth 3 plies
+h4      search depth 4 plies
+h5      search depth 5 plies
+h6      search depth 6 plies
+h7      search depth 7 plies
+h8      search depth 8 plies
+
 #prodigy#prodigy0#
 Levels:
 0       0-1 sec/move
@@ -2089,7 +2467,7 @@ Levels:
 8       2-10 hrs/move
 9       infinite
 
-#roma16#roma16a#roma32#roma2#
+#roma16#roma16a#roma16g#roma32#roma2#
 Levels: #
 00      1 sec/move
 01      2 sec/move
@@ -2204,7 +2582,7 @@ Levels:
 8       5-10 hrs/move
 9       analysis
 
-#sc1#sc2#sc1_4#sc2_4#
+#sc1#sc2#sc2a#sc1_4#sc2_4#
 Levels:
 1       3 sec/move
 2       8 sec/move
@@ -2217,7 +2595,7 @@ Levels:
 9       60 min/move
 10      12 min 30 sec/move
 
-#sc80#
+#sc80#lc80e#
 Levels: #
 0
 1
@@ -2227,7 +2605,7 @@ Levels: #
 5
 6
 
-#sc880#
+#sc880#poly880s#
 Levels: #
 1
 2
@@ -2314,6 +2692,53 @@ g6      mate in 6 moves
 g7      mate in 7 moves
 g8      mate in 8 moves
 
+#scprof#
+Levels:
+a1      1 sec/move
+a2      2 sec/move
+a3      3 sec/move
+a4      5 sec/move
+a5      10 sec/move
+a6      20 sec/move
+a7      30 sec/move
+a8      1 min/move
+
+b1      2 min/move
+b2      3 min/move
+b3      5 min/move
+b4      10 min/move
+b5      20 min/move
+b6      30 min/move
+b7      60 min/move
+b8      infinite
+
+c1      beginner levels with reduced strength
+c2      beginner levels with reduced strength
+c3      beginner levels with reduced strength
+c4      beginner levels with reduced strength
+c5      beginner levels with reduced strength
+c6      beginner levels with reduced strength
+c7      beginner levels with reduced strength
+c8      beginner levels with reduced strength
+
+d1      search depth 1 ply
+d2      search depth 2 plies
+d3      search depth 3 plies
+d4      search depth 4 plies
+d5      search depth 5 plies
+d6      search depth 6 plies
+d7      search depth 7 plies
+d8      search depth 8 plies
+
+e1      mate in 1 move
+e2      mate in 2 moves
+e3      mate in 3 moves
+e4      mate in 4 moves
+e5      mate in 5 moves
+e6      mate in 6 moves
+e7      mate in 7 moves
+e8      mate in 8 moves
+
 #scptchess#
 Levels: #
 1
@@ -2344,7 +2769,83 @@ Levels: #
 15
 16
 
-#senterp#
+#sdiamond#
+Levels: #
+a1      40 moves in 5 min
+a2      40 moves in 15 min
+a3      40 moves in 30 min
+a4      40 moves in 60 min
+a5      40 moves in 90 min
+a6      40 moves in 100 min
+a7      40 moves in 2 hrs
+a8      40 moves in 2.5 hrs
+TR#nn/hh:mm:ss          nn moves in hh:mm:ss (nn=01-99, hh=00-17, mm=00-59, ss=00-59)
+
+b1      2 sec/move
+b2      5 sec/move
+b3      10 sec/move
+b4      15 sec/move
+b5      30 sec/move
+b6      1 min/move
+b7      2 min/move
+b8      3 min/move
+AT#hh:mm:ss             time/move (hh=00-17, mm=00-59, ss=00-59)
+
+c1      3 min/game
+c2      5 min/game
+c3      10 min/game
+c4      15 min/game
+c5      30 min/game
+c6      1 hr/game
+c7      1.5 hrs/game
+c8      2 hrs/game
+SD#hh:mm:ss             time/game (hh=00-17, mm=00-59, ss=00-59)
+
+d1      search depth 1 ply
+d2      search depth 2 plies
+d3      search depth 3 plies
+d4      search depth 4 plies
+d5      search depth 5 plies
+d6      search depth 6 plies
+d7      search depth 7 plies
+d8      search depth 8 plies
+e1      search depth 9 ply
+e2      search depth 10 plies
+e3      search depth 11 plies
+e4      search depth 12 plies
+e5      search depth 13 plies
+e6      search depth 14 plies
+e7      search depth 15 plies
+
+e8      infinite
+
+f1      search depth 1 ply + 2 captures
+f2      search depth 1 ply + 3 captures
+f3      search depth 1 ply + 4 captures
+f4      search depth 1 ply + 5 captures
+f5      search depth 1 ply + 6 captures
+f6      search depth 1 ply + 7 captures
+f7      search depth 1 ply + 8 captures
+f8      search depth 1 ply + 9 captures
+g1      search depth 2 plies + 2 captures
+g2      search depth 2 plies + 3 captures
+g3      search depth 2 plies + 4 captures
+g4      search depth 2 plies + 5 captures
+g5      search depth 2 plies + 6 captures
+g6      search depth 2 plies + 7 captures
+g7      search depth 2 plies + 8 captures
+g8      search depth 2 plies + 9 captures
+
+h1      mate in 1 move
+h2      mate in 2 moves
+h3      mate in 3 moves
+h4      mate in 4 moves
+h5      mate in 5 moves
+h6      mate in 6 moves
+h7      mate in 7 moves
+h8      mate in 8 moves
+
+#senterp#senterpc#
 Levels:
 a1      1.5 sec/move            40 moves in 1 min
 a2      4.5 sec/move            40 moves in 3 min
@@ -2750,7 +3251,7 @@ h6      mate in 6 moves
 h7      mate in 7 moves
 h8      mate in 8 moves
 
-#sstar36k#tstar432#tstar432a#
+#sstar36k#tstar432#tstar432a#tstar432b#
 Levels: #
 a1      5 sec/move
 a2      15 sec/move
@@ -2808,6 +3309,17 @@ Levels: #
 7       15 sec/move - 15 min/move
 8       mate in 2 moves
 
+#triomphe#
+Levels:
+1       10 sec/move
+2       20 sec/move
+3       30 sec/move
+4       1 min/move
+5       2 min/move
+6       3 min/move
+7       4 min/move
+8       6 min/move
+
 #uvc#vcc#vsc#uvcg#vccg#vscg#
 #uvcfr#uvcsp#vccfr#vccsp#vscfr#vscsp#
 Levels:
@@ -2840,6 +3352,34 @@ Levels:
 14      10 min/move
 15      13 min/move
 16      16 min/move
+
+#y416xl#
+Levels: #
+a1      1 sec/move
+a2      2 sec/move
+a3      3 sec/move
+a4      5 sec/move
+a5      10 sec/move
+a6      20 sec/move
+a7      30 sec/move
+a8      1 min/move
+
+b1      2 min/move
+b2      3 min/move
+b3      5 min/move
+b4      10 min/move
+b5      20 min/move
+b6      30 min/move
+b7      60 min/move
+b8      infinite
+
+c1-d8   like a1-b8, but without "permanent brain"
+
+e1-f8   beginner levels with reduced strength
+
+g1-g8   search depth 1-8 plies
+
+h1-h8   mate in 1-8 moves
 
 #y532xl#
 Levels:
