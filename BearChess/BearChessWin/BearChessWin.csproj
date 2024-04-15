@@ -39,7 +39,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -385,6 +385,9 @@
     </Compile>
     <Compile Include="Windows\WinConfigureChessnut.xaml.cs">
       <DependentUpon>WinConfigureChessnut.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\WinConfigureChessnutEvo.xaml.cs">
+      <DependentUpon>WinConfigureChessnutEvo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\WinConfigureCitrine.xaml.cs">
       <DependentUpon>WinConfigureCitrine.xaml</DependentUpon>
@@ -744,6 +747,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\WinConfigureChessnut.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WinConfigureChessnutEvo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1685,6 +1692,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Icons\hos.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ChessnutEvo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

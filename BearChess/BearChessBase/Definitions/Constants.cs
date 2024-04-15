@@ -11,6 +11,7 @@
         public const string MChessLink = "MChessLink";
         public const string SquareOff = "Square Off";
         public const string SquareOffPro = "Square Off Pro";
+        public const string ChessnutEvo = "Chessnut Evo";
         public const string ChessnutAir = "Chessnut Air";
         public const string ChessnutAirPlus = "Chessnut Air+";
         public const string ChessnutAirPlus2 = "Chessnut Air Plus";

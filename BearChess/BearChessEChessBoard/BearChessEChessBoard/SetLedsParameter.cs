@@ -36,6 +36,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool RepeatLastMove;
         public bool ForceShow;
         public string DisplayString;
+        public string FenString;
 
         public SetLEDsParameter()
         {
@@ -54,6 +55,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             IsProbing = false;
             RepeatLastMove = false;
             ForceShow = false;
+            FenString = string.Empty;
         }
 
         public override string ToString()

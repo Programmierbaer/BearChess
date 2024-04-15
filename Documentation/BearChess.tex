@@ -50,6 +50,8 @@ linkcolor=black
 		I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited Inc.\ or iChessOne or Bryght Labs or ZMARTFUN. If something does not work, the companies are not responsible for it.\\
 		
 		Many thanks to Ralf Schäfer and Volker Böhm for the use of their engine Spike (\url{http://spike.lazypics.de/index.html}).\\
+		Many thanks to Graham O'Neill for the Chessnut Evo driver. For more details
+		look at his website on \url{https://goneill.co.nz/chess}.\\
 		
 		Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 		
@@ -1283,7 +1285,7 @@ The final version of iChessOne will have a built-in battery. BearChess will be a
 
 The iChessOne offers multi-colored LEDs. This allows a much more detailed configuration. Each LED can combine three colors ({\color{red}red}, {\color{ForestGreen}green} and {\color{blue}blue}) in different proportions (0 = none to 15 = full) and display them in different brightness levels (0 = off to 15 = very bright).
 And you can set whether they should light up permanently or flash.\\
-The following example defines the LED for the square from which you are to take the chess pieces, with a full proportion of  {\color{ForestGreen}green} and {\color{blue}blue}) and a brightness of 4.
+The following example defines the LED for the square from which you are to take the chess pieces, with a full proportion of  {\color{ForestGreen}green} and {\color{blue}blue} and a brightness of 4.
 The LED for the target square is {\color{ForestGreen}green} with a brightness of 4 and flashes.
 
 \begin{figure}[H]
@@ -1682,17 +1684,20 @@ For a USB connection, the connection is not simulated as a COM port, but as a Hu
 	\caption{Configure Chessnut Evo }
 	\label{fig:ChessnutEvo4}
 \end{figure}
+The driver developed by Graham O'Neill must be installed on the Chessnut Evo. For more details
+look at his website on (\url{https://goneill.co.nz/chess}).\\
+The computer connects to the Chessnut Evo board using its IP address. This means that your PC and the board must be on the same LAN in order for the PC to see the board. You will need the IPv4 number (192.168.178.49 in the above example) without the '//' or ':' characters or the port number "8888".
 
 
 \subsubsection{LEDs}
 
 The Chessnut Evo offers multi-colored LEDs. This allows a much more detailed configuration. Each LED can combine three colors ({\color{red}red}, {\color{ForestGreen}green} and {\color{blue}blue}) in different proportions (0 = none to 15 = full) and display them in different brightness levels (0 = off to 15 = very bright).
-The following example defines the LED for the square from which you are to take the chess pieces, with a full proportion of  {\color{ForestGreen}green} and {\color{blue}blue}) and a brightness of 4.
-The LED for the target square is {\color{ForestGreen}green} with a brightness of 4.
+The following example defines the LED for the square from which you are to take the chess pieces, with a full proportion of  {\color{ForestGreen}green} and {\color{blue}blue} and a brightness of 15.
+The LED for the target square is {\color{ForestGreen}green} with a brightness of 15.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{iChessOne3.png}
+	\includegraphics[scale=1.0]{ChessnutEvo3.png}
 	\caption{Set LEDs }
 	\label{fig:ChessnutEvo6}
 \end{figure}
@@ -1735,7 +1740,7 @@ A click on \includegraphics[scale=0.4]{eye.png} connects to the board.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{iChessOne6.png}
+	\includegraphics[scale=1.0]{ChessnutEvo8.png}
 	\caption{Test your LEDs }
 	\label{fig:ChessnutEvo9}
 \end{figure}
@@ -1769,17 +1774,15 @@ You can configure and save as many configurations as you like. For example, diff
 \subsubsection{Connect Chessnut Evo} \label{ConnectChessnutEvo}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=1.0]{ChessnutAir1.png}
+	\includegraphics[scale=0.7]{ChessnutEvo1.png}
 	\caption{Connect to Chessnut Evo}
 	\label{fig:ChessnutEvo1}
 \end{figure}
 
-Chessnut Evo supports connections via IP address. Your computer and the board must be in the same
-LAN.\\
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.7]{ChessnutAir2.png}
+	\includegraphics[scale=0.7]{ChessnutEvo6.png}
 	\caption{Connected via IP address}
 	\label{fig:ChessnutEvo2}
 \end{figure}
@@ -3307,6 +3310,7 @@ These are some ideas what will come in one of the next versions.
 \begin{itemize}			
 	\item {\color{blue}New}: Integration of Chessnut Evo.
     \item {\color{teal}Changes}: Support CTG files up to 4GB.
+    \item {\color{red}Fix}: Piece detection at Certabo/TabuTronic.
 \end{itemize}
 
 

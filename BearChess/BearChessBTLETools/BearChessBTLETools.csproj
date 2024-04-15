@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncHelper.cs" />
     <Compile Include="BTLEComPort.cs" />
     <Compile Include="DisplayHelper.cs" />
     <Compile Include="HIDComPort.cs" />

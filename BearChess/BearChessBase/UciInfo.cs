@@ -124,6 +124,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 if (fi.Exists)
                 {
                     string messChessLevelFileName = Path.Combine(fi.DirectoryName, "Level", "English.txt");
+                    string messChessBearChessLevelFileName = Path.Combine(fi.DirectoryName, "BearChess", "MessChessLevels.txt");
                     try
                     {
                         var strings = CommandParameter.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -131,6 +132,9 @@ namespace www.SoLaNoSoft.com.BearChessBase
                         if (strings.Length > 1 && !strings[1].StartsWith("-"))
                         {
                             levelCode = strings[1];
+                        }
+                        if (File.Exists(messChessBearChessLevelFileName)) {
+                            bearChessFileName = messChessBearChessLevelFileName;
                         }
                         var messChessLevelReader =
                             new MessChessLevelReader(bearChessFileName, messChessLevelFileName, strings[0], levelCode);

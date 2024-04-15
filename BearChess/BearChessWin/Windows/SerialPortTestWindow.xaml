@@ -13,13 +13,13 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Visibility="Visible">
+        <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Visibility="Collapsed">
             <Button Name="buttonConnectPipe" Width="100" Margin="5" Click="buttonConnectPipe_Click">Connect</Button>
             <Button Name="buttonDisConnectPipe" Width="100" Margin="5" Click="buttonDisConnectPipe_Click">Disconnect</Button>
         </StackPanel>
-        <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Visibility="Collapsed">
+        <StackPanel Grid.Row="0" Margin="5" Orientation="Horizontal" Visibility="Visible">
             <TextBlock  Margin="5" >Address:</TextBlock>
-            <TextBox Name="textBoxAddress" Width="150" Margin="5" >COM12</TextBox>
+            <TextBox Name="textBoxAddress" Width="150" Margin="5" >192.168.178.49:8888</TextBox>
             <Button Name="buttonConnectIP" Width="100" Margin="5" Click="buttonConnectIP_Click">Connect</Button>
             <Button Name="buttonDicConnectIP" Width="100" Margin="5" Click="buttonDisConnectIP_Click">Disconnect</Button>
         </StackPanel>

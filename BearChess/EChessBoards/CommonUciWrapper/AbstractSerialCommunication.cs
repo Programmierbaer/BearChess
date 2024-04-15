@@ -577,6 +577,19 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                         SerialBTLECommunicationTools.StopWatching();
                     }
                 }
+                if (_boardName.Equals(Constants.ChessnutEvo, StringComparison.OrdinalIgnoreCase))
+                {
+
+                    _comPort = new WebSocketComPort(comPort);
+                        if (_comPort == null)
+                        {
+                            _logger?.LogInfo("No port for Chessnut Evo");
+                            return false;
+                        }
+
+
+                }
+
                 if (_boardName.Equals(Constants.ChessUp, StringComparison.OrdinalIgnoreCase))
                 {
                    
@@ -842,6 +855,19 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 return true;
                             }
                         }
+                        if (_boardName.Equals(Constants.ChessnutEvo, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                CurrentComPort = portName.StartsWith("B") ? "BTLE" : portName;
+                                BoardInformation = Constants.ChessnutEvo;
+                                Thread.Sleep(30);
+                                SendRawToBoard("fen");
+                                Thread.Sleep(10);
+                                return true;
+                            }
+                        }
                         if (_boardName.Equals(Constants.ChessUp, StringComparison.OrdinalIgnoreCase))
                         {
                             if (_comPort.IsOpen)
@@ -956,6 +982,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             SendRawToBoard("W030A");
                             Thread.Sleep(10);
                         }
+                     
 
                         string readLine = string.Empty;
                         if (_boardName.Equals(Constants.MChessLink, StringComparison.OrdinalIgnoreCase))

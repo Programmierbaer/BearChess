@@ -136,10 +136,15 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
             {
                 return moves.OrderByDescending(b => b.Recommendations).ThenByDescending(b => b.Weight).ToArray();
             }
+            List<IBookMoveBase> bookMoves = new List<IBookMoveBase>();
             var position = StringHelper.readFEN(fenPosition);
             var bookPosInput = new BookPosInput(position, null, null);
             var bookEntries = getBookEntries(bookPosInput);
-            List<IBookMoveBase> bookMoves = new List<IBookMoveBase>();
+            if (bookEntries == null)
+            {
+                return bookMoves.ToArray();
+            }
+            
             foreach (var bookEntry in bookEntries)
             {
                 var moveToUciString = StringHelper.MoveToUCIString(bookEntry.Move);
@@ -248,7 +253,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
             private FileStream _ctgFileStream;
             private CtbFile _ctbFile;
             private CtoFile _ctoFile;
-            private byte[] _ctgBuffer = null;
+            private byte[] _ctgBuffer1 = null;
+            private byte[] _ctgBuffer2 = null;
             public int NumberOfGames { get; private set; }
 
             public CtgFile(FileStream ctg, CtbFile ctb, CtoFile cto)
@@ -256,9 +262,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
                 _ctgFileStream = ctg;
                 _ctbFile = ctb;
                 _ctoFile = cto;
-                _ctgBuffer = new byte[_ctgFileStream.Length];
-                _ctgFileStream.Read(_ctgBuffer, 0, _ctgBuffer.Length);
-                NumberOfGames = ExtractInt(_ctgBuffer, 28, 4);
+                _ctgBuffer1 = new byte[_ctgFileStream.Length / 2];
+                _ctgBuffer2 = new byte[_ctgFileStream.Length / 2];
+                _ctgFileStream.Read(_ctgBuffer1, 0, _ctgBuffer1.Length);
+                _ctgFileStream.Read(_ctgBuffer2, 0, _ctgBuffer2.Length);
+                NumberOfGames = ExtractInt(_ctgBuffer1, 28, 4);
                 
             }
 
@@ -309,7 +317,15 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
             private PositionData findInPage(int page, sbyte[] encodedPos)
             {
                 byte[] pageByteBuf = new byte[4096];
-                Array.Copy(_ctgBuffer, (page + 1) * 4096, pageByteBuf, 0, 4096);
+                if (((page + 1) * 4096) <= _ctgBuffer1.Length)
+                {
+                    Array.Copy(_ctgBuffer1, (page + 1) * 4096, pageByteBuf, 0, 4096);
+                }
+                else
+                {
+                    Array.Copy(_ctgBuffer2, (page + 1) * 4096 - _ctgBuffer1.Length, pageByteBuf, 0, 4096);
+                }
+
                 //sbyte[] pageBuf = ReadBytes(_ctgFileStream, (page + 1) * 4096, 4096);
                 sbyte[] pageBuf = Array.ConvertAll(pageByteBuf, b => unchecked((sbyte)b));
                 // Array.ConvertAll(pageByteBuf, b => unchecked((sbyte)b));
@@ -350,7 +366,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
 
             public void Dispose()
             {
-                _ctgBuffer = null;
+                _ctgBuffer1 = null;
+                _ctgBuffer2 = null;
             }
         }
         private class BitVector
@@ -1048,7 +1065,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
                // _ctg.Dispose();
                 return ret.ToArray();
             }
-            catch (IOException e)
+            catch (Exception e)
             {
                 if (_ctgF != null)
                 {

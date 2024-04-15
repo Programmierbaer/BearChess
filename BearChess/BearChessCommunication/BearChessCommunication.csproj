@@ -45,8 +45,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="websocket-sharp-standard, Version=1.0.3.0, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharp.Standard.1.0.3\lib\netstandard2.0\websocket-sharp-standard.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncHelper.cs" />
     <Compile Include="BasicPipe.cs" />
     <Compile Include="ClientPipe.cs" />
     <Compile Include="CRCConversions.cs" />
@@ -63,6 +67,7 @@
     <Compile Include="SerialComPortStreamBased.cs" />
     <Compile Include="ServerPipe.cs" />
     <Compile Include="Telnet.cs" />
+    <Compile Include="WebSocketComPort.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BearChessBase\BearChessBase.csproj">

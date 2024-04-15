@@ -67,6 +67,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     imageChessnutAirPlus.Visibility = Visibility.Visible;
                 }
+                if (chessBoardInfo.Equals(Constants.ChessnutEvo))
+                {
+                    imageChessnutEvo.Visibility = Visibility.Visible;
+                }
                 if (chessBoardInfo.Equals(Constants.ChessnutPro))
                 {
                     imageChessnutAirPro.Visibility = Visibility.Visible;

@@ -12,9 +12,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
     {
         private readonly ILogging _logging;
 
-        // https://andre-benevides.medium.com/creating-a-serial-port-wrapper-c-net-framework-390584531285
-        // https://www.vgies.com/a-reliable-serial-port-in-c/
-        // https://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport
+       
         public string PortName { get; }
         public string Baud { get; }
         public string DeviceName => string.Empty;

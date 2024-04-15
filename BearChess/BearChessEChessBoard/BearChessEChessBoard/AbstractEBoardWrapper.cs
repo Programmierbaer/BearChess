@@ -346,7 +346,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     IsThinking = false,
                     IsTakeBack = true,
                     IsMove = false,
-                    DisplayString = string.Empty
+                    DisplayString = string.Empty,
+                    FenString = _internalChessBoard.GetPosition(),
                 });
             }
 
@@ -372,7 +373,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public void SetAllLedsOff(bool forceOff)
         {
-            if (!_allLedOff)
+            if (!_allLedOff || forceOff)
             {
                 _fileLogger?.LogDebug("AB: Set all LEDs off");
                 while (_waitForFen.Count > 0)
@@ -488,7 +489,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 Promote = promote,
                 IsThinking = false,
                 IsMove = true,
-                DisplayString = string.Empty
+                DisplayString = string.Empty,
+                FenString = _internalChessBoard.GetPosition()
             });
             _stop = false;
 
@@ -799,7 +801,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
                 //_board?.SetAllLedsOff();
                 var fenPosition = _board?.GetPiecesFen();
-                if (fenPosition == null)
+                if (fenPosition == null || string.IsNullOrWhiteSpace(fenPosition.FromBoard))
                 {
                     return null;
                 }

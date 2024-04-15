@@ -43,8 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EChessBoard.cs" />
+    <Compile Include="EChessBoardEvo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialCommunication.cs" />
+    <Compile Include="WebCommunication.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\BearChessBase\BearChessBase.csproj">

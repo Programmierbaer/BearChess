@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Net.WebSockets;
 using WebSocketSharp;
 using System.Text;
 using System.Threading;
@@ -12,9 +13,14 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using WebSocket = WebSocketSharp.WebSocket;
+using WebSocketState = System.Net.WebSockets.WebSocketState;
+using System.Threading.Tasks;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
+
+    // https://github.com/Marfusios/websocket-client
     /// <summary>
     /// Interaktionslogik für SerialPortTestWindow.xaml
     /// </summary>
@@ -245,6 +251,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _clientPipe?.WriteString(textBoxSend.Text);
                 //_clientPipe?.WriteBytes(Encoding.ASCII.GetBytes(textBoxSend.Text));
                 _comPort?.Write(textBoxSend.Text);
+                webSocket?.Send(textBoxSend.Text);
 
             }
             // _comPort?.Write(textBoxSend.Text);
@@ -371,15 +378,89 @@ namespace www.SoLaNoSoft.com.BearChessWin
            textBoxSend.Text = "L22"+ GetLedForFields(textBoxFrom.Text.Split(",".ToCharArray()), false);
         }
 
-        private void buttonConnectIP_Click(object sender, RoutedEventArgs e)
+        public  async Task Connect(string uri)
         {
-            //var url = new Uri(textBoxAddress.Text);
+            ClientWebSocket webSocket = null;
+
             try
             {
+                webSocket = new ClientWebSocket();
+                await webSocket.ConnectAsync(new Uri(uri), CancellationToken.None);
+                await Task.WhenAll(Receive(webSocket), Send(webSocket));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: {0}", ex);
+            }
+            finally
+            {
+                if (webSocket != null)
+                    webSocket.Dispose();
+             
+            }
+        }
+
+        private  async Task Send(ClientWebSocket webSocket)
+        {
+            var random = new Random();
+            byte[] buffer = new byte[256];
+            bool already = false;
+            while (webSocket.State == WebSocketState.Open)
+            {
+                if (!already)
+                {
+                    buffer = Encoding.UTF8.GetBytes("fen");
+
+                    await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, false,
+                        CancellationToken.None);
+                    already = true;
+                }
+
+                await Task.Delay(TimeSpan.FromMilliseconds(1000));
+            }
+        }
+
+        private  async Task Receive(ClientWebSocket webSocket)
+        {
+            byte[] buffer = new byte[64];
+            while (webSocket.State == WebSocketState.Open)
+            {
+                var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                if (result.MessageType == WebSocketMessageType.Close)
+                {
+                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                }
+                else
+                {
+                    Dispatcher?.Invoke(() =>
+                    {
+                        string res = System.Text.Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+                        listBoxLog.Items.Add($"{res}");
+                        ;
+                        listBoxLog.ScrollIntoView(listBoxLog.Items.GetItemAt(listBoxLog.Items.Count - 1));
+
+                    });
+                }
+            }
+        }
+
+        private async void buttonConnectIP_Click(object sender, RoutedEventArgs e)
+        {
+            //var url = new Uri(textBoxAddress.Text);
+            ClientWebSocket _clientWebSocket;
+            try
+            {
+                _clientWebSocket = new ClientWebSocket();
+                //await _clientWebSocket.ConnectAsync(new Uri($"ws://{textBoxAddress.Text}"), CancellationToken.None);
+                //await Task.WhenAll(Receive(_clientWebSocket), Send(_clientWebSocket));
+
                 webSocket = new WebSocket($"ws://{textBoxAddress.Text}");
                 webSocket.OnMessage += WebSocket_OnMessage;
+                webSocket.OnClose += WebSocket_OnClose;
+                webSocket.OnOpen += WebSocket_OnOpen;
                 webSocket.Connect();
                 webSocket.Send("fen");
+
             }
             catch (Exception ex)
             {
@@ -392,11 +473,33 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         }
 
+        private void WebSocket_OnOpen(object sender, EventArgs e)
+        {
+            Dispatcher?.Invoke(() =>
+            {
+                listBoxLog.Items.Add($"Opened");
+                ;
+                listBoxLog.ScrollIntoView(listBoxLog.Items.GetItemAt(listBoxLog.Items.Count - 1));
+                _allLines.AppendLine($"{DateTime.UtcNow:o} {e}");
+            });
+        }
+
+        private void WebSocket_OnClose(object sender, CloseEventArgs e)
+        {
+            Dispatcher?.Invoke(() =>
+            {
+                listBoxLog.Items.Add($"Closed: {e.Reason}");
+                ;
+                listBoxLog.ScrollIntoView(listBoxLog.Items.GetItemAt(listBoxLog.Items.Count - 1));
+                _allLines.AppendLine($"{DateTime.UtcNow:o} {e.Reason}");
+            });
+        }
+
         private void WebSocket_OnMessage(object sender, MessageEventArgs e)
         {
             Dispatcher?.Invoke(() =>
             {
-                listBoxLog.Items.Add($"{e.Data}");
+                listBoxLog.Items.Add($"Message: {e.Data}");
                 ;
                 listBoxLog.ScrollIntoView(listBoxLog.Items.GetItemAt(listBoxLog.Items.Count - 1));
                 _allLines.AppendLine($"{DateTime.UtcNow:o} {e.Data}");

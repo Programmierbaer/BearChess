@@ -112,7 +112,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                 _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
             }
 
-            Information = "iChessOne";
+            Information = Constants.IChessOne;
         }
 
       
@@ -122,7 +122,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
             _logger = logger;
             BatteryLevel = "---";
             BatteryStatus = "Full";
-            Information = "iChessOne";
+            Information = Constants.IChessOne;
             MultiColorLEDs = true;
         }
 
@@ -155,13 +155,12 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
             }
         }
 
-        
+
         public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
             lock (_lock)
             {
-
-            //    _logger.LogDebug($"EB: Request set LEDs for {ledsParameter}");
+                //    _logger.LogDebug($"EB: Request set LEDs for {ledsParameter}");
                 var fieldNamesList = new List<string>();
                 var allFieldNamesList = new List<string>();
                 var rgbMoveFrom = _extendedConfiguration.RGBMoveFrom;
@@ -178,7 +177,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
                     if (ledsParameter.HintFieldNames.All(f => _lastSend.Contains(f)))
                     {
-                       // return;
+                        // return;
                     }
 
                     string currentBestMove = string.Empty;
@@ -186,7 +185,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                     if (ledsParameter.ProbingMoves.Length < 1 || !_extendedConfiguration.ShowPossibleMovesEval)
                     {
                         SetLedForFields(ledsParameter.FieldNames, rgbMoveFrom, _extendedConfiguration.FlashMoveFrom,
-                            _extendedConfiguration.DimMoveFrom.ToString("X"), false,"Move from");
+                            _extendedConfiguration.DimMoveFrom.ToString("X"), false, "Move from");
                         //if (ledsParameter.HintFieldNames.Length > 1)
                         {
                             SetLedForFields(ledsParameter.HintFieldNames, _extendedConfiguration.RGBPossibleMoves,
@@ -200,24 +199,30 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                     else
                     {
                         SetLedForFields(ledsParameter.FieldNames, rgbMoveFrom, _extendedConfiguration.FlashMoveFrom,
-                            _extendedConfiguration.DimMoveFrom.ToString("X"), false,"Move from");
-                        string[] strings = ledsParameter.ProbingMoves.Where(p => p.Score <= -1).Select(p => p.FieldName).ToArray();
+                            _extendedConfiguration.DimMoveFrom.ToString("X"), false, "Move from");
+                        string[] strings = ledsParameter.ProbingMoves.Where(p => p.Score <= -1).Select(p => p.FieldName)
+                            .ToArray();
                         if (strings.Length > 0)
                         {
                             SetLedForFields(strings, _extendedConfiguration.RGBPossibleMovesBad,
                                 _extendedConfiguration.FlashPossibleMovesBad,
-                                _extendedConfiguration.DimPossibleMovesBad.ToString("X"), true,"Bad moves");
+                                _extendedConfiguration.DimPossibleMovesBad.ToString("X"), true, "Bad moves");
                         }
-                        strings = ledsParameter.ProbingMoves.Where(p => p.Score <= 1 && p.Score>=-1).OrderByDescending(p => p.Score).Select(p => p.FieldName).ToArray();
+
+                        strings = ledsParameter.ProbingMoves.Where(p => p.Score <= 1 && p.Score >= -1)
+                            .OrderByDescending(p => p.Score).Select(p => p.FieldName).ToArray();
                         if (strings.Length > 0)
                         {
                             currentBestMove = strings[0];
-                            currentBestSore = ledsParameter.ProbingMoves.First(p => p.FieldName.Equals(currentBestMove)).Score;
+                            currentBestSore = ledsParameter.ProbingMoves.First(p => p.FieldName.Equals(currentBestMove))
+                                .Score;
                             SetLedForFields(strings, _extendedConfiguration.RGBPossibleMovesPlayable,
                                 _extendedConfiguration.FlashPossibleMovesPlayable,
                                 _extendedConfiguration.DimPossibleMovesPlayable.ToString("X"), true, "Playable moves");
                         }
-                        strings = ledsParameter.ProbingMoves.Where(p => p.Score > 1).OrderByDescending(p => p.Score).Select(p => p.FieldName).ToArray();
+
+                        strings = ledsParameter.ProbingMoves.Where(p => p.Score > 1).OrderByDescending(p => p.Score)
+                            .Select(p => p.FieldName).ToArray();
                         if (strings.Length > 0)
                         {
                             SetLedForFields(strings, _extendedConfiguration.RGBPossibleMovesGood,
@@ -228,7 +233,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                         {
                             if (currentBestSore > 0)
                             {
-                                SetLedForFields(new[] {currentBestMove}, _extendedConfiguration.RGBPossibleMovesGood,
+                                SetLedForFields(new[] { currentBestMove }, _extendedConfiguration.RGBPossibleMovesGood,
                                     _extendedConfiguration.FlashPossibleMovesGood,
                                     _extendedConfiguration.DimPossibleMovesGood.ToString("X"), true, "Good moves");
                             }
@@ -237,6 +242,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                         _lastSend.Clear();
                         _lastSend = new HashSet<string>(ledsParameter.HintFieldNames);
                     }
+
                     return;
                 }
 
@@ -244,7 +250,8 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                 {
                     if (_showMoveLine && !ledsParameter.IsError)
                     {
-                        var moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
+                        var moveLine =
+                            MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
                         fieldNamesList.AddRange(moveLine);
                     }
                     else
@@ -257,42 +264,48 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                     fieldNamesList.AddRange(ledsParameter.FieldNames);
 
                 }
+
                 allFieldNamesList.AddRange(fieldNamesList);
                 allFieldNamesList.AddRange(ledsParameter.InvalidFieldNames);
                 if (allFieldNamesList.Count == 0)
                 {
                     return;
                 }
-                if (!ledsParameter.ForceShow && allFieldNamesList.Count>0 && allFieldNamesList.All(f => _lastSend.Contains(f)))
+
+                if (!ledsParameter.ForceShow && allFieldNamesList.Count > 0 &&
+                    allFieldNamesList.All(f => _lastSend.Contains(f)))
                 {
-  //                  _logger.LogDebug($"EB: Request set LEDs ignored: equal to last send");
+                    //                  _logger.LogDebug($"EB: Request set LEDs ignored: equal to last send");
                     return;
                 }
 
                 _lastSend.Clear();
                 _lastSend = new HashSet<string>(fieldNamesList.Concat(ledsParameter.InvalidFieldNames));
-               
+
 
                 if (ledsParameter.IsThinking)
                 {
-                    if (!ledsParameter.ForceShow && _lastSendThinkingParameters.FieldNames.Length==2 && _lastSendThinkingParameters.FieldNames[0].Equals(ledsParameter.FieldNames[0]) &&
+                    if (!ledsParameter.ForceShow && _lastSendThinkingParameters.FieldNames.Length == 2 &&
+                        _lastSendThinkingParameters.FieldNames[0].Equals(ledsParameter.FieldNames[0]) &&
                         _lastSendThinkingParameters.FieldNames[1].Equals(ledsParameter.FieldNames[1]))
                     {
                         return;
                     }
+
                     if (ledsParameter.RepeatLastMove)
                     {
                         SetLedForFields(_lastSendMoveParameters);
                         _logger.LogDebug($"EB: Set thinking LEDs for {ledsParameter}");
-                        SetLedForFields(fieldNamesList.ToArray(), rgbHelp, _extendedConfiguration.FlashHelp, _extendedConfiguration.DimHelp.ToString("X"),
-                            true,"Thinking fields");
+                        SetLedForFields(fieldNamesList.ToArray(), rgbHelp, _extendedConfiguration.FlashHelp,
+                            _extendedConfiguration.DimHelp.ToString("X"),
+                            true, "Thinking fields");
                     }
                     else
                     {
                         _logger.LogDebug($"EB: Set thinking LEDs for {ledsParameter}");
                         SetLedForFields(fieldNamesList.ToArray(), rgbHelp, _extendedConfiguration.FlashHelp,
                             _extendedConfiguration.DimHelp.ToString("X"),
-                            false,"Thinking fields");
+                            false, "Thinking fields");
                     }
 
                     _lastSendThinkingParameters = ledsParameter;
@@ -306,19 +319,25 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                     if (_extendedConfiguration.SplitMoveFromMoveTo() && fieldNamesList.Count == 2)
                     {
                         string[] f = fieldNamesList.ToArray();
-                        SetLedForFields(new[] { f[0] }, rgbMoveFrom, flashMoveFrom, dimMoveFrom.ToString("X"), false,"Move from");
-                        SetLedForFields(new[] { f[1] }, rgbMoveTo, flashMoveTo, dimMoveTo.ToString("X"), true, "Move to");
+                        SetLedForFields(new[] { f[0] }, rgbMoveFrom, flashMoveFrom, dimMoveFrom.ToString("X"), false,
+                            "Move from");
+                        SetLedForFields(new[] { f[1] }, rgbMoveTo, flashMoveTo, dimMoveTo.ToString("X"), true,
+                            "Move to");
 
                     }
                     else
                     {
-                        SetLedForFields(fieldNamesList.ToArray(), rgbMoveFrom, flashMoveFrom,dimMoveFrom.ToString("X"), false, "Move from/to");
+                        SetLedForFields(fieldNamesList.ToArray(), rgbMoveFrom, flashMoveFrom, dimMoveFrom.ToString("X"),
+                            false, "Move from/to");
                     }
 
                     SetLedForFields(ledsParameter.InvalidFieldNames, rgbInvalid, _extendedConfiguration.FlashInvalid,
-                        _extendedConfiguration.DimInvalid.ToString("X"), fieldNamesList.ToArray().Length > 0,"Invalid fields");
+                        _extendedConfiguration.DimInvalid.ToString("X"), fieldNamesList.ToArray().Length > 0,
+                        "Invalid fields");
                     SetLedForFields(ledsParameter.HintFieldNames, rgbHelp, _extendedConfiguration.FlashHelp,
-                        _extendedConfiguration.DimHelp.ToString("X"), fieldNamesList.ToArray().Length > 0 || ledsParameter.InvalidFieldNames.ToArray().Length > 0,"Hint fields") ;
+                        _extendedConfiguration.DimHelp.ToString("X"),
+                        fieldNamesList.ToArray().Length > 0 || ledsParameter.InvalidFieldNames.ToArray().Length > 0,
+                        "Hint fields");
 
                     return;
                 }
@@ -327,8 +346,8 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                 {
                     _logger.LogDebug($"EB: Set take back LEDs for {ledsParameter}");
                     SetLedForFields(fieldNamesList.ToArray(), rgbTakeBack, _extendedConfiguration.FlashTakeBack,
-                                        _extendedConfiguration.DimTakeBack.ToString("X"), false,"Take back");
-                    
+                        _extendedConfiguration.DimTakeBack.ToString("X"), false, "Take back");
+
                     return;
                 }
 
@@ -336,13 +355,15 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                 {
                     _logger.LogDebug($"EB: Set error LEDs for {ledsParameter}");
                     SetLedForFields(fieldNamesList.ToArray(), rgbMoveFrom, _extendedConfiguration.FlashCurrentColor,
-                                        _extendedConfiguration.DimMoveFrom.ToString("X"), false,"Invalid fields: Move from");
+                        _extendedConfiguration.DimMoveFrom.ToString("X"), false, "Invalid fields: Move from");
                     SetLedForFields(ledsParameter.InvalidFieldNames, rgbInvalid, _extendedConfiguration.FlashInvalid,
-                        _extendedConfiguration.DimInvalid.ToString("X"), fieldNamesList.ToArray().Length > 0,"Invalid fields: Invalid fields");
+                        _extendedConfiguration.DimInvalid.ToString("X"), fieldNamesList.ToArray().Length > 0,
+                        "Invalid fields: Invalid fields");
 
 
                     return;
                 }
+
                 _logger.LogError($"EB: Request without valid indicator set LEDs for {ledsParameter}");
             }
         }

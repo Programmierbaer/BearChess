@@ -45,8 +45,9 @@
             </Grid.RowDefinitions>
             <Menu Grid.Row="0" Margin="5,0,5,0" Background="Transparent">
 
-                <MenuItem Header="Actions" Name="menuItemActions" >
-                    <MenuItem Header="Start a new game" Name="menuItemNewGame" Click="MenuItemNewGame_OnClick" InputGestureText="Ctrl+N">
+                <MenuItem Header="Actions" Name="menuItemActions">
+                    <MenuItem Header="Start a new game" Name="menuItemNewGame" Click="MenuItemNewGame_OnClick"
+                              InputGestureText="Ctrl+N">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/BearChess.ico" Stretch="UniformToFill" />
                         </MenuItem.Icon>
@@ -296,7 +297,8 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Settings">
-                    <MenuItem Name="menuItemConfigBearChess" Header="BearChess..." Click="MenuItemConfigBearChess_OnClick">
+                    <MenuItem Name="menuItemConfigBearChess" Header="BearChess..."
+                              Click="MenuItemConfigBearChess_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/BearChess.ico" />
                         </MenuItem.Icon>
@@ -364,7 +366,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-               
+
                     <MenuItem Name="menuItemSettingsNotationMoves" Header="Notation/Moves">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/text_list_numbers.png" />
@@ -460,7 +462,7 @@
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/Certabo_icon.ico" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemConnectToCertabo" Header="Connect" 
+                        <MenuItem Name="menuItemConnectToCertabo" Header="Connect"
                                   Click="MenuItemConnectCertabo_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/connect.png" />
@@ -483,7 +485,8 @@
                                   ToolTip="Connect via Bluetooth LE"
                                   Click="MenuItemBluetoothLECertabo_OnClick">
                             <MenuItem.Icon>
-                                <Image Name="imageCertaboBluetoothLE" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                <Image Name="imageCertaboBluetoothLE" Source="Assets/Icons/tick.png"
+                                       Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Name="menuItemChesstimationCertabo" Header="Chesstimation module"
@@ -527,7 +530,8 @@
                                       ToolTip="Connect via Bluetooth LE"
                                       Click="MenuItemBluetoothLECerno_OnClick">
                                 <MenuItem.Icon>
-                                    <Image Name="imageCernoBluetoothLE" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                    <Image Name="imageCernoBluetoothLE" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
@@ -559,7 +563,8 @@
                                       ToolTip="Connect via Bluetooth LE"
                                       Click="MenuItemBluetoothLESentio_OnClick">
                                 <MenuItem.Icon>
-                                    <Image Name="imageSentioBluetoothLE" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                                    <Image Name="imageSentioBluetoothLE" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
@@ -694,29 +699,51 @@
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Header="Chessnut Air/Air+/Pro" Name="menuItemChessnutAirBoard">
+                    <MenuItem Header="Chessnut">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/chessnut.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemConnectToChessnutAirBoard" Header="Connect"
-                                  Click="MenuItemConnectChessnutAirBoard_OnClick">
+                        <MenuItem Header="Chessnut Air/Air+/Pro" Name="menuItemChessnutAirBoard">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/connect.png" />
+                                <Image Source="Assets/Icons/chessnut.png" />
                             </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToChessnutAirBoard" Header="Connect"
+                                      Click="MenuItemConnectChessnutAirBoard_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureChessnutAir" Header="Configure..."
+                                      Click="MenuItemConfigureChessnutAir_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemBluetoothChessnutAir" Header="Bluetooth LE"
+                                      ToolTip="Connect via Bluetooth LE"
+                                      Click="MenuItemBluetoothChesssnutAir_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageChessnutAirBluetooth" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
-                        <MenuItem Name="menuItemConfigureChessnutAir" Header="Configure..."
-                                  Click="MenuItemConfigureChessnutAir_OnClick">
+                        <MenuItem Header="Chessnut Evo" Name="menuItemChessnutEvo">
                             <MenuItem.Icon>
-                                <Image Source="Assets/Icons/cog.png" />
+                                <Image Source="Assets/Icons/chessnut.png" />
                             </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Name="menuItemBluetoothChessnutAir" Header="Bluetooth LE"
-                                  ToolTip="Connect via Bluetooth LE"
-                                  Click="MenuItemBluetoothChesssnutAir_OnClick">
-                            <MenuItem.Icon>
-                                <Image Name="imageChessnutAirBluetooth" Source="Assets/Icons/tick.png"
-                                       Visibility="Hidden" />
-                            </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToChessnutEvo" Header="Connect"
+                                      Click="MenuItemConnectChessnutEvoBoard_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureChessnutEvo" Header="Configure..."
+                                      Click="MenuItemConfigureChessnutEvo_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="House of Staunton" Name="menuItemZmartfun" Visibility="Visible">
@@ -724,13 +751,13 @@
                             <Image Source="Assets/Icons/hos.png" />
                         </MenuItem.Icon>
                         <MenuItem Name="menuItemConnectToZmartfun" Header="Connect"
-                                Click="MenuItemConnectHoSBoard_OnClick">
+                                  Click="MenuItemConnectHoSBoard_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Visibility="Collapsed" Name="menuItemConfigureZmartfun" Header="Configure..."
-                                Click="MenuItemConfigureZmartfun_OnClick">
+                                  Click="MenuItemConfigureZmartfun_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/cog.png" />
                             </MenuItem.Icon>
@@ -826,27 +853,29 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="Engines">
-                    <MenuItem Header="Show best move in analysis mode" Name="menuItemShowBestMoveInAnalyse"
-                              Click="MenuItemShowBestMoveInAnalyse_OnClick">
-                        <MenuItem.Icon>
-                            <Image Name="imageShowBestMoveOnAnalysisMode" Source="Assets/Icons/tick.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
+                        <MenuItem Header="Show best move in analysis mode" Name="menuItemShowBestMoveInAnalyse"
+                                  Click="MenuItemShowBestMoveInAnalyse_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageShowBestMoveOnAnalysisMode" Source="Assets/Icons/tick.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
 
-                    <MenuItem Header="Show current best move in game" Name="menuItemShowBestMoveInGame"
-                              Click="MenuItemShowBestMoveInGame_OnClick">
-                        <MenuItem.Icon>
-                            <Image Name="imageShowBestMoveOnGame" Source="Assets/Icons/tick.png" />
-                        </MenuItem.Icon>
+                        <MenuItem Header="Show current best move in game" Name="menuItemShowBestMoveInGame"
+                                  Click="MenuItemShowBestMoveInGame_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageShowBestMoveOnGame" Source="Assets/Icons/tick.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Show move from buddy when help is requested"
+                                  Name="menuItemShowRequestForHelp"
+                                  Click="MenuItemShowRequestForHelp_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageShowRequestForHelp" Source="Assets/Icons/tick.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="Show move from buddy when help is requested" Name="menuItemShowRequestForHelp"
-                              Click="MenuItemShowRequestForHelp_OnClick">
-                        <MenuItem.Icon>
-                            <Image Name="imageShowRequestForHelp" Source="Assets/Icons/tick.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    </MenuItem>
-                    <MenuItem Name="menuItemEChessBoardTest" Visibility="Collapsed" Header="Test" Click="MenuItemEChessBoardTest_OnClick" />  
+                    <MenuItem Name="menuItemEChessBoardTest" Visibility="Collapsed" Header="Test"
+                              Click="MenuItemEChessBoardTest_OnClick" />
                 </MenuItem>
                 <MenuItem Header="Windows">
                     <MenuItem Header="Show">
@@ -885,7 +914,7 @@
 
         </Grid>
         <DockPanel Margin="5" Grid.Row="1">
-            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect" 
+            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect"
                     Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonConnect_OnClick">
                 <StackPanel Orientation="Horizontal">
                     <Image Name="imageConnect" Source="Assets/Icons/disconnect.png" Width="16" />
@@ -894,12 +923,13 @@
                 </StackPanel>
                 <Button.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Configure" Name="menuItemConfigureEBoard" Click="MenuItemConfigureEBoard_OnClick">
-                        <MenuItem.Icon>
-                            <Image Source="../Assets/Icons/cog.png" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                   </ContextMenu>
+                        <MenuItem Header="Configure" Name="menuItemConfigureEBoard"
+                                  Click="MenuItemConfigureEBoard_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="../Assets/Icons/cog.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
                 </Button.ContextMenu>
             </Button>
             <TextBlock Name="textBlockWhiteKing" DockPanel.Dock="Right" FontSize="18" TextAlignment="Center"

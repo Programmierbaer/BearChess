@@ -6,6 +6,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     public class EChessBoardConfiguration
     {
         public string PortName { get; set; }
+        public string WebSocketAddr { get; set; }
         public string Baud { get; set; }
         public bool DimLeds { get; set; }
         public int DimLevel { get; set; }
@@ -63,6 +64,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             ShowHintMoves = true;
             ClockBeep = false;
             BeepDuration = 1;
+            WebSocketAddr = string.Empty;
 
         }
 
@@ -107,6 +109,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.ShowPossibleMovesEval = savedConfig.ShowPossibleMovesEval;
                     configuration.ShowOwnMoves = savedConfig.ShowOwnMoves;
                     configuration.ShowHintMoves = savedConfig.ShowHintMoves;
+                    configuration.WebSocketAddr = savedConfig.WebSocketAddr;
                 }
                 else
                 {
