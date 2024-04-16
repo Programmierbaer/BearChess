@@ -347,7 +347,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     IsTakeBack = true,
                     IsMove = false,
                     DisplayString = string.Empty,
-                    FenString = _internalChessBoard.GetPosition(),
+                    FenString = position
                 });
             }
 
@@ -490,7 +490,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 IsThinking = false,
                 IsMove = true,
                 DisplayString = string.Empty,
-                FenString = _internalChessBoard.GetPosition()
+                FenString = position
             });
             _stop = false;
 
@@ -677,11 +677,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 if (_forcedBasePosition || (piecesFen.Invalid && _piecesFenBasePosition))
                 {
                     _forcedBasePosition = false;
-                    SetAllLedsOff(true);
+                    SetAllLedsOff(false);
                     BasePositionEvent?.Invoke(this, null);
                 }
 
-               
+
 
                 if (!string.IsNullOrWhiteSpace(waitForFen))
                 {

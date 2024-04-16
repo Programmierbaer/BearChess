@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoardCodeConverter.cs" />
-    <Compile Include="EChessBoard.cs" />
     <Compile Include="ESentioChessBoard.cs" />
     <Compile Include="SerialCommunication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
