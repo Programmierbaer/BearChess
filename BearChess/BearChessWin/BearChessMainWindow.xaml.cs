@@ -491,7 +491,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 buttonConnect.ToolTip = "Connect to UCB";
             }
-           
+
+            if (_lastEBoard.Equals(Constants.Zmartfun, StringComparison.OrdinalIgnoreCase))
+            {
+                buttonConnect.ToolTip = $"Connect to {Constants.Zmartfun}";
+            }
+
 
             var clockStyleSimple = _configuration.GetConfigValue("clock", "simple").Equals("simple");
             imageBigTick.Visibility   = clockStyleSimple ? Visibility.Hidden : Visibility.Visible;
@@ -5288,13 +5293,26 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                             { strings[i + 2].Substring(0, 2), strings[i + 2].Substring(2, 2) };
                                         if ((_requestForHelpByEvent || _showHelp) && _requestForHelpArray.Length > 0)
                                         {
+                                            string moveString = $"* {_requestForHelpArray[0]}-{_requestForHelpArray[1]}";
+                                            var eMove = _chessBoard.CurrentMoveList.Where(m =>
+                                                m.FromFieldName.Equals(_requestForHelpArray[0].ToUpper()) &&
+                                                m.ToFieldName.Equals(_requestForHelpArray[1].ToUpper())).FirstOrDefault();
+                                            if (eMove != null)
+                                            {
+                                                var allMoveClass = new AllMoveClass(0);
+                                                allMoveClass.SetMove(_chessBoard.CurrentColor, eMove, string.Empty);
+                                                moveString = $"* {allMoveClass.GetMoveString(_eBoardLongMoveFormat, _displayCountryType)}";
+                                            }
                                             Dispatcher?.Invoke(() =>
                                             {
                                                 _eChessBoard?.SetLedsFor(
                                                     new SetLEDsParameter()
                                                     {
                                                         FieldNames = _requestForHelpArray,
-                                                        IsThinking = true
+                                                        IsThinking = true,
+
+                                                        DisplayString = moveString
+                                                    
                                                     });
                                             });
                                         }
@@ -5338,7 +5356,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                 FieldNames = new[]
                                                     { strings[i + 1].Substring(0, 2), strings[i + 1].Substring(2, 2) },
                                                 IsThinking = true,
-                                                RepeatLastMove = true
+                                                RepeatLastMove = true,
+                                                DisplayString = "* " + strings[i + 1].Substring(0, 2) + "-" + strings[i + 1].Substring(2, 2)
                                             });
                                         }
 
@@ -5349,7 +5368,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                             {
                                                 FieldNames = new[]
                                                     { strings[i + 1].Substring(0, 2), strings[i + 1].Substring(2, 2) },
-                                                IsThinking = true
+                                                IsThinking = true,
+                                                DisplayString = "* " + strings[i + 1].Substring(0, 2) + "-" + strings[i + 1].Substring(2, 2)
                                             });
                                         }
 
@@ -5391,13 +5411,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     { strings[i + 1].Substring(0, 2), strings[i + 1].Substring(2, 2) };
                                 if ((_requestForHelpByEvent || _showHelp) && _requestForHelpArray.Length > 0)
                                 {
+                                    string moveString = $"* {_requestForHelpArray[0]}-{_requestForHelpArray[1]}";
+                                    var eMove =_chessBoard.CurrentMoveList.Where(m =>
+                                        m.FromFieldName.Equals(_requestForHelpArray[0].ToUpper()) &&
+                                        m.ToFieldName.Equals(_requestForHelpArray[1].ToUpper())).FirstOrDefault();
+                                    if (eMove != null)
+                                    {
+                                        var allMoveClass = new AllMoveClass(0);
+                                        allMoveClass.SetMove(_chessBoard.CurrentColor,eMove,string.Empty);
+                                        moveString = $"* {allMoveClass.GetMoveString(_eBoardLongMoveFormat, _displayCountryType)}";
+                                    }
                                     Dispatcher?.Invoke(() =>
                                     {
                                         _eChessBoard?.SetLedsFor(
                                             new SetLEDsParameter()
                                             {
                                                 FieldNames = _requestForHelpArray,
-                                                IsThinking = true
+                                                IsThinking = true,
+                                                DisplayString = moveString
                                             });
                                     });
                                 }
@@ -5996,11 +6027,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
       
         private void DisconnectFromSquareOffPro()
         {
+            _eChessBoard.BatteryChangedEvent -= EChessBoard_BatteryChangedEvent;
             DisconnectFromEBoard(menuItemConnectToSquareOffPro,"SquareOff Pro");
         }
 
         private void DisconnectFromChessUp()
         {
+            _eChessBoard.BatteryChangedEvent -= EChessBoard_BatteryChangedEvent;
             DisconnectFromEBoard(menuItemConnectToChessUp, "ChessUp");
         }
 
@@ -6171,6 +6204,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DisconnectFromPegasus()
         {
+            _eChessBoard.BatteryChangedEvent -= EChessBoard_BatteryChangedEvent;
+            _eChessBoard.HelpRequestedEvent -= EChessBoardHelpRequestedEvent;
+            _eChessBoard.ProbeMoveEvent -= EChessBoard_ProbeMoveEvent;
+            _eChessBoard.ProbeMoveEndingEvent -= EChessBoard_ProbeMoveEndingEvent;
             DisconnectFromEBoard(menuItemConnectToDGTEBoard,"DGT Pegasus");
         }
 
@@ -6185,6 +6222,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _eChessBoard.ProbeMoveEvent -= EChessBoard_ProbeMoveEvent;
             _eChessBoard.ProbeMoveEndingEvent -= EChessBoard_ProbeMoveEndingEvent;
+            _eChessBoard.BatteryChangedEvent -= EChessBoard_BatteryChangedEvent;
             DisconnectFromEBoard(menuItemConnectToIChessOneBoard, "iChessOne");
         }
 
@@ -6395,6 +6433,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard.AwaitedPosition += EChessBoardAwaitedPositionEvent;
             _eChessBoard.ProbeMoveEvent += EChessBoard_ProbeMoveEvent;
             _eChessBoard.ProbeMoveEndingEvent += EChessBoard_ProbeMoveEndingEvent;
+            _eChessBoard.BatteryChangedEvent += EChessBoard_BatteryChangedEvent;
             if (!_eChessBoard.IsConnected)
             {
                 DisconnectFromIChessOne();
@@ -6441,6 +6480,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void DisconnectFromDGT()
         {
             _fileLogger?.LogInfo("Disconnect from DGT e-Board");
+            _eChessBoard.HelpRequestedEvent -= EChessBoardHelpRequestedEvent;
             DisconnectFromEBoard(menuItemConnectToDGTEBoard, "DGT e-Board");
         }
 
@@ -6456,6 +6496,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard.FenEvent += EChessBoardFenEvent;
             _eChessBoard.BasePositionEvent += EChessBoardBasePositionEvent;
             _eChessBoard.AwaitedPosition += EChessBoardAwaitedPositionEvent;
+            _eChessBoard.HelpRequestedEvent += EChessBoardHelpRequestedEvent;
             if (!_eChessBoard.IsConnected)
             {
                 DisconnectFromDGT();
@@ -6500,6 +6541,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard.BasePositionEvent += EChessBoardBasePositionEvent;
             _eChessBoard.AwaitedPosition += EChessBoardAwaitedPositionEvent;
             _eChessBoard.BatteryChangedEvent += EChessBoard_BatteryChangedEvent;
+            _eChessBoard.HelpRequestedEvent += EChessBoardHelpRequestedEvent;
+            _eChessBoard.ProbeMoveEvent += EChessBoard_ProbeMoveEvent;
+            _eChessBoard.ProbeMoveEndingEvent += EChessBoard_ProbeMoveEndingEvent;
             if (!_eChessBoard.IsConnected)
             {
                 DisconnectFromPegasus();
@@ -6545,10 +6589,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             Dispatcher?.Invoke(() =>
             {
-                //string z = "\xD83D\xDD0C";
-                //string z = "\x2301";
-                string z = "\x23FD";
-                //char z = '\x01F50C';
                 textBlockEBoard.Text =
                     $" Connected to {_lastEBoard} ({_eChessBoard?.BatteryStatus} {_eChessBoard?.BatteryLevel}%)";
             });
@@ -6568,6 +6608,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoard.Release();
             Thread.Sleep(200);
             _eChessBoard.Close();
+            _eChessBoard.Dispose();
             _eChessBoard = null;
             textBlockEBoard.Text = " Disconnected";
             imageConnect.Visibility = Visibility.Visible;
@@ -6724,12 +6765,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         //});
                         Dispatcher?.Invoke(() =>
                         {
+                            string moveString = $"* {_requestForHelpArray[0]}-{_requestForHelpArray[1]}";
+                            var eMove = _chessBoard.CurrentMoveList.Where(m =>
+                                m.FromFieldName.Equals(_requestForHelpArray[0].ToUpper()) &&
+                                m.ToFieldName.Equals(_requestForHelpArray[1].ToUpper())).FirstOrDefault();
+                            if (eMove != null)
+                            {
+                                var allMoveClass = new AllMoveClass(0);
+                                allMoveClass.SetMove(_chessBoard.CurrentColor, eMove, string.Empty);
+                                moveString = $"* {allMoveClass.GetMoveString(_eBoardLongMoveFormat, _displayCountryType)}";
+                            }
                             _eChessBoard?.SetLedsFor(
                                 new SetLEDsParameter()
                                 {
                                     FieldNames = _requestForHelpArray,
                                     IsThinking = true,
-                                    ForceShow = true
+                                    ForceShow = true,
+                                    DisplayString = moveString
                                 });
                         });
                         //Array.Copy(_requestForHelpArray, _prevRequestForHelpArray, 2);
@@ -6971,6 +7023,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             _showProbing = false;
                             _eChessBoard?.AcceptProbingMoves(false);
+                            string moveString = $"* {_requestForHelpArray[0]}-{_requestForHelpArray[1]}";
+                            var eMove = _chessBoard.CurrentMoveList.Where(m =>
+                                m.FromFieldName.Equals(_requestForHelpArray[0].ToUpper()) &&
+                                m.ToFieldName.Equals(_requestForHelpArray[1].ToUpper())).FirstOrDefault();
+                            if (eMove != null)
+                            {
+                                var allMoveClass = new AllMoveClass(0);
+                                allMoveClass.SetMove(_chessBoard.CurrentColor, eMove, string.Empty);
+                                moveString = $"* {allMoveClass.GetMoveString(_eBoardLongMoveFormat, _displayCountryType)}";
+                            }
                             Dispatcher?.Invoke(() =>
                             {
                                 _eChessBoard?.SetLedsFor(
@@ -6978,7 +7040,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     {
                                         FieldNames = _requestForHelpArray,
                                         IsThinking = true,
-                                        ForceShow = true
+                                        ForceShow = true,
+                                        DisplayString =moveString
                                     });
                             });
                         }
@@ -7834,8 +7897,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                FieldNames = new string[] { fromFieldFieldName, toFieldFieldName },
                                                Promote = promoteFigure,
                                                IsMove = true,
-                        DisplayString =
-                                                   _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType)
+                                               DisplayString = _chessBoard.GetPrevMove()?.GetMoveString(_eBoardLongMoveFormat, _displayCountryType)
                                            });
                     _moveListWindow?.AddMove(move1, _gameAgainstEngine && _timeControlWhite.TournamentMode);
                     _moveListWindow?.RemainingMovesFor50MovesDraw(_chessBoard.RemainingMovesFor50MovesDraw);
@@ -10662,6 +10724,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 MenuItemConfigureOSA_OnClick(sender, e);
                 return;
             }
+            if (_lastEBoard.Equals(Constants.Pegasus))
+            {
+                MenuItemConfigurePegasus_OnClick(sender, e);
+                return;
+            }
         }
 
         private void MenuItemConnectChessUp_OnClick(object sender, RoutedEventArgs e)
@@ -11012,7 +11079,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 menuItemAnalyseAGame.IsEnabled = true;
             }
         }
-
+        
         private void MenuItemConfigureChessnutEvo_OnClick(object sender, RoutedEventArgs e)
         {
             if (_currentAction == CurrentAction.InRunningGame)
@@ -11038,6 +11105,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 ConnectToChessnutEvo();
             }
 
+        }
+
+        private void MenuItemConfigurePegasus_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_currentAction == CurrentAction.InRunningGame)
+            {
+                return;
+            }
+
+            var reConnect = false;
+            if (_eChessBoard != null)
+            {
+                DisconnectFromPegasus();
+                reConnect = true;
+            }
+
+            var winConfigurePegasus = new WinConfigurePegasus(_configuration) { Owner = this };
+            var showDialog = winConfigurePegasus.ShowDialog();
+            if (showDialog.HasValue && showDialog.Value)
+            {
+                _lastEBoard = Constants.Pegasus;
+                textBlockButtonConnect.Text = _lastEBoard;
+                buttonConnect.ToolTip = $"Connect to {_lastEBoard}";
+            }
+            if (reConnect)
+            {
+                ConnectToPegasus();
+            }
         }
     }
 }

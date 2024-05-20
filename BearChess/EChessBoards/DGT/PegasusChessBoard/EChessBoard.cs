@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.OleDb;
+using System.Data.SqlTypes;
+using System.Linq;
 using System.Text;
 using System.Threading;
-using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
+
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -29,6 +33,13 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         private readonly byte[] _lockState = { 89 }; // Y
         private readonly byte[] _authorized = { 90 }; // Y
         private readonly byte[] _initialize = { 99, 7, 190, 245, 174, 221, 169, 95, 0 };
+        private readonly string _boardDump = "134";
+        private readonly string _boardFieldUpdate = "142";
+        private readonly string _boardSerialNumber = "145";
+        private readonly string _boardTrademark = "146";
+        private readonly string _boardVersion = "147";
+        private readonly string _boardHWVersion = "150";
+        private readonly string _boardBattery = "160";
 
 
         private readonly Dictionary<string, byte> _fieldName2FieldByte = new Dictionary<string, byte>()
@@ -90,9 +101,13 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         private byte _currentIntensity = 2;
         private string _lastLogMessage = string.Empty;
         private string _prevRead = string.Empty;
+        private readonly EChessBoardConfiguration _configuration;
+        private readonly List<string> _thinkingLeds = new List<string>();
+        private readonly ConcurrentQueue<ProbingMove[]> _probingFields = new ConcurrentQueue<ProbingMove[]>();
+        private readonly object _lockThinking = new object();
+        private bool _release = false;
 
-        private string _basePosition =
-            "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 ";
+        private const string BASE_POSITION = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 ";
 
         private string[] _baseFields =
         {
@@ -105,15 +120,17 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         private bool _isCalibrating;
 
 
-        public EChessBoard(string basePath, ILogging logger, string portName, bool useBluetooth)
+        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
         {
-            _serialCommunication = new SerialCommunication(logger, portName, useBluetooth);
+            _configuration = configuration;
+            _serialCommunication = new SerialCommunication(logger, _configuration.PortName, true);
             
             _logger = logger;
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
             SelfControlled = false;
+            MultiColorLEDs = true;
             Information = Constants.Pegasus;
             IsConnected = EnsureConnection();
             _serialCommunication.Send(_initialize);
@@ -125,7 +142,10 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             _chessBoard.NewGame();
             var requestDumpThread = new Thread(RequestADumpLoop) { IsBackground = true };
             requestDumpThread.Start();
-
+            var probingThread = new Thread(ShowProbingMoves) { IsBackground = true };
+            probingThread.Start();
+            var handleThinkingLeDsThread = new Thread(HandleThinkingLeds) { IsBackground = true };
+            handleThinkingLeDsThread.Start();
         }
 
         private void RequestADumpLoop()
@@ -155,7 +175,13 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
         public override bool CheckComPort(string portName)
         {
-            return true;
+            bool result = false;
+            _serialCommunication = new SerialCommunication(_logger, portName, true);
+            
+
+            result = _serialCommunication.CheckConnect(portName);
+            _serialCommunication.DisConnectFromCheck();
+            return result;
         }
 
         public override bool CheckComPort(string portName, string baud)
@@ -163,14 +189,93 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             return true;
         }
 
+        private void HandleThinkingLeds()
+        {
+            List<byte> allBytes = new List<byte>();
+            while (!_release)
+            {
+                Thread.Sleep(10);
+                lock (_lockThinking)
+                {
+                    if (_thinkingLeds.Count > 1)
+                    {
+
+                        byte anzahl = byte.Parse((_thinkingLeds.Count + 5).ToString());
+                        allBytes.Add(96);
+                        allBytes.Add(anzahl);
+                        allBytes.Add(5);
+                        allBytes.Add(0); // Speed
+                        allBytes.Add(0); // Times
+                        allBytes.Add(1); // Intensity
+                        foreach (var fieldName in _thinkingLeds)
+                        {
+                            if (PlayingWithWhite)
+                            {
+                                if (_fieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
+                                {
+                                    allBytes.Add(_fieldName2FieldByte[fieldName.ToUpper()]);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if (_invertedFieldName2FieldByte.ContainsKey(fieldName.ToUpper()))
+                                {
+                                    allBytes.Add(_invertedFieldName2FieldByte[fieldName.ToUpper()]);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        allBytes.Add(0);
+                        _serialCommunication.Send(allBytes.ToArray());
+                        Thread.Sleep(20);
+                    }
+                }
+            }
+        }
+
         public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
-            if (ledsParameter.FieldNames == null || ledsParameter.FieldNames.Length == 0)
+            if (!ledsParameter.IsProbing)
             {
+                if (ledsParameter.FieldNames == null || ledsParameter.FieldNames.Length == 0)
+                {
+                    return;
+                }
+            }
+
+            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} IsThinking: {ledsParameter.IsThinking}");
+
+            if (ledsParameter.IsThinking)
+            {
+                lock (_lockThinking)
+                {
+                    _thinkingLeds.Clear();
+                    _thinkingLeds.Add(ledsParameter.FieldNames[0]);
+                    _thinkingLeds.Add(ledsParameter.FieldNames[1]);
+                    while (_probingFields.TryDequeue(out _)) ;
+                    return;
+                }
+            }
+           
+            if (ledsParameter.IsProbing && (_configuration.ShowPossibleMoves || _configuration.ShowPossibleMovesEval))
+            {
+                _logger?.LogDebug($"B: set LEDs for probing {ledsParameter}");
+                while (_probingFields.TryDequeue(out _)) ;
+                _probingFields.Enqueue(ledsParameter.ProbingMoves);
+                lock (_lockThinking)
+                {
+                    _thinkingLeds.Clear();
+                }
+
                 return;
             }
-            List<byte> allBytes = new List<byte>();
-            var fieldNamesLength = ledsParameter.FieldNames.Length;
             string sendFields = string.Join(" ", ledsParameter.FieldNames);
             if (sendFields.Equals(_lastSendFields))
             {
@@ -178,27 +283,8 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             }
 
             _lastSendFields = sendFields;
-            _logger?.LogDebug($"PS: Set LED for fields: {_lastSendFields} IsThinking: {ledsParameter.IsThinking}");
-            if (ledsParameter.IsThinking && fieldNamesLength > 1)
-            {
-                SetLedForFields(new SetLEDsParameter()
-                {
-                    FieldNames = new[] { ledsParameter.FieldNames[0] },
-                    Promote = string.Empty,
-                    IsThinking = ledsParameter.IsThinking,
-                    IsMove = ledsParameter.IsMove,
-                    DisplayString = string.Empty
-                });
-                SetLedForFields(new SetLEDsParameter()
-                {
-                    FieldNames = new[] { ledsParameter.FieldNames[1] },
-                    Promote = string.Empty,
-                    IsThinking = ledsParameter.IsThinking,
-                    IsMove = ledsParameter.IsMove,
-                    DisplayString = string.Empty
-                });
-                return;
-            }
+            var fieldNamesLength = ledsParameter.FieldNames.Length;
+            List<byte> allBytes = new List<byte>();
             byte anzahl = byte.Parse((fieldNamesLength + 5).ToString());
             allBytes.Add(96);
             allBytes.Add(anzahl);
@@ -242,6 +328,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
         public override void SetAllLedsOff(bool forceOff)
         {
+            while (_probingFields.TryDequeue(out _)) ;
+            lock (_lockThinking)
+            {
+                _thinkingLeds.Clear();
+            }
             _serialCommunication.Send(_allLEDsOff);
             if (string.IsNullOrWhiteSpace(Information))
             {
@@ -251,6 +342,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
         public override void SetAllLedsOn()
         {
+            while (_probingFields.TryDequeue(out _));
+            lock (_lockThinking)
+            {
+                _thinkingLeds.Clear();
+            }
             byte currentSpeed = _currentSpeed;
             byte currentTimes = _currentTimes;
             byte currentIntensity = _currentIntensity;
@@ -360,7 +456,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                     {
                         if (strings.Length > 3)
                         {
-                            if (strings[0] == "146")
+                            if (strings[0] == _boardTrademark)
                             {
                                 string trademark = string.Empty;
                                 for (int i = 3; i < strings.Length; i++)
@@ -376,9 +472,9 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                     return new DataFromBoard(_chessBoard.GetFenPosition(), 3);
                 }
 
-                if (strings[0] == "134")
+                if (strings[0] == _boardDump)
                 {
-                    bool isBasePosition = dataFromBoard.FromBoard.EndsWith(_basePosition);
+                    bool isBasePosition = dataFromBoard.FromBoard.EndsWith(BASE_POSITION);
                     List<string> dumpFields = new List<string>();
                     for (byte i = 0; i < 64; i++)
                     {
@@ -418,14 +514,15 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                 {
                     if (strings.Length == 5)
                     {
-                        if (strings[0] == "142" && strings[1] == "0" && strings[2] == "5")
+                        if (strings[0] == _boardFieldUpdate && strings[1] == "0" && strings[2] == "5")
                         {
+                            // Lift up
                             if (strings[4] == "0")
                             {
                                 var fromField = PlayingWithWhite
                                                     ? _fieldByte2FieldName[byte.Parse(strings[3])]
                                                     : _invertedFieldByte2FieldName[byte.Parse(strings[3])];
-                                _logger?.LogDebug($"PS: Read Fromfield: {fromField}");
+                                _logger?.LogDebug($"PS: Read from field: {fromField}");
                                 if (fromField.Equals(_lastToField))
                                 {
                                     _tmpToField = fromField;
@@ -445,10 +542,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                                 }
 
                             }
+                            // Lift down
                             else
                             {
                                 _toField = PlayingWithWhite ? _fieldByte2FieldName[byte.Parse(strings[3])] : _invertedFieldByte2FieldName[byte.Parse(strings[3])];
-                                _logger?.LogDebug($"PS: Read ToField: {_toField}");
+                                _logger?.LogDebug($"PS: Read to field: {_toField}");
                                 if (_toField.Equals(_lastFromField))
                                 {
                                     _tmpFromField = _toField;
@@ -465,16 +563,16 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
                     if (strings.Length == 12)
                     {
-                        if (strings[0] == "160" && strings[1] == "0" && strings[2] == "12")
+                        if (strings[0] == _boardBattery && strings[1] == "0" && strings[2] == "12")
                         {
                             BatteryLevel = strings[3];
-                            BatteryStatus = strings[11].Equals("1") ? "🔋" : "";
+                            BatteryStatus = strings[11].Equals("1") ? "🔋" : "\uD83D\uDD0C"; ;
                         }
                     }
 
                     if (strings.Length > 3)
                     {
-                        if (strings[0] == "146")
+                        if (strings[0] == _boardTrademark)
                         {
                             string trademark = string.Empty;
                             for (int i = 3; i < strings.Length; i++)
@@ -485,9 +583,9 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                             Information = trademark;
                         }
 
-                        if (strings[0] == "134")
+                        if (strings[0] == _boardDump)
                         {
-                            bool isBasePosition = dataFromBoard.FromBoard.EndsWith(_basePosition);
+                            bool isBasePosition = dataFromBoard.FromBoard.EndsWith(BASE_POSITION);
                             List<string> dumpFields = new List<string>();
                             for (byte i = 0; i < 64; i++)
                             {
@@ -561,6 +659,15 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
                 _toField = string.Empty;
                 _tmpFromField = string.Empty;
                 _tmpToField = string.Empty;
+            }
+
+            if (!string.IsNullOrWhiteSpace(_fromField) && string.IsNullOrWhiteSpace(_toField))
+            {
+                var chessBoard = new ChessBoard();
+                chessBoard.Init(_chessBoard);
+                chessBoard.RemoveFigureFromField(Fields.GetFieldNumber(_fromField));
+                var strings = chessBoard.GetFenPosition().Split(" ".ToCharArray());
+                return new DataFromBoard(strings[0], 3);
             }
 
             if (!string.IsNullOrWhiteSpace(_fromField) && !string.IsNullOrWhiteSpace(_toField))
@@ -652,6 +759,11 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
         protected override void SetToNewGame()
         {
+            while (_probingFields.TryDequeue(out _)) ;
+            lock (_lockThinking)
+            {
+                _thinkingLeds.Clear();
+            }
             _chessBoard.Init();
             _chessBoard.NewGame();
             _serialCommunication.Send(_resetBoard);
@@ -664,7 +776,12 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
 
         public override void Release()
         {
-            //
+            _release = true;
+            while (_probingFields.TryDequeue(out _)) ;
+            lock (_lockThinking)
+            {
+                _thinkingLeds.Clear();
+            }
         }
 
         public override void SetFen(string fen)
@@ -705,6 +822,54 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         public override void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
         {
             //
+        }
+
+        private void ShowProbingMoves()
+        {
+            
+            List<byte> allBytes = new List<byte>();
+            while (!_release)
+            {
+                if (_probingFields.TryDequeue(out ProbingMove[] fields))
+                {
+                    if (!_acceptProbingMoves)
+                    {
+
+                        // SetAllLedsOff(true);
+                        continue;
+                    }
+                    var probingMove = fields.OrderByDescending(f => f.Score).First();
+                    allBytes.Clear();
+                    allBytes.Add(96);
+                    allBytes.Add(6);
+                    allBytes.Add(5);
+                    allBytes.Add(0); // Speed
+                    allBytes.Add(0); // Times
+                    allBytes.Add(1); // Intensity
+                    {
+                        if (PlayingWithWhite)
+                        {
+                            if (_fieldName2FieldByte.ContainsKey(probingMove.FieldName.ToUpper()))
+                            {
+                                allBytes.Add(_fieldName2FieldByte[probingMove.FieldName.ToUpper()]);
+                            }
+                        }
+                        else
+                        {
+                            if (_invertedFieldName2FieldByte.ContainsKey(probingMove.FieldName.ToUpper()))
+                            {
+                                allBytes.Add(_invertedFieldName2FieldByte[probingMove.FieldName.ToUpper()]);
+                            }
+                        }
+                    }
+                    allBytes.Add(0);
+                    _serialCommunication.Send(allBytes.ToArray());
+                    Thread.Sleep(20);
+                    continue;
+                }
+
+                Thread.Sleep(10);
+            }
         }
     }
 }

@@ -505,7 +505,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             try
             {
                 _board?.Stop(_stop);
-
+                _board?.Release();
                 _board?.Dispose();
             }
             catch
@@ -677,11 +677,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 if (_forcedBasePosition || (piecesFen.Invalid && _piecesFenBasePosition))
                 {
                     _forcedBasePosition = false;
-                    SetAllLedsOff(false);
+                    //SetAllLedsOff(false);
                     BasePositionEvent?.Invoke(this, null);
                 }
 
-
+               
 
                 if (!string.IsNullOrWhiteSpace(waitForFen))
                 {

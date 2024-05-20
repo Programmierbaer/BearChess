@@ -3,7 +3,7 @@
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
-    public interface IElectronicChessBoard
+    public interface IElectronicChessBoard: IDisposable
     {
 
         EChessBoardConfiguration Configuration { get; }

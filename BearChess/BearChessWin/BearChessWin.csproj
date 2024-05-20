@@ -404,6 +404,9 @@
     <Compile Include="Windows\WinConfigureOSA.xaml.cs">
       <DependentUpon>WinConfigureOSA.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\WinConfigurePegasus.xaml.cs">
+      <DependentUpon>WinConfigurePegasus.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\WinConfigureSentio.xaml.cs">
       <DependentUpon>WinConfigureSentio.xaml</DependentUpon>
     </Compile>
@@ -771,6 +774,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\WinConfigureOSA.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WinConfigurePegasus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

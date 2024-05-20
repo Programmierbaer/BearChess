@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EChessBoard.cs" />
+    <Compile Include="PegasusEChessBoard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialCommunication.cs" />
   </ItemGroup>

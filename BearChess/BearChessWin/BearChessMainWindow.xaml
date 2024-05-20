@@ -673,10 +673,17 @@
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/pegasus.png" />
                             </MenuItem.Icon>
+                          
                             <MenuItem Name="menuItemConnectToPegasus" Header="Connect"
                                       Click="MenuItemConnectPegasus_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigurePegasus" Header="Configure..."
+                                      Click="MenuItemConfigurePegasus_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>

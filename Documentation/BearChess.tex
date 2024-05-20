@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.8.1}
+\fancyhead[R]{Version 1.0.9.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{16.04.2024} 
+\date{20.05.2024} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -50,8 +50,6 @@ linkcolor=black
 		I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited Inc.\ or iChessOne or Bryght Labs or ZMARTFUN. If something does not work, the companies are not responsible for it.\\
 		
 		Many thanks to Ralf Schäfer and Volker Böhm for the use of their engine Spike (\url{http://spike.lazypics.de/index.html}).\\
-		Many thanks to Graham O'Neill for the Chessnut Evo driver. For more details
-		look at his website on \url{https://goneill.co.nz/chess}.\\
 		
 		Send errors, comments, suggestions for improvement or requests\\to \textbf{lars@solanosoft.com}.
 		
@@ -87,6 +85,7 @@ linkcolor=black
 		\item Play with \textbf{Chessnut Air/Air+/Pro} chessboard.	  	  	  
 		\item Play with \textbf{iChessOne} chessboard.	  	  	  	  
 		\item Play with \textbf{ChessUp} chessboard.	  	  	  	  	  
+        \item Play with \textbf{House of Staunton} chessboard from Zmartfun.
 		\item Play with \textbf{NOVAG Citrine/UCB} chessboard.
 		\item Play with \textbf{Saitek OSA} chessboard.	  
 		\item Play against human beings or UCI engines.
@@ -318,7 +317,7 @@ linkcolor=black
 	\begin{itemize}
 		\item \textbf{Show best move in analysis mode} displays the current best move of the engine on your electronic chessboard.
 		\item \textbf{Show current best move in game} displays the current best move of the engine on your electronic chessboard.	
-		\item \textbf{Show move from buddy when help is requested} displays the current best move of the analysis engine on your electronic chessboard when help is requested. To request help, raise your king for a short time and set it down again. To do this, you must be on the move and have an additional engine loaded for assistent (read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}).
+		\item \textbf{Show move from buddy when help is requested} displays the current best move of the analysis engine on your electronic chessboard when help is requested. To request help, raise your king for a short time and set it down again. To do this, you must be on the move and have an additional engine loaded for assistant (read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}).
 	\end{itemize}
 	
 	\subsection{Windows}
@@ -1563,16 +1562,32 @@ If the "Bluetooth" option is set, the following window will be displayed for a s
 During this time or if you connect for the first time, Windows may ask you to connect to the DGT e-Board and maybe you have to enter a pairing code. For more details, read the e-Board user manual.\\
 
 
-\subsection{Connect DGT Pegasus} \label{ConfigurePegasus}
+\subsection{Configure DGT Pegasus} \label{ConfigurePegasus}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{Pegasus1.png}
-	\caption{Connect to DGT Pegasus}
+	\caption{Opeb a window to configure DGT Pegasus}
 	\label{fig:Pegasus1}
 \end{figure}
 
-No configuration is required for your DGT Pegasus chessboard.\\
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Pegasus6.png}
+	\caption{Configure DGT Pegasus}
+	\label{fig:Pegasus6}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{LEDs and Flash} You can change the brightness of the LEDs and how fast the LEDs flash.
+Use the sliders to change the brightness from dim to light and the speed.
+A click on \includegraphics[scale=0.4]{eye.png} connects to the board and you can see the changes live.
+\item \textbf{Show own moves}\\Activate the LEDs of your last move.
+\item \textbf{Show the best move for the selected figure}\\Flashes the field that would be best for the currently raised figure. This does not mean that this is necessarily a good move. It is just the best option for the figure.
+\end{itemize}
+
 DGT Pegasus requires a Bluetooth LE connection. Make sure that your Bluetooth adapter also supports LE.
+
+
 
 \begin{figure}[H]
 	\centering
@@ -1684,8 +1699,6 @@ For a USB connection, the connection is not simulated as a COM port, but as a Hu
 	\caption{Configure Chessnut Evo }
 	\label{fig:ChessnutEvo4}
 \end{figure}
-The driver developed by Graham O'Neill must be installed on the Chessnut Evo. For more details
-look at his website on (\url{https://goneill.co.nz/chess}).\\
 The computer connects to the Chessnut Evo board using its IP address. This means that your PC and the board must be on the same LAN in order for the PC to see the board. You will need the IPv4 number (192.168.178.49 in the above example) without the '//' or ':' characters or the port number "8888".
 
 
@@ -2155,7 +2168,7 @@ For your convenience, you can configure and save a game definition that will be 
 \subsection{Request for help}
 If you play a game and you have "Show move when help is request" activated, raise your king for a short time and set it down again to see the best move on the board.\\
 Do it again to stop showing the best move.\\
-{\color{red}\textbf{*}} This is not supported on DGT e-Board, DGT Pegasus, Square Off Pro, ChessUp, NOVAG and Saitek OSA boards.
+{\color{red}\textbf{*}} This is not on supported Square Off Pro, ChessUp, NOVAG and Saitek OSA boards.
 
 \section{Move list}
 The move list shows all moves of your game.
@@ -2329,7 +2342,7 @@ You can achieve all this with the analysis mode.\\
 
 \subsection{With electronic chessboard}
 
-You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. TabuTronic Sentio, Millennium eOne, DGT Pegasus, ChessUp, Square Off Pro, NOVAG boards and Saitke bords has not. Connect your electronic chessboard before you start the analysis mode.\\ 
+You get the biggest advantage if you have connected an electronic chessboard with a piece recognition. TabuTronic Sentio, Millennium eOne, DGT Pegasus, ChessUp, Square Off Pro, NOVAG boards and Saitek boards has not. Connect your electronic chessboard before you start the analysis mode.\\ 
 When you start the analysis mode, you will be asked to select a supporting analysis engine.
 
 \begin{figure}[H]
@@ -3305,6 +3318,17 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 1.0.8.1 $\Rightarrow$  1.0.9.0}
+\begin{itemize}			
+	\item {\color{blue}New}: iChessOne: Show battery state.
+	\item {\color{blue}New}: DGT e-Boards: Show hint on clock.
+	\item {\color{blue}New}: DGT Pegasus: Enhanced behaviour and configuration.
+	\item {\color{teal}Changes}: Program code for handling DGT Pegasus boards revised.
+	\item {\color{red}Fix}: DGT Pegasus: First move on rotated board.
+    \item {\color{red}Fix}: Chessnut Evo: Removed incorrect reference to Graham O'Neill's driver in this document.
+\end{itemize}
+
 
 \subsection*{Version 1.0.8.0 $\Rightarrow$  1.0.8.1}
 \begin{itemize}			

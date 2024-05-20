@@ -31,7 +31,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
 
         public override void SetDebounce(int debounce)
         {
-            // ignore
+            _board.SetDebounce(debounce);
         }
 
         public override void FlashMode(EnumFlashMode flashMode)
@@ -43,13 +43,15 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
 
         protected override IEBoard GetEBoard()
         {
-            return new PegasusChessBoard.EChessBoard(_basePath, _fileLogger, _comPortName, _useBluetooth);
+            return new PegasusChessBoard.PegasusEChessBoard(_basePath, _fileLogger, _configuration);
+            //return new PegasusChessBoard.EChessBoard(_basePath, _fileLogger, _configuration);
         }
 
         protected override IEBoard GetEBoard(bool check)
         {
             
-            return new PegasusChessBoard.EChessBoard(logger: _fileLogger);
+            return new PegasusChessBoard.PegasusEChessBoard(logger: _fileLogger);
+            // return new PegasusChessBoard.EChessBoard(logger: _fileLogger);
         }
 
         public override bool Calibrate()
@@ -73,9 +75,9 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusEBoardWrapper
             // Ignore
         }
 
-        public override void DimLEDs(int _)
+        public override void DimLEDs(int level)
         {
-            // Ignore
+            _board.DimLeds(level);
         }
     }
 }

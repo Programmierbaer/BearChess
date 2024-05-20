@@ -451,6 +451,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
 
                 _serialCommunication.Send(ConvertToArray(_requestPosition),"Request current position");
                 _serialCommunication.Send(ConvertToArray(_requestHardwareVersion),"Request hardware version");
+                _serialCommunication.Send(ConvertToArray(_requestBattery),"Request battery status");
             }
         }
 
@@ -558,6 +559,20 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                     Information += " " + pLine;
                     return new DataFromBoard(_lastResult, dataFromBoard.Repeated);
                     
+                }
+                if (allData[i].Equals("62") && _readingCmdStart)
+                {
+                    _readingCmdStart = false;
+                    string pLine = "";
+                    for (int j = i + 1; j < allData.Length; j++)
+                    {
+                        pLine += ConvertFromRead(allData[j]);
+                    }
+
+                    BatteryLevel = Convert.ToInt32(allData[3],16).ToString();
+                    BatteryStatus = allData[2].Equals("00") ? "🔋" : "\uD83D\uDD0C";
+                    return new DataFromBoard(_lastResult, dataFromBoard.Repeated);
+
                 }
                 if (_allIndex < _allData.Length)
                 {

@@ -316,6 +316,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.DimLEDs(level);
         }
 
+        public void SetDebounce(int debounce)
+        {
+            _eChessBoard.SetDebounce(debounce);
+        }
+
         /// <inheritdoc />
         public void FlashInSync(bool flashSync)
         {
@@ -438,5 +443,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
 
         #endregion
+
+        public void Dispose()
+        {
+            _eChessBoard = null;
+        }
     }
 }

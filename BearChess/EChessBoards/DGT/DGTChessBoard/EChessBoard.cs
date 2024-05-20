@@ -158,6 +158,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         private int _readingClockIndex = 0;
         private int _currentColor;
         private readonly EChessBoardConfiguration _boardConfiguration;
+        private string _lastDisplayString;
 
 
         public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
@@ -170,6 +171,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             _switchClockSide = _boardConfiguration.ClockSwitchSide;
             _serialCommunication = new SerialCommunication(logger, _boardConfiguration.PortName, _useBluetooth);
             _logger = logger;
+            MultiColorLEDs = true;
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = true;
@@ -179,7 +181,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             _serialCommunication.Send(_startReadingNice);
             _serialCommunication.Send(_dumpBoard);
             Information = Constants.DGT;
-
+            _lastDisplayString = string.Empty;
             var clockThread = new Thread(HandlingClockMessages) { IsBackground = true };
             clockThread.Start();
         }
@@ -307,9 +309,16 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             }
             allBytes.Add(0);
             _serialCommunication.Send(allBytes.ToArray());
-            if (ledsParameter.IsMove && ledsParameter.FieldNames.Length == 2)
+            if ((ledsParameter.IsMove || ledsParameter.IsThinking) && ledsParameter.FieldNames.Length == 2)
             {
-                SendDisplayToClock(_clockUpperCase ? ledsParameter.DisplayString.ToUpper() : ledsParameter.DisplayString);
+                if (!_lastDisplayString.Equals(ledsParameter.DisplayString))
+                {
+                    SendDisplayToClock(_clockUpperCase
+                        ? ledsParameter.DisplayString.ToUpper()
+                        : ledsParameter.DisplayString);
+                    _lastDisplayString = ledsParameter.DisplayString;
+                }
+
                 if (ledsParameter.IsEngineMove)
                 {
                     SendClockBeep();

@@ -35,6 +35,8 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusLoader
             configuration.PortName = "BTLE";
             var eBoardWrapper = new PegasusImpl(Name, basePath, configuration);
 
+            eBoardWrapper.DimLEDs(configuration.DimLevel);
+            eBoardWrapper.SetDebounce(configuration.Debounce);
             return eBoardWrapper;
         }
     }

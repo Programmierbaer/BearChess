@@ -31,7 +31,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             public string FieldName => Fields.GetFieldName(Field);
         }
 
-        private readonly string _basePosition = "255 255 0 0 0 0 255 255";
+        private const string BASE_POSITION = "255 255 0 0 0 0 255 255";
+
         private readonly Dictionary<string, byte> _colName2ColByte = new Dictionary<string, byte>()
         {
             {"A", ColA},
@@ -67,7 +68,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
         private static byte[] AllOff = { 0, 0, 0, 0, 0, 0, 0, 0 };
         private static byte[] AllOn = { 255, 255, 255, 255, 255, 255, 255, 255 };
 
-        private EChessBoardConfiguration _configuration;
+        private readonly EChessBoardConfiguration _configuration;
         private readonly IChessBoard _chessBoard;
         private readonly IChessBoard _workingChessBoard;
         private string _prevJoinedString = string.Empty;
@@ -408,7 +409,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                     return new DataFromBoard(_prevSend, 3);
                 }
                 // _logger?.LogDebug($"GetPiecesFen: fromBoard: {dataFromBoard.FromBoard}");
-                if (dataFromBoard.FromBoard.StartsWith(_basePosition))
+                if (dataFromBoard.FromBoard.StartsWith(BASE_POSITION))
                 {
                     _chessBoard.Init();
                     _chessBoard.NewGame();
@@ -724,7 +725,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
         private void HandleThinkingLeds()
         {
-            while (true)
+            while (!_release) 
             {
                 Thread.Sleep(10);
                 lock (_lockThinking)
