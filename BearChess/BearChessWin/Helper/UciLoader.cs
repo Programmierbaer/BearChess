@@ -560,7 +560,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void Quit()
         {
-            if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase))
+            if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase) || (_uciInfo.FileName.EndsWith("MessNew.exe", StringComparison.InvariantCultureIgnoreCase)))
             {
                 _rect = new RECT();
                 if (DwmGetWindowAttribute(_engineProcess.MainWindowHandle, DWMWA_EXTENDED_FRAME_BOUNDS, out _rect, Marshal.SizeOf(typeof(RECT))) != 0)
@@ -587,7 +587,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private RECT GetWindowRect(int delta)
         {
-            if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase))
+            if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase) || (_uciInfo.FileName.EndsWith("MessNew.exe", StringComparison.InvariantCultureIgnoreCase)))
             {
                 RECT rect = new RECT();
                 if (DwmGetWindowAttribute(_engineProcess.MainWindowHandle, DWMWA_EXTENDED_FRAME_BOUNDS, out rect, Marshal.SizeOf(typeof(RECT))) == 0)
@@ -608,7 +608,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void BringToOp()
         {
-            if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase))
+            if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase) || (_uciInfo.FileName.EndsWith("MessNew.exe", StringComparison.InvariantCultureIgnoreCase)))
             {
                 BringWindowToTop(_engineProcess.MainWindowHandle);
             }
