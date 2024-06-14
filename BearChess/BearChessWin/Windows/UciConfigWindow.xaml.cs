@@ -59,6 +59,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 buttonParameterFile.Visibility = Visibility.Visible;
             }
+            if (uciInfo.FileName.EndsWith("MessNew.exe", StringComparison.OrdinalIgnoreCase))
+            {
+                buttonParameterFile.Visibility = Visibility.Visible;
+            }
+
             textBlockName.ToolTip = uciInfo.OriginName;
             textBoxName.Text = uciInfo.Name;
             textBoxName.IsEnabled = canChangeName;

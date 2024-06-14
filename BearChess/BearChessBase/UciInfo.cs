@@ -71,6 +71,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         public bool IsInternalBearChessEngine { get; set; }
         public bool IsInternalChessEngine { get; set; }
         public bool IsMessChessEngine { get; set; }
+        public bool IsMessChessNewEngine { get; set; }
 
         [XmlIgnore]
         public string[] MessChessLevels { get; set; }
@@ -105,6 +106,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             IsProbing = false;
             IsInternalBearChessEngine = false;
             IsMessChessEngine = false;
+            IsMessChessNewEngine = false;
             MessChessLevels = Array.Empty<string>();
             MessChessLevelInfo = string.Empty;
             MessChessLevelsAreIncomplete = false;
@@ -305,6 +307,13 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 IsMessChessEngine = true;
                 return;
             }
+            if (FileName.EndsWith("MessNew.exe", StringComparison.OrdinalIgnoreCase))
+            {
+                ValidForAnalysis = false;
+                IsMessChessEngine = true;
+                IsMessChessNewEngine = true;
+                return;
+            }
 
             if (FileName.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase) || FileName.EndsWith(".bat", StringComparison.OrdinalIgnoreCase))
             {
@@ -315,6 +324,12 @@ namespace www.SoLaNoSoft.com.BearChessBase
                     {
                         ValidForAnalysis = false;
                         IsMessChessEngine = true;
+                    }
+                    if (allText.IndexOf("MessNew", StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        ValidForAnalysis = false;
+                        IsMessChessEngine = true;
+                        IsMessChessNewEngine = true;
                     }
                 }
                 catch

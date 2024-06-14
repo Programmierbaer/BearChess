@@ -10,8 +10,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private Process _engineProcess;
         private UciInfo _uciInfo;
 
-        public UciInfo Install(string fileName, string parameters)
+        public UciInfo Install(string fileName, string parameters, string newIndicator)
         {
+            if (!string.IsNullOrWhiteSpace(newIndicator))
+            {
+                fileName = fileName.Replace(@"\MessChess\MessChess.exe", @"\MessNew\MessNew.exe");
+//                var fileInfo = new FileInfo(fileName);
+
+            }
             _uciInfo = new UciInfo(fileName);
             _uciInfo.CommandParameter = parameters;
             _engineProcess = new Process

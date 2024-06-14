@@ -388,7 +388,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     foreach (var multiParameter in multiParameters)
                     {
                         uciInstaller = new UciInstaller();
-                        uciInfo = uciInstaller.Install(fileName, multiParameter.ParameterName);
+                        uciInfo = uciInstaller.Install(fileName, multiParameter.ParameterName,multiParameter.NewIndicator);
                        
                         if (!uciInfo.Valid)
                         {
@@ -443,7 +443,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     return;
                 }
                 uciInstaller = new UciInstaller();
-                uciInfo = uciInstaller.Install(fileName, parameters);
+                uciInfo = uciInstaller.Install(fileName,  parameters, string.Empty);
                 if (!string.IsNullOrWhiteSpace(engineName))
                 {
                     uciInfo.Name = engineName;
