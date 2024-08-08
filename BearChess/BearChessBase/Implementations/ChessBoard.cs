@@ -419,7 +419,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
 
             var fenPosition = GetFenPosition();
-            var substring = fenPosition.Split(" ".ToCharArray())[0];
+            var fenSplit = fenPosition.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var substring = $"{fenSplit[0]} {fenSplit[1]}";
             if (chessFigure.GeneralFigureId == FigureId.PAWN)
             {
                 _repetition.Clear();
