@@ -20,6 +20,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public event EventHandler<string[]> ProbeMoveEvent;
         public event EventHandler AwaitedPosition;
         public event EventHandler BasePositionEvent;
+        public event EventHandler NewGamePositionEvent;
         public event EventHandler BatteryChangedEvent;
         public event EventHandler HelpRequestedEvent;
         public event EventHandler ProbeMoveEndingEvent;
@@ -92,6 +93,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.MoveEvent += EChessBoard_MoveEvent;
             _eChessBoard.AwaitedPosition += EChessBoard_AwaitedPosition;
             _eChessBoard.BasePositionEvent += EChessBoard_BasePositionEvent;
+            _eChessBoard.NewGamePositionEvent += EChessBoard_NewGamePositionEvent;
             _eChessBoard.BatteryChangedEvent += EChessBoard_BatteryChangedEvent;
             _eChessBoard.DataEvent += EChessBoard_DataEvent;
             _eChessBoard.HelpRequestedEvent += EChessBoard_HelpRequestedEvent;
@@ -212,6 +214,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.SetFen(fen, allMoves);
         }
 
+        public void AwaitingMove(int fromField, int toField)
+        {
+            _eChessBoard.AwaitingMove(fromField, toField);
+        }
+
         /// <inheritdoc />
         public void Close()
         {
@@ -239,6 +246,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void SendInformation(string message)
         {
             _eChessBoard.SendInformation(message);
+        }
+
+        public string RequestInformation(string message)
+        {
+            return _eChessBoard.RequestInformation(message);
         }
 
         public void AdditionalInformation(string information)
@@ -374,6 +386,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool PieceRecognition => _eChessBoard.PieceRecognition;
         public bool MultiColorLEDs => _eChessBoard.MultiColorLEDs;
 
+        public bool ValidForAnalyse => _eChessBoard.ValidForAnalyse;
+
+        //public bool Valif => _eChessBoard.Va;
+
         public void Ignore(bool ignore)
         {
             _eChessBoard.Ignore(ignore);
@@ -436,6 +452,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             BasePositionEvent?.Invoke(sender, e);
         }
 
+        private void EChessBoard_NewGamePositionEvent(object sender, EventArgs e)
+        {
+            NewGamePositionEvent?.Invoke(sender, e);
+        }
         private void EChessBoard_BatteryChangedEvent(object sender, EventArgs e)
         {
             BatteryChangedEvent?.Invoke(sender, e);

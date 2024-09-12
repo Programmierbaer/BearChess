@@ -129,6 +129,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            ValidForAnalyse = false;
             SelfControlled = false;
             MultiColorLEDs = true;
             Information = Constants.Pegasus;
@@ -163,6 +164,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            ValidForAnalyse = false;
             SelfControlled = false;
             Information = Constants.Pegasus;
         }
@@ -816,6 +818,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         }
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 

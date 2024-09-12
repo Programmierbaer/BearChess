@@ -7,6 +7,7 @@ using System.Threading;
 using www.SoLaNoSoft.com.BearChess.BearChessBTTools;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessBTLETools;
@@ -61,6 +62,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         public string DeviceName =>  _comPort==null ? string.Empty : _comPort.DeviceName;
 
         public bool UseChesstimation { get; set; }
+        public bool UseElfacun { get; set; }
 
         public string BatteryLevel => _comPort == null ? "---" : _comPort.ReadBattery();
 
@@ -68,6 +70,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         protected AbstractSerialCommunication(ILogging logger, string portName, string boardName) : this(logger, portName, string.Empty, boardName)
         {
             UseChesstimation = false;
+            UseElfacun = false;
         }
 
         protected AbstractSerialCommunication(ILogging logger, string portName, string baud, string boardName)
@@ -460,6 +463,36 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                    { ReadTimeout = 1000, WriteTimeout = 1000 };
                     }
                 }
+                if (_boardName.Equals(Constants.TabutronicTactum, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (comPort.Equals("BTLE"))
+                    {
+                        int counter = 0;
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "Certabo" }))
+                        {
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count == 0)
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo($"No BTLE port for {Constants.TabutronicTactum}");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _logger);
+                        SerialBTLECommunicationTools.StopWatching();
+                    }
+                    else if (comPort.StartsWith("C"))
+                    {
+                        _comPort = new SerialComPortStreamBased(comPort, 38400, Parity.None)
+                            { ReadTimeout = 1000, WriteTimeout = 1000 };
+                    }
+                }
 
                 if (_boardName.Equals(Constants.UCB, StringComparison.OrdinalIgnoreCase))
                 {
@@ -556,7 +589,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (_useBluetooth && comPort.StartsWith("B"))
                     {
                         int counter = 0;
-                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "Chessnut Air" }))
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { Constants.ChessnutAir }))
                         {
                             while (SerialBTLECommunicationTools.DeviceIdList.Count==0)
                             {
@@ -565,6 +598,44 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 if (counter > 100)
                                 {
                                     _logger?.LogInfo("No BTLE port for Chessnut Air");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _logger);
+                        SerialBTLECommunicationTools.StopWatching();
+                    }
+                }
+                if (_boardName.Equals(Constants.ChessnutGo, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (_useHID && comPort.StartsWith("H"))
+                    {
+
+                        _comPort = HIDComPort.GetComPort(0x2D80, 0xFF00, Constants.ChessnutGo, _logger);
+                        if (_comPort == null)
+                        {
+                            _logger?.LogInfo("No HID port for Chessnut Go");
+                            return false;
+                        }
+
+
+                    }
+
+                    if (_useBluetooth && comPort.StartsWith("B"))
+                    {
+                        int counter = 0;
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { Constants.ChessnutGo }))
+                        {
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count == 0)
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo("No BTLE port for Chessnut Go");
                                     SerialBTLECommunicationTools.StopWatching();
                                     return false;
                                 }
@@ -803,6 +874,11 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             BoardInformation = Constants.TabutronicSentio;
                            
                         }
+                        if (_boardName.Equals(Constants.TabutronicTactum, StringComparison.OrdinalIgnoreCase))
+                        {
+                            BoardInformation = Constants.TabutronicTactum;
+
+                        }
                         if (_boardName.Equals(Constants.UCB, StringComparison.OrdinalIgnoreCase))
                         {
                             BoardInformation = Constants.UCB;
@@ -851,6 +927,16 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                 _logger?.LogInfo($"S: Open COM-Port {portName}");
                                 CurrentComPort = portName.StartsWith("B") ? "BTLE" : portName;
                                 BoardInformation = Constants.ChessnutAir;
+                                return true;
+                            }
+                        }
+                        if (_boardName.Equals(Constants.ChessnutGo, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (_comPort.IsOpen)
+                            {
+                                _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                CurrentComPort = portName.StartsWith("B") ? "BTLE" : portName;
+                                BoardInformation = Constants.ChessnutGo;
                                 return true;
                             }
                         }
@@ -946,6 +1032,33 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                                     _logger?.LogInfo($"S: Open COM-Port {portName}");
                                     CurrentComPort = portName;
                                     BoardInformation = Constants.TabutronicSentio;
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                if (_comPort.IsOpen)
+                                {
+                                    _logger?.LogInfo($"S: COM-Port {portName} with {_comPort.Baud} baud opened");
+                                    CurrentComPort = portName;
+                                    return true;
+                                }
+                            }
+                        }
+                        if (_boardName.Equals(Constants.TabutronicTactum, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (_comPort.PortName.Equals("BTLE"))
+                            {
+                                if (!_comPort.IsOpen)
+                                {
+                                    _comPort.Open();
+                                }
+
+                                if (_comPort.IsOpen)
+                                {
+                                    _logger?.LogInfo($"S: Open COM-Port {portName}");
+                                    CurrentComPort = portName;
+                                    BoardInformation = Constants.TabutronicTactum;
                                     return true;
                                 }
                             }

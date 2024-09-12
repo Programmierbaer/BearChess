@@ -10,8 +10,52 @@ namespace UnitTestsCertaboBoard
         [TestMethod]
         public void TestBoardPositions()
         {
+            var boardCodeConverter = new BoardCodeConverter(true);
+            boardCodeConverter.SetFigureOn(Fields.FE2);
+            Assert.IsFalse(boardCodeConverter.IsFigureOn(Fields.FA1));
+            Assert.IsTrue(boardCodeConverter.IsFigureOn(Fields.FE2));
+            Assert.IsFalse(boardCodeConverter.SamePosition(new BoardCodeConverter(true)));
+            boardCodeConverter.ClearFields();
+            Assert.IsFalse(boardCodeConverter.IsFigureOn(Fields.FE2));
+            Assert.IsTrue(boardCodeConverter.SamePosition(new BoardCodeConverter(true)));
+
+            boardCodeConverter.SetFigureOn(Fields.FA1);
+            boardCodeConverter.SetFigureOn(Fields.FB1);
+            boardCodeConverter.SetFigureOn(Fields.FC1);
+            boardCodeConverter.SetFigureOn(Fields.FD1);
+            boardCodeConverter.SetFigureOn(Fields.FE1);
+            boardCodeConverter.SetFigureOn(Fields.FF1);
+            boardCodeConverter.SetFigureOn(Fields.FG1);
+            boardCodeConverter.SetFigureOn(Fields.FH1);
+            boardCodeConverter.SetFigureOn(Fields.FA2);
+            boardCodeConverter.SetFigureOn(Fields.FB2);
+            boardCodeConverter.SetFigureOn(Fields.FC2);
+            boardCodeConverter.SetFigureOn(Fields.FD2);
+            boardCodeConverter.SetFigureOn(Fields.FE2);
+            boardCodeConverter.SetFigureOn(Fields.FF2);
+            boardCodeConverter.SetFigureOn(Fields.FG2);
+            boardCodeConverter.SetFigureOn(Fields.FH2);
+            boardCodeConverter.SetFigureOn(Fields.FA8);
+            boardCodeConverter.SetFigureOn(Fields.FB8);
+            boardCodeConverter.SetFigureOn(Fields.FC8);
+            boardCodeConverter.SetFigureOn(Fields.FD8);
+            boardCodeConverter.SetFigureOn(Fields.FE8);
+            boardCodeConverter.SetFigureOn(Fields.FF8);
+            boardCodeConverter.SetFigureOn(Fields.FG8);
+            boardCodeConverter.SetFigureOn(Fields.FH8);
+            boardCodeConverter.SetFigureOn(Fields.FA7);
+            boardCodeConverter.SetFigureOn(Fields.FB7);
+            boardCodeConverter.SetFigureOn(Fields.FC7);
+            boardCodeConverter.SetFigureOn(Fields.FD7);
+            boardCodeConverter.SetFigureOn(Fields.FE7);
+            boardCodeConverter.SetFigureOn(Fields.FF7);
+            boardCodeConverter.SetFigureOn(Fields.FG7);
+            boardCodeConverter.SetFigureOn(Fields.FH7);
+
+            Assert.IsTrue(boardCodeConverter.SamePosition(new BoardCodeConverter(new[] { "255", "255", "0", "0", "0", "0", "255", "255" }, true)));
+
             // 255 255 0 0 0 0 247 255 
-            var boardCodeConverter = new BoardCodeConverter(new[] {"255","255","0","0","0","0","255","255"}, true);
+            boardCodeConverter = new BoardCodeConverter(new[] {"255","255","0","0","0","0","255","255"}, true);
             Assert.IsTrue(boardCodeConverter.IsFigureOn(Fields.FA1));
             Assert.IsTrue(boardCodeConverter.IsFigureOn(Fields.FB1));
             Assert.IsTrue(boardCodeConverter.IsFigureOn(Fields.FC1));
@@ -144,6 +188,7 @@ namespace UnitTestsCertaboBoard
             Assert.IsFalse(boardCodeConverter.IsFigureOn(Fields.FF6));
             Assert.IsFalse(boardCodeConverter.IsFigureOn(Fields.FG6));
             Assert.IsFalse(boardCodeConverter.IsFigureOn(Fields.FH6));
+
         }
     }
 }

@@ -17,7 +17,6 @@ using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
-using Configuration = www.SoLaNoSoft.com.BearChessTools.Configuration;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -1199,6 +1198,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                   {
                                       Owner = this
                                   };
+                _progressWindow.SetWait("Please wait...");
                 _progressWindow.IsIndeterminate(true);
 
                 Dispatcher?.Invoke(() => { _progressWindow.Show(); });

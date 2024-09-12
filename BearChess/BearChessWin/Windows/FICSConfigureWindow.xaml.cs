@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Resources;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -10,11 +12,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class FICSConfigureWindow : Window
     {
         private readonly Configuration _configuration;
+        private readonly ResourceManager _rm;
 
         public FICSConfigureWindow(Configuration configuration)
         {
             _configuration = configuration;
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             textBlockUserName.Text = _configuration.GetConfigValue("ficsUserName", string.Empty);
             textBlockPassword.Password = _configuration.GetSecureConfigValue("ficsPassword", string.Empty);
             textBlockServer.Text = _configuration.GetConfigValue("ficsServer", "www.freechess.org");
@@ -30,7 +34,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (!string.IsNullOrWhiteSpace(textBlockPort.Text) && !int.TryParse(textBlockPort.Text, out _))
             {
-                MessageBox.Show("Port must be a number", "Invalid parameter", MessageBoxButton.OK,
+                MessageBox.Show(_rm.GetString("PortMustBeANumber"), _rm.GetString("InvalidParameter"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
                 return;
             }
@@ -41,8 +45,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 var messageBoxResult =
                     MessageBox.Show(
-                        $"You have not filled in all the input fields.{Environment.NewLine}Save entries anyway?",
-                        "Missing parameter", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                        $"{_rm.GetString("NotFilledAllFields")}{Environment.NewLine}{_rm.GetString("SaveEntriesAnyWay")}",
+                        _rm.GetString("MissingParameter"), MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                 if (messageBoxResult != MessageBoxResult.Yes)
                 {
                     return;

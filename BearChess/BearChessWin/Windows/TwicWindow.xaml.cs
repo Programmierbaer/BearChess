@@ -11,6 +11,7 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
+using System.Resources;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -21,21 +22,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         private readonly Database _database;
         private readonly ILogging _logger;
-        private readonly Configuration _configuration;
+        
         private readonly string _twicUrl;
-        private bool _deleteAfterDownload;
+        private readonly bool _deleteAfterDownload;
         private int _initialTwicNumber;
+        private ResourceManager _rm;
 
         public TwicWindow(Database database, ILogging logger, Configuration configuration)
         {
-
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _database = database;
             _logger = logger;
-            _configuration = configuration;
-            _twicUrl = _configuration.GetConfigValue("twicUrl", "https://theweekinchess.com/zips/");
-            bool.TryParse(_configuration.GetConfigValue("deleteAfterDownload", "true"), out _deleteAfterDownload);
-            int.TryParse(_configuration.GetConfigValue("initialTwicNumber", "1499"), out _initialTwicNumber);
+            _twicUrl = configuration.GetConfigValue("twicUrl", "https://theweekinchess.com/zips/");
+            bool.TryParse(configuration.GetConfigValue("deleteAfterDownload", "true"), out _deleteAfterDownload);
+            int.TryParse(configuration.GetConfigValue("initialTwicNumber", "1499"), out _initialTwicNumber);
             SetItemsSource();
         }
 
@@ -61,7 +62,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 maxNumber = _initialTwicNumber;
             }
-            if (MessageBox.Show($"Download and import all latest PGN files higher than {maxNumber} from TWIC?", "Download from TWIC",
+            if (MessageBox.Show($"{_rm.GetString("DownloadAllHigherThan")} {maxNumber}?", _rm.GetString("DownloadFromTWIC"),
                     MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) != MessageBoxResult.Yes)
             {
                 return;
@@ -125,7 +126,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         };
 
                         infoWindow.IsIndeterminate(true);
-                        infoWindow.SetTitle($"Download {twicNumber}");
+                        infoWindow.SetTitle($"{_rm.GetString("Download")} {twicNumber}");
+                        infoWindow.SetWait(_rm.GetString("PleaseWait"));
                         infoWindow.Show();
                     });
                     FileDownload.Download(url, zipFileName, true);
@@ -167,7 +169,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private async Task<bool> ImportFile(string fileName, int twicId)
         {
-            _logger?.LogDebug($"Import file started.");
+            _logger?.LogDebug($"Import file {fileName} started.");
             bool isCanceled = false;
             var count = 0;
             var fi = new FileInfo(fileName);
@@ -181,7 +183,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 };
 
                 infoWindow.IsIndeterminate(true);
-                infoWindow.SetTitle($"Import {fi.Name}");
+                infoWindow.SetTitle($"{_rm.GetString("Import")} {fi.Name}");
+                infoWindow.SetWait(_rm.GetString("PleaseWait"));
                 infoWindow.ShowCancelButton(true);
                 infoWindow.Show();
             });
@@ -219,7 +222,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     count++;
                     if (count % 100 == 0)
                     {
-                        Dispatcher.Invoke(() => { infoWindow.SetInfo($"{count} games..."); });
+                        Dispatcher.Invoke(() => { infoWindow.SetInfo($"{count} {_rm.GetString("Games")}..."); });
                     }
                     var uciInfoWhite = new UciInfo()
                     {
@@ -264,7 +267,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                
             }, System.Threading.CancellationToken.None, TaskContinuationOptions.None,
                 TaskScheduler.FromCurrentSynchronizationContext());
-            _logger?.LogDebug($"Import file finished.");
+            _logger?.LogDebug($"Import file {fileName} finished.");
             return isCanceled;
         }
 
@@ -308,7 +311,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (numericUpDownUserControlTwicNumberTo.Value < numericUpDownUserControlTwicNumberFrom.Value)
             {
-                MessageBox.Show("The 'from' number must be less than or equal to the 'to' number", "Invalid",
+                MessageBox.Show("The 'from' number must be less than or equal to the 'to' number", _rm.GetString("InvalidParameter"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -347,12 +350,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (numericUpDownUserControlTwicNumberFrom.Value.Equals(numericUpDownUserControlTwicNumberTo.Value))
                 {
                     buttonDownloadSingle.ToolTip =
-                        $"Download {numericUpDownUserControlTwicNumberFrom.Value}";
+                        $"{_rm.GetString("Download")} {numericUpDownUserControlTwicNumberFrom.Value}";
                 }
                 else
                 {
                     buttonDownloadSingle.ToolTip =
-                        $"Download from {numericUpDownUserControlTwicNumberFrom.Value} to {numericUpDownUserControlTwicNumberTo.Value}";
+                        $"{_rm.GetString("Download")} {_rm.GetString("From")} {numericUpDownUserControlTwicNumberFrom.Value} {_rm.GetString("To")} {numericUpDownUserControlTwicNumberTo.Value}";
                 }
             }
         }

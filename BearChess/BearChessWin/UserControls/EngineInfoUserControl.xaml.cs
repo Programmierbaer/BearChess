@@ -5,6 +5,7 @@ using System.Diagnostics.PerformanceData;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -45,10 +46,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DisplayFigureType _figureType;
         private DisplayMoveType _moveType;
         private DisplayCountryType _countryType;
+        private readonly ResourceManager _rm;
 
         public EngineInfoUserControl()
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _showTeddy = false;
             _hideInfo = 0;
             _currentColor = Fields.COLOR_WHITE;
@@ -146,12 +149,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
                
             }
 
-            if (!uciInfo.ValidForAnalysis)
+            if (!uciInfo.ValidForAnalysis || !uciInfo.SupportChangeMultiPV)
             {
-                engineInfoLineUserControl1.Visibility = Visibility.Collapsed;
+                if (!uciInfo.ValidForAnalysis)
+                {
+                    engineInfoLineUserControl1.Visibility = Visibility.Collapsed;
+                    buttonHide.Visibility = Visibility.Collapsed;
+                }
+
                 buttonPlus.Visibility = Visibility.Collapsed;
                 buttonMinus.Visibility = Visibility.Collapsed;
-                buttonHide.Visibility = Visibility.Collapsed;
+              
+            }
+            else
+            {
+                for (int i = 1; i < uciInfo.GetConfiguredMultiPV(); i++)
+                {
+                    ButtonPlus_OnClick(null, null);
+                }
             }
             engineInfoLineUserControl1.FillLine(string.Empty, string.Empty);
             var thread = new Thread(ShowInfoLine) { IsBackground = true };
@@ -441,7 +456,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                 var infoLinePart = infoLineParts[i + 2];
                                 if (!infoLinePart.Equals("0"))
                                 {
-                                    scoreString = $"Mate in {infoLinePart}";
+                                    scoreString = $"{_rm.GetString("MateIn")} {infoLinePart}";
                                 }
                             }
 
@@ -456,7 +471,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                         if (infoLineParts[i].Equals("currmove", StringComparison.OrdinalIgnoreCase))
                         {
-                            currentMove = $"Current: {infoLineParts[i + 1]}";
+                            currentMove = $"{_rm.GetString("Current")} {infoLineParts[i + 1]}";
                             readingMoveLine = false;
                             continue;
                         }
@@ -631,7 +646,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                             if (_hideInfo == 2)
                             {
-                                textBlockDepth.Text = "Depth:";
+                                textBlockDepth.Text = $"{_rm.GetString("Depth")}:";
                                 textBlockCurrentMove.Text = string.Empty;
                                 textBlockCurrentNodes.Text = string.Empty;
                                 textBlockCurrentNodesPerSec.Text = string.Empty;
@@ -642,7 +657,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             {
                                 if (!string.IsNullOrWhiteSpace(depthString))
                                 {
-                                    textBlockDepth.Text = $"Depth: {depthString}/{selDepthString}";
+                                    textBlockDepth.Text = $"{_rm.GetString("Depth")}: {depthString}/{selDepthString}";
                                 }
 
                                 if (!string.IsNullOrWhiteSpace(currentMove))

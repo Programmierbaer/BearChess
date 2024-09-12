@@ -1,9 +1,38 @@
-﻿using www.SoLaNoSoft.com.BearChessBase.Definitions;
+﻿using System.Resources;
+using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessTools
 {
+
     public static class SpeechTranslator
     {
+        public static ResourceManager ResourceManager;
+
+        public static string GetClockTime(ClockTime clockTime)
+        {
+            var result = string.Empty;
+            if (clockTime.Hour > 0)
+            {
+                result += $"{clockTime.Hour.ToString()} ";
+                result += clockTime.Hour == 1
+                    ? ResourceManager.GetString("ClockHour") : ResourceManager.GetString("ClockHours");
+            }
+            if (clockTime.Minute > 0 || clockTime.Hour > 0)
+            {
+                result += $"{clockTime.Minute.ToString()} ";
+                result += clockTime.Minute == 1
+                    ? ResourceManager.GetString("ClockMinute") : ResourceManager.GetString("ClockMinutes");
+            }
+            
+            {
+                result += $"{clockTime.Second.ToString()} ";
+                result += clockTime.Second == 1
+                    ? ResourceManager.GetString("ClockSecond") : ResourceManager.GetString("ClockSeconds");
+            }
+            return result;
+        }
 
         public static string GetWelcome(string langCode, Configuration configuration)
         {
@@ -29,6 +58,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public static string GetFigureName(int figureId, string langCode, Configuration configuration)
         {
+        
             string result = FigureId.FigureIdToEnName[figureId];
             string figureName = string.Empty;
 

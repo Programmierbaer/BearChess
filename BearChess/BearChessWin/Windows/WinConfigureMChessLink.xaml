@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         Icon="../Assets/Icons/Millennium ChessLink.png"
-        Title="Configure Millennium ChessLink" Height="690" Width="390" SizeToContent="WidthAndHeight">
+        Title="{x:Static p:Resources.ConfigureMillennium}" Height="730" Width="390" SizeToContent="WidthAndHeight">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -20,11 +21,11 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="Current:" FontWeight="DemiBold"
+                <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="{x:Static p:Resources.Current}" FontWeight="DemiBold"
                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                 <TextBlock Name="textBlockCurrentPort" Grid.Column="1" Grid.Row="0" Margin="5" Text="COM4"
                            HorizontalAlignment="Center" VerticalAlignment="Center" />
-                <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="COM-Ports:" FontWeight="DemiBold"
+                <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="{x:Static p:Resources.ComPorts}" FontWeight="DemiBold"
                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                 <ComboBox Margin="5,5,5,5" Name="comboBoxComPorts" Grid.Column="1" Grid.Row="1"
                           HorizontalAlignment="Center" Width="100"
@@ -33,13 +34,13 @@
                 <Button Name="buttonCheck" Grid.Column="2" Grid.Row="1" Margin="10,5,5,5" Width="100"
                         HorizontalAlignment="Center" VerticalAlignment="Center" Click="ButtonCheck_OnClick">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Name="textBlockCheck" VerticalAlignment="Center">Check...</TextBlock>
+                        <TextBlock Name="textBlockCheck" VerticalAlignment="Center" Text="{x:Static p:Resources.Check}" />
                         <Image Source="../Assets/Icons/connect.png" Width="32" />
                     </StackPanel>
                 </Button>
                 <TextBlock Name="textBlockInformation" Margin="5,5,5,5" Grid.Column="0" Grid.Row="2"
-                           Visibility="Collapsed"
-                           Foreground="IndianRed" Text="No COM-Port detected. Check the connection to the chessboard."
+                           Visibility="Collapsed" TextWrapping="Wrap"
+                           Foreground="IndianRed" Text="{x:Static p:Resources.NoCOMPortDetected}"
                            Grid.ColumnSpan="3" VerticalAlignment="Top" FontWeight="DemiBold" />
 
             </Grid>
@@ -47,7 +48,7 @@
         <Border Name="borderLEDs" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <StackPanel>
                 <DockPanel Margin="0,5,0,0" LastChildFill="False">
-                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="LEDs:" FontWeight="DemiBold" Width="70"
+                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.LEDs}" FontWeight="DemiBold" Width="70"
                                HorizontalAlignment="Left" VerticalAlignment="Center" />
                     <Button Margin="0" Name="buttonDecrementDim" Background="Transparent" DockPanel.Dock="Left"
                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonDecrementDim_OnClick">
@@ -63,12 +64,12 @@
                     </Button>
                 </DockPanel>
                 <DockPanel>
-                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="Move LEDs:" FontWeight="DemiBold" Width="70"
+                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.MoveLEDs}" FontWeight="DemiBold" Width="70"
                                HorizontalAlignment="Left" VerticalAlignment="Center" />
                     <RadioButton DockPanel.Dock="Left" Margin="5" GroupName="sync" Width="125" Name="radioButtonSync"
                                  VerticalContentAlignment="Center" Checked="RadioButtonSync_OnChecked">
                         <StackPanel Orientation="Horizontal">
-                            <Label VerticalAlignment="Center">Synchron</Label>
+                            <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Synchron}"/>
                             <Image Margin="10,0,0,0" Source="../Assets/Icons/images_flickr - 2.png" Width="32"
                                    Height="32" />
                         </StackPanel>
@@ -78,7 +79,7 @@
                                  VerticalContentAlignment="Center"
                                  Name="radioButtonAlternate" GroupName="sync" Checked="RadioButtonSync_OnChecked">
                         <StackPanel Orientation="Horizontal">
-                            <Label VerticalAlignment="Center">Alternate</Label>
+                            <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Alternate}"/>
                             <Image Margin="10,0,0,0" Source="../Assets/Icons/images_flickr.png" Width="32" Height="32" />
                         </StackPanel>
                     </RadioButton>
@@ -88,17 +89,17 @@
                              VerticalContentAlignment="Center"
                              Name="radioButtonNoFlash" GroupName="sync" Checked="RadioButtonSync_OnChecked">
                     <StackPanel Orientation="Horizontal">
-                        <Label VerticalAlignment="Center">No flash</Label>
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.NoFlash}"/>
                         <Image Margin="10,0,0,0" Source="../Assets/Icons/image.png" Width="32" Height="32" />
                     </StackPanel>
                 </RadioButton>
                 <StackPanel Orientation="Horizontal">
-                    <Button Margin="10,5,0,5" Name="buttonShowDim" Background="Transparent" ToolTip="Show LEDs"
+                    <Button Margin="10,5,0,5" Name="buttonShowDim" Background="Transparent" ToolTip="{x:Static p:Resources.ConnectTestLEDs}"
                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonShowDim_OnClick">
                         <Image Source="../Assets/Icons/eye.png" />
                     </Button>
                     <Button Margin="10,5,0,5" Name="buttonShowDim2" Background="Transparent" Visibility="Collapsed"
-                            ToolTip="Hide LEDs"
+                            ToolTip="{x:Static p:Resources.Disconnect}"
                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonShowDim_OnClick">
                         <Image Source="../Assets/Icons/eye_half.png" />
                     </Button>
@@ -110,14 +111,14 @@
         <Border Name="borderDelay" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <StackPanel Margin="0,5,0,5">
                 <DockPanel LastChildFill="False">
-                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="Delay..." FontWeight="DemiBold" Width="70"
+                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.Delay}" FontWeight="DemiBold" Width="70"
                                HorizontalAlignment="Left" VerticalAlignment="Center"
-                               ToolTip="A higher value increases the delay when the board reports a change (debounce)" />
+                               ToolTip="{x:Static p:Resources.HigherValueIncrease}" />
                     <Button DockPanel.Dock="Left" Margin="0,0,0,0" HorizontalAlignment="Left" Name="buttonDelDebounce"
                             Width="32"
                             Height="32"
                             Click="ButtonDebounceDelete_OnClick" Background="Transparent" BorderBrush="Transparent"
-                            ToolTip="Decrement delay">
+                            ToolTip="{x:Static p:Resources.DecrementDelay}">
                         <Image Source="../Assets/Icons/time_delete.png" />
                     </Button>
 
@@ -129,7 +130,7 @@
                             Width="32"
                             Height="32"
                             Click="ButtonDebounceAdd_OnClick" Background="Transparent" BorderBrush="Transparent"
-                            ToolTip="Increment delay">
+                            ToolTip="{x:Static p:Resources.IncrementDelay}">
                         <Image Source="../Assets/Icons/time_add.png" />
                     </Button>
                     <TextBlock Name="textBlockDebounce" DockPanel.Dock="Left" HorizontalAlignment="Left"
@@ -138,25 +139,25 @@
                 </DockPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button Margin="10,5,10,5" Name="buttonDebounceDefault" Background="Transparent"
-                            ToolTip="Reset to default"
+                            ToolTip="{x:Static p:Resources.ResetDefault}"
                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonResetDebounce_OnClick">
                         <Image Source="../Assets/Icons/time.png" />
                     </Button>
-                    <TextBlock VerticalAlignment="Center">reset to default value, without delay</TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static p:Resources.ResetDefaultWithout}"/>
                 </StackPanel>
             </StackPanel>
         </Border>
         <Border Name="borderScans" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <StackPanel Margin="0,5,0,5">
                 <DockPanel LastChildFill="False">
-                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="Scans..." FontWeight="DemiBold" Width="70"
+                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.Scans}" FontWeight="DemiBold" Width="70"
                                HorizontalAlignment="Left" VerticalAlignment="Center"
-                               ToolTip="How many times per second the board is scanned for any changes" />
+                               ToolTip="{x:Static p:Resources.HowManyTimerPerSecond}" />
                     <Button DockPanel.Dock="Left" Margin="0,0,0,0" HorizontalAlignment="Left" Name="buttonDelScan"
                             Width="32"
                             Height="32"
                             Click="ButtonTimeDelete_OnClick" Background="Transparent" BorderBrush="Transparent"
-                            ToolTip="Decrement scan time">
+                            ToolTip="{x:Static p:Resources.DecrementScanTime}">
                         <Image Source="../Assets/Icons/time_delete.png" />
                     </Button>
 
@@ -168,47 +169,39 @@
                             Width="32"
                             Height="32"
                             Click="ButtonTimeAdd_OnClick" Background="Transparent" BorderBrush="Transparent"
-                            ToolTip="Increment scan time">
+                            ToolTip="{x:Static p:Resources.IncrementScanTime}">
                         <Image Source="../Assets/Icons/time_add.png" />
                     </Button>
                     <TextBlock Name="textBlockScansPerSec" DockPanel.Dock="Left" HorizontalAlignment="Left"
                                Margin="5,0,0,0"
-                               VerticalAlignment="Center" Text="per sec." />
+                               VerticalAlignment="Center" Text="{x:Static p:Resources.PerSec}" />
                 </DockPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button Margin="10,5,10,5" Name="buttonScanDefault" Background="Transparent"
-                            ToolTip="Reset to default"
+                            ToolTip="{x:Static p:Resources.ResetDefault}"
                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonResetScan_OnClick">
                         <Image Source="../Assets/Icons/time.png" />
                     </Button>
-                    <TextBlock VerticalAlignment="Center">reset to default with 16.3 scans per sec</TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static p:Resources.ResetDefaultPerSec}"/>
                 </StackPanel>
             </StackPanel>
         </Border>
         <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <StackPanel>
-                <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
-                <CheckBox Margin="5" Name="checkBoxOwnMoves"
-                          ToolTip="This selection is exclusive to the following two options"
-                          Checked="CheckBoxOwnMoves_OnChecked" Unchecked="CheckBoxOwnMoves_OnUnchecked">
-                    Show own moves
-                </CheckBox>
-                <CheckBox Margin="5" Name="checkBoxPossibleMoves"
-                          ToolTip="This selection is exclusive to 'Show own moves'"
-                          Unchecked="CheckBoxPossibleMoves_OnUnchecked" Checked="CheckBoxPossibleMoves_OnChecked">
-                    Show all moves for the selected figure
-                </CheckBox>
-                <CheckBox Margin="5" Name="checkBoxBestMove" ToolTip="This selection is exclusive to 'Show own moves'"
-                          Unchecked="CheckBoxBesteMove_OnUnchecked" Checked="CheckBoxBesteMove_OnChecked">
-                    Show the best move for the selected figure
-                </CheckBox>
-                <CheckBox Margin="5" Name="checkBoxCurrentValue" Unchecked="CheckBoxCurrentValue_OnUnchecked" Checked="CheckBoxCurrentValue_OnChecked">Show valuation</CheckBox>
+                
+                <StackPanel >
+                    <CheckBox Margin="5" Name="checkBoxMoveLine" Content="{x:Static p:Resources.ActivateAllLEDsAlongMove}"></CheckBox>
+                    <CheckBox Margin="5" Name="checkBoxOwnMoves" ToolTip="{x:Static p:Resources.SelectionIsExclusive}"  Checked="CheckBoxOwnMoves_OnChecked" Unchecked="CheckBoxOwnMoves_OnUnchecked" Content="{x:Static p:Resources.ShowOwnMoves}"/>
+                    <CheckBox Margin="5" Name="checkBoxPossibleMoves" ToolTip="{x:Static p:Resources.SelectionIsExclusiveShowOwnMoves}" Unchecked="CheckBoxPossibleMoves_OnUnchecked" Checked="CheckBoxPossibleMoves_OnChecked" Content="{x:Static p:Resources.ShowAllMovesSelectedFigure}"/>
+                    <CheckBox Margin="5" Name="checkBoxBestMove" ToolTip="{x:Static p:Resources.SelectionIsExclusiveShowOwnMoves}" Unchecked="CheckBoxBesteMove_OnUnchecked" Checked="CheckBoxBesteMove_OnChecked" Content="{x:Static p:Resources.ShowBestMoveSelectedFigure}"/>
+                </StackPanel>
+                <CheckBox Margin="5" Name="checkBoxCurrentValue" Unchecked="CheckBoxCurrentValue_OnUnchecked" Checked="CheckBoxCurrentValue_OnChecked" Content="{x:Static p:Resources.ShowValuation}"/>
 
                 <StackPanel Name="stackPanelValuation" Margin="15,5" Orientation="Horizontal">
-                    <RadioButton Name="radioButtonValueLeft" GroupName="Valuation" Margin="5">Left</RadioButton>
-                    <RadioButton Name="radioButtonValueLeftRight" GroupName="Valuation" Margin="5">Left/Right</RadioButton>
-                    <RadioButton Name="radioButtonValueBottom" GroupName="Valuation" IsChecked="True" Margin="5">Bottom</RadioButton>
-                    <RadioButton Name="radioButtonValueBottomTop" GroupName="Valuation" Margin="5">Bottom/Top</RadioButton>
+                    <RadioButton Name="radioButtonValueLeft" GroupName="Valuation" Margin="5" Content="{x:Static p:Resources.Left}"/>
+                    <RadioButton Name="radioButtonValueLeftRight" GroupName="Valuation" Margin="5" Content="{x:Static p:Resources.LeftRight}"/>
+                    <RadioButton Name="radioButtonValueBottom" GroupName="Valuation" IsChecked="True" Margin="5" Content="{x:Static p:Resources.Bottom}"/>
+                    <RadioButton Name="radioButtonValueBottomTop" GroupName="Valuation" Margin="5" Content="{x:Static p:Resources.BottomTop}"/>
                 </StackPanel>
 
             </StackPanel>
@@ -216,21 +209,25 @@
         <Border Name="borderChesstimation" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1"
                 IsEnabled="False">
             <StackPanel Orientation="Vertical">
-                <TextBlock TextWrapping="Wrap" Margin="5,5,5,0">Using a Chesstimation module by Andreas Petersik</TextBlock>
-                <TextBlock TextWrapping="Wrap" Margin="5,0,5,5">or a Elfacun module by 'inmbolmie'</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5,5,5,0" Text="{x:Static p:Resources.UsingChesstimation}"/>
+            </StackPanel>
+        </Border>
+        <Border Name="borderElfacun" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1"
+                IsEnabled="False">
+            <StackPanel Orientation="Vertical">
+                <TextBlock TextWrapping="Wrap" Margin="5,5,5,0" Text="{x:Static p:Resources.UsingElfacun}"/>
             </StackPanel>
         </Border>
         <DockPanel Margin="0,0,0,5">
             <Button DockPanel.Dock="Left" Margin="10,5,5,5" HorizontalAlignment="Left" Name="buttonOk" Width="32"
                     Height="32"
-                    Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">
+                    Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" >
                 <Image Source="../Assets/Icons/accept_button.png" />
             </Button>
 
             <Button DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right" Name="buttonCancel" Width="32"
                     Height="32"
-                    Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent"
-                    ToolTip="Cancel">
+                    Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="../Assets/Icons/cancel.png" />
             </Button>
         </DockPanel>

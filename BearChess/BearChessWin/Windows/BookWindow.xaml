@@ -2,9 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Icon="../Assets/Icons/book_open.png"
         mc:Ignorable="d" Closing="BookWindow_OnClosing"
-        Title="Book" MinHeight="290" Height="290" Width="350">
+        Title="{x:Static p:Resources.Book}" MinHeight="290" Height="290" Width="410">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -38,7 +39,9 @@
             </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding MoveText}" Width="Auto">
-                    <DataGridTextColumn.Header>Move</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Move}"></TextBlock>
+                    </DataGridTextColumn.Header>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Right" />
@@ -60,19 +63,29 @@
                 </DataGridTextColumn>
                 -->
                 <DataGridTextColumn Binding="{Binding Weight}" Width="Auto">
-                    <DataGridTextColumn.Header>Weight</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Weight}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding NoOfGames}" Width="Auto">
-                    <DataGridTextColumn.Header>Games</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Games}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding NoOfWins}" Width="Auto">
-                    <DataGridTextColumn.Header>Wins</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Wins}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding NoOfLoss}" Width="Auto">
-                    <DataGridTextColumn.Header>Losts</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Losts}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding NoOfDraws}" Width="Auto">
-                    <DataGridTextColumn.Header>Draws</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Draws}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <!--<DataGridTextColumn Binding="{Binding FenPosition}" Width="*">
                     <DataGridTextColumn.Header>FEN</DataGridTextColumn.Header>

@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows" Loaded="ConfirmPiecesWindow_OnLoaded"
         mc:Ignorable="d"  WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="Confirm Pieces Selection" Height="250" Width="400">
+        Title="{x:Static p:Resources.ConfirmPiecesSelection}" Height="250" Width="400">
     <StackPanel>
         <StackPanel Margin="5,0,0,0" VerticalAlignment="Top">
             <Grid  >
@@ -36,19 +37,19 @@
                 <Image Name="imagePawnB" Margin="5"  Grid.Column="5" Grid.Row="1" Source="../Assets/Stone/Symbol/PawnB.png" Width="50" Height="50" />
             </Grid>
             <StackPanel Margin="5" Orientation="Horizontal">
-                <TextBlock Margin="5" HorizontalAlignment="Left">Name:</TextBlock>
-                <TextBox Name="textBoxName" Width="300" Margin="5" HorizontalAlignment="Left" />
+                <TextBlock Margin="5" HorizontalAlignment="Left" Text="{x:Static p:Resources.Name}"></TextBlock>
+                <TextBox Name="textBoxName" Width="300" Margin="5" HorizontalAlignment="Left" ToolTip="{x:Static p:Resources.GiveThePieceSetAName}" />
             </StackPanel>
 
         </StackPanel>
         <DockPanel>
             <Button Margin="5"  DockPanel.Dock="Left" HorizontalAlignment="Left" Background="Transparent"
-                    BorderBrush="Transparent"
-                    Click="ButtonBase_OnClick">
+                    BorderBrush="Transparent" ToolTip="{x:Static p:Resources.Ok}"
+                    Click="ButtonOk_OnClick">
                 <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32" />
             </Button>
             <Button Name="buttonCancel" DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right" Background="Transparent"
-                    BorderBrush="Transparent"
+                    BorderBrush="Transparent" ToolTip="{x:Static p:Resources.Cancel}"
                     Click="ButtonCancel_OnClick">
                 <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32" />
             </Button>

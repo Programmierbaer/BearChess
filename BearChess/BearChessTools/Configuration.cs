@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -8,6 +9,7 @@ using InTheHand.Net;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 
 namespace www.SoLaNoSoft.com.BearChessTools
 {
@@ -41,6 +43,28 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public string FolderPath { get; }
 
         public string BinPath { get; }
+
+        public PgnConfiguration GetPgnConfiguration()
+        {
+            return new PgnConfiguration()
+            {
+                PurePgn = bool.Parse(GetConfigValue("gamesPurePGNExport", "true")),
+                IncludeComment = bool.Parse(GetConfigValue("gamesPGNExportComment", "true")),
+                IncludeEvaluation = bool.Parse(GetConfigValue("gamesPGNExportEvaluation", "true")),
+                IncludeMoveTime = bool.Parse(GetConfigValue("gamesPGNExportMoveTime", "true")),
+                IncludeSymbols = bool.Parse(GetConfigValue("gamesPGNExportSymbols", "true")),
+            };
+
+        }
+
+        public void SavePgnConfiguration(PgnConfiguration pgnConfiguration)
+        {
+            SetConfigValue("gamesPurePGNExport", pgnConfiguration.PurePgn.ToString());
+            SetConfigValue("gamesPGNExportComment", pgnConfiguration.IncludeComment.ToString());
+            SetConfigValue("gamesPGNExportEvaluation", pgnConfiguration.IncludeEvaluation.ToString());
+            SetConfigValue("gamesPGNExportMoveTime", pgnConfiguration.IncludeMoveTime.ToString());
+            SetConfigValue("gamesPGNExportSymbols", pgnConfiguration.IncludeSymbols.ToString());
+        }
 
         public static Configuration Instance
         {

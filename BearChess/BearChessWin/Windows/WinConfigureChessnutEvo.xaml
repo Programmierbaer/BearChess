@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="Configure Chessnut Evo" Height="700" Width="520" SizeToContent="WidthAndHeight">
+        Title="{x:Static p:Resources.ConfigureChessnutEvo}" Height="700" Width="520" SizeToContent="WidthAndHeight">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -22,13 +23,13 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock Margin="5" Text="Current:" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBlock Margin="5" Text="{x:Static p:Resources.Current}" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     <TextBlock  Margin="5" Text="ws://" HorizontalAlignment="Right" VerticalAlignment="Center" />
                 </StackPanel>
                 <TextBlock Name="textBlockCurrentPort" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Margin="5" Text="192.168.178.49:8888"
                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                 <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                    <TextBlock  Margin="5" Text="Address:" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBlock  Margin="5" Text="{x:Static p:Resources.Address}" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" />
                     <TextBlock  Margin="5" Text="ws://" HorizontalAlignment="Right" VerticalAlignment="Center" />
                 </StackPanel>
                 <Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1">
@@ -40,7 +41,7 @@
                     <Button Name="buttonCheck" Grid.Column="1" Grid.Row="0" Margin="5" Width="100"
                         HorizontalAlignment="Center" VerticalAlignment="Center" Click="ButtonCheck_OnClick">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Name="textBlockCheck" VerticalAlignment="Center">Check...</TextBlock>
+                            <TextBlock Name="textBlockCheck" VerticalAlignment="Center" Text="{x:Static p:Resources.Check}"/>
                         <Image Source="../Assets/Icons/connect.png" Width="32" />
                     </StackPanel>
                 </Button>
@@ -50,9 +51,8 @@
        
             <Border Name="borderLEDs" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <TabControl Height="500">
-                <TabItem Header="LEDs">
+                <TabItem Header="{x:Static p:Resources.LEDs}">
                     <StackPanel>
-
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -80,17 +80,17 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <DockPanel Margin="0,5,0,0" LastChildFill="False" Grid.Column="0" Grid.Row="0">
-                                <TextBlock DockPanel.Dock="Left" Margin="5" Text="LEDs:" FontWeight="DemiBold"
+                                <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.LEDs}" FontWeight="DemiBold"
                                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                     <Button Margin="5,0" Name="buttonShowDim" Background="Transparent"
-                                            ToolTip="Connect to the board to test LEDs"
+                                            ToolTip="{x:Static p:Resources.ConnectTestLEDs}"
                                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonShowDim_OnClick">
                                         <Image Source="../Assets/Icons/eye.png" />
                                     </Button>
                                     <Button Margin="5,0" Name="buttonShowDim2" Background="Transparent"
                                             Visibility="Collapsed"
-                                            ToolTip="Disconnect from the board"
+                                            ToolTip="{x:Static p:Resources.Disconnect}"
                                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonShowDim_OnClick">
                                         <Image Source="../Assets/Icons/eye_half.png" />
                                     </Button>
@@ -99,27 +99,23 @@
                             </DockPanel>
                             <Image Margin="5,0,5,0" Grid.Column="1" Grid.Row="0"
                                    Source="../Assets/Icons/bullet_red.png" VerticalAlignment="Center"
-                                   HorizontalAlignment="Center" ToolTip="Red" />
+                                   HorizontalAlignment="Center" ToolTip="{x:Static p:Resources.Red}" />
                             <Image Margin="5,0,5,0" Grid.Column="2" Grid.Row="0"
                                    Source="../Assets/Icons/bullet_green.png" VerticalAlignment="Center"
-                                   HorizontalAlignment="Center" ToolTip="Green" />
+                                   HorizontalAlignment="Center" ToolTip="{x:Static p:Resources.Green}" />
                             <Image Margin="5,0,5,0" Grid.Column="3" Grid.Row="0"
                                    Source="../Assets/Icons/bullet_blue.png" VerticalAlignment="Center"
-                                   HorizontalAlignment="Center" ToolTip="Blue" />
+                                   HorizontalAlignment="Center" ToolTip="{x:Static p:Resources.Blue}" />
                             <Image Margin="5,0,5,0" Grid.Column="4" Grid.Row="0" Source="../Assets/Icons/lightbulb.png"
-                                   Width="20" HorizontalAlignment="Center" ToolTip="Brightness" />
+                                   Width="20" HorizontalAlignment="Center" ToolTip="{x:Static p:Resources.Brightness}" />
                             <Image Margin="5,0,5,0" Grid.Column="5" Grid.Row="0" Source="../Assets/Icons/lightning.png"
-                                   Width="20" HorizontalAlignment="Center" ToolTip="Flash" Visibility="Hidden" />
+                                   Width="20" HorizontalAlignment="Center" ToolTip="{x:Static p:Resources.Flash}" Visibility="Hidden" />
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
-                                      Margin="25,0,5,0" ToolTip="From field"
-                                      Grid.Column="0" Grid.Row="1">
-                                Move From
-                            </TextBlock>
+                                      Margin="25,0,5,0" ToolTip="{x:Static p:Resources.FromField}"
+                                      Grid.Column="0" Grid.Row="1" Text="{x:Static p:Resources.MoveFrom}"/>
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
-                                       Margin="25,0,5,0" ToolTip="To field"
-                                       Grid.Column="0" Grid.Row="2">
-                                Move To
-                            </TextBlock>
+                                       Margin="25,0,5,0" ToolTip="{x:Static p:Resources.ToField}"
+                                       Grid.Column="0" Grid.Row="2" Text="{x:Static p:Resources.MoveTo}"/>
                             <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="1" Grid.Row="1"
                                                                    x:Name="numericUpDownUserControlMoveFromRed"
                                                                    MinValue="0"
@@ -141,7 +137,7 @@
                                       Grid.Row="1" Name="checkBoxFlashMoveFrom" Checked="RadioButtonSync_OnChecked" />
 
                             <Button Grid.Column="6" Grid.Row="1" Margin="5" Name="buttonShowMoveFrom"
-                                    Background="Transparent" ToolTip="Show LEDs"
+                                    Background="Transparent" ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
@@ -168,27 +164,25 @@
 
 
                             <Button Grid.Column="6" Grid.Row="3" Margin="5" Name="buttonShowInvalid"
-                                    Background="Transparent" ToolTip="Show LEDs"
+                                    Background="Transparent" ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
                             <Button Grid.Column="6" Grid.Row="4" Margin="6" Name="buttonShowTakeBack"
-                                    Background="Transparent" ToolTip="Show LEDs"
+                                    Background="Transparent" ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
                             <Button Grid.Column="6" Grid.Row="5" Margin="5" Name="buttonShowHint"
-                                    Background="Transparent" ToolTip="Show LEDs"
+                                    Background="Transparent" ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
                           
 
                             <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Name="checkBoxInvalidMoves"
-                                      Margin="5,5,5,0" ToolTip="Invalid fields" 
-                                      Grid.Column="0" Grid.Row="3">
-                                Invalid
-                            </CheckBox>
+                                      Margin="5,5,5,0" ToolTip="{x:Static p:Resources.InvalidFields}" 
+                                      Grid.Column="0" Grid.Row="3" Content="{x:Static p:Resources.Invalid}"/>
                             <bearChessWin:NumericUpDownUserControl Margin="5" Grid.Column="1" Grid.Row="3"
                                                                    x:Name="numericUpDownUserControlInvalidRed"
                                                                    MinValue="0"
@@ -211,10 +205,8 @@
                                       Grid.Row="3" Name="checkBoxFlashInvalid" Checked="RadioButtonSync_OnChecked" />
 
                             <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Name="checkBoxTakeBackMove"
-                                      Margin="5" ToolTip="From and to field when undoing a chess move"
-                                      Grid.Column="0" Grid.Row="4">
-                                Take Back
-                            </CheckBox>
+                                      Margin="5" ToolTip="{x:Static p:Resources.FromAndToFieldUndo}"
+                                      Grid.Column="0" Grid.Row="4" Content="{x:Static p:Resources.TakeBack}"/>
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="4"
                                                                    x:Name="numericUpDownUserControlTakeBackRed"
                                                                    MinValue="0"
@@ -236,10 +228,8 @@
                                       Grid.Row="4" Name="checkBoxFlashTakeBack" Checked="RadioButtonSync_OnChecked" />
 
                             <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Name="checkBoxHintMoves"
-                                      Margin="5,5,5,0" ToolTip="From and to field for a hint on the best move"
-                                      Grid.Column="0" Grid.Row="5">
-                                Hint
-                            </CheckBox>
+                                      Margin="5,5,5,0" ToolTip="{x:Static p:Resources.FromAndToFieldForHint}"
+                                      Grid.Column="0" Grid.Row="5" Content="{x:Static p:Resources.Hint}"/>
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="5"
                                                                    x:Name="numericUpDownUserControlHintRed"
                                                                    MinValue="0"
@@ -261,13 +251,10 @@
                                       Grid.Row="5" Name="checkBoxFlashHint" Checked="RadioButtonSync_OnChecked" />
 
 
-                         
 
                             <CheckBox Name="checkBoxPossibleMoves" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,5,5,0"
-           ToolTip="Show possible moves if you lift up a figure" Checked="CheckBoxPossibleMoves_OnChecked" Unchecked="CheckBoxPossibleMoves_OnUnchecked"
-           Grid.Column="0" Grid.Row="9">
-                                Possible moves
-                            </CheckBox>
+           ToolTip="{x:Static p:Resources.ShowPossibleMovesOfFigure}" Checked="CheckBoxPossibleMoves_OnChecked" Unchecked="CheckBoxPossibleMoves_OnUnchecked"
+           Grid.Column="0" Grid.Row="9" Content="{x:Static p:Resources.PossibleMoves}"/>
 
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="9"
                                         x:Name="numericUpDownUserControlPossibleMovesRed"
@@ -290,16 +277,14 @@
            Grid.Row="9" Name="checkBoxFlashPossibleMoves" Visibility="Hidden"
            Checked="RadioButtonSync_OnChecked" />
                             <Button Grid.Column="6" Grid.Row="9" Margin="5" Name="buttonShowCurrentPossibleMoves"
-         Background="Transparent" ToolTip="Show LEDs"
+         Background="Transparent" ToolTip="{x:Static p:Resources.ShowLEDs}"
          BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
 
                             <CheckBox Name="checkBoxPossibleMovesEval" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,5,5,0"
-                                      ToolTip="This is a good move"
-                                      Grid.Column="0" Grid.Row="10">
-                                Evaluation: good
-                            </CheckBox>
+                                      ToolTip="{x:Static p:Resources.ThisIsAGoodMove}"
+                                      Grid.Column="0" Grid.Row="10" Content="{x:Static p:Resources.EvaluationGood}"/>
 
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="10"
                                                                    x:Name="numericUpDownUserControlGoodMoveEvaluationRed"
@@ -322,16 +307,14 @@
                                       Grid.Row="10" Name="checkBoxFlashGoodMoveEvaluation"
                                       Checked="RadioButtonSync_OnChecked" />
                             <Button Grid.Column="6" Grid.Row="10" Margin="0,11,6,11" Name="buttonShowCurrentGoodMoveEvaluation"
-                                    Background="Transparent" ToolTip="Show LEDs"
+                                    Background="Transparent" ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick" HorizontalAlignment="Right">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
 
-                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="120,5,5,0"
-                                       ToolTip="This is a bad move"
-                                       Grid.Column="0" Grid.Row="11">
-                                bad
-                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,5,5,0"
+                                       ToolTip="{x:Static p:Resources.ThisIsABadMove}"
+                                       Grid.Column="0" Grid.Row="11" Text="{x:Static p:Resources.Bad}"/>
 
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="11"
                                                                    x:Name="numericUpDownUserControlBadMoveEvaluationRed"
@@ -355,9 +338,9 @@
                                       Checked="RadioButtonSync_OnChecked" />
 
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,5,5,0"
-             ToolTip="This is neither a particularly good or bad move"
+             ToolTip="{x:Static p:Resources.PlayableMove}" Text="{x:Static p:Resources.Playable}"
              Grid.Column="0" Grid.Row="12">
-      playable
+      
                             </TextBlock>
 
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="12"
@@ -387,21 +370,12 @@
                         <StackPanel Orientation="Horizontal" />
                     </StackPanel>
                 </TabItem>
-                <TabItem Header="Active LEDs">
+                <TabItem Header="{x:Static p:Resources.ActiveLEDs}">
                     <StackPanel>
 
+                        <CheckBox Margin="5" Name="checkBoxMoveLine" Content="{x:Static p:Resources.ActivateAllLEDsAlongMove}"></CheckBox>
 
-
-
-
-
-
-                        <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
-
-
-
-
-                        <CheckBox Margin="5" Name="checkBoxOwnMoves">Show own moves</CheckBox>
+                        <CheckBox Margin="5" Name="checkBoxOwnMoves" Content="{x:Static p:Resources.ShowOwnMoves}"></CheckBox>
 
                     </StackPanel>
                 </TabItem>
@@ -412,31 +386,31 @@
 
         <StackPanel Visibility="Collapsed">
             <TextBox Name="textBoxSnd">45 4C</TextBox>
-            <Button Name="buttonSend" Click="ButtonSend_OnClick">Send</Button>
+            <Button Name="buttonSend" Click="ButtonSend_OnClick" Content="{x:Static p:Resources.Send}"/>
         </StackPanel>
         <DockPanel Margin="0,0,0,5">
             <Button DockPanel.Dock="Left" Margin="10,5,5,5" HorizontalAlignment="Left" Name="buttonOk" Width="32"
                     Height="32"
-                    Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">
+                    Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" >
                 <Image Source="../Assets/Icons/accept_button.png" />
             </Button>
-            <ComboBox ToolTip="Select your current configuration" Name="comboBoxSettings" DockPanel.Dock="Left"
+            <ComboBox ToolTip="{x:Static p:Resources.SelectCurrentConfiguration}" Name="comboBoxSettings" DockPanel.Dock="Left"
                       Margin="15,5" SelectedItem="0" Width="150" Height="25" VerticalContentAlignment="Center" 
                       SelectionChanged="ComboBoxSettings_OnSelectionChanged" />
             <Button Name="buttonSaveAsNew" Click="ButtonSaveAsNew_OnClick" DockPanel.Dock="Left"
-                    ToolTip="Save as new configuration" Margin="5,0" Background="Transparent" BorderBrush="Transparent">
+                    ToolTip="{x:Static p:Resources.SaveAsNewConfiguration}" Margin="5,0" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="../Assets/Icons/cog_add.png" Height="30" Width="30"></Image>
             </Button>
 
             <Button Click="ButtonDelete_OnClick" Name="buttonDelete" DockPanel.Dock="Left"
-                    ToolTip="Delete configuration" Margin="5,0" Background="Transparent" BorderBrush="Transparent">
+                    ToolTip="{x:Static p:Resources.DeleteConfiguration}" Margin="5,0" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="../Assets/Icons/bin.png" Height="30" Width="30"></Image>
             </Button>
 
             <Button DockPanel.Dock="Right" Margin="5,5,10,5" HorizontalAlignment="Right" Name="buttonCancel" Width="32"
                     Height="32"
-                    Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent"
-                    ToolTip="Cancel">
+                    Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent">
+                
                 <Image Source="../Assets/Icons/cancel.png" />
             </Button>
         </DockPanel>

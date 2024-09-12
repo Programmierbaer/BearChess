@@ -90,6 +90,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         void SetFen(string fen, string allMoves);
 
+        void AwaitingMove(int fromField, int toField);
+
         /// <summary>
         /// Close the connection to the chess board
         /// </summary>
@@ -115,6 +117,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         /// <param name="message"></param>
         void SendInformation(string message);
+        string RequestInformation(string message);
         void AdditionalInformation(string information);
 
         void SendCommand(string command);
@@ -156,6 +159,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// The pieces are replaced on the base position
         /// </summary>
         event EventHandler BasePositionEvent;
+        event EventHandler NewGamePositionEvent;
 
         event EventHandler BatteryChangedEvent;
 
@@ -226,6 +230,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void AllowTakeBack(bool allowTakeBack);
         bool PieceRecognition { get; }
         bool MultiColorLEDs { get; }
+        bool ValidForAnalyse { get; }
         void Ignore(bool ignore);
 
         void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack);

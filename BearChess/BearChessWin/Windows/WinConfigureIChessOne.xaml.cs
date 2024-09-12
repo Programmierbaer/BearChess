@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +11,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.IChessOneLoader;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
@@ -31,11 +33,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _lastButtonName = string.Empty;
         private readonly FileLogger _fileLogger;
         private readonly List<string> _allPortNames;
+        private readonly ResourceManager _rm;
 
         public WinConfigureIChessOne(Configuration configuration, bool useBluetoothLE)
         {
         
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _allPortNames = new List<string> { "<auto>" };
             List<string> portNames;
 
@@ -459,7 +463,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ShowTooltip()
         {
             buttonOk.ToolTip =
-                $"Select and save configuration as '{((ExtendedEChessBoardConfiguration)comboBoxSettings.Items[_currentIndex]).Name}'";
+                $"{_rm.GetString("SelectAndSaveConfiguration")} '{((ExtendedEChessBoardConfiguration)comboBoxSettings.Items[_currentIndex]).Name}'";
         }
 
         private void ComboBoxSettings_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -481,7 +485,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                              {
                                  Owner = this
                              };
-            editWindow.SetTitle("Give your configuration a name");
+            editWindow.SetTitle(_rm.GetString("GiveConfigurationName"));
             var showDialog = editWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -509,12 +513,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_currentIndex == 0)
             {
-                MessageBox.Show("You cannot delete the 'BearChess' configuration", "Not allowed", MessageBoxButton.OK,
-                                MessageBoxImage.Hand);
+                MessageBox.Show(_rm.GetString("CannotDeleteBearChessConfig"), _rm.GetString("NotAllowed"), MessageBoxButton.OK,
+                    MessageBoxImage.Hand);
                 return;
             }
-            if (MessageBox.Show($"Delete your configuration '{((ExtendedEChessBoardConfiguration)comboBoxSettings.Items[_currentIndex]).Name}' ?", "Delete", MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"{_rm.GetString("DeleteConfiguration")} '{((ExtendedEChessBoardConfiguration)comboBoxSettings.Items[_currentIndex]).Name}' ?", _rm.GetString("Delete"), MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 _loaded = false;
                 comboBoxSettings.Items.RemoveAt(_currentIndex);
@@ -561,16 +565,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             infoWindow.Close();
                             _fileLogger?.LogInfo($"Check successful for {name}");
-                            MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK,
-                                            MessageBoxImage.Information);
+                            MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {name}", _rm.GetString("Check"), MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                          
                             comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
                             return;
                         }
                     }
                     infoWindow.Close();
                     _fileLogger?.LogInfo($"Check failed for all");
-                    MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show(_rm.GetString("CheckConnectionFailedForAll"), _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                     return;
 
                 }
@@ -581,16 +586,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     _fileLogger?.LogInfo($"Check successful for {portName}");
                     infoWindow.Close();
-                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Information);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                     comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(portName);
                 }
                 else
                 {
                     _fileLogger?.LogInfo($"Check failed for {portName}");
                     infoWindow.Close();
-                    MessageBox.Show($"Check failed for {portName} ", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
@@ -610,7 +615,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (textBlockScansPerSec != null)
             {
-                textBlockScansPerSec.Text = $"every {(int)sliderScanTime.Value} ms";
+                textBlockScansPerSec.Text = $"{_rm.GetString("Every")} {(int)sliderScanTime.Value} ms";
             }
         }
 

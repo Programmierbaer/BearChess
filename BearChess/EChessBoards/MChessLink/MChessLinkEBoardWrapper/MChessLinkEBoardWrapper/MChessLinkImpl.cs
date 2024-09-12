@@ -11,11 +11,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         }
 
         /// <inheritdoc />
-        public MChessLinkImpl(string name, string basePath, string comPortName, bool useChesstimation) : base(
-            name, basePath,  comPortName, useChesstimation)
-        {
-         
-        }
+       
         public MChessLinkImpl(string name, string basePath, EChessBoardConfiguration configuration) :
             base(name, basePath, configuration)
         {
@@ -44,7 +40,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         protected override IEBoard GetEBoard()
         {
            // return new MChessLinkChessBoard.EChessBoard(_fileLogger, _comPortName, UseChesstimation);
-            return new MChessLinkChessBoard.EChessBoard( _fileLogger, _configuration, UseChesstimation);
+            return new MChessLinkChessBoard.EChessBoard( _fileLogger, _configuration);
         }
 
         protected override IEBoard GetEBoard(bool check)
@@ -62,6 +58,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkEBoardWrapper
         public override void SendInformation(string message)
         {
             //
+        }
+
+        public override string RequestInformation(string message)
+        {
+            return string.Empty;
         }
 
 

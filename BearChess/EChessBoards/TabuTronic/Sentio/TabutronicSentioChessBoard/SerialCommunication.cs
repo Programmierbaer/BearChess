@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.CommonUciWrapper;
-using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
@@ -10,7 +9,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
     public class SerialCommunication : AbstractSerialCommunication
     {
 
-        private Thread _sendingThread;
+        
         public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.TabutronicSentio)
         {
             _useBluetooth = useBluetooth;
@@ -81,8 +80,6 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
             _logger?.LogDebug("SC: Communicate");
             IsCommunicating = true;
             var withConnection = true;
-            //_sendingThread = new Thread(SendingToBoard) { IsBackground = true };
-            //_sendingThread.Start();
             while (!_stopReading || _byteDataToBoard.Count > 0)
             {
                 try
@@ -94,11 +91,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
                     if (withConnection && !_pauseReading)
                     {
-                       
-
                         try
                         {
-                            //_logger?.LogDebug($"SC: Readline.... ");
                             string readLine = string.Empty;
                             if (_comPort.PortName.Equals("BTLE"))
                             {
@@ -116,15 +110,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                                         _logger?.LogDebug($"SC: Send info: {data.Info}");
                                         _logger?.LogDebug($"SC: As byte array: {s}");
                                         _comPort.Write(data.Data, 0, data.Data.Length);
-                                        //_logger?.LogDebug($"SC: bytes send");
                                         Thread.Sleep(50);
 
                                     }
                                     string comReadLine = _comPort.ReadLine();
                                     if (!string.IsNullOrWhiteSpace(comReadLine))
                                     {
-                                     //  _logger?.LogDebug("Read from port:" + comReadLine);
-
                                         var strings = comReadLine.Split(" ".ToCharArray());
                                         foreach (var s in strings)
                                         {
@@ -154,7 +145,6 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
                                         if (readLine.Contains(Environment.NewLine))
                                         {
-                                            //readLine = readLine.Substring(0, readLine.IndexOf(Environment.NewLine));
                                             if (!string.IsNullOrWhiteSpace(readLine))
                                             {
                                                 _dataFromBoard.Enqueue(
@@ -185,26 +175,29 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                                     _logger?.LogDebug($"SC: Send info: {data.Info}");
                                     _logger?.LogDebug($"SC: As byte array: {s}");
                                     _comPort.Write(data.Data, 0, data.Data.Length);
-                                    //_logger?.LogDebug($"SC: bytes send");
                                     Thread.Sleep(50);
 
                                 }
                                 readLine = _comPort.ReadLine();
-                                _logger?.LogDebug("SC: read from port:" + readLine);
-                                var strings = readLine.Split(Environment.NewLine.ToCharArray(),
-                                                             StringSplitOptions.RemoveEmptyEntries);
-                                if (strings.Length > 0)
+                                //_logger?.LogDebug("SC: read from port:" + readLine);
+                                if (!string.IsNullOrWhiteSpace(readLine))
                                 {
-                                    readLine = strings[0];
-                                }
+                                    var strings = readLine.Split(Environment.NewLine.ToCharArray(),
+                                        StringSplitOptions.RemoveEmptyEntries);
+                                    if (strings.Length > 0)
+                                    {
+                                        readLine = strings[0];
+                                    }
 
-                                _logger?.LogDebug($"SC: Read: {readLine} ");
-                                if (_dataFromBoard.Count > 20)
-                                {
-                                    _dataFromBoard.TryDequeue(out _);
-                                }
+                                    // _logger?.LogDebug($"SC: Read: {readLine} ");
+                                    if (_dataFromBoard.Count > 20)
+                                    {
+                                        _dataFromBoard.TryDequeue(out _);
+                                    }
 
-                                _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty).Replace("\0", string.Empty));
+                                    _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty)
+                                        .Replace("\0", string.Empty));
+                                }
                             }
 
                         }

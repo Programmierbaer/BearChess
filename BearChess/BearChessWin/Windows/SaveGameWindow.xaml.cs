@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Resources;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin.Windows
 {
@@ -16,11 +18,13 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         public string GameDate => textBoxDate.Text;
 
         public bool ReplaceGame { get; private set; }
+        private readonly ResourceManager _rm;
 
 
         public SaveGameWindow(string moveList)
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             textBoxDate.Text = DateTime.Now.ToString("dd.MM.yyyy");
             textBoxEvent.Text = Constants.BearChess;
             textBlockMoves.Text = moveList;
@@ -87,17 +91,17 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         {
             if (string.IsNullOrWhiteSpace(White))
             {
-                MessageBox.Show("White player missing", "Required", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(_rm.GetString("WhitePlayerMissing"), _rm.GetString("Required"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrWhiteSpace(Black))
             {
-                MessageBox.Show("Black player missing", "Required", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(_rm.GetString("BlackPlayerMissing"), _rm.GetString("Required"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             if (string.IsNullOrWhiteSpace(GameEvent))
             {
-                MessageBox.Show("Event missing", "Required", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(_rm.GetString("EventMissing"), _rm.GetString("Required"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 

@@ -51,6 +51,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessUpChessBoard
       
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler HelpRequestedEvent;
         public override event EventHandler<string> DataEvent;
      
@@ -66,6 +67,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessUpChessBoard
             Information = "ChessUp";
             SelfControlled = true;
             PieceRecognition = false;
+            ValidForAnalyse = false;
             IsConnected = EnsureConnection();
 
 
@@ -80,6 +82,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessUpChessBoard
             Information = "ChessUp";
             SelfControlled = true;
             PieceRecognition = false;
+            ValidForAnalyse = false;
             IsConnected = EnsureConnection();
         }
 
@@ -91,6 +94,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessUpChessBoard
             Information = "ChessUp";
             SelfControlled = true;
             PieceRecognition = false;
+            ValidForAnalyse = false;
             IsConnected = EnsureConnection();
         }
 

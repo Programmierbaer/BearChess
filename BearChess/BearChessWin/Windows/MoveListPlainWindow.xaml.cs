@@ -10,6 +10,7 @@ using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessTools;
+using System.Resources;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -34,6 +35,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class MoveListPlainWindow : Window
     {
         private readonly Configuration _configuration;
+        private readonly PgnConfiguration _pgnConfiguration;
         private int _lastMoveNumber;
         private WrapPanel _wrapPanel;
         private DisplayFigureType _figureType;
@@ -52,15 +54,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly FontFamily _fontFamily;
         private CurrentGame _currentGame;
         private string _gameStartPosition;
+        private readonly ResourceManager _rm;
 
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
         public event EventHandler<SelectedMoveOfMoveList> ContentChanged;
         public event EventHandler<SelectedMoveOfMoveList> RestartEvent;
 
-        public MoveListPlainWindow(Configuration configuration)
+        public MoveListPlainWindow(Configuration configuration, PgnConfiguration pgnConfiguration)
         {
             _configuration = configuration;
+            _pgnConfiguration = pgnConfiguration;
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
             _lastMoveNumber = 0;
 
@@ -113,7 +118,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockResult.Text = result;
         }
 
-        public MoveListPlainWindow(Configuration configuration, double top, double left, double width, double height) : this(configuration)
+        public MoveListPlainWindow(Configuration configuration, double top, double left, double width, double height, PgnConfiguration pgnConfiguration): this(configuration, pgnConfiguration)
         {
             SetSizes(top, left, width, height);
 
@@ -243,11 +248,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (showRule)
                 {
-                    Title = $"Moves ( {remainingMoves} up to fifty-move rule )";
+                    Title = $"{_rm.GetString("Moves")} ( {remainingMoves} {_rm.GetString("UpToFiftyMoveRule")} )";
                 }
                 else
                 {
-                    Title = "Moves";
+                    Title = _rm.GetString("Moves");
                 }
             }
         }
@@ -529,7 +534,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonCopy_OnClick(object sender, RoutedEventArgs e)
         {
-            var pgnCreator = new PgnCreator(_gameStartPosition, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false")));
+            var pgnCreator = new PgnCreator(_gameStartPosition, _pgnConfiguration);
             for (int w = 0; w < stackPanelMoves.Children.Count; w++)
             {
                 if (stackPanelMoves.Children[w] is WrapPanel wrapPanel1)
@@ -612,22 +617,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void SetContentInfo()
         {
-            string comments = "without comments";
+            string comments = _rm.GetString("WithoutComments");
             if (_showComments)
             {
-                comments = "with comments";
+                comments = _rm.GetString("WithComments");
             }
             if (_showOnlyMoves)
             {
-                textBlockContent.Text = $"Content: Only moves {comments}";
+                textBlockContent.Text = $"{_rm.GetString("ContentOnlyMoves")} {comments}";
                 return;
             }
             if (_showFullInfo)
             {
-                textBlockContent.Text = $"Content: Moves {comments} and with best line";
+                textBlockContent.Text = $"{_rm.GetString("ContentMoves")} {comments} {_rm.GetString("AndWithBestLine")}";
                 return;
             }
-            textBlockContent.Text = $"Content: Moves {comments} and with first best move";
+            textBlockContent.Text = $"{_rm.GetString("ContentMoves")} {comments} {_rm.GetString("AndWithFirstBestMove")}";
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

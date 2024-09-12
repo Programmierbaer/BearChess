@@ -4,6 +4,7 @@ using System.Media;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin

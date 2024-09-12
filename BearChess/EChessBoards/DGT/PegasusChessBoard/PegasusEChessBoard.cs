@@ -104,6 +104,7 @@ namespace www.SoLaNoSoft.com.BearChess.PegasusChessBoard
         private byte _currentIntensity = 2;
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler HelpRequestedEvent;
         public override event EventHandler<string> DataEvent;
         private readonly object _lockThinking = new object();

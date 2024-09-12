@@ -1,16 +1,17 @@
 ﻿using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
 {
     public class ChessnutAirImpl : AbstractEBoardWrapper
     {
-     
+       
 
 
         public ChessnutAirImpl(string name, string basePath) : base(name, basePath)
         {
-            
+
         }
 
         public ChessnutAirImpl(string name, string basePath, string comPortName, bool useBluetooth) : base(
@@ -41,6 +42,11 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
            // throw new System.NotImplementedException();
         }
 
+        public override string RequestInformation(string message)
+        {
+            return string.Empty;
+        }
+
         public override void DimLEDs(bool dimLEDs)
         {
             //throw new System.NotImplementedException();
@@ -69,7 +75,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutEBoardWrapper
      
         protected override IEBoard GetEBoard()
         {
-            return new ChessnutChessBoard.EChessBoard(_basePath, _fileLogger, _configuration);
+            return new ChessnutChessBoard.EChessBoard(Constants.ChessnutAir, _fileLogger, _configuration);
         }
 
         protected override IEBoard GetEBoard(bool check)

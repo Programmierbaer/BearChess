@@ -15,7 +15,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         {
         }
 
-        public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.ChessnutAir)
+        public SerialCommunication(ILogging logger, string portName, bool useBluetooth, string boardName) : base(logger, portName, boardName)
         {
             _useBluetooth = useBluetooth;
             _useHID = !useBluetooth;
@@ -160,8 +160,6 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                     }
                     if (withConnection && !_pauseReading)
                     {
-
-
                             readLine = string.Empty;
                             try
                             {

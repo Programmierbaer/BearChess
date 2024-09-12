@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Resources;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -16,14 +18,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _whiteFileName;
         private string _blackFileName;
         private readonly HashSet<string> _allNames;
+        private readonly ResourceManager _rm;
 
         public ConfirmBoardImageWindow(string path, string[] allNames)
         {
             _path = path;
             InitializeComponent();
-          
+            _rm = SpeechTranslator.ResourceManager;
             textBoxName.Text = string.Empty;
-            textBoxName.ToolTip = "Give the board a name";
+            textBoxName.ToolTip = _rm.GetString("GiveBoardAName");
             _allNames = new HashSet<string>(allNames);
         }
 
@@ -31,12 +34,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (string.IsNullOrWhiteSpace(textBoxName.Text))
             {
-                MessageBox.Show("A board name is required", "Missing Information", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(_rm.GetString("BoardNameRequired"), _rm.GetString("MissingInformation"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (_allNames.Contains(textBoxName.Text))
             {
-                MessageBox.Show("The board name is already taken", "Duplicate Information", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(_rm.GetString("BoardNameAlreadyTaken"), _rm.GetString("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -86,7 +89,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 if (string.IsNullOrWhiteSpace(_whiteFileName) || string.IsNullOrWhiteSpace(_blackFileName))
                 {
-                    MessageBox.Show($"No png files found.{Environment.NewLine}Looking for w.png or white.png for white squares{Environment.NewLine}and b.png or black.png for black squares.", "Missing Files", MessageBoxButton.OK,
+                    MessageBox.Show($"{_rm.GetString("NoPNGFilesFound")}{Environment.NewLine}{_rm.GetString("LookingForWhite")}{Environment.NewLine}{_rm.GetString("LookingForBlack")}.", _rm.GetString("Error"), MessageBoxButton.OK,
                         MessageBoxImage.Error);
                     DialogResult = false;
                     return;
@@ -95,7 +98,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error reading files{Environment.NewLine}{ex.Message}", "Error", MessageBoxButton.OK,
+                MessageBox.Show($"{_rm.GetString("ErrorReadingFiles")}{Environment.NewLine}{ex.Message}", _rm.GetString("Error"), MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 DialogResult = false;
             }

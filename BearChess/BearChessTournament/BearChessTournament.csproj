@@ -47,9 +47,9 @@
     <Compile Include="TournamentManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BearChessBase\BearChessBase.csproj">
-      <Project>{72bad856-2f5e-45db-9ff1-42d68a4998f5}</Project>
-      <Name>BearChessBase</Name>
+    <ProjectReference Include="..\BearChessBaseLib\BearChessBaseLib.csproj">
+      <Project>{b298b210-c007-4f95-84ca-b0b8ad26281b}</Project>
+      <Name>BearChessBaseLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\BearChessDatabase\BearChessDatabase.csproj">
       <Project>{fbc89b8a-e40d-4464-8aeb-ca963f7554ad}</Project>

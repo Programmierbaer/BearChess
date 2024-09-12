@@ -15,6 +15,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
     public  class EChessBoardEvo : AbstractEBoard
     {
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler HelpRequestedEvent;
         public override event EventHandler<string> DataEvent;
 
@@ -101,6 +102,8 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             _showMoveLine = configuration.ShowMoveLine;
             _logger = logger;
             MultiColorLEDs = true;
+            PieceRecognition = true;
+            ValidForAnalyse = true;
             BatteryLevel = "---";
             BatteryStatus = "Full";
             _extendedConfiguration = configuration.ExtendedConfig.First(e => e.IsCurrent);
@@ -120,6 +123,8 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             BatteryStatus = "Full";
             Information = Constants.ChessnutEvo;
             MultiColorLEDs = true;
+            PieceRecognition = true;
+            ValidForAnalyse = true;
         }
 
         public override void Reset()

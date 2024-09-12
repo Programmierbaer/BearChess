@@ -46,9 +46,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BearChessBase\BearChessBase.csproj">
-      <Project>{72bad856-2f5e-45db-9ff1-42d68a4998f5}</Project>
-      <Name>BearChessBase</Name>
+    <ProjectReference Include="..\..\..\BearChessBaseLib\BearChessBaseLib.csproj">
+      <Project>{b298b210-c007-4f95-84ca-b0b8ad26281b}</Project>
+      <Name>BearChessBaseLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\BearChessEChessBoard\BearChessEChessBoard\BearChessEChessBoard.csproj">
       <Project>{a6bcdc78-1edc-40c7-936f-880423360ba3}</Project>

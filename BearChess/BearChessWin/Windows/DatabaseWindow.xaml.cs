@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Resources;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,12 +33,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _lastSyncFen = string.Empty;
         private readonly bool _readOnly;
         private readonly ILogging _logger;
+        private readonly PgnConfiguration _pgnConfiguration;
         private bool _syncWithBoard;
         private DatabaseFilterWindow _databaseFilterWindow;
         private GamesFilter _gamesFilter;
         private readonly string _twicUrl;
         private readonly bool _deleteAfterDownload = false;
         private readonly int _initialTwicNumber  = 0;
+        private ResourceManager _rm;
 
         public static Dictionary<ulong, SolidColorBrush> colorMap = new Dictionary<ulong, SolidColorBrush>();
         public static bool ShowGamesDuplicates = true;
@@ -45,10 +48,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler<DatabaseGame> SelectedGameChanged;
         public event EventHandler<GamesFilter> SelectedFilterChanged;
 
-        public DatabaseWindow(Configuration configuration, Database database, string fen, bool readOnly, ILogging logger)
+        public DatabaseWindow(Configuration configuration, Database database, string fen, bool readOnly, ILogging logger, PgnConfiguration pgnConfiguration)
         {
             InitializeComponent();
             _configuration = configuration;
+            _rm = SpeechTranslator.ResourceManager;
             ShowGamesDuplicates = bool.Parse(_configuration.GetConfigValue("showGamesDuplicates", "true"));
             _twicUrl = _configuration.GetConfigValue("twicUrl", "https://theweekinchess.com/zips/");
             bool.TryParse(_configuration.GetConfigValue("deleteAfterDownload", "true"), out _deleteAfterDownload);
@@ -60,6 +64,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _lastSyncFen = fen;
             _readOnly = readOnly;
             _logger = logger;
+            _pgnConfiguration = pgnConfiguration;
             _gamesFilter = _configuration.LoadGamesFilter();
             SetItemsSource();
             imageTableFilterActive.Visibility = _gamesFilter.FilterIsActive ? Visibility.Visible : Visibility.Hidden;
@@ -240,12 +245,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id, false));
+                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id, _pgnConfiguration));
             }
         }
 
         protected virtual void OnSelectedGamedChanged(DatabaseGame e)
         {
+            if (e == null)
+            {
+                MessageBox.Show(_rm.GetString("CannotLoadDatabaseGame"), _rm.GetString("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             SelectedGameChanged?.Invoke(this, e);
         }
 
@@ -261,13 +271,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     if (_database.IsDuelGame(pgnGame.Id))
                     {
-                        MessageBox.Show("Game is part of a duel. Use duel manager to repeat duel games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(_rm.GetString("GameIsPartOfADuel"), _rm.GetString("CannotDeleteGame"), MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                         
                     }
                     if (_database.IsTournamentGame(pgnGame.Id))
                     {
-                        MessageBox.Show("Game is part of a tournament. Use tournament manager to repeat tournament games", "Cannot delete selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(_rm.GetString("GameIsPartOfATournament"), _rm.GetString("CannotDeleteGame"), MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
 
@@ -275,7 +285,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (dataGridGames.SelectedItems.Count > 1)
             {
-                if (MessageBox.Show($"Delete all {dataGridGames.SelectedItems.Count} selected games?", "Delete games", MessageBoxButton.YesNo,
+                if (MessageBox.Show($"{_rm.GetString("DeleteAllSelected")}  {dataGridGames.SelectedItems.Count} {_rm.GetString("Games")}", _rm.GetString("DeleteGames"), MessageBoxButton.YesNo,
                                     MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
                 {
                     return;
@@ -283,7 +293,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                if (MessageBox.Show("Delete selected game?", "Delete game", MessageBoxButton.YesNo,
+                if (MessageBox.Show(_rm.GetString("DeleteSelectedGame"), _rm.GetString("DeleteGame"), MessageBoxButton.YesNo,
                                     MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
                 {
                     return;
@@ -336,7 +346,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 };
 
                 infoWindow.IsIndeterminate(true);
-                infoWindow.SetTitle($"Import {fi.Name}");
+                infoWindow.SetTitle($"{_rm.GetString("Import")} {fi.Name}");
+                infoWindow.SetWait(_rm.GetString("PleaseWait"));
                 infoWindow.Show();
             });
             if (fi.Extension.Equals(".db",StringComparison.OrdinalIgnoreCase))
@@ -345,7 +356,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     var startTime = DateTime.Now;
                     _logger?.LogDebug("Start import...");
-                    var tempDb = new Database(this, null, fileName);
+                    var tempDb = new Database(this, null, fileName, _pgnConfiguration);
                     tempDb.Open();
                     tempDb.Close();
                     var allIds = tempDb.GetGamesIds();
@@ -354,9 +365,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         count++;
                         if (count % 100 == 0)
                         {
-                            infoWindow.SetInfo($"{count} games...");
+                            infoWindow.SetInfo($"{count} {_rm.GetString("Games")}...");
                         }
-                        var dbGame = tempDb.LoadGame(id, false);
+                        var dbGame = tempDb.LoadGame(id, _pgnConfiguration);
                         _database.Save(dbGame, false, false, dbGame.TwicId);
                     }
 
@@ -405,7 +416,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     count++;
                     if (count % 100 == 0)
                     {
-                        Dispatcher.Invoke(() => { infoWindow.SetInfo($"{count} games..."); });
+                        Dispatcher.Invoke(() => { infoWindow.SetInfo($"{count} {_rm.GetString("Games")}..."); });
                     }
                     var uciInfoWhite = new UciInfo()
                     {
@@ -458,7 +469,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _syncWithBoard = !_syncWithBoard;
             imageLinkApply.Visibility = _syncWithBoard ? Visibility.Collapsed : Visibility.Visible;
             imageLinkClear.Visibility = _syncWithBoard ? Visibility.Visible : Visibility.Collapsed;
-            buttonSync.ToolTip = _syncWithBoard ? "Do not synchronize with chessboard" : "Synchronize with chessboard";
+            buttonSync.ToolTip = _syncWithBoard ? _rm.GetString("DoNotSynchronize") : _rm.GetString("SynchronizeWithBoard");
             if (_syncWithBoard && !string.IsNullOrWhiteSpace(_lastSyncFen))
             {
                 SetItemsSource(_lastSyncFen);
@@ -472,7 +483,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDeleteDb_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Delete database with all games?", "Delete database", MessageBoxButton.YesNo,
+            if (MessageBox.Show(_rm.GetString("DeleteAllGames"), _rm.GetString("DeleteDatabase"), MessageBoxButton.YesNo,
                                 MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 dataGridGames.ItemsSource = null;
@@ -500,13 +511,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
                 {
-                    ClipboardHelper.SetText(_database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame());
+                    ClipboardHelper.SetText(_database.LoadGame(pgnGame.Id, _pgnConfiguration).PgnGame.GetGame());
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error on copy", MessageBoxButton.OK,MessageBoxImage.Error);
-                MessageBox.Show(ex.StackTrace, "Error on copy", MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, _rm.GetString("ErrorOnCopy"), MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show(ex.StackTrace, _rm.GetString("ErrorOnCopy"), MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
 
@@ -539,7 +550,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void UpdateTitle()
         {
-            Dispatcher.Invoke(() => { Title = $"{dataGridGames.Items.Count} of {_database.GetTotalGamesCount()} games on: {_database.FileName}"; });
+            Dispatcher.Invoke(() => { Title = $"{dataGridGames.Items.Count} {_rm.GetString("Of")} {_database.GetTotalGamesCount()} {_rm.GetString("GamesOn")}: {_database.FileName}"; });
             
         }
 
@@ -554,7 +565,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 selectedItems = dataGridGames.Items;
             }
-            ExportGames.Export(selectedItems,_database, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false")),this);
+            ExportGames.Export(selectedItems,_database, _pgnConfiguration,this);
         }
 
         private void ButtonSaveDb_OnClick(object sender, RoutedEventArgs e)
@@ -562,12 +573,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var backup = _database.Backup();
             if (backup.StartsWith("Error"))
             {
-                MessageBox.Show($"Unable to save database{Environment.NewLine}{backup}", "Save database", MessageBoxButton.OK,
+                MessageBox.Show($"{_rm.GetString("UnableToSaveDatabase")}{Environment.NewLine}{backup}", _rm.GetString("SaveDatabase"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
             }
             else
             {
-                MessageBox.Show($"Database saved to{Environment.NewLine}{backup}", "Save database", MessageBoxButton.OK,
+                MessageBox.Show($"{_rm.GetString("DatabaseSavedTo")}{Environment.NewLine}{backup}", _rm.GetString("SaveDatabase"), MessageBoxButton.OK,
                                 MessageBoxImage.Information);
             }
 
@@ -587,25 +598,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var fileInfo = new FileInfo(_database.FileName);
             var openFileDialog = new OpenFileDialog
                                  {
-                                     Filter = "Saved Database|*.bak_*;",
+                                     Filter = $"{_rm.GetString("SavedDatabase")}|*.bak_*;",
                                      InitialDirectory = fileInfo.DirectoryName
                                  };
             var showDialog = openFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
                 var info = new FileInfo(openFileDialog.FileName);
-                if (MessageBox.Show($"Override current database with a backup{Environment.NewLine}from {info.CreationTime}?", "Restore database", MessageBoxButton.YesNo,
+                if (MessageBox.Show($"{_rm.GetString("OverrideDatabase")}{Environment.NewLine}{_rm.GetString("From")} {info.CreationTime}?", _rm.GetString("RestoreDatabase"), MessageBoxButton.YesNo,
                                     MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     var restore = _database.Restore(openFileDialog.FileName);
                     if (string.IsNullOrWhiteSpace(restore))
                     {
-                        MessageBox.Show("Database restored", "Restore database", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show(_rm.GetString("DatabaseRestored"), _rm.GetString("RestoreDatabase"), MessageBoxButton.OK, MessageBoxImage.Information);
 
                     }
                     else
                     {
-                        MessageBox.Show($"Unable to restore database{Environment.NewLine}{restore}", "Restore database",
+                        MessageBox.Show($"{_rm.GetString("UnableRestoreDatabase")}{Environment.NewLine}{restore}", _rm.GetString("RestoreDatabase"),
                                         MessageBoxButton.OK,
                                         MessageBoxImage.Error);
                     }
@@ -627,16 +638,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                var databaseGame = _database.LoadGame(pgnGame.Id, false);
+                var databaseGame = _database.LoadGame(pgnGame.Id, _pgnConfiguration);
                 if (_database.IsDuelGame(pgnGame.Id))
                 {
-                    MessageBox.Show("Game is part of a duel. Use duel manager to continue duel games", "Cannot continue selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(_rm.GetString("GameIsPartOfADuelContinue"), _rm.GetString("CannotContinue"), MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
 
                 }
                 if (_database.IsTournamentGame(pgnGame.Id))
                 {
-                    MessageBox.Show("Game is part of a tournament. Use tournament manager to continue tournament games", "Cannot continue selected game", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(_rm.GetString("GameIsPartOfTournamentContinue"), _rm.GetString("CannotContinue"), MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
 
                 }
@@ -672,15 +683,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
                 {
-                    var game = _database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame();
+                    var game = _database.LoadGame(pgnGame.Id, _pgnConfiguration).PgnGame.GetGame();
                     e.ClipboardRowContent.Add(
                         new DataGridClipboardCellContent(e.Item, (sender as DataGrid).Columns[0], game));
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error on copy", MessageBoxButton.OK, MessageBoxImage.Error);
-                MessageBox.Show(ex.StackTrace, "Error on copy", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, _rm.GetString("ErrorOnCopy"), MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.StackTrace, _rm.GetString("ErrorOnCopy"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -696,14 +707,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     if (_database.IsDuelGame(pgnGame.Id))
                     {
-                        MessageBox.Show("Game is part of a duel. Use duel manager to repeat duel games", "Cannot delete duplicate games", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(_rm.GetString("GameIsPartOfADuel"), _rm.GetString("CannotDeleteDuplicate"), MessageBoxButton.OK, MessageBoxImage.Error);
 
                         return;
 
                     }
                     if (_database.IsTournamentGame(pgnGame.Id))
                     {
-                        MessageBox.Show("Game is part of a tournament. Use tournament manager to repeat tournament games", "Cannot delete duplicate games", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(_rm.GetString("GameIsPartOfATournament"), _rm.GetString("CannotDeleteDuplicate"), MessageBoxButton.OK, MessageBoxImage.Error);
 
                         return;
 
@@ -713,11 +724,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (dataGridGames.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Please select only one game", "Cannot delete duplicate games", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(_rm.GetString("SelectOnlyOneGame"), _rm.GetString("CannotDeleteDuplicate"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (MessageBox.Show("Delete duplicates from selected game?", "Delete duplicate games", MessageBoxButton.YesNo,
+            if (MessageBox.Show(_rm.GetString("DeleteDuplicates"), _rm.GetString("DeleteDuplicateGames"), MessageBoxButton.YesNo,
                                 MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
             {
                 return;
@@ -746,7 +757,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDeleteAllDuplicates_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Delete all duplicates games in the database ?", "Delete all duplicates", MessageBoxButton.YesNo,
+            if (MessageBox.Show(_rm.GetString("DeleteAllDuplicatesGames"), _rm.GetString("DeleteAllDuplicates"), MessageBoxButton.YesNo,
                                 MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
             {
                 return;

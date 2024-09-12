@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessTournament;
@@ -23,6 +26,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private readonly Configuration _configuration;
         private readonly Database _database;
+        private readonly PgnConfiguration _pgnConfiguration;
         private bool _tournamentFinished;
         private TournamentManager _tournamentManager;
         private ITournamentInfoWindow _tournamentInfoWindow;
@@ -33,20 +37,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler<int> ContinueTournamentSelected;
         public event EventHandler<int> CloneTournamentSelected;
         public event EventHandler<int> RepeatGameSelected;
+        private readonly ResourceManager _rm;
 
-     
 
-        public TournamentWindow(Configuration configuration, Database database)
+        public TournamentWindow(Configuration configuration, Database database, PgnConfiguration pgnConfiguration)
         {
             InitializeComponent();
             _configuration = configuration;
+            _rm = SpeechTranslator.ResourceManager;
             ShowGamesDuplicates = bool.Parse(_configuration.GetConfigValue("showGamesDuplicates", "true"));
             dataGridGames.Columns[0].Visibility = ShowGamesDuplicates ? Visibility.Visible : Visibility.Collapsed;
             _database = database;
+            _pgnConfiguration = pgnConfiguration;
             Top = _configuration.GetWinDoubleValue("TournamentWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             Left = _configuration.GetWinDoubleValue("TournamentWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
             dataGridTournament.ItemsSource = _database.LoadTournament();
-            Title = $"Tournament on: {_database.FileName}";
+            Title = $"{_rm.GetString("TournamentOn")}: {_database.FileName}";
         }
 
         private void ButtonLoad_OnClick(object sender, RoutedEventArgs e)
@@ -68,7 +74,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (dataGridTournament.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Please select only one tournament", "Cannot continue",
+                MessageBox.Show(_rm.GetString("SelectOnlyOneTournament"), _rm.GetString("CannotContinueTournament"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -78,7 +84,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (tournament.GamesToPlay == tournament.PlayedGames && _tournamentFinished)
                 {
-                    MessageBox.Show("Cannot continue the tournament, it is finished", "Cannot continue",
+                    MessageBox.Show(_rm.GetString("CannotContinueTournamentFinished"), _rm.GetString("CannotContinueTournament"),
                                     MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
@@ -95,7 +101,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (dataGridTournament.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Please select only one tournament", "Cannot load as new",
+                MessageBox.Show(_rm.GetString("SelectOnlyOneTournament"), _rm.GetString("CannotLoadAsNewTournament"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -121,8 +127,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (dataGridTournament.SelectedItems.Count > 1)
             {
-                if (MessageBox.Show($"Delete all {dataGridTournament.SelectedItems.Count} selected tournament?",
-                                    "Delete tournament", MessageBoxButton.YesNo,
+                if (MessageBox.Show($"{_rm.GetString("DeleteAllSelectedTournaments")} {dataGridTournament.SelectedItems.Count}",
+                                    _rm.GetString("DeleteTournamentTip"), MessageBoxButton.YesNo,
                                     MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes)
                 {
                     return;
@@ -130,7 +136,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                if (MessageBox.Show("Delete selected tournament?", "Delete tournament", MessageBoxButton.YesNo,
+                if (MessageBox.Show(_rm.GetString("DeleteSelectedTournament"), _rm.GetString("DeleteTournamentTip"), MessageBoxButton.YesNo,
                                     MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
                 {
                     return;
@@ -160,7 +166,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-            if (MessageBox.Show($"Delete all {dataGridTournament.Items.Count} tournament?", "Delete all tournament", MessageBoxButton.YesNo,
+            if (MessageBox.Show($"{_rm.GetString("DeleteAllTournaments")} {dataGridTournament.Items.Count}", _rm.GetString("DeleteAllTournamentTip"), MessageBoxButton.YesNo,
                                 MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 _database.DeleteAllTournament();
@@ -180,7 +186,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id,false));
+                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id, _pgnConfiguration));
             }
         }
 
@@ -209,7 +215,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                ClipboardHelper.SetText(_database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame());
+                ClipboardHelper.SetText(_database.LoadGame(pgnGame.Id, _pgnConfiguration).PgnGame.GetGame());
             }
         }
 
@@ -265,12 +271,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (dataGridTournament.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Please select only one tournament", "Cannot continue",
+                MessageBox.Show(_rm.GetString("SelectOnlyOneTournament"), _rm.GetString("CannotContinueTournament"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (MessageBox.Show("Delete all games and repeat selected tournament?", "Repeat tournament",
+            if (MessageBox.Show(_rm.GetString("DeleteAllAndRepeat"), _rm.GetString("RepeatTournament"),
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes)
             {
@@ -291,7 +297,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.Items.Count == 0)
             {
-                MessageBox.Show("Select a tournament for export", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(_rm.GetString("SelectTournamentExport"), _rm.GetString("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             IList selectedItems = dataGridGames.SelectedItems;
@@ -300,7 +306,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 selectedItems = dataGridGames.Items;
             }
 
-            ExportGames.Export(selectedItems, _database, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false")), this);
+            ExportGames.Export(selectedItems, _database, _pgnConfiguration, this);
         
         }
 
@@ -360,7 +366,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
            
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                if (MessageBox.Show($"Repeat selected game?{Environment.NewLine}The previous result will be overwritten.", "Repeat game", MessageBoxButton.YesNo,
+                if (MessageBox.Show($"{_rm.GetString("RepeatSelectedGame")}{Environment.NewLine}{_rm.GetString("PreviousResultOverwritten")}", _rm.GetString("RepeatGame"), MessageBoxButton.YesNo,
                                     MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     OnSelectedRepeatGame(pgnGame.Id);
@@ -376,7 +382,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (dataGridTournament.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Please select only one tournament", "Cannot rename",
+                MessageBox.Show(_rm.GetString("SelectOnlyOneTournament"), _rm.GetString("CannotRename"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -388,7 +394,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                  {
                                      Owner = this
                                  };
-                editWindow.SetTitle("Rename Tournament");
+                editWindow.SetTitle(_rm.GetString("RenameTournament"));
                 editWindow.SetComment(tournament.CurrentTournament.GameEvent);
                 var showDialog = editWindow.ShowDialog();
                 if (showDialog.HasValue && showDialog.Value && !string.IsNullOrWhiteSpace(editWindow.Comment))

@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
+using System.Resources;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.IO;
 using www.SoLaNoSoft.com.BearChess.ChessnutAirLoader;
-using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
-using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessTools;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin.Windows
@@ -28,26 +17,33 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         private readonly string _fileName;
         private readonly Configuration _configuration;
         private readonly bool _useBluetooth;
-        private readonly bool _showMoveLineChessnutAir;
-        private readonly bool _showOwnMoveChessnutAir;
         private readonly EChessBoardConfiguration _eChessBoardConfiguration;
+        private readonly ResourceManager _rm;
 
-        public WinConfigureChessnut(Configuration configuration, bool useBluetooth)
+        public WinConfigureChessnut(string boardName, Configuration configuration, bool useBluetooth)
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _configuration = configuration;
             _useBluetooth = useBluetooth;
-            _fileName = Path.Combine(_configuration.FolderPath, ChessnutAirLoader.EBoardName,
-                         $"{ChessnutAirLoader.EBoardName}Cfg.xml");
-            _showMoveLineChessnutAir = bool.Parse(_configuration.GetConfigValue("showmovelineChessnutAir", "false"));
-            _showOwnMoveChessnutAir = bool.Parse(_configuration.GetConfigValue("showOwnMoveChessnutAir", "true"));
+            if (boardName.Equals(Constants.ChessnutAir)) {
+
+                Title = $"{_rm.GetString("ConfigureTitle")} Chessnut Air/Air+/Pro";
+                _fileName = Path.Combine(_configuration.FolderPath, ChessnutAirLoader.EBoardName,
+                    $"{ChessnutAirLoader.EBoardName}Cfg.xml");
+            }
+            else
+            {
+                Title = $"{_rm.GetString("ConfigureTitle")} {boardName}";
+                _fileName = Path.Combine(_configuration.FolderPath, ChessnutGoLoader.EBoardName,
+                    $"{ChessnutGoLoader.EBoardName}Cfg.xml");
+            }
             var fileInfo = new FileInfo(_fileName);
             if (!Directory.Exists(fileInfo.DirectoryName))
             {
                 Directory.CreateDirectory(fileInfo.DirectoryName);
                 Directory.CreateDirectory(Path.Combine(fileInfo.DirectoryName, "log"));
             }
-          
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
             checkBoxOwnMoves.IsChecked = _eChessBoardConfiguration.ShowOwnMoves;

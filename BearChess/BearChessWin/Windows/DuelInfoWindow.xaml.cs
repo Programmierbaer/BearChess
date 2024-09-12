@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -14,6 +16,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         private readonly Configuration _configuration;
         private readonly int _duelGames;
+        private readonly ResourceManager _rm;
 
 
         private readonly decimal[] _results = { 0, 0 };
@@ -24,6 +27,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             InitializeComponent();
             _configuration = configuration;
+            _rm = SpeechTranslator.ResourceManager;
             Top = _configuration.GetWinDoubleValue("EngineDuelWindowTop", Configuration.WinScreenInfo.Top,
                                                    SystemParameters.VirtualScreenHeight,
                                                    SystemParameters.VirtualScreenWidth);
@@ -59,7 +63,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockEngine1.Text = engine1;
             textBlockEngine2.Text = engine2;
             checkBoxSwitchColor.IsChecked = switchColor;
-            textBlockStatus.Text = $"Game 1 of {duelGames}";
+            textBlockStatus.Text = $"{_rm.GetString("Game")} 1 {_rm.GetString("Of")} {duelGames}";
         }
 
         public bool PausedAfterGame { get; private set; } = true;
@@ -130,7 +134,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             gridDuel.Children.Add(textBlock2);
             if (gameNumber <= _duelGames)
             {
-                textBlockStatus.Text = $"Game {gameNumber} of {_duelGames}";
+                textBlockStatus.Text = $"{_rm.GetString("Game")} {gameNumber} {_rm.GetString("Of")} {_duelGames}";
                 if (PausedAfterGame)
                 {
                     buttonContinue.Visibility = Visibility.Visible;
@@ -148,7 +152,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _isFinished = true;
                 _canClose = true;
-                textBlockStatus.Text = "Duel finished";
+                textBlockStatus.Text = _rm.GetString("DuelFinished");
                 buttonClose.Visibility = Visibility.Visible;
                 buttonStop.Visibility = Visibility.Collapsed;
                 buttonContinue.Visibility = Visibility.Collapsed;
@@ -185,7 +189,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                if (MessageBox.Show("Stop current duel?", "Stop",
+                if (MessageBox.Show($"{_rm.GetString("StopCurrentDuel")}?", _rm.GetString("Stop"),
                                     MessageBoxButton.YesNo,
                                     MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
@@ -223,7 +227,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonWin_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Save the game as won for white?", "Save game",
+            if (MessageBox.Show($"{_rm.GetString("SaveGameAsWinForWhite")}?", _rm.GetString("SaveGame"),
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
@@ -234,7 +238,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonLose_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Save the game as won for black?", "Save game",
+            if (MessageBox.Show($"{_rm.GetString("SaveGameAsWinForBlack")}?", _rm.GetString("SaveGame"),
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
@@ -245,7 +249,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDraw_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Save the game as as a draw?", "Save game",
+            if (MessageBox.Show($"{_rm.GetString("SaveGameAsDraw")}?", _rm.GetString("SaveGame"),
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {

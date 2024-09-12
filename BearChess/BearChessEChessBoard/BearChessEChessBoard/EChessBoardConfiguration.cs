@@ -23,13 +23,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public int ScanTime { get; set; }
         public int Debounce { get; set; }
         public bool UseChesstimation { get; set; }
+        public bool UseElfacun { get; set; }
         public bool ShowMoveLine { get; set; }
-
         public bool ShowPossibleMoves { get; set; }
         public bool ShowPossibleMovesEval { get; set; }
         public bool ShowOwnMoves { get; set; }
         public bool ShowHintMoves { get; set; }
         public string FileName { get; set; }
+        public bool SayLiftUpDownFigure { get; set; }
+
         
 
         [XmlArray]
@@ -48,6 +50,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             Debounce = 0; // Default for ChessLink
             Baud = "1200";
             UseChesstimation = false;
+            UseElfacun = false;
             ShowMoveLine = false;
             ExtendedConfig = new[]
                              {
@@ -65,6 +68,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             ClockBeep = false;
             BeepDuration = 1;
             WebSocketAddr = string.Empty;
+            SayLiftUpDownFigure = false;
+
 
         }
 
@@ -75,7 +80,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             {
                 if (File.Exists(fileName))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(EChessBoardConfiguration));
+                    var serializer = new XmlSerializer(typeof(EChessBoardConfiguration));
                     TextReader textReader = new StreamReader(fileName);
                     var savedConfig = (EChessBoardConfiguration)serializer.Deserialize(textReader);
                     textReader.Close();
@@ -96,6 +101,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.ScanTime = savedConfig.ScanTime;
                     configuration.Debounce = savedConfig.Debounce;
                     configuration.UseChesstimation = savedConfig.UseChesstimation;
+                    configuration.UseElfacun = savedConfig.UseElfacun;
                     configuration.ShowMoveLine = savedConfig.ShowMoveLine;
 
                     if (configuration.DimLevel < 0)
@@ -110,6 +116,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     configuration.ShowOwnMoves = savedConfig.ShowOwnMoves;
                     configuration.ShowHintMoves = savedConfig.ShowHintMoves;
                     configuration.WebSocketAddr = savedConfig.WebSocketAddr;
+                    configuration.SayLiftUpDownFigure = savedConfig.SayLiftUpDownFigure;
                 }
                 else
                 {
@@ -136,7 +143,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 }
 
                 configuration.FileName = fileName;
-                XmlSerializer serializer = new XmlSerializer(typeof(EChessBoardConfiguration));
+                var serializer = new XmlSerializer(typeof(EChessBoardConfiguration));
                 TextWriter textWriter = new StreamWriter(fileName, false);
                 serializer.Serialize(textWriter, configuration);
                 textWriter.Close();

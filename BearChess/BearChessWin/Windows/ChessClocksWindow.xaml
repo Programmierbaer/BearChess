@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStyle="ToolWindow"
-        Title="Clock White" Height="150" Width="300" Closing="ChessClocksWindow_OnClosing">
+        Title="{x:Static p:Resources.Clock}" Height="150" Width="300" Closing="ChessClocksWindow_OnClosing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

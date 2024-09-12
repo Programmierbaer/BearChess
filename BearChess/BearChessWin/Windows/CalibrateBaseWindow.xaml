@@ -4,20 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
-        Title="Calibrate" Height="390" Width="260">
+        Title="{x:Static p:Resources.Calibrate}" Height="390" Width="260">
     <StackPanel>
         <Image Margin="5" HorizontalAlignment="Left" Source="../Assets/Icons/CalibrateBase.png" Width="220" Height="220"></Image>
-        <TextBlock Margin="5" TextWrapping="Wrap" Text="Place all chessmen as in the picture above."></TextBlock>
-        <TextBlock Margin="5" TextWrapping="Wrap" Text="All chessmen on the chess base position and both extra queens on d3 and d6."></TextBlock>
+        <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static p:Resources.PlaceAllChessmenPictureAbove}"></TextBlock>
+        <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static p:Resources.AllChessmenOnBasePositionExtraQueens}"></TextBlock>
         <DockPanel>
         <Button  Margin="5" HorizontalAlignment="Left" Name="buttonOk" 
-                Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">
+                Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent">
             <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32" />
         </Button>
         <Button  Margin="5" HorizontalAlignment="Right" Name="buttonCancel"
-                Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent"
-                ToolTip="Cancel">
+                Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent">
             <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32" />
         </Button>
         </DockPanel>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -24,12 +26,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _showOnlyMoves;
         private bool _showComments;
         private bool _showForWhite;
-
+        private readonly ResourceManager _rm;
 
         public MovePlainUserControl(Window parent)
         {
             _parent = parent;
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
             _showOnlyMoves = false;
             _showFullInformation = true;
@@ -145,7 +148,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 if (_showComments)
                 {
-                    string comment = move.Comment.Replace("(", " ").Replace(")", " ").Replace("{", " ").Replace("}", " ");
+                    string comment = move.Comment?.Replace("(", " ").Replace(")", " ").Replace("{", " ").Replace("}", " ");
                     textBlockCommentInternal.Text =  string.IsNullOrWhiteSpace(comment) ? string.Empty : comment;
                     textBlockCommentInternal.Text +=  string.IsNullOrWhiteSpace(move.ElapsedMoveTime) ? string.Empty : ConvertEMT(move.ElapsedMoveTime);
                     textBlockCommentInternal.Visibility = textBlockCommentInternal.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -155,7 +158,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (_showComments)
                 {
-                    string comment = move.Comment.Replace("(", " ").Replace(")", " ").Replace("{", " ").Replace("}", " ");
+                    string comment = move.Comment?.Replace("(", " ").Replace(")", " ").Replace("{", " ").Replace("}", " ");
                     textBlockCommentInternal.Text = string.IsNullOrWhiteSpace(comment) ? string.Empty : comment;
                     textBlockCommentInternal.Text += string.IsNullOrWhiteSpace(move.ElapsedMoveTime) ? string.Empty : ConvertEMT(move.ElapsedMoveTime);
                     textBlockCommentInternal.Visibility = textBlockCommentInternal
@@ -376,7 +379,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void MenuItemEditComment_OnClick(object sender, RoutedEventArgs e)
         {
-            var editCommentWindow = new EditCommentWindow("Comment", CurrentMove.Comment)
+            var editCommentWindow = new EditCommentWindow(_rm.GetString("Comment"), CurrentMove.Comment)
                                     {
                                         Owner = _parent
                                     };
@@ -393,7 +396,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void MenuItemEditSymbol_OnClick(object sender, RoutedEventArgs e)
         {
-            var editCommentWindow = new EditCommentWindow("Symbol",CurrentMove.OwnSymbol)
+            var editCommentWindow = new EditCommentWindow(_rm.GetString("Symbol"),CurrentMove.OwnSymbol)
                                     {
                                         Owner = _parent
                                     };

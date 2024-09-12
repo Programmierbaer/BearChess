@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using Microsoft.Win32;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 
@@ -11,7 +12,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 {
     public static class ExportGames
     {
-        public static void Export(IList selectedItems, Database database,bool purePGN, Window owner)
+        public static void Export(IList selectedItems, Database database,PgnConfiguration pgnConfiguration, Window owner)
         {
             if (selectedItems.Count == 0)
             {
@@ -45,7 +46,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         if (selectedItem is DatabaseGameSimple pgnGame)
                         {
-                            sb.AppendLine(database.LoadGame(pgnGame.Id, purePGN).PgnGame.GetGame());
+                            sb.AppendLine(database.LoadGame(pgnGame.Id, pgnConfiguration).PgnGame.GetGame());
                             sb.AppendLine(string.Empty);
                             i++;
                             infoWindow.SetCurrentValue(i);

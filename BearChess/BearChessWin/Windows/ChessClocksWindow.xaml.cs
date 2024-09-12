@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Resources;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessTools;
 
@@ -27,11 +29,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _stop = true;
         private DateTime _stopTime;
         private readonly Stopwatch _stopwatch;
+        private readonly ResourceManager _rm;
 
 
         public ChessClocksWindow(string capture, Configuration configuration, double top, double left)
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _stopwatch = new Stopwatch();
             CountDown = true;
             _capture = capture;
@@ -44,7 +48,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                     SystemParameters.VirtualScreenHeight,
                                                     SystemParameters.VirtualScreenWidth, left.ToString());
 
-            var color = capture.Equals("White", StringComparison.OrdinalIgnoreCase) ? Colors.White : Colors.Black;
+            var color = capture.Equals(_rm.GetString("White"), StringComparison.OrdinalIgnoreCase) ? Colors.White : Colors.Black;
             var inversColor = color == Colors.White ? Colors.Black : Colors.White;
             Background = new SolidColorBrush(color);
             digitalNumberUserControlHour1.SetColor(inversColor);
@@ -56,7 +60,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             delimiterUserControl1.SetColor(inversColor);
             delimiterUserControl2.SetColor(inversColor);
             textBlockInfo.Foreground = new SolidColorBrush(inversColor);
-            Title = "Clock " + capture;
+            Title = $"{_rm.GetString("Clock")} {capture}";
             _thread = new Thread(updateTime) { IsBackground = true };
             _thread.Start();
         }
@@ -106,8 +110,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _initTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
             _extraSeconds = extraSeconds;
             Title = _extraSeconds > 0
-                        ? $"Clock {_capture} ({hh:00}:{mm:00}:{ss:00} + {extraSeconds}s)"
-                        : $"Clock {_capture} ({hh:00}:{mm:00}:{ss:00}";
+                        ? $"{_rm.GetString("Clock")} {_capture} ({hh:00}:{mm:00}:{ss:00} + {extraSeconds}s)"
+                        : $"{_rm.GetString("Clock")} {_capture} ({hh:00}:{mm:00}:{ss:00}";
             borderWarning.Visibility = Visibility.Hidden;
         }
         public void CorrectTime(int hh, int mm, int ss)

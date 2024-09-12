@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +25,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private  ObservableCollection<UciInfo> _uciInfos;
         private  HashSet<string> _installedEngines;
         private readonly string _uciPath;
+        private readonly ISpeech _synthesizer;
+        private readonly ResourceManager _rm;
+        private readonly bool _blindUserSaySelection;
+        private readonly bool _blindUser;
+
         public UciInfo SelectedEngine => (UciInfo) dataGridEngine.SelectedItem;
 
         public SelectInstalledEngineWindow()
@@ -32,6 +39,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Left =   Configuration.Instance.GetWinDoubleValue("InstalledEngineWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,"400");
             Height = Configuration.Instance.GetDoubleValue("InstalledEngineWindowHeight",  "390");
             Width =  Configuration.Instance.GetDoubleValue("InstalledEngineWindowWidth",  "500");
+            _rm = SpeechTranslator.ResourceManager;
+            _synthesizer = BearChessSpeech.Instance;
+            _blindUserSaySelection = bool.Parse(Configuration.Instance.GetConfigValue("blindUserSaySelection", "false"));
+            _blindUser = bool.Parse(Configuration.Instance.GetConfigValue("blindUserSaySelection", "false"));
         }
 
         public SelectInstalledEngineWindow(IEnumerable<UciInfo> uciInfos, string lastEngineId, string uciPath) : this()
@@ -67,7 +78,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (SelectedEngine.IsInternalBearChessEngine || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
                 {
-                    MessageBox.Show($"You cannot play with a BearChess or Buddy engine: '{SelectedEngine.Name}'", "Load UCI Engine",
+                    Messages.Show($"{_rm.GetString("CannotPlayAgainstBuddy")} '{SelectedEngine.Name}'", _rm.GetString("LoadUCIEngne"),
                              MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
@@ -86,7 +97,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (SelectedEngine.IsInternalBearChessEngine || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
                 {
-                    MessageBox.Show($"You cannot play with a BearChess or Buddy engine '{SelectedEngine.Name}'", "Load UCI Engine",
+                    Messages.Show($"{_rm.GetString("CannotPlayAgainstBuddy")} '{SelectedEngine.Name}'", _rm.GetString("LoadUCIEngne"),
                              MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
@@ -102,7 +113,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (SelectedEngine.IsInternalBearChessEngine)
             {
-                MessageBox.Show($"You cannot change internal engine '{SelectedEngine.Name}'", "Configure UCI Engine",
+                Messages.Show($"{_rm.GetString("CannotChangeInternalEngine")} '{SelectedEngine.Name}'", _rm.GetString("ConfigureEngine"),
                          MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -167,8 +178,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (dataGridEngine.SelectedItems.Count > 1)
             {
-                if (MessageBox.Show($"Uninstall all {dataGridEngine.SelectedItems.Count} selected engines?",
-                                    "Uninstall Engine",
+                if (MessageBox.Show($"{_rm.GetString("UninstallAllSelectedEngines")}? {dataGridEngine.SelectedItems.Count} ",
+                                    _rm.GetString("UninstallEngine"),
                                     MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) !=
                     MessageBoxResult.Yes)
                 {
@@ -221,13 +232,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (SelectedEngine.IsInternalBearChessEngine  || SelectedEngine.IsInternalChessEngine)
             {
-                MessageBox.Show($"It is not allowed to uninstall internal engine '{SelectedEngine.Name}'", "Uninstall UCI Engine",
+                Messages.Show($"{_rm.GetString("CannotUninstallInternalEngine")} '{SelectedEngine.Name}'", _rm.GetString("UninstallEngine"),
                               MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             var engineName = SelectedEngine.Name;
             var engineId = SelectedEngine.Id;
-            if (MessageBox.Show($"Uninstall engine '{engineName}'?", "Uninstall Engine",
+            if (MessageBox.Show($"{_rm.GetString("UninstallEngine")} '{engineName}'?", _rm.GetString("UninstallEngine"),
                                 MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) !=
                 MessageBoxResult.Yes)
             {
@@ -253,7 +264,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error on uninstall engine '{engineName}'{Environment.NewLine}{ex.Message}", "Uninstall UCI Engine",
+                Messages.Show($"{_rm.GetString("ErrorOnUninstallEngine")} '{engineName}'{Environment.NewLine}{ex.Message}", _rm.GetString("UninstallEngine"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
@@ -402,7 +413,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             {
                                 MessageBox.Show(
                                     this,
-                                    $"Engine '{uciInfo.Name}' already installed!", "UCI Engine", MessageBoxButton.OK,
+                                    $"Engine '{uciInfo.Name}' already installed!", _rm.GetString("UCIEngine"), MessageBoxButton.OK,
                                     MessageBoxImage.Error);
                             }
 
@@ -450,7 +461,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 if (!uciInfo.Valid)
                 {
-                    throw new Exception($"{uciInfo.FileName} is not a valid UCI engine");
+                    throw new Exception($"{uciInfo.FileName} {_rm.GetString("IsNotValidEngine")}");
                 }
 
                 if (uciInfo.Name.Equals("Avatar", StringComparison.OrdinalIgnoreCase))
@@ -463,7 +474,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         MessageBox.Show(
                             this,
-                            $"Engine '{uciInfo.Name}' already installed!", "UCI Engine", MessageBoxButton.OK,
+                            $"{_rm.GetString("Engine")} '{uciInfo.Name}' {_rm.GetString("AlReadyInstalled")}", _rm.GetString("UCIEngine"), MessageBoxButton.OK,
                             MessageBoxImage.Error);
                     }
 
@@ -472,8 +483,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                
                 uciInfo.Id = "uci" + Guid.NewGuid().ToString("N");
-                if (MessageBox.Show(this, $"Install UCI engine{Environment.NewLine}{uciInfo.Name}{Environment.NewLine}Author: {uciInfo.Author}",
-                        "UCI Engine", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show(this, $"{_rm.GetString("InstallEngine")}{Environment.NewLine}{uciInfo.Name}{Environment.NewLine}{_rm.GetString("Author")}: {uciInfo.Author}",
+                        _rm.GetString("UCIEngine"), MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     _installedEngines.Add(uciInfo.Name);
                     var uciPath = Path.Combine(_uciPath, uciInfo.Id);
@@ -539,7 +550,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Error on install chess engine", MessageBoxButton.OK,
+                MessageBox.Show(this, ex.Message, _rm.GetString("ErrorInstallEngine"), MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
@@ -628,19 +639,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (!SelectedEngine.ValidForAnalysis)
             {
-                MessageBox.Show("This kind of engine is not suitable for a buddy", "Not suitable", MessageBoxButton.OK,
+                Messages.Show(_rm.GetString("NotSuitableForBuddy"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
                 return;
             }
             if (SelectedEngine.IsProbing)
             {
-                MessageBox.Show("A BearChess engine cannot be a buddy", "Not suitable", MessageBoxButton.OK,
+                Messages.Show(_rm.GetString("BearChessCannotBuddy"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
                 return;
             }
             if (SelectedEngine.IsInternalBearChessEngine)
             {
-                MessageBox.Show("This internal engine is not suitable for a buddy", "Not suitable", MessageBoxButton.OK,
+                Messages.Show(_rm.GetString("NotSuitableForBuddy"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
                 return;
             }
@@ -681,13 +692,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (!SelectedEngine.ValidForAnalysis)
             {
-                MessageBox.Show("This kind of engine is not suitable for a BearChess", "Not suitable", MessageBoxButton.OK,
+                Messages.Show(_rm.GetString("NotSuitableForBearChess"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return;
             }
             if (SelectedEngine.IsBuddy)
             {
-                MessageBox.Show("A Buddy engine cannot be a BearChess engine", "Not suitable", MessageBoxButton.OK,
+                Messages.Show(_rm.GetString("BuddyCannotBearChess"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
                 return;
             }

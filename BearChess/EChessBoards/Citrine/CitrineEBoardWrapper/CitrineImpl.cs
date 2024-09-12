@@ -32,6 +32,11 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineEBoardWrapper
             _board?.SendInformation(message);
         }
 
+        public override string RequestInformation(string message)
+        {
+            return string.Empty;
+        }
+
         public override void DimLEDs(bool dimLeds)
         {
             //

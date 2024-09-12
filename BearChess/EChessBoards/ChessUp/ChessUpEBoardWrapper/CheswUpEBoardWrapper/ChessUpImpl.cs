@@ -38,6 +38,11 @@ namespace www.SoLaNoSoft.com.BearChess.ChessUpEBoardWrapper
             // throw new System.NotImplementedException();
         }
 
+        public override string RequestInformation(string message)
+        {
+            return string.Empty;
+        }
+
         public override void DimLEDs(bool dimLEDs)
         {
             //throw new System.NotImplementedException();

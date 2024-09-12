@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Resources;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
 using www.SoLaNoSoft.com.BearChess.PegasusLoader;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
@@ -23,10 +25,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly EChessBoardConfiguration _eChessBoardConfiguration;
         private readonly ILogging _fileLogger;
         private PegasusLoader _loader;
+        private readonly ResourceManager _rm;
 
         public WinConfigurePegasus(Configuration configuration)
         {
             _configuration = configuration;
+            _rm = SpeechTranslator.ResourceManager;
             InitializeComponent();
             _fileName = Path.Combine(_configuration.FolderPath, PegasusLoader.EBoardName,
                 $"{PegasusLoader.EBoardName}Cfg.xml");
@@ -70,13 +74,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (pegasusLoader.CheckComPort(portName))
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
                         MessageBoxImage.Information);
+
                 }
                 else
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check failed for {portName}", "Check", MessageBoxButton.OK,
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 }
             }

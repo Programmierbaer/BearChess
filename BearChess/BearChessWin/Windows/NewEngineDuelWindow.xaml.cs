@@ -7,8 +7,11 @@ using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessBaseLib.Definitions;
+using System.Resources;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -21,6 +24,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Configuration _configuration;
         private readonly Database _database;
         private readonly bool _estimateElo;
+        private readonly PgnConfiguration _pgnConfiguration;
         private readonly Dictionary<string, UciInfo> _allUciInfos = new Dictionary<string, UciInfo>();
         private readonly bool _isInitialized;
         public UciInfo PlayerBlackConfigValues;
@@ -29,14 +33,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _playerIndex;
         private bool? _isCheckedAllowTakeBack;
         private Brush _foreground;
+        private readonly ResourceManager _rm;
 
-        public NewEngineDuelWindow(Configuration configuration, Database database, bool estimateElo, bool startFromBasePosition)
+        public NewEngineDuelWindow(Configuration configuration, Database database, bool estimateElo, bool startFromBasePosition, PgnConfiguration pgnConfiguration)
         {
             _configuration = configuration;
+            _rm = SpeechTranslator.ResourceManager;
             _database = database;
             _estimateElo = estimateElo;
+            _pgnConfiguration = pgnConfiguration;
             InitializeComponent();
-            textBoxEvent.Text = estimateElo ? "Elo Duel" : "Duel";
+            textBoxEvent.Text = estimateElo ? $"{_rm.GetString("Elo")} {_rm.GetString("Duel")}" : _rm.GetString("Duel");
             labelDatabaseName.Content = _database.FileName;
             labelDatabaseName.ToolTip = _database.FileName;
             _isInitialized = true;
@@ -47,6 +54,66 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _playerIndex = 0;
             radioButtonStartPosition.IsChecked = startFromBasePosition;
             radioButtonCurrentPosition.IsChecked = !startFromBasePosition;
+            comboBoxTimeControl.Items.Clear();
+            comboBoxTimeControl2.Items.Clear();
+            foreach (var value in Enum.GetValues(typeof(TimeControlEnum)))
+            {
+                var timeControlEnum = (TimeControlEnum)value;
+                switch (timeControlEnum)
+                {
+                    case TimeControlEnum.Adapted:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("AdpatedTime")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("AdpatedTime")));
+                        break;
+                    case TimeControlEnum.AverageTimePerMove:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("AverageTimePerMove")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("AverageTimePerMove")));
+                        break;
+                    case TimeControlEnum.Depth:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("Depth")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("Depth")));
+                        break;
+                    case TimeControlEnum.Movetime:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("ExactTimePerMove")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("ExactTimePerMove")));
+                        break;
+                  
+                    case TimeControlEnum.Nodes:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("Nodes")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("Nodes")));
+                        break;
+                    case TimeControlEnum.TimePerGame:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerGame")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerGame")));
+                        break;
+                    case TimeControlEnum.TimePerGameIncrement:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerGameInc")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerGameInc")));
+                        break;
+                    case TimeControlEnum.TimePerMoves:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerMoves")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerMoves")));
+                        break;
+                    default:
+                        break;
+                }
+            }
             CheckForEstimateElo();
         }
 
@@ -78,59 +145,69 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public TimeControl GetTimeControlWhite()
         {
             var timeControl = new TimeControl();
+            var timeControlValue = comboBoxTimeControl.SelectedItem as TimeControlValue;
 
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game with increment"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGameIncrement)
             {
                 timeControl.TimeControlType = TimeControlEnum.TimePerGameIncrement;
                 timeControl.Value1 = numericUpDownUserControlTimePerGameWith.Value;
                 timeControl.Value2 = numericUpDownUserControlTimePerGameIncrement.Value;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGame)
             {
                 timeControl.TimeControlType = TimeControlEnum.TimePerGame;
                 timeControl.Value1 = numericUpDownUserControlTimePerGame.Value;
                 timeControl.Value2 = 0;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per given moves"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerMoves)
             {
                 timeControl.TimeControlType = TimeControlEnum.TimePerMoves;
                 timeControl.Value1 = numericUpDownUserControlTimePerGivenMoves.Value;
                 timeControl.Value2 = numericUpDownUserControlTimePerGivensMovesMin.Value;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Average time per move"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.AverageTimePerMove)
             {
                 timeControl.TimeControlType = TimeControlEnum.AverageTimePerMove;
                 timeControl.Value1 = numericUpDownUserControlAverageTime.Value;
                 timeControl.Value2 = 0;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Adapted time"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Adapted)
             {
                 timeControl.TimeControlType = TimeControlEnum.Adapted;
                 timeControl.Value1 = 5;
                 timeControl.Value2 = 0;
             }
 
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Depth"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.Depth)
             {
                 timeControl.TimeControlType = TimeControlEnum.Depth;
                 timeControl.Value1 = numericUpDownUserControlDepth.Value;
                 timeControl.Value2 = 0;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Nodes"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Nodes)
             {
                 timeControl.TimeControlType = TimeControlEnum.Nodes;
                 timeControl.Value1 = numericUpDownUserControlNodes.Value;
                 timeControl.Value2 = 0;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Exact"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Movetime)
             {
                 timeControl.TimeControlType = TimeControlEnum.Movetime;
                 timeControl.Value1 = numericUpDownUserControlExactTime.Value;
                 timeControl.Value2 = 0;
             }
-         
+
+           
+
+
             timeControl.HumanValue = numericUpDownUserExtraTime.Value;
-            timeControl.AllowTakeBack = false;
+            timeControl.AllowTakeBack = AllowTakeMoveBack;
             if (timeControl.TimeControlType == TimeControlEnum.Adapted)
             {
                 timeControl.AverageTimInSec = true;
@@ -151,55 +228,66 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (checkBox2TimeControls.IsChecked.HasValue && checkBox2TimeControls.IsChecked.Value)
             {
                 timeControl = new TimeControl();
+                var timeControlValue = comboBoxTimeControl2.SelectedItem as TimeControlValue;
 
-                if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per game with increment"))
+                if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGameIncrement)
                 {
                     timeControl.TimeControlType = TimeControlEnum.TimePerGameIncrement;
                     timeControl.Value1 = numericUpDownUserControlTimePerGameWith2.Value;
                     timeControl.Value2 = numericUpDownUserControlTimePerGameIncrement2.Value;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per game"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGame)
                 {
                     timeControl.TimeControlType = TimeControlEnum.TimePerGame;
                     timeControl.Value1 = numericUpDownUserControlTimePerGame2.Value;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per given moves"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.TimePerMoves)
                 {
                     timeControl.TimeControlType = TimeControlEnum.TimePerMoves;
                     timeControl.Value1 = numericUpDownUserControlTimePerGivenMoves2.Value;
                     timeControl.Value2 = numericUpDownUserControlTimePerGivensMovesMin2.Value;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Average time per move"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.AverageTimePerMove)
                 {
                     timeControl.TimeControlType = TimeControlEnum.AverageTimePerMove;
                     timeControl.Value1 = numericUpDownUserControlAverageTime2.Value;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Adapted time"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.Adapted)
                 {
                     timeControl.TimeControlType = TimeControlEnum.Adapted;
                     timeControl.Value1 = 5;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Depth"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.Depth)
                 {
                     timeControl.TimeControlType = TimeControlEnum.Depth;
                     timeControl.Value1 = numericUpDownUserControlDepth2.Value;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Nodes"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.Nodes)
                 {
                     timeControl.TimeControlType = TimeControlEnum.Nodes;
                     timeControl.Value1 = numericUpDownUserControlNodes2.Value;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Exact"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.Movetime)
                 {
                     timeControl.TimeControlType = TimeControlEnum.Movetime;
                     timeControl.Value1 = numericUpDownUserControlExactTime2.Value;
                     timeControl.Value2 = 0;
                 }
+
+               
+
                 timeControl.HumanValue = numericUpDownUserExtraTime.Value;
                 timeControl.AllowTakeBack = AllowTakeMoveBack;
                 if (timeControl.TimeControlType == TimeControlEnum.Adapted)
@@ -230,9 +318,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             var array = uciInfos.Where(u => u.IsActive).OrderBy(u => u.Name).ToArray();
             textBlockPlayerWhiteEngine.Text = Constants.Player;
-            textBlockPlayerWhiteEngine.ToolTip = "A human being as a player";
+            textBlockPlayerWhiteEngine.ToolTip = _rm.GetString("AHumanBeingAsAPlayer");
             textBlockPlayerBlackEngine.Text = Constants.Player;
-            textBlockPlayerBlackEngine.ToolTip = "A human being as a player";
+            textBlockPlayerBlackEngine.ToolTip = _rm.GetString("AHumanBeingAsAPlayer");
 
             for (var i = 0; i < array.Length; i++)
             {
@@ -274,48 +362,46 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
+            foreach (var item in comboBoxTimeControl.Items)
+            {
+                if (((TimeControlValue)item).TimeControl == timeControl.TimeControlType)
+                    comboBoxTimeControl.SelectedItem = item;
+            }
+
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGame)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[0];
                 numericUpDownUserControlTimePerGame.Value = timeControl.Value1;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGameIncrement)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[1];
                 numericUpDownUserControlTimePerGameWith.Value = timeControl.Value1;
                 numericUpDownUserControlTimePerGameIncrement.Value = timeControl.Value2;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerMoves)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[2];
                 numericUpDownUserControlTimePerGivenMoves.Value = timeControl.Value1;
                 numericUpDownUserControlTimePerGivensMovesMin.Value = timeControl.Value2;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.AverageTimePerMove)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[3];
                 numericUpDownUserControlAverageTime.Value = timeControl.Value1;
             }
-            if (timeControl.TimeControlType == TimeControlEnum.Adapted)
-            {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[4];
-            }
+
             if (timeControl.TimeControlType == TimeControlEnum.Depth)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[5];
                 numericUpDownUserControlDepth.Value = timeControl.Value1;
             }
+
             if (timeControl.TimeControlType == TimeControlEnum.Nodes)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[6];
                 numericUpDownUserControlNodes.Value = timeControl.Value1;
             }
+
             if (timeControl.TimeControlType == TimeControlEnum.Movetime)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[7];
                 numericUpDownUserControlExactTime.Value = timeControl.Value1;
             }
 
@@ -335,50 +421,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
 
+            foreach (var item in comboBoxTimeControl2.Items)
+            {
+                if (((TimeControlValue)item).TimeControl == timeControl.TimeControlType)
+                    comboBoxTimeControl2.SelectedItem = item;
+            }
+
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGame)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[0];
                 numericUpDownUserControlTimePerGame2.Value = timeControl.Value1;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGameIncrement)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[1];
                 numericUpDownUserControlTimePerGameWith2.Value = timeControl.Value1;
                 numericUpDownUserControlTimePerGameIncrement2.Value = timeControl.Value2;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerMoves)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[2];
                 numericUpDownUserControlTimePerGivenMoves2.Value = timeControl.Value1;
                 numericUpDownUserControlTimePerGivensMovesMin2.Value = timeControl.Value2;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.AverageTimePerMove)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[3];
                 numericUpDownUserControlAverageTime2.Value = timeControl.Value1;
             }
-            if (timeControl.TimeControlType == TimeControlEnum.Adapted)
-            {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[4];
-            }
+
             if (timeControl.TimeControlType == TimeControlEnum.Depth)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[5];
                 numericUpDownUserControlDepth2.Value = timeControl.Value1;
             }
+
             if (timeControl.TimeControlType == TimeControlEnum.Nodes)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[6];
                 numericUpDownUserControlNodes2.Value = timeControl.Value1;
             }
+
             if (timeControl.TimeControlType == TimeControlEnum.Movetime)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[7];
                 numericUpDownUserControlExactTime2.Value = timeControl.Value1;
             }
+
             radioButtonSecond2.IsChecked = timeControl.AverageTimInSec;
             radioButtonMinute2.IsChecked = !timeControl.AverageTimInSec;
             checkBox2TimeControls.IsChecked = !timeControl.SeparateControl;
@@ -434,37 +519,42 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderDepth.Visibility = Visibility.Collapsed;
             borderNodes.Visibility = Visibility.Collapsed;
             borderExactTime.Visibility = Visibility.Collapsed;
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game with increment"))
+            var timeControlValue = comboBoxTimeControl.SelectedItem as TimeControlValue;
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGameIncrement)
             {
                 borderTimePerGameWithIncrement.Visibility = Visibility.Visible;
                 return;
             }
 
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGame)
             {
                 borderTimePerGame.Visibility = Visibility.Visible;
                 return;
             }
 
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per given moves"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerMoves)
             {
                 borderTimePerGivenMoves.Visibility = Visibility.Visible;
                 return;
             }
 
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Average time per move"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.AverageTimePerMove)
             {
                 borderAverageTimePerMove.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Depth"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Depth)
             {
                 borderDepth.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Nodes"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Nodes)
             {
                 borderNodes.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Exact"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Movetime)
             {
                 borderExactTime.Visibility = Visibility.Visible;
             }
@@ -474,7 +564,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_estimateElo && !_validConfig)
             {
-                MessageBox.Show("At least one engine must allow configuring the ELO number", "Not valid for ELO",
+                MessageBox.Show(_rm.GetString("AtLeastOnEngineELO"), _rm.GetString("NotValidForELO"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -588,7 +678,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDatabase_OnClick(object sender, RoutedEventArgs e)
         {
-            var databaseWindow = new DatabaseWindow(_configuration, _database, string.Empty, false, null);
+            var databaseWindow = new DatabaseWindow(_configuration, _database, string.Empty, false, null, _pgnConfiguration);
             databaseWindow.ShowDialog();
             labelDatabaseName.Content = _database.FileName;
             labelDatabaseName.ToolTip = _database.FileName;
@@ -691,37 +781,42 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderDepth2.Visibility = Visibility.Collapsed;
             borderNodes2.Visibility = Visibility.Collapsed;
             borderExactTime2.Visibility = Visibility.Collapsed;
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per game with increment"))
+            var timeControlValue = comboBoxTimeControl2.SelectedItem as TimeControlValue;
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGameIncrement)
             {
                 borderTimePerGameWithIncrement2.Visibility = Visibility.Visible;
                 return;
             }
 
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per game"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGame)
             {
                 borderTimePerGame2.Visibility = Visibility.Visible;
                 return;
             }
 
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per given moves"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerMoves)
             {
                 borderTimePerGivenMoves2.Visibility = Visibility.Visible;
                 return;
             }
 
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Average time per move"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.AverageTimePerMove)
             {
                 borderAverageTimePerMove2.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Depth"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Depth)
             {
                 borderDepth2.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Nodes"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Nodes)
             {
                 borderNodes2.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Exact"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Movetime)
             {
                 borderExactTime2.Visibility = Visibility.Visible;
             }
@@ -734,8 +829,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderTimePerGameWithIncrement2.Visibility = Visibility.Collapsed;
             borderTimePerGivenMoves2.Visibility = Visibility.Collapsed;
             borderAverageTimePerMove2.Visibility = Visibility.Collapsed;
-            comboBoxTimeControl2.SelectedIndex = 0;         
-            textBlockTimeControl1.Text = "Time control ♔:";
+            comboBoxTimeControl2.SelectedIndex = 0;
+            textBlockTimeControl1.Text = $"{SpeechTranslator.ResourceManager.GetString("TimeControl")} ♔:";
         }
 
         private void CheckBox2TimeControls_OnUnchecked(object sender, RoutedEventArgs e)
@@ -745,7 +840,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderTimePerGameWithIncrement2.Visibility = Visibility.Collapsed;
             borderTimePerGivenMoves2.Visibility = Visibility.Collapsed;
             borderAverageTimePerMove2.Visibility = Visibility.Collapsed;
-            textBlockTimeControl1.Text = "Time control:";
+            textBlockTimeControl1.Text = $"{SpeechTranslator.ResourceManager.GetString("TimeControl")}:";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using www.SoLaNoSoft.com.BearChess.EChessBoard;
+﻿using System.IO;
+using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.SquareOffEBoardWrapper;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
@@ -22,7 +23,22 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffProLoader
         {
         }
 
-        
+
+        public static EChessBoardConfiguration Load(string basePath)
+        {
+            string fileName = Path.Combine(basePath, Constants.SquareOffPro,
+                $"{Constants.SquareOffPro}Cfg.xml");
+            return EChessBoardConfiguration.Load(fileName);
+
+        }
+
+        public static void Save(string basePath, EChessBoardConfiguration eChessBoardConfiguration)
+        {
+            string fileName = Path.Combine(basePath, Constants.SquareOffPro,
+                $"{Constants.SquareOffPro}Cfg.xml");
+            EChessBoardConfiguration.Save(eChessBoardConfiguration, fileName);
+        }
+
         protected override IEBoardWrapper GetEBoardImpl(string basePath, EChessBoardConfiguration configuration)
         {
             if (Check)

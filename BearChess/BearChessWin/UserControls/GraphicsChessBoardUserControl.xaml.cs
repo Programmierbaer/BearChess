@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,6 +13,7 @@ using System.Windows.Media.Imaging;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
 
 // ReSharper disable RedundantCast
 
@@ -80,11 +83,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _whiteFileName;
         private string _whitePlayer = string.Empty;
         private SolidColorBrush _hintArrowColor;
+        private readonly ResourceManager _rm;
 
 
         public GraphicsChessBoardUserControl()
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             Symbol = true;
             TagFields();
             var fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Miscel");
@@ -1199,8 +1204,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             textBlockBlackClock.Text = WhiteOnTop ? "C" : "c";
             textBlockWhiteClock.Text = WhiteOnTop ? "c" : "C";
-            textBlockBlackClock.ToolTip = WhiteOnTop ? "Black's move" : "White's move";
-            textBlockWhiteClock.ToolTip = WhiteOnTop ? "White's move" : "Black's move";
+            textBlockBlackClock.ToolTip = WhiteOnTop ? _rm.GetString("BlacksMove") : _rm.GetString("WhitesMove");
+            textBlockWhiteClock.ToolTip = WhiteOnTop ? _rm.GetString("WhitesMove") : _rm.GetString("BlacksMove");
             textBlockWhitePlayer.Text = WhiteOnTop ? _whitePlayer : _blackPlayer;
             textBlockBlackPlayer.Text = WhiteOnTop ? _blackPlayer : _whitePlayer;
             textBlock1.Text = WhiteOnTop ? "1" : "8";
@@ -1459,7 +1464,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void ShowForceMove(bool show)
         {
-            buttonForceMove.ToolTip = show ? "Force move" : "Switch color";
+            buttonForceMove.ToolTip = show ? _rm.GetString("ForceMove") : _rm.GetString("SwitchColor");
             imageForceMove.Visibility = Visibility.Collapsed;
             imageSwitchColor.Visibility = Visibility.Collapsed;
             imageForceMove.Visibility = show ? Visibility.Visible : Visibility.Collapsed;

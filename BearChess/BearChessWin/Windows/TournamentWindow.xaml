@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" Closing="TournamentWindow_OnClosing" WindowStyle="SingleBorderWindow" 
-        Title="Tournament" Height="450" Width="800">
+        Title="{x:Static p:Resources.EngineTournament}" Height="450" Width="800">
     <Window.Resources>
         <bearChessWin:TournamentValueToBrushConverter x:Key="ValueToBrushConverter"/>
     </Window.Resources>
@@ -26,22 +27,22 @@
             </DataGrid.Resources>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Delete" Name="menuItemDelete" Click="ButtonDelete_OnClick">
+                    <MenuItem Header="{x:Static p:Resources.Delete}" Name="menuItemDelete" Click="ButtonDelete_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/bin.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Continue tournament" Name="menuItemLoad" Click="ButtonLoad_OnClick">
+                    <MenuItem Header="{x:Static p:Resources.ContinueTournament}" Name="menuItemLoad" Click="ButtonLoad_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/control_play_blue.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Load as new tournament" Name="menuItemClone" Click="ButtonClone_OnClick">
+                    <MenuItem Header="{x:Static p:Resources.LoadAsNewTournament}" Name="menuItemClone" Click="ButtonClone_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/cup_gold.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Rename tournament" Name="menuItemRename" Click="ButtonRename_OnClick">
+                    <MenuItem Header="{x:Static p:Resources.RenameTournament}" Name="menuItemRename" Click="ButtonRename_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/text_replace.png"></Image>
                         </MenuItem.Icon>
@@ -50,35 +51,51 @@
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding CurrentTournament.GameEvent}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Name</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Event}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
                 <DataGridTextColumn Binding="{Binding CurrentTournament.TournamentType}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Type</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Type}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding CurrentTournament.Cycles}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Cycles</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Cycles}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding PlayedGames}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Played games</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.PlayedGames}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding GamesToPlay}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Games to play</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.GamesToPlay}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding State}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>State</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.State}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding EventDate, StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Date</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Date}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Participants}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Participants</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Participants}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
             </DataGrid.Columns>
 
         </DataGrid>
         <StackPanel  Grid.Row="1" Margin="5,10,5,0" Orientation="Horizontal">
-            <Label>Games of the selected tournament:</Label>
+            <Label Content="{x:Static p:Resources.GamesOfSelectedTournament}"></Label>
             <Label Name="labelGamesCount">0</Label>
         </StackPanel>
         <DataGrid Name="dataGridGames" ItemsSource="{Binding}" Grid.Row="2" Margin="5" AutoGenerateColumns="False" 
@@ -89,12 +106,12 @@
             </DataGrid.Resources>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Copy to clipboard" Name="menuItemCopy" Click="MenuItemCopy_OnClick">
+                    <MenuItem Header="{x:Static p:Resources.CopyToClipboard}" Name="menuItemCopy" Click="MenuItemCopy_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/clipboard_sign_out.png"></Image>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Repeat game" Name="menuItemReplay" Click="MenuItemReplay_OnClick">
+                    <MenuItem Header="{x:Static p:Resources.RepeatGame}" Name="menuItemReplay" Click="MenuItemReplay_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/control_repeat_blue.png"></Image>
                         </MenuItem.Icon>
@@ -121,67 +138,95 @@
                     <DataGridTextColumn.Header>=</DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding White}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>White</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.White}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding WhiteElo}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Elo</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Elo}"></TextBlock>
+                    </DataGridTextColumn.Header>
+
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Black}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Black</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Black}"></TextBlock>
+                    </DataGridTextColumn.Header>
+
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding BlackElo}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Elo</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Elo}"></TextBlock>
+                    </DataGridTextColumn.Header>
+
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding GameEvent}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Event</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Event}"></TextBlock>
+                    </DataGridTextColumn.Header>
+
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding GameSite}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Site</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Site}"></TextBlock>
+                    </DataGridTextColumn.Header>
+
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Round}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Round</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Round}"></TextBlock>
+                    </DataGridTextColumn.Header>
+
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Result}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Result</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Result}"></TextBlock>
+                    </DataGridTextColumn.Header>
+
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding GameDate , StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}" Width="Auto"  FontSize="13">
-                    <DataGridTextColumn.Header>Date</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Date}"></TextBlock>
+                    </DataGridTextColumn.Header>
+
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding MoveList}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Moves</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Moves}"></TextBlock>
+                    </DataGridTextColumn.Header>
+
                 </DataGridTextColumn>
             </DataGrid.Columns>
 
         </DataGrid>
         <DockPanel Margin="5" Grid.Row="3" LastChildFill="False">
 
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonLoad" Click="ButtonLoad_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Continue tournament">
-                <Image Source="../Assets/Icons/control_play_blue.png" Width="32" Height="32"></Image>
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonLoad" Click="ButtonLoad_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.ContinueTournament}">
+                <Image Source="../Assets/Icons/control_play_blue.png" Width="32" Height="32"/>
             </Button>
 
-
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonClone" Click="ButtonClone_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Load as new tournament">
-                <Image Source="../Assets/Icons/cup_gold.png" Width="32" Height="32"></Image>
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonClone" Click="ButtonClone_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.LoadAsNewTournament}">
+                <Image Source="../Assets/Icons/cup_gold.png" Width="32" Height="32"/>
             </Button>
 
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonRepeat" Click="ButtonRepeat_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Repeat tournament">
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonRepeat" Click="ButtonRepeat_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.RepeatTournament}">
                 <Image Source="../Assets/Icons/control_repeat_blue.png" Width="32" Height="32"></Image>
             </Button>
 
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonDelete" Click="ButtonDelete_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete tournament">
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonDelete" Click="ButtonDelete_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.DeleteTournamentTip}">
                 <Image Source="../Assets/Icons/bin.png" Width="32" Height="32"></Image>
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonExport" Click="ButtonExport_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Export tournament games">
+            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonExport" Click="ButtonExport_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.ExportTournamentGames}">
                 <Image Source="../Assets/Icons/text_exports.png" Width="32" Height="32"></Image>
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonInfo" Click="ButtonInfo_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Tournament information">
+            <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonInfo" Click="ButtonInfo_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.TournamentInformation}">
                 <Image Source="../Assets/Icons/information.png" Width="32" Height="32"></Image>
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick" Background="Transparent" BorderBrush="Transparent" >
                 <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
             </Button>
 
-            <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="Delete all tournament">
+            <Button Margin="5,5,50,5" DockPanel.Dock="Right" Name="buttonDeleteDb" Click="ButtonDeleteDb_OnClick"  Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.DeleteAllTournamentTip}">
                 <Image Source="../Assets/Icons/database_delete.png" Width="32" Height="32"></Image>
             </Button>
 

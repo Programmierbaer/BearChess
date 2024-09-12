@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Resources;
 using System.Threading;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -18,10 +19,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Thread _thread;
         private bool _stopRunning;
         private readonly ChessBoard _chessBoard;
+        private ResourceManager _rm;
 
         public EBoardInfoWindow()
         {
             InitializeComponent();
+            _rm = Properties.Resources.ResourceManager;
         }
 
         public EBoardInfoWindow(IElectronicChessBoard eChessBoard, string eBoardName) : this()
@@ -46,14 +49,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _chessBoard = new ChessBoard();
                 textBlockBoard.Text =
-                    $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}Current position reported by the board.{Environment.NewLine}";
+                    $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}{_rm.GetString("CurrentPositionReportedByBoard")}{Environment.NewLine}";
 
             }
             else
             {
                 textBlockBoard.Text =
-                    $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}Each pawn represents a piece on a field.{Environment.NewLine}{eBoardName} has no real piece recognition " +
-                    "and can only give the information per field whether there is a piece or not.";
+                    $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}{_rm.GetString("EachPawnAField")}{Environment.NewLine}{eBoardName} {_rm.GetString("HasNoRecognition")}";
             }
         }
 
@@ -117,7 +119,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonReset_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Send a reset command to the board?", "Reset board", MessageBoxButton.YesNo,
+            if (MessageBox.Show(_rm.GetString("SendReset"), _rm.GetString("ResetBoard"), MessageBoxButton.YesNo,
                                 MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 _eChessBoard.Reset();

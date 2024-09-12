@@ -177,6 +177,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _openingBook = null;
             _bookMove = null;
             string fileName = _uciInfo.FileName;
+            if (fileName.ToLower().Contains("wasp") || !_uciInfo.CanMultiPV())
+            {
+                _uciInfo.SupportChangeMultiPV = false;
+            }
             if (!string.IsNullOrWhiteSpace(_uciInfo.OpeningBook))
             {
                 _openingBook = OpeningBookLoader.LoadBook(uciInfo.OpeningBook, false);
@@ -337,9 +341,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-        
-
-            
             _currentColor = fen.Contains("w") ? Fields.COLOR_WHITE : Fields.COLOR_BLACK;
             
             _initFen = fen;

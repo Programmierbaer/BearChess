@@ -16,6 +16,7 @@ using PgnCreator = www.SoLaNoSoft.com.BearChessBase.Implementations.pgn.PgnCreat
 using System.Runtime.Serialization.Formatters.Binary;
 using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 
 namespace www.SoLaNoSoft.com.BearChessDatabase
 {
@@ -23,16 +24,18 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
     {
         private readonly Window _owner;
         private readonly ILogging _logging;
+        private readonly PgnConfiguration _pgnConfiguration;
         private SQLiteConnection _connection;
         private bool _dbExists;
         private bool _inError;
         private int _storageVersion;
         SQLiteTransaction _sqLiteTransaction;
 
-        public Database(Window owner, ILogging logging, string fileName)
+        public Database(Window owner, ILogging logging, string fileName, PgnConfiguration pgnConfiguration)
         {
             _owner = owner;
             _logging = logging;
+            _pgnConfiguration = pgnConfiguration;
             FileName = fileName;
         }
 
@@ -460,7 +463,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     var databaseGameSimples = GetGames(new GamesFilter() { FilterIsActive = false });
                     foreach (var databaseGameSimple in databaseGameSimples)
                     {
-                        Save(LoadGame(databaseGameSimple.Id, false), true);
+                        Save(LoadGame(databaseGameSimple.Id, _pgnConfiguration), true);
                     }
 
                     Open();
@@ -539,7 +542,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                     {
                         foreach (var databaseGameSimple in databaseGameSimples)
                         {
-                            Save(LoadOldGame(databaseGameSimple.Id, false), true, true, 0);
+                            Save(LoadOldGame(databaseGameSimple.Id, _pgnConfiguration), true, true, 0);
                             i++;
                             if (i % 100 == 0)
                             {
@@ -665,7 +668,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             return allIds.ToArray();
         }
 
-        public DatabaseGame LoadOldGame(int id, bool purePGN)
+        public DatabaseGame LoadOldGame(int id, PgnConfiguration purePGN)
         {
             if (!_dbExists)
             {
@@ -1024,7 +1027,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             }
         }
 
-        public DatabaseGame LoadGame(int id, bool purePGN)
+        public DatabaseGame LoadGame(int id, PgnConfiguration pgnConfiguration)
         {
             if (!_dbExists)
             {
@@ -1056,7 +1059,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
 
                                     databaseGame.Id = id;
 
-                                    var pgnCreator = databaseGame.CurrentGame == null ? new PgnCreator(purePGN) : new PgnCreator(databaseGame.CurrentGame.StartPosition, purePGN);
+                                    var pgnCreator = databaseGame.CurrentGame == null ? new PgnCreator(pgnConfiguration) : new PgnCreator(databaseGame.CurrentGame.StartPosition, pgnConfiguration);
                                     foreach (var databaseGameAllMove in databaseGame.AllMoves)
                                     {
                                         pgnCreator.AddMove(databaseGameAllMove);
@@ -1076,7 +1079,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
                                     databaseGame = bf.Deserialize(memoryStream) as DatabaseGame;
                                     databaseGame.Id = id;
 
-                                    var pgnCreator = databaseGame.CurrentGame == null ? new PgnCreator(purePGN) : new PgnCreator(databaseGame.CurrentGame.StartPosition, purePGN);
+                                    var pgnCreator = databaseGame.CurrentGame == null ? new PgnCreator(pgnConfiguration) : new PgnCreator(databaseGame.CurrentGame.StartPosition, pgnConfiguration);
                                     foreach (var databaseGameAllMove in databaseGame.AllMoves)
                                     {
                                         pgnCreator.AddMove(databaseGameAllMove);
@@ -1684,7 +1687,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
         }
         public DatabaseDuel[] LoadDuel()
         {
-            List<DatabaseDuel> allDuels = new List<DatabaseDuel>();
+            var allDuels = new List<DatabaseDuel>();
             if (!_dbExists)
             {
                 if (!CreateTables())
@@ -1947,7 +1950,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             var sql = "SELECT duel_id FROM duelGames WHERE game_id = @game_Id";
             using (var command = new SQLiteCommand(sql, _connection))
             {
-                command.Parameters.Add("@game_id", DbType.Int32).Value = gameId;
+                command.Parameters.Add("@game_Id", DbType.Int32).Value = gameId;
                 var executeScalar = command.ExecuteScalar();
                 isDuelGame = executeScalar != null;
             }
@@ -2482,7 +2485,7 @@ namespace www.SoLaNoSoft.com.BearChessDatabase
             var sql = "SELECT tournament_id FROM tournamentGames WHERE game_id = @game_Id";
             using (var command = new SQLiteCommand(sql, _connection))
             {
-                command.Parameters.Add("@game_id", DbType.Int32).Value = gameId;
+                command.Parameters.Add("@game_Id", DbType.Int32).Value = gameId;
                 var executeScalar = command.ExecuteScalar();
                 isTournamentGame = executeScalar != null;
             }

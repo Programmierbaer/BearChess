@@ -40,6 +40,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
         }
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 
@@ -103,7 +104,8 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
             _currentColor = Fields.COLOR_WHITE;
             _prevColor = Fields.COLOR_BLACK;
             _logger = logger;
-            
+            PieceRecognition = true;
+            ValidForAnalyse = true;
             MultiColorLEDs = true;
             BatteryLevel = "---";
             BatteryStatus = "Full";
@@ -124,6 +126,8 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
             BatteryStatus = "Full";
             Information = Constants.IChessOne;
             MultiColorLEDs = true;
+            PieceRecognition = true;
+            ValidForAnalyse = true;
         }
 
         public override void SetCurrentColor(int currentColor)

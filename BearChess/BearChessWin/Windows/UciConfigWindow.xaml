@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="CanResize"
         Title="UCI Engine Configuration" MaxHeight="770" Width="400" SizeToContent="WidthAndHeight">
     <Grid>
@@ -14,7 +15,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <TextBlock Name="textBlockName" Margin="5">Name:</TextBlock>
+            <TextBlock Name="textBlockName" Margin="5" Text="{x:Static p:Resources.Name}" />
             <TextBox Name="textBoxName" Width="330" Margin="5"></TextBox>
         </StackPanel>
         <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="5">
@@ -23,27 +24,20 @@
                     <CheckBox Name="checkBoxUseOpeningBook" VerticalAlignment="Center"
                               VerticalContentAlignment="Center" DockPanel.Dock="Left"
                               Checked="CheckBoxUseOpeningBook_OnChecked"
-                              Unchecked="CheckBoxUseOpeningBook_OnUnchecked" Margin="5">
-                        Use opening book:
-                    </CheckBox>
+                              Unchecked="CheckBoxUseOpeningBook_OnUnchecked" Margin="5" Content="{x:Static p:Resources.UseOpeningBook}"/>
+
                     <ComboBox Name="comboBoxOpeningBooks" Margin="5" DockPanel.Dock="Left"></ComboBox>
                 </DockPanel>
                 <StackPanel Margin="5" Orientation="Horizontal">
                     <RadioButton Name="radioButtonBest" Margin="10,0,5,0" GroupName="Variation"
                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                 ToolTip="Always choose the best move">
-                        Best
-                    </RadioButton>
+                                 ToolTip="{x:Static p:Resources.AlwaysChooseBestMove}" Content="{x:Static p:Resources.Best}"/>
                     <RadioButton Name="radioButtonFlexible" Margin="5,0,5,0" GroupName="Variation"
                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                 ToolTip="Choose one of the better moves">
-                        Flexible
-                    </RadioButton>
+                                 ToolTip="{x:Static p:Resources.ChooseBetterMove}" Content="{x:Static p:Resources.Flexible}"/>
                     <RadioButton Name="radioButtonWide" Margin="5,0,5,0" GroupName="Variation"
                                  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                 ToolTip="Choose any move">
-                        Wide
-                    </RadioButton>
+                                 ToolTip="{x:Static p:Resources.ChooseAnyMove}" Content="{x:Static p:Resources.Wide}" />
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -77,7 +71,7 @@
                 </Border>
                 <Border Grid.Row="3" BorderBrush="Gray" BorderThickness="1" Margin="5">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5" Text="Wait for new game:" VerticalAlignment="Center"
+                        <TextBlock Margin="5" Text="{x:Static p:Resources.WaitForNewGame}" VerticalAlignment="Center"
                                    FontWeight="DemiBold">
                         </TextBlock>
                         <CheckBox VerticalAlignment="Center" Name="checkBoxWaitForStart" Margin="5"
@@ -128,27 +122,27 @@
         </ScrollViewer>
         <DockPanel Grid.Row="3" Margin="10" LastChildFill="False">
             <Button DockPanel.Dock="Left" Name="buttonOk" Click="ButtonOk_OnClick" BorderBrush="Transparent"
-                    Background="Transparent" ToolTip="Save">
+                    Background="Transparent" ToolTip="{x:Static p:Resources.Save}">
                 <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32"></Image>
             </Button>
             <Button DockPanel.Dock="Left" Margin="20,0,10,0" Name="buttonSaveAs" Click="ButtonSaveAs_OnClick"
                     BorderBrush="Transparent" Background="Transparent"
-                    ToolTip="Add as new configuration">
+                    ToolTip="{x:Static p:Resources.AddAsNewConfiguration}">
                 <Image Source="../Assets/Icons/cog_add.png" Width="32" Height="32"></Image>
             </Button>
 
             <Button DockPanel.Dock="Right" Name="buttonCancel" Click="ButtonCancel_OnClick" BorderBrush="Transparent"
-                    Background="Transparent" ToolTip="Cancel">
+                    Background="Transparent" ToolTip="{x:Static p:Resources.Cancel}">
                 <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32"></Image>
             </Button>
 
             <Button DockPanel.Dock="Right" Margin="0,0,10,0" Name="buttonDefault" Click="ButtonDefault_OnClick"
                     BorderBrush="Transparent" Background="Transparent"
-                    ToolTip="Reset to default values">
+                    ToolTip="{x:Static p:Resources.ResetDefaultValues}">
                 <Image Source="../Assets/Icons/undo.png" Width="32" Height="32"></Image>
             </Button>
             <Button DockPanel.Dock="Right" Name="buttonLog" Click="ButtonLog_OnClick" BorderBrush="Transparent"
-                    Background="Transparent" ToolTip="Show log files">
+                    Background="Transparent" ToolTip="{x:Static p:Resources.ShowLogFiles}">
                 <Image Source="../Assets/Icons/file_extension_log.png" Width="32" Height="32"></Image>
             </Button>
 

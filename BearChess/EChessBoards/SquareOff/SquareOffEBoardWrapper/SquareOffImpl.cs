@@ -67,6 +67,11 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffEBoardWrapper
             //
         }
 
+        public override string RequestInformation(string message)
+        {
+            return string.Empty;
+        }
+
         public override void DimLEDs(bool _)
         {
             // Ignore

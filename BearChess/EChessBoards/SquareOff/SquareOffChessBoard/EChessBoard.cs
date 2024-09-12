@@ -97,6 +97,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            ValidForAnalyse = false;
             SelfControlled = false;
             Information = boardName;
             IsConnected = EnsureConnection();
@@ -129,6 +130,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            ValidForAnalyse = false;
             SelfControlled = false;
             Information = string.Empty;
             _fromField[0] = string.Empty;
@@ -575,6 +577,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
         }
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 

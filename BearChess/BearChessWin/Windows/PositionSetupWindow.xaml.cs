@@ -52,9 +52,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonBase.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
             buttonClear.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
             buttonReset.Visibility = _acceptMouse ? Visibility.Visible : Visibility.Collapsed;
-//            buttonBase.IsEnabled = _acceptMouse;
-//            buttonClear.IsEnabled = _acceptMouse;
-//            buttonReset.IsEnabled = _acceptMouse;
+
             if (_acceptMouse)
             {
                 checkBoxWhiteShortCastle.IsChecked = _chessBoard.CanCastling(Fields.COLOR_WHITE, CastlingEnum.Short);

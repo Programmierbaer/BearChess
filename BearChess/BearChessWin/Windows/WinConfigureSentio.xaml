@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="Height"
-        Title="Configure TabuTronic Sentio Chessboard" Height="280" Width="390" Icon="../Assets/tabutronic_logo_def.png">
+        Title="{x:Static p:Resources.ConfigureSentio}" Height="280" Width="390" Icon="../Assets/tabutronic_logo_def.png">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -20,11 +21,11 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="Current:" FontWeight="DemiBold"
+                <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="{x:Static p:Resources.Current}" FontWeight="DemiBold"
                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                 <TextBlock Name="textBlockCurrentPort" Grid.Column="1" Grid.Row="0" Margin="5" Text="COM4"
                            HorizontalAlignment="Center" VerticalAlignment="Center" />
-                <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="COM-Ports:" FontWeight="DemiBold"
+                <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="{x:Static p:Resources.ComPorts}" FontWeight="DemiBold"
                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                 <ComboBox Margin="5,5,5,5" Name="comboBoxComPorts" Grid.Column="1" Grid.Row="1"
                           HorizontalAlignment="Center" Width="100"
@@ -34,24 +35,23 @@
                         Click="ButtonCheck_OnClick" HorizontalAlignment="Right" VerticalAlignment="Center"
                         Visibility="Visible">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Name="textBlockCheck" VerticalAlignment="Center">Check...</TextBlock>
+                        <TextBlock Name="textBlockCheck" VerticalAlignment="Center" Text="{x:Static p:Resources.Check}"></TextBlock>
                         <Image Source="../Assets/Icons/connect.png" Width="32" />
                     </StackPanel>
                 </Button>
                 <TextBlock Name="textBlockInformation" Margin="5,5,5,5" Grid.Column="0" Grid.Row="2"
-                           Visibility="Collapsed"
-                           Foreground="IndianRed" Text="No COM-Port detected. Check the connection to the chessboard."
+                           Visibility="Collapsed" TextWrapping="Wrap"
+                           Foreground="IndianRed" Text="{x:Static p:Resources.NoCOMPortDetected}"
                            Grid.ColumnSpan="3" VerticalAlignment="Top" FontWeight="DemiBold" />
-
             </Grid>
         </Border>
        
         <Border Name="borderMoveLine" Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" >
             <StackPanel >
-                <CheckBox Margin="5" Name="checkBoxMoveLine">Activate all LEDs along the move</CheckBox>
-                <CheckBox Visibility="Visible" Margin="5" Name="checkBoxOwnMoves" Checked="CheckBoxOwnMoves_OnChecked" Unchecked="CheckBoxOwnMoves_OnUnchecked">Show own moves</CheckBox>
-                <CheckBox Visibility="Visible"  Margin="5" Name="checkBoxPossibleMoves" ToolTip="This selection is exclusive to 'Show own moves'" Unchecked="CheckBoxPossibleMoves_OnUnchecked" Checked="CheckBoxPossibleMoves_OnChecked" >Show all moves for the selected figure</CheckBox>
-                <CheckBox  Visibility="Visible" Margin="5" Name="checkBoxBestMove" ToolTip="This selection is exclusive to 'Show own moves'" Checked="CheckBoxBestMove_OnChecked" Unchecked="CheckBoxBestMove_OnUnchecked" >Show the best move for the selected figure</CheckBox>
+                <CheckBox Margin="5" Name="checkBoxMoveLine" Content="{x:Static p:Resources.ActivateAllLEDsAlongMove}"></CheckBox>
+                <CheckBox Margin="5" Name="checkBoxOwnMoves" ToolTip="{x:Static p:Resources.SelectionIsExclusive}"  Checked="CheckBoxOwnMoves_OnChecked" Unchecked="CheckBoxOwnMoves_OnUnchecked" Content="{x:Static p:Resources.ShowOwnMoves}"></CheckBox>
+                <CheckBox Margin="5" Name="checkBoxPossibleMoves" ToolTip="{x:Static p:Resources.SelectionIsExclusiveShowOwnMoves}" Unchecked="CheckBoxPossibleMoves_OnUnchecked" Checked="CheckBoxPossibleMoves_OnChecked" Content="{x:Static p:Resources.ShowAllMovesSelectedFigure}"></CheckBox>
+                <CheckBox Margin="5" Name="checkBoxBestMove" ToolTip="{x:Static p:Resources.SelectionIsExclusiveShowOwnMoves}" Unchecked="CheckBoxBestMove_OnUnchecked" Checked="CheckBoxBestMove_OnChecked" Content="{x:Static p:Resources.ShowBestMoveSelectedFigure}"></CheckBox>
             </StackPanel>
         </Border>
         <Grid>
@@ -68,13 +68,12 @@
 
             <Button Grid.Column="0" Grid.Row="0" Margin="5" HorizontalAlignment="Left" Name="buttonOk" Width="32"
                     Height="32"
-                    Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Ok">
+                    Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" >
                 <Image Source="../Assets/Icons/accept_button.png" />
             </Button>
             <Button Grid.Column="2" Grid.Row="0" Margin="5" HorizontalAlignment="Right" Name="buttonCancel" Width="32"
                     Height="32"
-                    Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent"
-                    ToolTip="Cancel">
+                    Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="../Assets/Icons/cancel.png" />
             </Button>
         </Grid>

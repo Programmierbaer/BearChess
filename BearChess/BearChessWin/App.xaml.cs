@@ -9,7 +9,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class App : Application
     {
-
+        public App()
+        {
+            //System.Threading.Thread.CurrentThread.CurrentUICulture
+            //    = new System.Globalization.CultureInfo("de");
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {

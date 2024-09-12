@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +11,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChess.ChessnutAirLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
@@ -31,13 +33,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private bool _loaded = false;
         private string _lastButtonName = string.Empty;
         private readonly FileLogger _fileLogger;
-        
+        private readonly ResourceManager _rm;
+
 
         public WinConfigureChessnutEvo(Configuration configuration)
         {
             InitializeComponent();
-        
 
+            _rm = SpeechTranslator.ResourceManager;
 
             _fileName = Path.Combine(configuration.FolderPath, ChessnutEvoLoader.EBoardName, $"{ChessnutEvoLoader.EBoardName}Cfg.xml");
 
@@ -100,7 +103,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ShowCurrentConfig()
         {
-            ExtendedEChessBoardConfiguration current = comboBoxSettings.Items[_currentIndex] as ExtendedEChessBoardConfiguration;
+            var current = comboBoxSettings.Items[_currentIndex] as ExtendedEChessBoardConfiguration;
+            if (current == null)
+            {
+                return;
+            }
             checkBoxMoveLine.IsChecked = current.ShowMoveLine;
 
             checkBoxFlashMoveFrom.IsChecked = current.FlashMoveFrom;
@@ -381,7 +388,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ShowTooltip()
         {
             buttonOk.ToolTip =
-                $"Select and save configuration as '{((ExtendedEChessBoardConfiguration)comboBoxSettings.Items[_currentIndex]).Name}'";
+                $"{_rm.GetString("SelectAndSaveConfiguration")} '{((ExtendedEChessBoardConfiguration)comboBoxSettings.Items[_currentIndex]).Name}'";
         }
 
         private void ComboBoxSettings_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -403,7 +410,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 Owner = this
             };
-            editWindow.SetTitle("Give your configuration a name");
+            editWindow.SetTitle(_rm.GetString("GiveConfigurationName"));
             var showDialog = editWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -431,11 +438,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_currentIndex == 0)
             {
-                MessageBox.Show("You cannot delete the 'BearChess' configuration", "Not allowed", MessageBoxButton.OK,
+                MessageBox.Show(_rm.GetString("CannotDeleteBearChessConfig"), _rm.GetString("NotAllowed"), MessageBoxButton.OK,
                                 MessageBoxImage.Hand);
                 return;
             }
-            if (MessageBox.Show($"Delete your configuration '{((ExtendedEChessBoardConfiguration)comboBoxSettings.Items[_currentIndex]).Name}' ?", "Delete", MessageBoxButton.YesNo,
+            if (MessageBox.Show($"{_rm.GetString("DeleteConfiguration")} '{((ExtendedEChessBoardConfiguration)comboBoxSettings.Items[_currentIndex]).Name}' ?", _rm.GetString("Delete"), MessageBoxButton.YesNo,
                                 MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 _loaded = false;
@@ -468,15 +475,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     _fileLogger?.LogInfo($"Check successful for {portName}");
                     infoWindow.Close();
-                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Information);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                    
                 }
                 else
                 {
                     _fileLogger?.LogInfo($"Check failed for {portName}");
                     infoWindow.Close();
-                    MessageBox.Show($"Check failed for {portName} ", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                 
                 }
             }
             catch (Exception ex)

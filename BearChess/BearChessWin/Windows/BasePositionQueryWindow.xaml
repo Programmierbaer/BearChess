@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner"
-        Title="What do you like to do?" Height="180" Width="650" SizeToContent="WidthAndHeight">
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
+        Title="{x:Static p:Resources.WhatDoYouLikeToDo}" Height="180" Width="650" SizeToContent="WidthAndHeight">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -20,36 +21,36 @@
         <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Image Source="../Assets/Icons/emotion_question.png" HorizontalAlignment="Left" Margin="5" Height="32"
                    Width="32" />
-            <TextBlock FontWeight="Bold" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">Action...</TextBlock>
+            <TextBlock FontWeight="Bold" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Static p:Resources.Action}"/>
         </StackPanel>
         <Button Grid.Row="1" Name="buttonStart" Margin="5,20,5,10" Grid.Column="0" Click="ButtonStart_OnClick" Background="Transparent" BorderBrush="Transparent">
             <StackPanel >
-                <Image Margin="0,5,0,0" Source="../Assets/Icons/bearchess.png" Width="32" Height="32"></Image>
-                <TextBlock TextWrapping="Wrap" Margin="5">Start a new game</TextBlock>
+                <Image Margin="0,5,0,0" Source="../Assets/Icons/bearchess.png" Width="32" Height="32"/>
+                <TextBlock TextWrapping="Wrap" Margin="5" Text="{x:Static p:Resources.StartNewGame}"/>
             </StackPanel>
         </Button>
         <Button Grid.Row="1" Name="buttonReStart" Margin="5,20,5,10" Grid.Column="1" Click="ButtonReStart_OnClick" Background="Transparent"  BorderBrush="Transparent">
             <StackPanel >
                 <Image Margin="0,5,0,0" Source="../Assets/Icons/chessboard_base.png" Width="32" Height="32"></Image>
-                <TextBlock TextWrapping="Wrap" Margin="5">Restart the game</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5"  Text="{x:Static p:Resources.RestartGame}"/>
             </StackPanel>
         </Button>
         <Button Grid.Row="1" Name="buttonStop" Margin="5,20,5,10" Grid.Column="2" Click="ButtonStop_OnClick" Background="Transparent"  BorderBrush="Transparent">
             <StackPanel >
                 <Image Margin="0,5,0,0"  Source="../Assets/Icons/control_stop.png" Width="32" Height="32"></Image>
-                <TextBlock TextWrapping="Wrap" Margin="5">Stop current game</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5" Text="{x:Static p:Resources.StopCurrentGame}"/>
             </StackPanel>
         </Button>
         <Button Grid.Row="1" Name="buttonCancel" Margin="5,20,5,10" Grid.Column="3" Click="ButtonCancel_OnClick" Background="Transparent"  BorderBrush="Transparent">
             <StackPanel >
                 <Image  Margin="0,5,0,0"  Source="../Assets/Icons/control_play_blue.png" Width="32" Height="32"></Image>
-                <TextBlock TextWrapping="Wrap" Margin="5">Continue</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5" Text="{x:Static p:Resources.ContinueTheGame}"/>
             </StackPanel>
         </Button>
         <Button Grid.Row="1" Name="buttonSave" Margin="5,20,5,10" Grid.Column="4" Click="ButtonSave_OnClick" Background="Transparent"  BorderBrush="Transparent">
             <StackPanel >
                 <Image  Margin="0,5,0,0"  Source="../Assets/Icons/diskette.png" Width="32" Height="32"></Image>
-                <TextBlock TextWrapping="Wrap" Margin="5">Stop and save current game</TextBlock>
+                <TextBlock TextWrapping="Wrap" Margin="5" Text="{x:Static p:Resources.StopAndSave}"/>
             </StackPanel>
         </Button>
     </Grid>

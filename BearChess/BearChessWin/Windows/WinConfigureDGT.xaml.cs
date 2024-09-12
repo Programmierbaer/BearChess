@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Windows;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChess.DGTLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
@@ -26,12 +28,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private List<string> _portNames;
         private List<string> _allPortNames;
         private readonly ILogging _fileLogger;
+        private readonly ResourceManager _rm;
 
         public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
         public WinConfigureDGT(Configuration configuration, bool useBluetooth)
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             var fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Miscel");
             textBlockClock.FontFamily = fontFamily;
             textBlockClock.Text = "c";
@@ -125,16 +129,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (dgtLoader.CheckComPort(name))
                         {
                             infoWindow.Close();
-                            MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK,
-                                            MessageBoxImage.Information);
+                            MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {name}", _rm.GetString("Check"), MessageBoxButton.OK,
+                                MessageBoxImage.Information);
                             comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
                             return;
                         }
                     }
 
                     infoWindow.Close();
-                    MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show(_rm.GetString("CheckConnectionFailedForAll"), _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                     return;
 
                 }
@@ -145,14 +149,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (dgtLoader.CheckComPort(portName))
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Information);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                 }
                 else
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check failed for {portName}", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
@@ -204,13 +208,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void CheckBoxSwitchSide_OnChecked(object sender, RoutedEventArgs e)
         {
             textBlockClock.Text = "C";
-            checkBoxSwitchSide.ToolTip = "Left side shows the time for black";
+            checkBoxSwitchSide.ToolTip = _rm.GetString("LeftSideShowsForBlack");
         }
 
         private void CheckBoxSwitchSide_OnUnchecked(object sender, RoutedEventArgs e)
         {
             textBlockClock.Text = "c";
-            checkBoxSwitchSide.ToolTip = "Left side shows the time for white";
+            checkBoxSwitchSide.ToolTip = _rm.GetString("LeftSideShowsForWhite");
         }
     }
 }

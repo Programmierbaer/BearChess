@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -118,13 +119,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
             OnValueChanged(Value);
         }
 
-        private void TextBlockNumber_OnTextChanged(object sender, TextChangedEventArgs e)
+    
+
+        protected virtual void OnValueChanged(int e)
+        {
+            ValueChanged?.Invoke(this, e);
+        }
+
+        private void TextBlockNumber_OnLostFocus(object sender, RoutedEventArgs e)
         {
             if (scrollBarNumber == null)
             {
                 return;
             }
-            string currentValue =  Value.ToString(CultureInfo.InvariantCulture);
+            var currentValue = Value.ToString(CultureInfo.InvariantCulture);
             if (textBlockNumber.Text.Equals(currentValue))
             {
                 return;
@@ -140,30 +148,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-
-        protected virtual void OnValueChanged(int e)
+        private void TextBlockNumber_OnKeyDown(object sender, KeyEventArgs e)
         {
-            ValueChanged?.Invoke(this, e);
-        }
-
-        private void TextBlockNumber_OnLostFocus(object sender, RoutedEventArgs e)
-        {
-            if (scrollBarNumber == null)
+            if (e.Key == Key.Up && Value < scrollBarNumber.Maximum)
             {
-                return;
-            }
-            string currentValue = Value.ToString(CultureInfo.InvariantCulture);
-            if (textBlockNumber.Text.Equals(currentValue))
-            {
+                Value++;
+                var currentValue = Value.ToString(CultureInfo.InvariantCulture);
+                textBlockNumber.Text = currentValue;
                 return;
             }
 
-            if (int.TryParse(textBlockNumber.Text, out int newValue))
+            if (e.Key == Key.Down && Value > scrollBarNumber.Minimum)
             {
-                Value = newValue;
-            }
-            else
-            {
+                Value--;
+                var currentValue = Value.ToString(CultureInfo.InvariantCulture);
                 textBlockNumber.Text = currentValue;
             }
         }

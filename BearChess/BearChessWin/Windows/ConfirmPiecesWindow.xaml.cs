@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 //using System.Drawing;
 using System.IO;
+using System.Resources;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -15,32 +19,62 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly HashSet<string> _allNames;
         private readonly string _path;
         private readonly string _fileName;
+        private ISpeech _synthesizer;
+        private ResourceManager _rm;
+        private bool _blindUser;
+        private bool _blindUserSaySelection;
 
         public BoardPiecesSetup BoardPiecesSetup { get; private set; }
 
-        public ConfirmPiecesWindow(string path, string[] allNames, string fileName)
+        public ConfirmPiecesWindow(Configuration configuration, string path, string[] allNames, string fileName)
         {
             InitializeComponent();
             _path = path;
             _fileName = fileName;
             textBoxName.Text = string.Empty;
-            textBoxName.ToolTip = "Give the piece set a name";
             _allNames = new HashSet<string>(allNames);
+            _rm = SpeechTranslator.ResourceManager;
+            _synthesizer = BearChessSpeech.Instance;
+            _blindUser = bool.Parse(configuration.GetConfigValue("blindUser", "false"));
+
+            _blindUserSaySelection =
+                _blindUser && bool.Parse(configuration.GetConfigValue("blindUserSaySelection", "false"));
+            if (_blindUser)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("ConfirmPiecesSelectionWindow"));
+            }
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBoxName.Text))
             {
-                MessageBox.Show("A piece set name is required", "Missing Information", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                if (_blindUser)
+                {
+                    _synthesizer?.SpeakAsync($"{_rm.GetString("MissingInformation")}: {_rm.GetString("APieceSetNameIsRequired")}");
+                }
+
+                {
+                    MessageBox.Show(_rm.GetString("APieceSetNameIsRequired"), _rm.GetString("MissingInformation"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
                 return;
             }
 
             if (_allNames.Contains(textBoxName.Text))
             {
-                MessageBox.Show("The piece set name is already taken", "Duplicate Information", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                if (_blindUser)
+                {
+                    _synthesizer?.SpeakAsync($"{_rm.GetString("DuplicateInformation")}: {_rm.GetString("PieceSetNameAlreadyTaken")}");
+                }
+                else
+                {
+                    MessageBox.Show(_rm.GetString("PieceSetNameAlreadyTaken"), _rm.GetString("DuplicateInformation"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+
                 return;
             }
 
@@ -338,8 +372,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     || string.IsNullOrWhiteSpace(BoardPiecesSetup.BlackPawnFileName)
                 )
                 {
-                    MessageBox.Show("No or not all png files found", "Missing Information", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
+                    if (_blindUser)
+                    {
+                        _synthesizer?.SpeakAsync($"{_rm.GetString("MissingInformation")}: {_rm.GetString("NotPngFilesFound")}");
+                    }
+                    else
+                    {
+                        MessageBox.Show(_rm.GetString("NotPngFilesFound"), _rm.GetString("MissingInformation"),
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
+
                     DialogResult = false;
                     return;
                 }
@@ -358,8 +401,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error reading files{Environment.NewLine}{ex.Message}", "Error", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                if (_blindUser)
+                {
+                    _synthesizer?.SpeakAsync($"{_rm.GetString("Error")}: {_rm.GetString("ErrorReadingFiles")}{Environment.NewLine}{ex.Message}");
+                }
+                else
+                {
+                    MessageBox.Show($"{_rm.GetString("ErrorReadingFiles")}{Environment.NewLine}{ex.Message}",
+                        _rm.GetString("Error"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+
                 DialogResult = false;
             }
         }

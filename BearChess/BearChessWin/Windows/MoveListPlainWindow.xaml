@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties" 
         mc:Ignorable="d" Closing="Window_Closing"
-        Title="Moves" Height="450" Width="800">
+        Title="{x:Static p:Resources.Moves}" Height="450" Width="800">
     <Window.CommandBindings>
         <CommandBinding Command="Copy" Executed="MenuItemCopy_OnClick" CanExecute="CommandBinding_OnCanExecute"></CommandBinding>
     </Window.CommandBindings>
@@ -30,8 +31,6 @@
             <TextBlock Margin="2,5,5,5" Grid.Row="0" Grid.Column="1" Name="textBlockWhitePlayer"></TextBlock>
             <TextBlock Name="textBlockBlack" VerticalAlignment="Center"  Margin="5,5,5,0" Grid.Row="1" Grid.Column="0">k</TextBlock>
             <TextBlock Margin="2,5,5,0" Grid.Row="1" Grid.Column="1" Name="textBlockBlackPlayer"></TextBlock>
-
-
         </Grid>
 
         <ScrollViewer Name="scrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
@@ -40,22 +39,22 @@
         <DockPanel Margin="5" Grid.Row="2" LastChildFill="False">
            
             <Button Margin="5" Name="buttonExtend" Click="ButtonExtend_OnClick" Width="32" Height="32" Background="Transparent" BorderBrush="Transparent"
-                    HorizontalAlignment="Left" ToolTip="Change content to be displayed">
+                    HorizontalAlignment="Left" ToolTip="{x:Static p:Resources.ChangeContent}">
                 <Image Source="../Assets/Icons/script_gear.png" />
             </Button>
             <Button Margin="5" Name="buttonShowHideComments" Click="ButtonShowHideComments_OnClick" Width="32" Height="32" Background="Transparent" BorderBrush="Transparent"
-                    HorizontalAlignment="Left" ToolTip="Show or hide comments">
+                    HorizontalAlignment="Left" ToolTip="{x:Static p:Resources.ShowHideComments}">
                 <Image Source="../Assets/Icons/comments.png" />
             </Button>
             <Button Margin="5" Name="buttonFontInc" Click="ButtonFontInc_OnClick" Width="32" Height="32" Background="Transparent" BorderBrush="Transparent"
-                    HorizontalAlignment="Left" ToolTip="Increase font size">
+                    HorizontalAlignment="Left" ToolTip="{x:Static p:Resources.IncreaseFontSize}">
                 <Image Source="../Assets/Icons/font_size_decrease.png" />
             </Button>
             <Button Margin="5" Name="buttonFontDec" Click="ButtonFontDec_OnClick" Width="26" Height="26" Background="Transparent" BorderBrush="Transparent"
-                    HorizontalAlignment="Left" ToolTip="Decrease font size">
+                    HorizontalAlignment="Left" ToolTip="{x:Static p:Resources.DecreaseFontSize}">
                 <Image Source="../Assets/Icons/font_size_increase.png" />
             </Button>
-            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonCopy"   Command="Copy"    Background="Transparent" BorderBrush="Transparent" ToolTip="Copy to clipboard">
+            <Button Margin="15,5,5,5" DockPanel.Dock="Left" Name="buttonCopy"   Command="Copy"    Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.CopyToClipboard}">
                 <Image Source="../Assets/Icons/clipboard_sign_out.png" Width="32" Height="32"></Image>
             </Button>
 

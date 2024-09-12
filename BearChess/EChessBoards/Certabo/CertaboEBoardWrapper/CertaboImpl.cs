@@ -66,6 +66,11 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboEBoardWrapper
             //
         }
 
+        public override string RequestInformation(string message)
+        {
+            return string.Empty;
+        }
+
         public override void DimLEDs(bool _)
         {
             // Ignore

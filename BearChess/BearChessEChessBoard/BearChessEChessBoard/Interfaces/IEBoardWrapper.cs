@@ -79,6 +79,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         void SetFen(string fen, string allMoves);
 
+        void AwaitingMove(int fromField, int toField);
+
         /// <summary>
         /// Close the connection to the chess board
         /// </summary>
@@ -100,6 +102,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         bool Calibrate();
 
         void SendInformation(string message);
+        string RequestInformation(string message);
         void AdditionalInformation(string information);
 
         void SetCurrentColor(int currentColor);
@@ -126,6 +129,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         event EventHandler AwaitedPosition;
         event EventHandler BasePositionEvent;
+        event EventHandler NewGamePositionEvent;
         event EventHandler BatteryChangedEvent;
         event EventHandler HelpRequestedEvent;
         event EventHandler ProbeMoveEndingEvent;
@@ -188,6 +192,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void DisplayOnClock(string display);
 
         bool MultiColorLEDs { get; }
+
+        bool ValidForAnalyse { get; }
 
         void AcceptProbingMoves(bool acceptProbingMoves);
     }

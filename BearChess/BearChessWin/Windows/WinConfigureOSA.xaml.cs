@@ -7,10 +7,12 @@ using System.Xml.Linq;
 using www.SoLaNoSoft.com.BearChess.CitrineLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.OSALoader;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 using www.SoLaNoSoft.com.BearChessTools;
+using System.Resources;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -26,13 +28,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly List<string> _allPortNames;
         private readonly List<string> _allBaudRates;
         private readonly ILogging _fileLogger;
+        private readonly ResourceManager _rm;
 
         public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
         public WinConfigureOSA(Configuration configuration)
         {
             InitializeComponent();
-
+            _rm = SpeechTranslator.ResourceManager;
             _fileName = Path.Combine(configuration.FolderPath, OSALoader.EBoardName, $"{OSALoader.EBoardName}Cfg.xml");
             var fileInfo = new FileInfo(_fileName);
             if (!Directory.Exists(fileInfo.DirectoryName))
@@ -100,12 +103,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             foreach (var baudRate in _baudRates)
                             {
-                                infoWindow.SetCurrentValue(i, $"{name} and {baudRate} baud");
+                                infoWindow.SetCurrentValue(i, $"{name} {_rm.GetString("And")} {baudRate} {_rm.GetString("BaudValue")}");
                                 infoWindow.SetCurrentValue(i);
                                 if (osaLoader.CheckComPort(name, baudRate))
                                 {
                                     infoWindow.Close();
-                                    MessageBox.Show($"Check successful for {name} and {baudRate} baud", "Check",
+                                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {name} {_rm.GetString("And")} {baudRate} {_rm.GetString("BaudValue")}", _rm.GetString("Check"),
                                                     MessageBoxButton.OK,
                                                     MessageBoxImage.Information);
                                     comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
@@ -120,7 +123,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             if (osaLoader.CheckComPort(name, baud))
                             {
                                 infoWindow.Close();
-                                MessageBox.Show($"Check successful for {name} and {baud}", "Check", MessageBoxButton.OK,
+                                MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {name} {_rm.GetString("And")} {baud} {_rm.GetString("BaudValue")}", _rm.GetString("Check"), MessageBoxButton.OK,
                                                 MessageBoxImage.Information);
                                 comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
                                 return;
@@ -129,7 +132,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
 
                     infoWindow.Close();
-                    MessageBox.Show("Check failed for all COM ports and baud rates", "Check", MessageBoxButton.OK,
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailedForAll")} {_rm.GetString("And")} {_rm.GetString("BaudRates")}", _rm.GetString("Check"), MessageBoxButton.OK,
                                     MessageBoxImage.Error);
                     return;
 
@@ -144,11 +147,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     foreach (var baudRate in _baudRates)
                     {
                         i++;
-                        infoWindow.SetCurrentValue(i, $"{portName} and {baudRate} baud");
+                        infoWindow.SetCurrentValue(i, $"{portName} {_rm.GetString("And")} {baudRate} {_rm.GetString("BaudValue")}");
                         if (osaLoader.CheckComPort(portName, baudRate))
                         {
                             infoWindow.Close();
-                            MessageBox.Show($"Check successful for {portName} and {baudRate} baud", "Check",
+                            MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName} {_rm.GetString("And")} {baudRate} {_rm.GetString("BaudValue")}", _rm.GetString("Check"),
                                             MessageBoxButton.OK,
                                             MessageBoxImage.Information);
                             comboBoxBaud.SelectedIndex = _allBaudRates.IndexOf(baudRate);
@@ -158,7 +161,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
 
                     infoWindow.Close();
-                    MessageBox.Show($"Check failed for {portName} and all baud rates", "Check", MessageBoxButton.OK,
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName} {_rm.GetString("AndAllBaudRates")}", _rm.GetString("Check"), MessageBoxButton.OK,
                                     MessageBoxImage.Error);
                     return;
 
@@ -166,17 +169,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 infoWindow.SetMaxValue(1);
                 infoWindow.Show();
-                infoWindow.SetCurrentValue(1, $"{portName} and {baud} baud");
+                infoWindow.SetCurrentValue(1, $"{portName} {_rm.GetString("And")} {baud} {_rm.GetString("BaudValue")}");
                 if (osaLoader.CheckComPort(portName, baud))
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check successful for {portName} and {baud}", "Check", MessageBoxButton.OK,
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName} {_rm.GetString("And")} {baud} {_rm.GetString("BaudValue")}", _rm.GetString("Check"), MessageBoxButton.OK,
                                     MessageBoxImage.Information);
                 }
 
 
                 infoWindow.Close();
-                MessageBox.Show($"Check failed for {portName} and {baud} baud", "Check", MessageBoxButton.OK,
+                MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName} {_rm.GetString("And")} {baud} {_rm.GetString("BaudValue")}", _rm.GetString("Check"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
 
             }

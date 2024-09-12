@@ -93,6 +93,7 @@
         string BoardInformation { get; }
 
         bool UseChesstimation { get; set; }
+        bool UseElfacun { get; set; }
 
         string BatteryLevel { get; }
     }

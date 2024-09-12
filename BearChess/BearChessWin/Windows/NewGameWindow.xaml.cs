@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Serialization;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBaseLib.Definitions;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -22,18 +26,105 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly Dictionary<string, UciInfo> _allUciInfos = new Dictionary<string, UciInfo>();
         private readonly bool _isInitialized;
 
-        private UciInfo PlayerBlackConfigValues { get;  set; }
-        private UciInfo PlayerWhiteConfigValues { get;  set; }
+        
+
+        private UciInfo PlayerBlackConfigValues
+        {
+            get;
+            set;
+        }
+
+        private UciInfo PlayerWhiteConfigValues
+        {
+            get;
+            set;
+        }
+
         private bool? _isCheckedAllowTakeBack;
         private Brush _foreground;
-        private int _playerIndex;
+        private readonly ISpeech _synthesizer;
+        private readonly ResourceManager _rm;
+        private readonly bool _blindUser;
+        private bool _blindUserSaySelection;
+        private string _currentHelpText;
+
 
         public NewGameWindow(Configuration configuration)
         {
             _configuration = configuration;
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
+            _synthesizer = BearChessSpeech.Instance;
+            textBlockTimeControl2.Text = $"{SpeechTranslator.ResourceManager.GetString("TimeControl")} \u265a:";
+            comboBoxTimeControl.Items.Clear();
+            comboBoxTimeControl2.Items.Clear();
+            foreach (var value in Enum.GetValues(typeof(TimeControlEnum)))
+            {
+                var timeControlEnum = (TimeControlEnum)value;
+                switch (timeControlEnum)
+                {
+                    case TimeControlEnum.Adapted:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("AdpatedTime")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("AdpatedTime")));
+                        break;
+                    case TimeControlEnum.AverageTimePerMove:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("AverageTimePerMove")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("AverageTimePerMove")));
+                        break;
+                    case TimeControlEnum.Depth:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("Depth")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("Depth")));
+                        break;
+                    case TimeControlEnum.Movetime:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("ExactTimePerMove")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("ExactTimePerMove")));
+                        break;
+                    case TimeControlEnum.NoControl:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("NoControl")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("NoControl")));
+                        break;
+                    case TimeControlEnum.Nodes:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("Nodes")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("Nodes")));
+                        break;
+                    case TimeControlEnum.TimePerGame:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerGame")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerGame")));
+                        break;
+                    case TimeControlEnum.TimePerGameIncrement:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerGameInc")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerGameInc")));
+                        break;
+                    case TimeControlEnum.TimePerMoves:
+                        comboBoxTimeControl.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerMoves")));
+                        comboBoxTimeControl2.Items.Add(new TimeControlValue(timeControlEnum,
+                            SpeechTranslator.ResourceManager.GetString("TimePerMoves")));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+            _blindUser = bool.Parse(configuration.GetConfigValue("blindUser", "false"));
             _isInitialized = true;
-            _playerIndex = 0;
+
         }
 
         public string PlayerWhite => textBlockPlayerWhiteEngine.Text;
@@ -59,7 +150,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return PlayerWhiteConfigValues;
         }
 
-        public bool RelaxedMode => checkBoxRelaxed.Visibility==Visibility.Visible && checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value;
+        public bool RelaxedMode => checkBoxRelaxed.Visibility == Visibility.Visible &&
+                                   checkBoxRelaxed.IsChecked.HasValue && checkBoxRelaxed.IsChecked.Value;
 
         private bool AllowTakeMoveBack =>
             checkBoxAllowTakeMoveBack.IsChecked.HasValue && checkBoxAllowTakeMoveBack.IsChecked.Value;
@@ -79,57 +171,72 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public bool SeparateControl =>
             checkBox2TimeControls.IsChecked.HasValue && checkBox2TimeControls.IsChecked.Value;
 
-       
+
         public TimeControl GetTimeControlWhite()
         {
             var timeControl = new TimeControl();
+            var timeControlValue = comboBoxTimeControl.SelectedItem as TimeControlValue;
 
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game with increment"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGameIncrement)
             {
                 timeControl.TimeControlType = TimeControlEnum.TimePerGameIncrement;
                 timeControl.Value1 = numericUpDownUserControlTimePerGameWith.Value;
                 timeControl.Value2 = numericUpDownUserControlTimePerGameIncrement.Value;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGame)
             {
                 timeControl.TimeControlType = TimeControlEnum.TimePerGame;
                 timeControl.Value1 = numericUpDownUserControlTimePerGame.Value;
                 timeControl.Value2 = 0;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per given moves"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerMoves)
             {
                 timeControl.TimeControlType = TimeControlEnum.TimePerMoves;
                 timeControl.Value1 = numericUpDownUserControlTimePerGivenMoves.Value;
                 timeControl.Value2 = numericUpDownUserControlTimePerGivensMovesMin.Value;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Average time per move"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.AverageTimePerMove)
             {
                 timeControl.TimeControlType = TimeControlEnum.AverageTimePerMove;
                 timeControl.Value1 = numericUpDownUserControlAverageTime.Value;
                 timeControl.Value2 = 0;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Adapted time"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Adapted)
             {
                 timeControl.TimeControlType = TimeControlEnum.Adapted;
                 timeControl.Value1 = 5;
                 timeControl.Value2 = 0;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Depth"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Depth)
             {
                 timeControl.TimeControlType = TimeControlEnum.Depth;
                 timeControl.Value1 = numericUpDownUserControlDepth.Value;
                 timeControl.Value2 = 0;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Nodes"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Nodes)
             {
                 timeControl.TimeControlType = TimeControlEnum.Nodes;
                 timeControl.Value1 = numericUpDownUserControlNodes.Value;
                 timeControl.Value2 = 0;
             }
-            else if (comboBoxTimeControl.SelectedItem.ToString().Contains("Exact"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Movetime)
             {
                 timeControl.TimeControlType = TimeControlEnum.Movetime;
                 timeControl.Value1 = numericUpDownUserControlExactTime.Value;
+                timeControl.Value2 = 0;
+            }
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.NoControl)
+            {
+                timeControl.TimeControlType = TimeControlEnum.NoControl;
+                timeControl.Value1 = 0;
                 timeControl.Value2 = 0;
             }
 
@@ -157,53 +264,68 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (checkBox2TimeControls.IsChecked.HasValue && checkBox2TimeControls.IsChecked.Value)
             {
                 timeControl = new TimeControl();
+                var timeControlValue = comboBoxTimeControl2.SelectedItem as TimeControlValue;
 
-                if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per game with increment"))
+                if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGameIncrement)
                 {
                     timeControl.TimeControlType = TimeControlEnum.TimePerGameIncrement;
                     timeControl.Value1 = numericUpDownUserControlTimePerGameWith2.Value;
                     timeControl.Value2 = numericUpDownUserControlTimePerGameIncrement2.Value;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per game"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGame)
                 {
                     timeControl.TimeControlType = TimeControlEnum.TimePerGame;
                     timeControl.Value1 = numericUpDownUserControlTimePerGame2.Value;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per given moves"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.TimePerMoves)
                 {
                     timeControl.TimeControlType = TimeControlEnum.TimePerMoves;
                     timeControl.Value1 = numericUpDownUserControlTimePerGivenMoves2.Value;
                     timeControl.Value2 = numericUpDownUserControlTimePerGivensMovesMin2.Value;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Average time per move"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.AverageTimePerMove)
                 {
                     timeControl.TimeControlType = TimeControlEnum.AverageTimePerMove;
                     timeControl.Value1 = numericUpDownUserControlAverageTime2.Value;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Adapted time"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.Adapted)
                 {
                     timeControl.TimeControlType = TimeControlEnum.Adapted;
                     timeControl.Value1 = 5;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Depth"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.Depth)
                 {
                     timeControl.TimeControlType = TimeControlEnum.Depth;
                     timeControl.Value1 = numericUpDownUserControlDepth2.Value;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Nodes"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.Nodes)
                 {
                     timeControl.TimeControlType = TimeControlEnum.Nodes;
                     timeControl.Value1 = numericUpDownUserControlNodes2.Value;
                     timeControl.Value2 = 0;
                 }
-                else if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Exact"))
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.Movetime)
                 {
                     timeControl.TimeControlType = TimeControlEnum.Movetime;
                     timeControl.Value1 = numericUpDownUserControlExactTime2.Value;
+                    timeControl.Value2 = 0;
+                }
+
+                if (timeControlValue?.TimeControl == TimeControlEnum.NoControl)
+                {
+                    timeControl.TimeControlType = TimeControlEnum.NoControl;
+                    timeControl.Value1 = 0;
                     timeControl.Value2 = 0;
                 }
 
@@ -233,21 +355,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-       
+
             _allUciInfos.Clear();
 
-            var array = uciInfos.Where(u => u.IsActive && !u.IsProbing && !u.IsBuddy && !u.IsInternalBearChessEngine).OrderBy(u => u.Name).ToArray();
+            var array = uciInfos.Where(u => u.IsActive && !u.IsProbing && !u.IsBuddy && !u.IsInternalBearChessEngine)
+                .OrderBy(u => u.Name).ToArray();
             textBlockPlayerWhiteEngine.Text = Constants.Player;
-            textBlockPlayerWhiteEngine.ToolTip = "A human being as a player";
+            textBlockPlayerWhiteEngine.ToolTip = _rm.GetString("AHumanBeingAsAPlayer");
             textBlockPlayerBlackEngine.Text = Constants.Player;
-            textBlockPlayerBlackEngine.ToolTip = "A human being as a player";
+            textBlockPlayerBlackEngine.ToolTip = _rm.GetString("AHumanBeingAsAPlayer");
             for (var i = 0; i < array.Length; i++)
             {
                 var uciInfo = array[i];
-                if (uciInfo.IsPlayer)
-                {
-                    _playerIndex = i;
-                }
                 _allUciInfos[uciInfo.Name] = uciInfo;
                 if (uciInfo.Id.Equals(lastSelectedEngineIdWhite, StringComparison.OrdinalIgnoreCase))
                 {
@@ -263,21 +382,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
 
             PlayerWhiteConfigValues = _allUciInfos.ContainsKey(textBlockPlayerWhiteEngine.Text)
-                                          ? _allUciInfos[textBlockPlayerWhiteEngine.Text]
-                                          : null;
+                ? _allUciInfos[textBlockPlayerWhiteEngine.Text]
+                : null;
             PlayerBlackConfigValues = _allUciInfos.ContainsKey(textBlockPlayerBlackEngine.Text)
-                                          ? _allUciInfos[textBlockPlayerBlackEngine.Text]
-                                          : null;
-            buttonConfigureWhite.Visibility = PlayerWhiteConfigValues != null && PlayerWhiteConfigValues.IsPlayer ? Visibility.Hidden : Visibility.Visible;
-            buttonConfigureBlack.Visibility = PlayerBlackConfigValues != null && PlayerBlackConfigValues.IsPlayer ? Visibility.Hidden : Visibility.Visible;
+                ? _allUciInfos[textBlockPlayerBlackEngine.Text]
+                : null;
+            buttonConfigureWhite.Visibility = PlayerWhiteConfigValues != null && PlayerWhiteConfigValues.IsPlayer
+                ? Visibility.Hidden
+                : Visibility.Visible;
+            buttonConfigureBlack.Visibility = PlayerBlackConfigValues != null && PlayerBlackConfigValues.IsPlayer
+                ? Visibility.Hidden
+                : Visibility.Visible;
             SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
-                             textBlockEloWhite, imageBookWhite, imageBookWhite2);
+                textBlockEloWhite, imageBookWhite, imageBookWhite2);
             SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2,
-                             textBlockEloBlack, imageBookBlack, imageBookBlack2);
+                textBlockEloBlack, imageBookBlack, imageBookBlack2);
             SetRelaxedVisibility();
         }
 
-       
+
         public void SetTimeControlWhite(TimeControl timeControl)
         {
             if (timeControl == null)
@@ -285,48 +408,46 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
+            foreach (var item in comboBoxTimeControl.Items)
+            {
+                if (((TimeControlValue)item).TimeControl == timeControl.TimeControlType)
+                    comboBoxTimeControl.SelectedItem = item;
+            }
+
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGame)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[0];
                 numericUpDownUserControlTimePerGame.Value = timeControl.Value1;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGameIncrement)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[1];
                 numericUpDownUserControlTimePerGameWith.Value = timeControl.Value1;
                 numericUpDownUserControlTimePerGameIncrement.Value = timeControl.Value2;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerMoves)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[2];
                 numericUpDownUserControlTimePerGivenMoves.Value = timeControl.Value1;
                 numericUpDownUserControlTimePerGivensMovesMin.Value = timeControl.Value2;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.AverageTimePerMove)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[3];
                 numericUpDownUserControlAverageTime.Value = timeControl.Value1;
             }
-            if (timeControl.TimeControlType == TimeControlEnum.Adapted)
-            {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[4];
-            }
+
             if (timeControl.TimeControlType == TimeControlEnum.Depth)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[5];
                 numericUpDownUserControlDepth.Value = timeControl.Value1;
             }
+
             if (timeControl.TimeControlType == TimeControlEnum.Nodes)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[6];
                 numericUpDownUserControlNodes.Value = timeControl.Value1;
             }
+
             if (timeControl.TimeControlType == TimeControlEnum.Movetime)
             {
-                comboBoxTimeControl.SelectedItem = comboBoxTimeControl.Items[7];
                 numericUpDownUserControlExactTime.Value = timeControl.Value1;
             }
 
@@ -344,49 +465,47 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-                    
+
+            foreach (var item in comboBoxTimeControl2.Items)
+            {
+                if (((TimeControlValue)item).TimeControl == timeControl.TimeControlType)
+                    comboBoxTimeControl2.SelectedItem = item;
+            }
+
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGame)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[0];
                 numericUpDownUserControlTimePerGame2.Value = timeControl.Value1;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGameIncrement)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[1];
                 numericUpDownUserControlTimePerGameWith2.Value = timeControl.Value1;
                 numericUpDownUserControlTimePerGameIncrement2.Value = timeControl.Value2;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.TimePerMoves)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[2];
                 numericUpDownUserControlTimePerGivenMoves2.Value = timeControl.Value1;
                 numericUpDownUserControlTimePerGivensMovesMin2.Value = timeControl.Value2;
             }
 
             if (timeControl.TimeControlType == TimeControlEnum.AverageTimePerMove)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[3];
                 numericUpDownUserControlAverageTime2.Value = timeControl.Value1;
             }
-            if (timeControl.TimeControlType == TimeControlEnum.Adapted)
-            {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[4];
-            }
+
             if (timeControl.TimeControlType == TimeControlEnum.Depth)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[5];
                 numericUpDownUserControlDepth2.Value = timeControl.Value1;
             }
+
             if (timeControl.TimeControlType == TimeControlEnum.Nodes)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[6];
                 numericUpDownUserControlNodes2.Value = timeControl.Value1;
             }
+
             if (timeControl.TimeControlType == TimeControlEnum.Movetime)
             {
-                comboBoxTimeControl2.SelectedItem = comboBoxTimeControl2.Items[7];
                 numericUpDownUserControlExactTime2.Value = timeControl.Value1;
             }
 
@@ -442,47 +561,55 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderDepth.Visibility = Visibility.Collapsed;
             borderNodes.Visibility = Visibility.Collapsed;
             borderExactTime.Visibility = Visibility.Collapsed;
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game with increment"))
+            var timeControlValue = comboBoxTimeControl.SelectedItem as TimeControlValue;
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGameIncrement)
             {
                 borderTimePerGameWithIncrement.Visibility = Visibility.Visible;
+                SayTimeControl(sender, e);
                 return;
             }
 
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per game"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGame)
             {
                 borderTimePerGame.Visibility = Visibility.Visible;
+                SayTimeControl(sender, e);
                 return;
             }
 
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Time per given moves"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerMoves)
             {
                 borderTimePerGivenMoves.Visibility = Visibility.Visible;
+                SayTimeControl(sender, e);
                 return;
             }
 
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Average time per move"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.AverageTimePerMove)
             {
                 borderAverageTimePerMove.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Depth"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Depth)
             {
                 borderDepth.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Nodes"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Nodes)
             {
                 borderNodes.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl.SelectedItem.ToString().Contains("Exact"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Movetime)
             {
                 borderExactTime.Visibility = Visibility.Visible;
             }
-
+            SayTimeControl(sender, e);
         }
 
-      
-        private void SetPonderControl(UciInfo playConfigValue, TextBlock textBlockPonder, Image ponderImage, Image ponderImage2, TextBlock textBlockElo, Image bookImage, Image bookImage2)
-        {
 
+        private void SetPonderControl(UciInfo playConfigValue, TextBlock textBlockPonder, Image ponderImage,
+            Image ponderImage2, TextBlock textBlockElo, Image bookImage, Image bookImage2)
+        {
             textBlockElo.Text = string.Empty;
             textBlockPonder.Visibility = Visibility.Hidden;
             ponderImage.Visibility = Visibility.Hidden;
@@ -493,6 +620,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
+
             if (playConfigValue.Options.Any(O => O.Contains("Ponder")))
             {
                 textBlockPonder.Visibility = Visibility.Visible;
@@ -520,23 +648,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     textBlockElo.Text = $"Elo: {configuredElo}";
                 }
+
                 ;
             }
-        
+
             bookImage.Visibility = Visibility.Collapsed;
             bookImage2.Visibility = Visibility.Visible;
             var book = playConfigValue.OptionValues.FirstOrDefault(o => o.Contains("OwnBook"));
             if (string.IsNullOrEmpty(book))
             {
-                book =   playConfigValue.OptionValues.FirstOrDefault(o => o.Contains("UseBook"));
+                book = playConfigValue.OptionValues.FirstOrDefault(o => o.Contains("UseBook"));
             }
 
-            if (!string.IsNullOrEmpty(playConfigValue.OpeningBook) || (!string.IsNullOrEmpty(book) && book.EndsWith("true")))
+            if (!string.IsNullOrEmpty(playConfigValue.OpeningBook) ||
+                (!string.IsNullOrEmpty(book) && book.EndsWith("true")))
             {
                 bookImage.Visibility = Visibility.Visible;
                 bookImage2.Visibility = Visibility.Collapsed;
             }
-            
         }
 
 
@@ -579,34 +708,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 CheckBoxRelaxed_OnUnchecked(this, null);
             }
+
             imageTeddy.Visibility = Visibility.Hidden;
             checkBoxRelaxed.IsEnabled = false;
         }
 
         private void ButtonConfigureWhite_OnClick(object sender, RoutedEventArgs e)
         {
-
             var uciConfigWindow = new UciConfigWindow(PlayerWhiteConfigValues, false, false, false) { Owner = this };
             var showDialog = uciConfigWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
                 imagePonderWhite.Visibility = Visibility.Hidden;
                 PlayerWhiteConfigValues = uciConfigWindow.GetUciInfo();
-                SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2, textBlockEloWhite, imageBookWhite, imageBookWhite2);
+                SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
+                    textBlockEloWhite, imageBookWhite, imageBookWhite2);
             }
         }
 
         private void ButtonConfigureBlack_OnClick(object sender, RoutedEventArgs e)
         {
-
             var uciConfigWindow = new UciConfigWindow(PlayerBlackConfigValues, false, false, false) { Owner = this };
             var showDialog = uciConfigWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
                 imagePonderBlack.Visibility = Visibility.Hidden;
                 PlayerBlackConfigValues = uciConfigWindow.GetUciInfo();
-                SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
-
+                SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2,
+                    textBlockEloBlack, imageBookBlack, imageBookBlack2);
             }
         }
 
@@ -616,7 +745,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockPlayerBlackEngine.ToolTip = _allUciInfos[Constants.Player].OriginName;
             buttonConfigureBlack.Visibility = Visibility.Hidden;
             PlayerBlackConfigValues = _allUciInfos[Constants.Player];
-            SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
+            SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2,
+                textBlockEloBlack, imageBookBlack, imageBookBlack2);
             SetRelaxedVisibility();
         }
 
@@ -626,7 +756,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockPlayerWhiteEngine.ToolTip = _allUciInfos[Constants.Player].OriginName;
             buttonConfigureWhite.Visibility = Visibility.Hidden;
             PlayerWhiteConfigValues = _allUciInfos[Constants.Player];
-            SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2, textBlockEloWhite, imageBookWhite, imageBookWhite2);
+            SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
+                textBlockEloWhite, imageBookWhite, imageBookWhite2);
             SetRelaxedVisibility();
         }
 
@@ -635,46 +766,47 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.Save(GetTimeControlWhite(), true, true);
             _configuration.Save(GetTimeControlBlack(), false, true);
 
-            string _uciPath = Path.Combine(_configuration.FolderPath, "uci");
+            var uciPath = Path.Combine(_configuration.FolderPath, "uci");
 
-            File.Delete(Path.Combine(_uciPath, Configuration.STARTUP_WHITE_ENGINE_ID));
-            File.Delete(Path.Combine(_uciPath, Configuration.STARTUP_BLACK_ENGINE_ID));
+            File.Delete(Path.Combine(uciPath, Configuration.STARTUP_WHITE_ENGINE_ID));
+            File.Delete(Path.Combine(uciPath, Configuration.STARTUP_BLACK_ENGINE_ID));
             if (PlayerWhiteConfigValues != null)
             {
-
-                XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
-                TextWriter textWriter = new StreamWriter(Path.Combine(_uciPath, Configuration.STARTUP_WHITE_ENGINE_ID), false);
+                var serializer = new XmlSerializer(typeof(UciInfo));
+                TextWriter textWriter =
+                    new StreamWriter(Path.Combine(uciPath, Configuration.STARTUP_WHITE_ENGINE_ID), false);
                 serializer.Serialize(textWriter, PlayerWhiteConfigValues);
                 textWriter.Close();
             }
+
             if (PlayerBlackConfigValues != null)
             {
-
-                XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
-                TextWriter textWriter = new StreamWriter(Path.Combine(_uciPath, Configuration.STARTUP_BLACK_ENGINE_ID), false);
+                var serializer = new XmlSerializer(typeof(UciInfo));
+                TextWriter textWriter =
+                    new StreamWriter(Path.Combine(uciPath, Configuration.STARTUP_BLACK_ENGINE_ID), false);
                 serializer.Serialize(textWriter, PlayerBlackConfigValues);
                 textWriter.Close();
             }
-            MessageBox.Show("Startup game definition saved", "Information",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
+
+            Messages.Show(_rm.GetString("StartupGameDefinitionSaved"), _rm.GetString("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
+            
         }
 
         private bool LoadStartupGame()
         {
-            var loadTimeControl = _configuration.LoadTimeControl(true,true);
+            var loadTimeControl = _configuration.LoadTimeControl(true, true);
             if (loadTimeControl == null)
             {
                 return false;
             }
+
             var loadTimeControlBlack = _configuration.LoadTimeControl(false, true);
-            UciInfo whiteConfig = null;
-            UciInfo blackConfig = null;
-            string _uciPath = Path.Combine(_configuration.FolderPath, "uci");
-            if (File.Exists(Path.Combine(_uciPath, Configuration.STARTUP_WHITE_ENGINE_ID)))
+            var uciPath = Path.Combine(_configuration.FolderPath, "uci");
+            if (File.Exists(Path.Combine(uciPath, Configuration.STARTUP_WHITE_ENGINE_ID)))
             {
                 var serializer = new XmlSerializer(typeof(UciInfo));
-                TextReader textReader = new StreamReader(Path.Combine(_uciPath, Configuration.STARTUP_WHITE_ENGINE_ID));
-                whiteConfig = (UciInfo)serializer.Deserialize(textReader);
+                TextReader textReader = new StreamReader(Path.Combine(uciPath, Configuration.STARTUP_WHITE_ENGINE_ID));
+                var whiteConfig = (UciInfo)serializer.Deserialize(textReader);
                 if (!_allUciInfos.ContainsKey(whiteConfig.Name))
                 {
                     return false;
@@ -684,30 +816,32 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockPlayerWhiteEngine.Text = whiteConfig.Name;
                 buttonConfigureWhite.Visibility = Visibility.Visible;
                 SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
-                                 textBlockEloWhite, imageBookWhite, imageBookWhite2);
+                    textBlockEloWhite, imageBookWhite, imageBookWhite2);
             }
-            if (File.Exists(Path.Combine(_uciPath, Configuration.STARTUP_BLACK_ENGINE_ID)))
+
+            if (File.Exists(Path.Combine(uciPath, Configuration.STARTUP_BLACK_ENGINE_ID)))
             {
                 var serializer = new XmlSerializer(typeof(UciInfo));
-                TextReader textReader = new StreamReader(Path.Combine(_uciPath, Configuration.STARTUP_BLACK_ENGINE_ID));
-                blackConfig = (UciInfo)serializer.Deserialize(textReader);
+                TextReader textReader = new StreamReader(Path.Combine(uciPath, Configuration.STARTUP_BLACK_ENGINE_ID));
+                var blackConfig = (UciInfo)serializer.Deserialize(textReader);
                 if (!_allUciInfos.ContainsKey(blackConfig.Name))
                 {
                     return false;
                 }
+
                 PlayerBlackConfigValues = blackConfig;
                 textBlockPlayerBlackEngine.Text = blackConfig.Name;
                 buttonConfigureBlack.Visibility = Visibility.Visible;
                 SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2,
-                                 textBlockEloBlack, imageBookBlack, imageBookBlack2);
+                    textBlockEloBlack, imageBookBlack, imageBookBlack2);
             }
-          
+
             SetTimeControlWhite(loadTimeControl);
             SetTimeControlBlack(loadTimeControlBlack);
 
             return true;
         }
-    
+
 
         private void ButtonOpen_OnClick(object sender, RoutedEventArgs e)
         {
@@ -716,8 +850,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            MessageBox.Show("Startup game definition not found or configured engines not installed", "Error on load",
-                            MessageBoxButton.OK, MessageBoxImage.Error);
+            Messages.Show(_rm.GetString("StartupDefinitionNotFound"), _rm.GetString("ErrorOnLoad"),
+                MessageBoxButton.OK, MessageBoxImage.Error);
+
         }
 
         private void CheckBoxAllowTournament_OnChecked(object sender, RoutedEventArgs e)
@@ -727,6 +862,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxAllowTakeMoveBack.IsChecked = false;
             checkBoxAllowTakeMoveBack.IsEnabled = false;
             checkBoxAllowTakeMoveBack.Foreground = new SolidColorBrush(Colors.DarkGray);
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsSelected"));
+            }
         }
 
         private void CheckBoxAllowTournament_OnUnchecked(object sender, RoutedEventArgs e)
@@ -736,9 +875,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 checkBoxAllowTakeMoveBack.IsChecked = false;
             }
+
             checkBoxAllowTakeMoveBack.FontWeight = FontWeights.Normal;
             checkBoxAllowTakeMoveBack.IsChecked = _isCheckedAllowTakeBack;
             checkBoxAllowTakeMoveBack.Foreground = _foreground;
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsUnSelected"));
+            }
         }
 
         private void CheckBoxRelaxed_OnChecked(object sender, RoutedEventArgs e)
@@ -758,6 +902,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxStartAfterMoveOnBoard.IsEnabled = false;
             checkBox2TimeControls.IsChecked = false;
             checkBox2TimeControls.IsEnabled = false;
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsSelected"));
+            }
         }
 
         private void CheckBoxRelaxed_OnUnchecked(object sender, RoutedEventArgs e)
@@ -775,6 +923,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             checkBoxStartAfterMoveOnBoard.IsEnabled = true;
             checkBox2TimeControls.IsEnabled = true;
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsUnSelected"));
+            }
         }
 
         private bool ValidForAnalysis()
@@ -793,7 +945,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonPlayerWhiteEngine_OnClick(object sender, RoutedEventArgs e)
         {
-            var selectInstalledEngineForGameWindow = new SelectInstalledEngineForGameWindow(_allUciInfos.Values.ToArray(), textBlockPlayerWhiteEngine.Text);
+            var selectInstalledEngineForGameWindow =
+                new SelectInstalledEngineForGameWindow(_allUciInfos.Values.ToArray(), textBlockPlayerWhiteEngine.Text);
             var showDialog = selectInstalledEngineForGameWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -801,19 +954,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockPlayerWhiteEngine.Text = selectedEngine.Name;
                 textBlockPlayerWhiteEngine.ToolTip = selectedEngine.Name;
                 PlayerWhiteConfigValues = selectedEngine;
-                SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2, textBlockEloWhite, imageBookWhite, imageBookWhite2);
+                SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
+                    textBlockEloWhite, imageBookWhite, imageBookWhite2);
                 buttonConfigureWhite.Visibility = Visibility.Visible;
-                if (selectedEngine.IsChessComputer || (PlayerBlackConfigValues!=null &&  PlayerBlackConfigValues.IsChessComputer))
+                if (selectedEngine.IsChessComputer || _blindUser ||
+                    (PlayerBlackConfigValues != null && PlayerBlackConfigValues.IsChessComputer))
                 {
-                    ButtonPlayerBlack_OnClick(this,e);
+                    ButtonPlayerBlack_OnClick(this, e);
                 }
+
                 SetRelaxedVisibility();
             }
         }
 
         private void ButtonPlayerBlackEngine_OnClick(object sender, RoutedEventArgs e)
         {
-            var selectInstalledEngineForGameWindow = new SelectInstalledEngineForGameWindow(_allUciInfos.Values.ToArray(), textBlockPlayerBlackEngine.Text);
+            var selectInstalledEngineForGameWindow =
+                new SelectInstalledEngineForGameWindow(_allUciInfos.Values.ToArray(), textBlockPlayerBlackEngine.Text);
             var showDialog = selectInstalledEngineForGameWindow.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
@@ -821,12 +978,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockPlayerBlackEngine.Text = selectedEngine.Name;
                 textBlockPlayerBlackEngine.ToolTip = selectedEngine.Name;
                 PlayerBlackConfigValues = selectedEngine;
-                SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
+                SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2,
+                    textBlockEloBlack, imageBookBlack, imageBookBlack2);
                 buttonConfigureBlack.Visibility = Visibility.Visible;
-                if (selectedEngine.IsChessComputer || (PlayerWhiteConfigValues != null && PlayerWhiteConfigValues.IsChessComputer))
+                if (selectedEngine.IsChessComputer || _blindUser ||
+                    (PlayerWhiteConfigValues != null && PlayerWhiteConfigValues.IsChessComputer))
                 {
                     ButtonPlayerWhite_OnClick(this, e);
                 }
+
                 SetRelaxedVisibility();
             }
         }
@@ -843,7 +1003,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderExactTime2.Visibility = Visibility.Collapsed;
             comboBoxTimeControl2.SelectedIndex = 0;
             checkBoxRelaxed.IsChecked = false;
-            textBlockTimeControl1.Text = "Time control ♔:";
+            textBlockTimeControl1.Text = $"{SpeechTranslator.ResourceManager.GetString("TimeControl")} ♔:";
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsSelected"));
+            }
             SetRelaxedVisibility();
         }
 
@@ -857,7 +1021,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderDepth2.Visibility = Visibility.Collapsed;
             borderNodes2.Visibility = Visibility.Collapsed;
             borderExactTime2.Visibility = Visibility.Collapsed;
-            textBlockTimeControl1.Text = "Time control:";
+            textBlockTimeControl1.Text = $"{SpeechTranslator.ResourceManager.GetString("TimeControl")}:";
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsUnSelected"));
+            }
             SetRelaxedVisibility();
         }
 
@@ -875,40 +1043,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
             borderDepth2.Visibility = Visibility.Collapsed;
             borderNodes2.Visibility = Visibility.Collapsed;
             borderExactTime2.Visibility = Visibility.Collapsed;
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per game with increment"))
+            var timeControlValue = comboBoxTimeControl2.SelectedItem as TimeControlValue;
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGameIncrement)
             {
                 borderTimePerGameWithIncrement2.Visibility = Visibility.Visible;
+                SayTimeControl(sender, e);
                 return;
             }
 
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per game"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerGame)
             {
                 borderTimePerGame2.Visibility = Visibility.Visible;
+                SayTimeControl(sender, e);
                 return;
             }
 
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Time per given moves"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.TimePerMoves)
             {
                 borderTimePerGivenMoves2.Visibility = Visibility.Visible;
+                SayTimeControl(sender, e);
                 return;
             }
 
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Average time per move"))
+            if (timeControlValue?.TimeControl == TimeControlEnum.AverageTimePerMove)
             {
                 borderAverageTimePerMove2.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Depth"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Depth)
             {
                 borderDepth2.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Nodes"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Nodes)
             {
                 borderNodes2.Visibility = Visibility.Visible;
             }
-            if (comboBoxTimeControl2.SelectedItem.ToString().Contains("Exact"))
+
+            if (timeControlValue?.TimeControl == TimeControlEnum.Movetime)
             {
                 borderExactTime2.Visibility = Visibility.Visible;
             }
+            SayTimeControl(sender, e);
         }
 
         private void ButtonSwap_OnClick(object sender, RoutedEventArgs e)
@@ -933,9 +1110,281 @@ namespace www.SoLaNoSoft.com.BearChessWin
             buttonConfigureBlack.Visibility = whiteVisibility;
             PlayerBlackConfigValues = playerWhiteConfigValues;
 
-            SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2, textBlockEloWhite, imageBookWhite, imageBookWhite2);
-            SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2, textBlockEloBlack, imageBookBlack, imageBookBlack2);
+            SetPonderControl(PlayerWhiteConfigValues, textBlockPonderWhite, imagePonderWhite, imagePonderWhite2,
+                textBlockEloWhite, imageBookWhite, imageBookWhite2);
+            SetPonderControl(PlayerBlackConfigValues, textBlockPonderBlack, imagePonderBlack, imagePonderBlack2,
+                textBlockEloBlack, imageBookBlack, imageBookBlack2);
         }
-    
+
+        private void SayCurrentHelpText()
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_currentHelpText);
+            }
+        }
+
+        private void NewGameWindow_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F1)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("NewGameWindowSpeech"));
+                if (Keyboard.Modifiers == ModifierKeys.Control)
+                {
+                    SayCurrentHelpText();
+                }
+            }
+        }
+
+        private void ButtonPlayerWhiteEngine_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                var helpText = AutomationProperties.GetHelpText(sender as UIElement);
+                _synthesizer?.SpeakAsync(helpText);
+                _synthesizer?.SpeakAsync($"{_rm.GetString("CurrentSelection")}: {textBlockPlayerWhiteEngine.Text}");
+            }
+        }
+        private void ButtonPlayerBlackEngine_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                var helpText = AutomationProperties.GetHelpText(sender as UIElement);
+                _synthesizer?.SpeakAsync(helpText);
+                _synthesizer?.SpeakAsync($"{_rm.GetString("CurrentSelection")}: {textBlockPlayerBlackEngine.Text}");
+            }
+        }
+
+        private void ButtonConfigureWhite_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync($"{_rm.GetString("ConfigureWhiteButton")}: {textBlockPlayerWhiteEngine.Text}");
+            }
+        }
+
+        private void ButtonConfigureBlack_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync($"{_rm.GetString("ConfigureBlackButton")}: {textBlockPlayerBlackEngine.Text}");
+            }
+        }
+
+      
+
+        private void Button_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                var helpText = $" {_rm.GetString("Button")} {AutomationProperties.GetHelpText(sender as UIElement)}" ;
+                _synthesizer?.SpeakAsync(helpText);
+            }
+        }
+
+        private void CheckBox_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                var helpText = AutomationProperties.GetHelpText(sender as UIElement);
+                if (sender is CheckBox checkBox)
+                {
+                    bool selected = checkBox.IsChecked.HasValue && checkBox.IsChecked.Value;
+                    helpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
+                }
+                _synthesizer?.SpeakAsync(helpText, true);
+            }
+        }
+
+        private void SayTimeControl(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                if (sender is ComboBox comboBox)
+                {
+                    TimeControl currenTimeControl;
+                    string helpText = $"{_rm.GetString("ComboBox")} {_rm.GetString("TimeControl")} ";
+                    if (comboBox.Name == "comboBoxTimeControl2")
+                    {
+                        helpText += _rm.GetString("ForBlack") + ". ";
+                        currenTimeControl = GetTimeControlBlack();
+                    }
+                    else
+                    {
+                        helpText += gridTimeControl2.Visibility != Visibility.Visible
+                            ? _rm.GetString("ForWhiteAndBlack") + ". "
+                            : _rm.GetString("ForWhite") + ". ";
+                        currenTimeControl = GetTimeControlWhite();
+                    }
+                    //helpText += $"{_rm.GetString("Current")} {comboBox.SelectionBoxItem}";
+                    _synthesizer?.SpeakAsync(helpText, true);
+                    _synthesizer?.SpeakAsync(TimeControlHelper.GetDescription(currenTimeControl, _rm), true);
+
+                }
+            }
+        }
+
+        private void SayTimeControlValueChange(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                if (sender is ComboBox comboBox)
+                {
+                    var currentTimeControl = comboBox.Name == "comboBoxTimeControl2" ? GetTimeControlBlack() : GetTimeControlWhite();
+                    _synthesizer?.SpeakAsync(TimeControlHelper.GetDescription(currentTimeControl, _rm), true);
+
+                }
+            }
+        }
+
+        private void ComboBoxTimeControl_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+          SayTimeControl(sender, e);
+        }
+
+        private void NumericUpDownUserControl_OnValueChanged(object sender, int e)
+        {
+
+            if (sender is NumericUpDownUserControl numericUpDownUserControl)
+            {
+                if (numericUpDownUserControl.Name.EndsWith("2")) {
+                    SayTimeControl(comboBoxTimeControl2, null);
+                }
+                else
+                {
+                    if (numericUpDownUserControl.Name.Equals("numericUpDownUserExtraTime"))
+                    {
+                        _synthesizer?.SpeakAsync(
+                            numericUpDownUserExtraTime.Value == 1
+                                ? $"{_rm.GetString("ExtraTimeForHuman")} {numericUpDownUserExtraTime.Value} {_rm.GetString("TCMinute")}"
+                                : $"{_rm.GetString("ExtraTimeForHuman")} {numericUpDownUserExtraTime.Value} {_rm.GetString("TCMinutes")}");
+                    }
+                    else
+                    {
+                        SayTimeControlValueChange(comboBoxTimeControl, null);
+                    }
+                }
+            }
+        }
+
+        private void CheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsSelected"));
+            }
+        }
+
+        private void CheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsUnSelected"));
+            }
+        }
+
+        private void NewGameWindow_OnStateChanged(object sender, EventArgs e)
+        {
+            //
+        }
+
+        private void NewGameWindow_OnActivated(object sender, EventArgs e)
+        {
+            _blindUserSaySelection =
+                _blindUser && bool.Parse(_configuration.GetConfigValue("blindUserSaySelection", "false"));
+            _currentHelpText = _rm.GetString("NewGameWindowSpeech");
+            SayCurrentHelpText();
+        }
+
+        private void NumericUpDownUserControlTimePerGame_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("EnterMinutesPerGame"));
+            }
+        }
+
+        private void NumericUpDownUserControlTimePerGameWith_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("EnterMinutesForGameWithIncrement"));
+            }
+        }
+
+        private void NumericUpDownUserControlTimePerGameIncrement_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("EnterSecondsForGameWithIncrement"));
+            }
+        }
+
+        private void NumericUpDownUserControlTimePerGivenMoves_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("EnterNumberOfMovesGamePerMinute"));
+            }
+        }
+
+        private void NumericUpDownUserControlTimePerGivensMovesMin_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("EnterMinutesGameMovesPerMinute"));
+            }
+        }
+
+        private void NumericUpDownUserControlAverageTime_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                if (sender is NumericUpDownUserControl numericUpDownUserControl)
+                {
+                    if (numericUpDownUserControl.Name.EndsWith("2"))
+                    {
+                        if (radioButtonMinute2.IsChecked.HasValue && radioButtonMinute2.IsChecked.Value)
+                            _synthesizer?.SpeakAsync(_rm.GetString("EnterMinutesGameAverageTime"));
+                        if (radioButtonSecond2.IsChecked.HasValue && radioButtonSecond2.IsChecked.Value)
+                            _synthesizer?.SpeakAsync(_rm.GetString("EnterSecondsGameAverageTime"));
+                    }
+                    else
+                    {
+                        if (radioButtonMinute.IsChecked.HasValue && radioButtonMinute.IsChecked.Value)
+                            _synthesizer?.SpeakAsync(_rm.GetString("EnterMinutesGameAverageTime"));
+                        if (radioButtonSecond.IsChecked.HasValue && radioButtonSecond.IsChecked.Value)
+                            _synthesizer?.SpeakAsync(_rm.GetString("EnterSecondsGameAverageTime"));
+                    }
+                }
+            }
+        }
+
+
+        private void NumericUpDownUserControlDepth_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("EnterDepthGameFixedDepth"));
+            }
+        }
+
+        private void NumericUpDownUserControlNodes_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("EnterNodesGameFixedNodes"));
+            }
+        }
+
+        private void NumericUpDownUserControlExactTime_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUserSaySelection)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("EnterSecondsGameExactMoveTime"));
+            }
+        }
+
+     
     }
 }

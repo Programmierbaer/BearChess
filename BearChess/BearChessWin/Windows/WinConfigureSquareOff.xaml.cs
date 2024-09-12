@@ -1,8 +1,10 @@
 ﻿using System.IO;
+using System.Resources;
 using System.Threading;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.SquareOffProLoader;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -17,11 +19,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private SquareOffProLoader _loader;
         private const int _defaultScanTime = 250;
         private const int _defaultScanIncr = 50;
+        private readonly ResourceManager _rm;
 
         public WinConfigureSquareOff(Configuration configuration)
         {
             InitializeComponent();
-
+            _rm = SpeechTranslator.ResourceManager;
             _fileName = Path.Combine(configuration.FolderPath, SquareOffProLoader.EBoardName,
                 $"{SquareOffProLoader.EBoardName}Cfg.xml");
             var fileInfo = new FileInfo(_fileName);
@@ -76,7 +79,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (textBlockScansPerSec != null)
             {
-                textBlockScansPerSec.Text = $"every {sliderScanTime.Value.ToString("###")} ms.";
+                textBlockScansPerSec.Text = $"{_rm.GetString("Every")} {sliderScanTime.Value.ToString("###")} ms.";
             }
         }
 

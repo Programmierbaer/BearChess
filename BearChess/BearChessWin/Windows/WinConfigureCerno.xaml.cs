@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.Loader;
-using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessBTLETools;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
@@ -21,22 +20,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class WinConfigureCerno : Window
     {
         private readonly Configuration _configuration;
-        private readonly bool _useBluetooth;
-        private readonly bool _useBluetoothLE;
+
         private readonly string _fileName;
         private readonly string _calibrateFileName;
         private readonly EChessBoardConfiguration _eChessBoardConfiguration;
-        private List<string> _portNames;
-        private List<string> _allPortNames;
+        private readonly List<string> _portNames;
+        private readonly List<string> _allPortNames;
         private readonly ILogging _fileLogger;
+        private readonly ResourceManager _rm;
 
         public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
         public WinConfigureCerno(Configuration configuration, bool useBluetooth, bool useBluetoothLE)
         {
             _configuration = configuration;
-            _useBluetooth = useBluetooth;
-            _useBluetoothLE = useBluetoothLE;
+
+            _rm = SpeechTranslator.ResourceManager;
             InitializeComponent();
             _fileName = Path.Combine(_configuration.FolderPath, TabutronicCernoLoader.EBoardName,
                                      $"{TabutronicCernoLoader.EBoardName}Cfg.xml");
@@ -62,12 +61,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxPossibleMoves.IsChecked = _eChessBoardConfiguration.ShowPossibleMoves;
             checkBoxBestMove.IsChecked = _eChessBoardConfiguration.ShowPossibleMovesEval;
             _allPortNames = new List<string> { "<auto>" };
-            if (_useBluetooth || useBluetoothLE)
+            if (useBluetooth || useBluetoothLE)
             {
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 _portNames = SerialCommunicationTools
-                             .GetBTComPort(TabutronicCernoLoader.EBoardName, configuration, _fileLogger, _useBluetooth, useBluetoothLE,false).ToList();
+                             .GetBTComPort(TabutronicCernoLoader.EBoardName, configuration, _fileLogger, useBluetooth, useBluetoothLE,false).ToList();
               
                 comPortSearchWindow.Close();
                 
@@ -83,7 +82,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             comboBoxComPorts.SelectedIndex = 0;
             _calibrateFileName = Path.Combine(_configuration.FolderPath, TabutronicCernoLoader.EBoardName, "calibrate.xml");
             _eChessBoardConfiguration.UseBluetooth = useBluetooth || useBluetoothLE; ;
-            textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
+            textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? _rm.GetString("IsCalibrated") : _rm.GetString("IsNotCalibrated");
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
             if (_portNames.Count == 0)
             {
@@ -138,16 +137,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 infoWindow.Close();
                 cernoLoader.Stop();
                 cernoLoader.SetAllLedsOff(false);
-                MessageBox.Show(this, "Calibration finished", "Calibrate", MessageBoxButton.OK,
+                MessageBox.Show(this, $"{_rm.GetString("CalibrationMsg")} {_rm.GetString("Finished")}", _rm.GetString("CalibrationMsg"), MessageBoxButton.OK,
                                 MessageBoxImage.Information);
                 cernoLoader.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, $"{ex.Message}", "Calibrate", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, $"{ex.Message}", _rm.GetString("CalibrationMsg"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? "Is calibrated" : "Is not calibrated";
+            textBlockCalibrate.Text = File.Exists(_calibrateFileName) ? _rm.GetString("IsCalibrated") : _rm.GetString("IsNotCalibrated");
 
         }
 
@@ -174,7 +173,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (cernoLoader.CheckComPort(name))
                         {
                             infoWindow.Close();
-                            MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK,
+                            MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {name}", _rm.GetString("Check"), MessageBoxButton.OK,
                                             MessageBoxImage.Information);
                             comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
                             return;
@@ -182,7 +181,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     }
 
                     infoWindow.Close();
-                    MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK,
+                    MessageBox.Show(_rm.GetString("CheckConnectionFailedForAll"), _rm.GetString("Check"), MessageBoxButton.OK,
                                     MessageBoxImage.Error);
                     return;
 
@@ -194,13 +193,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (cernoLoader.CheckComPort(portName))
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
                                     MessageBoxImage.Information);
                 }
                 else
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check failed for {portName}", "Check", MessageBoxButton.OK,
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
                                     MessageBoxImage.Error);
                 }
             }

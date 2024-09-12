@@ -2,6 +2,8 @@
 using www.SoLaNoSoft.com.BearChess.CertaboLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
+using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -10,10 +12,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class EBoardTestWindow : Window
     {
-        private readonly BearChessTools.Configuration _configuration;
+        private readonly Configuration _configuration;
         private IElectronicChessBoard _eChessBoard = null;
 
-        public EBoardTestWindow(BearChessTools.Configuration configuration)
+        public EBoardTestWindow(Configuration configuration)
         {
             _configuration = configuration;
             InitializeComponent();

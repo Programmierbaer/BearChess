@@ -1,6 +1,7 @@
 ﻿<Application x:Class="www.SoLaNoSoft.com.BearChessWin.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:resource="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
              StartupUri="BearChessMainWindow.xaml">
     <Application.Resources>
         <FontFamily x:Key="Adventure">pack://application:,,,/Assets/Fonts/#Chess Adventurer</FontFamily>

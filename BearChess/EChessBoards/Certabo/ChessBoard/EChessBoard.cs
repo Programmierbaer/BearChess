@@ -77,6 +77,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             BatteryLevel = "---";
             BatteryStatus = "Full";
             PieceRecognition = true;
+            ValidForAnalyse = true;
             SelfControlled = false;
             MultiColorLEDs = true;
             var calibrationData = _calibrateStorage.GetCalibrationData();
@@ -680,6 +681,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
         }
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 

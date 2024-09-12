@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.9.2}
+\fancyhead[R]{Version 1.0.10.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{07.08.2024} 
+\date{12.09.2024} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -42,10 +42,13 @@ linkcolor=black
 		
 		Another feature is the extended engine support. Read more in chapter \textbf{\ref{ExtendedSupport}  \nameref{ExtendedSupport}} on page \pageref{ExtendedSupport}.
 		
-		So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.
+		So the focus of BearChess is more on exploiting the possibilities of the chessboards than being just another GUI. Of course, you don't need an electronic chessboard to use BearChess.\\
+	
+	    \textbf{The next version will have a special mode and an adapted GUI for visually impaired players.
+		The Tactum chessboard from TabuTronics, the first electronic chessboard for visually impaired players, will be integrated.\\}
 		
-		BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut Air/Pro and Evo},
-		\textbf{House of Staunton} from Zmartfun, \textbf{ChessUp}, \textbf{NOVAG Citrine and UCB}, and \textbf{Saitek} boards with an OSA interface (Galileo, Leornado, Renaissance).\\
+		BearChess supports \textbf{Certabo} and \textbf{TabuTronic} chessboards, \textbf{iChessOne}, chessboards connected via \textbf{Millennium} ChessLink or Millennium eOne, the \textbf{DGT} e-Boards or Pegasus chessboard, \textbf{Square Off Pro}, \textbf{Chessnut} Air/Air+, Pro, Go and Evo,
+		\textbf{House of Staunton} from Zmartfun, \textbf{ChessUp}, \textbf{NOVAG Citrine and UCB}, and \textbf{Saitek} boards with an \textbf{OSA} interface (Galileo, Leornado, Renaissance).\\
 		
 		I am a professional programmer and write the software in my spare time and it is free. I am not an employee of Inventhio Srl trading (Certabo, TabuTronic) or Millennium 2000 Digital GmbH or Digital Game Technology B.V. or Infivention Technologies Private Limited or CHESSNUT Technology Limited Inc.\ or iChessOne or Bryght Labs or ZMARTFUN. If something does not work, the companies are not responsible for it.\\
 		
@@ -77,12 +80,12 @@ linkcolor=black
 	BearChess offers among others the following functions:
 	\begin{enumerate}
 		\item Play with \textbf{Certabo} chessboards.
-		\item Play with \textbf{TabuTronics} chessboards.	  
+		\item Play with \textbf{TabuTronic Cerno, Sentio} chessboards.	  
 		\item Play with \textbf{Millennium} chessboards via \textbf{ChessLink} modul or \textbf{eOne}.
 		\item Play with \textbf{DGT e-Board} or \textbf{Revelation}.	  
 		\item Play with \textbf{DGT Pegasus} chessboard.	  
 		\item Play with \textbf{Square Off Pro} chessboard.	  	  
-		\item Play with \textbf{Chessnut Air/Air+/Pro} chessboard.	  	  	  
+		\item Play with \textbf{Chessnut Air/Air+, Pro, Go, Evo} chessboard.	  	  	  
 		\item Play with \textbf{iChessOne} chessboard.	  	  	  	  
 		\item Play with \textbf{ChessUp} chessboard.	  	  	  	  	  
         \item Play with \textbf{House of Staunton} chessboard from Zmartfun.
@@ -693,6 +696,10 @@ linkcolor=black
 		\caption{Open window to configure BearChess}
 		\label{fig:ConfigureBearChess}
 	\end{figure}
+	
+	\subsection{Language}
+	You can switch between English and German. The first selection is preset for your current system language.
+	If you change the language, a restart of BearChess is required to apply the changes.
 	
 	\subsection{Games}
 	\begin{itemize}
@@ -3144,13 +3151,21 @@ The context menu for aline (right mouse click) allows you to delete all games wi
 	
 \end{itemize}
 
-\subsection{PGN export}
-By default, BearChess write all information into the PGN output, e.g. move time, ratings and comments. If you like to have only the pure move information, you can check it on the settings area.
+\subsection{Configure PGN export}
+By default, BearChess write all information into the PGN output, e.g. move time, ratings and comments.
+If you like to have only the pure move information, you can check it on the settings area or select specific information.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{Games8.png}
-	\caption{Only pure PGN information}
+	\caption{Configure PGN export}
 	\label{fig:Games8}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{Games9.png}
+	\caption{Configure PGN export}
+	\label{fig:Games9}
 \end{figure}
 
 \section{Engine window}
@@ -3303,6 +3318,8 @@ The code for the CTG opening book is very much based on the Java code by Peter Ã
 These are some ideas what will come in one of the next versions.
 
 \begin{itemize}		
+	    \item Support for TabuTronic Tactum.
+	    \item \textbf{Extra mode and adapted GUI design for visually impaired players.}
 	    \item More time control settings.
 		\item Extend the game analysis.
 		\item Improve electronic chess board handling.
@@ -3318,6 +3335,18 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 1.0.9.2 $\Rightarrow$  1.0.10.0}
+\begin{itemize}			
+		\item {\color{blue}New}: Available in German/ Deutsche Ãœbersetzung.
+		\item {\color{blue}New}: Configure PGN export.
+		\item {\color{blue}New}: Support for Chessnut Go.
+		\item {\color{teal}Changes}: Improved position detection at TabuTronic Sentio.
+		\item {\color{teal}Changes}: Improved LEDs handling for Millennium and Chesstimation/Elfacun modules
+		\item {\color{teal}Changes}: MultiPV handling for Wasp engines.
+	
+\end{itemize}
+
 
 \subsection*{Version 1.0.9.1 $\Rightarrow$  1.0.9.2}
 \begin{itemize}			

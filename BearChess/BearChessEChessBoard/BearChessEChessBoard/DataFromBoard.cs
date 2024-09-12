@@ -4,11 +4,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
     public class DataFromBoard
     {
-        public string FromBoard { get; }
+        public string FromBoard { get; set; }
        
         public ulong Repeated { get; }
         public bool PlayWithWhite { get; }
         public bool BasePosition { get; set; }
+        public bool NewGamePosition { get; set; }
         public bool Invalid { get; set; }
 
         public bool IsFieldDump { get; set; }
@@ -22,6 +23,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             PlayWithWhite = fromBoard.StartsWith(FenCodes.WhiteBoardBasePosition);
             Invalid = false;
             IsFieldDump = false;
+            NewGamePosition = false;
         }
     }
 }

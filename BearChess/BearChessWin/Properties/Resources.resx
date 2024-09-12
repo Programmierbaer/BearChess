@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,2361 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AbortGames" xml:space="preserve">
+    <value>Abort games</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="AdaptedTime" xml:space="preserve">
+    <value>Adapted time</value>
+  </data>
+  <data name="AddAsNewConfiguration" xml:space="preserve">
+    <value>Add as new configuration</value>
+  </data>
+  <data name="AdjustedForThePlayer" xml:space="preserve">
+    <value>Adjusted for the player</value>
+  </data>
+  <data name="AdpatedTime" xml:space="preserve">
+    <value>Adapted time</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>Age</value>
+  </data>
+  <data name="AHumanBeingAsAPlayer" xml:space="preserve">
+    <value>A human being as a player</value>
+  </data>
+  <data name="AllowBearChessEndGameEarly" xml:space="preserve">
+    <value>Allow BearChess to end the game early</value>
+  </data>
+  <data name="AllowToTakeBack" xml:space="preserve">
+    <value>Allow to take a move back</value>
+  </data>
+  <data name="AlwaysChooseBestMove" xml:space="preserve">
+    <value>Always choose the best move</value>
+  </data>
+  <data name="AnalyseAGame" xml:space="preserve">
+    <value>Analyse a game</value>
+  </data>
+  <data name="AnalyseCurrentGame" xml:space="preserve">
+    <value>Analyse current loaded game with your chess board?</value>
+  </data>
+  <data name="Analysis" xml:space="preserve">
+    <value>Analysis</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="AnnounceOwnMove" xml:space="preserve">
+    <value>Announce your own move</value>
+  </data>
+  <data name="APieceSetNameIsRequired" xml:space="preserve">
+    <value>A piece set name is required</value>
+  </data>
+  <data name="Arrange" xml:space="preserve">
+    <value>Arrange</value>
+  </data>
+  <data name="Author" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="AverageTimePerMove" xml:space="preserve">
+    <value>Average time per move</value>
+  </data>
+  <data name="BackToFirstMove" xml:space="preserve">
+    <value>Back to first move</value>
+  </data>
+  <data name="BackToMainMenu" xml:space="preserve">
+    <value>Back to main menu</value>
+  </data>
+  <data name="BasePosition" xml:space="preserve">
+    <value>Starting position</value>
+  </data>
+  <data name="BearChessConfiguration" xml:space="preserve">
+    <value>BearChess Configuration</value>
+  </data>
+  <data name="BearChessConfigurationSpeech" xml:space="preserve">
+    <value>This is the BearChess configuration window</value>
+  </data>
+  <data name="BearChessMainWindowsSpeech" xml:space="preserve">
+    <value>This is the BearChess main window</value>
+  </data>
+  <data name="BearChessPDFNotFound" xml:space="preserve">
+    <value>File BearChess.pdf not found</value>
+  </data>
+  <data name="Best" xml:space="preserve">
+    <value>Best</value>
+  </data>
+  <data name="BestField" xml:space="preserve">
+    <value>Best field</value>
+  </data>
+  <data name="BestMove" xml:space="preserve">
+    <value>Best move</value>
+  </data>
+  <data name="Black" xml:space="preserve">
+    <value>Black</value>
+  </data>
+  <data name="BlacksMove" xml:space="preserve">
+    <value>Black's move</value>
+  </data>
+  <data name="Blind" xml:space="preserve">
+    <value>Blind</value>
+  </data>
+  <data name="BlindSayExtended" xml:space="preserve">
+    <value>Extented speech </value>
+  </data>
+  <data name="BlindSayMoveTime" xml:space="preserve">
+    <value>Say move time</value>
+  </data>
+  <data name="BlindUserMode" xml:space="preserve">
+    <value>Mode activated for visually impaired persons</value>
+  </data>
+  <data name="Bluetooth" xml:space="preserve">
+    <value>Bluetooth</value>
+  </data>
+  <data name="Board" xml:space="preserve">
+    <value>Board</value>
+  </data>
+  <data name="BoardAndPieces" xml:space="preserve">
+    <value>Board &amp; pieces</value>
+  </data>
+  <data name="BoardNotSuitableAnalysis" xml:space="preserve">
+    <value>This board is not suitable for analysis mode</value>
+  </data>
+  <data name="Books" xml:space="preserve">
+    <value>Books</value>
+  </data>
+  <data name="BTClassic" xml:space="preserve">
+    <value>Bluetooth Classic</value>
+  </data>
+  <data name="BTClassicTip" xml:space="preserve">
+    <value>Connect via Bluetooth Classic</value>
+  </data>
+  <data name="BTLE" xml:space="preserve">
+    <value>Bluetooth LE</value>
+  </data>
+  <data name="BTLETip" xml:space="preserve">
+    <value>Connect via Bluetooth LE</value>
+  </data>
+  <data name="Buddy" xml:space="preserve">
+    <value>Buddy</value>
+  </data>
+  <data name="BuddyEngine" xml:space="preserve">
+    <value>Buddy engine</value>
+  </data>
+  <data name="Button" xml:space="preserve">
+    <value>Button</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CapturedPieces" xml:space="preserve">
+    <value>Captured pieces</value>
+  </data>
+  <data name="CapturedPiecesBig" xml:space="preserve">
+    <value>Big</value>
+  </data>
+  <data name="CapturedPiecesSmall" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Check...</value>
+  </data>
+  <data name="CheckConnection" xml:space="preserve">
+    <value>Check the connection to the chessboard</value>
+  </data>
+  <data name="CheckConnectionFailed" xml:space="preserve">
+    <value>Check failed for</value>
+  </data>
+  <data name="CheckConnectionFailedForAll" xml:space="preserve">
+    <value>Check failed for all COM ports</value>
+  </data>
+  <data name="CheckConnectionSuccess" xml:space="preserve">
+    <value>Check successful for</value>
+  </data>
+  <data name="CheckSelectedCOMPortTip" xml:space="preserve">
+    <value>Check connection for selected COM port</value>
+  </data>
+  <data name="ElfacunModule" xml:space="preserve">
+    <value>Elfacun module</value>
+  </data>
+  <data name="ChesstimationElfacunModuleTip" xml:space="preserve">
+    <value>Using a Chesstimation module by Andreas Petersik or Elfacun module by 'inmbolmie'</value>
+  </data>
+  <data name="ChesstimationModule" xml:space="preserve">
+    <value>Chesstimation module</value>
+  </data>
+  <data name="ChesstimationModuleTip" xml:space="preserve">
+    <value>Using a Chesstimation module by Andreas Petersik</value>
+  </data>
+  <data name="ChooseAnyMove" xml:space="preserve">
+    <value>Choose any move</value>
+  </data>
+  <data name="ChooseBetterMove" xml:space="preserve">
+    <value>Choose one of the better moves</value>
+  </data>
+  <data name="ClearSoundFile" xml:space="preserve">
+    <value>Clear sound file</value>
+  </data>
+  <data name="ClockBlack" xml:space="preserve">
+    <value>time for black</value>
+  </data>
+  <data name="ClockHour" xml:space="preserve">
+    <value>hour</value>
+  </data>
+  <data name="ClockHours" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="ClockMinute" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="ClockMinutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="Clocks" xml:space="preserve">
+    <value>Clocks</value>
+  </data>
+  <data name="ClocksBig" xml:space="preserve">
+    <value>Big</value>
+  </data>
+  <data name="ClockSecond" xml:space="preserve">
+    <value>second</value>
+  </data>
+  <data name="ClockSeconds" xml:space="preserve">
+    <value>seconds</value>
+  </data>
+  <data name="ClocksSmall" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="ClockWhite" xml:space="preserve">
+    <value>time for white</value>
+  </data>
+  <data name="CloseBearChess" xml:space="preserve">
+    <value>Close BearChess</value>
+  </data>
+  <data name="ColorForTheArrow" xml:space="preserve">
+    <value>Color for the arrow</value>
+  </data>
+  <data name="ComboBox" xml:space="preserve">
+    <value>Combo box</value>
+  </data>
+  <data name="ComPorts" xml:space="preserve">
+    <value>COM-Ports:</value>
+  </data>
+  <data name="Configure" xml:space="preserve">
+    <value>Configure</value>
+  </data>
+  <data name="ConfigureBlackButton" xml:space="preserve">
+    <value>Button to configure black engine</value>
+  </data>
+  <data name="ConfigureBoardAndPieces" xml:space="preserve">
+    <value>Configure board &amp; pieces</value>
+  </data>
+  <data name="ConfigureEngine" xml:space="preserve">
+    <value>Configure engine</value>
+  </data>
+  <data name="ConfigureTactum" xml:space="preserve">
+    <value>Configure TabuTronic Tactum chessboard</value>
+  </data>
+  <data name="ConfigureTactumSpeech" xml:space="preserve">
+    <value>This is the TabuTronic Tactum configuration window</value>
+  </data>
+  <data name="ConfigureWhiteButton" xml:space="preserve">
+    <value>Button to configure white engine</value>
+  </data>
+  <data name="ConfirmPiecesSelection" xml:space="preserve">
+    <value>Confirm Pieces Selection</value>
+  </data>
+  <data name="ConfirmPiecesSelectionWindow" xml:space="preserve">
+    <value>The is the window to confirm the pieces selection</value>
+  </data>
+  <data name="ConfirmPosition" xml:space="preserve">
+    <value>Confirm position</value>
+  </data>
+  <data name="Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="ConnectedTo" xml:space="preserve">
+    <value>Connected to</value>
+  </data>
+  <data name="ConnectionFailed" xml:space="preserve">
+    <value>Connection failed</value>
+  </data>
+  <data name="ConnectOnStartup" xml:space="preserve">
+    <value>Connect on startup</value>
+  </data>
+  <data name="ConnectTo" xml:space="preserve">
+    <value>Connect to</value>
+  </data>
+  <data name="ConnectToCertaboTip" xml:space="preserve">
+    <value>Connect to Certabo chessboard</value>
+  </data>
+  <data name="ConnectToChessnutAirProTip" xml:space="preserve">
+    <value>Connect to Chessnut Air/Pro</value>
+  </data>
+  <data name="ConnectToChessnutEvoTip" xml:space="preserve">
+    <value>Connect to Chessnut Evo</value>
+  </data>
+  <data name="ConnectToChessupTip" xml:space="preserve">
+    <value>Connect to ChessUp</value>
+  </data>
+  <data name="ConnectToCitrineTip" xml:space="preserve">
+    <value>Connect to Citrine</value>
+  </data>
+  <data name="ConnectToDGTEBoardTip" xml:space="preserve">
+    <value>Connect to DGT e-Board</value>
+  </data>
+  <data name="ConnectToDGTPegasusTip" xml:space="preserve">
+    <value>Connect to DGT Pegasus</value>
+  </data>
+  <data name="ConnectToFICS" xml:space="preserve">
+    <value>Connect to FICS</value>
+  </data>
+  <data name="ConnectToHOSTip" xml:space="preserve">
+    <value>Connect to House of Staunton</value>
+  </data>
+  <data name="ConnectToIChessOneTip" xml:space="preserve">
+    <value>Connect to iChessOne chessboard</value>
+  </data>
+  <data name="ConnectToMillenniumChesslinkTip" xml:space="preserve">
+    <value>Connect to Millennium ChessLink</value>
+  </data>
+  <data name="ConnectToSaitekOSATip" xml:space="preserve">
+    <value>Connect to Saitek OSA</value>
+  </data>
+  <data name="ConnectToSquareOffProTip" xml:space="preserve">
+    <value>Connect to Square Off Pro</value>
+  </data>
+  <data name="ConnectToTabuTronicCernoTip" xml:space="preserve">
+    <value>Connect to TabuTronic Cerno chessboard</value>
+  </data>
+  <data name="ConnectToTabuTronicSentioTip" xml:space="preserve">
+    <value>Connect to TabuTronic Sentio chessboard</value>
+  </data>
+  <data name="ConnectToUCBTip" xml:space="preserve">
+    <value>Connect to UCB</value>
+  </data>
+  <data name="ContinueTheGame" xml:space="preserve">
+    <value>Continue the game</value>
+  </data>
+  <data name="ContinueWithoutTimeControl" xml:space="preserve">
+    <value>Continue without time control?</value>
+  </data>
+  <data name="CouldNotLoad" xml:space="preserve">
+    <value>Could not load</value>
+  </data>
+  <data name="CultureName" xml:space="preserve">
+    <value>Culture</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Current:</value>
+  </data>
+  <data name="CurrentCOMPort" xml:space="preserve">
+    <value>Current COM port</value>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Current position</value>
+  </data>
+  <data name="CurrentSelection" xml:space="preserve">
+    <value>Current selection</value>
+  </data>
+  <data name="DefineOwnTranslation" xml:space="preserve">
+    <value>Define your own translation</value>
+  </data>
+  <data name="DefinePlayerSpeech" xml:space="preserve">
+    <value>This dialog allows you to enter the first name and surname of the player</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteBoard" xml:space="preserve">
+    <value>Delete board</value>
+  </data>
+  <data name="DeletePieces" xml:space="preserve">
+    <value>Delete pieces</value>
+  </data>
+  <data name="DeletePreInstalledBoard" xml:space="preserve">
+    <value>You cannot delete pre-installed board</value>
+  </data>
+  <data name="DeletePreInstalledPieces" xml:space="preserve">
+    <value>You cannot delete pre-installed pieces</value>
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value>Depth</value>
+  </data>
+  <data name="DGTEBoard" xml:space="preserve">
+    <value>DGT e-Board</value>
+  </data>
+  <data name="DirectSelectionPlayerBlack" xml:space="preserve">
+    <value>to select a player for black</value>
+  </data>
+  <data name="DirectSelectionPlayerWhite" xml:space="preserve">
+    <value>to select a player for white</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="DisconnectFrom" xml:space="preserve">
+    <value>Disconnect from</value>
+  </data>
+  <data name="DisconnectFromFICS" xml:space="preserve">
+    <value>Disconnect from FICS</value>
+  </data>
+  <data name="DrawBy50Rule" xml:space="preserve">
+    <value>Draw by 50 moves rule</value>
+  </data>
+  <data name="DrawByMaterial" xml:space="preserve">
+    <value>Draw by insufficient material</value>
+  </data>
+  <data name="DrawByRepetition" xml:space="preserve">
+    <value>Draw by position repetition</value>
+  </data>
+  <data name="Duel" xml:space="preserve">
+    <value>Duel</value>
+  </data>
+  <data name="DuelManager" xml:space="preserve">
+    <value>Duel manager</value>
+  </data>
+  <data name="DuplicateInformation" xml:space="preserve">
+    <value>Duplicate information</value>
+  </data>
+  <data name="EitherVoiceSound" xml:space="preserve">
+    <value>Either voice or sound</value>
+  </data>
+  <data name="ElectronicBoards" xml:space="preserve">
+    <value>Electronic Boards</value>
+  </data>
+  <data name="EngineCheck" xml:space="preserve">
+    <value>Engine check</value>
+  </data>
+  <data name="EngineMate" xml:space="preserve">
+    <value>Engine mate</value>
+  </data>
+  <data name="EngineMove" xml:space="preserve">
+    <value>Engine move</value>
+  </data>
+  <data name="EngineNotSuitable" xml:space="preserve">
+    <value>This kind of engine is only suitable for games</value>
+  </data>
+  <data name="Engines" xml:space="preserve">
+    <value>Engines</value>
+  </data>
+  <data name="EngineTournament" xml:space="preserve">
+    <value>Engine tournament</value>
+  </data>
+  <data name="EnterDepthGameFixedDepth" xml:space="preserve">
+    <value>Enter the depth for a game with a fixed depth</value>
+  </data>
+  <data name="EnterMinutesForGameWithIncrement" xml:space="preserve">
+    <value>Enter the minutes for a game with increment</value>
+  </data>
+  <data name="EnterMinutesGameAverageTime" xml:space="preserve">
+    <value>Enter the minutes for a game with average thinking time</value>
+  </data>
+  <data name="EnterMinutesGameMovesPerMinute" xml:space="preserve">
+    <value>Enter the minutes for a game with moves per minute</value>
+  </data>
+  <data name="EnterMinutesPerGame" xml:space="preserve">
+    <value>Enter the minutes per game</value>
+  </data>
+  <data name="EnterNodesGameFixedNodes" xml:space="preserve">
+    <value>Enter the nodes for a game with a fixed number of nodes</value>
+  </data>
+  <data name="EnterNumberOfMovesGamePerMinute" xml:space="preserve">
+    <value>Enter the number of moves in the game per minute</value>
+  </data>
+  <data name="EnterSecondsForGameWithIncrement" xml:space="preserve">
+    <value>Enter the seconds for a game with increment</value>
+  </data>
+  <data name="EnterSecondsGameAverageTime" xml:space="preserve">
+    <value>Enter the secondsfor a game with average thinking time</value>
+  </data>
+  <data name="EnterSecondsGameExactMoveTime" xml:space="preserve">
+    <value>Enter the seconds for a game with exact move time</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorOnLoad" xml:space="preserve">
+    <value>Error on load</value>
+  </data>
+  <data name="ErrorOnLoading" xml:space="preserve">
+    <value>Error on loading</value>
+  </data>
+  <data name="ErrorReadingFiles" xml:space="preserve">
+    <value>Error reading files</value>
+  </data>
+  <data name="EstimatedELO" xml:space="preserve">
+    <value>Estimated ELO</value>
+  </data>
+  <data name="EstimatedEloBetween" xml:space="preserve">
+    <value>Estimated ELO between</value>
+  </data>
+  <data name="EstimateElo" xml:space="preserve">
+    <value>Estimate ELO</value>
+  </data>
+  <data name="Evaluation" xml:space="preserve">
+    <value>Evaluation</value>
+  </data>
+  <data name="ExactTimePerMove" xml:space="preserve">
+    <value>Exact time per move</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="ExtraTimeForHuman" xml:space="preserve">
+    <value>Extra time for human player:</value>
+  </data>
+  <data name="FastMoveInput" xml:space="preserve">
+    <value>Fast move input</value>
+  </data>
+  <data name="FastMoveInputTip" xml:space="preserve">
+    <value>Make move if selected field allows only one move</value>
+  </data>
+  <data name="FICS" xml:space="preserve">
+    <value>FICS</value>
+  </data>
+  <data name="FICSTip" xml:space="preserve">
+    <value>Configure you Free Internet Chess Server connection</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter:</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First name:</value>
+  </data>
+  <data name="Flexible" xml:space="preserve">
+    <value>Flexible</value>
+  </data>
+  <data name="ForBlack" xml:space="preserve">
+    <value>for black</value>
+  </data>
+  <data name="ForceMove" xml:space="preserve">
+    <value>Force move</value>
+  </data>
+  <data name="ForwardLastMove" xml:space="preserve">
+    <value>Forward to last move</value>
+  </data>
+  <data name="ForWhite" xml:space="preserve">
+    <value>for white</value>
+  </data>
+  <data name="ForWhiteAndBlack" xml:space="preserve">
+    <value>for white and black</value>
+  </data>
+  <data name="FreeAnalysis" xml:space="preserve">
+    <value>Free analysis</value>
+  </data>
+  <data name="FromPointOfWhite" xml:space="preserve">
+    <value>From the point of view of White</value>
+  </data>
+  <data name="GameAnalysis" xml:space="preserve">
+    <value>Analyse a game</value>
+  </data>
+  <data name="GameFinished" xml:space="preserve">
+    <value>Game finished</value>
+  </data>
+  <data name="Games" xml:space="preserve">
+    <value>Games</value>
+  </data>
+  <data name="GamesCopy" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="GamesManager" xml:space="preserve">
+    <value>Games manager</value>
+  </data>
+  <data name="GamesPaste" xml:space="preserve">
+    <value>Paste from clipboarrd</value>
+  </data>
+  <data name="GamesSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="GiveThePieceSetAName" xml:space="preserve">
+    <value>Give the piece set a name</value>
+  </data>
+  <data name="GoBackToBasePosition" xml:space="preserve">
+    <value>Go back to the starting position</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="HideBuddyEngine" xml:space="preserve">
+    <value>Hide buddy engine</value>
+  </data>
+  <data name="IAmBlind" xml:space="preserve">
+    <value>I am blind</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="InstallAtLeast" xml:space="preserve">
+    <value>Please install at least one engine for a duel</value>
+  </data>
+  <data name="InstallAtLeastTwo" xml:space="preserve">
+    <value>Please install at least two engines for an engine tournament</value>
+  </data>
+  <data name="Internal" xml:space="preserve">
+    <value>Internal</value>
+  </data>
+  <data name="IsSelected" xml:space="preserve">
+    <value>Is set</value>
+  </data>
+  <data name="IsUnSelected" xml:space="preserve">
+    <value>Is not set</value>
+  </data>
+  <data name="KnightF3" xml:space="preserve">
+    <value>Knight f3</value>
+  </data>
+  <data name="KnightG1F3" xml:space="preserve">
+    <value>Knight g1-f3</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last name:</value>
+  </data>
+  <data name="LoadAndManageBooks" xml:space="preserve">
+    <value>Load &amp; manage opening books</value>
+  </data>
+  <data name="LoadAndManageEngines" xml:space="preserve">
+    <value>Load &amp; manage engines</value>
+  </data>
+  <data name="LoadBuddyEngine" xml:space="preserve">
+    <value>Load buddy engine</value>
+  </data>
+  <data name="LoadBuddyEngineOnNewGame" xml:space="preserve">
+    <value>Load buddy engine on new game</value>
+  </data>
+  <data name="LoadLastEngineOnStart" xml:space="preserve">
+    <value>Load last engine on start</value>
+  </data>
+  <data name="LoadSelectedEngineTip" xml:space="preserve">
+    <value>Load selected engine</value>
+  </data>
+  <data name="LoadStartupGameConfig" xml:space="preserve">
+    <value>Load startup game configuration</value>
+  </data>
+  <data name="LoadUCIEngine" xml:space="preserve">
+    <value>Load UCI Engine</value>
+  </data>
+  <data name="LosesBecauseTimeout" xml:space="preserve">
+    <value>loses because of timeout</value>
+  </data>
+  <data name="MainMenu" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="Mate" xml:space="preserve">
+    <value>Mate</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>min.</value>
+  </data>
+  <data name="MinutesPerMove" xml:space="preserve">
+    <value>min. per move</value>
+  </data>
+  <data name="MisingFile" xml:space="preserve">
+    <value>Mising file</value>
+  </data>
+  <data name="MissingEngines" xml:space="preserve">
+    <value>Missing engines</value>
+  </data>
+  <data name="MissingInformation" xml:space="preserve">
+    <value>Missing information</value>
+  </data>
+  <data name="ModeAnalysing" xml:space="preserve">
+    <value>Mode: Analysing</value>
+  </data>
+  <data name="ModeEasyPlaying" xml:space="preserve">
+    <value>Mode: Easy playing</value>
+  </data>
+  <data name="ModePlayingAGame" xml:space="preserve">
+    <value>Mode: Playing a game</value>
+  </data>
+  <data name="ModeSetupPosition" xml:space="preserve">
+    <value>Mode: Setup Position</value>
+  </data>
+  <data name="MoveIn" xml:space="preserve">
+    <value>move in</value>
+  </data>
+  <data name="Moves" xml:space="preserve">
+    <value>Moves</value>
+  </data>
+  <data name="MovesIn" xml:space="preserve">
+    <value>moves in</value>
+  </data>
+  <data name="MovesMinutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NewDuel" xml:space="preserve">
+    <value>Start a new duel</value>
+  </data>
+  <data name="NewGame" xml:space="preserve">
+    <value>Start a new game</value>
+  </data>
+  <data name="NewGameClock" xml:space="preserve">
+    <value>New game</value>
+  </data>
+  <data name="NewGameWindowSpeech" xml:space="preserve">
+    <value>This is the window for a new game</value>
+  </data>
+  <data name="NoBuddyEngineFound" xml:space="preserve">
+    <value>No buddy engine found</value>
+  </data>
+  <data name="NoControl" xml:space="preserve">
+    <value>No control</value>
+  </data>
+  <data name="Nodes" xml:space="preserve">
+    <value>Nodes</value>
+  </data>
+  <data name="Notation" xml:space="preserve">
+    <value>Notation</value>
+  </data>
+  <data name="NotationMoves" xml:space="preserve">
+    <value>Notation/Moves</value>
+  </data>
+  <data name="NotPngFilesFound" xml:space="preserve">
+    <value>No or not all png files found</value>
+  </data>
+  <data name="NotSuitable" xml:space="preserve">
+    <value>Not suitable</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="OneMoveBack" xml:space="preserve">
+    <value>One move back</value>
+  </data>
+  <data name="OneMoveForward" xml:space="preserve">
+    <value>One move forward</value>
+  </data>
+  <data name="OpenLoadAndManageEngine" xml:space="preserve">
+    <value>Open 'Load &amp; manage engines' dialog to define a buddy engine.</value>
+  </data>
+  <data name="OwnMove" xml:space="preserve">
+    <value>Own move</value>
+  </data>
+  <data name="PauseAfterGame" xml:space="preserve">
+    <value>Pause after game</value>
+  </data>
+  <data name="PauseContinueGame" xml:space="preserve">
+    <value>Pause/Continue game</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>Pieces</value>
+  </data>
+  <data name="PieceSetNameAlreadyTaken" xml:space="preserve">
+    <value>The piece set name is already taken</value>
+  </data>
+  <data name="PlaceAllOnBasePosition" xml:space="preserve">
+    <value>Place all chessmen on the base position. Then click 'Ok'</value>
+  </data>
+  <data name="PlaceAlOnCorrectPosition" xml:space="preserve">
+    <value>Press OK when the chess pieces are in the correct position.</value>
+  </data>
+  <data name="PlaceYourChessmen" xml:space="preserve">
+    <value>Place your chessmen</value>
+  </data>
+  <data name="PlayAGame" xml:space="preserve">
+    <value>Play a game</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>Player</value>
+  </data>
+  <data name="PlayingWithBlackTip" xml:space="preserve">
+    <value>Playing with black</value>
+  </data>
+  <data name="PlayingWithWhiteTip" xml:space="preserve">
+    <value>Playing with white</value>
+  </data>
+  <data name="Plies" xml:space="preserve">
+    <value>plies</value>
+  </data>
+  <data name="Plus" xml:space="preserve">
+    <value>min. plus</value>
+  </data>
+  <data name="Ply" xml:space="preserve">
+    <value>ply</value>
+  </data>
+  <data name="PossibleMoves" xml:space="preserve">
+    <value>Possible moves</value>
+  </data>
+  <data name="PurePGNExport" xml:space="preserve">
+    <value>Pure PGN export</value>
+  </data>
+  <data name="Relaxed" xml:space="preserve">
+    <value>Relaxed</value>
+  </data>
+  <data name="Remaining" xml:space="preserve">
+    <value>Remaning</value>
+  </data>
+  <data name="RemainingMoves" xml:space="preserve">
+    <value>Remaining moves</value>
+  </data>
+  <data name="RequestFICSForDraw" xml:space="preserve">
+    <value>Request FICS for draw</value>
+  </data>
+  <data name="ResetDefaultValues" xml:space="preserve">
+    <value>Reset to default values</value>
+  </data>
+  <data name="RotateBoard" xml:space="preserve">
+    <value>Rotate board</value>
+  </data>
+  <data name="RunStartupGameOnStart" xml:space="preserve">
+    <value>Run startup game on start</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveConfigAsStartup" xml:space="preserve">
+    <value>Save configuration as startup game</value>
+  </data>
+  <data name="SaveGamesAutomatically" xml:space="preserve">
+    <value>Save games automatically</value>
+  </data>
+  <data name="SayAllMovesSelectedFigure" xml:space="preserve">
+    <value>Say all moves for the selected figure</value>
+  </data>
+  <data name="SayBestMoveSelectedFigure" xml:space="preserve">
+    <value>Say the best move for the selected figure</value>
+  </data>
+  <data name="SayLiftUpDown" xml:space="preserve">
+    <value>Say LiftUp/Down figures</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchDepth" xml:space="preserve">
+    <value>Search depth</value>
+  </data>
+  <data name="Sec" xml:space="preserve">
+    <value>sec.</value>
+  </data>
+  <data name="SecondsPerMove" xml:space="preserve">
+    <value>sec. per move</value>
+  </data>
+  <data name="SelectAnEngineSpeech" xml:space="preserve">
+    <value>This dialog is to select an engine</value>
+  </data>
+  <data name="SelectBlackPlayerButton" xml:space="preserve">
+    <value>Button to select black engine</value>
+  </data>
+  <data name="SelectedCOMPort" xml:space="preserve">
+    <value>Selected COM port to check is</value>
+  </data>
+  <data name="SelectLanguage" xml:space="preserve">
+    <value>Select your language. Only German or English is fully supported</value>
+  </data>
+  <data name="SelectPlayer" xml:space="preserve">
+    <value>Select Player</value>
+  </data>
+  <data name="SelectSoundFile" xml:space="preserve">
+    <value>Select a sound file</value>
+  </data>
+  <data name="SelectWhitePlayerButton" xml:space="preserve">
+    <value>Button to select white engine</value>
+  </data>
+  <data name="SeparateTimeControl" xml:space="preserve">
+    <value>Separate time control for white and black</value>
+  </data>
+  <data name="SetAs" xml:space="preserve">
+    <value>Set as...</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SetupBoardAndPieces" xml:space="preserve">
+    <value>Setup Board and Pieces</value>
+  </data>
+  <data name="SetupPosition" xml:space="preserve">
+    <value>Setup position</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="ShowBestMove" xml:space="preserve">
+    <value>Show best move</value>
+  </data>
+  <data name="ShowBestMoveFromBuddy" xml:space="preserve">
+    <value>Show move from buddy when help is requested</value>
+  </data>
+  <data name="ShowBestMoveInAnalyseMode" xml:space="preserve">
+    <value>Show best move in analysis mode</value>
+  </data>
+  <data name="ShowBestMoveTip" xml:space="preserve">
+    <value>Show best move by engine as orange arrow</value>
+  </data>
+  <data name="ShowBoardInformationTip" xml:space="preserve">
+    <value>Show board information</value>
+  </data>
+  <data name="ShowCommunicationWindow" xml:space="preserve">
+    <value>Show communication protocol</value>
+  </data>
+  <data name="ShowCurrentBestMoveInGame" xml:space="preserve">
+    <value>Show current best move in game</value>
+  </data>
+  <data name="ShowDuplicates" xml:space="preserve">
+    <value>Show duplicates</value>
+  </data>
+  <data name="ShowFiftyRule" xml:space="preserve">
+    <value>Show fifty-move rule</value>
+  </data>
+  <data name="ShowHash" xml:space="preserve">
+    <value>Show hash</value>
+  </data>
+  <data name="ShowLastMove" xml:space="preserve">
+    <value>Show last move</value>
+  </data>
+  <data name="ShowLastMoveTip" xml:space="preserve">
+    <value>Show last move as green arrow</value>
+  </data>
+  <data name="ShowLogFiles" xml:space="preserve">
+    <value>Show log files</value>
+  </data>
+  <data name="ShowNextMoveInGameAnalyseMode" xml:space="preserve">
+    <value>Show next move in game analyse mode</value>
+  </data>
+  <data name="ShowNodesN" xml:space="preserve">
+    <value>Show nodes (N)</value>
+  </data>
+  <data name="ShowNodesNPS" xml:space="preserve">
+    <value>Show nodes per seconds (Nps)</value>
+  </data>
+  <data name="ShowOnGame" xml:space="preserve">
+    <value>Show on game</value>
+  </data>
+  <data name="ShowOnStart" xml:space="preserve">
+    <value>Show on start</value>
+  </data>
+  <data name="ShowPossibleMoves" xml:space="preserve">
+    <value>Show possible moves</value>
+  </data>
+  <data name="ShowPossibleMovesTip" xml:space="preserve">
+    <value>Show all possible moves on mouse over</value>
+  </data>
+  <data name="SoundFile" xml:space="preserve">
+    <value>Sound file:</value>
+  </data>
+  <data name="SpeechActive" xml:space="preserve">
+    <value>Voice output active</value>
+  </data>
+  <data name="SpeechAndSound" xml:space="preserve">
+    <value>Voice/Sounds</value>
+  </data>
+  <data name="SpeechNotAvailable" xml:space="preserve">
+    <value>Voice is on your system not available</value>
+  </data>
+  <data name="SpeechRepeat" xml:space="preserve">
+    <value>Repeat speech output</value>
+  </data>
+  <data name="SpeechSoundConfiguration" xml:space="preserve">
+    <value>Voice/Sound Configuration</value>
+  </data>
+  <data name="StartClockAfterMove" xml:space="preserve">
+    <value>Start the clock after the move is executed on the electronic board.</value>
+  </data>
+  <data name="StartFrom" xml:space="preserve">
+    <value>Start from:</value>
+  </data>
+  <data name="StartNewEngineMatch" xml:space="preserve">
+    <value>Start a new engine match</value>
+  </data>
+  <data name="StartNewEngineTournament" xml:space="preserve">
+    <value>Start a new engine tournament</value>
+  </data>
+  <data name="StartOnBasePosition" xml:space="preserve">
+    <value>Start new game on base position</value>
+  </data>
+  <data name="StartStopEngine" xml:space="preserve">
+    <value>Start/Stop engine</value>
+  </data>
+  <data name="StartTournament" xml:space="preserve">
+    <value>Start a new tournament</value>
+  </data>
+  <data name="StartupDefinitionNotFound" xml:space="preserve">
+    <value>Startup game definition not found or configured engines not installed</value>
+  </data>
+  <data name="StartupGameDefinitionSaved" xml:space="preserve">
+    <value>Startup game definition saved</value>
+  </data>
+  <data name="StopAnalysis" xml:space="preserve">
+    <value>Stop analyse mode</value>
+  </data>
+  <data name="StopGame" xml:space="preserve">
+    <value>Stop game</value>
+  </data>
+  <data name="SwitchColor" xml:space="preserve">
+    <value>Switch color</value>
+  </data>
+  <data name="SwitchMessChessWindowPosition" xml:space="preserve">
+    <value>Switch MessChess window position</value>
+  </data>
+  <data name="SwitchMessChessWindowPositionTip" xml:space="preserve">
+    <value>Tries to match the positions of MessChess engines to the current color</value>
+  </data>
+  <data name="TCMinute" xml:space="preserve">
+    <value>minute</value>
+  </data>
+  <data name="TCMinutePerGame" xml:space="preserve">
+    <value>minute per game</value>
+  </data>
+  <data name="TCMinutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="TCMinutesPerGame" xml:space="preserve">
+    <value>minutes per game</value>
+  </data>
+  <data name="TCMinutesPerMove" xml:space="preserve">
+    <value>minutes per move</value>
+  </data>
+  <data name="TCSecondIncrement" xml:space="preserve">
+    <value>second increment per move</value>
+  </data>
+  <data name="TCSecondPerMove" xml:space="preserve">
+    <value>second per move</value>
+  </data>
+  <data name="TCSecondsIncrement" xml:space="preserve">
+    <value>seconds increment per move</value>
+  </data>
+  <data name="TCSecondsPerMove" xml:space="preserve">
+    <value>secondes per move</value>
+  </data>
+  <data name="TimeControl" xml:space="preserve">
+    <value>Time control</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Timeout</value>
+  </data>
+  <data name="TimePerGame" xml:space="preserve">
+    <value>Time per game</value>
+  </data>
+  <data name="TimePerGameInc" xml:space="preserve">
+    <value>Time per game with increment</value>
+  </data>
+  <data name="TimePerMoves" xml:space="preserve">
+    <value>Time per given moves</value>
+  </data>
+  <data name="TournamentManager" xml:space="preserve">
+    <value>Tournament manager</value>
+  </data>
+  <data name="TournamentMode" xml:space="preserve">
+    <value>Tournament mode</value>
+  </data>
+  <data name="TypeMoveAnnouncement" xml:space="preserve">
+    <value>Type of move announcement:</value>
+  </data>
+  <data name="UCIEngine" xml:space="preserve">
+    <value>UCI engine</value>
+  </data>
+  <data name="UninstallEngine" xml:space="preserve">
+    <value>Uninstall engine</value>
+  </data>
+  <data name="UsedTime" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="UseOpeningBook" xml:space="preserve">
+    <value>Use opening book</value>
+  </data>
+  <data name="WaitForBoardPosition" xml:space="preserve">
+    <value>Wait for board position on your electronic chessboard</value>
+  </data>
+  <data name="WaitForNewGame" xml:space="preserve">
+    <value>Wait for new game</value>
+  </data>
+  <data name="WaitingForBasePosition" xml:space="preserve">
+    <value>Waiting for base position</value>
+  </data>
+  <data name="White" xml:space="preserve">
+    <value>White</value>
+  </data>
+  <data name="WhitesMove" xml:space="preserve">
+    <value>White's move</value>
+  </data>
+  <data name="Wide" xml:space="preserve">
+    <value>Wide</value>
+  </data>
+  <data name="Windows" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="WinsByMate" xml:space="preserve">
+    <value>wins by mate</value>
+  </data>
+  <data name="WinsByScore" xml:space="preserve">
+    <value>wins by score</value>
+  </data>
+  <data name="With" xml:space="preserve">
+    <value>with</value>
+  </data>
+  <data name="WithAnEvalutionFrom" xml:space="preserve">
+    <value>with an evaluation from</value>
+  </data>
+  <data name="WriteLogFiles" xml:space="preserve">
+    <value>Write log files</value>
+  </data>
+  <data name="ConfigurePGN" xml:space="preserve">
+    <value>Configure PGN export</value>
+  </data>
+  <data name="Including" xml:space="preserve">
+    <value>Including</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="MoveTime" xml:space="preserve">
+    <value>Move time</value>
+  </data>
+  <data name="Symbols" xml:space="preserve">
+    <value>Symbols</value>
+  </data>
+  <data name="LoadAndContinue" xml:space="preserve">
+    <value>Load and continue</value>
+    <comment>Laden und fortführen</comment>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+    <comment>Kopieren</comment>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Copy to clipboard</value>
+    <comment>In die Zwischenablage kopieren</comment>
+  </data>
+  <data name="DeleteMyDuplicates" xml:space="preserve">
+    <value>Delete my duplicates</value>
+  </data>
+  <data name="Elo" xml:space="preserve">
+    <value>Elo</value>
+  </data>
+  <data name="Event" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="Site" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="Round" xml:space="preserve">
+    <value>Round</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="NewDatabase" xml:space="preserve">
+    <value>New games database</value>
+  </data>
+  <data name="OpenDatabase" xml:space="preserve">
+    <value>Open games database</value>
+  </data>
+  <data name="DeleteGame" xml:space="preserve">
+    <value>Delete game</value>
+  </data>
+  <data name="ImportGames" xml:space="preserve">
+    <value>Import games</value>
+  </data>
+  <data name="DeleteAllDuplicates" xml:space="preserve">
+    <value>Delete all duplicates</value>
+  </data>
+  <data name="ManageTWIC" xml:space="preserve">
+    <value>Manage 'The Week in Chess'</value>
+  </data>
+  <data name="SynchronizeBoard" xml:space="preserve">
+    <value>Synchronize with chessboard</value>
+  </data>
+  <data name="FilterGames" xml:space="preserve">
+    <value>Filter games</value>
+  </data>
+  <data name="FilterIsActive" xml:space="preserve">
+    <value>Filter is active</value>
+  </data>
+  <data name="ExportSelectedGames" xml:space="preserve">
+    <value>Export selected games</value>
+  </data>
+  <data name="CompressDatabase" xml:space="preserve">
+    <value>Compress database</value>
+  </data>
+  <data name="SaveDatabase" xml:space="preserve">
+    <value>Save database</value>
+  </data>
+  <data name="RestoreDatabase" xml:space="preserve">
+    <value>Restore database</value>
+  </data>
+  <data name="DeleteDatabase" xml:space="preserve">
+    <value>Delete database</value>
+  </data>
+  <data name="CannotLoadDatabaseGame" xml:space="preserve">
+    <value>Cannot load database game</value>
+  </data>
+  <data name="CannotDeleteGame" xml:space="preserve">
+    <value>Cannot delete selected game</value>
+  </data>
+  <data name="GameIsPartOfADuel" xml:space="preserve">
+    <value>Game is part of a duel. Use duel manager to delete duel games</value>
+  </data>
+  <data name="GameIsPartOfATournament" xml:space="preserve">
+    <value>Game is part of a tournament. Use tournament manager to delete tournament games</value>
+  </data>
+  <data name="DeleteGames" xml:space="preserve">
+    <value>Delete games</value>
+  </data>
+  <data name="DeleteSelectedGame" xml:space="preserve">
+    <value>Delete selected game?</value>
+  </data>
+  <data name="DeleteAllSelected" xml:space="preserve">
+    <value>Delete all selected games?</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="DoNotSynchronize" xml:space="preserve">
+    <value>Do not synchronize with chessboard</value>
+  </data>
+  <data name="SynchronizeWithBoard" xml:space="preserve">
+    <value>Synchronize with chessboard</value>
+  </data>
+  <data name="DeleteAllGames" xml:space="preserve">
+    <value>Delete database with all games?</value>
+  </data>
+  <data name="ErrorOnCopy" xml:space="preserve">
+    <value>Error on copy</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="UnableToSaveDatabase" xml:space="preserve">
+    <value>Unable to save database</value>
+  </data>
+  <data name="DatabaseSavedTo" xml:space="preserve">
+    <value>Database saved to</value>
+  </data>
+  <data name="SavedDatabase" xml:space="preserve">
+    <value>Saved database</value>
+  </data>
+  <data name="OverrideDatabase" xml:space="preserve">
+    <value>Override current database with a backup</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="DatabaseRestored" xml:space="preserve">
+    <value>Database restored</value>
+  </data>
+  <data name="UnableRestoreDatabase" xml:space="preserve">
+    <value>Unable to restore database</value>
+  </data>
+  <data name="GameIsPartOfADuelContinue" xml:space="preserve">
+    <value>Game is part of a duel. Use duel manager to continue duel games</value>
+  </data>
+  <data name="CannotContinue" xml:space="preserve">
+    <value>Cannot continue selected game</value>
+  </data>
+  <data name="GameIsPartOfTournamentContinue" xml:space="preserve">
+    <value>Game is part of a tournament. Use tournament manager to continue tournament games</value>
+  </data>
+  <data name="GameIsPartOfDuelRepeat" xml:space="preserve">
+    <value>Game is part of a duel. Use duel manager to repeat duel games</value>
+  </data>
+  <data name="GamesOn" xml:space="preserve">
+    <value>games on</value>
+  </data>
+  <data name="CannotDeleteDuplicate" xml:space="preserve">
+    <value>Cannot delete duplicate games</value>
+  </data>
+  <data name="DeleteDuplicateGames" xml:space="preserve">
+    <value>Delete duplicate games</value>
+  </data>
+  <data name="DeleteDuplicates" xml:space="preserve">
+    <value>Delete duplicates from selected game?</value>
+  </data>
+  <data name="SelectOnlyOneGame" xml:space="preserve">
+    <value>Please select only one game</value>
+  </data>
+  <data name="DeleteAllDuplicatesGames" xml:space="preserve">
+    <value>Delete all duplicates games in the database?</value>
+  </data>
+  <data name="AsGuest" xml:space="preserve">
+    <value>As guest:</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username:</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="Server" xml:space="preserve">
+    <value>Server:</value>
+  </data>
+  <data name="Port" xml:space="preserve">
+    <value>Port:</value>
+  </data>
+  <data name="InvalidParameter" xml:space="preserve">
+    <value>Invalid parameter</value>
+  </data>
+  <data name="PortMustBeANumber" xml:space="preserve">
+    <value>Port must be a number</value>
+  </data>
+  <data name="MissingParameter" xml:space="preserve">
+    <value>Missing parameter</value>
+  </data>
+  <data name="SaveEntriesAnyWay" xml:space="preserve">
+    <value>Save entries anyway?</value>
+  </data>
+  <data name="NotFilledAllFields" xml:space="preserve">
+    <value>You have not filled in all the input fields.</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="NumberOfGames" xml:space="preserve">
+    <value>Number of games</value>
+  </data>
+  <data name="FileDate" xml:space="preserve">
+    <value>File date</value>
+  </data>
+  <data name="ImportDate" xml:space="preserve">
+    <value>Import date</value>
+  </data>
+  <data name="DownloadAllLatest" xml:space="preserve">
+    <value>Download all latest</value>
+  </data>
+  <data name="DownloadFromNumber" xml:space="preserve">
+    <value>Download TWIC from number:</value>
+  </data>
+  <data name="ToNumber" xml:space="preserve">
+    <value>to number:</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="DownloadFromTWIC" xml:space="preserve">
+    <value>Download from TWIC</value>
+  </data>
+  <data name="DownloadAllHigherThan" xml:space="preserve">
+    <value>Download and import all latest PGN files higher than</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Please wait...</value>
+  </data>
+  <data name="LoadSelectedEngine" xml:space="preserve">
+    <value>Load selected engine</value>
+  </data>
+  <data name="UninstallSelectedEngineTip" xml:space="preserve">
+    <value>Uninstall selected engine</value>
+  </data>
+  <data name="AddNewEngineTip" xml:space="preserve">
+    <value>Add new engine</value>
+  </data>
+  <data name="SelectedEngineFile" xml:space="preserve">
+    <value>Select an engine file</value>
+  </data>
+  <data name="ConfigureSelectedEngine" xml:space="preserve">
+    <value>Configure selected engine</value>
+  </data>
+  <data name="SetAsBuddy" xml:space="preserve">
+    <value>Set selected engine as buddy</value>
+  </data>
+  <data name="Positions" xml:space="preserve">
+    <value>Positions</value>
+  </data>
+  <data name="SizeBytes" xml:space="preserve">
+    <value>Size (bytes)</value>
+  </data>
+  <data name="LoadBook" xml:space="preserve">
+    <value>Load selected book</value>
+  </data>
+  <data name="UninstallBook" xml:space="preserve">
+    <value>Uninstall selected book</value>
+  </data>
+  <data name="InstallBook" xml:space="preserve">
+    <value>Install a new book</value>
+  </data>
+  <data name="AllBooks" xml:space="preserve">
+    <value>All books</value>
+  </data>
+  <data name="OpeningBook" xml:space="preserve">
+    <value>Opening book</value>
+  </data>
+  <data name="ErrorUninstallBook" xml:space="preserve">
+    <value>Error on uninstall opening book</value>
+  </data>
+  <data name="AlReadyInstalled" xml:space="preserve">
+    <value>already installed</value>
+  </data>
+  <data name="Duels" xml:space="preserve">
+    <value>Duels</value>
+  </data>
+  <data name="ContinueDuel" xml:space="preserve">
+    <value>Continue duel</value>
+  </data>
+  <data name="LoadAsNewDuel" xml:space="preserve">
+    <value>Load as new duel</value>
+  </data>
+  <data name="RenameDuel" xml:space="preserve">
+    <value>Rename duel</value>
+  </data>
+  <data name="PlayedGames" xml:space="preserve">
+    <value>Played games</value>
+  </data>
+  <data name="GamesToPlay" xml:space="preserve">
+    <value>Games to play</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="Participants" xml:space="preserve">
+    <value>Participants</value>
+  </data>
+  <data name="GamesOfSelectedDuel" xml:space="preserve">
+    <value>Games of selected duel</value>
+  </data>
+  <data name="RepeatGame" xml:space="preserve">
+    <value>Repeat game</value>
+  </data>
+  <data name="IncreaseNumberOfGames" xml:space="preserve">
+    <value>Increase number of games</value>
+  </data>
+  <data name="DeleteDuel" xml:space="preserve">
+    <value>Delete duel</value>
+  </data>
+  <data name="ExportDuelGames" xml:space="preserve">
+    <value>Export duel games</value>
+  </data>
+  <data name="DuelInformation" xml:space="preserve">
+    <value>Duel information</value>
+  </data>
+  <data name="DeleteAllDuels" xml:space="preserve">
+    <value>Delete all duels</value>
+  </data>
+  <data name="DuelsOn" xml:space="preserve">
+    <value>Duels on</value>
+  </data>
+  <data name="CannotContinueDuel" xml:space="preserve">
+    <value>Cannot continue</value>
+  </data>
+  <data name="SelectOnlyOneDuel" xml:space="preserve">
+    <value>Please select only one duel</value>
+  </data>
+  <data name="CannotContinueDuelFinished" xml:space="preserve">
+    <value>Cannot continue the duel, it is finished</value>
+  </data>
+  <data name="CannotLoadAsNewDuel" xml:space="preserve">
+    <value>Cannot load as new duel</value>
+  </data>
+  <data name="DeleteSelectedDuel" xml:space="preserve">
+    <value>Delete selected duel?</value>
+  </data>
+  <data name="DeleteAllSelectedDuels" xml:space="preserve">
+    <value>Delete all selected duels?</value>
+  </data>
+  <data name="RepeatDuel" xml:space="preserve">
+    <value>Repeat duel</value>
+  </data>
+  <data name="DeleteAllGamesOfDuel" xml:space="preserve">
+    <value>Delete all games and repeat selected duel?</value>
+  </data>
+  <data name="SelectDuelForExport" xml:space="preserve">
+    <value>Select a duel for export</value>
+  </data>
+  <data name="ConfigureTitle" xml:space="preserve">
+    <value>Configure</value>
+  </data>
+  <data name="SystemInformation" xml:space="preserve">
+    <value>System Information</value>
+  </data>
+  <data name="Path" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="OpenDialog" xml:space="preserve">
+    <value>Open...</value>
+  </data>
+  <data name="Chessboard" xml:space="preserve">
+    <value>Chessboard:</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="RestartBearChess" xml:space="preserve">
+    <value>In order for the changes to take effect, you must restart BearChess</value>
+  </data>
+  <data name="LocalCountry" xml:space="preserve">
+    <value>Current system language</value>
+  </data>
+  <data name="EventDialog" xml:space="preserve">
+    <value>Event:</value>
+  </data>
+  <data name="TimeControlDialog" xml:space="preserve">
+    <value>Timecontrol:</value>
+  </data>
+  <data name="NumberOfGamesDialog" xml:space="preserve">
+    <value>Number of games:</value>
+  </data>
+  <data name="MaximalNumberOfGames" xml:space="preserve">
+    <value>Maximal number of games:</value>
+  </data>
+  <data name="SwitchColorDialog" xml:space="preserve">
+    <value>Switch color:</value>
+  </data>
+  <data name="AdjustELO" xml:space="preserve">
+    <value>Adjust ELO:</value>
+  </data>
+  <data name="Database" xml:space="preserve">
+    <value>Database:</value>
+  </data>
+  <data name="NotValidForELO" xml:space="preserve">
+    <value>Not valid for ELO</value>
+  </data>
+  <data name="AtLeastOnEngineELO" xml:space="preserve">
+    <value>At least one engine must allow configuring the ELO number</value>
+  </data>
+  <data name="NewEngineTournament" xml:space="preserve">
+    <value>New Engine Tournament</value>
+  </data>
+  <data name="NameDialog" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="TypeDialog" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="Deliquent" xml:space="preserve">
+    <value>Deliquent:</value>
+  </data>
+  <data name="Cycles" xml:space="preserve">
+    <value>Cycles</value>
+  </data>
+  <data name="AvailableEngines" xml:space="preserve">
+    <value>Available engines</value>
+  </data>
+  <data name="NotEnoughParticitpants" xml:space="preserve">
+    <value>Not enough participants</value>
+  </data>
+  <data name="AtLeastRequiredParticipants" xml:space="preserve">
+    <value>At least 2 participants required</value>
+  </data>
+  <data name="TotalGames" xml:space="preserve">
+    <value>Total games:</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="CyclesDialog" xml:space="preserve">
+    <value>Cycles:</value>
+  </data>
+  <data name="GamesOfSelectedTournament" xml:space="preserve">
+    <value>Games of selected Tournament:</value>
+  </data>
+  <data name="ContinueTournament" xml:space="preserve">
+    <value>Continue tournament</value>
+  </data>
+  <data name="LoadAsNewTournament" xml:space="preserve">
+    <value>Load as new tournament</value>
+  </data>
+  <data name="RepeatTournament" xml:space="preserve">
+    <value>Repeat tournament</value>
+  </data>
+  <data name="DeleteTournamentTip" xml:space="preserve">
+    <value>Delete tournament</value>
+  </data>
+  <data name="ExportTournamentGames" xml:space="preserve">
+    <value>Export tournament games</value>
+  </data>
+  <data name="TournamentInformation" xml:space="preserve">
+    <value>Tournament information</value>
+  </data>
+  <data name="DeleteAllTournamentTip" xml:space="preserve">
+    <value>Delete all tournament</value>
+  </data>
+  <data name="TournamentOn" xml:space="preserve">
+    <value>Tournaments on</value>
+  </data>
+  <data name="CannotContinueTournament" xml:space="preserve">
+    <value>Cannot continue</value>
+  </data>
+  <data name="SelectOnlyOneTournament" xml:space="preserve">
+    <value>Please select only one tournament</value>
+  </data>
+  <data name="CannotContinueTournamentFinished" xml:space="preserve">
+    <value>Cannot continue the tournament, it is finished</value>
+  </data>
+  <data name="CannotLoadAsNewTournament" xml:space="preserve">
+    <value>Cannot load as new tournament</value>
+  </data>
+  <data name="DeleteAllSelectedTournaments" xml:space="preserve">
+    <value>Delete all selected tournaments?</value>
+  </data>
+  <data name="DeleteSelectedTournament" xml:space="preserve">
+    <value>Delete selected tournament?</value>
+  </data>
+  <data name="DeleteAllTournaments" xml:space="preserve">
+    <value>Delete all tournaments?</value>
+  </data>
+  <data name="DeleteAllAndRepeat" xml:space="preserve">
+    <value>Delete all games and repeat selected tournament?</value>
+  </data>
+  <data name="SelectTournamentExport" xml:space="preserve">
+    <value>Select a tournament for export</value>
+  </data>
+  <data name="RepeatSelectedGame" xml:space="preserve">
+    <value>Repeat selected game?</value>
+  </data>
+  <data name="PreviousResultOverwritten" xml:space="preserve">
+    <value>The previous result will be overwritten.</value>
+  </data>
+  <data name="CannotRename" xml:space="preserve">
+    <value>Cannot rename</value>
+  </data>
+  <data name="RenameTournament" xml:space="preserve">
+    <value>Rename tournament</value>
+  </data>
+  <data name="CannotPlayAgainstBuddy" xml:space="preserve">
+    <value>You cannot play with a BearChess or Buddy engine</value>
+  </data>
+  <data name="CannotChangeInternalEngine" xml:space="preserve">
+    <value>You cannot change internal engine</value>
+  </data>
+  <data name="UninstallAllSelectedEngines" xml:space="preserve">
+    <value>Uninstall all selected engines</value>
+  </data>
+  <data name="CannotUninstallInternalEngine" xml:space="preserve">
+    <value>It is not allowed to uninstall internal engine</value>
+  </data>
+  <data name="ErrorOnUninstallEngine" xml:space="preserve">
+    <value>Error on uninstall engine</value>
+  </data>
+  <data name="IsNotValidEngine" xml:space="preserve">
+    <value>is not a valid UCI engine</value>
+  </data>
+  <data name="Engine" xml:space="preserve">
+    <value>Engine</value>
+  </data>
+  <data name="InstallEngine" xml:space="preserve">
+    <value>Install UCI engine</value>
+  </data>
+  <data name="ErrorInstallEngine" xml:space="preserve">
+    <value>Error on install chess engine</value>
+  </data>
+  <data name="NotSuitableForBuddy" xml:space="preserve">
+    <value>This kind of engine is not suitable for a buddy</value>
+  </data>
+  <data name="BearChessCannotBuddy" xml:space="preserve">
+    <value>A BearChess engine cannot be a buddy</value>
+  </data>
+  <data name="NotSuitableForBearChess" xml:space="preserve">
+    <value>This kind of engine is not suitable for a BearChess</value>
+  </data>
+  <data name="BuddyCannotBearChess" xml:space="preserve">
+    <value>A Buddy engine cannot be a BearChess engine</value>
+  </data>
+  <data name="Book" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="Wins" xml:space="preserve">
+    <value>Wins</value>
+  </data>
+  <data name="Losts" xml:space="preserve">
+    <value>Losts</value>
+  </data>
+  <data name="Draws" xml:space="preserve">
+    <value>Draws</value>
+  </data>
+  <data name="EngineGame" xml:space="preserve">
+    <value>Engine / Game</value>
+  </data>
+  <data name="SaveGameAsWinForWhite" xml:space="preserve">
+    <value>Save the game as won for white</value>
+  </data>
+  <data name="SaveGameAsWinForBlack" xml:space="preserve">
+    <value>Save the game as won for black</value>
+  </data>
+  <data name="SaveGameAsDraw" xml:space="preserve">
+    <value>Save the game as a draw</value>
+  </data>
+  <data name="StopDuel" xml:space="preserve">
+    <value>Stop duel</value>
+  </data>
+  <data name="CloseDuel" xml:space="preserve">
+    <value>Close duel</value>
+  </data>
+  <data name="Game" xml:space="preserve">
+    <value>Game</value>
+  </data>
+  <data name="DuelFinished" xml:space="preserve">
+    <value>Duel finished</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="StopCurrentDuel" xml:space="preserve">
+    <value>Stop current duel</value>
+  </data>
+  <data name="SaveGame" xml:space="preserve">
+    <value>Save game</value>
+  </data>
+  <data name="NoCOMPortDetected" xml:space="preserve">
+    <value>No COM-Port deteced. Check the connection to the chessboard</value>
+  </data>
+  <data name="EngineTournamentInfo" xml:space="preserve">
+    <value>Engine Tournament Information</value>
+  </data>
+  <data name="StopCurrentTournament" xml:space="preserve">
+    <value>Stop current tournament</value>
+  </data>
+  <data name="TournamentFinished" xml:space="preserve">
+    <value>Tournament finished</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="GoodMove" xml:space="preserve">
+    <value>Good move</value>
+  </data>
+  <data name="PoorMove" xml:space="preserve">
+    <value>Poor move</value>
+  </data>
+  <data name="VeryGoodMove" xml:space="preserve">
+    <value>Very good move</value>
+  </data>
+  <data name="VeryPoorMove" xml:space="preserve">
+    <value>Very poor move</value>
+  </data>
+  <data name="SpeculativeMove" xml:space="preserve">
+    <value>Speculative move</value>
+  </data>
+  <data name="QuestionableMove" xml:space="preserve">
+    <value>Questionable move</value>
+  </data>
+  <data name="OnlyMove" xml:space="preserve">
+    <value>Only move</value>
+  </data>
+  <data name="MoveSymbol" xml:space="preserve">
+    <value>Move symbol</value>
+  </data>
+  <data name="RemoveSymbol" xml:space="preserve">
+    <value>Remove symbol</value>
+  </data>
+  <data name="EvaluationSymbol" xml:space="preserve">
+    <value>Evaluation symbol</value>
+  </data>
+  <data name="WhiteHasDecisiveAdvantage" xml:space="preserve">
+    <value>White has a decisive advantage</value>
+  </data>
+  <data name="BlackHasDecisiveAdvantage" xml:space="preserve">
+    <value>Black has a decisive advantage</value>
+  </data>
+  <data name="EqualPosition" xml:space="preserve">
+    <value>Equal position</value>
+  </data>
+  <data name="UnclearPosition" xml:space="preserve">
+    <value>Unclear position</value>
+  </data>
+  <data name="WhiteSlightAdvantage" xml:space="preserve">
+    <value>White has a slight advantage</value>
+  </data>
+  <data name="BlackSlightAdvantage" xml:space="preserve">
+    <value>Black has a slight advantage</value>
+  </data>
+  <data name="WhiteModerateAdvantage" xml:space="preserve">
+    <value>White has a moderate advantage</value>
+  </data>
+  <data name="BlackModerateAdvantage" xml:space="preserve">
+    <value>Black has a moderate advantage</value>
+  </data>
+  <data name="WithCompensation" xml:space="preserve">
+    <value>With compensation</value>
+  </data>
+  <data name="OwnSymbol" xml:space="preserve">
+    <value>Own symbol...</value>
+  </data>
+  <data name="EditComent" xml:space="preserve">
+    <value>Edit comment...</value>
+  </data>
+  <data name="RestartFromHere" xml:space="preserve">
+    <value>Restart from here...</value>
+  </data>
+  <data name="Symbol" xml:space="preserve">
+    <value>Symbol</value>
+  </data>
+  <data name="AddInfoLine" xml:space="preserve">
+    <value>Add info line</value>
+  </data>
+  <data name="RemoveInfoLine" xml:space="preserve">
+    <value>Remove info line</value>
+  </data>
+  <data name="CloseEngine" xml:space="preserve">
+    <value>Close engine</value>
+  </data>
+  <data name="UsingBook" xml:space="preserve">
+    <value>Engine is using an opening book</value>
+  </data>
+  <data name="NotUsingBook" xml:space="preserve">
+    <value>Engine is not using an opening book</value>
+  </data>
+  <data name="HideBestLine" xml:space="preserve">
+    <value>Hide best line</value>
+  </data>
+  <data name="HideAll" xml:space="preserve">
+    <value>Hide all</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>Show all</value>
+  </data>
+  <data name="MateIn" xml:space="preserve">
+    <value>Mate in</value>
+  </data>
+  <data name="ChangeContent" xml:space="preserve">
+    <value>Change content to be displayed</value>
+  </data>
+  <data name="ShowHideComments" xml:space="preserve">
+    <value>Show or hide comments</value>
+  </data>
+  <data name="IncreaseFontSize" xml:space="preserve">
+    <value>Increase font size</value>
+  </data>
+  <data name="DecreaseFontSize" xml:space="preserve">
+    <value>Decrease font size</value>
+  </data>
+  <data name="UpToFiftyMoveRule" xml:space="preserve">
+    <value>up to fifty-move rule</value>
+  </data>
+  <data name="WithoutComments" xml:space="preserve">
+    <value>without comments</value>
+  </data>
+  <data name="WithComments" xml:space="preserve">
+    <value>with comments</value>
+  </data>
+  <data name="ContentOnlyMoves" xml:space="preserve">
+    <value>Content: Only moves</value>
+  </data>
+  <data name="ContentMoves" xml:space="preserve">
+    <value>Content: Moves</value>
+  </data>
+  <data name="AndWithBestLine" xml:space="preserve">
+    <value>and with best line</value>
+  </data>
+  <data name="AndWithFirstBestMove" xml:space="preserve">
+    <value>and with first best move</value>
+  </data>
+  <data name="Full" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="ConfigureCerno" xml:space="preserve">
+    <value>Configure TabuTronic Cerno chessboard</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Calibration:</value>
+  </data>
+  <data name="IsNotCalibrated" xml:space="preserve">
+    <value>Is not calibrated</value>
+  </data>
+  <data name="Calibrate" xml:space="preserve">
+    <value>Calibrate...</value>
+  </data>
+  <data name="ActivateAllLEDsAlongMove" xml:space="preserve">
+    <value>Activate all LEDs along the move</value>
+  </data>
+  <data name="ShowOwnMoves" xml:space="preserve">
+    <value>Show own moves</value>
+  </data>
+  <data name="SelectionIsExclusive" xml:space="preserve">
+    <value>This selection is exclusive to the following two options</value>
+  </data>
+  <data name="ShowAllMovesSelectedFigure" xml:space="preserve">
+    <value>Show all moves for the selected figure</value>
+  </data>
+  <data name="SelectionIsExclusiveShowOwnMoves" xml:space="preserve">
+    <value>This selection is exclusive to 'Show own moves'</value>
+  </data>
+  <data name="ShowBestMoveSelectedFigure" xml:space="preserve">
+    <value>Show the best move for the selected figure</value>
+  </data>
+  <data name="IsCalibrated" xml:space="preserve">
+    <value>Is calibrated</value>
+  </data>
+  <data name="CalibrationMsg" xml:space="preserve">
+    <value>Calibration</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>finished</value>
+  </data>
+  <data name="CheckMsg" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="PlaceAllChessmenPictureAbove" xml:space="preserve">
+    <value>Place all chessmen as in the picture above.</value>
+  </data>
+  <data name="AllChessmenOnBasePositionExtraQueens" xml:space="preserve">
+    <value>All chessmen on the chess base position and both extra queens on d3 and d6.</value>
+  </data>
+  <data name="ConfigureCertabo" xml:space="preserve">
+    <value>Configure Certabo chessboard</value>
+  </data>
+  <data name="UsingChesstimation" xml:space="preserve">
+    <value>Using a Chesstimation module by Andreas Petersik</value>
+  </data>
+  <data name="ConfigureChessnutAir" xml:space="preserve">
+    <value>Configure Chessnut Air/Air+/Pro</value>
+  </data>
+  <data name="ConfigureChessnutEvo" xml:space="preserve">
+    <value>Configure Chessnut Evo</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="LEDs" xml:space="preserve">
+    <value>LEDs</value>
+  </data>
+  <data name="ConnectTestLEDs" xml:space="preserve">
+    <value>Connect to the board to test LEDs</value>
+  </data>
+  <data name="Red" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="Green" xml:space="preserve">
+    <value>Green</value>
+  </data>
+  <data name="Blue" xml:space="preserve">
+    <value>Blue</value>
+  </data>
+  <data name="Brightness" xml:space="preserve">
+    <value>Brightness</value>
+  </data>
+  <data name="Flash" xml:space="preserve">
+    <value>Flash</value>
+  </data>
+  <data name="FromField" xml:space="preserve">
+    <value>From field</value>
+  </data>
+  <data name="MoveFrom" xml:space="preserve">
+    <value>Move from</value>
+  </data>
+  <data name="ToField" xml:space="preserve">
+    <value>To field</value>
+  </data>
+  <data name="MoveTo" xml:space="preserve">
+    <value>Move to</value>
+  </data>
+  <data name="ShowLEDs" xml:space="preserve">
+    <value>Show LEDs</value>
+  </data>
+  <data name="InvalidFields" xml:space="preserve">
+    <value>Invalid fields</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+  <data name="FromAndToFieldUndo" xml:space="preserve">
+    <value>From and to field when undoing a chess move</value>
+  </data>
+  <data name="TakeBack" xml:space="preserve">
+    <value>Take back</value>
+  </data>
+  <data name="Hint" xml:space="preserve">
+    <value>Hint</value>
+  </data>
+  <data name="FromAndToFieldForHint" xml:space="preserve">
+    <value>From and to field for a hint on the best move</value>
+  </data>
+  <data name="ShowPossibleMovesOfFigure" xml:space="preserve">
+    <value>Show possible moves if you lift up a figure</value>
+  </data>
+  <data name="EvaluationGood" xml:space="preserve">
+    <value>Evaluation: good</value>
+  </data>
+  <data name="ThisIsAGoodMove" xml:space="preserve">
+    <value>This is a good move</value>
+  </data>
+  <data name="ThisIsABadMove" xml:space="preserve">
+    <value>This is a bad move</value>
+  </data>
+  <data name="Bad" xml:space="preserve">
+    <value>bad</value>
+  </data>
+  <data name="PlayableMove" xml:space="preserve">
+    <value>This is neither a particularly good or bad move</value>
+  </data>
+  <data name="Playable" xml:space="preserve">
+    <value>Playable</value>
+  </data>
+  <data name="ActiveLEDs" xml:space="preserve">
+    <value>Active LEDs</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="SelectCurrentConfiguration" xml:space="preserve">
+    <value>Select your current configuration</value>
+  </data>
+  <data name="SaveAsNewConfiguration" xml:space="preserve">
+    <value>Save as new configuration</value>
+  </data>
+  <data name="DeleteConfiguration" xml:space="preserve">
+    <value>Delete configuration</value>
+  </data>
+  <data name="SelectAndSaveConfiguration" xml:space="preserve">
+    <value>Select and save configuration as</value>
+  </data>
+  <data name="GiveConfigurationName" xml:space="preserve">
+    <value>Give your configuration a name</value>
+  </data>
+  <data name="NotAllowed" xml:space="preserve">
+    <value>Not allowed</value>
+  </data>
+  <data name="CannotDeleteBearChessConfig" xml:space="preserve">
+    <value>You cannot delete the 'BearChess' configuration</value>
+  </data>
+  <data name="ConfigureCitrine" xml:space="preserve">
+    <value>Configure NOVAG Citrine</value>
+  </data>
+  <data name="ConfigureDGT" xml:space="preserve">
+    <value>Configure DGT chessboard</value>
+  </data>
+  <data name="Clock" xml:space="preserve">
+    <value>Clock</value>
+  </data>
+  <data name="UseDGT3000Clock" xml:space="preserve">
+    <value>Use DGT 3000 clock if connected</value>
+  </data>
+  <data name="SwitchSide" xml:space="preserve">
+    <value>Switch side</value>
+  </data>
+  <data name="LeftSideShowsForWhite" xml:space="preserve">
+    <value>Left side shows the time for white</value>
+  </data>
+  <data name="ShowOnlyMoves" xml:space="preserve">
+    <value>Show only moves</value>
+  </data>
+  <data name="UpperCase" xml:space="preserve">
+    <value>Upper case</value>
+  </data>
+  <data name="AllCharactersInUpperCase" xml:space="preserve">
+    <value>Show all characters in upper case</value>
+  </data>
+  <data name="BeepOnMove" xml:space="preserve">
+    <value>Beep on move.</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration:</value>
+  </data>
+  <data name="Style" xml:space="preserve">
+    <value>Style:</value>
+  </data>
+  <data name="LeftSideShowsForBlack" xml:space="preserve">
+    <value>Left side shows the time for black</value>
+  </data>
+  <data name="ConfigureIChessOne" xml:space="preserve">
+    <value>Configure iChessOne</value>
+  </data>
+  <data name="SendOnlyUpdates" xml:space="preserve">
+    <value>Send only updates</value>
+  </data>
+  <data name="BoardSendOnlyUpdates" xml:space="preserve">
+    <value>Board send current position only on updates</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh:</value>
+  </data>
+  <data name="RefreshInMS" xml:space="preserve">
+    <value>How many times per millisecond the board should send the current position</value>
+  </data>
+  <data name="DecrementScanTime" xml:space="preserve">
+    <value>Decrement scan time</value>
+  </data>
+  <data name="IncrementScanTime" xml:space="preserve">
+    <value>Increment scan time</value>
+  </data>
+  <data name="EveryMS" xml:space="preserve">
+    <value>every ms</value>
+  </data>
+  <data name="CurrentColor" xml:space="preserve">
+    <value>Current color</value>
+  </data>
+  <data name="CurrentColorTip" xml:space="preserve">
+    <value>Which board side is currently on the move</value>
+  </data>
+  <data name="ValuationAdvantage" xml:space="preserve">
+    <value>Valuation: Advantage</value>
+  </data>
+  <data name="IfCurrentAdvantage" xml:space="preserve">
+    <value>If there is currently an advantage in the valuation</value>
+  </data>
+  <data name="Disadvantage" xml:space="preserve">
+    <value>Disadvantage</value>
+  </data>
+  <data name="IfCurrentDisadvantage" xml:space="preserve">
+    <value>If there is currently a disadvantage in the valuation</value>
+  </data>
+  <data name="Every" xml:space="preserve">
+    <value>every</value>
+  </data>
+  <data name="ConfigureMillennium" xml:space="preserve">
+    <value>Configure Millennium ChessLink</value>
+  </data>
+  <data name="MoveLEDs" xml:space="preserve">
+    <value>Move LEDs</value>
+  </data>
+  <data name="Synchron" xml:space="preserve">
+    <value>Synchronous</value>
+  </data>
+  <data name="Alternate" xml:space="preserve">
+    <value>Alternate</value>
+  </data>
+  <data name="NoFlash" xml:space="preserve">
+    <value>No flash</value>
+  </data>
+  <data name="HideLEDs" xml:space="preserve">
+    <value>Hide LEDs</value>
+  </data>
+  <data name="Delay" xml:space="preserve">
+    <value>Delay:</value>
+  </data>
+  <data name="HigherValueIncrease" xml:space="preserve">
+    <value>A higher value increases the delay when the board reports a change (debounce)</value>
+  </data>
+  <data name="DecrementDelay" xml:space="preserve">
+    <value>Decrement delay</value>
+  </data>
+  <data name="IncrementDelay" xml:space="preserve">
+    <value>Increment delay</value>
+  </data>
+  <data name="ResetDefault" xml:space="preserve">
+    <value>Reset to default</value>
+  </data>
+  <data name="ResetDefaultWithout" xml:space="preserve">
+    <value>Reset to default value, without delay</value>
+  </data>
+  <data name="Scans" xml:space="preserve">
+    <value>Scans:</value>
+  </data>
+  <data name="HowManyTimerPerSecond" xml:space="preserve">
+    <value>How many times per second the board is scanned for any changes</value>
+  </data>
+  <data name="PerSec" xml:space="preserve">
+    <value>per sec.</value>
+  </data>
+  <data name="ResetDefaultPerSec" xml:space="preserve">
+    <value>Reset to default with 16.3 scans per sec.</value>
+  </data>
+  <data name="ShowValuation" xml:space="preserve">
+    <value>Show valuation</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="LeftRight" xml:space="preserve">
+    <value>Left/Right</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Bottom</value>
+  </data>
+  <data name="BottomTop" xml:space="preserve">
+    <value>Bottom/Top</value>
+  </data>
+  <data name="UsingElfacun" xml:space="preserve">
+    <value>Using a Elfacun module by 'inmbolmie'</value>
+  </data>
+  <data name="ConfigureSaitekOSA" xml:space="preserve">
+    <value>Configure Saitek OSA</value>
+  </data>
+  <data name="Baud" xml:space="preserve">
+    <value>Baud:</value>
+  </data>
+  <data name="AndAllBaudRates" xml:space="preserve">
+    <value>and all baud rates</value>
+  </data>
+  <data name="BaudValue" xml:space="preserve">
+    <value>baud</value>
+  </data>
+  <data name="BaudRates" xml:space="preserve">
+    <value>baud rates</value>
+  </data>
+  <data name="ConfigurePegasus" xml:space="preserve">
+    <value>Configure DGT Pegasus</value>
+  </data>
+  <data name="ConfigureSentio" xml:space="preserve">
+    <value>Configure TabuTronic Sentio chessboard</value>
+  </data>
+  <data name="ConfigureNOVAGUCB" xml:space="preserve">
+    <value>Configure NOVAG UCB</value>
+  </data>
+  <data name="ConfigureSquareOffPro" xml:space="preserve">
+    <value>Configure SquareOff Pro</value>
+  </data>
+  <data name="ScanIntervalInMS" xml:space="preserve">
+    <value>Scan interval in ms</value>
+  </data>
+  <data name="ResetDefault250ms" xml:space="preserve">
+    <value>reset to default witch scans every 250 ms</value>
+  </data>
+  <data name="WhatDoYouLikeToDo" xml:space="preserve">
+    <value>What do you like to do?</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action...</value>
+  </data>
+  <data name="StartNewGame" xml:space="preserve">
+    <value>Start a new game</value>
+  </data>
+  <data name="RestartGame" xml:space="preserve">
+    <value>Restart the game</value>
+  </data>
+  <data name="StopCurrentGame" xml:space="preserve">
+    <value>Stop current game</value>
+  </data>
+  <data name="StopAndSave" xml:space="preserve">
+    <value>Stop and save current game</value>
+  </data>
+  <data name="SearchForBT" xml:space="preserve">
+    <value>Search for Bluetooth COM-Ports...</value>
+  </data>
+  <data name="ConfirmBoardSelection" xml:space="preserve">
+    <value>Confirm board selection</value>
+  </data>
+  <data name="GiveBoardAName" xml:space="preserve">
+    <value>Give the board name</value>
+  </data>
+  <data name="BoardNameRequired" xml:space="preserve">
+    <value>A board name is required</value>
+  </data>
+  <data name="BoardNameAlreadyTaken" xml:space="preserve">
+    <value>The board name is already taken</value>
+  </data>
+  <data name="NoPNGFilesFound" xml:space="preserve">
+    <value>No png files found.</value>
+  </data>
+  <data name="LookingForWhite" xml:space="preserve">
+    <value>Looking for w.png or white.png for white squares</value>
+  </data>
+  <data name="LookingForBlack" xml:space="preserve">
+    <value>and b.png or black.png for black squares</value>
+  </data>
+  <data name="DatabaseFilter" xml:space="preserve">
+    <value>Database filter</value>
+  </data>
+  <data name="EnableFilter" xml:space="preserve">
+    <value>Enable filter</value>
+  </data>
+  <data name="NoTournamentGames" xml:space="preserve">
+    <value>No tournament games</value>
+  </data>
+  <data name="NoDuelGames" xml:space="preserve">
+    <value>No duel games</value>
+  </data>
+  <data name="OnlyDuplicates" xml:space="preserve">
+    <value>Only duplicates</value>
+  </data>
+  <data name="Whatever" xml:space="preserve">
+    <value>Whatever</value>
+  </data>
+  <data name="ApplyFilter" xml:space="preserve">
+    <value>Apply filter settings</value>
+  </data>
+  <data name="ClearFilter" xml:space="preserve">
+    <value>Clear filter settings</value>
+  </data>
+  <data name="SaveFilterAsDefault" xml:space="preserve">
+    <value>Save filter as default</value>
+  </data>
+  <data name="IncrementCycles" xml:space="preserve">
+    <value>Increment cycles</value>
+  </data>
+  <data name="WaitingForNewGame" xml:space="preserve">
+    <value>Waiting for a new game</value>
+  </data>
+  <data name="ClickToContinue" xml:space="preserve">
+    <value>Click to continue</value>
+  </data>
+  <data name="ClickOn" xml:space="preserve">
+    <value>Click on</value>
+  </data>
+  <data name="WhenReady" xml:space="preserve">
+    <value>when ready</value>
+  </data>
+  <data name="Castling" xml:space="preserve">
+    <value>Castling</value>
+  </data>
+  <data name="ColorOnMove" xml:space="preserve">
+    <value>Color on move</value>
+  </data>
+  <data name="ClearBoard" xml:space="preserve">
+    <value>Clear board</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Promote" xml:space="preserve">
+    <value>Promote</value>
+  </data>
+  <data name="ReplaceGame" xml:space="preserve">
+    <value>Replace game</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="WhitePlayerMissing" xml:space="preserve">
+    <value>White player missing</value>
+  </data>
+  <data name="BlackPlayerMissing" xml:space="preserve">
+    <value>Black player missing</value>
+  </data>
+  <data name="EventMissing" xml:space="preserve">
+    <value>Event missing</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="EngineAndParameter" xml:space="preserve">
+    <value>Engine and parameter</value>
+  </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="CurrentPositionReportedByBoard" xml:space="preserve">
+    <value>Current postion reported by the board.</value>
+  </data>
+  <data name="EachPawnAField" xml:space="preserve">
+    <value>Each pawn represents a piece on a field.</value>
+  </data>
+  <data name="HasNoRecognition" xml:space="preserve">
+    <value>has no real piece recognition and can only give the information per field whether there is a piece or not.</value>
+  </data>
+  <data name="ResetBoard" xml:space="preserve">
+    <value>Reset board</value>
+  </data>
+  <data name="SendReset" xml:space="preserve">
+    <value>Send a reset command to the board?</value>
+  </data>
+  <data name="Set" xml:space="preserve">
+    <value>Set</value>
+  </data>
 </root>

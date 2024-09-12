@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
-        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="New Game" Height="590" Width="670">
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner" KeyDown="NewGameWindow_OnKeyDown" Activated="NewGameWindow_OnActivated"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"  StateChanged="NewGameWindow_OnStateChanged"
+        Title="{x:Static p:Resources.NewGame}" Height="590" Width="695">
     <Window.Resources>
         <ResourceDictionary>
             <RoutedUICommand x:Key="CtrEnter" Text="Exit" />
@@ -52,8 +53,9 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Margin="0,0,58,0" Source="../Assets/Stone/Symbol/KingW.png" Width="32" Height="32" />
                            
-                            <Button Name="buttonPlayerWhiteEngine"  HorizontalContentAlignment="Left" Width="370" Click="ButtonPlayerWhiteEngine_OnClick" >
-                                <TextBlock Margin="5" Name="textBlockPlayerWhiteEngine"></TextBlock>
+                            <Button Name="buttonPlayerWhiteEngine"  HorizontalContentAlignment="Left" Width="370" Click="ButtonPlayerWhiteEngine_OnClick"
+                                     GotFocus="ButtonPlayerWhiteEngine_OnGotFocus" AutomationProperties.HelpText="{x:Static p:Resources.SelectWhitePlayerButton}" >
+                                <TextBlock  Margin="5" Name="textBlockPlayerWhiteEngine"></TextBlock>
                             </Button>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
@@ -68,8 +70,8 @@
                                    Source="../Assets/Icons/book_open.png" />
                             <Image Margin="5,0,0,0" Name="imageBookWhite2" Width="24" Height="24"
                                    Source="../Assets/Icons/book.png" Visibility="Collapsed" />
-                            <Button Name="buttonSwap" ToolTip="Switch color" Margin="100,1,0,0" Height="24" BorderBrush="Transparent" 
-                                    Background="Transparent" Click="ButtonSwap_OnClick">
+                            <Button Name="buttonSwap" ToolTip="{x:Static p:Resources.SwitchColor}" Margin="100,1,0,0" Height="24" BorderBrush="Transparent" GotFocus="Button_OnGotFocus"
+                                    Background="Transparent" Click="ButtonSwap_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.SwitchColor}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Margin="5,0,0,0"  Source="../Assets/Icons/arrow_refresh.png" />
                                 </StackPanel>
@@ -77,21 +79,23 @@
                         </StackPanel>
 
                     </StackPanel>
-                    <Button Name="buttonConfigureWhite" Margin="5" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"
+                    <Button Name="buttonConfigureWhite" Margin="5" Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" GotFocus="ButtonConfigureWhite_OnGotFocus"
                             HorizontalAlignment="Left" Click="ButtonConfigureWhite_OnClick" BorderBrush="Transparent"
-                            Background="Transparent" ToolTip="Configure">
+                            Background="Transparent" ToolTip="{x:Static p:Resources.Configure}">
                         <Image Height="32" Width="32" Source="../Assets/Icons/cog.png" />
                     </Button>
-                    <Button Name="buttonPlayerWhite" Margin="5" Grid.Column="2" Grid.Row="0" VerticalAlignment="Top"
+                    <Button Name="buttonPlayerWhite" Margin="5" Grid.Column="2" Grid.Row="0" VerticalAlignment="Top" GotFocus="Button_OnGotFocus"
                             HorizontalAlignment="Left" Click="ButtonPlayerWhite_OnClick" BorderBrush="Transparent"
-                            Background="Transparent" ToolTip="Select Player">
+                            Background="Transparent" ToolTip="{x:Static p:Resources.SelectPlayer}"
+                            AutomationProperties.HelpText="{x:Static p:Resources.DirectSelectionPlayerWhite}">
                         <Image Height="32" Width="32" Source="../Assets/Icons/user_silhouette.png" />
                     </Button>
                     <StackPanel Grid.Column="0" Grid.Row="1" Margin="5">
                         <StackPanel Orientation="Horizontal">
                             <Image Margin="0,0,58,0" Source="../Assets/Stone/Symbol/KingB.png" Width="32" Height="32" />
 
-                            <Button Name="buttonPlayerBlackEngine"  HorizontalContentAlignment="Left" Width="370" Click="ButtonPlayerBlackEngine_OnClick" >
+                            <Button Name="buttonPlayerBlackEngine"  HorizontalContentAlignment="Left" Width="370" GotFocus="ButtonPlayerBlackEngine_OnGotFocus"
+                                    Click="ButtonPlayerBlackEngine_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.SelectBlackPlayerButton}" > 
                                 <TextBlock Margin="5" Name="textBlockPlayerBlackEngine"></TextBlock>
                             </Button>
                         </StackPanel>
@@ -113,13 +117,14 @@
 
                     <Button Name="buttonConfigureBlack" Margin="5" Grid.Column="1" Grid.Row="1" VerticalAlignment="Top"
                             HorizontalAlignment="Left" Click="ButtonConfigureBlack_OnClick" BorderBrush="Transparent"
-                            Background="Transparent" ToolTip="Configure">
+                            Background="Transparent" ToolTip="{x:Static p:Resources.Configure}" GotFocus="ButtonConfigureBlack_OnGotFocus">
                         <Image Height="32" Width="32" Source="../Assets/Icons/cog.png" />
                     </Button>
 
                     <Button Name="buttonPlayerBlack" Margin="5" Grid.Column="2" Grid.Row="1" VerticalAlignment="Top"
-                            HorizontalAlignment="Left" Click="ButtonPlayerBlack_OnClick" BorderBrush="Transparent"
-                            Background="Transparent" ToolTip="Select Player">
+                            HorizontalAlignment="Left" Click="ButtonPlayerBlack_OnClick" BorderBrush="Transparent" GotFocus="Button_OnGotFocus"
+                            Background="Transparent" ToolTip="{x:Static p:Resources.SelectPlayer}"
+                            AutomationProperties.HelpText="{x:Static p:Resources.DirectSelectionPlayerBlack}">
                         <Image Height="32" Width="32" Source="../Assets/Icons/user_silhouette.png" />
 
                     </Button>
@@ -128,17 +133,19 @@
                     <Image Margin="15,0,0,0" Width="32" Height="32" Name="imageTeddy"
                            Source="../Assets/Icons/BearChess.ico" Visibility="Visible" />
                     <StackPanel>
-                        <CheckBox Name="checkBoxRelaxed" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="55,5,5,5" 
-                                Checked="CheckBoxRelaxed_OnChecked" Unchecked="CheckBoxRelaxed_OnUnchecked">Relaxed</CheckBox>
-                        <CheckBox Name="checkBox2TimeControls" VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                  Margin="55,5,5,5" 
-                              Checked="CheckBox2TimeControls_OnChecked" Unchecked="CheckBox2TimeControls_OnUnchecked">Separate time control for white and black</CheckBox>
+                        <CheckBox Name="checkBoxRelaxed" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="55,5,5,5" GotFocus="CheckBox_OnGotFocus"
+                                  AutomationProperties.HelpText="{x:Static p:Resources.Relaxed}"
+                                Checked="CheckBoxRelaxed_OnChecked" Unchecked="CheckBoxRelaxed_OnUnchecked" Content="{x:Static p:Resources.Relaxed}"></CheckBox>
+                        <CheckBox Name="checkBox2TimeControls" VerticalAlignment="Center" VerticalContentAlignment="Center" GotFocus="CheckBox_OnGotFocus"
+                                  AutomationProperties.HelpText="{x:Static p:Resources.SeparateTimeControl}"
+                                  Margin="55,5,5,5" Content="{x:Static p:Resources.SeparateTimeControl}"
+                              Checked="CheckBox2TimeControls_OnChecked" Unchecked="CheckBox2TimeControls_OnUnchecked"></CheckBox>
                     </StackPanel>
                 </StackPanel>
                 <Grid Grid.Column="0" Grid.Row="2" Margin="5">
                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock Name="textBlockTimeControl1" Text="Time control:" VerticalAlignment="Center" Width="90"/>
-                        <ComboBox Name="comboBoxTimeControl" Width="200" Height="30" VerticalContentAlignment="Center"
+                        <TextBlock Name="textBlockTimeControl1" Text="{x:Static p:Resources.TimeControlDialog}" VerticalAlignment="Center" Width="90"/>
+                        <ComboBox Name="comboBoxTimeControl" Width="200" Height="30" VerticalContentAlignment="Center" GotFocus="ComboBoxTimeControl_OnGotFocus"
                                   SelectionChanged="ComboBoxTimeControl_OnSelectionChanged">
                             <ComboBoxItem IsSelected="True">Time per game</ComboBoxItem>
                             <ComboBoxItem>Time per game with increment</ComboBoxItem>
@@ -148,6 +155,7 @@
                             <ComboBoxItem>Depth</ComboBoxItem>
                             <ComboBoxItem>Nodes</ComboBoxItem>
                             <ComboBoxItem>Exact time per move</ComboBoxItem>
+                            <ComboBoxItem>No control</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
                 </Grid>
@@ -156,82 +164,80 @@
                         Margin="5"
                         Visibility="Visible" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGame" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">min.</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGame" GotFocus="NumericUpDownUserControlTimePerGame_OnGotFocus" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                        MinValue="1" MaxValue="999" Value="5" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Minutes}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderTimePerGameWithIncrement" Grid.Column="1" Grid.Row="2" BorderBrush="Gray"
                         Margin="5"
                         BorderThickness="0" Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameWith" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">min.</Label>
-                        <Label VerticalAlignment="Center">plus</Label>
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameIncrement"
-                                                        Height="40"
-                                                        MinValue="1" MaxValue="60" Value="1" />
-                        <Label VerticalAlignment="Center">sec. per move</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameWith" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                        MinValue="1" MaxValue="999" Value="5" GotFocus="NumericUpDownUserControlTimePerGameWith_OnGotFocus" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Plus}"/>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameIncrement" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                        Height="40" GotFocus="NumericUpDownUserControlTimePerGameIncrement_OnGotFocus"
+                                                        MinValue="1" MaxValue="60" Value="3" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.SecondsPerMove}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderTimePerGivenMoves" Grid.Column="1" Grid.Row="2" BorderBrush="Gray"
                         BorderThickness="0" Margin="5"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivenMoves" Height="40"
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivenMoves" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                        MinValue="1" MaxValue="999" Value="1"  GotFocus="NumericUpDownUserControlTimePerGivenMoves_OnGotFocus" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.MovesIn}"/>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivensMovesMin" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                        Height="40" GotFocus="NumericUpDownUserControlTimePerGivensMovesMin_OnGotFocus"
                                                         MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">moves</Label>
-                        <Label VerticalAlignment="Center">in</Label>
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivensMovesMin"
-                                                        Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">min.</Label>
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Minutes}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderAverageTimePerMove" Grid.Column="1" Grid.Row="2" BorderBrush="Gray"
                         BorderThickness="0" Margin="5"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlAverageTime" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlAverageTime" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                        MinValue="1" MaxValue="999" Value="3" GotFocus="NumericUpDownUserControlAverageTime_OnGotFocus" />
                         <RadioButton Name="radioButtonSecond" Margin="10,0,0,0" IsChecked="True"
-                                     VerticalAlignment="Center" GroupName="averageTime" Content="sec." />
+                                     VerticalAlignment="Center" GroupName="averageTime" Content="{x:Static p:Resources.Sec}"/>
                         <RadioButton Name="radioButtonMinute" Margin="10,0,0,0" VerticalAlignment="Center"
-                                     GroupName="averageTime" Content="min." />
+                                     GroupName="averageTime" Content="{x:Static p:Resources.Minutes}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderDepth" Grid.Column="1" Grid.Row="2" BorderBrush="Gray" BorderThickness="0"
-                        Margin="5"
+                        Margin="5" 
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlDepth" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">plies</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlDepth" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                           GotFocus="NumericUpDownUserControlDepth_OnGotFocus"             MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Plies}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderNodes" Grid.Column="1" Grid.Row="2" BorderBrush="Gray" BorderThickness="0"
                         Margin="5"
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlNodes" Height="40"
-                                                        MinValue="1" MaxValue="999999999" Value="1" />
-                        <Label VerticalAlignment="Center">nodes</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlNodes" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                     GotFocus="NumericUpDownUserControlNodes_OnGotFocus"                   MinValue="1" MaxValue="999999999" Value="1" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Nodes}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderExactTime" Grid.Column="1" Grid.Row="2" BorderBrush="Gray" BorderThickness="0"
                         Margin="5"
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlExactTime" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">sec.</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlExactTime" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                         GotFocus="NumericUpDownUserControlExactTime_OnGotFocus"               MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Sec}"/>
                     </StackPanel>
                 </Border>
                 <Grid Name="gridTimeControl2" Grid.Column="0" Grid.Row="3" Visibility="Hidden" Margin="5">
                     <StackPanel Orientation="Horizontal" Margin="5">
-                        <TextBlock VerticalAlignment="Center" Text="Time control &#x265A;:" Width="90"></TextBlock>
-                        <ComboBox Name="comboBoxTimeControl2" Width="200" Height="30" VerticalContentAlignment="Center"
+                        <TextBlock VerticalAlignment="Center" Name="textBlockTimeControl2" Text="Time control &#x265A;:" Width="90"></TextBlock>
+                        <ComboBox Name="comboBoxTimeControl2" Width="200" Height="30" VerticalContentAlignment="Center" GotFocus="ComboBoxTimeControl_OnGotFocus"
                                   SelectionChanged="ComboBoxTimeControl2_OnSelectionChanged">
                             <ComboBoxItem IsSelected="True">Time per game</ComboBoxItem>
                             <ComboBoxItem>Time per game with increment</ComboBoxItem>
@@ -241,6 +247,7 @@
                             <ComboBoxItem>Depth</ComboBoxItem>
                             <ComboBoxItem>Nodes</ComboBoxItem>
                             <ComboBoxItem>Exact time per move</ComboBoxItem>
+                            <ComboBoxItem>No control</ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
                 </Grid>
@@ -248,96 +255,97 @@
                         Margin="5"
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGame2" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">min.</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGame2" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                        GotFocus="NumericUpDownUserControlTimePerGame_OnGotFocus" MinValue="1" MaxValue="999" Value="5" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Minutes}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderTimePerGameWithIncrement2" Grid.Column="1" Grid.Row="3" BorderBrush="Gray"
                         Margin="5"
                         BorderThickness="0" Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameWith2" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">min.</Label>
-                        <Label VerticalAlignment="Center">plus</Label>
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameIncrement2"
-                                                        Height="40"
-                                                        MinValue="1" MaxValue="60" Value="1" />
-                        <Label VerticalAlignment="Center">sec. per move</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameWith2" Height="40" GotFocus="NumericUpDownUserControlTimePerGameWith_OnGotFocus"
+                                                        MinValue="1" MaxValue="999" Value="5" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Plus}"/>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGameIncrement2" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                        Height="40" GotFocus="NumericUpDownUserControlTimePerGameIncrement_OnGotFocus"
+                                                        MinValue="1" MaxValue="60" Value="3" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.SecondsPerMove}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderTimePerGivenMoves2" Grid.Column="1" Grid.Row="3" BorderBrush="Gray"
                         BorderThickness="0" Margin="5"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivenMoves2" Height="40"
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivenMoves2" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                GotFocus="NumericUpDownUserControlTimePerGivenMoves_OnGotFocus"  MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.MovesIn}"/>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivensMovesMin2" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                        Height="40" GotFocus="NumericUpDownUserControlTimePerGivensMovesMin_OnGotFocus"
                                                         MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">moves</Label>
-                        <Label VerticalAlignment="Center">in</Label>
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlTimePerGivensMovesMin2"
-                                                        Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">min.</Label>
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Minutes}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderAverageTimePerMove2" Grid.Column="1" Grid.Row="3" BorderBrush="Gray"
                         BorderThickness="0" Margin="5"
                         Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlAverageTime2" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlAverageTime2" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                          GotFocus="NumericUpDownUserControlAverageTime_OnGotFocus"   MinValue="1" MaxValue="999" Value="3" />
                         <RadioButton Name="radioButtonSecond2" Margin="10,0,0,0" IsChecked="True"
-                                     VerticalAlignment="Center" GroupName="averageTime2" Content="sec." />
+                                     VerticalAlignment="Center" GroupName="averageTime2" Content="{x:Static p:Resources.Sec}"/>
                         <RadioButton Name="radioButtonMinute2" Margin="10,0,0,0" VerticalAlignment="Center"
-                                     GroupName="averageTime2" Content="min." />
+                                     GroupName="averageTime2" Content="{x:Static p:Resources.Minutes}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderDepth2" Grid.Column="1" Grid.Row="3" BorderBrush="Gray" BorderThickness="0"
                         Margin="5"
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlDepth2" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">plies</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlDepth2" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                             GotFocus="NumericUpDownUserControlDepth_OnGotFocus"   MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Plies}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderNodes2" Grid.Column="1" Grid.Row="3" BorderBrush="Gray" BorderThickness="0"
-                        Margin="5"
+                        Margin="5" 
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlNodes2" Height="40"
-                                                        MinValue="1" MaxValue="999999999" Value="1" />
-                        <Label VerticalAlignment="Center">nodes</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlNodes2" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                GotFocus="NumericUpDownUserControlDepth_OnGotFocus"   MinValue="1" MaxValue="999999999" Value="1" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Nodes}"/>
                     </StackPanel>
                 </Border>
                 <Border Name="borderExactTime2" Grid.Column="1" Grid.Row="3" BorderBrush="Gray" BorderThickness="0"
                         Margin="5"
                         Visibility="Collapsed" HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlExactTime2" Height="40"
-                                                        MinValue="1" MaxValue="999" Value="1" />
-                        <Label VerticalAlignment="Center">sec.</Label>
+                        <local:NumericUpDownUserControl x:Name="numericUpDownUserControlExactTime2" Height="40" ValueChanged="NumericUpDownUserControl_OnValueChanged"
+                                                   GotFocus="NumericUpDownUserControlExactTime_OnGotFocus"  MinValue="1" MaxValue="999" Value="1" />
+                        <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Sec}"/>
                     </StackPanel>
                 </Border>
                 <StackPanel Grid.Row="4" Grid.Column="1">
-                    <CheckBox Name="checkBoxTournamentMode" Margin="5,5,5,5" VerticalAlignment="Center"
-                              Unchecked="CheckBoxAllowTournament_OnUnchecked"
+                    <CheckBox Name="checkBoxTournamentMode" Margin="5,5,5,5" VerticalAlignment="Center"  GotFocus="CheckBox_OnGotFocus"
+                              AutomationProperties.HelpText="{x:Static p:Resources.TournamentMode}"
+                              Unchecked="CheckBoxAllowTournament_OnUnchecked" Content="{x:Static p:Resources.TournamentMode}"
                               Checked="CheckBoxAllowTournament_OnChecked">
-                        Tournament mode
+                        
                     </CheckBox>
-                    <CheckBox Name="checkBoxAllowTakeMoveBack" Margin="5,5,5,5" VerticalAlignment="Center">Allow to take a move back</CheckBox>
+                    <CheckBox Name="checkBoxAllowTakeMoveBack" Margin="5,5,5,5" VerticalAlignment="Center" Content="{x:Static p:Resources.AllowToTakeBack}" Checked="CheckBox_OnChecked"
+                              Unchecked="CheckBox_OnUnchecked" GotFocus="CheckBox_OnGotFocus" AutomationProperties.HelpText="{x:Static p:Resources.AllowToTakeBack}"></CheckBox>
                 </StackPanel>
                 <StackPanel Name="stackPanelExtraTime" Orientation="Horizontal" Grid.Column="0" Grid.Row="4"
                             Margin="10,5,5,5" VerticalAlignment="Top">
-                    <Label VerticalAlignment="Center">Extra time for human player:</Label>
-                    <local:NumericUpDownUserControl x:Name="numericUpDownUserExtraTime" Height="40" MinValue="0"
+                    <Label VerticalAlignment="Center" Content="{x:Static p:Resources.ExtraTimeForHuman}"/>
+                    <local:NumericUpDownUserControl x:Name="numericUpDownUserExtraTime" Height="40" MinValue="0" ValueChanged="NumericUpDownUserControl_OnValueChanged"
                                                     MaxValue="999" Value="0" />
-                    <Label VerticalAlignment="Center">min.</Label>
+                    <Label VerticalAlignment="Center" Content="{x:Static p:Resources.Minutes}"/>
                 </StackPanel>
-                <CheckBox Name="checkBoxStartAfterMoveOnBoard" VerticalAlignment="Center" Margin="5" Grid.Column="1"
+                <CheckBox Name="checkBoxStartAfterMoveOnBoard" VerticalAlignment="Center" Margin="5" Grid.Column="1"  Checked="CheckBox_OnChecked"
+                          Unchecked="CheckBox_OnUnchecked" GotFocus="CheckBox_OnGotFocus" AutomationProperties.HelpText="{x:Static p:Resources.StartClockAfterMove}"
                           Grid.Row="5">
-                    <TextBlock TextWrapping="Wrap">Start the clock after the move is executed on the electronic board.</TextBlock>
+                    <TextBlock TextWrapping="Wrap" Text="{x:Static p:Resources.StartClockAfterMove}"></TextBlock>
                 </CheckBox>
                 <Grid Grid.Column="0" Grid.Row="6" Margin="5">
                     <Grid>
@@ -346,31 +354,35 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock VerticalAlignment="Center" Margin="10,5" Grid.Column="0">Start from:</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="10,5" Grid.Column="0" Text="{x:Static p:Resources.StartFrom}"/>
                         <StackPanel Name="stackPanelStartFrom" VerticalAlignment="Center" Margin="5" Grid.Column="1" >
-                            <RadioButton Name="radioButtonStartPosition" Margin="0" GroupName="start" IsChecked="True">Base position</RadioButton>
-                            <RadioButton Name="radioButtonCurrentPosition" Margin="0,5,0,0" GroupName="start">Current position</RadioButton>
-                            <RadioButton Name="radioButtonContinueGame" Margin="0,5,0,0" GroupName="start">Continue the game</RadioButton>
+                            <RadioButton Name="radioButtonStartPosition" Margin="0" GroupName="start" IsChecked="True" Content="{x:Static p:Resources.BasePosition}"/>
+                            <RadioButton Name="radioButtonCurrentPosition" Margin="0,5,0,0" GroupName="start" Content="{x:Static p:Resources.CurrentPosition}"/>
+                            <RadioButton Name="radioButtonContinueGame" Margin="0,5,0,0" GroupName="start" Content="{x:Static p:Resources.ContinueTheGame}"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
             </Grid>
         </Border>
         <DockPanel Grid.Column="0" Grid.Row="1" LastChildFill="False" Margin="5">
-            <Button Name="buttonOk" Click="ButtonOk_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left" 
-                    Background="Transparent" BorderBrush="Transparent">
+            <Button Name="buttonOk" Click="ButtonOk_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left" ToolTip="{x:Static p:Resources.Ok}"
+                    AutomationProperties.HelpText="{x:Static p:Resources.Ok}"
+                    Background="Transparent" BorderBrush="Transparent" GotFocus="Button_OnGotFocus">
                 <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32" />
             </Button>
-            <Button Name="buttonSave" Click="ButtonSave_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left"
-                    Background="Transparent" BorderBrush="Transparent" ToolTip="Save configuration as startup game">
+            <Button Name="buttonSave" Click="ButtonSave_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left"  GotFocus="Button_OnGotFocus"
+                    AutomationProperties.HelpText="{x:Static p:Resources.SaveConfigAsStartup}"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.SaveConfigAsStartup}">
                 <Image Source="../Assets/Icons/layer_save.png" Width="32" Height="32" />
             </Button>
-            <Button Name="buttonOpen" Click="ButtonOpen_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left"
-                    Background="Transparent" BorderBrush="Transparent" ToolTip="Load startup game configuration">
+            <Button Name="buttonOpen" Click="ButtonOpen_OnClick" Margin="15,5,5,5" DockPanel.Dock="Left" GotFocus="Button_OnGotFocus"
+                    AutomationProperties.HelpText="{x:Static p:Resources.LoadStartupGameConfig}"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.LoadStartupGameConfig}">
                 <Image Source="../Assets/Icons/layer_open.png" Width="32" Height="32" />
             </Button>
-            <Button Name="buttonCancel" Click="ButtonCancel_OnClick" Margin="5,5,20,5" DockPanel.Dock="Right"
-                    Background="Transparent" BorderBrush="Transparent">
+            <Button Name="buttonCancel" Click="ButtonCancel_OnClick" Margin="5,5,20,5" DockPanel.Dock="Right" ToolTip="{x:Static p:Resources.Cancel}"
+                    AutomationProperties.HelpText="{x:Static p:Resources.Cancel}"
+                    Background="Transparent" BorderBrush="Transparent" GotFocus="Button_OnGotFocus">
                 <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32" />
             </Button>
         </DockPanel>

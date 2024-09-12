@@ -30,6 +30,11 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
         {
             this.Title = title;
         }
+
+        public void SetWait(string waitInfo)
+        {
+            this.textBlockWait.Text = waitInfo;
+        }
         public void SetMaxValue(int maxValue)
         {
             progressBar.Maximum = maxValue;

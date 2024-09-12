@@ -5,18 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" 
-        Title="Increment Cycles" Height="150" Width="300">
+        Title="{x:Static p:Resources.IncrementCycles}" Height="150" Width="300">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel  Grid.Column="0" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
-            <Label Width="110" VerticalAlignment="Center">Number of games:</Label>
+            <Label Width="110" VerticalAlignment="Center" Content="{x:Static p:Resources.NumberOfGames}"></Label>
             <bearChessWin:NumericUpDownUserControl x:Name="numericUpDownUserControlNumberOfGames" Height="40"
                                             MinValue="1" MaxValue="999" Value="1" />
 

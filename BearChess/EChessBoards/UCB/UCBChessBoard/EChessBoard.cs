@@ -25,6 +25,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
         }
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 
@@ -34,6 +35,7 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            ValidForAnalyse = false;
             SelfControlled = true;
             _serialCommunication = new SerialCommunication(logger, portName, false);
             IsConnected = EnsureConnection();
@@ -49,7 +51,8 @@ namespace www.SoLaNoSoft.com.BearChess.UCBChessBoard
             _logger = logger;
             BatteryLevel = "--";
             BatteryStatus = "";
-            PieceRecognition = false; 
+            PieceRecognition = false;
+            ValidForAnalyse = false;
             SelfControlled = true;
             Information = Constants.UCB;
             _lastMove = string.Empty;

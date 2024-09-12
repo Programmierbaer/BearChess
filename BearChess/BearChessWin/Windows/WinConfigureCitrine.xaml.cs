@@ -5,11 +5,13 @@ using System.Linq;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.CitrineLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 using Path = System.IO.Path;
+using System.Resources;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -29,6 +31,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private List<string> _portNames;
         private List<string> _allPortNames;
         private readonly ILogging _fileLogger;
+        private readonly ResourceManager _rm;
 
         public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
@@ -37,7 +40,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public WinConfigureCitrine(Configuration configuration)
         {
             InitializeComponent();
-
+            _rm = SpeechTranslator.ResourceManager;
             _configuration = configuration;
 
             _fileName = Path.Combine(_configuration.FolderPath, CitrineLoader.EBoardName, $"{CitrineLoader.EBoardName}Cfg.xml");
@@ -104,16 +107,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (ucbLoader.CheckComPort(name))
                         {
                             infoWindow.Close();
-                            MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK,
-                                            MessageBoxImage.Information);
+                            MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {name}", _rm.GetString("Check"), MessageBoxButton.OK,
+                                MessageBoxImage.Information);
                             comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
                             return;
                         }
                     }
 
                     infoWindow.Close();
-                    MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show(_rm.GetString("CheckConnectionFailedForAll"), _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                     return;
 
                 }
@@ -124,14 +127,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (ucbLoader.CheckComPort(portName))
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Information);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                 }
                 else
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check failed for {portName}", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)

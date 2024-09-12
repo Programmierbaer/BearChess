@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.Loader;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
@@ -27,6 +29,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private List<string> _portNames;
         private List<string> _allPortNames;
         private readonly ILogging _fileLogger;
+        private readonly ResourceManager _rm;
 
         public string SelectedPortName => (string)comboBoxComPorts.SelectedItem;
 
@@ -34,6 +37,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _configuration = configuration;
             _useBluetooth = useBluetooth || useBluetoothLE;
+            _rm = SpeechTranslator.ResourceManager;
             InitializeComponent();
             _fileName = Path.Combine(_configuration.FolderPath, TabutronicSentioLoader.EBoardName,
                                                 $"{TabutronicSentioLoader.EBoardName}Cfg.xml");
@@ -120,16 +124,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         if (sentioLoader.CheckComPort(name))
                         {
                             infoWindow.Close();
-                            MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK,
-                                            MessageBoxImage.Information);
+                            MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {name}", _rm.GetString("Check"), MessageBoxButton.OK,
+                                MessageBoxImage.Information);
                             comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
                             return;
                         }
                     }
 
                     infoWindow.Close();
-                    MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show(_rm.GetString("CheckConnectionFailedForAll"), _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                     return;
 
                 }
@@ -140,14 +144,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (sentioLoader.CheckComPort(portName))
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Information);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                 }
                 else
                 {
                     infoWindow.Close();
-                    MessageBox.Show($"Check failed for {portName}", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)

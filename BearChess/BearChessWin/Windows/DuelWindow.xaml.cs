@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessTournament;
@@ -22,9 +24,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
     {
         private readonly Configuration _configuration;
         private readonly Database _database;
+        private readonly PgnConfiguration _pgnConfiguration;
         private bool _duelFinished;
         private DuelInfoWindow _duelInfoWindow;
         private DuelManager _duelManager;
+        private readonly ResourceManager _rm;
 
         public static Dictionary<ulong,SolidColorBrush> colorMap = new Dictionary<ulong, SolidColorBrush>();
         public static bool ShowGamesDuplicates = true;
@@ -34,13 +38,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler<int> CloneDuelSelected;
         public event EventHandler<int> RepeatGameSelected;
 
-        public DuelWindow(Configuration configuration, Database database)
+        public DuelWindow(Configuration configuration, Database database, PgnConfiguration pgnConfiguration)
         {
             InitializeComponent();
             _configuration = configuration;
+            _rm = SpeechTranslator.ResourceManager;
             ShowGamesDuplicates = bool.Parse(_configuration.GetConfigValue("showGamesDuplicates", "true"));
             dataGridGames.Columns[0].Visibility = ShowGamesDuplicates ? Visibility.Visible : Visibility.Collapsed;
             _database = database;
+            _pgnConfiguration = pgnConfiguration;
             Top = _configuration.GetWinDoubleValue("DuelWindowTop", Configuration.WinScreenInfo.Top,
                                                    SystemParameters.VirtualScreenHeight,
                                                    SystemParameters.VirtualScreenWidth);
@@ -48,7 +54,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                                     SystemParameters.VirtualScreenHeight,
                                                     SystemParameters.VirtualScreenWidth);
             dataGridDuel.ItemsSource = _database.LoadDuel();
-            Title = $"Duels on: {_database.FileName}";
+            Title = $"{_rm.GetString("DuelsOn")}: {_database.FileName}";
         }
 
         private void ContinueADuel()
@@ -60,7 +66,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (dataGridDuel.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Please select only one duel", "Cannot continue",
+                MessageBox.Show(_rm.GetString("SelectOnlyOneDuel"), _rm.GetString("CannotContinueDuel"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -70,7 +76,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (duel.GamesToPlay == duel.PlayedGames && _duelFinished)
                 {
-                    MessageBox.Show("Cannot continue the duel, it is finished", "Cannot continue",
+                    MessageBox.Show(_rm.GetString("CannotContinueDuelFinished"), _rm.GetString("CannotContinueDuel"),
                                     MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
@@ -88,7 +94,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (dataGridDuel.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Please select only one duel", "Cannot load as new",
+                MessageBox.Show(_rm.GetString("SelectOnlyOneDuel"), _rm.GetString("CannotLoadAsNewDuel"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -178,8 +184,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (dataGridDuel.SelectedItems.Count > 1)
             {
-                if (MessageBox.Show($"Delete all {dataGridDuel.SelectedItems.Count} selected duels?",
-                                    "Delete duel", MessageBoxButton.YesNo,
+                if (MessageBox.Show($"{_rm.GetString("DeleteAllSelectedDuels")} {dataGridDuel.SelectedItems.Count}",
+                                    _rm.GetString("DeleteDuel"), MessageBoxButton.YesNo,
                                     MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes)
                 {
                     return;
@@ -187,7 +193,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                if (MessageBox.Show("Delete selected duel?", "Delete duel", MessageBoxButton.YesNo,
+                if (MessageBox.Show(_rm.GetString("DeleteSelectedDuel"), _rm.GetString("DeleteDuel"), MessageBoxButton.YesNo,
                                     MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
                 {
                     return;
@@ -220,7 +226,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id, false));
+                OnSelectedGamedChanged(_database.LoadGame(pgnGame.Id, _pgnConfiguration));
             }
         }
 
@@ -228,7 +234,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                ClipboardHelper.SetText(_database.LoadGame(pgnGame.Id, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false"))).PgnGame.GetGame());
+                ClipboardHelper.SetText(_database.LoadGame(pgnGame.Id, _pgnConfiguration).PgnGame.GetGame());
             }
         }
 
@@ -241,12 +247,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (dataGridDuel.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Please select only one duel", "Cannot continue",
+                MessageBox.Show(_rm.GetString("SelectOnlyOneDuel"), _rm.GetString("CannotContinueDuel"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (MessageBox.Show("Delete all games and repeat selected duel?", "Repeat duel",
+            if (MessageBox.Show(_rm.GetString("DeleteAllGamesOfDuel"), _rm.GetString("RepeatDuel"),
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes)
             {
@@ -273,7 +279,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            if (MessageBox.Show($"Delete all {dataGridDuel.Items.Count} duels?", "Delete all duels",
+            if (MessageBox.Show($"{_rm.GetString("DeleteAllDuels")}? {dataGridDuel.Items.Count}", _rm.GetString("DeleteAllDuels"),
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
@@ -288,7 +294,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.Items.Count == 0)
             {
-                MessageBox.Show("Select a duel for export", "Information", MessageBoxButton.OK,
+                MessageBox.Show(_rm.GetString("SelectDuelForExport"), _rm.GetString("Information"), MessageBoxButton.OK,
                                 MessageBoxImage.Information);
                 return;
             }
@@ -299,7 +305,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 selectedItems = dataGridGames.Items;
             }
 
-            ExportGames.Export(selectedItems, _database, bool.Parse(_configuration.GetConfigValue("gamesPurePGNExport", "false")),this);
+            ExportGames.Export(selectedItems, _database, _pgnConfiguration,this);
         }
 
         private void ButtonInfo_OnClick(object sender, RoutedEventArgs e)
@@ -334,7 +340,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             }
 
-            CurrentDuel currentDuel = _duelManager.Load(currentDuelId);
+            var currentDuel = _duelManager.Load(currentDuelId);
             if (currentDuel != null)
             {
 
@@ -421,7 +427,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (dataGridGames.SelectedItem is DatabaseGameSimple pgnGame)
             {
-                if (MessageBox.Show($"Repeat selected game?{Environment.NewLine}The previous result will be overwritten.", "Repeat game", MessageBoxButton.YesNo,
+                if (MessageBox.Show($"{_rm.GetString("RepeatSelectedGame")}{Environment.NewLine}{_rm.GetString("PreviousResultOverwritten")}", _rm.GetString("RepeatGame"), MessageBoxButton.YesNo,
                                     MessageBoxImage.Question,MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     OnSelectedRepeatGame(pgnGame.Id);
@@ -437,7 +443,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (dataGridDuel.SelectedItems.Count > 1)
             {
-                MessageBox.Show("Please select only one duel", "Cannot rename",
+                MessageBox.Show(_rm.GetString("SelectOnlyOneDuel"), _rm.GetString("CannotRename"),
                                 MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -449,7 +455,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                  {
                                      Owner = this
                                  };
-                editWindow.SetTitle("Rename Duel");
+                editWindow.SetTitle(_rm.GetString("RenameDuel"));
                 editWindow.SetComment(duel.CurrentDuel.GameEvent);
                 var showDialog = editWindow.ShowDialog();
                 if (showDialog.HasValue && showDialog.Value && !string.IsNullOrWhiteSpace(editWindow.Comment))

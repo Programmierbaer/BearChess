@@ -10,9 +10,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         
         void Release();
 
-
         void SetLedForFields(SetLEDsParameter ledsParameter);
-
 
         /// <summary>
         /// Switch all leds off
@@ -43,6 +41,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         void SendInformation(string message);
         void AdditionalInformation(string information);
+
+        string RequestInformation(string message);
 
         void RequestDump();
 
@@ -89,7 +89,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         bool CheckComPort(string portName);
         bool CheckComPort(string portName, string baud);
 
-        string GetCurrentCOMPort();
+        string GetCurrentComPort();
         string GetCurrentBaud();
         string UnknownPieceCode { get; }
         void DimLeds(bool dimLeds);
@@ -106,10 +106,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetDemoMode(bool inDemoMode);
         void AllowTakeBack(bool allowTakeBack);
         void SetFen(string fen);
+
+        void AwaitingMove(int fromField, int toField);
         bool PieceRecognition { get; }
         bool SelfControlled { get; }
 
         bool MultiColorLEDs { get; }
+        bool ValidForAnalyse { get; }
+
+        bool UseFieldDumpForFEN { get; }
 
         void Stop(bool stop);
         void Ignore(bool ignore);
@@ -123,6 +128,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetEngineColor(int color);
 
         event EventHandler BasePositionEvent;
+        event EventHandler NewGamePositionEvent;
         event EventHandler HelpRequestedEvent;
         event EventHandler<string> DataEvent;
         void AcceptProbingMoves(bool acceptProbingMoves);

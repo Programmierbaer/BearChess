@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="Speech/Sound Configuration" Height="680" Width="500" SizeToContent="Height"> 
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
+        Title="{x:Static p:Resources.SpeechSoundConfiguration}" Height="680" Width="500" SizeToContent="Height"> 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -16,26 +17,25 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="5">
             <StackPanel Orientation="Horizontal">
-                <CheckBox Margin="5" Checked="CheckBoxSpeechActive_OnChecked" FontWeight="DemiBold" ToolTip="Either speech or sound"
-                          Unchecked="CheckBoxSpeechActive_OnUnchecked" Name="checkBoxSpeechActive">
-                    Speech active
-                </CheckBox>
-                <TextBlock Name="textBlockSpeechAvailable"  Visibility="Hidden" Margin="10,5,5,5" FontWeight="DemiBold" Foreground="Red" VerticalAlignment="Center">Speech is on your system not available</TextBlock>
+                <CheckBox Margin="5" Checked="CheckBoxSpeechActive_OnChecked" FontWeight="DemiBold" ToolTip="{x:Static p:Resources.EitherVoiceSound}"
+                          Unchecked="CheckBoxSpeechActive_OnUnchecked" Name="checkBoxSpeechActive" Content="{x:Static p:Resources.SpeechActive}"/>
+
+                <TextBlock Name="textBlockSpeechAvailable"  Visibility="Hidden" Margin="10,5,5,5" FontWeight="DemiBold" Foreground="Red" VerticalAlignment="Center" Text="{x:Static p:Resources.SpeechNotAvailable}"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="15,5,5,5" VerticalAlignment="Center" TextAlignment="Center">Type of move announcement:</TextBlock>
-                <RadioButton GroupName="moveType" Margin="5,5,5,5" Name="radioButtonLong" IsChecked="True">Knight g1-f3</RadioButton>
-                <RadioButton GroupName="moveType" Margin="5" Name="radioButtonShort">Knight f3</RadioButton>
+                <TextBlock Margin="15,5,5,5" VerticalAlignment="Center" TextAlignment="Center" Text="{x:Static p:Resources.TypeMoveAnnouncement}"/>
+                <RadioButton GroupName="moveType" Margin="5,5,5,5" Name="radioButtonLong" IsChecked="True"  Content="{x:Static p:Resources.KnightG1F3}"/>
+                <RadioButton GroupName="moveType" Margin="5" Name="radioButtonShort" Content="{x:Static p:Resources.KnightF3}"/>
 
             </StackPanel>
 
-            <CheckBox Name="checkBoxOwnMove" Margin="15,5,5,5" ToolTip="Announce your own move">Own move</CheckBox>
+            <CheckBox Name="checkBoxOwnMove" Margin="15,5,5,5" ToolTip="{x:Static p:Resources.AnnounceOwnMove}" Content="{x:Static p:Resources.OwnMove}"/>
         </StackPanel>
-        <TextBlock DockPanel.Dock="Left" FontWeight="DemiBold" Margin="15,5,5,4" Grid.Row="1" >Language</TextBlock>
+        <TextBlock DockPanel.Dock="Left" FontWeight="DemiBold" Margin="15,5,5,4" Grid.Row="1"  Text="{x:Static p:Resources.Language}"/>
 
         <DataGrid Name="dataGridSpeech" ItemsSource="{Binding}" Margin="15,5,5,5" AutoGenerateColumns="False"
-                  Grid.Row="2" ToolTip="Select your language. Only German or English is fully supported."
+                  Grid.Row="2" ToolTip="{x:Static p:Resources.SelectLanguage}"
                   SelectionMode="Extended" MouseDoubleClick="DataGridSpeech_OnMouseSpeechClick"
                   VerticalScrollBarVisibility="Auto"
                   IsReadOnly="True">
@@ -48,25 +48,33 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding VoiceInfo.Name}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Name</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Name}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
                 <DataGridTextColumn Binding="{Binding VoiceInfo.Culture.DisplayName}" Width="Auto"
                                     FontSize="13">
-                    <DataGridTextColumn.Header>Culture</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.CultureName}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding VoiceInfo.Gender}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Gender</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Gender}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding VoiceInfo.Age}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Age</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Age}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
 
             </DataGrid.Columns>
 
         </DataGrid>
         <StackPanel Grid.Row="3"  Orientation="Horizontal">
-            <CheckBox Name="checkBoxOwnLanguage" Checked="CheckBoxOwnLanguage_OnChecked" Unchecked="CheckBoxOwnLanguage_OnUnchecked" Margin="15,5,5,5" >Define your own translation</CheckBox>
+            <CheckBox Name="checkBoxOwnLanguage" Checked="CheckBoxOwnLanguage_OnChecked" Unchecked="CheckBoxOwnLanguage_OnUnchecked" Margin="15,5,5,5" Content="{x:Static p:Resources.DefineOwnTranslation}" />
             <Button Margin="5" FontWeight="DemiBold" Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" Click="ButtonBase_OnClick">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../Assets/Icons/world_edit.png"></Image>
@@ -77,7 +85,7 @@
             <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="130" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
@@ -86,25 +94,25 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <CheckBox Grid.Column="0" Grid.Row="0" Margin="5" Name="checkBoxSoundMove">Engine move</CheckBox>
+                    <CheckBox Grid.Column="0" Grid.Row="0" Margin="5" Name="checkBoxSoundMove" Content="{x:Static p:Resources.EngineMove}"/>
                     <Button Grid.Column="2" Grid.Row="0" Name="buttonMovePlay" Margin="5"
                             Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
                             Click="ButtonMovePlay_OnClick" ToolTip="Play">
                         <Image Source="../Assets/Icons/sound.png" />
                     </Button>
-                    <Label Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Right">Sound file:</Label>
+                    <Label Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Right" Content="{x:Static p:Resources.SoundFile}"/>
                     <Label Name="labelSoundMove" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" />
                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
                         <Button Name="buttonMoveFile" Margin="5,5,5,5" DockPanel.Dock="Left"
                                 Width="32" Height="32" Background="Transparent" BorderBrush="Transparent"
                                 IsDefault="True"
-                                Click="ButtonMoveFile_OnClick" ToolTip="Select a sound file">
+                                Click="ButtonMoveFile_OnClick" ToolTip="{x:Static p:Resources.SelectSoundFile}">
                             <Image Source="../Assets/Icons/file_extension_wav.png" />
                         </Button>
                         <Button Name="buttonClearMoveFile" Margin="5" DockPanel.Dock="Left"
                                 Width="28" Height="28" Background="Transparent" BorderBrush="Transparent"
                                 IsDefault="True"
-                                Click="ButtonClearMoveFile_OnClick" ToolTip="Clear sound file">
+                                Click="ButtonClearMoveFile_OnClick" ToolTip="{x:Static p:Resources.ClearSoundFile}">
                             <Image Source="../Assets/Icons/delete.png" />
                         </Button>
                     </StackPanel>
@@ -113,7 +121,7 @@
             <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="130" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
@@ -122,25 +130,25 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <CheckBox Grid.Column="0" Grid.Row="0" Margin="5" Name="checkBoxSoundCheck">Engine check</CheckBox>
+                    <CheckBox Grid.Column="0" Grid.Row="0" Margin="5" Name="checkBoxSoundCheck" Content="{x:Static p:Resources.EngineCheck}"/>
                     <Button Grid.Column="2" Grid.Row="0" Name="buttonCheckPlay" Margin="5"
                             Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
                             Click="ButtonCheckPlay_OnClick" ToolTip="Play">
                         <Image Source="../Assets/Icons/sound.png" />
                     </Button>
-                    <Label Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Right">Sound file:</Label>
+                    <Label Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Right" Content="{x:Static p:Resources.SoundFile}"/>
                     <Label Name="labelSoundCheck" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" />
                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
                         <Button Name="buttonCheckFile" Margin="5,5,5,5" DockPanel.Dock="Left"
                                 Width="32" Height="32" Background="Transparent" BorderBrush="Transparent"
                                 IsDefault="True"
-                                Click="ButtonCheckFile_OnClick" ToolTip="Select a sound file">
+                                Click="ButtonCheckFile_OnClick" ToolTip="{x:Static p:Resources.SelectSoundFile}">
                             <Image Source="../Assets/Icons/file_extension_wav.png" />
                         </Button>
                         <Button Name="buttonClearCheckFile" Margin="5" DockPanel.Dock="Left"
                                 Width="28" Height="28" Background="Transparent" BorderBrush="Transparent"
                                 IsDefault="True"
-                                Click="ButtonClearCheckFile_OnClick" ToolTip="Clear sound file">
+                                Click="ButtonClearCheckFile_OnClick" ToolTip="{x:Static p:Resources.ClearSoundFile}">
                             <Image Source="../Assets/Icons/delete.png" />
                         </Button>
                     </StackPanel>
@@ -149,7 +157,7 @@
             <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="130" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
@@ -158,26 +166,26 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <CheckBox Grid.Column="0" Grid.Row="0" Margin="5" Name="checkBoxSoundCheckMate">Engine mate</CheckBox>
+                    <CheckBox Grid.Column="0" Grid.Row="0" Margin="5" Name="checkBoxSoundCheckMate" Content="{x:Static p:Resources.EngineMate}"/>
                     <Button Grid.Column="2" Grid.Row="0" Name="buttonCheckMatePlay" Margin="5"
                             Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True"
                             Click="ButtonCheckMatePlay_OnClick" ToolTip="Play">
                         <Image Source="../Assets/Icons/sound.png" />
                     </Button>
-                    <Label Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Right">Sound file:</Label>
+                    <Label Grid.Column="0" Grid.Row="1" VerticalContentAlignment="Center" HorizontalAlignment="Right" Content="{x:Static p:Resources.SoundFile}"/>
                     <Label Name="labelSoundCheckMate" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Center" />
                     <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal">
                         <Button Name="buttonCheckMateFile" Margin="5" DockPanel.Dock="Left"
                                 Width="32" Height="32" Background="Transparent" BorderBrush="Transparent"
                                 IsDefault="True"
-                                Click="ButtonCheckMateFile_OnClick" ToolTip="Select a sound file">
+                                Click="ButtonCheckMateFile_OnClick" ToolTip="{x:Static p:Resources.SelectSoundFile}">
                             <Image Source="../Assets/Icons/file_extension_wav.png" />
                         </Button>
 
                         <Button Name="buttonClearCheckMateFile" Margin="5" DockPanel.Dock="Left"
                                 Width="28" Height="28" Background="Transparent" BorderBrush="Transparent"
                                 IsDefault="True"
-                                Click="ButtonClearCheckMateFile_OnClick" ToolTip="Clear sound file">
+                                Click="ButtonClearCheckMateFile_OnClick" ToolTip="{x:Static p:Resources.ClearSoundFile}">
                             <Image Source="../Assets/Icons/delete.png" />
                         </Button>
                     </StackPanel>

@@ -26,6 +26,7 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
         }
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 
@@ -35,6 +36,7 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            ValidForAnalyse = false;
             SelfControlled = true;
             _serialCommunication = new SerialCommunication(logger, portName, baud, false);
             IsConnected = EnsureConnection();
@@ -53,6 +55,7 @@ namespace www.SoLaNoSoft.com.BearChess.OSAChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            ValidForAnalyse = false;
             SelfControlled = true;
             Information = Constants.OSA;
             _lastMove = string.Empty;

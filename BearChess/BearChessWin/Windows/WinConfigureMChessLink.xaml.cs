@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Threading;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
@@ -27,10 +29,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private MChessLinkLoader _loader;
         private readonly ILogging _fileLogger;
         private ExtendedEChessBoardConfiguration _extendedEChessBoardConfiguration;
+        private readonly ResourceManager _rm;
 
-        public WinConfigureMChessLink(Configuration configuration, bool useBluetoothClassic, bool useBluetoothLE, bool useChesstimation)
+        public WinConfigureMChessLink(Configuration configuration, bool useBluetoothClassic, bool useBluetoothLE, bool useChesstimation, bool useElfacun)
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _allPortNames = new List<string> { "<auto>" };
             List<string> portNames;
             _fileName = Path.Combine(configuration.FolderPath, MChessLinkLoader.EBoardName, $"{MChessLinkLoader.EBoardName}Cfg.xml");
@@ -51,6 +55,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseChesstimation = useChesstimation;
+            _eChessBoardConfiguration.UseElfacun = useElfacun;
             checkBoxMoveLine.IsChecked = _eChessBoardConfiguration.ShowMoveLine;
             checkBoxOwnMoves.IsChecked = _eChessBoardConfiguration.ShowOwnMoves;
             checkBoxPossibleMoves.IsChecked = _eChessBoardConfiguration.ShowPossibleMoves;
@@ -81,14 +86,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 checkBoxCurrentValue.IsChecked = false;
                 radioButtonValueBottom.IsChecked = true;
             }
+
+            if (useElfacun || useChesstimation)
+            {
+                checkBoxCurrentValue.IsChecked = false;
+                radioButtonValueBottom.IsChecked = true;
+                checkBoxCurrentValue.IsEnabled = false;
+            }
             stackPanelValuation.IsEnabled = checkBoxCurrentValue.IsChecked.Value;
             if (useBluetoothClassic || useBluetoothLE) 
             { 
-
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 portNames = SerialCommunicationTools
-                            .GetBTComPort(MChessLinkLoader.EBoardName, configuration, _fileLogger,useBluetoothClassic,useBluetoothLE, _eChessBoardConfiguration.UseChesstimation).ToList();
+                            .GetBTComPort(MChessLinkLoader.EBoardName, configuration, _fileLogger,useBluetoothClassic,useBluetoothLE, _eChessBoardConfiguration.UseChesstimation || _eChessBoardConfiguration.UseElfacun).ToList();
                 comPortSearchWindow.Close();
 
             }
@@ -96,8 +107,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (useChesstimation)
                 {
-
                     portNames = SerialCommunicationTools.GetPortNames("CH340").ToList();
+                }
+                else if (useElfacun)
+                {
+                    portNames = SerialCommunicationTools.GetPortNames("CP210x").ToList();
                 }
                 else
                 {
@@ -119,7 +133,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(_eChessBoardConfiguration.PortName);
             }
             var flashInSync = _eChessBoardConfiguration.FlashInSync;
-            var noFlash = _eChessBoardConfiguration.NoFlash;
+            var noFlash = _eChessBoardConfiguration.NoFlash || useElfacun || useChesstimation;
             sliderDim.Value = _eChessBoardConfiguration.DimLevel;
             sliderScanTime.Value = _eChessBoardConfiguration.ScanTime;
             sliderDebounce.Value = _eChessBoardConfiguration.Debounce;
@@ -138,13 +152,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
             borderChesstimation.Visibility = _eChessBoardConfiguration.UseChesstimation ? Visibility.Visible : Visibility.Collapsed;
+            borderElfacun.Visibility = _eChessBoardConfiguration.UseElfacun ? Visibility.Visible : Visibility.Collapsed;
             SetScanText();
             SetDebounceText();
-            if (_eChessBoardConfiguration.UseChesstimation)
+            if (_eChessBoardConfiguration.UseChesstimation || _eChessBoardConfiguration.UseElfacun)
             {
                 borderDelay.IsEnabled = false;
                 borderLEDs.IsEnabled = false;
                 borderScans.IsEnabled = false;
+                radioButtonAlternate.IsEnabled = false;
+                radioButtonNoFlash.IsEnabled = false;
+                radioButtonSync.IsEnabled = false;
             }
         }
 
@@ -168,7 +186,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _eChessBoardConfiguration.ShowMoveLine = checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value;
             _eChessBoardConfiguration.ShowOwnMoves = checkBoxOwnMoves.IsChecked.HasValue && checkBoxOwnMoves.IsChecked.Value;
             _eChessBoardConfiguration.ShowPossibleMoves = checkBoxPossibleMoves.IsChecked.HasValue && checkBoxPossibleMoves.IsChecked.Value;
-            _eChessBoardConfiguration.ShowPossibleMovesEval = checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
+          
+            {
+                _eChessBoardConfiguration.ShowPossibleMovesEval =
+                    checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
+            }
             _eChessBoardConfiguration.ExtendedConfig[0].ShowEvaluationValue = checkBoxCurrentValue.IsChecked.HasValue && checkBoxCurrentValue.IsChecked.Value;
             if (radioButtonValueLeft.IsChecked.HasValue && radioButtonValueLeft.IsChecked.Value)
             {
@@ -217,7 +239,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _fileLogger?.LogInfo($"Check com port {portName}");
                 if (portName.Contains("auto"))
                 {
-                
                     infoWindow.SetMaxValue(_allPortNames.Count);
                     infoWindow.Show();
                     var i = 0;
@@ -238,16 +259,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         {
                             infoWindow.Close();
                             _fileLogger?.LogInfo($"Check successful for {name}");
-                            MessageBox.Show($"Check successful for {name}", "Check", MessageBoxButton.OK,
-                                            MessageBoxImage.Information);
+                            MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {name}", _rm.GetString("Check"), MessageBoxButton.OK,
+                               MessageBoxImage.Information);
                             comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(name);
                             return;
                         }
                     }
                     infoWindow.Close();
-                    _fileLogger?.LogInfo($"Check failed for all");
-                    MessageBox.Show("Check failed for all COM ports", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    _fileLogger?.LogInfo("Check failed for all");
+                    MessageBox.Show(_rm.GetString("CheckConnectionFailedForAll"), _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                     return;
 
                 }
@@ -258,16 +279,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     _fileLogger?.LogInfo($"Check successful for {portName}");
                     infoWindow.Close();
-                    MessageBox.Show($"Check successful for {portName}", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Information);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionSuccess")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                     comboBoxComPorts.SelectedIndex = _allPortNames.IndexOf(portName);
                 }
                 else
                 {
                     _fileLogger?.LogInfo($"Check failed for {portName}");
                     infoWindow.Close();
-                    MessageBox.Show($"Check failed for {portName} ", "Check", MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show($"{_rm.GetString("CheckConnectionFailed")} {portName}", _rm.GetString("Check"), MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
@@ -347,7 +368,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             double time = 1000 / (2.048 * sliderScanTime.Value);
             if (textBlockScansPerSec != null)
             {
-                textBlockScansPerSec.Text = $"{time.ToString("##.#")} per sec.";
+                textBlockScansPerSec.Text = $"{time.ToString("##.#")} {_rm.GetString("PerSec")}";
             }
         }
 

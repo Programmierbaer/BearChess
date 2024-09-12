@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" ResizeMode="NoResize"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight"
-        Title="Setup Board and Pieces" Height="250" Width="500">
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
+        Title="{x:Static p:Resources.SetupBoardAndPieces}" Height="250" Width="500">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -14,7 +15,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <GroupBox Name="groupBoxBoards" Margin="5" Grid.Column="0" Grid.Row="0" Header="Board">
+        <GroupBox Name="groupBoxBoards" Margin="5" Grid.Column="0" Grid.Row="0" Header="{x:Static p:Resources.Board}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -43,7 +44,7 @@
 
             </Grid>
         </GroupBox>
-        <GroupBox Name="groupBoxPieces" Margin="5" Grid.Column="1" Grid.Row="0" Header="Pieces">
+        <GroupBox Name="groupBoxPieces" Margin="5" Grid.Column="1" Grid.Row="0" Header="{x:Static p:Resources.Pieces}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -69,12 +70,12 @@
             </Grid>
         </GroupBox>
         <Button Margin="5" HorizontalAlignment="Left" Grid.Column="0" Background="Transparent"
-                BorderBrush="Transparent"
+                BorderBrush="Transparent" ToolTip="{x:Static p:Resources.Ok}"
                 Grid.Row="1" Click="ButtonBase_OnClick">
             <Image Source="../Assets/Icons/accept_button.png" Width="32" Height="32" />
         </Button>
         <Button Name="buttonCancel" Margin="5" HorizontalAlignment="Right" Grid.Column="1" Background="Transparent"
-                BorderBrush="Transparent"
+                BorderBrush="Transparent" ToolTip="{x:Static p:Resources.Cancel}"
                 Grid.Row="1" Click="ButtonCancel_OnClick">
             <Image Source="../Assets/Icons/cancel.png" Width="32" Height="32" />
         </Button>

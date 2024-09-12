@@ -30,6 +30,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         public static byte ColA = 0x1 << 7;
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 
@@ -82,17 +83,19 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
         private readonly ConcurrentQueue<ProbingMove[]> _probingFields = new ConcurrentQueue<ProbingMove[]>();
         private readonly EChessBoardConfiguration _boardConfiguration;
 
-        public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
+        public EChessBoard(string boardName, ILogging logger, EChessBoardConfiguration configuration)
         {
             _boardConfiguration = configuration;
             _useBluetooth = configuration.UseBluetooth;
             _showMoveLine = configuration.ShowMoveLine;
             _logger = logger;
             MultiColorLEDs = true;
+            PieceRecognition = true;
+            ValidForAnalyse = true;
             BatteryLevel = "---";
             BatteryStatus = "Full";
-            _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
-            Information = Constants.ChessnutAir;
+            _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth, boardName);
+            Information = boardName;
             var thread = new Thread(FlashLeds) { IsBackground = true };
             thread.Start();
             var probingThread = new Thread(ShowProbingMoves) { IsBackground = true };
@@ -454,6 +457,10 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                         i = i + 31;
                     }
 
+                    if (string.IsNullOrWhiteSpace(pLine))
+                    {
+                        return new DataFromBoard(_lastResult, dataFromBoard.Repeated);
+                    }
                     pLine = "s" + pLine;
                     if (pLine.StartsWith(
                             "sRNBKQBNRPPPPPPPP................................pppppppprnbkqbnr"))

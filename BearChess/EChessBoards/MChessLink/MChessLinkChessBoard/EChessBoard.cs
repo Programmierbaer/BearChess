@@ -22,6 +22,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         }
 
         private readonly bool _useChesstimation;
+        private readonly bool _useElfacun;
 
         private readonly string[] _ledToField =
         {
@@ -168,22 +169,22 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public string Version { get; private set; }
         
-        public EChessBoard(ILogging logger, EChessBoardConfiguration configuration, bool useChesstimation) 
+        public EChessBoard(ILogging logger, EChessBoardConfiguration configuration) 
         {
-            _useChesstimation = useChesstimation;
+            _useChesstimation = configuration.UseChesstimation;
+            _useElfacun = configuration.UseElfacun;
             _showMoveLine = configuration.ShowMoveLine;
             _boardConfiguration = configuration;
-            _boardConfiguration.ShowPossibleMovesEval = true;
-            _boardConfiguration.ShowPossibleMoves = true;
             _logger = logger;
             _serialCommunication = new SerialCommunication(logger, configuration.PortName);
-            _serialCommunication.UseChesstimation = useChesstimation;
+            _serialCommunication.UseChesstimation = _useChesstimation;
+            _serialCommunication.UseElfacun = _useElfacun;
             Version = string.Empty;
             _eprom = string.Empty;
             BatteryLevel = "---";
             BatteryStatus = "Full";
             IsConnected = EnsureConnection();
-            if (useChesstimation)
+            if (_useChesstimation || _useElfacun)
             {
                 Information = _serialCommunication.BoardInformation;
             }
@@ -191,10 +192,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 Information = "Millennium " + _serialCommunication.BoardInformation;
             }
-            PieceRecognition = _serialCommunication.BoardInformation != Constants.MeOne && !_serialCommunication.BoardInformation.Contains(Constants.Chesstimation)
-                && !_serialCommunication.BoardInformation.Contains((Constants.Elfacun));
+            PieceRecognition = _serialCommunication.BoardInformation != Constants.MeOne && !_useElfacun && !_useChesstimation;
+            ValidForAnalyse = PieceRecognition;
             SelfControlled = false;
-            MultiColorLEDs = PieceRecognition;
+            MultiColorLEDs = PieceRecognition || _useElfacun || _useChesstimation;
             var probingThread = new Thread(ShowProbingMoves) { IsBackground = true };
             probingThread.Start();
             _acceptProbingMoves = true;
@@ -228,6 +229,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     showFields.Clear();
                     var probingMove = fields.OrderByDescending(f => f.Score).First();
                     {
+                        showFields.Add(probingMove.FieldName);
                         foreach (var field in fields)
                         {
                             if (_boardConfiguration.ShowPossibleMoves)
@@ -266,6 +268,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                     _logger?.LogDebug($"CheckComPort {portName}");
                     _serialCommunication = new SerialCommunication(_logger, portName);
                     _serialCommunication.UseChesstimation = _useChesstimation;
+                    _serialCommunication.UseElfacun = _useElfacun;
                     if (_serialCommunication.CheckConnect(portName))
                     {
                         _logger?.LogDebug("CheckComPort successful. Send ROM initialize ");
@@ -400,7 +403,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             //   lock (_locker)
             {
                 _serialCommunication.Send(_lastSendLeds);
-                if (ledsParameter.FieldNames.Length == 1 && _useChesstimation)
+                if (ledsParameter.FieldNames.Length == 1 && (_useChesstimation || _useElfacun))
                 {
                     _serialCommunication.Send("S");
                 }
@@ -427,14 +430,14 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void SetAllLedsOn()
         {
-            if (_useChesstimation || !EnsureConnection())
+            if (_useChesstimation || _useElfacun || !EnsureConnection())
             {
                 return;
             }
             _probingFields.TryDequeue(out _);
             //  lock (_locker)
             {
-                if (!_useChesstimation)
+                if (!_useChesstimation && !_useElfacun)
                 {
                     var ledForFields = GetLedForAllFieldsOn();
                     _serialCommunication.Send($"L22{ledForFields}");
@@ -517,6 +520,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         public override void AdditionalInformation(string information)
         {
+            if (_useChesstimation || _useElfacun)
+            {
+                return;
+            }
             var strings = information.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToArray();
             if (strings.Length == 0)
             {
@@ -656,6 +663,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
         }
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 
@@ -774,7 +782,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
                 codes += code;
             }
 
-            return _useChesstimation ? codes.Replace("FFFFFFFF", "FFF00FFF") : codes;
+            return _useChesstimation || _useElfacun ? codes.Replace("FFFFFFFF", "FFF00FFF") : codes;
         }
 
         private string GetLedForFields(string[] fieldNames, bool thinking, LedCorner ledCorner)
@@ -782,7 +790,7 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             var codes = string.Empty;
             var toCode = string.Empty;
             var fromCode = "CC";
-            if (_useChesstimation)
+            if (_useChesstimation || _useElfacun)
             {
                 fromCode = "FF";
                 toCode = "FF";

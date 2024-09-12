@@ -4,8 +4,10 @@ using System.Threading;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessTools;
+using System.Resources;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -28,7 +30,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private static readonly object _locker = new object();
         private readonly Configuration _configuration;
         private readonly Stopwatch _stopwatch;
-      
+        private readonly ResourceManager _rm;
+
 
         public bool CountDown { get; set; }
         public event EventHandler TimeOutEvent;
@@ -37,13 +40,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public ChessClockSimpleWindow(string capture, Configuration configuration, double top, double left)
         {
             InitializeComponent();
-           _stopwatch = new Stopwatch();
+            _rm = SpeechTranslator.ResourceManager;
+            _stopwatch = new Stopwatch();
             CountDown = true;
             _capture = capture;
             _configuration = configuration;
             Top = _configuration.GetWinDoubleValue($"ChessClockSimpleWindow{capture}Top", Configuration.WinScreenInfo.Top,  SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, top > 150 ? (top - 150).ToString() : "0");
             Left = _configuration.GetWinDoubleValue($"ChessClockSimpleWindow{capture}Left", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, left.ToString());
-            Color color = capture.Equals("White", StringComparison.OrdinalIgnoreCase) ? Colors.White : Colors.Black;
+            Color color = capture.Equals(_rm.GetString("White"), StringComparison.OrdinalIgnoreCase) ? Colors.White : Colors.Black;
             Color inversColor = color == Colors.White ? Colors.Black : Colors.White;
             Background = new SolidColorBrush(color);
             textBlockHour1.Foreground = new SolidColorBrush(inversColor);

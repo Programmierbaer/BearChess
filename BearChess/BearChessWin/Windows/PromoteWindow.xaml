@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner"
-        Title="Promote" Height="100" Width="200">
+        Title="{x:Static p:Resources.Promote}" Height="100" Width="200">
     <StackPanel>
         <StackPanel Name="stackPanelBlack" Margin="5" Orientation="Horizontal" Height="Auto" VerticalAlignment="Top"
                     HorizontalAlignment="Left" Visibility="Collapsed">

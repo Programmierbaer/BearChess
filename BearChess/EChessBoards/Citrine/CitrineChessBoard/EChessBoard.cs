@@ -28,6 +28,7 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
         }
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 
@@ -37,6 +38,7 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false;
+            ValidForAnalyse = false;
             SelfControlled = true;
             _serialCommunication = new SerialCommunication(logger, portName, false);
             IsConnected = EnsureConnection();
@@ -57,6 +59,7 @@ namespace www.SoLaNoSoft.com.BearChess.CitrineChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = false; 
+            ValidForAnalyse = false;
             SelfControlled = true;
             Information = Constants.Citrine;
             _lastMove = string.Empty;

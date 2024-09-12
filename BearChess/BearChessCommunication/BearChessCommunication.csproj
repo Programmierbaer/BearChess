@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AsyncHelper.cs" />
     <Compile Include="BasicPipe.cs" />
+    <Compile Include="BearChessClient.cs" />
     <Compile Include="ClientPipe.cs" />
     <Compile Include="CRCConversions.cs" />
     <Compile Include="IComPort.cs" />
@@ -70,13 +71,13 @@
     <Compile Include="WebSocketComPort.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BearChessBase\BearChessBase.csproj">
-      <Project>{72BAD856-2F5E-45DB-9FF1-42D68A4998F5}</Project>
-      <Name>BearChessBase</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\BearChessBaseLib\BearChessBaseLib.csproj">
+      <Project>{b298b210-c007-4f95-84ca-b0b8ad26281b}</Project>
+      <Name>BearChessBaseLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

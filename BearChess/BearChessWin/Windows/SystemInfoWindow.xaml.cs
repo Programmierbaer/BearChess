@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Resources;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessTools;
 
@@ -11,15 +13,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class SystemInfoWindow : Window
     {
         private readonly Configuration _configuration;
+        private readonly ResourceManager _rm;
 
         public SystemInfoWindow(Configuration configuration, string chessBoardInfo)
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _configuration = configuration;
-            textBlockBoard.Text = chessBoardInfo;
+            textBlockBoard.Text = _rm.GetString("NotConnected");
             if (!string.IsNullOrWhiteSpace(chessBoardInfo))
             {
-
+                textBlockBoard.Text = chessBoardInfo;
                 if (chessBoardInfo.Equals("Millennium " + Constants.MeOne))
                 {
                     imageeOne.Visibility = Visibility.Visible;
@@ -58,6 +62,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (chessBoardInfo.Equals(Constants.ChessnutAir))
                 {
                     imageChessnutAir.Visibility = Visibility.Visible;
+                }
+                if (chessBoardInfo.Equals(Constants.ChessnutGo))
+                {
+                    imageChessnutGo.Visibility = Visibility.Visible;
                 }
                 if (chessBoardInfo.Equals(Constants.ChessnutAirPlus))
                 {

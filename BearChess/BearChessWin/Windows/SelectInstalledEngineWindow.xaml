@@ -6,7 +6,8 @@
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         Icon="../Assets/Icons/robot.png"
         mc:Ignorable="d" Closing="SelectInstalledEngineWindow_OnClosing" 
-        Title="Load and Manage UCI Engines" Height="390" Width="550"  MinWidth="500" >
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
+        Title="{x:Static p:Resources.LoadAndManageEngines}" Height="390" Width="550"  MinWidth="500" >
     <Window.Resources>
         <bearChessWin:BoolToContentConverter x:Key="BoolToContentConverter" />
     </Window.Resources>
@@ -19,8 +20,8 @@
                   SelectionMode="Extended"  PreviewKeyDown="DataGridEngine_OnPreviewKeyDown" IsReadOnly="True" AllowDrop="True" Drop="DataGridEngine_OnDrop" DragOver="DataGridEngine_OnDragOver" >
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Set as..">
-                    <MenuItem Header="Buddy" Click="MenuItemSetAsBuddy_OnClick">
+                    <MenuItem Header="{x:Static p:Resources.SetAs}">
+                        <MenuItem Header="{x:Static p:Resources.Buddy}" Click="MenuItemSetAsBuddy_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/user_comment.png" />
                         </MenuItem.Icon>
@@ -44,13 +45,19 @@
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Name}" Width="Auto">
-                    <DataGridTextColumn.Header>Name</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Name}"/>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Author}" Width="Auto">
-                      <DataGridTextColumn.Header>Author</DataGridTextColumn.Header>
-                  </DataGridTextColumn>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Author}"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding IsBuddy, Converter={StaticResource BoolToContentConverter}}"  Width="Auto">
-                    <DataGridTextColumn.Header>Buddy</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Buddy}"/>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding IsProbing, Converter={StaticResource BoolToContentConverter}}"  Width="Auto">
                     <DataGridTextColumn.Header>BearChess</DataGridTextColumn.Header>
@@ -59,30 +66,30 @@
         </DataGrid>
         <!-- <ListBox Margin="5" Grid.Row="0" Name="listBoxEngines" MouseDoubleClick="ListBoxEngines_OnMouseDoubleClick"></ListBox> -->
         <DockPanel Margin="5" Grid.Row="1" LastChildFill="False">
-            <Button Margin="5" DockPanel.Dock="Left" Name="buttonOk" Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Load selected engine">
-                <Image Source="../Assets/Icons/robot.png" Width="32" Height="32"></Image>
+            <Button Margin="5" DockPanel.Dock="Left" Name="buttonOk" Click="ButtonOk_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.LoadSelectedEngineTip}">
+                <Image Source="../Assets/Icons/robot.png" Width="32" Height="32"/>
             </Button>
-            <TextBlock VerticalAlignment="Center" Margin="5">Filter:</TextBlock>
+            <TextBlock VerticalAlignment="Center" Margin="5" Text="{x:Static p:Resources.Filter}"/>
             <TextBox VerticalAlignment="Center" Margin="5" DockPanel.Dock="Left" Name="textBoxFilter" TextChanged="TextBoxFilter_OnTextChanged" Height="25" Width="130"></TextBox>
-            <Button Margin="25,5,5,5" DockPanel.Dock="Right" Name="buttonCancel" Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
-                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"></Image>
+            <Button Margin="25,5,5,5" DockPanel.Dock="Right" Name="buttonCancel" Click="ButtonCancel_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.Exit}">
+                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32"/>
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonDelete" Click="ButtonDelete_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Uninstall selected engine">
-                <Image Source="../Assets/Icons/bin.png" Width="32" Height="32"></Image>
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonDelete" Click="ButtonDelete_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.UninstallSelectedEngineTip}">
+                <Image Source="../Assets/Icons/bin.png" Width="32" Height="32"/>
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonAddConfigure" Click="ButtonAddConfigure_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Add new engine">
-                <Image Source="../Assets/Icons/cog_add.png" Width="32" Height="32"></Image>
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonAddConfigure" Click="ButtonAddConfigure_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.AddNewEngineTip}">
+                <Image Source="../Assets/Icons/cog_add.png" Width="32" Height="32"/>
             </Button>
 
-            <Button Margin="5" DockPanel.Dock="Right" Name="buttonInstall" Click="ButtonInstall_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Install a new engine"
+            <Button Margin="5" DockPanel.Dock="Right" Name="buttonInstall" Click="ButtonInstall_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.SelectedEngineFile}"
                     AllowDrop="True" Drop="DataGridEngine_OnDrop" DragOver="DataGridEngine_OnDragOver" >
-                <Image Source="../Assets/Icons/file_extension_exe.png" Width="32" Height="32"></Image>
+                <Image Source="../Assets/Icons/file_extension_exe.png" Width="32" Height="32"/>
             </Button>
 
-            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonConfigure" Click="ButtonConfigure_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Configure selected engine">
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonConfigure" Click="ButtonConfigure_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.ConfigureSelectedEngine}">
                 <Image Source="../Assets/Icons/cog_edit.png" Width="32" Height="32"></Image>
             </Button>
-            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonBuddy" Click="MenuItemSetAsBuddy_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="Set selected engine as buddy">
+            <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonBuddy" Click="MenuItemSetAsBuddy_OnClick" Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.SetAsBuddy}">
                 <Image Source="../Assets/Icons/user_comment.png" Width="32" Height="32"></Image>
             </Button>
 

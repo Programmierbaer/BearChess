@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         mc:Ignorable="d" ResizeMode="NoResize" WindowStyle="ToolWindow" WindowStartupLocation="Manual"
-        Title="Select" Height="270" Width="170">
+        Title="{x:Static p:Resources.Select}" Height="270" Width="170">
     <StackPanel Orientation="Horizontal"> 
    
     <StackPanel Name="stackPanelWhite" Margin="5" Orientation="Vertical" Height="Auto" VerticalAlignment="Top"

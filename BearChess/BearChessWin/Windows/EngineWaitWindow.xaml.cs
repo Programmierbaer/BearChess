@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Resources;
 using System.Timers;
 using System.Windows;
 using System.Windows.Threading;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -13,15 +15,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly int _waitSeconds;
         private int _seconds;
         private Timer _timer;
+        private readonly ResourceManager _rm;
 
         public EngineWaitWindow()
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
         }
 
         public EngineWaitWindow(string engineName, int waitSeconds)
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _waitSeconds = waitSeconds;
             textBoxEngineName.Text = engineName;
             textBoxEngineName.ToolTip = engineName;
@@ -39,14 +44,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                textBlockSecond.Text = "Click on "+"\u2713" +" when ready";
+                textBlockSecond.Text = $"{_rm.GetString("ClickOn")} "+"\u2713" +$" {_rm.GetString("WhenReady")}";
             }
         }
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
             _seconds++;
             progressBarSeconds.Dispatcher.Invoke(() => progressBarSeconds.Value = _seconds, DispatcherPriority.Background);
-            textBlockSecond.Dispatcher.Invoke(() => textBlockSecond.Text = $"{_waitSeconds-_seconds} sec.", DispatcherPriority.Background);
+            textBlockSecond.Dispatcher.Invoke(() => textBlockSecond.Text = $"{_waitSeconds-_seconds} {_rm.GetString("Sec")}", DispatcherPriority.Background);
             if (_seconds >= _waitSeconds)
             {
                 _timer.Enabled = false;

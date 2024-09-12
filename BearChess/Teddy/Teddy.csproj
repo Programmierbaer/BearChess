@@ -69,9 +69,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BearChessBase\BearChessBase.csproj">
-      <Project>{72BAD856-2F5E-45DB-9FF1-42D68A4998F5}</Project>
-      <Name>BearChessBase</Name>
+    <ProjectReference Include="..\BearChessBaseLib\BearChessBaseLib.csproj">
+      <Project>{b298b210-c007-4f95-84ca-b0b8ad26281b}</Project>
+      <Name>BearChessBaseLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\BearChessEChessBoard\BearChessEChessBoard\BearChessEChessBoard.csproj">
       <Project>{A6BCDC78-1EDC-40C7-936F-880423360BA3}</Project>
@@ -85,9 +85,9 @@
       <Project>{66ab214e-2281-4d97-99c7-b54b0e31df1a}</Project>
       <Name>CommonUciWrapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.csproj">
-      <Project>{98c77d6d-470a-4a6d-b4bd-7965d6a82f29}</Project>
-      <Name>Engine</Name>
+    <ProjectReference Include="..\EngineDefs\EngineDefs.csproj">
+      <Project>{af37ad09-e359-497a-94af-e4cb12fc5ded}</Project>
+      <Name>EngineDefs</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -5,28 +5,62 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
-        mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="WidthAndHeight"
-        Title="BearChess Configuration" Height="330" Width="400">
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties" KeyDown="WinConfigureBearChess_OnKeyDown"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="Height"
+        Title="{x:Static p:Resources.BearChessConfiguration}" Height="570" Width="350">
     <StackPanel>
-        <GroupBox Margin="5" Header="Games" HorizontalAlignment="Left">
+        <GroupBox  Width="300" Margin="5" Header="{x:Static p:Resources.Language}" HorizontalAlignment="Left">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                
+                    <RadioButton Grid.Row="0" Grid.Column="0" GroupName="country" Name="radioButtonGlob" IsChecked="True" Margin="10,5" ToolTip="{x:Static p:Resources.LocalCountry}" >
+                    <Image Width="16" Height="16" Source="../Assets/Icons/globe_model.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="1" Grid.Column="0" GroupName="country" Name="radioButtonGB" Margin="10,5" ToolTip="English" >
+                    <Image Width="16" Height="16" Source="../Assets/Icons/flag_great_britain.png"/>
+                </RadioButton>
+                <RadioButton Grid.Row="2" Grid.Column="0" GroupName="country" Margin="10,5" Name="radioButtonDE" ToolTip="Deutsch" >
+                    <Image Width="16" Height="16" Source="../Assets/Icons/flag_germany.png"/>
+                </RadioButton>
+            </Grid>
+        </GroupBox>
+        <GroupBox  Width="300" Margin="5" Header="{x:Static p:Resources.Blind}" HorizontalAlignment="Left" Visibility="Collapsed">
+           <Grid>
+               <Grid.RowDefinitions>
+                   <RowDefinition></RowDefinition>
+                   <RowDefinition></RowDefinition>
+                   <RowDefinition></RowDefinition>
+               </Grid.RowDefinitions>
+
+                <CheckBox Name="checkBoxBlind" Margin="5" Grid.Column="0" Grid.Row="0"  Content="{x:Static p:Resources.IAmBlind}"/>
+                <CheckBox Name="checkBoxBlindSayExtended" Margin="5" Grid.Column="0" Grid.Row="1"  Content="{x:Static p:Resources.BlindSayExtended}"/>
+                <CheckBox Name="checkBoxBlindSayMoveTime" Margin="5" Grid.Column="0" Grid.Row="2"  Content="{x:Static p:Resources.BlindSayMoveTime}"/>
+            </Grid>
+        </GroupBox>
+            <GroupBox Width="300" Margin="5" Header="{x:Static p:Resources.Games}" HorizontalAlignment="Left">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <CheckBox Name="checkBoxStartBasePosition" Margin="5" Grid.Column="0" Grid.Row="0">Start new games from base position</CheckBox>
-                <CheckBox Name="checkBoxSaveGames"  Margin="5" Grid.Column="0" Grid.Row="1">Save games automatically</CheckBox>
-                <GroupBox Margin="5" Grid.Row="2" Header="Abort games">
+                
+                <CheckBox Name="checkBoxStartBasePosition" Margin="5" Grid.Column="0" Grid.Row="0"  Content="{x:Static p:Resources.StartOnBasePosition}"/>
+                <CheckBox Name="checkBoxSaveGames"  Margin="5" Grid.Column="0" Grid.Row="1" Content="{x:Static p:Resources.SaveGamesAutomatically}" />
+                <GroupBox Margin="5" Grid.Row="2" Header="{x:Static p:Resources.AbortGames}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <CheckBox Name="checkBoxAllowEarly" Margin="5" Grid.Column="0" Unchecked="CheckBoxAllowEarly_OnUnchecked" Checked="CheckBoxAllowEarly_OnChecked" Grid.Row="0">Allow BearChess to end the game early</CheckBox>
+                        <CheckBox Name="checkBoxAllowEarly" Margin="5" Grid.Column="0" Unchecked="CheckBoxAllowEarly_OnUnchecked" Checked="CheckBoxAllowEarly_OnChecked" Grid.Row="0" Content="{x:Static p:Resources.AllowBearChessEndGameEarly}"/>
                         <StackPanel Margin="5" Grid.Row="1" Orientation="Horizontal">
-                            <TextBlock Margin="5"  VerticalAlignment="Center" Text="Evaluation:"></TextBlock>
+                            <TextBlock Margin="5"  VerticalAlignment="Center" Text="{x:Static p:Resources.Evaluation}"></TextBlock>
                             <bearChessWin:NumericUpDownUserControl  Margin="5" 
                                                                     x:Name="numericUpDownUserControlEvaluation" MinValue="1"
                                                                     MaxValue="99" TextWidthProperty="30"></bearChessWin:NumericUpDownUserControl>
@@ -36,15 +70,15 @@
                 </GroupBox>
             </Grid>
         </GroupBox>
-        <GroupBox Margin="5" Header="Internal" HorizontalAlignment="Left">
-            <CheckBox Name="checkBoxWriteLogFiles" Margin="5">Write log files</CheckBox>
+        <GroupBox Width="300" Margin="5" Header="{x:Static p:Resources.Internal}" HorizontalAlignment="Left">
+            <CheckBox Name="checkBoxWriteLogFiles" Margin="5" Content="{x:Static p:Resources.WriteLogFiles}"/>
         </GroupBox>
         <DockPanel Margin="5" DockPanel.Dock="Bottom" LastChildFill="False">
-            <Button Name="buttonOk" Margin="5,5,5,5" DockPanel.Dock="Left" Width="28" Height="28"
+            <Button Name="buttonOk" Margin="5,5,5,5" DockPanel.Dock="Left" Width="28" Height="28" ToolTip="{x:Static p:Resources.Ok}"
                     Background="Transparent" BorderBrush="Transparent" IsDefault="True" Click="ButtonOk_OnClick">
                 <Image Source="../Assets/Icons/accept_button.png"></Image>
             </Button>
-            <Button Name="buttonCancel" Margin="5,5,5,5" DockPanel.Dock="Right" Width="28" Height="28"
+            <Button Name="buttonCancel" Margin="5,5,5,5" DockPanel.Dock="Right" Width="28" Height="28" ToolTip="{x:Static p:Resources.Cancel}"
                     Background="Transparent" BorderBrush="Transparent" IsCancel="True">
                 <Image Source="../Assets/Icons/cancel.png"></Image>
             </Button>

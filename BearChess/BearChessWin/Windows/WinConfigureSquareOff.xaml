@@ -4,20 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d"  SizeToContent="Height" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
-        Title="Configure SquareOff Pro" Height="350" Width="490">
+        Title="{x:Static p:Resources.ConfigureSquareOffPro}" Height="350" Width="490">
     <StackPanel>
         <Border Name="borderScans" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <StackPanel Margin="0,5,0,5">
                 <DockPanel LastChildFill="False">
-                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="Scans..." FontWeight="DemiBold" Width="70"
+                    <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.Scans}" FontWeight="DemiBold" Width="70"
                                HorizontalAlignment="Left" VerticalAlignment="Center"
-                               ToolTip="Scan interval in ms" />
+                               ToolTip="{x:Static p:Resources.ScanIntervalInMS}" />
                     <Button DockPanel.Dock="Left" Margin="0,0,0,0" HorizontalAlignment="Left" Name="buttonDelScan"
                             Width="32"
                             Height="32"
                             Click="ButtonTimeDelete_OnClick" Background="Transparent" BorderBrush="Transparent"
-                            ToolTip="Decrement scan time">
+                            ToolTip="{x:Static p:Resources.DecrementScanTime}">
                         <Image Source="../Assets/Icons/time_delete.png" />
                     </Button>
 
@@ -29,7 +30,7 @@
                             Width="32"
                             Height="32"
                             Click="ButtonTimeAdd_OnClick" Background="Transparent" BorderBrush="Transparent"
-                            ToolTip="Increment scan time">
+                            ToolTip="{x:Static p:Resources.IncrementScanTime}">
                         <Image Source="../Assets/Icons/time_add.png" />
                     </Button>
                     <TextBlock Name="textBlockScansPerSec" DockPanel.Dock="Left" HorizontalAlignment="Left"
@@ -42,7 +43,7 @@
                             BorderBrush="Transparent" Width="32" Height="32" Click="ButtonResetScan_OnClick">
                         <Image Source="../Assets/Icons/time.png" />
                     </Button>
-                    <TextBlock VerticalAlignment="Center">reset to default with scans every 250 ms</TextBlock>
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static p:Resources.ResetDefault250ms}"></TextBlock>
                 </StackPanel>
             </StackPanel>
         </Border>

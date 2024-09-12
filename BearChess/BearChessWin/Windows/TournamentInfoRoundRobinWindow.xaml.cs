@@ -14,6 +14,7 @@ using Microsoft.Win32;
 using System.IO;
 using System.Text;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using System.Resources;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -31,6 +32,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _currentGameNumber;
         private bool _isFinished;
         private bool _canClose;
+        private readonly ResourceManager _rm;
         private readonly IComparer _revComparer = new ReverseComparer();
 
         public event EventHandler StopTournament;
@@ -56,6 +58,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             Width = _configuration.GetWinDoubleValue("EngineTournamentRRWindowWidth", Configuration.WinScreenInfo.Width,
                 SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
                 (Width / 2).ToString(CultureInfo.InvariantCulture));
+            _rm = SpeechTranslator.ResourceManager;
         }
 
         public TournamentInfoRoundRobinWindow(CurrentTournament currentTournament, Configuration configuration) : this(
@@ -143,7 +146,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _currentTournament.Players.Length, _currentTournament.Cycles);
             checkBoxSwitchColor.IsChecked = _currentTournament.TournamentSwitchColor;
             _currentGameNumber = 1;
-            textBlockStatus.Text =  $"Game 1 of {_totalGames}";
+            textBlockStatus.Text = $"{_rm.GetString("Game")} 1 {_rm.GetString("Of")} {_totalGames}";
             _isFinished = false;
             _canClose = false;
         }
@@ -223,11 +226,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _currentGameNumber++;
             if (_currentGameNumber <= _totalGames)
             {
-                textBlockStatus.Text = $"Game {_currentGameNumber} of {_totalGames}";
+                textBlockStatus.Text = $"{_rm.GetString("Game")} {_currentGameNumber} {_rm.GetString("Of")} {_totalGames}";
             }
             else
             {
-                textBlockStatus.Text = "Tournament finished";
+                textBlockStatus.Text = _rm.GetString("TournamentFinished");
                 buttonPause.Visibility = Visibility.Collapsed;
                 buttonClose.Visibility = Visibility.Visible;
                 buttonDraw.Visibility = Visibility.Collapsed;
@@ -288,9 +291,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             else
             {
-                if (MessageBox.Show("Stop current tournament?", "Stop",
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"{_rm.GetString("StopCurrentTournament")}?", _rm.GetString("Stop"),
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     _canClose = true;
                     StopTournament?.Invoke(this, EventArgs.Empty);
@@ -308,9 +311,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonWin_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Save the game as won for white?", "Save game",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"{_rm.GetString("SaveGameAsWinForWhite")}?", _rm.GetString("SaveGame"),
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 _canClose = true;
                 SaveGame?.Invoke(this, "1-0");
@@ -319,9 +322,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonLose_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Save the game as won for black?", "Save game",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"{_rm.GetString("SaveGameAsWinForBlack")}?", _rm.GetString("SaveGame"),
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 _canClose = true;
                 SaveGame?.Invoke(this, "0-1");
@@ -330,9 +333,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonDraw_OnClick(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Save the game as as a draw?", "Save game",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"{_rm.GetString("SaveGameAsDraw")}?", _rm.GetString("SaveGame"),
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 _canClose = true;
                 SaveGame?.Invoke(this, "1/2");
@@ -389,7 +392,7 @@ tr:nth-child(even) {
             sb.Append(@"<b>");
             sb.Append(@"Time control: ");
             sb.Append(@"</b>");
-            sb.Append($"{TimeControlHelper.GetDescription(_currentTournament.TimeControl)}");
+            sb.Append($"{TimeControlHelper.GetDescription(_currentTournament.TimeControl, _rm)}");
             sb.AppendLine(@"</p>");
             sb.AppendLine(@"<table>");
             sb.AppendLine(@"<tr>");

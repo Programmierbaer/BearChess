@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         xmlns:gl="clr-namespace:System.Globalization;assembly=mscorlib"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" WindowStyle="SingleBorderWindow" Icon="../Assets/Icons/outlook_calendar_week.png"
-        Title="The Week in Chess" Height="450" Width="800">
+        Title="The Week in Chess TWIC" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -25,8 +26,7 @@
             </DataGrid.Resources>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    
-                    <MenuItem Header="Delete" Name="menuItemDelete" Click="ButtonDelete_OnClick">
+                    <MenuItem Header="{x:Static p:Resources.Delete}" Name="menuItemDelete" Click="ButtonDelete_OnClick">
                         <MenuItem.Icon>
                             <Image Source="../Assets/Icons/bin.png" />
                         </MenuItem.Icon>
@@ -35,42 +35,52 @@
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding TwicNumber}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Number</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header >
+                        <TextBlock Text="{x:Static p:Resources.Number}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding FileName}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>File name</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header >
+                        <TextBlock Text="{x:Static p:Resources.FileName}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding NumberOfGames}" Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Number of games</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header >
+                        <TextBlock Text="{x:Static p:Resources.NumberOfGames}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding FileDate , StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
                                     Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>File date</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header >
+                        <TextBlock Text="{x:Static p:Resources.FileDate}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding ImportDate , StringFormat=d, ConverterCulture={x:Static gl:CultureInfo.CurrentCulture}}"
                                      Width="Auto" FontSize="13">
-                    <DataGridTextColumn.Header>Import date</DataGridTextColumn.Header>
+                    <DataGridTextColumn.Header >
+                        <TextBlock Text="{x:Static p:Resources.ImportDate}"></TextBlock>
+                    </DataGridTextColumn.Header>
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
         <DockPanel Margin="5" Grid.Row="1" LastChildFill="False">
             <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonDownloadAll" Click="ButtonDownloadAll_OnClick"
-                    Background="Transparent" BorderBrush="Transparent" ToolTip="Download all latest">
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.DownloadAllLatest}">
                 <Image Source="../Assets/Icons/download.png" Width="32" Height="32" />
             </Button>
             <Border Margin="5"  BorderThickness="1" BorderBrush="Gray">
             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
 
-                <TextBlock Margin="5"  VerticalAlignment="Center" Text="Download TWIC from number:"></TextBlock>
+                    <TextBlock Margin="5"  VerticalAlignment="Center" Text="{x:Static p:Resources.DownloadFromNumber}"></TextBlock>
                 <bearChessWin:NumericUpDownUserControl  Margin="5" Value="1000" ValueChanged="NumericUpDownUserControlTwicNumberFrom_OnValueChanged"
                                                         x:Name="numericUpDownUserControlTwicNumberFrom" MinValue="920"
                                                         MaxValue="9999" TextWidthProperty="30"></bearChessWin:NumericUpDownUserControl>
-                <TextBlock Margin="5"  VerticalAlignment="Center" Text="to number:"></TextBlock>
+                    <TextBlock Margin="5"  VerticalAlignment="Center" Text="{x:Static p:Resources.ToNumber}"></TextBlock>
                 <bearChessWin:NumericUpDownUserControl  Margin="5" Value="1000" 
                                                         x:Name="numericUpDownUserControlTwicNumberTo" MinValue="920" ValueChanged="NumericUpDownUserControlTwicNumberTo_OnValueChanged"
                                                         MaxValue="9999" TextWidthProperty="30"></bearChessWin:NumericUpDownUserControl>
                     <Button Margin="5,5,5,5" DockPanel.Dock="Left" Name="buttonDownloadSingle" Click="ButtonDownloadSingle_OnClick"
-                        Background="Transparent" BorderBrush="Transparent" ToolTip="Download ">
+                        Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.Download}">
                     <Image Source="../Assets/Icons/mark_to_download.png" Width="32" Height="32" />
                 </Button>
 
@@ -78,7 +88,7 @@
             </StackPanel>
             </Border>
             <Button Margin="5,5,5,5" DockPanel.Dock="Right" Name="buttonExit" Click="ButtonExit_OnClick"
-                    Background="Transparent" BorderBrush="Transparent" ToolTip="Close">
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.Exit}">
                 <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32" />
             </Button>
         </DockPanel>   

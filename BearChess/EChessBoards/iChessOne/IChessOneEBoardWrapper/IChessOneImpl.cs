@@ -34,6 +34,11 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneEBoardWrapper
             _board.SendInformation(message);
         }
 
+        public override string RequestInformation(string message)
+        {
+            return string.Empty;
+        }
+
         public override void DimLEDs(bool dimLEDs)
         {
             //throw new System.NotImplementedException();

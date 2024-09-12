@@ -32,6 +32,11 @@ namespace www.SoLaNoSoft.com.BearChess.UCBEBoardWrapper
            //
         }
 
+        public override string RequestInformation(string message)
+        {
+            return string.Empty;
+        }
+
         public override void DimLEDs(bool dimLeds)
         {
             //

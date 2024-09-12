@@ -16,6 +16,7 @@ namespace www.SoLaNoSoft.com.BearChess.HoSChessBoard
 
         
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler HelpRequestedEvent;
         public override event EventHandler<string> DataEvent;
 

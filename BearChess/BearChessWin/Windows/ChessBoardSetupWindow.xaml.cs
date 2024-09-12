@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Serialization;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -24,12 +27,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         }
 
+        private readonly Configuration _configuration;
         private readonly string _boardPath;
         private readonly string _piecesPath;
         private readonly Dictionary<string, BoardFieldsSetup> _installedFields;
         private readonly Dictionary<string, BoardPiecesSetup> _installedPieces;
         private readonly List<string> _unDeleteablePieces = new List<string>();
         private readonly List<string> _unDeleteableFields = new List<string>();
+        private readonly ResourceManager _rm;
 
         public BoardFieldsSetup BoardFieldsSetup { get; private set; }
         public BoardPiecesSetup BoardPiecesSetup { get; private set; }
@@ -39,14 +44,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
       
     
 
-        public ChessBoardSetupWindow(string boardPath, string piecesPath, Dictionary<string, BoardFieldsSetup> installedFields,
+        public ChessBoardSetupWindow(Configuration configuration, string boardPath, string piecesPath, Dictionary<string, BoardFieldsSetup> installedFields,
                                      Dictionary<string, BoardPiecesSetup> installedPieces,
                                      string currentBoardFieldsSetupId, string currentBoardPiecesSetupId)
         {
 
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
 
-          
             installedFields[Constants.BearChess] = new BoardFieldsSetup()
             {
                 Name = Constants.BearChess,
@@ -93,6 +98,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _unDeleteableFields.Add(Constants.Certabo);
             _unDeleteableFields.Add(Constants.Tabutronic);
 
+            _configuration = configuration;
             _boardPath = boardPath;
             _piecesPath = piecesPath;
             _installedFields = installedFields;
@@ -158,7 +164,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    var confirmPiecesWindow = new ConfirmPiecesWindow(dialog.SelectedPath, Array.Empty<string>(),string.Empty) { Owner = this };
+                    var confirmPiecesWindow = new ConfirmPiecesWindow(_configuration, dialog.SelectedPath, Array.Empty<string>(),string.Empty) { Owner = this };
                     var confirm = confirmPiecesWindow.ShowDialog();
                     if (confirm.HasValue && confirm.Value)
                     {
@@ -210,12 +216,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_unDeleteableFields.Contains(BoardFieldsSetup.Name))
             {
-                MessageBox.Show($"You cannot delete pre-installed board '{BoardFieldsSetup.Name}'", "Information", MessageBoxButton.OK,
+                MessageBox.Show($"{_rm.GetString("DeletePreInstalledBoard")} '{BoardFieldsSetup.Name}'", _rm.GetString("Information"), MessageBoxButton.OK,
                           MessageBoxImage.Hand);
                 return;
             }
             
-            if (MessageBox.Show($"Delete board '{BoardFieldsSetup.Name}'?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning,
+            if (MessageBox.Show($"{_rm.GetString("DeleteBoard")} '{BoardFieldsSetup.Name}'?", _rm.GetString("Delete"), MessageBoxButton.YesNo, MessageBoxImage.Warning,
                                 MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 _installedFields.Remove(BoardFieldsSetup.Id);
@@ -229,12 +235,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_unDeleteablePieces.Contains(BoardPiecesSetup.Name))
             {
-                MessageBox.Show($"You cannot delete pre-installed pieces '{BoardPiecesSetup.Name}'", "Information", MessageBoxButton.OK,
+                MessageBox.Show($"{_rm.GetString("DeletePreInstalledPieces")} '{BoardPiecesSetup.Name}'", _rm.GetString("Information"), MessageBoxButton.OK,
                             MessageBoxImage.Hand);
                 return;
             }
 
-            if (MessageBox.Show($"Delete pieces '{BoardPiecesSetup.Name}'?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning,
+            if (MessageBox.Show($"{_rm.GetString("DeletePieces")} '{BoardPiecesSetup.Name}'?", _rm.GetString("Delete"), MessageBoxButton.YesNo, MessageBoxImage.Warning,
                                 MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 _installedPieces.Remove(BoardPiecesSetup.Id);
@@ -253,7 +259,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (files != null)
                 {
                     var fileInfo = new FileInfo(files[0]);
-                    var confirmPiecesWindow = new ConfirmPiecesWindow(fileInfo.DirectoryName, new string[0], fileInfo.FullName) { Owner = this };
+                    var confirmPiecesWindow = new ConfirmPiecesWindow(_configuration,fileInfo.DirectoryName, new string[0], fileInfo.FullName) { Owner = this };
                     var confirm = confirmPiecesWindow.ShowDialog();
                     if (confirm.HasValue && confirm.Value)
                     {

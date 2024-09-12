@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="Height"
         Title="Free Internet Chess Server" Height="200" Width="300">
     <Grid>
@@ -19,15 +20,15 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Margin="5" Grid.Column="0" Grid.Row="0" FontWeight="SemiBold">Username:</TextBlock>
+        <TextBlock Margin="5" Grid.Column="0" Grid.Row="0" FontWeight="SemiBold" Text="{x:Static p:Resources.Username}"/>
         <TextBox Margin="5" Name="textBlockUserName" Grid.Column="1" Grid.Row="0"></TextBox>
-        <TextBlock Margin="5" Grid.Column="0" Grid.Row="1" FontWeight="SemiBold">Password:</TextBlock>
+        <TextBlock Margin="5" Grid.Column="0" Grid.Row="1" FontWeight="SemiBold" Text="{x:Static p:Resources.Password}"/>
         <PasswordBox PasswordChar="*" Margin="5" Name="textBlockPassword"  Grid.Column="1" Grid.Row="1"></PasswordBox>
-        <TextBlock Margin="5" Grid.Column="0" Grid.Row="2" FontWeight="SemiBold">Server:</TextBlock>
+        <TextBlock Margin="5" Grid.Column="0" Grid.Row="2" FontWeight="SemiBold" Text="{x:Static p:Resources.Server}"/>
         <TextBox Margin="5" Name="textBlockServer" Grid.Column="1" Grid.Row="2">www.freechess.org</TextBox>
-        <TextBlock Margin="5" Grid.Column="0" Grid.Row="3" FontWeight="SemiBold">Port:</TextBlock>
+        <TextBlock Margin="5" Grid.Column="0" Grid.Row="3" FontWeight="SemiBold" Text="{x:Static p:Resources.Port}"/>
         <TextBox Margin="5" Name="textBlockPort" Grid.Column="1" Grid.Row="3">5000</TextBox>
-        <TextBlock Margin="5" Grid.Row="4" Grid.Column="0" FontWeight="SemiBold">As guest:</TextBlock>
+        <TextBlock Margin="5" Grid.Row="4" Grid.Column="0" FontWeight="SemiBold" Text="{x:Static p:Resources.AsGuest}"></TextBlock>
         <CheckBox Margin="5" Name="checkBoxAsGuest" Grid.Row="4" Grid.Column="1" ></CheckBox>
         <DockPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Margin="5" DockPanel.Dock="Bottom" LastChildFill="False">
             <Button Name="buttonOk" Margin="5,5,5,5" DockPanel.Dock="Left"  Width="28" Height="28" Background="Transparent" BorderBrush="Transparent" IsDefault="True" Click="ButtonOk_OnClick" >

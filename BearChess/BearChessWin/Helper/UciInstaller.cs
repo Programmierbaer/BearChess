@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChessBase;
@@ -48,6 +49,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 //
             }
 
+            if (fileName.ToLower().Contains("wasp") || !_uciInfo.CanMultiPV())
+            {
+                _uciInfo.SupportChangeMultiPV = false;
+            }
             return _uciInfo;
         }
 

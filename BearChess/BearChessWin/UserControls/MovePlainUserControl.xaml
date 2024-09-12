@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties" 
              mc:Ignorable="d" FontSize="18"
              d:DesignHeight="150" d:DesignWidth="200">
     <StackPanel Name="stackPanelMove">
@@ -11,57 +12,57 @@
                     HorizontalContentAlignment="Left">
                 <Button.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Move symbol">
-                            <MenuItem Icon="!" Header="Good move" Click="MenuItemMoveSymbol_OnClick" />
-                            <MenuItem Icon="?" Header="Poor move" Click="MenuItemMoveSymbol_OnClick" />
-                            <MenuItem Icon="!!" Header="Very good move" Click="MenuItemMoveSymbol_OnClick" />
-                            <MenuItem Icon="??" Header="Very poor move" Click="MenuItemMoveSymbol_OnClick" />
-                            <MenuItem Icon="!?" Header="Speculative move" Click="MenuItemMoveSymbol_OnClick" />
-                            <MenuItem Icon="?!" Header="Questionable move" Click="MenuItemMoveSymbol_OnClick" />
-                            <MenuItem Icon="□" Header="Only move" Click="MenuItemMoveSymbol_OnClick" />
+                        <MenuItem Header="{x:Static p:Resources.MoveSymbol}">
+                            <MenuItem Icon="!" Header="{x:Static p:Resources.GoodMove}" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="?" Header="{x:Static p:Resources.PoorMove}" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="!!" Header="{x:Static p:Resources.VeryGoodMove}" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="??" Header="{x:Static p:Resources.VeryPoorMove}" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="!?" Header="{x:Static p:Resources.SpeculativeMove}" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="?!" Header="{x:Static p:Resources.QuestionableMove}" Click="MenuItemMoveSymbol_OnClick" />
+                            <MenuItem Icon="□" Header="{x:Static p:Resources.OnlyMove}" Click="MenuItemMoveSymbol_OnClick" />
                             <Separator />
-                            <MenuItem Header="Remove symbol" Click="MenuItemMoveSymbol_OnClick">
+                            <MenuItem Header="{x:Static p:Resources.RemoveSymbol}" Click="MenuItemMoveSymbol_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="../Assets/Icons/bin.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Header="Evaluation symbol">
-                            <MenuItem Icon="+-" Header="White has a decisive advantage"
+                        <MenuItem Header="{x:Static p:Resources.EvaluationSymbol}">
+                            <MenuItem Icon="+-" Header="{x:Static p:Resources.WhiteHasDecisiveAdvantage}"
                                       Click="MenuItemMoveEvaluation_OnClick" />
-                            <MenuItem Icon="-+" Header="Black has a decisive advantage"
+                            <MenuItem Icon="-+" Header="{x:Static p:Resources.WhiteHasDecisiveAdvantage}"
                                       Click="MenuItemMoveEvaluation_OnClick" />
-                            <MenuItem Icon="=" Header="Equal position" Click="MenuItemMoveEvaluation_OnClick" />
-                            <MenuItem Icon="∞" Header="Unclear position" Click="MenuItemMoveEvaluation_OnClick" />
-                            <MenuItem Icon="+=" Header="White has a slight advantage"
+                            <MenuItem Icon="=" Header="{x:Static p:Resources.EqualPosition}" Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="∞" Header="{x:Static p:Resources.UnclearPosition}" Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="+=" Header="{x:Static p:Resources.WhiteSlightAdvantage}"
                                       Click="MenuItemMoveEvaluation_OnClick" />
-                            <MenuItem Icon="=+" Header="Black has a slight advantage"
+                            <MenuItem Icon="=+" Header="{x:Static p:Resources.BlackSlightAdvantage}"
                                       Click="MenuItemMoveEvaluation_OnClick" />
-                            <MenuItem Icon="±" Header="White has a moderate advantage"
+                            <MenuItem Icon="±" Header="{x:Static p:Resources.WhiteModerateAdvantage}"
                                       Click="MenuItemMoveEvaluation_OnClick" />
-                            <MenuItem Icon="∓" Header="Black has a moderate advantage"
+                            <MenuItem Icon="∓" Header="{x:Static p:Resources.BlackModerateAdvantage}"
                                       Click="MenuItemMoveEvaluation_OnClick" />
-                            <MenuItem Icon="∞=" Header="With compensation" Click="MenuItemMoveEvaluation_OnClick" />
+                            <MenuItem Icon="∞=" Header="{x:Static p:Resources.WithCompensation}" Click="MenuItemMoveEvaluation_OnClick" />
                             <Separator />
-                            <MenuItem Header="Remove symbol" Click="MenuItemMoveEvaluation_OnClick">
+                            <MenuItem Header="{x:Static p:Resources.RemoveSymbol}" Click="MenuItemMoveEvaluation_OnClick">
                                 <MenuItem.Icon>
                                     <Image Source="../Assets/Icons/bin.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Header="Own symbol..." Name="menuItemEditSymbol"
+                        <MenuItem Header="{x:Static p:Resources.OwnSymbol}" Name="menuItemEditSymbol"
                                   Click="MenuItemEditSymbol_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="../Assets/Icons/highlighter_text.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="Edit comment..." Name="menuItemEditComment"
+                        <MenuItem Header="{x:Static p:Resources.EditComent}" Name="menuItemEditComment"
                                   Click="MenuItemEditComment_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="../Assets/Icons/script_add.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="Restart from here..." Click="MenuItemRestart_Click">
+                        <MenuItem Header="{x:Static p:Resources.RestartFromHere}" Click="MenuItemRestart_Click">
                             <MenuItem.Icon>
                                 <Image Source="../Assets/Icons/control_repeat_blue.png" />
                             </MenuItem.Icon>

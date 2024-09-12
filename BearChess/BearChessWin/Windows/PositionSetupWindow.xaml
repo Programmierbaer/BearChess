@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"  WindowStartupLocation="CenterOwner"
         mc:Ignorable="d" ResizeMode="NoResize" 
         SizeToContent="WidthAndHeight"
-        Title="Setup Position" Height="500" Width="860">
+        Title="{x:Static p:Resources.SetupPosition}" Height="500" Width="860">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -19,9 +20,9 @@
         <bearChessWin:GraphicsChessBoardUserControl  Margin="5" x:Name="chessBoardUserControl" Grid.Column="0" Grid.Row="0" />
         <StackPanel Margin="5" Grid.Row="0" Grid.Column="1">
             <DockPanel VerticalAlignment="Top" Name="dockPanelSetFen">
-                <Button DockPanel.Dock="Left" Width="40" Margin="2" Content="Set" Name="buttonSetPosition"
+                <Button DockPanel.Dock="Left" Width="40" Margin="2" Content="{x:Static p:Resources.Set}" Name="buttonSetPosition"
                         Click="ButtonSetPosition_OnClick" Visibility="Collapsed" />
-                <Button DockPanel.Dock="Left" Width="40" Margin="2" Name="buttonCopyPosition" ToolTip="Copy to clipboard"
+                <Button DockPanel.Dock="Left" Width="40" Margin="2" Name="buttonCopyPosition" ToolTip="{x:Static p:Resources.CopyToClipboard}"
                         Click="ButtonCopyPosition_OnClick" Background="Transparent" BorderBrush="Transparent" >
                     <Image Source="../Assets/Icons/clipboard_sign_out.png" Width="32"></Image>
                 </Button>
@@ -30,7 +31,7 @@
                          GotMouseCapture="TextBoxFenPosition_OnGotMouseCapture" Width="400"
                          GotKeyboardFocus="TextBoxFenPosition_OnGotKeyboardFocus" />
             </DockPanel>
-            <GroupBox Header="Pieces" Name="groupBoxFigures" VerticalAlignment="Top">
+            <GroupBox Header="{x:Static p:Resources.Pieces}" Name="groupBoxFigures" VerticalAlignment="Top">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -73,7 +74,7 @@
                         </Button>
                     </StackPanel>
                     <StackPanel Grid.Row="0" Grid.Column="2">
-                        <GroupBox Margin="5" Header="Castling">
+                        <GroupBox Margin="5" Header="{x:Static p:Resources.Castling}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
@@ -83,7 +84,7 @@
                                     <RowDefinition Height="Auto" />
 
                                 </Grid.RowDefinitions>
-                                <GroupBox Margin="1" Header="White" Grid.Row="0" Grid.Column="0">
+                                <GroupBox Margin="1" Header="{x:Static p:Resources.White}" Grid.Row="0" Grid.Column="0">
                                     <StackPanel>
                                         <CheckBox Margin="2"  Content="0-0"
                                                   Name="checkBoxWhiteShortCastle" />
@@ -91,7 +92,7 @@
                                                   Name="checkBoxWhiteLongCastle" />
                                     </StackPanel>
                                 </GroupBox>
-                                <GroupBox Margin="1" Grid.Row="0" Grid.Column="1" Header="Black">
+                                <GroupBox Margin="1" Grid.Row="0" Grid.Column="1" Header="{x:Static p:Resources.Black}">
                                     <StackPanel>
                                         <CheckBox Margin="2"  Content="0-0"
                                                   Name="checkBoxBlackShortCastle" />
@@ -101,29 +102,29 @@
                                 </GroupBox>
                             </Grid>
                         </GroupBox>
-                        <GroupBox Margin="5" Header="Color on move">
+                        <GroupBox Margin="5" Header="{x:Static p:Resources.ColorOnMove}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <RadioButton Click="RadioButtonWhiteOnMove_OnClick" Margin="2" Grid.Column="0" Content="White" Name="radioButtonWhiteOnMove" />
-                                <RadioButton Click="RadioButtonBlackOnMove_OnClick" Margin="2" Grid.Column="1" Content="Black" Name="radioButtonBlackOnMove" />
+                                <RadioButton Click="RadioButtonWhiteOnMove_OnClick" Margin="2" Grid.Column="0" Content="{x:Static p:Resources.White}" Name="radioButtonWhiteOnMove" />
+                                <RadioButton Click="RadioButtonBlackOnMove_OnClick" Margin="2" Grid.Column="1" Content="{x:Static p:Resources.Black}" Name="radioButtonBlackOnMove" />
                             </Grid>
                         </GroupBox>
                        
                     </StackPanel>
                     <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="5,40,5,5" LastChildFill="False">
                         <Button Margin="2,2,5,2"  DockPanel.Dock="Left" Name="buttonClear" Background="Transparent" 
-                                Click="ButtonClear_OnClick" ToolTip="Clear board">
+                                Click="ButtonClear_OnClick" ToolTip="{x:Static p:Resources.ClearBoard}">
                             <Image Source="../Assets/Icons/Board64 black.ico" Width="48" Height="48"></Image>
                         </Button>
                         <Button Margin="5,2,5,2"  DockPanel.Dock="Left" Name="buttonBase" Background="Transparent" 
-                                Click="ButtonBase_OnClick" ToolTip="Base position" >
+                                Click="ButtonBase_OnClick" ToolTip="{x:Static p:Resources.BasePosition}" >
                             <Image Source="../Assets/Icons/Array.ico" Width="48" Height="48"></Image>
                         </Button>
                         <Button Margin="5,2,2,2"  DockPanel.Dock="Left" Name="buttonReset" Background="Transparent" BorderBrush="Transparent"
-                                Click="ButtonReset_OnClick" ToolTip="Reset">
+                                Click="ButtonReset_OnClick" ToolTip="{x:Static p:Resources.Reset}">
                             <Image Source="../Assets/Icons/undo.png" Width="32"></Image>
                         </Button>
                     </DockPanel>

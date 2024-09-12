@@ -175,6 +175,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = true;
+            ValidForAnalyse = true;
             SelfControlled = false;
             Information = string.Empty;
             IsConnected = EnsureConnection();
@@ -233,6 +234,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
             BatteryLevel = "--";
             BatteryStatus = "";
             PieceRecognition = true;
+            ValidForAnalyse = true;
             SelfControlled = false;
             Information = Constants.DGT;
         }
@@ -725,6 +727,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         }
 
         public override event EventHandler BasePositionEvent;
+        public override event EventHandler NewGamePositionEvent;
         public override event EventHandler<string> DataEvent;
         public override event EventHandler HelpRequestedEvent;
 
@@ -815,6 +818,10 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
                 return;
             }
 
+            if (displayString.Length > 8)
+            {
+                displayString = displayString.Substring(0, 8);
+            }
             _logger?.LogDebug($"DGT: Display: {displayString}");
             List<byte> allBytes = new List<byte>
                                   {

@@ -1,4 +1,5 @@
 ﻿using System;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
@@ -17,6 +18,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected volatile bool _stopAll = false;
         protected bool _ignoreReading = false;
         protected bool _acceptProbingMoves = false;
+        protected int _awaitingMoveFromField = Fields.COLOR_OUTSIDE;
+        protected int _awaitingMoveToField = Fields.COLOR_OUTSIDE;
 
 
         public bool IsCalibrated { get; protected set; }
@@ -32,7 +35,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract bool CheckComPort(string portName, string baud);
         
         public abstract void SetLedForFields(SetLEDsParameter ledsParameter);
-
 
         public abstract void SetAllLedsOff(bool forceOff);
 
@@ -55,6 +57,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void Calibrate();
 
         public abstract void SendInformation(string message);
+
+        public virtual string RequestInformation(string message)
+        {
+            return string.Empty;
+        }
         
         public abstract void AdditionalInformation(string information);
 
@@ -70,10 +77,20 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract void SetFen(string fen);
 
+
+        public void AwaitingMove(int fromField, int toField)
+        {
+            _awaitingMoveFromField = fromField;
+            _awaitingMoveToField = toField;
+        }
+
         public bool PieceRecognition { get; set; } = true;
 
         public bool SelfControlled { get; set; }
         public bool MultiColorLEDs { get; set; } = false;
+        public bool ValidForAnalyse { get; set; }
+
+        public bool UseFieldDumpForFEN { get; set; } = false;
 
         public void Stop(bool stop)
         {
@@ -102,6 +119,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public abstract void SetEngineColor(int color);
 
         public abstract event EventHandler BasePositionEvent;
+        public abstract event EventHandler NewGamePositionEvent;
         public abstract event EventHandler HelpRequestedEvent;
 
         public abstract event EventHandler<string> DataEvent;
@@ -149,7 +167,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             }
         }
 
-        public string GetCurrentCOMPort()
+        public string GetCurrentComPort()
         {
             return _serialCommunication.CurrentComPort;
         }
