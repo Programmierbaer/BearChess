@@ -4,6 +4,7 @@ using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -62,6 +63,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         void SwitchColor();
         void SetDisplayTypes(DisplayFigureType figureType, DisplayMoveType moveType, DisplayCountryType countryType);
+        void SetConfiguration(Configuration configuration, string uciPath);
+
+        void ShowCloseButton();
     }
 
    

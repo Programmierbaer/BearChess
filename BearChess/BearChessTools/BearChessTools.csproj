@@ -70,9 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClipboardHelper.cs" />
-    <Compile Include="Configuration.cs" />
-    <Compile Include="ConfigurationSettings.cs" />
-    <Compile Include="EnDeCryption.cs" />
     <Compile Include="FileDownload.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -7,7 +7,7 @@ using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
 {
-    public class CTGReader
+    public class CTGReader: IDisposable
     {
 
         private string _fileName;
@@ -1062,7 +1062,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
                             ret[i].Move = mirrorMoveColor(ret[i].Move);
                     }
                 }
-               // _ctg.Dispose();
                 return ret.ToArray();
             }
             catch (Exception e)
@@ -1086,28 +1085,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.CTG
                 }
                 return null;
             }
-            finally
-            {
-                //if (ctgF != null)
-                //{
-                //    ctgF.Close();
-                //    ctgF.Dispose();
-                //}
-                //if (ctbF != null)
-                //{
-                //    ctbF.Close();
-                //    ctbF.Dispose();
-
-                //}
-                //if (ctoF != null)
-                //{
-                //    ctoF.Close();
-                //    ctoF.Dispose();
-
-                //}
-            }
         }
 
-        #endregion      
+        #endregion
+
+        public void Dispose()
+        {
+            _ctgF?.Dispose();
+            _ctbF?.Dispose();
+            _ctoF?.Dispose();
+            _ctg?.Dispose();
+        }
     }
 }

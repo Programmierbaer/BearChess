@@ -1,13 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Threading;
 using System.Diagnostics;
+using System.Resources;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessTools;
-using System.Resources;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -34,6 +34,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
 
         public bool CountDown { get; set; }
+
+        public void SetConfiguration(string capture, Configuration configuration)
+        {
+
+        }
+
         public event EventHandler TimeOutEvent;
 
 
@@ -132,7 +138,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _startTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
             _initTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hh, mm, ss);
             _extraSeconds = extraSeconds;
-            Title = _extraSeconds > 0 ? $"{_capture} ({hh:00}:{mm:00}:{ss:00} + {extraSeconds}s)" : $"{_capture} ({hh:00}:{mm:00}:{ss:00}";
+            Title = _extraSeconds > 0 ? $"{_capture} ({hh:00}:{mm:00}:{ss:00} + {extraSeconds}s)" : $"{_capture} ({hh:00}:{mm:00}:{ss:00})";
             ToolTip = Title;
             borderWarning.Visibility = Visibility.Hidden;
             _duration = TimeSpan.Zero;

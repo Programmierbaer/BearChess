@@ -1322,5 +1322,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
            //
         }
+
+        public void SetConfiguration(Configuration configuration, string uciPath)
+        {
+        
+        }
+
+        public void ShowCloseButton() {}
     }
 }

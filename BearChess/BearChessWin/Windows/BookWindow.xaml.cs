@@ -17,9 +17,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// <summary>
     /// Interaktionslogik für BookWindow.xaml
     /// </summary>
-    public partial class BookWindow : Window
+    public partial class BookWindow : Window, IBookWindow
     {
-        private readonly Configuration _configuration;
+        private  Configuration _configuration;
         private  OpeningBook _openingBook;
         private readonly List<string> _allMoves = new List<string>();
         private readonly ConcurrentQueue<string> _concurrentFenPositions = new ConcurrentQueue<string>();
@@ -28,6 +28,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DisplayCountryType _displayCountryType;
 
 
+        public string BookName      
+        {
+            get;
+            set;
+        }
+
         public event EventHandler<IBookMoveBase> SelectedMoveChanged;
 
         public BookWindow()
@@ -35,14 +41,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
             InitializeComponent();
         }
 
-        public BookWindow(Configuration configuration,BookInfo bookInfo) : this()
+      
+        public void SetConfiguration(Configuration configuration, BookInfo bookInfo)
         {
             _configuration = configuration;
             var bookInfo1 = bookInfo;
             Title += $" {bookInfo1.Name}";
-            Top = _configuration.GetWinDoubleValue("BookWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight,SystemParameters.VirtualScreenWidth);
-            Left = _configuration.GetWinDoubleValue("BookWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth);
-       
+            BookName = bookInfo1.Name;
+
             _displayFigureType = (DisplayFigureType)Enum.Parse(typeof(DisplayFigureType),
                 _configuration.GetConfigValue(
                     "DisplayFigureTypeBooks",
@@ -57,18 +63,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     DisplayCountryType.GB.ToString()));
             _openingBook = new OpeningBook(_displayFigureType, _displayMoveType, _displayCountryType);
             _openingBook.LoadBook(bookInfo1.FileName, false);
-         //   SetMoves(_openingBook.GetMoveList());
             var thread = new Thread(ReadFenPositions)
-                         {
-                             IsBackground = true
-                         };
+            {
+                IsBackground = true
+            };
             thread.Start();
         }
 
-        public BookWindow(IEnumerable<IBookMoveBase> bookMoves) : this()
-        {
-            dataGridMoves.ItemsSource = bookMoves;
-        }
+        public event EventHandler<string> Closed;
+
 
         public void SetMoves(IBookMoveBase[] bookMoves) 
         {
@@ -87,7 +90,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void ClearMoves()
         {
             _allMoves.Clear();
-            dataGridMoves.ItemsSource = _openingBook.GetMoveList(FenCodes.BasePosition,true);
+            dataGridMoves.ItemsSource = _openingBook.GetMoveList(FenCodes.BasePosition);
         }
 
         public void SetMoves(string fenPosition)
@@ -107,13 +110,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _openingBook.SetDisplayTypes(_displayFigureType, _displayMoveType, _displayCountryType);
         }
 
-        private void ReadFenPositions()
+        public void ReadFenPositions()
         {
             while (true)
             {
                 if (_concurrentFenPositions.TryDequeue(out string fenPosition))
                 {
-                    Dispatcher?.Invoke(() => { dataGridMoves.ItemsSource = _openingBook.GetMoveList(fenPosition, true); });
+                    Dispatcher?.Invoke(() => { dataGridMoves.ItemsSource = _openingBook.GetMoveList(fenPosition); });
                 }
                 Thread.Sleep(10);
             }

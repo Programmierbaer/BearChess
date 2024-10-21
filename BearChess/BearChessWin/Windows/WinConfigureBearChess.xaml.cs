@@ -30,6 +30,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxAllowEarly.IsChecked = bool.Parse(_configuration.GetConfigValue("allowEarly", "true"));
             numericUpDownUserControlEvaluation.Value = int.Parse(_configuration.GetConfigValue("earlyEvaluation", "4"));
             checkBoxWriteLogFiles.IsChecked = bool.Parse(_configuration.GetConfigValue("writeLogFiles", "true"));
+            radioButtonSDI.IsChecked = _configuration.GetBoolValue("sdiLayout",true);
+            radioButtonMDI.IsChecked = !_configuration.GetBoolValue("sdiLayout", true);
             var configValueLanguage = _configuration.GetConfigValue("Language", "default");
             if (configValueLanguage.Equals("default"))
             {
@@ -59,6 +61,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetConfigValue("allowEarly", (checkBoxAllowEarly.IsChecked.HasValue && checkBoxAllowEarly.IsChecked.Value).ToString());
             _configuration.SetConfigValue("earlyEvaluation", numericUpDownUserControlEvaluation.Value.ToString());
             _configuration.SetConfigValue("writeLogFiles", (checkBoxWriteLogFiles.IsChecked.HasValue && checkBoxWriteLogFiles.IsChecked.Value).ToString());
+            _configuration.SetBoolValue("sdiLayout", (radioButtonSDI.IsChecked.HasValue && radioButtonSDI.IsChecked.Value));
             if (radioButtonGlob.IsChecked.HasValue && radioButtonGlob.IsChecked.Value)
             {
                 _configuration.SetConfigValue("Language", "default");

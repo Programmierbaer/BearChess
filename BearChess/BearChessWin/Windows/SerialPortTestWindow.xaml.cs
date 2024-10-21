@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Net.WebSockets;
-using WebSocketSharp;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using WebSocketSharp;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
-
-using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessTools;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using WebSocket = WebSocketSharp.WebSocket;
 using WebSocketState = System.Net.WebSockets.WebSocketState;
-using System.Threading.Tasks;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {

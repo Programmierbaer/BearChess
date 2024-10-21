@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -30,6 +31,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         double Left { get; set; }
         double Height { get; set; }
         double Width { get; set; }
-
+        void SetConfiguration(string capture, Configuration configuration);
     }
 }

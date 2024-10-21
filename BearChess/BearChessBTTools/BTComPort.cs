@@ -48,7 +48,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessBTTools
             if (btAddress == null)
             {
                 string ident = useChesstimation ? "Chesstimation" : "0";
-                btAddress = BearChessTools.Configuration.Instance.LoadBTAddress(boardName, ident);
+                btAddress = BearChessBase.Configuration.Instance.LoadBTAddress(boardName, ident);
                 if (btAddress == null)
                 {
                     _bluetoothEndPoint = null;

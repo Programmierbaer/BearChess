@@ -1013,6 +1013,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
                         foreach (var move in checkMoves)
                         {
+                            if (string.IsNullOrWhiteSpace(move.FromFieldName) ||
+                                string.IsNullOrWhiteSpace(move.ToFieldName))
+                            {
+                                continue;
+                            }
                             if (invalidFields.Contains(move.FromFieldName) && invalidFields.Contains(move.ToFieldName))
                             {
                                 validFields.Add(move.ToFieldName);

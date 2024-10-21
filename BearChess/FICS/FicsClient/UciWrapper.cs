@@ -70,7 +70,7 @@ namespace www.SoLaNoSoft.com.BearChess.FicsClient
                             int promoteId = FigureId.NO_PIECE;
                             if (move.Length > 4)
                             {
-                                promoteId = FigureId.FenCharacterToFigureId[move[4].ToString()];
+                                promoteId = FigureId.GetFenCharacterToFigureId(move[4].ToString());
                             }
                             var engineMove = moveList.FirstOrDefault(mv => move.StartsWith($"{mv.FromFieldName}{mv.ToFieldName}"
                                                                          .ToLower()));

@@ -682,7 +682,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             var moves = moveList.Where(f => f.ToField == fieldNumber).ToList();
             if (moves.Count == 1)
             {
-                MakeMove(moves[0].FromField, moves[0].ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
+                MakeMove(moves[0].FromField, moves[0].ToField, FigureId.GetFenCharacterToFigureId(promotionFigure));
                 var lastMove = _allPlayedMoves.Last().Value.GetMove(EnemyColor);
                 lastMove.Comment = comment;
                 lastMove.ElapsedMoveTime = emt;
@@ -702,7 +702,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         {
                             if (fieldName.StartsWith(fromField))
                             {
-                                MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
+                                MakeMove(move.FromField, move.ToField, FigureId.GetFenCharacterToFigureId(promotionFigure));
                                 var lastMove = _allPlayedMoves.Last().Value.GetMove(EnemyColor);
                                 lastMove.Comment = comment;
                                 lastMove.ElapsedMoveTime = emt;
@@ -713,7 +713,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         }
                         if (string.IsNullOrWhiteSpace(fromField) || fieldName.Contains(fromField))
                         {
-                            MakeMove(move.FromField, move.ToField, FigureId.FenCharacterToFigureId[promotionFigure]);
+                            MakeMove(move.FromField, move.ToField, FigureId.GetFenCharacterToFigureId(promotionFigure));
                             var lastMove = _allPlayedMoves.Last().Value.GetMove(EnemyColor);
                             lastMove.Comment = comment;
                             lastMove.ElapsedMoveTime = emt;
@@ -761,7 +761,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public void MakeMove(string fromField, string toField, string promotionFigure)
         {
-            MakeMove(Fields.GetFieldNumber(fromField), Fields.GetFieldNumber(toField), FigureId.FenCharacterToFigureId[promotionFigure]);
+            MakeMove(Fields.GetFieldNumber(fromField), Fields.GetFieldNumber(toField), FigureId.GetFenCharacterToFigureId(promotionFigure));
         }
 
     

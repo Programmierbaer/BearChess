@@ -8,6 +8,7 @@ using InTheHand.Net.Sockets;
 using System.Management;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
+using www.SoLaNoSoft.com.BearChessBase;
 
 
 namespace www.SoLaNoSoft.com.BearChessTools

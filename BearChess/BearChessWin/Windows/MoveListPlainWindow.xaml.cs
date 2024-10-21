@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Globalization;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessTools;
-using System.Resources;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -32,7 +32,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// <summary>
     /// Interaktionslogik für MoveListPlainWindow.xaml
     /// </summary>
-    public partial class MoveListPlainWindow : Window
+    public partial class MoveListPlainWindow : Window, IMoveListPlainWindow
     {
         private readonly Configuration _configuration;
         private readonly PgnConfiguration _pgnConfiguration;
@@ -256,6 +256,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
         }
+
+        public void SetConfiguration(Configuration configuration, PgnConfiguration pgnConfiguration){}
 
         private void SetSizes(double top, double left, double width, double height)
         {

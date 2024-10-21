@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.ExceptionServices;
 using System.Text;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
@@ -15,16 +14,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
         public IEnumerable<PgnGame> Load(string fileName)
         {
              Filename = fileName;
-            PgnGame currentGame = null;
-            StringBuilder sb = new StringBuilder();
-            using (FileStream fs = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+             var sb = new StringBuilder();
+            using (var fs = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                using (BufferedStream bs = new BufferedStream(fs))
+                using (var bs = new BufferedStream(fs))
                 {
-                    using (StreamReader sr = new StreamReader(bs))
+                    using (var sr = new StreamReader(bs))
                     {
                         string allLine;
-                        bool startNewGame = false;
+                        var startNewGame = false;
+                        PgnGame currentGame = null;
                         while ((allLine = sr.ReadLine()) != null)
                         {
                             var line = allLine.Trim();
@@ -62,39 +61,58 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                     }
                 }
             }
-       
 
-            //if (currentGame != null)
-            //{
-            //    yield return currentGame;
-            //}
         }
 
-       
+        private string ReadingComment(char parenthesis, string line, ref int index)
+        {
+            string comment = string.Empty;
+            int i = 0;
+            for (i = index+1;i < line.Length; i++)
+            {
+                if (line[i] == '{')
+                {
+                    comment += ReadingComment('}', line, ref i);
+                    continue;
+                }
+                if (line[i] == '(')
+                {
+                    comment += ReadingComment(')', line, ref i);
+                    continue;
+                }
+                if (line[i] == parenthesis)
+                {
+                    break;
+                }
+                comment += line[i];
+               
+            }
+
+            index = i;
+            return comment;
+        }
 
         public PgnGame GetGame(string pgnGame)
         {
             PgnGame currentGame = null;
-            int insideComment = 0;
             var allLines = pgnGame.Split(new[] { Environment.NewLine },StringSplitOptions.RemoveEmptyEntries);
             int ji = 0;
             string line;
             bool startNewGame = false;
-            for (int j= 0; j < allLines.Length; j++)
+            for (int j = 0; j < allLines.Length; j++)
             {
                 line = allLines[j];
                 if (line.Length == 0)
                 {
                     continue;
                 }
+
                 if (!startNewGame && line.StartsWith("[", StringComparison.OrdinalIgnoreCase))
                 {
                     startNewGame = true;
-                   // ji += line.Length +2;
                     currentGame = new PgnGame();
-
-                    //                    continue;
                 }
+
                 if (line.StartsWith("["))
                 {
                     ji += line.Length + 2;
@@ -103,41 +121,40 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                     currentGame?.AddValue(line.Substring(0, indexOf), line.Substring(indexOf));
                     continue;
                 }
+
                 break;
             }
 
-            line = pgnGame.Replace("\r", " ").Replace("\n", " ");
+            line = pgnGame.Replace("\r", " ").Replace("\n", " ").Replace(")",") ").Replace("}", "} ");
             bool startsWithDollar = false;
             string newLine = string.Empty;
             string prevLine = string.Empty;
             string comment = string.Empty;
             string emt = string.Empty;
             string currentSign = string.Empty;
+           
             for (int i = ji; i < line.Length; i++)
             {
-                if (line[i] == '{' || line[i] == '(')
+             //   if (line[i] == '{' || line[i] == '(')
+                if (line[i] == '{' )
                 {
-                    insideComment++;
-                    comment += line[i];
-                    continue;
+                    comment += ReadingComment('}', line, ref i);
+                
+                }
+                if (line[i] == '(')
+                {
+                    comment += ReadingComment(')', line, ref i);
+                
                 }
 
-                if (line[i] == '}' || line[i] == ')')
+                if (comment.Contains("[%evp"))
                 {
-                    insideComment--;
-                    comment += line[i];
-                    continue;
-                }
-
-                if (insideComment > 0)
-                {
-                    comment += line[i];
-                    continue;
+                    comment = string.Empty;
                 }
 
                 if (comment.Contains("[%emt"))
                 {
-                    var indexOf = comment.IndexOf("[%emt");
+                    var indexOf = comment.IndexOf("[%emt",StringComparison.OrdinalIgnoreCase);
                     emt = string.Empty;
                     string dummy = string.Empty;
                     while (!comment[indexOf].Equals(']'))
@@ -251,15 +268,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             return currentGame;
         }
 
-        private string NagToSymbo(string nag)
-        {
-            if (PgnDefinitions.NagToSymbol.ContainsKey(nag))
-            {
-                return PgnDefinitions.NagToSymbol[nag];
-            }
-
-            return string.Empty;
-        }
+     
 
       
     }

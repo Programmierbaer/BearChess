@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
+using www.SoLaNoSoft.com.BearChessBaseLib.Definitions;
 using www.SoLaNoSoft.com.BearChessDatabase;
 using www.SoLaNoSoft.com.BearChessTools;
-using www.SoLaNoSoft.com.BearChessBaseLib.Definitions;
-using System.Resources;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
