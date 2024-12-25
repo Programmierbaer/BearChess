@@ -163,26 +163,26 @@
 \contentsline {section}{\numberline {28}Extended engine support}{156}{section.28}%
 \contentsline {section}{\numberline {29}Important To Know}{158}{section.29}%
 \contentsline {subsection}{\numberline {29.1}Install a new version}{158}{subsection.29.1}%
-\contentsline {subsection}{\numberline {29.2}Usage of "Buddy" and "BearChess" engines}{158}{subsection.29.2}%
-\contentsline {subsection}{\numberline {29.3}MessChess engines}{158}{subsection.29.3}%
-\contentsline {subsection}{\numberline {29.4}Certabo: board orientation}{158}{subsection.29.4}%
-\contentsline {subsection}{\numberline {29.5}Certabo: Calibration}{158}{subsection.29.5}%
-\contentsline {subsection}{\numberline {29.6}Certabo: Pawn conversion to a queen}{159}{subsection.29.6}%
+\contentsline {subsection}{\numberline {29.2}Configuration and log files}{158}{subsection.29.2}%
+\contentsline {subsection}{\numberline {29.3}Usage of "Buddy" and "BearChess" engines}{158}{subsection.29.3}%
+\contentsline {subsection}{\numberline {29.4}MessChess engines}{159}{subsection.29.4}%
+\contentsline {subsection}{\numberline {29.5}Certabo: board orientation}{159}{subsection.29.5}%
+\contentsline {subsection}{\numberline {29.6}Certabo: Calibration}{159}{subsection.29.6}%
 \contentsline {subsection}{\numberline {29.7}TabuTronic Cerno: Calibration}{159}{subsection.29.7}%
 \contentsline {subsection}{\numberline {29.8}TabuTronic Sentio: Piece recognition}{159}{subsection.29.8}%
 \contentsline {subsection}{\numberline {29.9}Millennium ChessLink (not eOne): board orientation}{159}{subsection.29.9}%
 \contentsline {subsection}{\numberline {29.10}DGT Pegasus: Piece recognition}{159}{subsection.29.10}%
 \contentsline {subsection}{\numberline {29.11}Square Off Pro: Piece recognition}{159}{subsection.29.11}%
-\contentsline {subsection}{\numberline {29.12}iChessOne}{159}{subsection.29.12}%
+\contentsline {subsection}{\numberline {29.12}iChessOne}{160}{subsection.29.12}%
 \contentsline {subsection}{\numberline {29.13}ChessUp}{160}{subsection.29.13}%
 \contentsline {subsection}{\numberline {29.14}Electronic chessboard and engine duels}{160}{subsection.29.14}%
 \contentsline {subsection}{\numberline {29.15}FICS and game types}{160}{subsection.29.15}%
 \contentsline {subsection}{\numberline {29.16}FICS and engines}{160}{subsection.29.16}%
 \contentsline {subsection}{\numberline {29.17}NOVAG and Saitek boards}{160}{subsection.29.17}%
-\contentsline {subsection}{\numberline {29.18}Available COM-Ports}{160}{subsection.29.18}%
+\contentsline {subsection}{\numberline {29.18}Available COM-Ports}{161}{subsection.29.18}%
 \contentsline {section}{\numberline {30}Trouble shooting}{161}{section.30}%
 \contentsline {subsection}{\numberline {30.1}The chess moves are not or not correctly displayed}{161}{subsection.30.1}%
 \contentsline {section}{\numberline {31}Known Issues}{161}{section.31}%
 \contentsline {section}{\numberline {32}Acknowledgments}{161}{section.32}%
-\contentsline {section}{\numberline {33}Next Steps}{161}{section.33}%
+\contentsline {section}{\numberline {33}Next Steps}{162}{section.33}%
 \contentsline {section}{\numberline {34}Change log}{169}{section.34}%

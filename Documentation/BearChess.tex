@@ -22,7 +22,7 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.0.10.0}
+\fancyhead[R]{Version 1.1.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
 \date{12.09.2024} 
@@ -80,7 +80,7 @@ linkcolor=black
 	BearChess offers among others the following functions:
 	\begin{enumerate}
 		\item Play with \textbf{Certabo} chessboards.
-		\item Play with \textbf{TabuTronic Cerno, Sentio} chessboards.	  
+		\item Play with \textbf{TabuTronic Cerno, Sentio, Tactum} chessboards.	  
 		\item Play with \textbf{Millennium} chessboards via \textbf{ChessLink} modul or \textbf{eOne}.
 		\item Play with \textbf{DGT e-Board} or \textbf{Revelation}.	  
 		\item Play with \textbf{DGT Pegasus} chessboard.	  
@@ -106,11 +106,13 @@ linkcolor=black
 		\item Individual chessmen and board fields.
 	\end{enumerate}
 	
-	BearChess follows the design of Single Document Interface (SDI). You can place different windows, e.g. chess engine output or chess move list, anywhere on your Windows desktop. If you close them or exit BearChess, the position is saved and set to the same position when reopening.\\ 
-	If you click on the BearChess main screen, all other open windows are also brought to the foreground. If you hold down the Shift key and move the BearChess main screen, all other windows will also be moved synchronously.\\\\
+	By default, BearChess follows the design of the Single Document Interface (SDI). You can place different windows, e.g. chess engine output or chess move list, anywhere on your Windows desktop. If you close them or exit BearChess, the position is saved and set to the same position when reopening.\\ 
+	If you click on the BearChess main screen, all other open windows are also brought to the foreground. If you hold down the Shift key and move the BearChess main screen, all other windows will also be moved synchronously.\\
+	Optionally, the design can also be changed so that most windows remain within the application window.\\\\
 	The version numbering follows the following scheme:\\ 
 	"\textit{major release}"\textbf{.}""\textit{minor release}"\textbf{.}""\textit{sub release}"\textbf{.}""\textit{bug fix}"\\
 	The \textit{minor release} is increased when new features are added. The \textit{sub release} is increased when minor features are added or improved. The last number is incremented if only errors were corrected.
+	
 	
 	\subsection{Modes}
 	BearChess is running in different modes. The current mode is displayed in the lower left corner.
@@ -3228,6 +3230,15 @@ Even if you are not playing a game and are on mode "Easy playing", just load som
 \subsection{Install a new version}
 All your configration settings for BearChess is not stored in the directory from which you start BearChess. For an installation of a new version of BearChess you can delete the complete BearChess directory and unpack the new version there. Or you unpack the new version in a separate directory and still have the same configuration.
 
+\subsection{Configuration and log files}
+All your configration settings for BearChess and log files are stored in a separate folder. The default folder depends on your windows user name and is\\
+\textbf{c:\textbackslash users\textbackslash USERNAME\textbackslash AppData \textbackslash Local \textbackslash BearChess}\\
+You can change the folder using the -path command line parameter\\
+\textbf{BearChessWin.exe -path d:\textbackslash chess} \\ 
+saves all files in the path \textbf{d:\textbackslash chess\textbackslash BearChess}\\
+If you like to use your document folder, use the abbreviation -doc\\
+\textbf{BearChessWin.exe -path -doc} \\ 
+
 \subsection{Usage of "Buddy" and "BearChess" engines} \label{BuddyBearChessEngines}
 BearChess is delivered with its own engine Spike. However, it can use other engines for internal tasks.\\
 The task of a "Buddy" engine is to be able to make move suggestions during a game. To do this, it calculates in parallel on the current position on the board to make a move proposal when the king piece is briefly raised. The "Buddy" engine is therefore exclusively concerned with calculating the current position.\\
@@ -3242,9 +3253,6 @@ The figure recognition assumes that the board is aligned so that the USB port is
 
 \subsection{Certabo: Calibration}
 For the first time, the engine assumes that all chessmen are on their initial position and the extra queens on d3 (white queen) and d6 (black queen).
-
-\subsection{Certabo: Pawn conversion to a queen}
-If you have performed the calibration without extra queens and are performing a pawn conversion with a extra queen on your board for the first time, the program needs a few seconds to identify the new piece. Please wait until the LEDs are off. The new piece code is stored. There is no delay next time.
 
 \subsection{TabuTronic Cerno: Calibration}
 For the first time, the engine assumes that all chessmen are on their initial position and the extra queens on d3 (white queen) and d6 (black queen).
@@ -3304,8 +3312,7 @@ The electronic chessboards work with different drivers for the COM interface. Du
 \section{Known Issues}
 \begin{itemize}
     \item \textbf{Setup position} It is not completely checked whether the position is valid. This also applies to castling rights.
-	\item Some windows may overlap for the first time.
-	\item Sometimes showing incorrect material balance for "All".
+	\item Some windows may overlap for the first time.	
 	\item Opening books may not work if the game is not started from the base position.	
 	\item Take back moves does not work if the engine is still in the BearChess opening library.
 \end{itemize}
@@ -3322,10 +3329,10 @@ These are some ideas what will come in one of the next versions.
 	    \item \textbf{Extra mode and adapted GUI design for visually impaired players.}
 	    \item More time control settings.
 		\item Extend the game analysis.
-		\item Improve electronic chess board handling.
-  	    \item Improve the performance of the opening book.
+		\item Improve electronic chess board handling.  	    
     	\item More BearChess settings.
    		\item GUI redesign.
+   		\item German handbook / Deutsches Handbuch
 \end{itemize} 
 
 \pagebreak
@@ -3335,6 +3342,16 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 1.0.10.0 $\Rightarrow$  1.1.0.0}
+\begin{itemize}			
+	\item {\color{blue}New}: Single window mode.
+	\item {\color{blue}New}: Path command line parameter
+	\item {\color{teal}Changes}: MessChess: Handling time control
+	\item {\color{red}Fix}: Reading polyglot opening book
+	\item {\color{red}Fix}: Showing material balance for "All".
+	\item {\color{red}Fix}: Show best move for TabuTronic Sentio boards.
+\end{itemize}
 
 \subsection*{Version 1.0.9.2 $\Rightarrow$  1.0.10.0}
 \begin{itemize}			
