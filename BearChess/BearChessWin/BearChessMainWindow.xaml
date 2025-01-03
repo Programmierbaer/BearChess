@@ -69,9 +69,23 @@
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
-                        <MenuItem Tag="FreeAnalysis" Header="{x:Static p:Resources.FreeAnalysis}"
-                                  Name="menuItemAnalyseFreeMode"
-                                  Click="MenuItemAnalyzeFreeMode_OnClick">
+                        <MenuItem Tag="FreeAnalysisBoth" Header="{x:Static p:Resources.FreeAnalysisBothSides}"
+                                  Name="MenuItemAnalyseFreeModeBoth"
+                                  Click="MenuItemAnalyzeFreeModeBoth_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/robot.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Tag="FreeAnalysisWhiteOnly" Header="{x:Static p:Resources.FreeAnalysisWhiteOnly}"
+                                  Name="MenuItemAnalyseFreeModeWhiteOnly"
+                                  Click="MenuItemAnalyzeFreeModeWhiteOnly_OnClick">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/Icons/robot.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Tag="FreeAnalysis" Header="{x:Static p:Resources.FreeAnalysisBlackOnly}"
+                                  Name="MenuItemAnalyseFreeModeBlackOnly"
+                                  Click="MenuItemAnalyzeFreeModeBlackOnly_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/robot.png" />
                             </MenuItem.Icon>

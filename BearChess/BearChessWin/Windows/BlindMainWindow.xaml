@@ -33,7 +33,9 @@
             </TabItem>
             <TabItem Tag="Analysis" Header="{x:Static p:Resources.Analysis}"  AutomationProperties.HelpText="Schaltflächen für Analysen"  >
                 <StackPanel Orientation="Vertical">
-                    <Button Tag="FreeAnalysis" Margin="5" Content="{x:Static p:Resources.FreeAnalysis}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+                    <Button Tag="FreeAnalysisBoth" Margin="5" Content="{x:Static p:Resources.FreeAnalysisBothSides}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+                    <Button Tag="FreeAnalysisWhiteOnly" Margin="5" Content="{x:Static p:Resources.FreeAnalysisWhiteOnly}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+                    <Button Tag="FreeAnalysisBlackOnly" Margin="5" Content="{x:Static p:Resources.FreeAnalysisBlackOnly}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
                     <Button Tag="GameAnalysis" Margin="5" Content="{x:Static p:Resources.GameAnalysis}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
                     <Button Tag="StopAnalysis" Margin="5" Content="{x:Static p:Resources.StopAnalysis}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
                     <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
