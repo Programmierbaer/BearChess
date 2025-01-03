@@ -867,10 +867,12 @@
     <EmbeddedResource Include="Properties\Resources.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Resource Include="Assets\Fonts\Alpha.ttf" />
     <Resource Include="Assets\Fonts\AVENFONT.TTF" />
@@ -1188,7 +1190,7 @@
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.7.1 %28x86 und x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.7.1 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

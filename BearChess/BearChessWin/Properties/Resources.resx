@@ -663,8 +663,14 @@
   <data name="ForWhiteAndBlack" xml:space="preserve">
     <value>for white and black</value>
   </data>
-  <data name="FreeAnalysis" xml:space="preserve">
-    <value>Free analysis</value>
+  <data name="FreeAnalysisBothSides" xml:space="preserve">
+    <value>Free analysis white and black moves</value>
+  </data>
+  <data name="FreeAnalysisWhiteOnly" xml:space="preserve">
+    <value>Free analysis white moves only</value>
+  </data>
+  <data name="FreeAnalysisBlackOnly" xml:space="preserve">
+    <value>Free analysis black moves only</value>
   </data>
   <data name="FromPointOfWhite" xml:space="preserve">
     <value>From the point of view of White</value>

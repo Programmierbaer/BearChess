@@ -663,8 +663,14 @@
   <data name="ForWhiteAndBlack" xml:space="preserve">
     <value>für Weiß und Schwarz</value>
   </data>
-  <data name="FreeAnalysis" xml:space="preserve">
-    <value>Freie Analyse</value>
+  <data name="FreeAnalysisBothSides" xml:space="preserve">
+    <value>Freie Analyse für weiße und schwarze Züge</value>
+  </data>
+  <data name="FreeAnalysisWhiteOnly" xml:space="preserve">
+    <value>Freie Analyse nur für weiße Züge</value>
+  </data>
+  <data name="FreeAnalysisBlackOnly" xml:space="preserve">
+    <value>Freie Analyse nur für schwarze Züge</value>
   </data>
   <data name="FromPointOfWhite" xml:space="preserve">
     <value>Aus der Sicht von Weiß</value>
