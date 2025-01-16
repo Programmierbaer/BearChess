@@ -1,18 +1,18 @@
 \babel@toc {ngerman}{}\relax 
-\contentsline {figure}{\numberline {1}{\ignorespaces Easy playing}}{11}{figure.1}%
-\contentsline {figure}{\numberline {2}{\ignorespaces Playing a game}}{11}{figure.2}%
-\contentsline {figure}{\numberline {3}{\ignorespaces Analysing}}{11}{figure.3}%
-\contentsline {figure}{\numberline {4}{\ignorespaces Analysing}}{12}{figure.4}%
-\contentsline {figure}{\numberline {5}{\ignorespaces Setup Position}}{12}{figure.5}%
-\contentsline {figure}{\numberline {6}{\ignorespaces Main window}}{13}{figure.6}%
-\contentsline {figure}{\numberline {7}{\ignorespaces Actions}}{14}{figure.7}%
-\contentsline {figure}{\numberline {8}{\ignorespaces Games}}{15}{figure.8}%
+\contentsline {figure}{\numberline {1}{\ignorespaces Einfaches Spiel}}{11}{figure.1}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Partie spielen}}{11}{figure.2}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Analyse}}{12}{figure.3}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Partieanalyse}}{12}{figure.4}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Positionen eingeben}}{12}{figure.5}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Hauptfenster}}{13}{figure.6}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Aktionen}}{14}{figure.7}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Partien}}{15}{figure.8}%
 \contentsline {figure}{\numberline {9}{\ignorespaces Engines}}{15}{figure.9}%
-\contentsline {figure}{\numberline {10}{\ignorespaces Engine Settings}}{16}{figure.10}%
-\contentsline {figure}{\numberline {11}{\ignorespaces Books}}{17}{figure.11}%
-\contentsline {figure}{\numberline {12}{\ignorespaces Settings}}{17}{figure.12}%
-\contentsline {figure}{\numberline {13}{\ignorespaces Player}}{18}{figure.13}%
-\contentsline {figure}{\numberline {14}{\ignorespaces Electronic Boards}}{19}{figure.14}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Engine Einstellungen}}{16}{figure.10}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Bücher}}{17}{figure.11}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Einstellungen}}{17}{figure.12}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Spieler}}{18}{figure.13}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Elektronische Schachbretter}}{19}{figure.14}%
 \contentsline {figure}{\numberline {15}{\ignorespaces Windows}}{21}{figure.15}%
 \contentsline {figure}{\numberline {16}{\ignorespaces Open "Load and manage UCI Engines" window}}{21}{figure.16}%
 \contentsline {figure}{\numberline {17}{\ignorespaces Load and Manage UCI Engines}}{22}{figure.17}%
@@ -45,195 +45,195 @@
 \contentsline {figure}{\numberline {44}{\ignorespaces Loaded opening books }}{42}{figure.44}%
 \contentsline {figure}{\numberline {45}{\ignorespaces Open window to configure BearChess}}{43}{figure.45}%
 \contentsline {figure}{\numberline {46}{\ignorespaces Open window to configure board and pieces }}{44}{figure.46}%
-\contentsline {figure}{\numberline {47}{\ignorespaces Setup board and pieces }}{44}{figure.47}%
+\contentsline {figure}{\numberline {47}{\ignorespaces Setup board and pieces }}{45}{figure.47}%
 \contentsline {figure}{\numberline {48}{\ignorespaces Pre-installed pieces }}{45}{figure.48}%
-\contentsline {figure}{\numberline {49}{\ignorespaces Pre-installed boards}}{45}{figure.49}%
+\contentsline {figure}{\numberline {49}{\ignorespaces Pre-installed boards}}{46}{figure.49}%
 \contentsline {figure}{\numberline {50}{\ignorespaces Example for wood fields }}{46}{figure.50}%
-\contentsline {figure}{\numberline {51}{\ignorespaces Confirm new board }}{46}{figure.51}%
-\contentsline {figure}{\numberline {52}{\ignorespaces Example one png file for each piece}}{47}{figure.52}%
+\contentsline {figure}{\numberline {51}{\ignorespaces Confirm new board }}{47}{figure.51}%
+\contentsline {figure}{\numberline {52}{\ignorespaces Example one png file for each piece}}{48}{figure.52}%
 \contentsline {figure}{\numberline {53}{\ignorespaces One png file with all pieces}}{48}{figure.53}%
-\contentsline {figure}{\numberline {54}{\ignorespaces Drop new pieces }}{48}{figure.54}%
-\contentsline {figure}{\numberline {55}{\ignorespaces Confirm new pieces }}{48}{figure.55}%
-\contentsline {figure}{\numberline {56}{\ignorespaces Combine board and pieces by yoour own }}{49}{figure.56}%
-\contentsline {figure}{\numberline {57}{\ignorespaces Last/best move as arrow}}{50}{figure.57}%
-\contentsline {figure}{\numberline {58}{\ignorespaces Show possible moves for target field}}{51}{figure.58}%
-\contentsline {figure}{\numberline {59}{\ignorespaces Show possible moves for pieces}}{52}{figure.59}%
-\contentsline {figure}{\numberline {60}{\ignorespaces Opens a window to configure notation and moves }}{53}{figure.60}%
-\contentsline {figure}{\numberline {61}{\ignorespaces Configure notation and moves }}{53}{figure.61}%
-\contentsline {figure}{\numberline {62}{\ignorespaces Configure clocks }}{54}{figure.62}%
-\contentsline {figure}{\numberline {63}{\ignorespaces Small clocks }}{54}{figure.63}%
-\contentsline {figure}{\numberline {64}{\ignorespaces Big clocks }}{54}{figure.64}%
-\contentsline {figure}{\numberline {65}{\ignorespaces Sounds }}{55}{figure.65}%
-\contentsline {figure}{\numberline {66}{\ignorespaces Speech and sound configuration}}{56}{figure.66}%
-\contentsline {figure}{\numberline {67}{\ignorespaces Define translation}}{57}{figure.67}%
-\contentsline {figure}{\numberline {68}{\ignorespaces Show captured pieces }}{58}{figure.68}%
-\contentsline {figure}{\numberline {69}{\ignorespaces Show captured pieces on start }}{58}{figure.69}%
-\contentsline {figure}{\numberline {70}{\ignorespaces Show all captured pieces }}{59}{figure.70}%
-\contentsline {figure}{\numberline {71}{\ignorespaces Show captured pieces as difference}}{59}{figure.71}%
-\contentsline {figure}{\numberline {72}{\ignorespaces Open a window to configure Certabo boards }}{60}{figure.72}%
-\contentsline {figure}{\numberline {73}{\ignorespaces Search for Bluetooth }}{60}{figure.73}%
-\contentsline {figure}{\numberline {74}{\ignorespaces Configure Certabo boards }}{61}{figure.74}%
-\contentsline {figure}{\numberline {75}{\ignorespaces COM port successful detected}}{62}{figure.75}%
-\contentsline {figure}{\numberline {76}{\ignorespaces Invalid COM port }}{63}{figure.76}%
-\contentsline {figure}{\numberline {77}{\ignorespaces No board found }}{64}{figure.77}%
-\contentsline {figure}{\numberline {78}{\ignorespaces Search for Bluetooth}}{64}{figure.78}%
-\contentsline {figure}{\numberline {79}{\ignorespaces Calibrate base position }}{65}{figure.79}%
-\contentsline {figure}{\numberline {80}{\ignorespaces Calibration finished }}{65}{figure.80}%
-\contentsline {figure}{\numberline {81}{\ignorespaces Using Chesstimation module}}{66}{figure.81}%
-\contentsline {figure}{\numberline {82}{\ignorespaces Calibration not required}}{66}{figure.82}%
-\contentsline {figure}{\numberline {83}{\ignorespaces Connect to Certabo}}{66}{figure.83}%
-\contentsline {figure}{\numberline {84}{\ignorespaces Connected}}{67}{figure.84}%
-\contentsline {figure}{\numberline {85}{\ignorespaces Disconnected}}{67}{figure.85}%
-\contentsline {figure}{\numberline {86}{\ignorespaces Open a window to configure TabuTronic Cerno}}{67}{figure.86}%
-\contentsline {figure}{\numberline {87}{\ignorespaces Open a window to configure TabuTronic Sentio }}{67}{figure.87}%
-\contentsline {figure}{\numberline {88}{\ignorespaces Configure TabuTronic Sentio}}{68}{figure.88}%
-\contentsline {figure}{\numberline {89}{\ignorespaces Search for Bluetooth}}{69}{figure.89}%
-\contentsline {figure}{\numberline {90}{\ignorespaces Connect to TabuTronic Sentio}}{69}{figure.90}%
-\contentsline {figure}{\numberline {91}{\ignorespaces Open a window to configure iChessOne }}{69}{figure.91}%
-\contentsline {figure}{\numberline {92}{\ignorespaces Configure iChessOne }}{70}{figure.92}%
-\contentsline {figure}{\numberline {93}{\ignorespaces COM port successful detected }}{71}{figure.93}%
-\contentsline {figure}{\numberline {94}{\ignorespaces Invalid COM port }}{71}{figure.94}%
-\contentsline {figure}{\numberline {95}{\ignorespaces No board found }}{71}{figure.95}%
-\contentsline {figure}{\numberline {96}{\ignorespaces Set LEDs }}{72}{figure.96}%
-\contentsline {figure}{\numberline {97}{\ignorespaces Active LEDs }}{73}{figure.97}%
-\contentsline {figure}{\numberline {98}{\ignorespaces Test your LEDs }}{73}{figure.98}%
-\contentsline {figure}{\numberline {99}{\ignorespaces Test your LEDs }}{74}{figure.99}%
-\contentsline {figure}{\numberline {100}{\ignorespaces Save your configuration}}{74}{figure.100}%
-\contentsline {figure}{\numberline {101}{\ignorespaces Select a configuration}}{75}{figure.101}%
-\contentsline {figure}{\numberline {102}{\ignorespaces Open a window to configure Millennium boards }}{75}{figure.102}%
-\contentsline {figure}{\numberline {103}{\ignorespaces Search for Bluetooth}}{75}{figure.103}%
-\contentsline {figure}{\numberline {104}{\ignorespaces Configure Millennium ChessLink}}{76}{figure.104}%
-\contentsline {figure}{\numberline {105}{\ignorespaces COM port successful detected }}{77}{figure.105}%
-\contentsline {figure}{\numberline {106}{\ignorespaces Invalid COM port }}{78}{figure.106}%
-\contentsline {figure}{\numberline {107}{\ignorespaces No board found }}{78}{figure.107}%
-\contentsline {figure}{\numberline {108}{\ignorespaces Delay}}{79}{figure.108}%
-\contentsline {figure}{\numberline {109}{\ignorespaces Scan}}{79}{figure.109}%
-\contentsline {figure}{\numberline {110}{\ignorespaces Search for Bluetooth}}{79}{figure.110}%
-\contentsline {figure}{\numberline {111}{\ignorespaces Using Chesstimation/Elfacun Module}}{80}{figure.111}%
-\contentsline {figure}{\numberline {112}{\ignorespaces Connect to Millennium ChessLink}}{80}{figure.112}%
-\contentsline {figure}{\numberline {113}{\ignorespaces Connected}}{80}{figure.113}%
-\contentsline {figure}{\numberline {114}{\ignorespaces Disconnected}}{81}{figure.114}%
-\contentsline {figure}{\numberline {115}{\ignorespaces Open a window to configure DGT e-boards }}{81}{figure.115}%
-\contentsline {figure}{\numberline {116}{\ignorespaces Configure DGT e-boards }}{82}{figure.116}%
-\contentsline {figure}{\numberline {117}{\ignorespaces Search for Bluetooth}}{83}{figure.117}%
-\contentsline {figure}{\numberline {118}{\ignorespaces Opeb a window to configure DGT Pegasus}}{83}{figure.118}%
-\contentsline {figure}{\numberline {119}{\ignorespaces Configure DGT Pegasus}}{84}{figure.119}%
-\contentsline {figure}{\numberline {120}{\ignorespaces Connected}}{84}{figure.120}%
-\contentsline {figure}{\numberline {121}{\ignorespaces Disconnected}}{85}{figure.121}%
-\contentsline {figure}{\numberline {122}{\ignorespaces Confirm position}}{85}{figure.122}%
-\contentsline {figure}{\numberline {123}{\ignorespaces Verify position}}{86}{figure.123}%
-\contentsline {figure}{\numberline {124}{\ignorespaces Open a window to configure Chessnut Air/Air+/Pro}}{86}{figure.124}%
-\contentsline {figure}{\numberline {125}{\ignorespaces Configure Chessnut Air/Air+/Pro}}{87}{figure.125}%
-\contentsline {figure}{\numberline {126}{\ignorespaces Connect to Chessnut Air/Air+/Pro}}{87}{figure.126}%
-\contentsline {figure}{\numberline {127}{\ignorespaces Connected via Bluetooth LE}}{88}{figure.127}%
-\contentsline {figure}{\numberline {128}{\ignorespaces Connected via USB as HID}}{88}{figure.128}%
-\contentsline {figure}{\numberline {129}{\ignorespaces Disconnected}}{88}{figure.129}%
-\contentsline {figure}{\numberline {130}{\ignorespaces Open a window to configure Chessnut Evo}}{88}{figure.130}%
-\contentsline {figure}{\numberline {131}{\ignorespaces Configure Chessnut Evo }}{89}{figure.131}%
-\contentsline {figure}{\numberline {132}{\ignorespaces Set LEDs }}{90}{figure.132}%
-\contentsline {figure}{\numberline {133}{\ignorespaces Active LEDs }}{90}{figure.133}%
-\contentsline {figure}{\numberline {134}{\ignorespaces Test your LEDs }}{91}{figure.134}%
-\contentsline {figure}{\numberline {135}{\ignorespaces Test your LEDs }}{91}{figure.135}%
-\contentsline {figure}{\numberline {136}{\ignorespaces Save your configuration}}{92}{figure.136}%
-\contentsline {figure}{\numberline {137}{\ignorespaces Select a configuration}}{92}{figure.137}%
-\contentsline {figure}{\numberline {138}{\ignorespaces Connect to Chessnut Evo}}{92}{figure.138}%
-\contentsline {figure}{\numberline {139}{\ignorespaces Connected via IP address}}{92}{figure.139}%
-\contentsline {figure}{\numberline {140}{\ignorespaces Disconnected}}{93}{figure.140}%
-\contentsline {figure}{\numberline {141}{\ignorespaces Connect to Square Off Pro }}{93}{figure.141}%
-\contentsline {figure}{\numberline {142}{\ignorespaces Connected}}{93}{figure.142}%
-\contentsline {figure}{\numberline {143}{\ignorespaces Disconnected}}{93}{figure.143}%
-\contentsline {figure}{\numberline {144}{\ignorespaces Confirm position}}{94}{figure.144}%
-\contentsline {figure}{\numberline {145}{\ignorespaces Verify position}}{94}{figure.145}%
-\contentsline {figure}{\numberline {146}{\ignorespaces Connect to ChessUp }}{95}{figure.146}%
-\contentsline {figure}{\numberline {147}{\ignorespaces Connected via Bluetooth LE}}{95}{figure.147}%
-\contentsline {figure}{\numberline {148}{\ignorespaces Connect to House of Staunton }}{96}{figure.148}%
-\contentsline {figure}{\numberline {149}{\ignorespaces Open a window to configure NOVAG Citrine }}{96}{figure.149}%
-\contentsline {figure}{\numberline {150}{\ignorespaces Select COM port}}{97}{figure.150}%
-\contentsline {figure}{\numberline {151}{\ignorespaces Connect to NOVAG Citrine}}{97}{figure.151}%
-\contentsline {figure}{\numberline {152}{\ignorespaces Open a window to configure NOVAG UCB}}{98}{figure.152}%
-\contentsline {figure}{\numberline {153}{\ignorespaces Select COM port}}{98}{figure.153}%
-\contentsline {figure}{\numberline {154}{\ignorespaces Connect to NOVAG UCB}}{99}{figure.154}%
-\contentsline {figure}{\numberline {155}{\ignorespaces Open a window to configure Saitek OSA }}{100}{figure.155}%
-\contentsline {figure}{\numberline {156}{\ignorespaces Select COM port and baud rate}}{100}{figure.156}%
-\contentsline {figure}{\numberline {157}{\ignorespaces Connect to Saitek board}}{101}{figure.157}%
-\contentsline {figure}{\numberline {158}{\ignorespaces Rotate the board}}{102}{figure.158}%
-\contentsline {figure}{\numberline {159}{\ignorespaces Rotated board}}{102}{figure.159}%
-\contentsline {figure}{\numberline {160}{\ignorespaces Rotate graphic board}}{102}{figure.160}%
-\contentsline {figure}{\numberline {161}{\ignorespaces Opens a window to play a new game}}{103}{figure.161}%
-\contentsline {figure}{\numberline {162}{\ignorespaces Play a new game}}{104}{figure.162}%
-\contentsline {figure}{\numberline {163}{\ignorespaces Separate time control}}{106}{figure.163}%
-\contentsline {figure}{\numberline {164}{\ignorespaces Time control}}{106}{figure.164}%
-\contentsline {figure}{\numberline {165}{\ignorespaces Move controls}}{107}{figure.165}%
-\contentsline {figure}{\numberline {166}{\ignorespaces Simple move list}}{109}{figure.166}%
-\contentsline {figure}{\numberline {167}{\ignorespaces Add symbols or comment}}{110}{figure.167}%
-\contentsline {figure}{\numberline {168}{\ignorespaces Start a game}}{111}{figure.168}%
-\contentsline {figure}{\numberline {169}{\ignorespaces Reset to base position}}{112}{figure.169}%
-\contentsline {figure}{\numberline {170}{\ignorespaces Waiting}}{113}{figure.170}%
-\contentsline {figure}{\numberline {171}{\ignorespaces Draw by repetition}}{113}{figure.171}%
-\contentsline {figure}{\numberline {172}{\ignorespaces Draw by insufficient material}}{113}{figure.172}%
-\contentsline {figure}{\numberline {173}{\ignorespaces Won by score}}{114}{figure.173}%
-\contentsline {figure}{\numberline {174}{\ignorespaces Time control}}{114}{figure.174}%
-\contentsline {figure}{\numberline {175}{\ignorespaces BearChess in action}}{115}{figure.175}%
-\contentsline {figure}{\numberline {176}{\ignorespaces Analysis mode}}{115}{figure.176}%
-\contentsline {figure}{\numberline {177}{\ignorespaces Selection for an analysis engine}}{116}{figure.177}%
-\contentsline {figure}{\numberline {178}{\ignorespaces Stop analysis mode}}{117}{figure.178}%
-\contentsline {figure}{\numberline {179}{\ignorespaces Selection for an analysis engine}}{117}{figure.179}%
-\contentsline {figure}{\numberline {180}{\ignorespaces Analysis context menu}}{118}{figure.180}%
-\contentsline {figure}{\numberline {181}{\ignorespaces Stop analysis mode}}{118}{figure.181}%
-\contentsline {figure}{\numberline {182}{\ignorespaces Ask for analyze a game}}{119}{figure.182}%
-\contentsline {figure}{\numberline {183}{\ignorespaces Wait for base position}}{119}{figure.183}%
-\contentsline {figure}{\numberline {184}{\ignorespaces Selection for an analysis engine}}{119}{figure.184}%
-\contentsline {figure}{\numberline {185}{\ignorespaces Board after the 6th move}}{120}{figure.185}%
-\contentsline {figure}{\numberline {186}{\ignorespaces Analyse after the 6th move}}{121}{figure.186}%
-\contentsline {figure}{\numberline {187}{\ignorespaces Selection for an analysis engine}}{122}{figure.187}%
-\contentsline {figure}{\numberline {188}{\ignorespaces Duel}}{122}{figure.188}%
-\contentsline {figure}{\numberline {189}{\ignorespaces New duel}}{123}{figure.189}%
-\contentsline {figure}{\numberline {190}{\ignorespaces Duel information}}{124}{figure.190}%
-\contentsline {figure}{\numberline {191}{\ignorespaces Stop engine duel}}{124}{figure.191}%
-\contentsline {figure}{\numberline {192}{\ignorespaces Engine duel finished}}{125}{figure.192}%
-\contentsline {figure}{\numberline {193}{\ignorespaces New ELO duel}}{126}{figure.193}%
-\contentsline {figure}{\numberline {194}{\ignorespaces Choose color}}{127}{figure.194}%
-\contentsline {figure}{\numberline {195}{\ignorespaces Manage duels}}{127}{figure.195}%
-\contentsline {figure}{\numberline {196}{\ignorespaces Rename a duel}}{128}{figure.196}%
-\contentsline {figure}{\numberline {197}{\ignorespaces Repeat a game}}{128}{figure.197}%
-\contentsline {figure}{\numberline {198}{\ignorespaces Engine tournament}}{129}{figure.198}%
-\contentsline {figure}{\numberline {199}{\ignorespaces New engine tournament}}{129}{figure.199}%
-\contentsline {figure}{\numberline {200}{\ignorespaces Participants}}{130}{figure.200}%
-\contentsline {figure}{\numberline {201}{\ignorespaces Configuration}}{131}{figure.201}%
-\contentsline {figure}{\numberline {202}{\ignorespaces Gauntlet}}{132}{figure.202}%
-\contentsline {figure}{\numberline {203}{\ignorespaces Engine tournament information roundrobin}}{132}{figure.203}%
-\contentsline {figure}{\numberline {204}{\ignorespaces Engine tournament information gauntlet}}{133}{figure.204}%
-\contentsline {figure}{\numberline {205}{\ignorespaces Manage engine tournaments}}{133}{figure.205}%
-\contentsline {figure}{\numberline {206}{\ignorespaces Rename a tournament}}{134}{figure.206}%
-\contentsline {figure}{\numberline {207}{\ignorespaces Repeat a game}}{135}{figure.207}%
-\contentsline {figure}{\numberline {208}{\ignorespaces Tournament information}}{135}{figure.208}%
-\contentsline {figure}{\numberline {209}{\ignorespaces Opens a window for position setup}}{136}{figure.209}%
-\contentsline {figure}{\numberline {210}{\ignorespaces Setup a new position with an electronic chessboard}}{136}{figure.210}%
-\contentsline {figure}{\numberline {211}{\ignorespaces Castling rights and current color}}{137}{figure.211}%
-\contentsline {figure}{\numberline {212}{\ignorespaces Setup a new position without an electronic chessboard}}{138}{figure.212}%
-\contentsline {figure}{\numberline {213}{\ignorespaces FEN input box}}{138}{figure.213}%
-\contentsline {figure}{\numberline {214}{\ignorespaces Castling rights and current color}}{138}{figure.214}%
-\contentsline {figure}{\numberline {215}{\ignorespaces Confirm position}}{139}{figure.215}%
-\contentsline {figure}{\numberline {216}{\ignorespaces Open FICS connection dialog}}{140}{figure.216}%
-\contentsline {figure}{\numberline {217}{\ignorespaces Connection parameters}}{140}{figure.217}%
-\contentsline {figure}{\numberline {218}{\ignorespaces Connect to FICS}}{141}{figure.218}%
-\contentsline {figure}{\numberline {219}{\ignorespaces Initial window}}{142}{figure.219}%
-\contentsline {figure}{\numberline {220}{\ignorespaces Time control}}{143}{figure.220}%
-\contentsline {figure}{\numberline {221}{\ignorespaces Define a command}}{144}{figure.221}%
-\contentsline {figure}{\numberline {222}{\ignorespaces Advertisements}}{145}{figure.222}%
-\contentsline {figure}{\numberline {223}{\ignorespaces Users}}{146}{figure.223}%
-\contentsline {figure}{\numberline {224}{\ignorespaces Time control}}{147}{figure.224}%
-\contentsline {figure}{\numberline {225}{\ignorespaces Log}}{147}{figure.225}%
-\contentsline {figure}{\numberline {226}{\ignorespaces Run a game on startup}}{148}{figure.226}%
-\contentsline {figure}{\numberline {227}{\ignorespaces Games}}{149}{figure.227}%
-\contentsline {figure}{\numberline {228}{\ignorespaces Save a game}}{149}{figure.228}%
-\contentsline {figure}{\numberline {229}{\ignorespaces Games window}}{150}{figure.229}%
-\contentsline {figure}{\numberline {230}{\ignorespaces Delete single duplicate game}}{151}{figure.230}%
-\contentsline {figure}{\numberline {231}{\ignorespaces The Week in Chess Archive}}{152}{figure.231}%
-\contentsline {figure}{\numberline {232}{\ignorespaces The Week in Chess}}{152}{figure.232}%
-\contentsline {figure}{\numberline {233}{\ignorespaces Delete files}}{153}{figure.233}%
-\contentsline {figure}{\numberline {234}{\ignorespaces Configure PGN export}}{153}{figure.234}%
-\contentsline {figure}{\numberline {235}{\ignorespaces Configure PGN export}}{154}{figure.235}%
-\contentsline {figure}{\numberline {236}{\ignorespaces Two loaded engines}}{154}{figure.236}%
-\contentsline {figure}{\numberline {237}{\ignorespaces Two loaded engines}}{156}{figure.237}%
-\contentsline {figure}{\numberline {238}{\ignorespaces Play against Stockfish with support from Komodo}}{158}{figure.238}%
+\contentsline {figure}{\numberline {54}{\ignorespaces Drop new pieces }}{49}{figure.54}%
+\contentsline {figure}{\numberline {55}{\ignorespaces Confirm new pieces }}{49}{figure.55}%
+\contentsline {figure}{\numberline {56}{\ignorespaces Combine board and pieces by yoour own }}{50}{figure.56}%
+\contentsline {figure}{\numberline {57}{\ignorespaces Last/best move as arrow}}{51}{figure.57}%
+\contentsline {figure}{\numberline {58}{\ignorespaces Show possible moves for target field}}{52}{figure.58}%
+\contentsline {figure}{\numberline {59}{\ignorespaces Show possible moves for pieces}}{53}{figure.59}%
+\contentsline {figure}{\numberline {60}{\ignorespaces Opens a window to configure notation and moves }}{54}{figure.60}%
+\contentsline {figure}{\numberline {61}{\ignorespaces Configure notation and moves }}{54}{figure.61}%
+\contentsline {figure}{\numberline {62}{\ignorespaces Configure clocks }}{55}{figure.62}%
+\contentsline {figure}{\numberline {63}{\ignorespaces Small clocks }}{55}{figure.63}%
+\contentsline {figure}{\numberline {64}{\ignorespaces Big clocks }}{55}{figure.64}%
+\contentsline {figure}{\numberline {65}{\ignorespaces Sounds }}{56}{figure.65}%
+\contentsline {figure}{\numberline {66}{\ignorespaces Speech and sound configuration}}{57}{figure.66}%
+\contentsline {figure}{\numberline {67}{\ignorespaces Define translation}}{58}{figure.67}%
+\contentsline {figure}{\numberline {68}{\ignorespaces Show captured pieces }}{59}{figure.68}%
+\contentsline {figure}{\numberline {69}{\ignorespaces Show captured pieces on start }}{59}{figure.69}%
+\contentsline {figure}{\numberline {70}{\ignorespaces Show all captured pieces }}{60}{figure.70}%
+\contentsline {figure}{\numberline {71}{\ignorespaces Show captured pieces as difference}}{60}{figure.71}%
+\contentsline {figure}{\numberline {72}{\ignorespaces Open a window to configure Certabo boards }}{61}{figure.72}%
+\contentsline {figure}{\numberline {73}{\ignorespaces Search for Bluetooth }}{61}{figure.73}%
+\contentsline {figure}{\numberline {74}{\ignorespaces Configure Certabo boards }}{62}{figure.74}%
+\contentsline {figure}{\numberline {75}{\ignorespaces COM port successful detected}}{63}{figure.75}%
+\contentsline {figure}{\numberline {76}{\ignorespaces Invalid COM port }}{64}{figure.76}%
+\contentsline {figure}{\numberline {77}{\ignorespaces No board found }}{65}{figure.77}%
+\contentsline {figure}{\numberline {78}{\ignorespaces Search for Bluetooth}}{65}{figure.78}%
+\contentsline {figure}{\numberline {79}{\ignorespaces Calibrate base position }}{66}{figure.79}%
+\contentsline {figure}{\numberline {80}{\ignorespaces Calibration finished }}{66}{figure.80}%
+\contentsline {figure}{\numberline {81}{\ignorespaces Using Chesstimation module}}{67}{figure.81}%
+\contentsline {figure}{\numberline {82}{\ignorespaces Calibration not required}}{67}{figure.82}%
+\contentsline {figure}{\numberline {83}{\ignorespaces Connect to Certabo}}{67}{figure.83}%
+\contentsline {figure}{\numberline {84}{\ignorespaces Connected}}{68}{figure.84}%
+\contentsline {figure}{\numberline {85}{\ignorespaces Disconnected}}{68}{figure.85}%
+\contentsline {figure}{\numberline {86}{\ignorespaces Open a window to configure TabuTronic Cerno}}{68}{figure.86}%
+\contentsline {figure}{\numberline {87}{\ignorespaces Open a window to configure TabuTronic Sentio }}{68}{figure.87}%
+\contentsline {figure}{\numberline {88}{\ignorespaces Configure TabuTronic Sentio}}{69}{figure.88}%
+\contentsline {figure}{\numberline {89}{\ignorespaces Search for Bluetooth}}{70}{figure.89}%
+\contentsline {figure}{\numberline {90}{\ignorespaces Connect to TabuTronic Sentio}}{70}{figure.90}%
+\contentsline {figure}{\numberline {91}{\ignorespaces Open a window to configure iChessOne }}{70}{figure.91}%
+\contentsline {figure}{\numberline {92}{\ignorespaces Configure iChessOne }}{71}{figure.92}%
+\contentsline {figure}{\numberline {93}{\ignorespaces COM port successful detected }}{72}{figure.93}%
+\contentsline {figure}{\numberline {94}{\ignorespaces Invalid COM port }}{72}{figure.94}%
+\contentsline {figure}{\numberline {95}{\ignorespaces No board found }}{72}{figure.95}%
+\contentsline {figure}{\numberline {96}{\ignorespaces Set LEDs }}{73}{figure.96}%
+\contentsline {figure}{\numberline {97}{\ignorespaces Active LEDs }}{74}{figure.97}%
+\contentsline {figure}{\numberline {98}{\ignorespaces Test your LEDs }}{74}{figure.98}%
+\contentsline {figure}{\numberline {99}{\ignorespaces Test your LEDs }}{75}{figure.99}%
+\contentsline {figure}{\numberline {100}{\ignorespaces Save your configuration}}{75}{figure.100}%
+\contentsline {figure}{\numberline {101}{\ignorespaces Select a configuration}}{76}{figure.101}%
+\contentsline {figure}{\numberline {102}{\ignorespaces Open a window to configure Millennium boards }}{76}{figure.102}%
+\contentsline {figure}{\numberline {103}{\ignorespaces Search for Bluetooth}}{76}{figure.103}%
+\contentsline {figure}{\numberline {104}{\ignorespaces Configure Millennium ChessLink}}{77}{figure.104}%
+\contentsline {figure}{\numberline {105}{\ignorespaces COM port successful detected }}{78}{figure.105}%
+\contentsline {figure}{\numberline {106}{\ignorespaces Invalid COM port }}{79}{figure.106}%
+\contentsline {figure}{\numberline {107}{\ignorespaces No board found }}{79}{figure.107}%
+\contentsline {figure}{\numberline {108}{\ignorespaces Delay}}{80}{figure.108}%
+\contentsline {figure}{\numberline {109}{\ignorespaces Scan}}{80}{figure.109}%
+\contentsline {figure}{\numberline {110}{\ignorespaces Search for Bluetooth}}{80}{figure.110}%
+\contentsline {figure}{\numberline {111}{\ignorespaces Using Chesstimation/Elfacun Module}}{81}{figure.111}%
+\contentsline {figure}{\numberline {112}{\ignorespaces Connect to Millennium ChessLink}}{81}{figure.112}%
+\contentsline {figure}{\numberline {113}{\ignorespaces Connected}}{81}{figure.113}%
+\contentsline {figure}{\numberline {114}{\ignorespaces Disconnected}}{82}{figure.114}%
+\contentsline {figure}{\numberline {115}{\ignorespaces Open a window to configure DGT e-boards }}{82}{figure.115}%
+\contentsline {figure}{\numberline {116}{\ignorespaces Configure DGT e-boards }}{83}{figure.116}%
+\contentsline {figure}{\numberline {117}{\ignorespaces Search for Bluetooth}}{84}{figure.117}%
+\contentsline {figure}{\numberline {118}{\ignorespaces Opeb a window to configure DGT Pegasus}}{84}{figure.118}%
+\contentsline {figure}{\numberline {119}{\ignorespaces Configure DGT Pegasus}}{85}{figure.119}%
+\contentsline {figure}{\numberline {120}{\ignorespaces Connected}}{85}{figure.120}%
+\contentsline {figure}{\numberline {121}{\ignorespaces Disconnected}}{86}{figure.121}%
+\contentsline {figure}{\numberline {122}{\ignorespaces Confirm position}}{86}{figure.122}%
+\contentsline {figure}{\numberline {123}{\ignorespaces Verify position}}{87}{figure.123}%
+\contentsline {figure}{\numberline {124}{\ignorespaces Open a window to configure Chessnut Air/Air+/Pro}}{87}{figure.124}%
+\contentsline {figure}{\numberline {125}{\ignorespaces Configure Chessnut Air/Air+/Pro}}{88}{figure.125}%
+\contentsline {figure}{\numberline {126}{\ignorespaces Connect to Chessnut Air/Air+/Pro}}{88}{figure.126}%
+\contentsline {figure}{\numberline {127}{\ignorespaces Connected via Bluetooth LE}}{89}{figure.127}%
+\contentsline {figure}{\numberline {128}{\ignorespaces Connected via USB as HID}}{89}{figure.128}%
+\contentsline {figure}{\numberline {129}{\ignorespaces Disconnected}}{89}{figure.129}%
+\contentsline {figure}{\numberline {130}{\ignorespaces Open a window to configure Chessnut Evo}}{89}{figure.130}%
+\contentsline {figure}{\numberline {131}{\ignorespaces Configure Chessnut Evo }}{90}{figure.131}%
+\contentsline {figure}{\numberline {132}{\ignorespaces Set LEDs }}{91}{figure.132}%
+\contentsline {figure}{\numberline {133}{\ignorespaces Active LEDs }}{91}{figure.133}%
+\contentsline {figure}{\numberline {134}{\ignorespaces Test your LEDs }}{92}{figure.134}%
+\contentsline {figure}{\numberline {135}{\ignorespaces Test your LEDs }}{92}{figure.135}%
+\contentsline {figure}{\numberline {136}{\ignorespaces Save your configuration}}{93}{figure.136}%
+\contentsline {figure}{\numberline {137}{\ignorespaces Select a configuration}}{93}{figure.137}%
+\contentsline {figure}{\numberline {138}{\ignorespaces Connect to Chessnut Evo}}{93}{figure.138}%
+\contentsline {figure}{\numberline {139}{\ignorespaces Connected via IP address}}{93}{figure.139}%
+\contentsline {figure}{\numberline {140}{\ignorespaces Disconnected}}{94}{figure.140}%
+\contentsline {figure}{\numberline {141}{\ignorespaces Connect to Square Off Pro }}{94}{figure.141}%
+\contentsline {figure}{\numberline {142}{\ignorespaces Connected}}{94}{figure.142}%
+\contentsline {figure}{\numberline {143}{\ignorespaces Disconnected}}{94}{figure.143}%
+\contentsline {figure}{\numberline {144}{\ignorespaces Confirm position}}{95}{figure.144}%
+\contentsline {figure}{\numberline {145}{\ignorespaces Verify position}}{95}{figure.145}%
+\contentsline {figure}{\numberline {146}{\ignorespaces Connect to ChessUp }}{96}{figure.146}%
+\contentsline {figure}{\numberline {147}{\ignorespaces Connected via Bluetooth LE}}{96}{figure.147}%
+\contentsline {figure}{\numberline {148}{\ignorespaces Connect to House of Staunton }}{97}{figure.148}%
+\contentsline {figure}{\numberline {149}{\ignorespaces Open a window to configure NOVAG Citrine }}{97}{figure.149}%
+\contentsline {figure}{\numberline {150}{\ignorespaces Select COM port}}{98}{figure.150}%
+\contentsline {figure}{\numberline {151}{\ignorespaces Connect to NOVAG Citrine}}{98}{figure.151}%
+\contentsline {figure}{\numberline {152}{\ignorespaces Open a window to configure NOVAG UCB}}{99}{figure.152}%
+\contentsline {figure}{\numberline {153}{\ignorespaces Select COM port}}{99}{figure.153}%
+\contentsline {figure}{\numberline {154}{\ignorespaces Connect to NOVAG UCB}}{100}{figure.154}%
+\contentsline {figure}{\numberline {155}{\ignorespaces Open a window to configure Saitek OSA }}{101}{figure.155}%
+\contentsline {figure}{\numberline {156}{\ignorespaces Select COM port and baud rate}}{101}{figure.156}%
+\contentsline {figure}{\numberline {157}{\ignorespaces Connect to Saitek board}}{102}{figure.157}%
+\contentsline {figure}{\numberline {158}{\ignorespaces Rotate the board}}{103}{figure.158}%
+\contentsline {figure}{\numberline {159}{\ignorespaces Rotated board}}{103}{figure.159}%
+\contentsline {figure}{\numberline {160}{\ignorespaces Rotate graphic board}}{103}{figure.160}%
+\contentsline {figure}{\numberline {161}{\ignorespaces Opens a window to play a new game}}{104}{figure.161}%
+\contentsline {figure}{\numberline {162}{\ignorespaces Play a new game}}{105}{figure.162}%
+\contentsline {figure}{\numberline {163}{\ignorespaces Separate time control}}{107}{figure.163}%
+\contentsline {figure}{\numberline {164}{\ignorespaces Time control}}{107}{figure.164}%
+\contentsline {figure}{\numberline {165}{\ignorespaces Move controls}}{108}{figure.165}%
+\contentsline {figure}{\numberline {166}{\ignorespaces Simple move list}}{110}{figure.166}%
+\contentsline {figure}{\numberline {167}{\ignorespaces Add symbols or comment}}{111}{figure.167}%
+\contentsline {figure}{\numberline {168}{\ignorespaces Start a game}}{112}{figure.168}%
+\contentsline {figure}{\numberline {169}{\ignorespaces Reset to base position}}{113}{figure.169}%
+\contentsline {figure}{\numberline {170}{\ignorespaces Waiting}}{114}{figure.170}%
+\contentsline {figure}{\numberline {171}{\ignorespaces Draw by repetition}}{114}{figure.171}%
+\contentsline {figure}{\numberline {172}{\ignorespaces Draw by insufficient material}}{114}{figure.172}%
+\contentsline {figure}{\numberline {173}{\ignorespaces Won by score}}{115}{figure.173}%
+\contentsline {figure}{\numberline {174}{\ignorespaces Time control}}{115}{figure.174}%
+\contentsline {figure}{\numberline {175}{\ignorespaces BearChess in action}}{116}{figure.175}%
+\contentsline {figure}{\numberline {176}{\ignorespaces Analysis mode}}{116}{figure.176}%
+\contentsline {figure}{\numberline {177}{\ignorespaces Selection for an analysis engine}}{117}{figure.177}%
+\contentsline {figure}{\numberline {178}{\ignorespaces Stop analysis mode}}{118}{figure.178}%
+\contentsline {figure}{\numberline {179}{\ignorespaces Selection for an analysis engine}}{118}{figure.179}%
+\contentsline {figure}{\numberline {180}{\ignorespaces Analysis context menu}}{119}{figure.180}%
+\contentsline {figure}{\numberline {181}{\ignorespaces Stop analysis mode}}{119}{figure.181}%
+\contentsline {figure}{\numberline {182}{\ignorespaces Ask for analyze a game}}{120}{figure.182}%
+\contentsline {figure}{\numberline {183}{\ignorespaces Wait for base position}}{120}{figure.183}%
+\contentsline {figure}{\numberline {184}{\ignorespaces Selection for an analysis engine}}{120}{figure.184}%
+\contentsline {figure}{\numberline {185}{\ignorespaces Board after the 6th move}}{121}{figure.185}%
+\contentsline {figure}{\numberline {186}{\ignorespaces Analyse after the 6th move}}{122}{figure.186}%
+\contentsline {figure}{\numberline {187}{\ignorespaces Selection for an analysis engine}}{123}{figure.187}%
+\contentsline {figure}{\numberline {188}{\ignorespaces Duel}}{123}{figure.188}%
+\contentsline {figure}{\numberline {189}{\ignorespaces New duel}}{124}{figure.189}%
+\contentsline {figure}{\numberline {190}{\ignorespaces Duel information}}{125}{figure.190}%
+\contentsline {figure}{\numberline {191}{\ignorespaces Stop engine duel}}{125}{figure.191}%
+\contentsline {figure}{\numberline {192}{\ignorespaces Engine duel finished}}{126}{figure.192}%
+\contentsline {figure}{\numberline {193}{\ignorespaces New ELO duel}}{127}{figure.193}%
+\contentsline {figure}{\numberline {194}{\ignorespaces Choose color}}{128}{figure.194}%
+\contentsline {figure}{\numberline {195}{\ignorespaces Manage duels}}{128}{figure.195}%
+\contentsline {figure}{\numberline {196}{\ignorespaces Rename a duel}}{129}{figure.196}%
+\contentsline {figure}{\numberline {197}{\ignorespaces Repeat a game}}{129}{figure.197}%
+\contentsline {figure}{\numberline {198}{\ignorespaces Engine tournament}}{130}{figure.198}%
+\contentsline {figure}{\numberline {199}{\ignorespaces New engine tournament}}{130}{figure.199}%
+\contentsline {figure}{\numberline {200}{\ignorespaces Participants}}{131}{figure.200}%
+\contentsline {figure}{\numberline {201}{\ignorespaces Configuration}}{132}{figure.201}%
+\contentsline {figure}{\numberline {202}{\ignorespaces Gauntlet}}{133}{figure.202}%
+\contentsline {figure}{\numberline {203}{\ignorespaces Engine tournament information roundrobin}}{133}{figure.203}%
+\contentsline {figure}{\numberline {204}{\ignorespaces Engine tournament information gauntlet}}{134}{figure.204}%
+\contentsline {figure}{\numberline {205}{\ignorespaces Manage engine tournaments}}{134}{figure.205}%
+\contentsline {figure}{\numberline {206}{\ignorespaces Rename a tournament}}{135}{figure.206}%
+\contentsline {figure}{\numberline {207}{\ignorespaces Repeat a game}}{136}{figure.207}%
+\contentsline {figure}{\numberline {208}{\ignorespaces Tournament information}}{136}{figure.208}%
+\contentsline {figure}{\numberline {209}{\ignorespaces Opens a window for position setup}}{137}{figure.209}%
+\contentsline {figure}{\numberline {210}{\ignorespaces Setup a new position with an electronic chessboard}}{137}{figure.210}%
+\contentsline {figure}{\numberline {211}{\ignorespaces Castling rights and current color}}{138}{figure.211}%
+\contentsline {figure}{\numberline {212}{\ignorespaces Setup a new position without an electronic chessboard}}{139}{figure.212}%
+\contentsline {figure}{\numberline {213}{\ignorespaces FEN input box}}{139}{figure.213}%
+\contentsline {figure}{\numberline {214}{\ignorespaces Castling rights and current color}}{139}{figure.214}%
+\contentsline {figure}{\numberline {215}{\ignorespaces Confirm position}}{140}{figure.215}%
+\contentsline {figure}{\numberline {216}{\ignorespaces Open FICS connection dialog}}{141}{figure.216}%
+\contentsline {figure}{\numberline {217}{\ignorespaces Connection parameters}}{141}{figure.217}%
+\contentsline {figure}{\numberline {218}{\ignorespaces Connect to FICS}}{142}{figure.218}%
+\contentsline {figure}{\numberline {219}{\ignorespaces Initial window}}{143}{figure.219}%
+\contentsline {figure}{\numberline {220}{\ignorespaces Time control}}{144}{figure.220}%
+\contentsline {figure}{\numberline {221}{\ignorespaces Define a command}}{145}{figure.221}%
+\contentsline {figure}{\numberline {222}{\ignorespaces Advertisements}}{146}{figure.222}%
+\contentsline {figure}{\numberline {223}{\ignorespaces Users}}{147}{figure.223}%
+\contentsline {figure}{\numberline {224}{\ignorespaces Time control}}{148}{figure.224}%
+\contentsline {figure}{\numberline {225}{\ignorespaces Log}}{148}{figure.225}%
+\contentsline {figure}{\numberline {226}{\ignorespaces Run a game on startup}}{149}{figure.226}%
+\contentsline {figure}{\numberline {227}{\ignorespaces Games}}{150}{figure.227}%
+\contentsline {figure}{\numberline {228}{\ignorespaces Save a game}}{150}{figure.228}%
+\contentsline {figure}{\numberline {229}{\ignorespaces Games window}}{151}{figure.229}%
+\contentsline {figure}{\numberline {230}{\ignorespaces Delete single duplicate game}}{152}{figure.230}%
+\contentsline {figure}{\numberline {231}{\ignorespaces The Week in Chess Archive}}{153}{figure.231}%
+\contentsline {figure}{\numberline {232}{\ignorespaces The Week in Chess}}{153}{figure.232}%
+\contentsline {figure}{\numberline {233}{\ignorespaces Delete files}}{154}{figure.233}%
+\contentsline {figure}{\numberline {234}{\ignorespaces Configure PGN export}}{154}{figure.234}%
+\contentsline {figure}{\numberline {235}{\ignorespaces Configure PGN export}}{155}{figure.235}%
+\contentsline {figure}{\numberline {236}{\ignorespaces Two loaded engines}}{155}{figure.236}%
+\contentsline {figure}{\numberline {237}{\ignorespaces Two loaded engines}}{157}{figure.237}%
+\contentsline {figure}{\numberline {238}{\ignorespaces Play against Stockfish with support from Komodo}}{159}{figure.238}%
