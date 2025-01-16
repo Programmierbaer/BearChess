@@ -3931,6 +3931,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Layout ähnelt.
+        /// </summary>
+        public static string Layout {
+            get {
+                return ResourceManager.GetString("Layout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die LEDs ähnelt.
         /// </summary>
         public static string LEDs {

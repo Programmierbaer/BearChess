@@ -32,11 +32,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string FileName { get; set; }
         public bool SayLiftUpDownFigure { get; set; }
 
-        
 
         [XmlArray]
         public ExtendedEChessBoardConfiguration[] ExtendedConfig { get; set; }
 
+        // ReSharper disable once ConvertConstructorToMemberInitializers
         public EChessBoardConfiguration()
         {
             DimLevel = -1;
@@ -69,8 +69,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             BeepDuration = 1;
             WebSocketAddr = string.Empty;
             SayLiftUpDownFigure = false;
-
-
         }
 
         public static EChessBoardConfiguration Load(string fileName)
@@ -154,6 +152,16 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             }
         }
 
+        public override string ToString()
+        {
+            return
+                $"Port:{PortName} Web:{WebSocketAddr} Baud:{Baud} DimLeds:{DimLeds} DimLevel:{DimLevel} FlashSync:{FlashInSync} " +
+                $"NoFlash:{NoFlash} UseBT:{UseBluetooth} UseClock:{UseClock} ClockOnlyMoves:{ClockShowOnlyMoves} ClockSwitchSide:{ClockSwitchSide} " +
+                $"ClockUpperCase:{ClockUpperCase} ClockBeep:{ClockBeep} BeepDuration:{BeepDuration} LongMove:{LongMoveFormat} " +
+                $"ScanTime:{ScanTime} Debounce:{Debounce} Chesstimation:{UseChesstimation} Elfacun:{UseElfacun} " +
+                $"ShowMoveLine:{ShowMoveLine} ShowPossibleMoves:{ShowPossibleMoves} ShowPossibleMovesEval:{ShowPossibleMovesEval} " +
+                $"ShowOwnMoves:{ShowOwnMoves} ShowHintMoves:{ShowHintMoves} SayLiftUpDownFigure:{SayLiftUpDownFigure}";
+        }
     }
 
 }

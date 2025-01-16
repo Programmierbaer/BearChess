@@ -5,6 +5,7 @@ using www.SoLaNoSoft.com.BearChess.ChessnutAirLoader;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessBase;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin.Windows

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
              xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties" 
-             mc:Ignorable="d" Background="AliceBlue"
+             mc:Ignorable="d" Background="AliceBlue" Width="662"
              d:DesignHeight="150" d:DesignWidth="670">
     <Border Name="borderAll" BorderThickness="1" BorderBrush="Gray">
         <StackPanel Name="stackPanelMain">
@@ -86,7 +86,7 @@
                     <Image Source="../Assets/Icons/eye_close.png"></Image>
                 </Button>
             </DockPanel>
-            <local:EngineInfoLineUserControl  x:Name="engineInfoLineUserControl1" HorizontalAlignment="Left" Height="60" Margin="0,0,0,-1"/>
+            <local:EngineInfoLineUserControl  x:Name="engineInfoLineUserControl1" HorizontalAlignment="Left" Height="60" Margin="1"/>
         </StackPanel>
     </Border>
 </UserControl>

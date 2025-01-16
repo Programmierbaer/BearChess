@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Windows;
 using System.Xml.Linq;
 using www.SoLaNoSoft.com.BearChess.CitrineLoader;
@@ -10,9 +11,8 @@ using www.SoLaNoSoft.com.BearChess.OSALoader;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 using www.SoLaNoSoft.com.BearChessTools;
-using System.Resources;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {

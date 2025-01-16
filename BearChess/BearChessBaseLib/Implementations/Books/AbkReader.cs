@@ -6,7 +6,7 @@ using System.Text;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
-    public class AbkReader
+    public class AbkReader : IDisposable
     {
 
         public string Author { get; private set; }
@@ -165,6 +165,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 bookMove.Weight = (uint)( (decimal) bookMove.Weight *  factor);
             }
             return bookMoves.OrderByDescending(b => b.Weight).ToArray();
+        }
+
+        public void Dispose()
+        {
+            _book = null;
         }
     }
 }

@@ -2335,10 +2335,10 @@
     <value>Partie erneut beginnen</value>
   </data>
   <data name="StopCurrentGame" xml:space="preserve">
-    <value>Aktuelle Partie anhalten</value>
+    <value>Partie anhalten</value>
   </data>
   <data name="StopAndSave" xml:space="preserve">
-    <value>Aktuelle Partie anhalten und speichern</value>
+    <value>Partie anhalten und speichern</value>
   </data>
   <data name="SearchForBT" xml:space="preserve">
     <value>Suche nach Bluetooth-COM-Ports...</value>
@@ -2465,5 +2465,8 @@
   </data>
   <data name="Set" xml:space="preserve">
     <value>Setzen</value>
+  </data>
+  <data name="Layout" xml:space="preserve">
+    <value>Layout</value>
   </data>
 </root>

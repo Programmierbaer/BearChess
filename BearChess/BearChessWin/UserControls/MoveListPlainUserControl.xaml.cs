@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
@@ -14,18 +16,18 @@ using www.SoLaNoSoft.com.BearChessTools;
 namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
-    /// Interaktionslogik für MoveListPlainWindowUserControl.xaml
+    /// Interaktionslogik für moveListPlainUserControl.xaml
     /// </summary>
-    public partial class MoveListPlainWindowUserControl : UserControl
+    public partial class MoveListPlainUserControl : UserControl, IMoveListPlainWindow
     {
-        private readonly Configuration _configuration;
-        private readonly PgnConfiguration _pgnConfiguration;
+        private  Configuration _configuration;
+        private  PgnConfiguration _pgnConfiguration;
         private int _lastMoveNumber;
         private WrapPanel _wrapPanel;
         private DisplayFigureType _figureType;
         private DisplayMoveType _moveType;
         private DisplayCountryType _countryType;
-        private readonly List<Move> _moveList;
+        private  List<Move> _moveList = new List<Move>();
         private bool _newPanelAdded = false;
         private MovePlainUserControl _movePlainUserControl;
         private bool _showOnlyMoves;
@@ -35,79 +37,49 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _lastMarkedMoveNumber;
         private int _lastMarkedColor;
         private bool _showForWhite;
-        private readonly FontFamily _fontFamily;
+        private  FontFamily _fontFamily;
         private CurrentGame _currentGame;
         private string _gameStartPosition;
+        private  ResourceManager _rm;
 
         public event EventHandler<SelectedMoveOfMoveList> SelectedMoveChanged;
         public event EventHandler<SelectedMoveOfMoveList> ContentChanged;
         public event EventHandler<SelectedMoveOfMoveList> RestartEvent;
 
-
-        public MoveListPlainWindowUserControl()
+        public MoveListPlainUserControl()
         {
             InitializeComponent();
+            _rm = SpeechTranslator.ResourceManager;
             _fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
-            _lastMoveNumber = 0;
-
-            _figureType = (DisplayFigureType)Enum.Parse(typeof(DisplayFigureType),
-                _configuration.GetConfigValue(
-                    "DisplayFigureType", DisplayFigureType.Symbol.ToString()));
-            _moveType = (DisplayMoveType)Enum.Parse(typeof(DisplayMoveType),
-                _configuration.GetConfigValue(
-                    "DisplayMoveType", DisplayMoveType.FromToField.ToString()));
-            _countryType = (DisplayCountryType)Enum.Parse(typeof(DisplayCountryType),
-                _configuration.GetConfigValue(
-                    "DisplayCountryType", DisplayCountryType.GB.ToString()));
-            _moveList = new List<Move>();
-            _showOnlyMoves = bool.Parse(_configuration.GetConfigValue("extendMoveList", "false"));
-            _showFullInfo = bool.Parse(_configuration.GetConfigValue("extendFull", "false"));
-            _showComments = bool.Parse(_configuration.GetConfigValue("extendComments", "false"));
-            _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
+            _fontSize = Configuration.Instance.GetDoubleValue("MoveListPlainWindowFontSize", "18");
             textBlockBlack.FontFamily = _fontFamily;
             textBlockBlack.Text = FontConverter.ConvertFont("k", "Chess Merida");
             textBlockWhite.FontFamily = _fontFamily;
             textBlockWhite.Text = FontConverter.ConvertFont("K", "Chess Merida");
-            textBlockWhitePlayer.Text = string.Empty;
-            textBlockBlackPlayer.Text = string.Empty;
-            textBlockResult.Text = string.Empty;
-            SetContentInfo();
-            _currentGame = null;
-            _gameStartPosition = string.Empty;
         }
 
-        public MoveListPlainWindowUserControl(Configuration configuration, PgnConfiguration pgnConfiguration)
+        public void SetConfiguration(Configuration configuration, PgnConfiguration pgnConfiguration)
         {
             _configuration = configuration;
             _pgnConfiguration = pgnConfiguration;
-            InitializeComponent();
-            _fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
+            
             _lastMoveNumber = 0;
 
-            _figureType = (DisplayFigureType)Enum.Parse(typeof(DisplayFigureType),
-                _configuration.GetConfigValue(
-                    "DisplayFigureType", DisplayFigureType.Symbol.ToString()));
-            _moveType = (DisplayMoveType)Enum.Parse(typeof(DisplayMoveType),
-                _configuration.GetConfigValue(
-                    "DisplayMoveType", DisplayMoveType.FromToField.ToString()));
-            _countryType = (DisplayCountryType)Enum.Parse(typeof(DisplayCountryType),
-                _configuration.GetConfigValue(
-                    "DisplayCountryType", DisplayCountryType.GB.ToString()));
-            _moveList = new List<Move>();
+            _figureType = (DisplayFigureType)Enum.Parse(typeof(DisplayFigureType), _configuration.GetConfigValue("DisplayFigureType", DisplayFigureType.Symbol.ToString()));
+            _moveType = (DisplayMoveType)Enum.Parse(typeof(DisplayMoveType), _configuration.GetConfigValue("DisplayMoveType", DisplayMoveType.FromToField.ToString()));
+            _countryType = (DisplayCountryType)Enum.Parse(typeof(DisplayCountryType), _configuration.GetConfigValue("DisplayCountryType", DisplayCountryType.GB.ToString()));
+            _moveList.Clear();
             _showOnlyMoves = bool.Parse(_configuration.GetConfigValue("extendMoveList", "false"));
             _showFullInfo = bool.Parse(_configuration.GetConfigValue("extendFull", "false"));
             _showComments = bool.Parse(_configuration.GetConfigValue("extendComments", "false"));
             _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
-            textBlockBlack.FontFamily = _fontFamily;
-            textBlockBlack.Text = FontConverter.ConvertFont("k", "Chess Merida");
-            textBlockWhite.FontFamily = _fontFamily;
-            textBlockWhite.Text = FontConverter.ConvertFont("K", "Chess Merida");
             textBlockWhitePlayer.Text = string.Empty;
             textBlockBlackPlayer.Text = string.Empty;
             textBlockResult.Text = string.Empty;
             SetContentInfo();
             _currentGame = null;
             _gameStartPosition = string.Empty;
+            
         }
         public void SetPlayerAndResult(CurrentGame currentGame, string gameStartPosition, string result)
         {
@@ -116,7 +88,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockWhitePlayer.Text = currentGame.PlayerWhite;
             textBlockBlackPlayer.Text = currentGame.PlayerBlack;
             if (result.Contains("/"))
+            {
                 result = "1/2";
+            }
+
             textBlockResult.Text = result;
         }
 
@@ -128,13 +103,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetResult(string result)
         {
             if (result.Contains("/"))
+            {
                 result = "1/2";
+            }
+
             textBlockResult.Text = result;
         }
-
-      
-
-
         public void AddMove(Move move)
         {
             _moveList.Add(move);
@@ -209,7 +183,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void MarkLastMove()
         {
             MarkMove(_lastMarkedMoveNumber, _lastMarkedColor);
-            ;
         }
 
         public void MarkMove(int number, int color)
@@ -258,16 +231,47 @@ namespace www.SoLaNoSoft.com.BearChessWin
             //{
             //    if (showRule)
             //    {
-            //        Title = $"Moves ( {remainingMoves} up to fifty-move rule )";
+            //        Title = $"{_rm.GetString("Moves")} ( {remainingMoves} {_rm.GetString("UpToFiftyMoveRule")} )";
             //    }
             //    else
             //    {
-            //        Title = "Moves";
+            //        Title = _rm.GetString("Moves");
             //    }
             //}
         }
 
-      
+        public void Show()
+        {
+        }
+
+
+        public void Close()
+        {
+        }
+
+        public event EventHandler Closed;
+        public double Top
+        {
+            get;
+            set;
+        }
+
+        public double Left
+        {
+            get;
+            set;
+        }
+
+        private void SetSizes(double top, double left, double width, double height)
+        {
+           
+            Height = _configuration.GetWinDoubleValue("MoveListPlainWindowHeight", Configuration.WinScreenInfo.Height, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
+                                                      (height / 2).ToString(CultureInfo.InvariantCulture));
+            Width = _configuration.GetWinDoubleValue("MoveListPlainWindowWidth", Configuration.WinScreenInfo.Width, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,
+                                                     (width / 2).ToString(CultureInfo.InvariantCulture));
+            _fontSize = _configuration.GetDoubleValue("MoveListPlainWindowFontSize", "18");
+
+        }
 
         private void AddInternalMove(Move move)
         {
@@ -276,9 +280,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _wrapPanel = new WrapPanel();
                 stackPanelMoves.Children.Add(_wrapPanel);
             }
-            var movePlainUserControl = new MovePlainUserControl(null)
+
+            var movePlainUserControl = new MovePlainUserControl(null);
             {
-                FontSize = _fontSize
+                FontSize = _fontSize;
             };
             movePlainUserControl.SelectedChanged += MovePlainUserControl_SelectedChanged;
             movePlainUserControl.ContentChanged += MovePlainUserControl_ContentChanged;
@@ -357,7 +362,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void StackPanelMoves_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
-            int wpIndex = -1;
+            if (_movePlainUserControl == null)
+            {
+                return;
+            }
+                int wpIndex = -1;
             int ucIndex = -1;
             for (int w = 0; w < stackPanelMoves.Children.Count; w++)
             {
@@ -615,26 +624,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void SetContentInfo()
         {
-            string comments = "without comments";
+            string comments = _rm.GetString("WithoutComments");
             if (_showComments)
             {
-                comments = "with comments";
+                comments = _rm.GetString("WithComments");
             }
             if (_showOnlyMoves)
             {
-                textBlockContent.Text = $"Content: Only moves {comments}";
+                textBlockContent.Text = $"{_rm.GetString("ContentOnlyMoves")} {comments}";
                 return;
             }
             if (_showFullInfo)
             {
-                textBlockContent.Text = $"Content: Moves {comments} and with best line";
+                textBlockContent.Text = $"{_rm.GetString("ContentMoves")} {comments} {_rm.GetString("AndWithBestLine")}";
                 return;
             }
-            textBlockContent.Text = $"Content: Moves {comments} and with first best move";
+            textBlockContent.Text = $"{_rm.GetString("ContentMoves")} {comments} {_rm.GetString("AndWithFirstBestMove")}";
         }
-
-      
-
         private void ButtonFontInc_OnClick(object sender, RoutedEventArgs e)
         {
             _fontSize += 2;

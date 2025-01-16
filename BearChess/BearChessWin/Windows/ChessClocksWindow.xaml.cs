@@ -66,6 +66,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
         public bool CountDown { get; set; }
+        
+        public void SetConfiguration(string capture, Configuration configuration)
+        { 
+        }
+
         public event EventHandler TimeOutEvent;
 
         public ClockTime GetClockTime()
@@ -111,7 +116,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _extraSeconds = extraSeconds;
             Title = _extraSeconds > 0
                         ? $"{_rm.GetString("Clock")} {_capture} ({hh:00}:{mm:00}:{ss:00} + {extraSeconds}s)"
-                        : $"{_rm.GetString("Clock")} {_capture} ({hh:00}:{mm:00}:{ss:00}";
+                        : $"{_rm.GetString("Clock")} {_capture} ({hh:00}:{mm:00}:{ss:00})";
             borderWarning.Visibility = Visibility.Hidden;
         }
         public void CorrectTime(int hh, int mm, int ss)

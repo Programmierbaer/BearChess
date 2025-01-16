@@ -157,8 +157,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     buttonHide.Visibility = Visibility.Collapsed;
                 }
 
-                buttonPlus.Visibility = Visibility.Collapsed;
-                buttonMinus.Visibility = Visibility.Collapsed;
+                buttonPlus.Visibility = Visibility.Hidden;
+                buttonMinus.Visibility = Visibility.Hidden;
               
             }
             else
@@ -359,6 +359,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     imagePlay.Visibility = Visibility.Visible;
                 }
             });
+        }
+
+        public void ShowStopButton()
+        {
+            buttonClose.Visibility = Visibility.Visible;
         }
 
         private void ShowInfoLine()

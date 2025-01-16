@@ -2,19 +2,19 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Resources;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessTournament;
-using Microsoft.Win32;
-using System.IO;
-using System.Text;
-using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using System.Resources;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {

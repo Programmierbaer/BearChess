@@ -99,6 +99,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 engineInfoUserControl.SetDisplayTypes(_displayFigureType,_displayMoveType,_displayCountryType);
             }
         }
+
+        public void SetConfiguration(Configuration configuration, string uciPath)
+        {
+            
+        }
+
+        public void ShowCloseButton()
+        {
+            foreach (var engine in _loadedEngines.Where(e => e.Value.Color != Fields.COLOR_EMPTY && !e.Value.UciEngine.IsProbing))
+            {
+                _loadedEnginesControls[engine.Key].ShowStopButton();
+            }
+        }
+
         public event EventHandler<EngineEventArgs> EngineEvent;
 
         public void CloseLogWindow()
@@ -499,6 +513,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _timeControl = null;
             _timeControlBlack = null;
+            //foreach (var engine in _loadedEngines.Where(e => e.Value.Color != Fields.COLOR_EMPTY && !e.Value.UciEngine.IsProbing))
+            //{
+            //    _loadedEnginesControls[engine.Key].ShowStopButton();
+            //}
+
         }
 
         public void StopForCoaches()

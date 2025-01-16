@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
+using InTheHand.Net;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 
-namespace www.SoLaNoSoft.com.BearChessTools
+namespace www.SoLaNoSoft.com.BearChessBase
 {
     public class Configuration
     {
@@ -19,6 +22,7 @@ namespace www.SoLaNoSoft.com.BearChessTools
             Height,
             Left
         }
+
 
         private static Configuration _instance;
         private static readonly object Locker = new object();
@@ -41,6 +45,28 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
         public string BinPath { get; }
 
+        public PgnConfiguration GetPgnConfiguration()
+        {
+            return new PgnConfiguration()
+            {
+                PurePgn = bool.Parse(GetConfigValue("gamesPurePGNExport", "true")),
+                IncludeComment = bool.Parse(GetConfigValue("gamesPGNExportComment", "true")),
+                IncludeEvaluation = bool.Parse(GetConfigValue("gamesPGNExportEvaluation", "true")),
+                IncludeMoveTime = bool.Parse(GetConfigValue("gamesPGNExportMoveTime", "true")),
+                IncludeSymbols = bool.Parse(GetConfigValue("gamesPGNExportSymbols", "true")),
+            };
+
+        }
+
+        public void SavePgnConfiguration(PgnConfiguration pgnConfiguration)
+        {
+            SetConfigValue("gamesPurePGNExport", pgnConfiguration.PurePgn.ToString());
+            SetConfigValue("gamesPGNExportComment", pgnConfiguration.IncludeComment.ToString());
+            SetConfigValue("gamesPGNExportEvaluation", pgnConfiguration.IncludeEvaluation.ToString());
+            SetConfigValue("gamesPGNExportMoveTime", pgnConfiguration.IncludeMoveTime.ToString());
+            SetConfigValue("gamesPGNExportSymbols", pgnConfiguration.IncludeSymbols.ToString());
+        }
+
         public static Configuration Instance
         {
             get
@@ -55,6 +81,34 @@ namespace www.SoLaNoSoft.com.BearChessTools
         private Configuration()
         {
             FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.BearChess);
+            var args = Environment.GetCommandLineArgs();
+            for (int i = 1; i < args.Length; i++)
+            {
+                if (args[i].Equals("-path", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (i < args.Length - 1)
+                    {
+                        try
+                        {
+                            var pathValue = args[i + 1];
+                            if (pathValue.Equals("doc", StringComparison.InvariantCultureIgnoreCase) || pathValue.Equals("dok", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Constants.BearChess);
+                            }
+                            else
+                            {
+                                var pathName = Path.Combine(pathValue, Constants.BearChess);
+                                Directory.Exists(pathName);
+                                FolderPath = pathName;
+                            }
+                        }
+                        catch
+                        {
+                            //
+                        }
+                    }
+                }
+            }
             var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
             BinPath = fileInfo.DirectoryName;
             if (!Directory.Exists(FolderPath))
@@ -143,6 +197,16 @@ namespace www.SoLaNoSoft.com.BearChessTools
         public void SetDoubleValue(string winName, double position)
         {
             SetConfigValue(_appSettings, winName, position.ToString(CultureInfo.InvariantCulture));
+        }
+
+        public bool GetBoolValue(string key, bool defaultValue)
+        {
+            return bool.Parse(GetConfigValue(key, defaultValue.ToString()));
+        }
+
+        public void SetBoolValue(string key, bool value)
+        {
+            SetConfigValue(key, value.ToString());
         }
 
         public void SaveGamesFilter(GamesFilter gamesFilter)

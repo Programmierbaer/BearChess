@@ -152,6 +152,18 @@
     <Compile Include="UciConfigControls\UciButtonUserControl.xaml.cs">
       <DependentUpon>UciButtonUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\BookUserControl.xaml.cs">
+      <DependentUpon>BookUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\BookWindowUserControl.xaml.cs">
+      <DependentUpon>BookWindowUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ChessClockUserControl.xaml.cs">
+      <DependentUpon>ChessClockUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\EngineWindowUserControl.xaml.cs">
+      <DependentUpon>EngineWindowUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\FicsAdsUserControl.xaml.cs">
       <DependentUpon>FicsAdsUserControl.xaml</DependentUpon>
     </Compile>
@@ -164,8 +176,8 @@
     <Compile Include="UserControls\FicsUserUserControl.xaml.cs">
       <DependentUpon>FicsUserUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\MoveListPlainWindowUserControl.xaml.cs">
-      <DependentUpon>MoveListPlainWindowUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\MoveListPlainUserControl.xaml.cs">
+      <DependentUpon>MoveListPlainUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\MovePlainUserControl.xaml.cs">
       <DependentUpon>MovePlainUserControl.xaml</DependentUpon>
@@ -214,7 +226,9 @@
     <Compile Include="Windows\FicsWindow.xaml.cs">
       <DependentUpon>FicsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\IBookWindow.cs" />
     <Compile Include="Windows\IEngineWindow.cs" />
+    <Compile Include="Windows\IMoveListPlainWindow.cs" />
     <Compile Include="Windows\ITournamentInfoWindow.cs" />
     <Compile Include="Windows\MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
@@ -443,6 +457,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\BookUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\BookWindowUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ChessClockUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\EngineWindowUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\FicsAdsUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -459,7 +489,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\MoveListPlainWindowUserControl.xaml">
+    <Page Include="UserControls\MoveListPlainUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

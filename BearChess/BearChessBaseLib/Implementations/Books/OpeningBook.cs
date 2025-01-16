@@ -7,7 +7,7 @@ using www.SoLaNoSoft.com.BearChessBase.Implementations.CTG;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
-    public class OpeningBook
+    public class OpeningBook: IDisposable
     {
         private  DisplayFigureType _displayFigureType = DisplayFigureType.Letter;
         private  DisplayMoveType _displayMoveType =DisplayMoveType.FromToField;
@@ -179,7 +179,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             var chessBoard = new ChessBoard();
             chessBoard.Init();
             chessBoard.NewGame();
-            var bookMoves = GetMoveList(_emptyMove, false);
+            var bookMoves = GetMoveList(_emptyMove);
             foreach (var move in moveList)
             {
                 if (move.StartsWith("position"))
@@ -206,7 +206,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
                 if (foundMove != null)
                 {
-                    bookMoves = GetMoveList(foundMove, true);
+                    bookMoves = GetMoveList(foundMove);
                 }
                 else
                 {
@@ -217,7 +217,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return bookMoves;
         }
 
-        public IBookMoveBase[] GetMoveList(IBookMoveBase previousMove, bool checkCastle)
+        public IBookMoveBase[] GetMoveList(IBookMoveBase previousMove)
         {
             if (string.IsNullOrWhiteSpace(previousMove.FromField))
             {
@@ -241,6 +241,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 bookMoves = _ctgReader.GetMoves(previousMove.FenPosition);
             if (bookMoves == null)
                 bookMoves = Array.Empty<IBookMoveBase>();
+            if (bookMoves.Length==0)
+            {
+                return bookMoves;
+            }
             // if (checkCastle)
             {
                 var fastChessBoard = new FastChessBoard();
@@ -259,6 +263,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
                         if (chessFigure.GeneralFigureId == FigureId.KING)
                         {
+                            bookMove.MoveText = "0-0" + $"{bookMove.Annotation} ";
                             bookMove.ToField = "g1";
                         }
                     }
@@ -268,6 +273,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
                         if (chessFigure.GeneralFigureId == FigureId.KING)
                         {
+                            bookMove.MoveText = "0-0-0" + $"{bookMove.Annotation} ";
                             bookMove.ToField = "c1";
                         }
                     }
@@ -277,6 +283,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE8);
                         if (chessFigure.GeneralFigureId == FigureId.KING)
                         {
+                            bookMove.MoveText = "0-0" + $"{bookMove.Annotation} ";
                             bookMove.ToField = "g8";
                         }
                     }
@@ -286,6 +293,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE8);
                         if (chessFigure.GeneralFigureId == FigureId.KING)
                         {
+                            bookMove.MoveText = "0-0-0" + $"{bookMove.Annotation} ";
                             bookMove.ToField = "c8";
                         }
                     }
@@ -296,7 +304,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return bookMoves;
         }
 
-        public IBookMoveBase[] GetMoveList(string fenPosition, bool checkCastle)
+        public IBookMoveBase[] GetMoveList(string fenPosition)
         {
             IBookMoveBase[] bookMoves = null;
             if (_polyglotReader != null)
@@ -323,6 +331,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
                         if (chessFigure.GeneralFigureId == FigureId.KING)
                         {
+                            bookMove.MoveText = "0-0"+ $"{bookMove.Annotation} ";
                             bookMove.ToField = "g1";
                         }
 
@@ -334,6 +343,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE1);
                         if (chessFigure.GeneralFigureId == FigureId.KING)
                         {
+                            bookMove.MoveText = "0-0-0" + $"{bookMove.Annotation} ";
                             bookMove.ToField = "c1";
                         }
                     
@@ -344,6 +354,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE8);
                         if (chessFigure.GeneralFigureId == FigureId.KING)
                         {
+                            bookMove.MoveText = "0-0" + $"{bookMove.Annotation} ";
                             bookMove.ToField = "g8";
                         }
                     
@@ -354,6 +365,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                         var chessFigure = chessBoard.GetFigureOn(Fields.FE8);
                         if (chessFigure.GeneralFigureId == FigureId.KING)
                         {
+                            bookMove.MoveText = "0-0-0" + $"{bookMove.Annotation} ";
                             bookMove.ToField = "c8";
                         }
                     
@@ -367,7 +379,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public IBookMoveBase[] GetMoveList()
         {
-            return GetMoveList(_emptyMove, false);
+            return GetMoveList(_emptyMove);
         }
 
 
@@ -482,6 +494,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _displayFigureType = displayFigureType;
             _displayMoveType = displayMoveType;
             _displayCountryType = displayCountryType;
+        }
+
+        public void Dispose()
+        {
+            _abkReader?.Dispose();
+            _polyglotReader?.Dispose();
+            _ctgReader?.Dispose();
         }
     }
 }

@@ -2,7 +2,7 @@
 using www.SoLaNoSoft.com.BearChess.FicsClient;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
-using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessBase;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {

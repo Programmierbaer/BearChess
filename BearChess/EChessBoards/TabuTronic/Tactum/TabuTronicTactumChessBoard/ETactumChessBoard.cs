@@ -33,7 +33,7 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
         }
 
         private const string BASE_POSITION = "255 255 0 0 0 0 255 255";
-        private const string NEW_GAME_POSITION = "247 255 0 8 8 0 255 247";
+        private const string NEW_GAME_POSITION = "255 255 0 0 8 0 255 247";
 
       
         private readonly EChessBoardConfiguration _configuration;
@@ -422,28 +422,26 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 }
                 if (dataFromBoard.FromBoard.StartsWith(NEW_GAME_POSITION))
                 {
-                    _chessBoard.Init();
-                    _chessBoard.NewGame();
-                    _workingChessBoard.Init();
-                    _workingChessBoard.NewGame();
-                    _startFenPosition = string.Empty;
-                    NewGamePositionEvent?.Invoke(this, null);
-                    string basePos = _workingChessBoard.GetFenPosition().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                    if (_prevSend != basePos)
+                   
+                  //  NewGamePositionEvent?.Invoke(this, null);
+                    //string basePos = _workingChessBoard.GetFenPosition().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                   if (_equalReadCount==15)
                     {
+
                         _synthesizer?.SpeakForce($"{SpeechTranslator.ResourceManager.GetString("NewGame")}");
                         _synthesizer?.SpeakForce($"{SpeechTranslator.ResourceManager.GetString("GoBackToBasePosition")}");
+                        NewGamePositionEvent?.Invoke(this, null);
                     }
 
-                    _prevSend = basePos;
-
-                    return new DataFromBoard(_prevSend, 3)
-                    {
-                        BasePosition = true,
-                        Invalid = false,
-                        IsFieldDump = false,
-                        NewGamePosition = true
-                    };
+                    //_prevSend = basePos;
+                    DataEvent?.Invoke(this, "NewGame");
+                    //return new DataFromBoard(_prevSend, 3)
+                    //{
+                       
+                    //    Invalid = false,
+                    //    IsFieldDump = false,
+                       
+                    //};
                 }
 
                 var boardCodeConverter = new BoardCodeConverter(strings, _playWithWhite);

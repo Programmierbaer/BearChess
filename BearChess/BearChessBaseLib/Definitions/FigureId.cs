@@ -151,7 +151,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                               {BLACK_KING, "König"},
                                                                           };
 
-        public static readonly Dictionary<string, int> FenCharacterToFigureId = new Dictionary<string, int>()
+        private static readonly Dictionary<string, int> FenCharacterToFigureId = new Dictionary<string, int>()
                                                                                 {
                                                                                     {string.Empty, NO_PIECE},
                                                                                     {FenCodes.WhitePawn, WHITE_PAWN},
@@ -167,5 +167,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                                     {FenCodes.BlackQueen, BLACK_QUEEN},
                                                                                     {FenCodes.BlackKing, BLACK_KING},
                                                                                 };
+        public static  int GetFenCharacterToFigureId(string fenChar)
+        {
+            if (FenCharacterToFigureId.ContainsKey(fenChar))
+            {
+                return FenCharacterToFigureId[fenChar];
+            }
+            return NO_PIECE;
+        }
     }
 }

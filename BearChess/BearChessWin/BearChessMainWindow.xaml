@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Loaded="BearChessMainWindow_OnLoaded"
         Activated="BearChessMainWindow_OnActivated"
-        mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing" SizeToContent="Height" Background="WhiteSmoke"
+        mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing"  Background="WhiteSmoke"
         LocationChanged="BearChessMainWindow_OnLocationChanged" KeyDown="BearChessMainWindow_OnKeyDown"
-        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties" 
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         Title="BearChess" MinHeight="660" MinWidth="600">
     <Window.Resources>
         <ResourceDictionary>
@@ -37,7 +37,7 @@
         <CommandBinding Command="{StaticResource CtrE}" Executed="MenuItemEngineLoad_OnClick" />
         <CommandBinding Command="{StaticResource CtrR}" Executed="ButtonSoundRepeat_OnClick" />
         <CommandBinding Command="{StaticResource CtrM}" Executed="MenuItemMainMenue_OnClick" />
-        
+
     </Window.CommandBindings>
     <Grid Name="GridMain">
         <Grid.RowDefinitions>
@@ -51,130 +51,148 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Menu Name="MenuMain"  Grid.Row="0" Margin="5,0,5,0" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="663" Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Menu Name="MenuMain" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,5,0"
+                  Background="Transparent">
 
-                <MenuItem Header="{x:Static p:Resources.Actions}"  Name="menuItemActions"  >
-                    <MenuItem  Tag="NewGame"  Header="{x:Static p:Resources.NewGame}" Name="menuItemNewGame" Click="MenuItemNewGame_OnClick" InputGestureText="Ctrl+N"  >
+                <MenuItem Header="{x:Static p:Resources.Actions}" Name="menuItemActions">
+                    <MenuItem Tag="NewGame" Header="{x:Static p:Resources.NewGame}" Name="menuItemNewGame"
+                              Click="MenuItemNewGame_OnClick" InputGestureText="Ctrl+N">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/BearChess.ico" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="{x:Static p:Resources.Analysis}" Name="menuItemAnalyseMode" >
+                    <MenuItem Header="{x:Static p:Resources.Analysis}" Name="menuItemAnalyseMode">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
-                        <MenuItem  Tag="FreeAnalysis" Header="{x:Static p:Resources.FreeAnalysis}" Name="menuItemAnalyseFreeMode"
-                                   Click="MenuItemAnalyzeFreeMode_OnClick" >
+                        <MenuItem Tag="FreeAnalysis" Header="{x:Static p:Resources.FreeAnalysis}"
+                                  Name="menuItemAnalyseFreeMode"
+                                  Click="MenuItemAnalyzeFreeMode_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/robot.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Tag="GameAnalysis" Header="{x:Static p:Resources.GameAnalysis}" Name="menuItemAnalyseAGame" IsEnabled="False"
-                                  Click="MenuItemAnalyzeGameMode_OnClick" >
+                        <MenuItem Tag="GameAnalysis" Header="{x:Static p:Resources.GameAnalysis}"
+                                  Name="menuItemAnalyseAGame" IsEnabled="False"
+                                  Click="MenuItemAnalyzeGameMode_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/6-2-chess-png.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Tag="StopAnalyses" Header="{x:Static p:Resources.StopAnalysis}" Name="menuItemStopAnalyseMode" Visibility="Collapsed"
-                              Click="MenuItemStopAnalyseMode_OnClick" >
+                    <MenuItem Tag="StopAnalyses" Header="{x:Static p:Resources.StopAnalysis}"
+                              Name="menuItemStopAnalyseMode" Visibility="Collapsed"
+                              Click="MenuItemStopAnalyseMode_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="{x:Static p:Resources.Duel}" Name="menuItemDuel" >
+                    <MenuItem Header="{x:Static p:Resources.Duel}" Name="menuItemDuel">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/6-2-chess-png.png" />
                         </MenuItem.Icon>
-                        <MenuItem Tag="NewDuel"  Header="{x:Static p:Resources.NewDuel}" Name="menuItemEngineMatch"
-                                  Click="MenuItemEngineMatch_OnClick" >
+                        <MenuItem Tag="NewDuel" Header="{x:Static p:Resources.NewDuel}" Name="menuItemEngineMatch"
+                                  Click="MenuItemEngineMatch_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/6-2-chess-png.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Tag="EstimateElo" Header="{x:Static p:Resources.EstimateElo}" Name="menuItemEloEstimateEngineMatch"
-                                  Click="MenuItemEloEstimateEngineMatch_OnClick" >
+                        <MenuItem Tag="EstimateElo" Header="{x:Static p:Resources.EstimateElo}"
+                                  Name="menuItemEloEstimateEngineMatch"
+                                  Click="MenuItemEloEstimateEngineMatch_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/chart_line.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Tag="DuelManager"  Header="{x:Static p:Resources.DuelManager}" Name="menuItemLoadEngineDuel"
-                                  Click="MenuItemLoadDuel_OnClick" >
+                        <MenuItem Tag="DuelManager" Header="{x:Static p:Resources.DuelManager}"
+                                  Name="menuItemLoadEngineDuel"
+                                  Click="MenuItemLoadDuel_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/file_manager.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Header="{x:Static p:Resources.PauseAfterGame}" Name="menuItemPauseDuelGame"
-                                  Click="PauseDuelGame_OnClick" >
+                                  Click="PauseDuelGame_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/tick.png" Name="imagePauseDuelGame" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="{x:Static p:Resources.EngineTournament}" Name="menuItemTournament" >
+                    <MenuItem Header="{x:Static p:Resources.EngineTournament}" Name="menuItemTournament">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/cup_gold.png" />
                         </MenuItem.Icon>
                         <MenuItem Header="{x:Static p:Resources.StartTournament}" Name="menuItemEngineTour"
-                                  Click="MenuItemEngineTour_OnClick" >
+                                  Click="MenuItemEngineTour_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/cup_gold.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Header="{x:Static p:Resources.TournamentManager}" Name="menuItemLoadEngineTour"
-                                  Click="MenuItemLoadEngineTour_OnClick" >
+                                  Click="MenuItemLoadEngineTour_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/file_manager.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
 
-                    <MenuItem Tag="SetupPosition" Header="{x:Static p:Resources.SetupPosition}" Name="menuItemSetupPosition"
-                              Click="MenuItemSetupPosition_OnClick" >
+                    <MenuItem Tag="SetupPosition" Header="{x:Static p:Resources.SetupPosition}"
+                              Name="menuItemSetupPosition"
+                              Click="MenuItemSetupPosition_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/chess_board.png" />
                         </MenuItem.Icon>
                     </MenuItem>
 
                     <MenuItem Header="{x:Static p:Resources.ConnectToFICS}" Name="menuItemConnectFics"
-                              Click="MenuItemConnectFics_OnClick" >
+                              Click="MenuItemConnectFics_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/FicsLogo.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator />
-                    <MenuItem Header="{x:Static p:Resources.RunStartupGameOnStart}" Name="menuItemRunLastGame" AutomationProperties.HelpText="{x:Static p:Resources.IsUnSelected}"
-                              Click="MenuItemRunLastGame_OnClick" KeyDown="MenuItemRunLastGame_OnKeyDown"  >
-                        
+                    <MenuItem Header="{x:Static p:Resources.RunStartupGameOnStart}" Name="menuItemRunLastGame"
+                              AutomationProperties.HelpText="{x:Static p:Resources.IsUnSelected}"
+                              Click="MenuItemRunLastGame_OnClick" KeyDown="MenuItemRunLastGame_OnKeyDown">
+
                         <MenuItem.Icon>
                             <Image Name="imageRunLastGame" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
-                        
+
                     </MenuItem>
 
-                    <MenuItem Header="{x:Static p:Resources.CloseBearChess}" Name="menuItemClose" Click="MenuItemClose_OnClick" >
+                    <MenuItem Header="{x:Static p:Resources.CloseBearChess}" Name="menuItemClose"
+                              Click="MenuItemClose_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/door_out.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="{x:Static p:Resources.Games}" Name="menuItemGames" >
-                    <MenuItem Tag="GamesSave" Name="menuItemGamesSave" Command="Save" Header="{x:Static p:Resources.GamesSave}">
+                <MenuItem Header="{x:Static p:Resources.Games}" Name="menuItemGames">
+                    <MenuItem Tag="GamesSave" Name="menuItemGamesSave" Command="Save"
+                              Header="{x:Static p:Resources.GamesSave}">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/diskette.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Tag="GamesManager"  Name="menuItemGamesLoad" Header="{x:Static p:Resources.GamesManager}" Click="MenuItemGamesLoad_OnClick">
+                    <MenuItem Tag="GamesManager" Name="menuItemGamesLoad" Header="{x:Static p:Resources.GamesManager}"
+                              Click="MenuItemGamesLoad_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/file_manager.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Tag="GamesCopy"  Name="menuItemGamesCopy" Command="Copy" Header="{x:Static p:Resources.GamesCopy}">
+                    <MenuItem Tag="GamesCopy" Name="menuItemGamesCopy" Command="Copy"
+                              Header="{x:Static p:Resources.GamesCopy}">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/clipboard_sign_out.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Tag="GamesPaste"  Name="menuItemGamesPaste" Command="Paste" Header="{x:Static p:Resources.GamesPaste}">
+                    <MenuItem Tag="GamesPaste" Name="menuItemGamesPaste" Command="Paste"
+                              Header="{x:Static p:Resources.GamesPaste}">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/clipboard_sign.png" Stretch="UniformToFill" />
                         </MenuItem.Icon>
@@ -183,23 +201,27 @@
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/cog.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemGamesShowDuplicates" Header="{x:Static p:Resources.ShowDuplicates}" KeyDown="MenuItemGamesShowDuplicates_OnKeyDown"
-                                  Click="MenuItemGamesShowDuplicates_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.IsUnSelected}">
+                        <MenuItem Name="menuItemGamesShowDuplicates" Header="{x:Static p:Resources.ShowDuplicates}"
+                                  KeyDown="MenuItemGamesShowDuplicates_OnKeyDown"
+                                  Click="MenuItemGamesShowDuplicates_OnClick"
+                                  AutomationProperties.HelpText="{x:Static p:Resources.IsUnSelected}">
                             <MenuItem.Icon>
                                 <Image Name="imageGamesShowDuplicates" Source="Assets/Icons/tick.png"
                                        Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemGamesPurePGNExport" Header="{x:Static p:Resources.ConfigurePGN}" 
-                                  Click="MenuItemGamesPurePGNExport_OnClick" KeyDown="MenuItemGamesPurePGNExport_OnKeyDown">
+                        <MenuItem Name="menuItemGamesPurePGNExport" Header="{x:Static p:Resources.ConfigurePGN}"
+                                  Click="MenuItemGamesPurePGNExport_OnClick"
+                                  KeyDown="MenuItemGamesPurePGNExport_OnKeyDown">
                             <MenuItem.Icon>
-                                <Image Name="imageGamesPurePGNExport" Source="Assets/Icons/script_gear.png"  />
+                                <Image Name="imageGamesPurePGNExport" Source="Assets/Icons/script_gear.png" />
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="{x:Static p:Resources.Engines}">
-                    <MenuItem Tag="LoadManageEngines"  Header="{x:Static p:Resources.LoadAndManageEngines}" Name="menuItemEngineLoad" InputGestureText="Ctrl+E"
+                    <MenuItem Tag="LoadManageEngines" Header="{x:Static p:Resources.LoadAndManageEngines}"
+                              Name="menuItemEngineLoad" InputGestureText="Ctrl+E"
                               Click="MenuItemEngineLoad_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/robot.png" />
@@ -216,8 +238,10 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Name="menuItemLoadBuddyEngineOnNewGame" Header="{x:Static p:Resources.LoadBuddyEngineOnNewGame}"
-                                  Click="MenuItemLoadBuddyEngineNewGame_OnClick" KeyDown="MenuItemLoadBuddyEngineOnNewGame_OnKeyDown">
+                        <MenuItem Name="menuItemLoadBuddyEngineOnNewGame"
+                                  Header="{x:Static p:Resources.LoadBuddyEngineOnNewGame}"
+                                  Click="MenuItemLoadBuddyEngineNewGame_OnClick"
+                                  KeyDown="MenuItemLoadBuddyEngineOnNewGame_OnKeyDown">
                             <MenuItem.Icon>
                                 <Image Name="imageLoadBuddyEngine" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
@@ -279,7 +303,8 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Name="menuItemEngineSwitchPosition" Header="{x:Static p:Resources.SwitchMessChessWindowPosition}"
+                        <MenuItem Name="menuItemEngineSwitchPosition"
+                                  Header="{x:Static p:Resources.SwitchMessChessWindowPosition}"
                                   Click="MenuItemEngineSwitchPosition_OnClick"
                                   ToolTip="{x:Static p:Resources.SwitchMessChessWindowPositionTip}">
                             <MenuItem.Icon>
@@ -291,7 +316,8 @@
                 </MenuItem>
                 <MenuItem Header="{x:Static p:Resources.Books}">
 
-                    <MenuItem Tag="LoadManageBooks" Header="{x:Static p:Resources.LoadAndManageBooks}" Name="menuItemLoadBook"
+                    <MenuItem Tag="LoadManageBooks" Header="{x:Static p:Resources.LoadAndManageBooks}"
+                              Name="menuItemLoadBook"
                               Click="MenuItemLoadBook_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/books_stack.png" />
@@ -305,7 +331,7 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="{x:Static p:Resources.Settings}">
-                    <MenuItem Tag="SettingsBearChess"  Name="menuItemConfigBearChess" Header="BearChess"
+                    <MenuItem Tag="SettingsBearChess" Name="menuItemConfigBearChess" Header="BearChess"
                               Click="MenuItemConfigBearChess_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/BearChess.ico" />
@@ -337,7 +363,8 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <MenuItem Header="{x:Static p:Resources.PossibleMoves}">
-                            <MenuItem Name="menuItemShowPossibleMoves" Header="{x:Static p:Resources.ShowPossibleMoves}"
+                            <MenuItem Name="menuItemShowPossibleMoves"
+                                      Header="{x:Static p:Resources.ShowPossibleMoves}"
                                       ToolTip="{x:Static p:Resources.ShowPossibleMovesTip}"
                                       Click="MenuItemShowPossibleMoves_OnClick">
                                 <MenuItem.Icon>
@@ -402,12 +429,14 @@
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/digit_separator.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemSimpleClock" Header="{x:Static p:Resources.ClocksSmall}" Click="MenuItemSimpleClock_OnClick">
+                        <MenuItem Name="menuItemSimpleClock" Header="{x:Static p:Resources.ClocksSmall}"
+                                  Click="MenuItemSimpleClock_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageSmallTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemBigClock" Header="{x:Static p:Resources.ClocksBig}" Click="MenuItemBigClock_OnClick">
+                        <MenuItem Name="menuItemBigClock" Header="{x:Static p:Resources.ClocksBig}"
+                                  Click="MenuItemBigClock_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageBigTick" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
@@ -436,24 +465,28 @@
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemMaterialSmall" Header="{x:Static p:Resources.CapturedPiecesSmall}" Click="MenuItemMaterialSmall_OnClick">
+                        <MenuItem Name="menuItemMaterialSmall" Header="{x:Static p:Resources.CapturedPiecesSmall}"
+                                  Click="MenuItemMaterialSmall_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageShowMaterialSmall" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemMaterialBig" Header="{x:Static p:Resources.CapturedPiecesBig}" Click="MenuItemMaterialBig_OnClick">
+                        <MenuItem Name="menuItemMaterialBig" Header="{x:Static p:Resources.CapturedPiecesBig}"
+                                  Click="MenuItemMaterialBig_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageShowMaterialBig" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
 
                     </MenuItem>
-                    <MenuItem Tag="SettingsPlayer"  Name="menuItemPlayer" Header="{x:Static p:Resources.Player}" Click="MenuItemPlayer_OnClick">
+                    <MenuItem Tag="SettingsPlayer" Name="menuItemPlayer" Header="{x:Static p:Resources.Player}"
+                              Click="MenuItemPlayer_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/user_silhouette.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Tag="SettingsSpeech"  Name="menuItemSounds" Header="{x:Static p:Resources.SpeechAndSound}" Click="MenuItemSounds_OnClick">
+                    <MenuItem Tag="SettingsSpeech" Name="menuItemSounds" Header="{x:Static p:Resources.SpeechAndSound}"
+                              Click="MenuItemSounds_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/sound.png" />
                         </MenuItem.Icon>
@@ -465,21 +498,25 @@
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="{x:Static p:Resources.ElectronicBoards}" Name="menuItemElectronicBoardsBlind" Visibility="Collapsed">
-                    <MenuItem Tag="ConnectTactum"  Name="menuItemConnectToSentioTactum" Header="{x:Static p:Resources.Connect}"
+                <MenuItem Header="{x:Static p:Resources.ElectronicBoards}" Name="menuItemElectronicBoardsBlind"
+                          Visibility="Collapsed">
+                    <MenuItem Tag="ConnectTactum" Name="menuItemConnectToSentioTactum"
+                              Header="{x:Static p:Resources.Connect}"
                               Click="MenuItemConnectTactum_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/connect.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Tag="ConfigureTactum" Name="menuItemConfigureSentioTactum" Header="{x:Static p:Resources.Configure}"
+                    <MenuItem Tag="ConfigureTactum" Name="menuItemConfigureSentioTactum"
+                              Header="{x:Static p:Resources.Configure}"
                               Click="MenuItemConfigureSentioTactum_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/cog.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                   
-                    <MenuItem Visibility="Visible" Name="menuItemBluetoothLESentioTactum" Header="{x:Static p:Resources.BTLE}"
+
+                    <MenuItem Visibility="Visible" Name="menuItemBluetoothLESentioTactum"
+                              Header="{x:Static p:Resources.BTLE}"
                               ToolTip="{x:Static p:Resources.BTLETip}"
                               Click="MenuItemBluetoothLETactum_OnClick">
                         <MenuItem.Icon>
@@ -512,7 +549,8 @@
                                 <Image Name="imageCertaboBluetooth" Source="Assets/Icons/tick.png" Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Visibility="Visible" Name="menuItemBluetoothLECertabo" Header="{x:Static p:Resources.BTLE}"
+                        <MenuItem Visibility="Visible" Name="menuItemBluetoothLECertabo"
+                                  Header="{x:Static p:Resources.BTLE}"
                                   ToolTip="{x:Static p:Resources.BTLETip}"
                                   Click="MenuItemBluetoothLECertabo_OnClick">
                             <MenuItem.Icon>
@@ -520,7 +558,8 @@
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemChesstimationCertabo" Header="{x:Static p:Resources.ChesstimationModule}"
+                        <MenuItem Name="menuItemChesstimationCertabo"
+                                  Header="{x:Static p:Resources.ChesstimationModule}"
                                   Click="MenuItemChesstimationCertabo_OnClick"
                                   ToolTip="{x:Static p:Resources.ChesstimationModuleTip}">
                             <MenuItem.Icon>
@@ -557,7 +596,8 @@
                                            Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLECerno" Header="{x:Static p:Resources.BTLE}"
+                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLECerno"
+                                      Header="{x:Static p:Resources.BTLE}"
                                       ToolTip="{x:Static p:Resources.BTLETip}"
                                       Click="MenuItemBluetoothLECerno_OnClick">
                                 <MenuItem.Icon>
@@ -582,7 +622,8 @@
                                     <Image Source="Assets/Icons/cog.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="menuItemBluetoothSentio" Header="{x:Static p:Resources.BTClassic}" Visibility="Visible"
+                            <MenuItem Name="menuItemBluetoothSentio" Header="{x:Static p:Resources.BTClassic}"
+                                      Visibility="Visible"
                                       ToolTip="{x:Static p:Resources.BTClassicTip}"
                                       Click="MenuItemBluetoothSentio_OnClick">
                                 <MenuItem.Icon>
@@ -590,7 +631,8 @@
                                            Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLESentio" Header="{x:Static p:Resources.BTLE}"
+                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLESentio"
+                                      Header="{x:Static p:Resources.BTLE}"
                                       ToolTip="{x:Static p:Resources.BTLETip}"
                                       Click="MenuItemBluetoothLESentio_OnClick">
                                 <MenuItem.Icon>
@@ -599,7 +641,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Name="menuItemSentioTactum" Header="Tactum" Visibility="Collapsed">
+                        <MenuItem Name="menuItemSentioTactum" Visibility="Collapsed" Header="Tactum">
                             <MenuItem.Icon>
                                 <Image Source="Assets/tabutronic_logo_def.png" />
                             </MenuItem.Icon>
@@ -615,7 +657,8 @@
                                     <Image Source="Assets/Icons/cog.png" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLETactum" Header="{x:Static p:Resources.BTLE}"
+                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLETactum"
+                                      Header="{x:Static p:Resources.BTLE}"
                                       ToolTip="{x:Static p:Resources.BTLETip}"
                                       Click="MenuItemBluetoothLETactum_OnClick">
                                 <MenuItem.Icon>
@@ -646,7 +689,8 @@
                                 <Image Name="imageChessLinkBluetooth" Source="Assets/Icons/tick.png"
                                        Visibility="Hidden" />
                             </MenuItem.Icon>
-                            <MenuItem Name="menuItemBluetoothClassicMChessLink" Header="{x:Static p:Resources.BTClassic}"
+                            <MenuItem Name="menuItemBluetoothClassicMChessLink"
+                                      Header="{x:Static p:Resources.BTClassic}"
                                       ToolTip="{x:Static p:Resources.BTClassicTip}"
                                       Click="MenuItemBluetoothClassicMChessLink_OnClick">
                                 <MenuItem.Icon>
@@ -663,7 +707,8 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Name="menuItemChesstimationMChessLink" Header="{x:Static p:Resources.ChesstimationModule}"
+                        <MenuItem Name="menuItemChesstimationMChessLink"
+                                  Header="{x:Static p:Resources.ChesstimationModule}"
                                   Click="MenuItemChesstimationMChessLink_OnClick"
                                   ToolTip="{x:Static p:Resources.ChesstimationElfacunModuleTip}">
                             <MenuItem.Icon>
@@ -852,7 +897,8 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Visibility="Collapsed" Name="menuItemConfigureZmartfun" Header="{x:Static p:Resources.Configure}"
+                        <MenuItem Visibility="Collapsed" Name="menuItemConfigureZmartfun"
+                                  Header="{x:Static p:Resources.Configure}"
                                   Click="MenuItemConfigureZmartfun_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/cog.png" />
@@ -942,21 +988,24 @@
                             <Image Name="imageRunGameOnBase" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="{x:Static p:Resources.ShowNextMoveInGameAnalyseMode}" Name="menuItemShowNextMoveInGameAnalyse"
+                    <MenuItem Header="{x:Static p:Resources.ShowNextMoveInGameAnalyseMode}"
+                              Name="menuItemShowNextMoveInGameAnalyse"
                               Click="MenuItemShowNextMoveInGameAnalyse_OnClick">
                         <MenuItem.Icon>
                             <Image Name="imageShowNextMoveOnGameAnalysisMode" Source="Assets/Icons/tick.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{x:Static p:Resources.Engines}">
-                        <MenuItem Header="{x:Static p:Resources.ShowBestMoveInAnalyseMode}" Name="menuItemShowBestMoveInAnalyse"
+                        <MenuItem Header="{x:Static p:Resources.ShowBestMoveInAnalyseMode}"
+                                  Name="menuItemShowBestMoveInAnalyse"
                                   Click="MenuItemShowBestMoveInAnalyse_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageShowBestMoveOnAnalysisMode" Source="Assets/Icons/tick.png" />
                             </MenuItem.Icon>
                         </MenuItem>
 
-                        <MenuItem Header="{x:Static p:Resources.ShowCurrentBestMoveInGame}" Name="menuItemShowBestMoveInGame"
+                        <MenuItem Header="{x:Static p:Resources.ShowCurrentBestMoveInGame}"
+                                  Name="menuItemShowBestMoveInGame"
                                   Click="MenuItemShowBestMoveInGame_OnClick">
                             <MenuItem.Icon>
                                 <Image Name="imageShowBestMoveOnGame" Source="Assets/Icons/tick.png" />
@@ -973,17 +1022,19 @@
                     <MenuItem Name="menuItemEChessBoardTest" Visibility="Collapsed" Header="Test"
                               Click="MenuItemEChessBoardTest_OnClick" />
                 </MenuItem>
-                <MenuItem Header="{x:Static p:Resources.Windows}">
+                <MenuItem Name="menuItemWindows" Header="{x:Static p:Resources.Windows}">
                     <MenuItem Header="{x:Static p:Resources.Show}">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/new_window.png" />
                         </MenuItem.Icon>
-                        <MenuItem Name="menuItemWindowClocks" Click="MenuItemWindowClocks_OnClick" Header="{x:Static p:Resources.Clocks}">
+                        <MenuItem Name="menuItemWindowClocks" Click="MenuItemWindowClocks_OnClick"
+                                  Header="{x:Static p:Resources.Clocks}">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/digit_separator.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="menuItemWindowMoves" Click="MenuItemWindowMoves_OnClick" Header="{x:Static p:Resources.Moves}">
+                        <MenuItem Name="menuItemWindowMoves" Click="MenuItemWindowMoves_OnClick"
+                                  Header="{x:Static p:Resources.Moves}">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/text_list_numbers.png" />
                             </MenuItem.Icon>
@@ -995,7 +1046,8 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Name="menuItemWindowsArrange" Header="{x:Static p:Resources.Arrange}" Click="MenuItemWindowsArrange_OnClick">
+                    <MenuItem Name="menuItemWindowsArrange" Header="{x:Static p:Resources.Arrange}"
+                              Click="MenuItemWindowsArrange_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/switch_windows.png" />
                         </MenuItem.Icon>
@@ -1003,12 +1055,51 @@
                 </MenuItem>
                 <MenuItem Header="{x:Static p:Resources.Info}" Click="MenuItemInfo_OnClick" />
                 <MenuItem Header="{x:Static p:Resources.Help}" Click="MenuItemHelp_OnClick" />
-                <MenuItem Header="{x:Static p:Resources.Blind}" Visibility="Collapsed" Click="MenuItemMainMenue_OnClick" />
+                <MenuItem Header="{x:Static p:Resources.Blind}" Visibility="Collapsed"
+                          Click="MenuItemMainMenue_OnClick" />
             </Menu>
-            <local:GraphicsChessBoardUserControl Margin="5,5,5,0" Grid.Column="0" Grid.Row="1"
-                                                 x:Name="chessBoardUcGraphics" Visibility="Visible" />
-            <Canvas Name="canvasBoard" Grid.Row="1" />
-
+            <Border Margin="1" Grid.Column="0" Grid.Row="1" BorderBrush="DarkGray" BorderThickness="1">
+                <local:GraphicsChessBoardUserControl Margin="5,5,5,0" x:Name="chessBoardUcGraphics"
+                                                     Visibility="Visible" />
+            </Border>
+            <StackPanel x:Name="StackPanelClockAndMoves" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left">
+                <Border Margin="1" BorderThickness="1" BorderBrush="DarkGray">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <local:ChessClockUserControl Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                     x:Name="chessBoardUcClockWhite" Visibility="Visible" />
+                        <local:ChessClockUserControl Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                     x:Name="chessBoardUcClockBlack" Visibility="Visible" />
+                    </StackPanel>
+                </Border>
+                <Grid HorizontalAlignment="Left" MinWidth="400">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="500"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TabControl  Background="WhiteSmoke">
+                        <TabItem Header="{x:Static p:Resources.Moves}" >
+                            <local:MoveListPlainUserControl HorizontalAlignment="Left" x:Name="moveListPlainUserControl"/>
+                        </TabItem>
+                        <TabItem Header="{x:Static p:Resources.Books}" >
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Margin="1" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Click="MenuItemLoadBook_OnClick">
+                                    <Image Width="20" Height="20" Source="Assets/Icons/book_open.png"></Image>
+                                </Button>
+                                <local:BookWindowUserControl Grid.Row="1" x:Name="bookWindowUserControl"/>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                    <Border Margin="1" BorderThickness="1" BorderBrush="DarkGray" >
+                  
+                    </Border>
+                </Grid>
+            </StackPanel>
+            <Canvas Name="canvasBoard" Grid.Row="1" Grid.Column="0" />
+            <local:EngineWindowUserControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"
+                                           Margin="0" x:Name="EngineWindowUserControl" />
         </Grid>
         <DockPanel Margin="5" Grid.Row="1">
             <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonConnect"
@@ -1016,7 +1107,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Image Name="imageConnect" Source="Assets/Icons/disconnect.png" Width="16" />
                     <Image Name="imageDisconnect" Visibility="Collapsed" Source="Assets/Icons/connect.png" Width="16" />
-                    <TextBlock Name="textBlockButtonConnect" Margin="5,0,0,0" Text="{x:Static p:Resources.Connect}"/>
+                    <TextBlock Name="textBlockButtonConnect" Margin="5,0,0,0" Text="{x:Static p:Resources.Connect}" />
                 </StackPanel>
                 <Button.ContextMenu>
                     <ContextMenu>
@@ -1034,7 +1125,8 @@
                 ♔
             </TextBlock>
             <TextBlock Name="textBlockBlackKing" DockPanel.Dock="Right" FontSize="18" TextAlignment="Center"
-                       VerticalAlignment="Center" ToolTip="{x:Static p:Resources.PlayingWithBlackTip}" Visibility="Collapsed">
+                       VerticalAlignment="Center" ToolTip="{x:Static p:Resources.PlayingWithBlackTip}"
+                       Visibility="Collapsed">
                 ♚
             </TextBlock>
             <Button Name="buttonRotate" Click="ButtonRotate_OnClick" DockPanel.Dock="Right" Background="Transparent"
@@ -1059,14 +1151,14 @@
 
         <StatusBar Grid.Row="2" VerticalAlignment="Bottom">
             <StatusBarItem>
-                <TextBlock Name="textBlockRunningMode" Text="{x:Static p:Resources.ModeEasyPlaying}"/>
+                <TextBlock Name="textBlockRunningMode" Text="{x:Static p:Resources.ModeEasyPlaying}" />
             </StatusBarItem>
             <Separator />
             <StatusBarItem>
                 <Image Source="Assets/Icons/checkerboard.png" Height="15" />
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock Name="textBlockEBoard" Text="{x:Static p:Resources.Disconnected}"/>
+                <TextBlock Name="textBlockEBoard" Text="{x:Static p:Resources.Disconnected}" />
             </StatusBarItem>
             <StatusBarItem>
                 <Image Name="imageBT" Width="16" Height="16" Source="Assets/Icons/bluetooth.png" Visibility="Hidden" />

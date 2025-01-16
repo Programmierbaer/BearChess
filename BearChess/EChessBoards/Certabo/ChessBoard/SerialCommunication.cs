@@ -11,12 +11,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
 {
     public class SerialCommunication : AbstractSerialCommunication
     {
-        private const string _allEmpty =
-            "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-
-        private const string _withQueensEmpty =
-            "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-        
+      
         private Thread _sendingThread;
 
         public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.Certabo)
@@ -129,8 +124,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         try
                         {
                             //_logger?.LogDebug($"SC: Readline.... ");
-                            string readLine = string.Empty;
-                            string comReadLine = string.Empty;
+                            var readLine = string.Empty;
+                            var comReadLine = string.Empty;
                             if (_comPort.PortName.Equals("BTLE"))
                             {
                                 readLine = string.Empty;
@@ -140,6 +135,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                                     if (!string.IsNullOrWhiteSpace(comReadLine))
                                     {
                                         // _logger?.LogDebug("Read from port:" + comReadLine);
+                                        _logger?.LogDebug($"SC: comReadline: {comReadLine}");
 
                                         var strings = comReadLine.Split(" ".ToCharArray());
                                         foreach (var s in strings)
@@ -170,8 +166,9 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                                             var dataArray = readLine.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                                             if (dataArray.Length >= 320)
                                             {
-                                                readLine = readLine.Substring(readLine.IndexOf(":") + 1);
-                                                //    _logger?.LogDebug($"SC: BTLE Enqueue {readLine}");
+                                                _logger?.LogDebug($"SC: BTLE readLine {readLine}");
+                                                readLine = readLine.Substring(readLine.LastIndexOf(":") + 1);
+                                                _logger?.LogDebug($"SC: BTLE Enqueue {readLine}");
                                                 _dataFromBoard.Enqueue(readLine);
                                                 readLine = string.Empty;
                                             }
@@ -184,13 +181,17 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                             else
                             {
                                 comReadLine = _comPort.ReadLine();
-                                if (comReadLine.Contains(":"))
+                                if (!string.IsNullOrWhiteSpace(comReadLine))
                                 {
-                                    readLine = comReadLine.Substring(comReadLine.IndexOf(":") + 1);
-                                }
-                                else
-                                {
-                                    readLine += comReadLine;
+                                    _logger?.LogDebug($"SC: comReadline: {comReadLine}");
+                                    if (comReadLine.Contains(":"))
+                                    {
+                                        readLine = comReadLine.Substring(comReadLine.LastIndexOf(":") + 1);
+                                    }
+                                    else
+                                    {
+                                        readLine += comReadLine;
+                                    }
                                 }
                             }
                             if (!string.IsNullOrWhiteSpace(readLine))
@@ -198,7 +199,6 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                                 var dataArray = readLine.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                                 if (dataArray.Length >= 320)
                                 {
-                                    // _logger?.LogDebug($"SC: USB Enqueue {readLine}");
                                     _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
                                 }
                             }
@@ -249,20 +249,8 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                         }
                         else
                         {
-                            //Thread.Sleep(250);
-                            //  _comPort.Write(prevDataArrayToBoard, 0, prevDataArrayToBoard.Length);
                             Thread.Sleep(250);
 
-                        }
-                        //_logger?.LogDebug($"SC: bytes send");
-
-                    }
-                    else
-                    {
-                        if (prevDataArrayToBoard.Length > 0)
-                        {
-                            //_comPort.Write(prevDataArrayToBoard, 0, prevDataArrayToBoard.Length);
-                            //Thread.Sleep(250);
                         }
                     }
                     Thread.Sleep(10);
