@@ -21,7 +21,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" Margin="0" Grid.ColumnSpan="5" Name="textBlockTitle" FontSize="12" FontFamily="Segoe UI" >Clock</TextBlock>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Row="0" Grid.Column="0" Margin="0" Grid.ColumnSpan="5" Name="textBlockTitle" FontSize="12" FontFamily="Segoe UI" />
         <Border Margin="5,0,5,0" Name="borderWarning" Height="5" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Background="Red" Visibility="Visible"/>
         <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center"  Grid.Row="2" Grid.Column="0" Margin="0" Name="textBlockHour1" FontFamily="Square721 BT">00</TextBlock>
         <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Grid.Row="2"  Grid.Column="1" Margin="0" Name="textBlock1" FontFamily="Square721 BT">:</TextBlock>

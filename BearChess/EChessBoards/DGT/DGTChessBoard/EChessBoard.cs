@@ -20,7 +20,7 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
         private readonly bool _switchClockSide;
         private readonly bool _useBluetooth;
 
-        private readonly byte[] _allLEDsOff = { 0x60, 0x04, 0x00, 0x00, 0x00, 0x00 };
+        private readonly byte[] _allLEDsOff = { 0x60, 0x04, 0x00, 0x40, 0x40, 0x00 };
         private readonly byte[] _resetBoard = { 64 }; // @
         private readonly byte[] _dumpBoard = { 66 };  // B
         private readonly byte[] _startReading = { 68 }; // D

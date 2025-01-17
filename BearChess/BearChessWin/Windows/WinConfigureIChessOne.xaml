@@ -6,7 +6,7 @@
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
         xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
-        Title="{x:Static p:Resources.ConfigureIChessOne}" Height="830" Width="520" SizeToContent="WidthAndHeight">
+        Title="{x:Static p:Resources.ConfigureIChessOne}" Height="880" Width="610" SizeToContent="WidthAndHeight">
     <StackPanel>
         <Border Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid>
@@ -50,7 +50,7 @@
                             <CheckBox Name="checkBoxOnlyUpdate" DockPanel.Dock="Top"
                                       Unchecked="CheckBoxOnlyUpdate_OnUnchecked" Checked="CheckBoxOnlyUpdate_OnChecked"
                                       ToolTip="{x:Static p:Resources.BoardSendOnlyUpdates}" Margin="5" Content="{x:Static p:Resources.SendOnlyUpdates}">
-                                
+
                             </CheckBox>
                             <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.Refresh}" Width="80"
                                        HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -88,13 +88,14 @@
             </Grid>
         </Border>
         <Border Name="borderLEDs" Margin="5" BorderBrush="Gray" BorderThickness="1">
-            <TabControl Height="580">
+            <TabControl Height="620">
                 <TabItem Header="{x:Static p:Resources.LEDs}">
                     <StackPanel>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -117,8 +118,9 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
-                            <DockPanel Margin="0,5,0,0" LastChildFill="False" Grid.Column="0" Grid.Row="0">
+                            <DockPanel Margin="0,5,0,0" LastChildFill="False" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
                                 <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.LEDs}" FontWeight="DemiBold"
                                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
@@ -136,358 +138,390 @@
                                 </StackPanel>
 
                             </DockPanel>
-                            <Image Margin="5,0,5,0" Grid.Column="1" Grid.Row="0"
+                            <Image Grid.Column="2" Grid.Row="0" 
                                    Source="../Assets/Icons/bullet_red.png" VerticalAlignment="Center"
                                    HorizontalAlignment="Center"  ToolTip="{x:Static p:Resources.Red}" />
-                            <Image Margin="5,0,5,0" Grid.Column="2" Grid.Row="0"
+                            <Image Grid.Column="3" Grid.Row="0" 
                                    Source="../Assets/Icons/bullet_green.png" VerticalAlignment="Center"
                                    HorizontalAlignment="Center"  ToolTip="{x:Static p:Resources.Green}" />
-                            <Image Margin="5,0,5,0" Grid.Column="3" Grid.Row="0"
+                            <Image Grid.Column="4" Grid.Row="0" 
                                    Source="../Assets/Icons/bullet_blue.png" VerticalAlignment="Center"
                                    HorizontalAlignment="Center"  ToolTip="{x:Static p:Resources.Blue}" />
-                            <Image Margin="5,0,5,0" Grid.Column="4" Grid.Row="0" Source="../Assets/Icons/lightbulb.png"
+                            <Image Grid.Column="5" Grid.Row="0" Source="../Assets/Icons/lightbulb.png"
                                    Width="20" HorizontalAlignment="Center" ToolTip="{x:Static p:Resources.Brightness}" />
-                            <Image Margin="5,0,5,0" Grid.Column="5" Grid.Row="0" Source="../Assets/Icons/lightning.png"
+                            <Image Grid.Column="6" Grid.Row="0" Source="../Assets/Icons/lightning.png"
                                    Width="20" HorizontalAlignment="Center" ToolTip="{x:Static p:Resources.Flash}" />
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
-                                      Margin="25,0,5,0" ToolTip="{x:Static p:Resources.FromField}"
+                                      Margin="25,0,0,0" ToolTip="{x:Static p:Resources.FromField}"
                                       Grid.Column="0" Grid.Row="1" Text="{x:Static p:Resources.MoveFrom}"/>
                             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
-                                       Margin="25,0,5,0" ToolTip="{x:Static p:Resources.ToField}"
+                                       Margin="25,0,0,0" ToolTip="{x:Static p:Resources.ToField}"
                                        Grid.Column="0" Grid.Row="2" Text="{x:Static p:Resources.MoveTo}"/>
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="1" Grid.Row="1"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="1"
                                                                    x:Name="numericUpDownUserControlMoveFromRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="1"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="1"
                                                                    x:Name="numericUpDownUserControlMoveFromGreen"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="1"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="1"
                                                                    x:Name="numericUpDownUserControlMoveFromBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="1"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="1"
                                                                    x:Name="numericUpDownUserControlMoveDim"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"
+                                      Grid.Column="6"
                                       Grid.Row="1" Name="checkBoxFlashMoveFrom" Checked="RadioButtonSync_OnChecked" />
 
-                            <Button Grid.Column="6" Grid.Row="1" Margin="5" Name="buttonShowMoveFrom"
+                            <Button Grid.Column="7" Grid.Row="1" Margin="6,9,6,8" Name="buttonShowMoveFrom"
                                     Background="Transparent"  ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
 
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="1" Grid.Row="2"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="2"
                                                                    x:Name="numericUpDownUserControlMoveToRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="2"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="2"
                                                                    x:Name="numericUpDownUserControlMoveToGreen"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="2"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="2"
                                                                    x:Name="numericUpDownUserControlMoveToBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="2"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="2"
                                                                    x:Name="numericUpDownUserControlMoveToDim"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"
+                                      Grid.Column="6"
                                       Grid.Row="2" Name="checkBoxFlashMoveTo" Checked="RadioButtonSync_OnChecked" />
 
 
-                            <Button Grid.Column="6" Grid.Row="3" Margin="5" Name="buttonShowInvalid"
+                            <Button Grid.Column="7" Grid.Row="3" Margin="6,13,6,14" Name="buttonShowInvalid"
                                     Background="Transparent"  ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
-                            <Button Grid.Column="6" Grid.Row="4" Margin="6" Name="buttonShowTakeBack"
+                            <Button Grid.Column="7" Grid.Row="4" Margin="6,11,6,11" Name="buttonShowTakeBack"
                                     Background="Transparent"  ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
-                            <Button Grid.Column="6" Grid.Row="5" Margin="5" Name="buttonShowHint"
+                            <Button Grid.Column="7" Grid.Row="5" Margin="6,11,6,11" Name="buttonShowHint"
                                     Background="Transparent"  ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
-                            <Button Grid.Column="6" Grid.Row="6" Margin="5" Name="buttonShowCurrentColor"
+                            <Button Grid.Column="7" Grid.Row="6" Margin="6,11,6,11" Name="buttonShowBookMove"
                                     Background="Transparent"  ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
-                            <Button Grid.Column="6" Grid.Row="7" Margin="5" Name="buttonShowCurrentAdvantage"
+                            <Button Grid.Column="7" Grid.Row="7" Margin="6,11,6,11" Name="buttonShowCurrentColor"
                                     Background="Transparent"  ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
-                            <Button Grid.Column="6" Grid.Row="8" Margin="5" Name="buttonShowCurrentDisAdvantage"
+                            <Button Grid.Column="7" Grid.Row="8" Margin="6,11,6,11" Name="buttonShowCurrentAdvantage"
+                                    Background="Transparent"  ToolTip="{x:Static p:Resources.ShowLEDs}"
+                                    BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
+                                <Image Source="../Assets/Icons/eye.png" />
+                            </Button>
+                            <Button Grid.Column="7" Grid.Row="9" Margin="6,11,6,11" Name="buttonShowCurrentDisAdvantage"
                                     Background="Transparent"  ToolTip="{x:Static p:Resources.ShowLEDs}"
                                     BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
 
-                            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Name="checkBoxInvalidMoves"
-                                      Margin="5,5,5,0" ToolTip="{x:Static p:Resources.InvalidFields}" 
+                            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Name="checkBoxInvalidMoves"
+                                      Margin="5,18,0,0" ToolTip="{x:Static p:Resources.InvalidFields}" 
                                       Grid.Column="0" Grid.Row="3" Content="{x:Static p:Resources.Invalid}"/>
-                            <bearChessWin:NumericUpDownUserControl Margin="5" Grid.Column="1" Grid.Row="3"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,5" Grid.Column="2" Grid.Row="3"
                                                                    x:Name="numericUpDownUserControlInvalidRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="3"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="3"
                                                                    x:Name="numericUpDownUserControlInvalidGreen"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="3"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="3"
                                                                    TextWidthProperty="30"
                                                                    x:Name="numericUpDownUserControlInvalidBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="3"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="3"
                                                                    x:Name="numericUpDownUserControlInvalidDim"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
+                            <CheckBox Margin="0,18,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      Grid.Column="6"
                                       Grid.Row="3" Name="checkBoxFlashInvalid" Checked="RadioButtonSync_OnChecked" />
 
                             <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Name="checkBoxTakeBackMove"
-                                      Margin="5" ToolTip="{x:Static p:Resources.FromAndToFieldUndo}"
+                                      Margin="5,0,0,0" ToolTip="{x:Static p:Resources.FromAndToFieldUndo}"
                                       Grid.Column="0" Grid.Row="4" Content="{x:Static p:Resources.TakeBack}"/>
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="4"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="4"
                                                                    x:Name="numericUpDownUserControlTakeBackRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="4"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="4"
                                                                    x:Name="numericUpDownUserControlTakeBackGreen"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="4"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="4"
                                                                    x:Name="numericUpDownUserControlTakeBackBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="4"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="4"
                                                                    x:Name="numericUpDownUserControlTakeBackDim"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      Grid.Column="6"
                                       Grid.Row="4" Name="checkBoxFlashTakeBack" Checked="RadioButtonSync_OnChecked" />
 
-                            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Name="checkBoxHintMoves"
-                                      Margin="5,5,5,0" ToolTip="{x:Static p:Resources.FromAndToFieldForHint}"
+                            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Top" Name="checkBoxHintMoves"
+                                      Margin="5,16,0,0" ToolTip="{x:Static p:Resources.FromAndToFieldForHint}"
                                       Grid.Column="0" Grid.Row="5" Content="{x:Static p:Resources.Hint}"/>
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="5"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="5"
                                                                    x:Name="numericUpDownUserControlHintRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="5"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="5"
                                                                    x:Name="numericUpDownUserControlHintGreen"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="5"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="5"
                                                                    x:Name="numericUpDownUserControlHintBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="5"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="5"
                                                                    x:Name="numericUpDownUserControlHintDim"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      Grid.Column="6"
                                       Grid.Row="5" Name="checkBoxFlashHint" Checked="RadioButtonSync_OnChecked" />
 
+                            <CheckBox Name="checkBoxBookMove"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,16,0,0"
+                                      ToolTip="{x:Static p:Resources.ShowBestBookMove}"
+                                      Grid.Column="0" Grid.Row="6" Content="{x:Static p:Resources.BookMove}"/>
 
-                            <CheckBox Name="checkBoxCurrentColor"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,5,5,0"
-                                      ToolTip="{x:Static p:Resources.CurrentColorTip}"
-                                      Grid.Column="0" Grid.Row="6" Content="{x:Static p:Resources.CurrentColor}"/>
-
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="6"
-                                                                   x:Name="numericUpDownUserControlCurrentColorRed"
-                                                                   MinValue="0"
-                                                                   MaxValue="15" TextWidthProperty="30" />
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="6"
-                                                                   x:Name="numericUpDownUserControlCurrentColorGreen"
+                                                                   x:Name="numericUpDownUserControlBookRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="6"
-                                                                   x:Name="numericUpDownUserControlCurrentColorBlue"
+                                                                   x:Name="numericUpDownUserControlBookGreen"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="6"
-                                                                   x:Name="numericUpDownUserControlCurrentColorDim"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="6"
+                                                                   x:Name="numericUpDownUserControlBookBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
-                                      Grid.Row="6" Name="checkBoxFlashCurrentColor" Checked="RadioButtonSync_OnChecked" />
-
-
-                            <CheckBox Name="checkBoxShowEval" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,5,5,0"
-                                      ToolTip="{x:Static p:Resources.IfCurrentAdvantage}"
-                                      Grid.Column="0" Grid.Row="7" Content="{x:Static p:Resources.ValuationAdvantage}"/>
-
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="7"
-                                                                   x:Name="numericUpDownUserControlEvaluationRed"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="6"
+                                                                   x:Name="numericUpDownUserControlBookDim"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      Grid.Column="6"
+                                      Grid.Row="6" Name="checkBoxFlashBook" Checked="RadioButtonSync_OnChecked" />
+
+
+
+
+
+                            <CheckBox Name="checkBoxCurrentColor"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,16,0,0"
+                                      ToolTip="{x:Static p:Resources.CurrentColorTip}"
+                                      Grid.Column="0" Grid.Row="7" Content="{x:Static p:Resources.CurrentColor}"/>
+
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="7"
-                                                                   x:Name="numericUpDownUserControlEvaluationGreen"
+                                                                   x:Name="numericUpDownUserControlCurrentColorRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="7"
-                                                                   x:Name="numericUpDownUserControlEvaluationBlue"
+                                                                   x:Name="numericUpDownUserControlCurrentColorGreen"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="7"
-                                                                   x:Name="numericUpDownUserControlEvaluationDim"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="7"
+                                                                   x:Name="numericUpDownUserControlCurrentColorBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
-                                      Grid.Row="7" Name="checkBoxFlashEvaluation" Checked="RadioButtonSync_OnChecked" />
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="7"
+                                                                   x:Name="numericUpDownUserControlCurrentColorDim"
+                                                                   MinValue="0"
+                                                                   MaxValue="15" TextWidthProperty="30" />
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      Grid.Column="6"
+                                      Grid.Row="7" Name="checkBoxFlashCurrentColor" Checked="RadioButtonSync_OnChecked" />
 
-                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="65,5,5,0"
-                                       ToolTip="{x:Static p:Resources.IfCurrentDisadvantage}"
-                                       Grid.Column="0" Grid.Row="8" Text="{x:Static p:Resources.Disadvantage}"/>
 
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="8"
-                                                                   x:Name="numericUpDownUserControlDisEvaluationRed"
-                                                                   MinValue="0"
-                                                                   MaxValue="15" TextWidthProperty="30" />
+                            <CheckBox Name="checkBoxShowEval" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,16,0,0"
+                                      ToolTip="{x:Static p:Resources.IfCurrentAdvantage}"
+                                      Grid.Column="0" Grid.Row="8" Content="{x:Static p:Resources.ValuationAdvantage}" Grid.ColumnSpan="2"/>
+
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="8"
-                                                                   x:Name="numericUpDownUserControlDisEvaluationGreen"
+                                                                   x:Name="numericUpDownUserControlEvaluationRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
                             <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="8"
+                                                                   x:Name="numericUpDownUserControlEvaluationGreen"
+                                                                   MinValue="0"
+                                                                   MaxValue="15" TextWidthProperty="30" />
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="8"
+                                                                   x:Name="numericUpDownUserControlEvaluationBlue"
+                                                                   MinValue="0"
+                                                                   MaxValue="15" TextWidthProperty="30" />
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="8"
+                                                                   x:Name="numericUpDownUserControlEvaluationDim"
+                                                                   MinValue="0"
+                                                                   MaxValue="15" TextWidthProperty="30" />
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      Grid.Column="6"
+                                      Grid.Row="8" Name="checkBoxFlashEvaluation" Checked="RadioButtonSync_OnChecked" />
+
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="65,16,0,0"
+                                       ToolTip="{x:Static p:Resources.IfCurrentDisadvantage}"
+                                       Grid.Column="0" Grid.Row="9" Text="{x:Static p:Resources.Disadvantage}"/>
+
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="9"
+                                                                   x:Name="numericUpDownUserControlDisEvaluationRed"
+                                                                   MinValue="0"
+                                                                   MaxValue="15" TextWidthProperty="30" />
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="9"
+                                                                   x:Name="numericUpDownUserControlDisEvaluationGreen"
+                                                                   MinValue="0"
+                                                                   MaxValue="15" TextWidthProperty="30" />
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="9"
                                                                    x:Name="numericUpDownUserControlDisEvaluationBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="8"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="9"
                                                                    x:Name="numericUpDownUserControlDisEvaluationDim"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
-                                      Grid.Row="8" Name="checkBoxFlashDisEvaluation"
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      Grid.Column="6"
+                                      Grid.Row="9" Name="checkBoxFlashDisEvaluation"
                                       Checked="RadioButtonSync_OnChecked" />
 
-                            <CheckBox Name="checkBoxPossibleMoves" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,5,5,0"
+                            <CheckBox Name="checkBoxPossibleMoves" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,16,0,0"
            ToolTip="{x:Static p:Resources.ShowPossibleMovesOfFigure}" Checked="CheckBoxPossibleMoves_OnChecked" Unchecked="CheckBoxPossibleMoves_OnUnchecked"
-           Grid.Column="0" Grid.Row="9" Content="{x:Static p:Resources.PossibleMoves}"/>
+           Grid.Column="0" Grid.Row="10" Content="{x:Static p:Resources.PossibleMoves}"/>
 
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="9"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="10"
                                         x:Name="numericUpDownUserControlPossibleMovesRed"
                                         MinValue="0"
                                         MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="9"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="10"
                                         x:Name="numericUpDownUserControlPossibleMovesGreen"
                                         MinValue="0"
                                         MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="9"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="10"
                                         x:Name="numericUpDownUserControlPossibleMovesBlue"
                                         MinValue="0"
                                         MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="9"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="10"
                                         x:Name="numericUpDownUserControlPossibleMovesDim"
                                         MinValue="0"
                                         MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-           Grid.Column="5"
-           Grid.Row="9" Name="checkBoxFlashPossibleMoves"
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+           Grid.Column="6"
+           Grid.Row="10" Name="checkBoxFlashPossibleMoves"
            Checked="RadioButtonSync_OnChecked" />
-                            <Button Grid.Column="6" Grid.Row="9" Margin="5" Name="buttonShowCurrentPossibleMoves"
+                            <Button Grid.Column="7" Grid.Row="10" Margin="6,11,6,11" Name="buttonShowCurrentPossibleMoves"
          Background="Transparent" ToolTip="{x:Static p:Resources.ShowLEDs}"
          BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
 
-                            <CheckBox Name="checkBoxPossibleMovesEval" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,5,5,0"
+                            <CheckBox Name="checkBoxPossibleMovesEval" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,16,0,0"
                                       ToolTip="{x:Static p:Resources.ThisIsAGoodMove}"
-                                      Grid.Column="0" Grid.Row="10" Content="{x:Static p:Resources.EvaluationGood}"/>
+                                      Grid.Column="0" Grid.Row="11" Content="{x:Static p:Resources.EvaluationGood}"/>
 
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="10"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="11"
                                                                    x:Name="numericUpDownUserControlGoodMoveEvaluationRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="10"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="11"
                                                                    x:Name="numericUpDownUserControlGoodMoveEvaluationGreen"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="10"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="11"
                                                                    x:Name="numericUpDownUserControlGoodMoveEvaluationBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="10"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="11"
                                                                    x:Name="numericUpDownUserControlGoodMoveEvaluationDim"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
-                                      Grid.Row="10" Name="checkBoxFlashGoodMoveEvaluation"
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      Grid.Column="6"
+                                      Grid.Row="11" Name="checkBoxFlashGoodMoveEvaluation"
                                       Checked="RadioButtonSync_OnChecked" />
-                            <Button Grid.Column="6" Grid.Row="10" Margin="0,11,6,11" Name="buttonShowCurrentGoodMoveEvaluation"
+                            <Button Grid.Column="7" Grid.Row="11" Margin="0,11,0,11" Name="buttonShowCurrentGoodMoveEvaluation"
                                     Background="Transparent" ToolTip="{x:Static p:Resources.ShowLEDs}"
-                                    BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick" HorizontalAlignment="Right">
+                                    BorderBrush="Transparent" Width="20" Height="20" Click="ButtonShowHideLEDs_OnClick" HorizontalAlignment="Center">
                                 <Image Source="../Assets/Icons/eye.png" />
                             </Button>
 
-                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,5,5,0"
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,16,0,0"
                                        ToolTip="{x:Static p:Resources.ThisIsABadMove}"
-                                       Grid.Column="0" Grid.Row="11" Text="{x:Static p:Resources.Bad}"/>
+                                       Grid.Column="0" Grid.Row="12" Text="{x:Static p:Resources.Bad}" Grid.ColumnSpan="2"/>
 
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="11"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="12"
                                                                    x:Name="numericUpDownUserControlBadMoveEvaluationRed"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="11"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="12"
                                                                    x:Name="numericUpDownUserControlBadMoveEvaluationGreen"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="11"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="12"
                                                                    x:Name="numericUpDownUserControlBadMoveEvaluationBlue"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="11"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="12"
                                                                    x:Name="numericUpDownUserControlBadMoveEvaluationDim"
                                                                    MinValue="0"
                                                                    MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Grid.Column="5"
-                                      Grid.Row="11" Name="checkBoxFlashBadMoveEvaluation"
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      Grid.Column="6"
+                                      Grid.Row="12" Name="checkBoxFlashBadMoveEvaluation"
                                       Checked="RadioButtonSync_OnChecked" />
-                           
-                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,5,5,0"
-                                       ToolTip="{x:Static p:Resources.PlayableMove}" Text="{x:Static p:Resources.Playable}"
-                                Grid.Column="0" Grid.Row="12"/>
 
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="1" Grid.Row="12"
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,16,0,0"
+                                       ToolTip="{x:Static p:Resources.PlayableMove}" Text="{x:Static p:Resources.Playable}"
+                                Grid.Column="0" Grid.Row="13" Grid.ColumnSpan="2"/>
+
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="13"
                                          x:Name="numericUpDownUserControlPlayableMoveEvaluationRed"
                                          MinValue="0"
                                          MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="2" Grid.Row="12"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="13"
                                          x:Name="numericUpDownUserControlPlayableMoveEvaluationGreen"
                                          MinValue="0"
                                          MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="3" Grid.Row="12"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,5,5,0" Grid.Column="4" Grid.Row="13"
                                          x:Name="numericUpDownUserControlPlayableMoveEvaluationBlue"
                                          MinValue="0"
                                          MaxValue="15" TextWidthProperty="30" />
-                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="12"
+                            <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="13"
                                          x:Name="numericUpDownUserControlPlayableMoveEvaluationDim"
                                          MinValue="0"
                                          MaxValue="15" TextWidthProperty="30" />
-                            <CheckBox Margin="5,5,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-            Grid.Column="5"
-            Grid.Row="12" Name="checkBoxFlashPlayableMoveEvaluation"
+                            <CheckBox Margin="0,16,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
+            Grid.Column="6"
+            Grid.Row="13" Name="checkBoxFlashPlayableMoveEvaluation"
             Checked="RadioButtonSync_OnChecked" />
-                            
+
                         </Grid>
 
 
@@ -503,8 +537,199 @@
 
                     </StackPanel>
                 </TabItem>
-            </TabControl>
+                <TabItem Header="{x:Static p:Resources.Buzzer}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <DockPanel Margin="0,5,0,0" LastChildFill="False" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+                            <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.Buzzer}" FontWeight="DemiBold"
+                                       HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                <Button Margin="5,0" Name="buttonShowBuzzer" Background="Transparent"
+                                        ToolTip="{x:Static p:Resources.ConnectTestBuzzer}"
+                                        BorderBrush="Transparent" Width="32" Height="32" Click="ButtonShowDim_OnClick">
+                                    <Image Source="../Assets/Icons/sound.png" />
+                                </Button>
+                                <Button Margin="5,0" Name="buttonShowBuzzer2" Background="Transparent"
+                                        Visibility="Collapsed"
+                                        ToolTip="{x:Static p:Resources.Disconnect}"
+                                        BorderBrush="Transparent" Width="32" Height="32" Click="ButtonShowDim_OnClick">
+                                    <Image Source="../Assets/Icons/sound_mute.png" />
+                                </Button>
+                            </StackPanel>
+                        </DockPanel>
+                        <Image Grid.Column="2" Grid.Row="0" 
+                               Source="../Assets/Icons/slideshow_volume.png" VerticalAlignment="Center" Width="20" Height="20"
+                               HorizontalAlignment="Center"  ToolTip="{x:Static p:Resources.BuzzerVolume}" />
+                        <Image Grid.Column="3" Grid.Row="0" 
+                               Source="../Assets/Icons/control_repeat_blue.png" VerticalAlignment="Center" Width="20" Height="20"
+                               HorizontalAlignment="Center"  ToolTip="{x:Static p:Resources.BuzzerRepeat}"  />
+                        <Image Grid.Column="4" Grid.Row="0" 
+                               Source="../Assets/Icons/time_go.png" VerticalAlignment="Center" Width="20" Height="20"
+                               HorizontalAlignment="Center"  ToolTip="{x:Static p:Resources.BuzzerDuration}"  />
+                        <Image Grid.Column="5" Grid.Row="0" Source="../Assets/Icons/stopwatch_pause.png" 
+                               Width="20" HorizontalAlignment="Center"  ToolTip="{x:Static p:Resources.BuzzerPause}"  />
 
+                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5,5,5,5" Name="checkBoxBeepConnected" Content="{x:Static p:Resources.Connected}" ></CheckBox>
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="1"
+                                                               x:Name="numericUpDownUserControlBeepConnectedVolume"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="1"
+                                                               x:Name="numericUpDownUserControlBeepConnectedRepeat"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="1"
+                                                               x:Name="numericUpDownUserControlBeepConnectedDuration"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="1"
+                                                               x:Name="numericUpDownUserControlBeepConnectedPause"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <Button Grid.Column="6" Grid.Row="1" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Name="ButtonBeepConnected"  Click="ButtonBeepCheck_OnClick">
+                            <Image  Source="../Assets/Icons/sound.png"  
+                               Width="20" HorizontalAlignment="Center"  />
+                        </Button>
+                        <CheckBox Grid.Row="2" Grid.Column="0" Margin="5,5,5,5" Name="checkBoxBeepMove" Content="{x:Static p:Resources.EngineMove}"></CheckBox>
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="2"
+                                                               x:Name="numericUpDownUserControlBeepMoveVolume"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="2"
+                                                               x:Name="numericUpDownUserControlBeepMoveRepeat"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="2"
+                                                               x:Name="numericUpDownUserControlBeepMoveDuration"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="2"
+                                                               x:Name="numericUpDownUserControlBeepMovePause"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <Button Grid.Column="6" Grid.Row="2" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Name="ButtonBeepMove"  Click="ButtonBeepCheck_OnClick">
+                            <Image  Source="../Assets/Icons/sound.png"  
+                                    Width="20" HorizontalAlignment="Center"  />
+                        </Button>
+                        <CheckBox Grid.Row="3" Grid.Column="0" Margin="5,5,5,5" Name="checkBoxBeepCheck" Content="{x:Static p:Resources.InCheck}" ></CheckBox>
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="3"
+                                                               x:Name="numericUpDownUserControlBeepCheckVolume"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="3"
+                                                               x:Name="numericUpDownUserControlBeepCheckRepeat"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="3"
+                                                               x:Name="numericUpDownUserControlBeepCheckDuration"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="3"
+                                                               x:Name="numericUpDownUserControlBeepCheckPause"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <Button Grid.Column="6" Grid.Row="3" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Name="ButtonBeepCheck"  Click="ButtonBeepCheck_OnClick">
+                            <Image  Source="../Assets/Icons/sound.png"  
+                                    Width="20" HorizontalAlignment="Center"  />
+                        </Button>
+
+                        <CheckBox Grid.Row="4" Grid.Column="0" Margin="5,5,5,5" Name="checkBoxBeepMate" Content="{x:Static p:Resources.Mate}" ></CheckBox>
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="4"
+                                                               x:Name="numericUpDownUserControlBeepMateVolume"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="4"
+                                                               x:Name="numericUpDownUserControlBeepMateRepeat"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="4"
+                                                               x:Name="numericUpDownUserControlBeepMateDuration"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="4"
+                                                               x:Name="numericUpDownUserControlBeepMatePause"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <Button Grid.Column="6" Grid.Row="4" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Name="ButtonBeepMate"  Click="ButtonBeepCheck_OnClick">
+                            <Image  Source="../Assets/Icons/sound.png"  
+                                    Width="20" HorizontalAlignment="Center"  />
+                        </Button>
+
+
+                        <CheckBox Grid.Row="5" Grid.Column="0" Margin="5,5,5,5" Name="checkBoxBeepDraw" Content="{x:Static p:Resources.Draws}" ></CheckBox>
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="5"
+                                                               x:Name="numericUpDownUserControlBeepDrawVolume"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="5"
+                                                               x:Name="numericUpDownUserControlBeepDrawRepeat"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="5"
+                                                               x:Name="numericUpDownUserControlBeepDrawDuration"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="5"
+                                                               x:Name="numericUpDownUserControlBeepDrawPause"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <Button Grid.Column="6" Grid.Row="5" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Name="ButtonBeepDraw"  Click="ButtonBeepCheck_OnClick">
+                            <Image  Source="../Assets/Icons/sound.png"  
+                                    Width="20" HorizontalAlignment="Center"  />
+                        </Button>
+
+                        <CheckBox Grid.Row="6" Grid.Column="0" Margin="5,5,5,5" Name="checkBoxBeepInvalid" Content="{x:Static p:Resources.InvalidMove}" ></CheckBox>
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="2" Grid.Row="6"
+                                                               x:Name="numericUpDownUserControlBeepInvalidVolume"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="3" Grid.Row="6"
+                                                               x:Name="numericUpDownUserControlBeepInvalidRepeat"
+                                                               MinValue="0"
+                                                               MaxValue="15" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="4" Grid.Row="6"
+                                                               x:Name="numericUpDownUserControlBeepInvalidDuration"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <bearChessWin:NumericUpDownUserControl Margin="5,0,5,0" Grid.Column="5" Grid.Row="6"
+                                                               x:Name="numericUpDownUserControlBeepInvalidPause"
+                                                               MinValue="0"
+                                                               MaxValue="255" TextWidthProperty="30" />
+                        <Button Grid.Column="6" Grid.Row="6" Background="Transparent" BorderBrush="Transparent" Margin="5,0,5,0" Name="ButtonBeepInvalid"  Click="ButtonBeepCheck_OnClick">
+                            <Image  Source="../Assets/Icons/sound.png"  
+                                    Width="20" HorizontalAlignment="Center"  />
+                        </Button>
+
+                    </Grid>
+                </TabItem>
+            </TabControl>
 
         </Border>
 

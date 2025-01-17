@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
@@ -7,6 +8,30 @@ namespace UnitTestChessLink
     [TestClass]
     public class UnitTestFenNotation
     {
+
+        // 178 0 1 6 1 0 1 1  8 168 87 192 0 2 7 2
+        [TestMethod]
+        public void TestFirmwareChessUp()
+        {
+            string information = "178 0 1 6 1 0 1 1  8 168 87 192 0 2 7 2"; // 816887192
+            information = "178 0 1 9 0 1 0 0 13 239 54 208 1 4 0 1 ";   // 1323954208
+            var strings = information.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string result = string.Empty;
+            if (strings.Length == 16)
+            {
+                string firmware = $"{strings[2]}.{strings[3]}.{strings[4]}";
+                string BLEfirmware = $"{strings[5]}.{strings[6]}.{strings[7]}";
+                string bootLoader = $"{strings[12]}.{strings[13]}.{strings[14]}";
+              
+                string version = Convert.ToUInt64(strings[8] + strings[9] + strings[10] + strings[11],16).ToString();
+                result =
+                $"ChessUp {strings[15]}{Environment.NewLine}Firmware: {firmware}{Environment.NewLine}BLE-Firmware: {BLEfirmware}{Environment.NewLine}Bootloader: {bootLoader}{Environment.NewLine} Serial#: {version}";
+            }
+
+            result = "ChessUp";
+            Assert.AreEqual(result, "ChessUp");
+        }
+
         [TestMethod]
         public void TestFenToChessLink()
         {

@@ -13,7 +13,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             get;
         }
 
+        string BookId
+        {
+            get;
+        }
+
         event EventHandler<IBookMoveBase> SelectedMoveChanged;
+        event EventHandler<IBookMoveBase> BestMoveChanged;
+        event EventHandler<string> BookClosed;
+
+        IBookMoveBase GetBestMove();
+        IBookMoveBase GetBestMove(int index);
+        IBookMoveBase GetNextMove();
+
         void SetMoves(IBookMoveBase[] bookMoves);
         void SetMoves(string fenPosition);
         void AddMove(string move);
@@ -25,6 +37,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         void Show();
         void Close();
 
-        event EventHandler<string> Closed;
+
     }
 }

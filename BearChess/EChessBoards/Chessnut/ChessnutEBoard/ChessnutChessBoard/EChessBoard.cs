@@ -220,13 +220,18 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
             {
                 return;
             }
-
+            
             string[] fieldNames = ledsParameter.FieldNames.Length > 0
                 ? new List<string>(ledsParameter.FieldNames).ToArray()
                 : new List<string>(ledsParameter.InvalidFieldNames).ToArray();
             if (fieldNames.Length == 0)
             {
-                return;
+                fieldNames = new List<string>(ledsParameter.BookFieldNames).ToArray();
+                if (fieldNames.Length == 0)
+                {
+                    return;
+                }
+            
             }
             var joinedString = string.Join(" ", fieldNames);
             _flashFields.TryDequeue(out _);

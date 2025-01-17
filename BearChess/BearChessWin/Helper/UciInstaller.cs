@@ -16,9 +16,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (!string.IsNullOrWhiteSpace(newIndicator))
             {
                 fileName = fileName.Replace(@"\MessChess\MessChess.exe", @"\MessNew\MessNew.exe");
-//                var fileInfo = new FileInfo(fileName);
-
             }
+
             _uciInfo = new UciInfo(fileName);
             _uciInfo.CommandParameter = parameters;
             _engineProcess = new Process
@@ -58,16 +57,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ReadFromEngine()
         {
-            
+
             try
             {
                 string waitingFor = "uciok";
                 _engineProcess.StandardInput.Write("uci");
                 _engineProcess.StandardInput.Write("\n");
-                
+
                 while (true)
                 {
-                    
+
                     var readToEnd = _engineProcess.StandardOutput.ReadLine();
 
                     if (!string.IsNullOrWhiteSpace(readToEnd) && readToEnd.Equals(waitingFor))
@@ -78,7 +77,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     {
                         if (readToEnd.StartsWith("option"))
                         {
-                         _uciInfo.AddOption(readToEnd);
+                            _uciInfo.AddOption(readToEnd);
                         }
 
                         if (readToEnd.StartsWith("id name"))

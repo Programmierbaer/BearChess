@@ -409,10 +409,10 @@
     <value>Verbinden mit Certabo Schachbrett</value>
   </data>
   <data name="ConnectToChessnutAirProTip" xml:space="preserve">
-    <value>Verbinden mit Chessnut Air/Pro Schachbrett</value>
+    <value>Verbinden mit Chessnut Air/Air+/Pro Schachbrett</value>
   </data>
   <data name="ConnectToChessnutEvoTip" xml:space="preserve">
-    <value>Verbinden mit Chessnut Eco</value>
+    <value>Verbinden mit Chessnut Evo</value>
   </data>
   <data name="ConnectToChessupTip" xml:space="preserve">
     <value>Verbinden mit ChessUp</value>
@@ -490,7 +490,7 @@
     <value>Brett Löschen</value>
   </data>
   <data name="DeletePieces" xml:space="preserve">
-    <value>Figuren Löschen</value>
+    <value>Figuren löschen</value>
   </data>
   <data name="DeletePreInstalledBoard" xml:space="preserve">
     <value>Sie können kein vorinstalliertes Brett löschen</value>
@@ -607,7 +607,7 @@
     <value>Fehler beim Lesen der Dateien</value>
   </data>
   <data name="EstimatedELO" xml:space="preserve">
-    <value>Geschätzte Elo</value>
+    <value>Geschätzte ELO</value>
   </data>
   <data name="EstimatedEloBetween" xml:space="preserve">
     <value>Geschätzte ELO zwischen</value>
@@ -685,7 +685,7 @@
     <value>Partienverwaltung</value>
   </data>
   <data name="GamesPaste" xml:space="preserve">
-    <value>Einfügen aus dem Clipboard</value>
+    <value>Einfügen aus der Zwischenablage</value>
   </data>
   <data name="GamesSave" xml:space="preserve">
     <value>Speichern</value>
@@ -697,7 +697,7 @@
     <value>Vergeben Sie dem Figurenset einen Namen</value>
   </data>
   <data name="GoBackToBasePosition" xml:space="preserve">
-    <value>Gehen sie zurück zur Grundaufstellung</value>
+    <value>Gehen Sie zurück zur Grundaufstellung</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Hilfe</value>
@@ -715,10 +715,10 @@
     <value>Information</value>
   </data>
   <data name="InstallAtLeast" xml:space="preserve">
-    <value>Bitte installieren für ein Duell mind. eine Engine</value>
+    <value>Bitte Installieren Sie für ein Duell mind. eine Engine</value>
   </data>
   <data name="InstallAtLeastTwo" xml:space="preserve">
-    <value>Bitte installieren für ein Turnierl mind. zwei Engines</value>
+    <value>Bitte Installieren Sie für ein Turnier mind. zwei Engines</value>
   </data>
   <data name="Internal" xml:space="preserve">
     <value>Internes</value>
@@ -763,7 +763,7 @@
     <value>Lade Start-Konfiguration</value>
   </data>
   <data name="LoadUCIEngine" xml:space="preserve">
-    <value>UCI Engine Laden</value>
+    <value>UCI-Engine Laden</value>
   </data>
   <data name="LosesBecauseTimeout" xml:space="preserve">
     <value>hat durch Zeitüberschreitung verloren</value>
@@ -910,7 +910,7 @@
     <value>Mögliche Züge</value>
   </data>
   <data name="PurePGNExport" xml:space="preserve">
-    <value>Purer PGN export</value>
+    <value>Purer PGN Export</value>
   </data>
   <data name="Relaxed" xml:space="preserve">
     <value>Relaxt</value>
@@ -1243,7 +1243,7 @@
     <value>Kopieren</value>
   </data>
   <data name="CopyToClipboard" xml:space="preserve">
-    <value>In die Zischenablage kopieren</value>
+    <value>In die Zwischenablage kopieren</value>
   </data>
   <data name="DeleteMyDuplicates" xml:space="preserve">
     <value>Eigene Duplikate löschen</value>
@@ -1312,13 +1312,13 @@
     <value>Kann Partie nicht laden</value>
   </data>
   <data name="CannotDeleteGame" xml:space="preserve">
-    <value>Kann ausgewählte Partie nocht löschen</value>
+    <value>Kann ausgewählte Partie nicht löschen</value>
   </data>
   <data name="GameIsPartOfADuel" xml:space="preserve">
-    <value>Die Partie gehört zu einem Duell. Benutzen sie dafür den Duell-Manager.</value>
+    <value>Die Partie gehört zu einem Duell und kann nicht gelöscht werden. Benutzen Sie den Duell-Manager um die Partie zu wiederholen.</value>
   </data>
   <data name="GameIsPartOfATournament" xml:space="preserve">
-    <value>Die Partie gehört zu einem Turnier. Benutzen sie dafür den Turnier-Manager</value>
+    <value>Die Partie gehört zu einem Turnier. Benutzen Sie den Turnier-Manager um die Partie zu wiederholen.</value>
   </data>
   <data name="DeleteGames" xml:space="preserve">
     <value>Partien löschen</value>
@@ -1369,16 +1369,16 @@
     <value>Datenbank konnte nicht wieder hergestellt werden</value>
   </data>
   <data name="GameIsPartOfADuelContinue" xml:space="preserve">
-    <value>Die Partie gehört zu einem Duell. Benutzen sie dafür den Duell-Manager.</value>
+    <value>Die Partie gehört zu einem Duell. Benutzen Sie dafür den Duell-Manager.</value>
   </data>
   <data name="CannotContinue" xml:space="preserve">
     <value>Kann ausgewählte Partie nicht fortführen</value>
   </data>
   <data name="GameIsPartOfTournamentContinue" xml:space="preserve">
-    <value>Die Partie gehört zu einem Turnier. Benutzen sie dafür den Turnier-Manager</value>
+    <value>Die Partie gehört zu einem Turnier. Benutzen Sie dafür den Turnier-Manager</value>
   </data>
   <data name="GameIsPartOfDuelRepeat" xml:space="preserve">
-    <value>Die Partie gehört zu einem Duell. Benutzen sie dafür den Duell-Manager</value>
+    <value>Die Partie gehört zu einem Duell. Benutzen Sie dafür den Duell-Manager um die Partie zu wiederholen.</value>
   </data>
   <data name="GamesOn" xml:space="preserve">
     <value>Spiele auf</value>
@@ -1576,7 +1576,7 @@
     <value>Ausgewähltes Duell löschen?</value>
   </data>
   <data name="DeleteAllSelectedDuels" xml:space="preserve">
-    <value>Alle ausgewählten Duell löschen</value>
+    <value>Alle ausgewählten Duelle löschen</value>
   </data>
   <data name="RepeatDuel" xml:space="preserve">
     <value>Duell wiederholen</value>
@@ -1595,6 +1595,12 @@
   </data>
   <data name="Path" xml:space="preserve">
     <value>Pfad:</value>
+  </data>
+  <data name="PathBin" xml:space="preserve">
+    <value>Programmpfad:</value>
+  </data>
+  <data name="PathConfig" xml:space="preserve">
+    <value>Konfigurationspfad:</value>
   </data>
   <data name="OpenDialog" xml:space="preserve">
     <value>Öffnen...</value>
@@ -1711,13 +1717,13 @@
     <value>Kann nicht als neues Turnier geladen werden</value>
   </data>
   <data name="DeleteAllSelectedTournaments" xml:space="preserve">
-    <value>Alle ausgewählten Turnier löschen?</value>
+    <value>Alle ausgewählten Turniere löschen?</value>
   </data>
   <data name="DeleteSelectedTournament" xml:space="preserve">
     <value>Ausgewähltes Turnier löschen?</value>
   </data>
   <data name="DeleteAllTournaments" xml:space="preserve">
-    <value>Alle Turnier löschen?</value>
+    <value>Alle Turniere löschen?</value>
   </data>
   <data name="DeleteAllAndRepeat" xml:space="preserve">
     <value>Alle Partien löschen und ausgewähltes Turnier wiederholen?</value>
@@ -1738,7 +1744,7 @@
     <value>Turnier umbenennen</value>
   </data>
   <data name="CannotPlayAgainstBuddy" xml:space="preserve">
-    <value>Sie können nicht mit einee BearChess oder Buddy Engine spielen</value>
+    <value>Sie können nicht gegen einer BearChess oder Buddy Engine spielen</value>
   </data>
   <data name="CannotChangeInternalEngine" xml:space="preserve">
     <value>Sie können eine interne Engine nicht ändern.</value>
@@ -1750,7 +1756,7 @@
     <value>Eine interne Engine kann nicht deinstalliert werden.</value>
   </data>
   <data name="ErrorOnUninstallEngine" xml:space="preserve">
-    <value>Fehler beim deinstallieren der Engine</value>
+    <value>Fehler beim Deinstallieren der Engine</value>
   </data>
   <data name="IsNotValidEngine" xml:space="preserve">
     <value>ist keine gültige UCI-Engine</value>
@@ -1759,7 +1765,7 @@
     <value>Engine</value>
   </data>
   <data name="InstallEngine" xml:space="preserve">
-    <value>Installieren UCI engine</value>
+    <value>Installiere UCI-Engine</value>
   </data>
   <data name="ErrorInstallEngine" xml:space="preserve">
     <value>Fehler beim Installiieren der Engine</value>
@@ -1771,7 +1777,7 @@
     <value>Eine BearChess-Engine kann nicht gleichzeitig eine Buddy-Engine sein</value>
   </data>
   <data name="NotSuitableForBearChess" xml:space="preserve">
-    <value>Diese Engine ist als BearCHess-Engine nicht geeignet</value>
+    <value>Diese Engine ist als BearChess-Engine nicht geeignet</value>
   </data>
   <data name="BuddyCannotBearChess" xml:space="preserve">
     <value>Eine Buddy-Engine kann nicht gleichzetig eine BearChess-Engine sein</value>
@@ -1999,7 +2005,7 @@
     <value>Zeige alle möglichen Züge der ausgewählten Figur</value>
   </data>
   <data name="SelectionIsExclusiveShowOwnMoves" xml:space="preserve">
-    <value>Diese Auswahl ist exklusiv zur Optione 'Eigene Züge anzeigen'</value>
+    <value>Diese Auswahl ist exklusiv zur Option 'Eigene Züge anzeigen'</value>
   </data>
   <data name="ShowBestMoveSelectedFigure" xml:space="preserve">
     <value>Zeige den besten Zug für die ausgewählte Figur</value>
@@ -2092,7 +2098,7 @@
     <value>Von- und Ziel-Feld bei einem Hinweis</value>
   </data>
   <data name="ShowPossibleMovesOfFigure" xml:space="preserve">
-    <value>Zeige alle möglichen Züge wenn die Figur angehoben wird</value>
+    <value>Zeige alle möglichen Züge, wenn die Figur angehoben wird</value>
   </data>
   <data name="EvaluationGood" xml:space="preserve">
     <value>Bewertung: gut</value>
@@ -2131,7 +2137,7 @@
     <value>Konfiguration auswählen und speichern als</value>
   </data>
   <data name="GiveConfigurationName" xml:space="preserve">
-    <value>Geben sie der Konfiguration einen Namen</value>
+    <value>Geben Sie der Konfiguration einen Namen</value>
   </data>
   <data name="NotAllowed" xml:space="preserve">
     <value>Nicht erlaubt</value>
@@ -2389,7 +2395,7 @@
     <value>Filter zurücksetzen</value>
   </data>
   <data name="SaveFilterAsDefault" xml:space="preserve">
-    <value>Speichere Filter als Voreinstellung</value>
+    <value>Speicher Filter als Voreinstellung</value>
   </data>
   <data name="IncrementCycles" xml:space="preserve">
     <value>Zyklen erhöhen</value>
@@ -2468,5 +2474,161 @@
   </data>
   <data name="Layout" xml:space="preserve">
     <value>Layout</value>
+  </data>
+  <data name="UseEngineConfigForTC" xml:space="preserve">
+    <value>Benutzen Sie für die Zeitkontrolle die Engine-Konfiguration</value>
+  </data>
+  <data name="SwitchDifferenceAll" xml:space="preserve">
+    <value>Umschalten 'Differenz'/'Alle'</value>
+  </data>
+  <data name="ConnectFirst" xml:space="preserve">
+    <value>Sie müssen sich zuerst mit dem Schachbrett verbinden</value>
+  </data>
+  <data name="LoadDefaultBook" xml:space="preserve">
+    <value>Standard-Eröffnungsbuch automatisch laden</value>
+  </data>
+  <data name="DefaultBook" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="SetBookAsDefault" xml:space="preserve">
+    <value>Ausgewähltes Buch als Standard setzen</value>
+  </data>
+  <data name="CannotUninstallInternalBook" xml:space="preserve">
+    <value>Sie können dieses Buch nicht deinstallieren.</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="ShowBestBookMove" xml:space="preserve">
+    <value>Zeige auf dem Brett den besten Buchzug</value>
+  </data>
+  <data name="BestBookMove" xml:space="preserve">
+    <value>Bester Buchzug</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="PrevQuestion" xml:space="preserve">
+    <value>Zurück zur vorherigen Frage</value>
+  </data>
+  <data name="QueryDialogCancel" xml:space="preserve">
+    <value>Fragendialog abbrechen</value>
+  </data>
+  <data name="CancelNewGameDialog" xml:space="preserve">
+    <value>Dialog Neues Spiel abbrechen</value>
+  </data>
+  <data name="DoYouLike" xml:space="preserve">
+    <value>Möchten Sie</value>
+  </data>
+  <data name="StartNewGameWithThisSetting" xml:space="preserve">
+    <value>Neues Spiel mit diesen Einstellungen starten?</value>
+  </data>
+  <data name="ShouldWhiteBeAPerson" xml:space="preserve">
+    <value>Soll Weiß eine Person sein?</value>
+  </data>
+  <data name="EngineForWhite" xml:space="preserve">
+    <value>Engine für Weiß</value>
+  </data>
+  <data name="ShouldBlackBeAPerson" xml:space="preserve">
+    <value>Soll Schwarz eine Person sein?</value>
+  </data>
+  <data name="EngineForBlack" xml:space="preserve">
+    <value>Engine für Schwarz</value>
+  </data>
+  <data name="DifferentTCForWhiteAndBlack" xml:space="preserve">
+    <value>Möchten Sie für Weiß und Schwarz unterschiedliche Zeiktrontrollen?</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Übernehmen</value>
+  </data>
+  <data name="PlusSecPerMove" xml:space="preserve">
+    <value>Sekunden pro Zug zusätzlich</value>
+  </data>
+  <data name="Versus" xml:space="preserve">
+    <value>versus</value>
+  </data>
+  <data name="ConnectToTabuTronicTactumTip" xml:space="preserve">
+    <value>Verbinden mit TabuTronic Tactum Schachbrett</value>
+  </data>
+  <data name="YourMove" xml:space="preserve">
+    <value>Ihr Zug</value>
+  </data>
+  <data name="DisConnectTabuTronicTactum" xml:space="preserve">
+    <value>Trennen vom TabuTronic Tactum Schachbrett</value>
+  </data>
+  <data name="EditField" xml:space="preserve">
+    <value>Eingabefeld</value>
+  </data>
+  <data name="CurrentInput" xml:space="preserve">
+    <value>Aktueller Eingabewert</value>
+  </data>
+  <data name="DefineBearChessConfiguration" xml:space="preserve">
+    <value>Dieser Dialog erlaubt die Konfiguration von BearChess</value>
+  </data>
+  <data name="ConfigureHoS" xml:space="preserve">
+    <value>House of Staunton Schachbrett Konfigurieren</value>
+  </data>
+  <data name="NoAdditionalInfo" xml:space="preserve">
+    <value>Keine Zusatzinformation</value>
+  </data>
+  <data name="StartAnalysis" xml:space="preserve">
+    <value>Analyse beginnen</value>
+  </data>
+  <data name="BookMove" xml:space="preserve">
+    <value>Buchzug</value>
+  </data>
+  <data name="AutoPositionMessChessWindow" xml:space="preserve">
+    <value>Automatische Positionierung der MessChess-Fenster</value>
+  </data>
+  <data name="AutoPositionMessChessWindowTip" xml:space="preserve">
+    <value>Versucht die MessChess-Fenster rechts vom Hauptfenster zu positionieren</value>
+  </data>
+  <data name="Buzzer" xml:space="preserve">
+    <value>Buzzer</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="InCheck" xml:space="preserve">
+    <value>Schach</value>
+  </data>
+  <data name="InvalidMove" xml:space="preserve">
+    <value>Ungültiger Zug</value>
+  </data>
+  <data name="ConnectTestBuzzer" xml:space="preserve">
+    <value>Zum Testen des Buzzers mit dem Brett verbinden</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Lautstärke</value>
+  </data>
+  <data name="BuzzerDuration" xml:space="preserve">
+    <value>Dauer</value>
+  </data>
+  <data name="BuzzerVolume" xml:space="preserve">
+    <value>Lautstärke</value>
+  </data>
+  <data name="BuzzerPause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="BuzzerRepeat" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="BearChessPDFDENotFound" xml:space="preserve">
+    <value>Datei BearChess_DE.pdf nicht gefunden</value>
+  </data>
+  <data name="ConnectToBCServer" xml:space="preserve">
+    <value>Verbinden mit BearChess Server</value>
+  </data>
+  <data name="DisconnectFromBCServer" xml:space="preserve">
+    <value>Trennen vom BearChess Server</value>
+  </data>
+  <data name="BearChessServer" xml:space="preserve">
+    <value>BearChess Server</value>
+  </data>
+  <data name="BearChessServerTip" xml:space="preserve">
+    <value>Konfigurieren Sie die Verbindung zum BearChess Server</value>
   </data>
 </root>

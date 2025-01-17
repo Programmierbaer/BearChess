@@ -191,23 +191,23 @@ namespace www.SoLaNoSoft.com.BearChessTools
                                 List<string> list1 = new List<string>();
                                 list1.AddRange(GetPortNames(bluetoothDeviceInfo.DeviceAddress.ToString()));
                                 return list1.ToArray();
-                                var bluetoothEndPoint =
-                                    new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress,
-                                                          BluetoothService.SerialPort,
-                                                          10);
-                                if (!cli.Connected)
-                                {
-                                    cli.Connect(bluetoothEndPoint);
-                                    if (cli.Connected)
-                                    {
-                                        fileLogger?.LogInfo("Connected");
-                                        cli.Close();
-                                        configuration.SaveBTAddress(boardName, bluetoothDeviceInfo.DeviceAddress, "Chesstimation");
-                                        var list = new List<string> { "BT" };
-                                        list.AddRange(GetPortNames("Certabo"));
-                                        return list.ToArray();
-                                    }
-                                }
+                                //var bluetoothEndPoint =
+                                //    new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress,
+                                //                          BluetoothService.SerialPort,
+                                //                          10);
+                                //if (!cli.Connected)
+                                //{
+                                //    cli.Connect(bluetoothEndPoint);
+                                //    if (cli.Connected)
+                                //    {
+                                //        fileLogger?.LogInfo("Connected");
+                                //        cli.Close();
+                                //        configuration.SaveBTAddress(boardName, bluetoothDeviceInfo.DeviceAddress, "Chesstimation");
+                                //        var list = new List<string> { "BT" };
+                                //        list.AddRange(GetPortNames("Certabo"));
+                                //        return list.ToArray();
+                                //    }
+                                //}
                             }
                             catch (Exception ex)
                             {

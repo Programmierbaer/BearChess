@@ -24,6 +24,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string[] FieldNames;
         public string[] InvalidFieldNames;
         public string[] HintFieldNames;
+        public string[] BookFieldNames;
         public ProbingMove[] ProbingMoves;
         public string Promote;
         public bool IsThinking;
@@ -43,6 +44,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             FieldNames = Array.Empty<string>();
             InvalidFieldNames = Array.Empty<string>();
             HintFieldNames = Array.Empty<string>();
+            BookFieldNames = Array.Empty<string>();
             ProbingMoves = Array.Empty<ProbingMove>();
             Promote = string.Empty;
             DisplayString = string.Empty;

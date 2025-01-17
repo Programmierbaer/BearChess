@@ -92,14 +92,14 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.118.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\lib\net46\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.118.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.118.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.119.0\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.118.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.118.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.119.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.119.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Speech" />
@@ -125,6 +125,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BearChessServerWindow.xaml.cs">
+      <DependentUpon>BearChessServerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helper\HandlingClocks.cs" />
     <Compile Include="Helper\ArrowEnds.cs" />
     <Compile Include="Helper\ArrowLine.cs" />
@@ -175,6 +178,10 @@
     </Compile>
     <Compile Include="UserControls\FicsUserUserControl.xaml.cs">
       <DependentUpon>FicsUserUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\IMaterialUserControl.cs" />
+    <Compile Include="UserControls\MaterialUserControl.xaml.cs">
+      <DependentUpon>MaterialUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\MoveListPlainUserControl.xaml.cs">
       <DependentUpon>MoveListPlainUserControl.xaml</DependentUpon>
@@ -229,12 +236,16 @@
     <Compile Include="Windows\IBookWindow.cs" />
     <Compile Include="Windows\IEngineWindow.cs" />
     <Compile Include="Windows\IMoveListPlainWindow.cs" />
+    <Compile Include="Windows\INewGameWindow.cs" />
     <Compile Include="Windows\ITournamentInfoWindow.cs" />
     <Compile Include="Windows\MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\MoveListPlainWindow.xaml.cs">
       <DependentUpon>MoveListPlainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\NewGameDialogWindow.xaml.cs">
+      <DependentUpon>NewGameDialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\NewTournamentWindow.xaml.cs">
       <DependentUpon>NewTournamentWindow.xaml</DependentUpon>
@@ -352,6 +363,12 @@
     <Compile Include="Windows\PromoteWindow.xaml.cs">
       <DependentUpon>PromoteWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\QueryDialogWindow.xaml.cs">
+      <DependentUpon>QueryDialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QueryTCValueDialogWindow.xaml.cs">
+      <DependentUpon>QueryTCValueDialogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SaveGameWindow.xaml.cs">
       <DependentUpon>SaveGameWindow.xaml</DependentUpon>
     </Compile>
@@ -422,6 +439,9 @@
     <Compile Include="Windows\WinConfigureDGT.xaml.cs">
       <DependentUpon>WinConfigureDGT.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\WinConfigureHoS.xaml.cs">
+      <DependentUpon>WinConfigureHoS.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\WinConfigureIChessOne.xaml.cs">
       <DependentUpon>WinConfigureIChessOne.xaml</DependentUpon>
     </Compile>
@@ -450,6 +470,10 @@
       <DependentUpon>WinConfigureUCB.xaml</DependentUpon>
     </Compile>
     <Page Include="BearChessMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BearChessServerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -486,6 +510,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\FicsUserUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MaterialUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -558,6 +586,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MoveListPlainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\NewGameDialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -730,6 +762,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\QueryDialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QueryTCValueDialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\SaveGameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -818,6 +858,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\WinConfigureHoS.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\WinConfigureIChessOne.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -871,6 +915,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Resource Include="Assets\Fonts\Alpha.ttf" />
     <Resource Include="Assets\Fonts\AVENFONT.TTF" />
@@ -1773,6 +1818,33 @@
   <ItemGroup>
     <Resource Include="Assets\Icons\globe_model.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\tactum.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\bookmark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\HoS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\slideshow_volume.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\chessup2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ChessUpLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\bullet_arrow_left - Kopieren.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="bullet_arrow_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\BearChessServer.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -1781,8 +1853,8 @@
     <Error Condition="!Exists('..\packages\SQLite.3.13.0\build\net45\SQLite.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLite.3.13.0\build\net45\SQLite.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
-  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.118.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
 </Project>

@@ -49,8 +49,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         /// <inheritdoc />
         public List<Move> CurrentMoveList { get; protected set; }
 
-
-
         protected AbstractChessFigure(IChessBoard board, int field, int material)
         {
             ChessBoard = board;
@@ -166,7 +164,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 _attackingFigureIds.Add(figure.FigureId);
             }
 
-            _attackedColor[figure.Color] = _attackedColor[figure.Color] + 1;
+            _attackedColor[figure.Color] += 1;
 
             if (_highestAttackedFigureByColor[figure.Color] < figure.Material)
             {
@@ -187,8 +185,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             {
                 return;
             }
-            _attackingByFigure[figure.FigureId] = _attackingByFigure[figure.FigureId] + 1;
-            _attackingColor[figure.Color] = _attackingColor[figure.Color] + 1;
+            _attackingByFigure[figure.FigureId] += 1;
+            _attackingColor[figure.Color] += 1;
         }
 
         /// <inheritdoc />
@@ -216,17 +214,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             _attackingColor[Fields.COLOR_BLACK] = 0;
             _highestAttackedFigureByColor[Fields.COLOR_BLACK] = 0;
             _highestAttackedFigureByColor[Fields.COLOR_WHITE] = 0;
+            _attackingFigureIds.Clear();
         }
 
         /// <inheritdoc />
-        public string FigureCharacter
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(FenFigureCharacter)) return @" ";
-                return FenFigureCharacter;
-            }
-        }
+        public string FigureCharacter => string.IsNullOrEmpty(FenFigureCharacter) ? @" " : FenFigureCharacter;
 
         public int ResolveAttackingList()
         {

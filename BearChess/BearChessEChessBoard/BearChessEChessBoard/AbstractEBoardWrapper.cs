@@ -21,6 +21,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         private bool _allLedOff = true;
         private bool _forcedBasePosition = false;
         private bool _forcedNewGamePosition = false;
+        private string _lastInvalidFields = string.Empty;
 
         public string Name { get; }
         protected IInternalChessBoard _internalChessBoard;
@@ -251,6 +252,33 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public void AcceptProbingMoves(bool acceptProbingMoves)
         {
             _board?.AcceptProbingMoves(acceptProbingMoves);
+        }
+
+        public virtual void BuzzerOnConnected()
+        {
+        }
+
+        public virtual void BuzzerOnMove()
+        {
+        }
+
+        public virtual void BuzzerOnCheck()
+        {
+        }
+        public virtual void BuzzerOnDraw()
+        {
+        }
+
+        public virtual void BuzzerOnCheckMate()
+        {
+        }
+
+        public virtual void BuzzerOnInvalid()
+        {
+        }
+
+        public virtual void PlayBuzzer(string soundCode)
+        {
         }
 
         public void StopClock()
@@ -621,6 +649,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             string changedFenHelper = string.Empty;
             string batteryLevel = string.Empty;
             string batteryStatus = string.Empty;
+          
             _fileLogger?.LogDebug("AB: Handle board");
             while (!_stopCommunication)
             {
@@ -879,19 +908,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     }
 
                     var internalChessBoard = new InternalChessBoard();
-                    //if (_board != null && _board.UseFieldDumpForFEN)
-                    //{
-                    //    internalChessBoard.NewGame();
-                    //    internalChessBoard.SetPosition(_internalChessBoard.GetPosition());
+                    
+                    internalChessBoard.NewGame();
+                    internalChessBoard.SetPosition(fenPosition.FromBoard);
 
-                    //}
-                    //else
-                    {
-                        internalChessBoard.NewGame();
-                        internalChessBoard.SetPosition(fenPosition.FromBoard);
-                    }
-
-                    HashSet<string> prevMoveFields = new HashSet<string>();
+                    var prevMoveFields = new HashSet<string>();
                     var allMoveClass = _internalChessBoard.GetPrevMove();
 
                     if (allMoveClass != null)
@@ -930,7 +951,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     }
                     var strings = fenPosition.FromBoard.Split(",".ToCharArray());
                     foreach (var f in Fields.BoardFields) 
-                    //for (var f = InternalChessBoard.FA1; f <= InternalChessBoard.FH8; f++)
                     {
                         if (_board != null && _board.UseFieldDumpForFEN && fenPosition.IsFieldDump)
                         {
@@ -1046,7 +1066,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
                         }
 
-                        ;
+                        
                         var setLeDsParameter = new SetLEDsParameter()
                         {
                             FieldNames = validFields.ToArray(),
@@ -1084,6 +1104,16 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                         }
 
                         _board?.SetLedForFields(setLeDsParameter);
+                        if (setLeDsParameter.IsError)
+                        {
+                            var invalidFieldsString = string.Join("", setLeDsParameter.InvalidFieldNames);
+                            if (!invalidFieldsString.Equals(_lastInvalidFields))
+                            {
+                                _board?.BuzzerOnInvalid();
+                            }
+
+                            _lastInvalidFields = invalidFieldsString;
+                        }
 
                         //if (_board.MultiColorLEDs || _configuration.ShowOwnMoves)
                         //{

@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Resources;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChess.IChessOneLoader;
 using www.SoLaNoSoft.com.BearChessBase;
@@ -125,12 +122,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
            buttonShowTakeBack.Visibility = Visibility.Hidden;
            buttonShowCurrentGoodMoveEvaluation.Visibility = Visibility.Hidden;
            buttonShowCurrentPossibleMoves.Visibility = Visibility.Hidden;
+           buttonShowBookMove.Visibility = Visibility.Hidden;
+           ButtonBeepCheck.Visibility = Visibility.Hidden;
+           ButtonBeepConnected.Visibility = Visibility.Hidden;
+           ButtonBeepDraw.Visibility = Visibility.Hidden;
+           ButtonBeepInvalid.Visibility = Visibility.Hidden;
+           ButtonBeepMate.Visibility = Visibility.Hidden;
+           ButtonBeepMove.Visibility = Visibility.Hidden;
 
         }
 
         private void ShowCurrentConfig()
         {
-            ExtendedEChessBoardConfiguration current = comboBoxSettings.Items[_currentIndex] as ExtendedEChessBoardConfiguration;
+            var current = comboBoxSettings.Items[_currentIndex] as ExtendedEChessBoardConfiguration;
             checkBoxMoveLine.IsChecked = current.ShowMoveLine;
             checkBoxCurrentColor.IsChecked = current.ShowCurrentColor;
             checkBoxFlashMoveFrom.IsChecked = current.FlashMoveFrom;
@@ -139,6 +143,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxFlashDisEvaluation.IsChecked = current.FlashEvalDisAdvantage;
             checkBoxFlashEvaluation.IsChecked = current.FlashEvalAdvantage;
             checkBoxFlashHint.IsChecked = current.FlashHelp;
+            checkBoxFlashBook.IsChecked = current.FlashBookMove;
             checkBoxFlashInvalid.IsChecked = current.FlashInvalid;
             checkBoxFlashTakeBack.IsChecked = current.FlashTakeBack;
             checkBoxFlashPossibleMoves.IsChecked = current.FlashPossibleMoves;
@@ -175,6 +180,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             numericUpDownUserControlHintBlue.Value = Convert.ToInt32(current.RGBHelp[2].ToString(), 16);
             numericUpDownUserControlHintDim.Value = current.DimHelp;
 
+            numericUpDownUserControlBookRed.Value = Convert.ToInt32(current.RGBBookMove[0].ToString(), 16);
+            numericUpDownUserControlBookGreen.Value = Convert.ToInt32(current.RGBBookMove[1].ToString(), 16);
+            numericUpDownUserControlBookBlue.Value = Convert.ToInt32(current.RGBBookMove[2].ToString(), 16);
+            numericUpDownUserControlBookDim.Value = current.DimBook;
+
             numericUpDownUserControlInvalidRed.Value = Convert.ToInt32(current.RGBInvalid[0].ToString(), 16);
             numericUpDownUserControlInvalidGreen.Value = Convert.ToInt32(current.RGBInvalid[1].ToString(), 16);
             numericUpDownUserControlInvalidBlue.Value = Convert.ToInt32(current.RGBInvalid[2].ToString(), 16);
@@ -205,6 +215,39 @@ namespace www.SoLaNoSoft.com.BearChessWin
             numericUpDownUserControlPlayableMoveEvaluationBlue.Value = Convert.ToInt32(current.RGBPossibleMovesPlayable[2].ToString(), 16);
             numericUpDownUserControlPlayableMoveEvaluationDim.Value = current.DimPossibleMovesPlayable;
 
+            numericUpDownUserControlBeepConnectedVolume.Value = Convert.ToInt32(current.BuzzerConnected[0].ToString(), 16);
+            numericUpDownUserControlBeepConnectedRepeat.Value = Convert.ToInt32(current.BuzzerConnected[1].ToString(), 16);
+            numericUpDownUserControlBeepConnectedDuration.Value = Convert.ToInt32(current.BuzzerConnected[2].ToString() + current.BuzzerConnected[3].ToString(), 16);
+            numericUpDownUserControlBeepConnectedPause.Value = Convert.ToInt32(current.BuzzerConnected[4].ToString() + current.BuzzerConnected[5].ToString(), 16);
+            numericUpDownUserControlBeepMoveVolume.Value = Convert.ToInt32(current.BuzzerEngineMove[0].ToString(), 16);
+            numericUpDownUserControlBeepMoveRepeat.Value = Convert.ToInt32(current.BuzzerEngineMove[1].ToString(), 16);
+            numericUpDownUserControlBeepMoveDuration.Value = Convert.ToInt32(current.BuzzerEngineMove[2].ToString() + current.BuzzerEngineMove[3].ToString(), 16);
+            numericUpDownUserControlBeepMovePause.Value = Convert.ToInt32(current.BuzzerEngineMove[4].ToString() + current.BuzzerEngineMove[5].ToString(), 16);
+            numericUpDownUserControlBeepCheckVolume.Value = Convert.ToInt32(current.BuzzerCheck[0].ToString(), 16);
+            numericUpDownUserControlBeepCheckRepeat.Value = Convert.ToInt32(current.BuzzerCheck[1].ToString(), 16);
+            numericUpDownUserControlBeepCheckDuration.Value = Convert.ToInt32(current.BuzzerCheck[2].ToString() + current.BuzzerCheck[3].ToString(), 16);
+            numericUpDownUserControlBeepCheckPause.Value = Convert.ToInt32(current.BuzzerCheck[4].ToString() + current.BuzzerCheck[5].ToString(), 16);
+            numericUpDownUserControlBeepMateVolume.Value = Convert.ToInt32(current.BuzzerCheckMate[0].ToString(), 16);
+            numericUpDownUserControlBeepMateRepeat.Value = Convert.ToInt32(current.BuzzerCheckMate[1].ToString(), 16);
+            numericUpDownUserControlBeepMateDuration.Value = Convert.ToInt32(current.BuzzerCheckMate[2].ToString() + current.BuzzerCheckMate[3].ToString(), 16);
+            numericUpDownUserControlBeepMatePause.Value = Convert.ToInt32(current.BuzzerCheckMate[4].ToString() + current.BuzzerCheck[5].ToString(), 16);
+
+            numericUpDownUserControlBeepDrawVolume.Value = Convert.ToInt32(current.BuzzerDraw[0].ToString(), 16);
+            numericUpDownUserControlBeepDrawRepeat.Value = Convert.ToInt32(current.BuzzerDraw[1].ToString(), 16);
+            numericUpDownUserControlBeepDrawDuration.Value = Convert.ToInt32(current.BuzzerDraw[2].ToString() + current.BuzzerDraw[3].ToString(), 16);
+            numericUpDownUserControlBeepDrawPause.Value = Convert.ToInt32(current.BuzzerDraw[4].ToString() + current.BuzzerDraw[5].ToString(), 16);
+            numericUpDownUserControlBeepInvalidVolume.Value = Convert.ToInt32(current.BuzzerInvalid[0].ToString(), 16);
+            numericUpDownUserControlBeepInvalidRepeat.Value = Convert.ToInt32(current.BuzzerInvalid[1].ToString(), 16);
+            numericUpDownUserControlBeepInvalidDuration.Value = Convert.ToInt32(current.BuzzerInvalid[2].ToString() + current.BuzzerInvalid[3].ToString(), 16);
+            numericUpDownUserControlBeepInvalidPause.Value = Convert.ToInt32(current.BuzzerInvalid[4].ToString() + current.BuzzerInvalid[5].ToString(), 16);
+
+            checkBoxBeepCheck.IsChecked = current.SendBuzzerCheck;
+            checkBoxBeepConnected.IsChecked = current.SendBuzzerConnected;
+            checkBoxBeepDraw.IsChecked = current.SendBuzzerDraw;
+            checkBoxBeepInvalid.IsChecked = current.SendBuzzerInvalid;
+            checkBoxBeepMate.IsChecked = current.SendBuzzerCheckMate;
+            checkBoxBeepMove.IsChecked = current.SendBuzzerEngineMove;
+
             sliderScanTime.Value = current.ScanIntervall;
             checkBoxOnlyUpdate.IsChecked = current.InterruptMode;
             checkBoxPossibleMoves.IsChecked = current.ShowPossibleMoves;
@@ -216,6 +259,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             checkBoxHintMoves.IsChecked = current.ShowHintMoves;
             checkBoxShowEval.IsChecked = current.ShowEvaluationValue;
             checkBoxInvalidMoves.IsChecked = current.ShowInvalidMoves;
+            checkBoxBookMove.IsChecked = current.ShowBookMoves;
             SetScanText();
             ShowTooltip();
         }
@@ -243,20 +287,31 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _loader = new IChessOneLoader();
                 buttonShowDim.Visibility = Visibility.Collapsed;
                 buttonShowDim2.Visibility = Visibility.Visible;
+                buttonShowBuzzer.Visibility = Visibility.Collapsed;
+                buttonShowBuzzer2.Visibility = Visibility.Visible;
                 buttonShowCurrentAdvantage.Visibility = Visibility.Visible;
                 buttonShowCurrentColor.Visibility = Visibility.Visible;
                 buttonShowCurrentDisAdvantage.Visibility = Visibility.Visible;
                 buttonShowHint.Visibility = Visibility.Visible;
+                buttonShowBookMove.Visibility = Visibility.Visible;
                 buttonShowInvalid.Visibility = Visibility.Visible;
                 buttonShowMoveFrom.Visibility = Visibility.Visible;
                 buttonShowTakeBack.Visibility = Visibility.Visible;
                 buttonShowCurrentGoodMoveEvaluation.Visibility = Visibility.Visible;
                 buttonShowCurrentPossibleMoves.Visibility = Visibility.Visible;
+                ButtonBeepCheck.Visibility = Visibility.Visible;
+                ButtonBeepConnected.Visibility = Visibility.Visible;
+                ButtonBeepDraw.Visibility = Visibility.Visible;
+                ButtonBeepInvalid.Visibility = Visibility.Visible;
+                ButtonBeepMate.Visibility = Visibility.Visible;
+                ButtonBeepMove.Visibility = Visibility.Visible;
             }
             else
             {
                 buttonShowDim.Visibility = Visibility.Visible;
                 buttonShowDim2.Visibility = Visibility.Collapsed;
+                buttonShowBuzzer.Visibility = Visibility.Visible;
+                buttonShowBuzzer2.Visibility = Visibility.Collapsed;
                 _loader.SetAllLedsOff(true);
                 Thread.Sleep(500);
                 _loader.Close();
@@ -265,11 +320,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 buttonShowCurrentColor.Visibility = Visibility.Hidden;
                 buttonShowCurrentDisAdvantage.Visibility = Visibility.Hidden;
                 buttonShowHint.Visibility = Visibility.Hidden;
+                buttonShowBookMove.Visibility = Visibility.Hidden;
                 buttonShowInvalid.Visibility = Visibility.Hidden;
                 buttonShowMoveFrom.Visibility = Visibility.Hidden;
                 buttonShowTakeBack.Visibility = Visibility.Hidden;
                 buttonShowCurrentGoodMoveEvaluation.Visibility = Visibility.Hidden;
                 buttonShowCurrentPossibleMoves.Visibility = Visibility.Hidden;
+                ButtonBeepCheck.Visibility = Visibility.Hidden;
+                ButtonBeepConnected.Visibility = Visibility.Hidden;
+                ButtonBeepDraw.Visibility = Visibility.Hidden;
+                ButtonBeepInvalid.Visibility = Visibility.Hidden;
+                ButtonBeepMate.Visibility = Visibility.Hidden;
+                ButtonBeepMove.Visibility = Visibility.Hidden;
             }
         }
 
@@ -281,6 +343,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             extendedConfiguration.FlashEvalDisAdvantage = checkBoxFlashDisEvaluation.IsChecked.HasValue && checkBoxFlashDisEvaluation.IsChecked.Value;
             extendedConfiguration.FlashEvalAdvantage = checkBoxFlashEvaluation.IsChecked.HasValue && checkBoxFlashEvaluation.IsChecked.Value;
             extendedConfiguration.FlashHelp = checkBoxFlashHint.IsChecked.HasValue && checkBoxFlashHint.IsChecked.Value;
+            extendedConfiguration.FlashBookMove = checkBoxFlashBook.IsChecked.HasValue && checkBoxFlashBook.IsChecked.Value;
             extendedConfiguration.FlashInvalid = checkBoxFlashInvalid.IsChecked.HasValue && checkBoxFlashInvalid.IsChecked.Value;
             extendedConfiguration.FlashMoveFrom = checkBoxFlashMoveFrom.IsChecked.HasValue && checkBoxFlashMoveFrom.IsChecked.Value;
             extendedConfiguration.FlashMoveTo = checkBoxFlashMoveTo.IsChecked.HasValue && checkBoxFlashMoveTo.IsChecked.Value;
@@ -297,6 +360,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             extendedConfiguration.RGBEvalDisAdvantage = $"{numericUpDownUserControlDisEvaluationRed.Value:X}{numericUpDownUserControlDisEvaluationGreen.Value:X}{numericUpDownUserControlDisEvaluationBlue.Value:X}";
             extendedConfiguration.RGBCurrentColor = $"{numericUpDownUserControlCurrentColorRed.Value:X}{numericUpDownUserControlCurrentColorGreen.Value:X}{numericUpDownUserControlCurrentColorBlue.Value:X}";
             extendedConfiguration.RGBHelp = $"{numericUpDownUserControlHintRed.Value:X}{numericUpDownUserControlHintGreen.Value:X}{numericUpDownUserControlHintBlue.Value:X}";
+            extendedConfiguration.RGBBookMove = $"{numericUpDownUserControlBookRed.Value:X}{numericUpDownUserControlBookGreen.Value:X}{numericUpDownUserControlBookBlue.Value:X}";
             extendedConfiguration.RGBTakeBack = $"{numericUpDownUserControlTakeBackRed.Value:X}{numericUpDownUserControlTakeBackGreen.Value:X}{numericUpDownUserControlTakeBackBlue.Value:X}";
             extendedConfiguration.RGBPossibleMoves = $"{numericUpDownUserControlPossibleMovesRed.Value:X}{numericUpDownUserControlPossibleMovesGreen.Value:X}{numericUpDownUserControlPossibleMovesBlue.Value:X}";
             extendedConfiguration.RGBPossibleMovesGood = $"{numericUpDownUserControlGoodMoveEvaluationRed.Value:X}{numericUpDownUserControlGoodMoveEvaluationGreen.Value:X}{numericUpDownUserControlGoodMoveEvaluationBlue.Value:X}";
@@ -306,6 +370,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             extendedConfiguration.DimEvalAdvantage = numericUpDownUserControlEvaluationDim.Value;
             extendedConfiguration.DimEvalDisAdvantage = numericUpDownUserControlDisEvaluationDim.Value;
             extendedConfiguration.DimHelp = numericUpDownUserControlHintDim.Value;
+            extendedConfiguration.DimBook = numericUpDownUserControlBookDim.Value;
             extendedConfiguration.DimInvalid = numericUpDownUserControlInvalidDim.Value;
             extendedConfiguration.DimMoveFrom = numericUpDownUserControlMoveDim.Value;
             extendedConfiguration.DimMoveTo = numericUpDownUserControlMoveToDim.Value;
@@ -323,11 +388,30 @@ namespace www.SoLaNoSoft.com.BearChessWin
             extendedConfiguration.ShowEvaluationValue = checkBoxShowEval.IsChecked.HasValue && checkBoxShowEval.IsChecked.Value;
             extendedConfiguration.ShowTakeBackMoves = checkBoxTakeBackMove.IsChecked.HasValue && checkBoxTakeBackMove.IsChecked.Value;
             extendedConfiguration.ShowHintMoves = checkBoxHintMoves.IsChecked.HasValue && checkBoxHintMoves.IsChecked.Value;
+            extendedConfiguration.ShowBookMoves = checkBoxBookMove.IsChecked.HasValue && checkBoxBookMove.IsChecked.Value;
             extendedConfiguration.ShowInvalidMoves = checkBoxInvalidMoves.IsChecked.HasValue && checkBoxInvalidMoves.IsChecked.Value;
             _eChessBoardConfiguration.ShowPossibleMoves = extendedConfiguration.ShowPossibleMoves;
             _eChessBoardConfiguration.ShowPossibleMovesEval = extendedConfiguration.ShowPossibleMovesEval;
             _eChessBoardConfiguration.ShowOwnMoves = extendedConfiguration.ShowOwnMoves;
             _eChessBoardConfiguration.ShowHintMoves = extendedConfiguration.ShowHintMoves;
+            extendedConfiguration.SendBuzzerConnected =
+                checkBoxBeepConnected.IsChecked.HasValue && checkBoxBeepConnected.IsChecked.Value;
+            extendedConfiguration.BuzzerConnected = $"{numericUpDownUserControlBeepConnectedVolume.Value:X1}{numericUpDownUserControlBeepConnectedRepeat.Value:X1}{numericUpDownUserControlBeepConnectedDuration.Value:X2}{numericUpDownUserControlBeepConnectedPause.Value:X2}";
+            extendedConfiguration.SendBuzzerEngineMove =
+                checkBoxBeepMove.IsChecked.HasValue && checkBoxBeepMove.IsChecked.Value;
+            extendedConfiguration.BuzzerEngineMove = $"{numericUpDownUserControlBeepMoveVolume.Value:X1}{numericUpDownUserControlBeepMoveRepeat.Value:X1}{numericUpDownUserControlBeepMoveDuration.Value:X2}{numericUpDownUserControlBeepMovePause.Value:X2}";
+            extendedConfiguration.SendBuzzerCheck =
+                checkBoxBeepCheck.IsChecked.HasValue && checkBoxBeepCheck.IsChecked.Value;
+            extendedConfiguration.BuzzerCheck = $"{numericUpDownUserControlBeepCheckVolume.Value:X1}{numericUpDownUserControlBeepCheckRepeat.Value:X1}{numericUpDownUserControlBeepCheckDuration.Value:X2}{numericUpDownUserControlBeepCheckPause.Value:X2}";
+            extendedConfiguration.SendBuzzerCheckMate =
+                checkBoxBeepMate.IsChecked.HasValue && checkBoxBeepMate.IsChecked.Value;
+            extendedConfiguration.BuzzerCheckMate = $"{numericUpDownUserControlBeepMateVolume.Value:X1}{numericUpDownUserControlBeepMateRepeat.Value:X1}{numericUpDownUserControlBeepMateDuration.Value:X2}{numericUpDownUserControlBeepMatePause.Value:X2}";
+            extendedConfiguration.SendBuzzerDraw =
+                checkBoxBeepDraw.IsChecked.HasValue && checkBoxBeepDraw.IsChecked.Value;
+            extendedConfiguration.BuzzerDraw = $"{numericUpDownUserControlBeepDrawVolume.Value:X1}{numericUpDownUserControlBeepDrawRepeat.Value:X1}{numericUpDownUserControlBeepDrawDuration.Value:X2}{numericUpDownUserControlBeepDrawPause.Value:X2}";
+            extendedConfiguration.SendBuzzerInvalid =
+                checkBoxBeepInvalid.IsChecked.HasValue && checkBoxBeepInvalid.IsChecked.Value;
+            extendedConfiguration.BuzzerInvalid = $"{numericUpDownUserControlBeepInvalidVolume.Value:X1}{numericUpDownUserControlBeepInvalidRepeat.Value:X1}{numericUpDownUserControlBeepInvalidDuration.Value:X2}{numericUpDownUserControlBeepInvalidPause.Value:X2}";
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -379,7 +463,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 string movesFrom = "E2";
                 string movesTo = "E4";
-                if (checkBoxMoveLine.IsChecked.Value)
+                if (checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value)
                 {
                     movesFrom = "E2 E3";
                 }
@@ -397,7 +481,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (buttonName.Equals("buttonShowTakeBack"))
             {
                 string moves = "E2 E4";
-                if (checkBoxMoveLine.IsChecked.Value)
+                if (checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value)
                 {
                     moves = "E2 E3 E4";
                 }
@@ -407,11 +491,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (buttonName.Equals("buttonShowHint"))
             {
                 string moves = "E2 E4";
-                if (checkBoxMoveLine.IsChecked.Value)
+                if (checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value)
                 {
                     moves = "E2 E3 E4";
                 }
                 _loader.AdditionalInformation($"DIM: {numericUpDownUserControlHintDim.Value} R:{numericUpDownUserControlHintRed.Value} G:{numericUpDownUserControlHintGreen.Value} B:{numericUpDownUserControlHintBlue.Value} F:{checkBoxFlashHint.IsChecked} A:1 {moves}");
+                return;
+            }
+            if (buttonName.Equals("buttonShowBookMove"))
+            {
+                string moves = "E2 E4";
+                if (checkBoxMoveLine.IsChecked.HasValue && checkBoxMoveLine.IsChecked.Value)
+                {
+                    moves = "E2 E3 E4";
+                }
+                _loader.AdditionalInformation($"DIM: {numericUpDownUserControlBookDim.Value} R:{numericUpDownUserControlBookRed.Value} G:{numericUpDownUserControlBookGreen.Value} B:{numericUpDownUserControlBookBlue.Value} F:{checkBoxFlashBook.IsChecked} A:1 {moves}");
                 return;
             }
             if (buttonName.Equals("buttonShowCurrentPossibleMoves"))
@@ -662,6 +756,60 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             checkBoxPossibleMovesEval.IsEnabled = false;
             checkBoxOwnMoves.IsEnabled = true;
+        }
+
+        private void ButtonBeepCheck_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_loader == null)
+            {
+                return;
+            }
+          
+            if (sender is Button button)
+            {
+                if (button.Name.Equals("ButtonBeepConnected"))
+                {
+
+                    var s =$"{numericUpDownUserControlBeepConnectedVolume.Value:X1}{numericUpDownUserControlBeepConnectedRepeat.Value:X1}{numericUpDownUserControlBeepConnectedDuration.Value:X2}{numericUpDownUserControlBeepConnectedPause.Value:X2}";
+                  _loader.BuzzerSound(s);
+                  return;
+                }
+                if (button.Name.Equals("ButtonBeepMove"))
+                {
+
+                    var s = $"{numericUpDownUserControlBeepMoveVolume.Value:X1}{numericUpDownUserControlBeepMoveRepeat.Value:X1}{numericUpDownUserControlBeepMoveDuration.Value:X2}{numericUpDownUserControlBeepMovePause.Value:X2}";
+                    _loader.BuzzerSound(s);
+                    return;
+                }
+                if (button.Name.Equals("ButtonBeepCheck"))
+                {
+
+                    var s = $"{numericUpDownUserControlBeepCheckVolume.Value:X1}{numericUpDownUserControlBeepCheckRepeat.Value:X1}{numericUpDownUserControlBeepCheckDuration.Value:X2}{numericUpDownUserControlBeepCheckPause.Value:X2}";
+                    _loader.BuzzerSound(s);
+                    return;
+                }
+                if (button.Name.Equals("ButtonBeepMate"))
+                {
+
+                    var s = $"{numericUpDownUserControlBeepMateVolume.Value:X1}{numericUpDownUserControlBeepMateRepeat.Value:X1}{numericUpDownUserControlBeepMateDuration.Value:X2}{numericUpDownUserControlBeepMatePause.Value:X2}";
+                    _loader.BuzzerSound(s);
+                    return;
+                }
+                if (button.Name.Equals("ButtonBeepDraw"))
+                {
+
+                    var s = $"{numericUpDownUserControlBeepDrawVolume.Value:X1}{numericUpDownUserControlBeepDrawRepeat.Value:X1}{numericUpDownUserControlBeepDrawDuration.Value:X2}{numericUpDownUserControlBeepDrawPause.Value:X2}";
+                    _loader.BuzzerSound(s);
+                    return;
+                }
+                if (button.Name.Equals("ButtonBeepInvalid"))
+                {
+
+                    var s = $"{numericUpDownUserControlBeepInvalidVolume.Value:X1}{numericUpDownUserControlBeepInvalidRepeat.Value:X1}{numericUpDownUserControlBeepInvalidDuration.Value:X2}{numericUpDownUserControlBeepInvalidPause.Value:X2}";
+                    _loader.BuzzerSound(s);
+                    return;
+                }
+            }
         }
     }
 }

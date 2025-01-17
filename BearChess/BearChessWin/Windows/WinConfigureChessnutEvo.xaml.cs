@@ -94,6 +94,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ShowCurrentConfig();
             _loaded = true;
             buttonShowHint.Visibility = Visibility.Hidden;
+            buttonShowBook.Visibility = Visibility.Hidden;
             buttonShowInvalid.Visibility = Visibility.Hidden;
             buttonShowMoveFrom.Visibility = Visibility.Hidden;
             buttonShowTakeBack.Visibility = Visibility.Hidden;
@@ -140,6 +141,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             numericUpDownUserControlHintBlue.Value = Convert.ToInt32(current.RGBHelp[2].ToString(), 16);
             numericUpDownUserControlHintDim.Value = current.DimHelp;
 
+            numericUpDownUserControlBookRed.Value = Convert.ToInt32(current.RGBBookMove[0].ToString(), 16);
+            numericUpDownUserControlBookGreen.Value = Convert.ToInt32(current.RGBBookMove[1].ToString(), 16);
+            numericUpDownUserControlBookBlue.Value = Convert.ToInt32(current.RGBBookMove[2].ToString(), 16);
+            numericUpDownUserControlBookDim.Value = current.DimBook;
+
             numericUpDownUserControlInvalidRed.Value = Convert.ToInt32(current.RGBInvalid[0].ToString(), 16);
             numericUpDownUserControlInvalidGreen.Value = Convert.ToInt32(current.RGBInvalid[1].ToString(), 16);
             numericUpDownUserControlInvalidBlue.Value = Convert.ToInt32(current.RGBInvalid[2].ToString(), 16);
@@ -173,6 +179,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             checkBoxTakeBackMove.IsChecked = current.ShowTakeBackMoves;
             checkBoxHintMoves.IsChecked = current.ShowHintMoves;
+            checkBoxBookMoves.IsChecked = current.ShowBookMoves;
 
             checkBoxInvalidMoves.IsChecked = current.ShowInvalidMoves;
             ShowTooltip();
@@ -207,6 +214,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 buttonShowTakeBack.Visibility = Visibility.Visible;
                 buttonShowCurrentGoodMoveEvaluation.Visibility = Visibility.Visible;
                 buttonShowCurrentPossibleMoves.Visibility = Visibility.Visible;
+                buttonShowBook.Visibility = Visibility.Visible;
             }
             else
             {
@@ -222,6 +230,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 buttonShowTakeBack.Visibility = Visibility.Hidden;
                 buttonShowCurrentGoodMoveEvaluation.Visibility = Visibility.Hidden;
                 buttonShowCurrentPossibleMoves.Visibility = Visibility.Hidden;
+                buttonShowBook.Visibility = Visibility.Hidden;
             }
         }
 
@@ -242,6 +251,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             extendedConfiguration.RGBMoveTo = $"{numericUpDownUserControlMoveToRed.Value:X}{numericUpDownUserControlMoveToGreen.Value:X}{numericUpDownUserControlMoveToBlue.Value:X}";
             extendedConfiguration.RGBInvalid = $"{numericUpDownUserControlInvalidRed.Value:X}{numericUpDownUserControlInvalidGreen.Value:X}{numericUpDownUserControlInvalidBlue.Value:X}";
             extendedConfiguration.RGBHelp = $"{numericUpDownUserControlHintRed.Value:X}{numericUpDownUserControlHintGreen.Value:X}{numericUpDownUserControlHintBlue.Value:X}";
+            extendedConfiguration.RGBBookMove = $"{numericUpDownUserControlBookRed.Value:X}{numericUpDownUserControlBookGreen.Value:X}{numericUpDownUserControlBookBlue.Value:X}";
             extendedConfiguration.RGBTakeBack = $"{numericUpDownUserControlTakeBackRed.Value:X}{numericUpDownUserControlTakeBackGreen.Value:X}{numericUpDownUserControlTakeBackBlue.Value:X}";
             extendedConfiguration.RGBPossibleMoves = $"{numericUpDownUserControlPossibleMovesRed.Value:X}{numericUpDownUserControlPossibleMovesGreen.Value:X}{numericUpDownUserControlPossibleMovesBlue.Value:X}";
             extendedConfiguration.RGBPossibleMovesGood = $"{numericUpDownUserControlGoodMoveEvaluationRed.Value:X}{numericUpDownUserControlGoodMoveEvaluationGreen.Value:X}{numericUpDownUserControlGoodMoveEvaluationBlue.Value:X}";
@@ -252,6 +262,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             extendedConfiguration.DimMoveFrom = numericUpDownUserControlMoveDim.Value;
             extendedConfiguration.DimMoveTo = numericUpDownUserControlMoveToDim.Value;
             extendedConfiguration.DimTakeBack = numericUpDownUserControlTakeBackDim.Value;
+            extendedConfiguration.DimBook = numericUpDownUserControlBookDim.Value;
             extendedConfiguration.DimPossibleMoves = numericUpDownUserControlPossibleMovesDim.Value;
             extendedConfiguration.DimPossibleMovesGood = numericUpDownUserControlGoodMoveEvaluationDim.Value;
             extendedConfiguration.DimPossibleMovesBad = numericUpDownUserControlBadMoveEvaluationDim.Value;
@@ -261,6 +272,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             extendedConfiguration.ShowOwnMoves = checkBoxOwnMoves.IsChecked.HasValue && checkBoxOwnMoves.IsChecked.Value;
             extendedConfiguration.ShowTakeBackMoves = checkBoxTakeBackMove.IsChecked.HasValue && checkBoxTakeBackMove.IsChecked.Value;
             extendedConfiguration.ShowHintMoves = checkBoxHintMoves.IsChecked.HasValue && checkBoxHintMoves.IsChecked.Value;
+            extendedConfiguration.ShowBookMoves = checkBoxBookMoves.IsChecked.HasValue && checkBoxBookMoves.IsChecked.Value;
             extendedConfiguration.ShowInvalidMoves = checkBoxInvalidMoves.IsChecked.HasValue && checkBoxInvalidMoves.IsChecked.Value;
             _eChessBoardConfiguration.PortName = $"ws://{textBoxWebAddr.Text}";
             _eChessBoardConfiguration.WebSocketAddr = $"ws://{textBoxWebAddr.Text}";
@@ -353,6 +365,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     moves = "E2 E3 E4";
                 }
                 _loader.AdditionalInformation($"DIM: {numericUpDownUserControlHintDim.Value} R:{numericUpDownUserControlHintRed.Value} G:{numericUpDownUserControlHintGreen.Value} B:{numericUpDownUserControlHintBlue.Value} A:1 {moves}");
+                return;
+            }
+            if (buttonName.Equals("buttonShowBook"))
+            {
+                string moves = "E2 E4";
+                if (checkBoxMoveLine.IsChecked.Value)
+                {
+                    moves = "E2 E3 E4";
+                }
+                _loader.AdditionalInformation($"DIM: {numericUpDownUserControlBookDim.Value} R:{numericUpDownUserControlBookRed.Value} G:{numericUpDownUserControlBookGreen.Value} B:{numericUpDownUserControlBookBlue.Value} A:1 {moves}");
                 return;
             }
             if (buttonName.Equals("buttonShowCurrentPossibleMoves"))
@@ -465,13 +487,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     Owner = this
                 };
-                var chessOneLoader = new ChessnutEvoLoader(true, ChessnutEvoLoader.EBoardName);
+                var chessnutEvoLoader = new ChessnutEvoLoader(true, ChessnutEvoLoader.EBoardName);
                 var portName = $"ws://{textBoxWebAddr.Text}";
                 _fileLogger?.LogInfo($"Check address {portName}");
                 infoWindow.SetMaxValue(1);
                 infoWindow.Show();
                 infoWindow.SetCurrentValue(1, portName);
-                if (chessOneLoader.CheckComPort(portName))
+                if (chessnutEvoLoader.CheckComPort(portName))
                 {
                     _fileLogger?.LogInfo($"Check successful for {portName}");
                     infoWindow.Close();

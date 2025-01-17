@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Resources;
@@ -8,6 +10,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using Microsoft.Win32;
+using www.SoLaNoSoft.com.BearChessBase;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.CTG;
 using www.SoLaNoSoft.com.BearChessTools;
@@ -30,7 +34,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _bookPath = bookPath;
             InitializeComponent();
+            Top = Configuration.Instance.GetWinDoubleValue("InstalledBookWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, "300");
+            Left = Configuration.Instance.GetWinDoubleValue("InstalledBookWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, "400");
+            Height = Configuration.Instance.GetDoubleValue("InstalledBookWindowHeight", "250");
+            Width = Configuration.Instance.GetDoubleValue("InstalledBookWindowWidth", "600");
             _rm = SpeechTranslator.ResourceManager;
+            var configValue = Configuration.Instance.GetConfigValue("defaultBook", Constants.InternalBookGUIDPerfectCTG);
+            var firstOrDefault = openingBooks.FirstOrDefault(b => b.Id.Equals(configValue));
+            if (firstOrDefault != null)
+            {
+                firstOrDefault.IsDefaultBook = true;
+            }
+
             _openingBooks = new ObservableCollection<BookInfo>(openingBooks.OrderBy(o => o.Name));
             dataGridBook.ItemsSource = _openingBooks;
             _installedBooks = new HashSet<string>(openingBooks.Select(b => b.Name));
@@ -55,6 +70,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             var bookName = SelectedBook.Name;
             var bookId = SelectedBook.Id;
+            if (SelectedBook.IsInternalBook)
+            {
+                MessageBox.Show($"{_rm.GetString("CannotUninstallInternalBook")}: '{bookName}'", _rm.GetString("UninstallBook"),
+                    MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
             if (MessageBox.Show($"{_rm.GetString("UninstallBook")} '{bookName}'?", _rm.GetString("UninstallBook"),
                                 MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) !=
                 MessageBoxResult.Yes)
@@ -89,10 +110,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
             var showDialog = openFileDialog.ShowDialog(this);
             if (showDialog.Value && !string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
-                var openingBook = new OpeningBook();
-                if (openingBook.LoadBook(openFileDialog.FileName, true))
+                var fileName = openFileDialog.FileName;
+                if (Configuration.Instance.Standalone)
                 {
-                    var fileInfo = new FileInfo(openFileDialog.FileName);
+                    fileName = fileName.Replace(Configuration.Instance.BinPath, @".\");
+                    if (!File.Exists(fileName)) 
+                    {
+                        MessageBox.Show("For standalone, the file must be local to the BearChess directory", "File is placed incorrectly", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
+                var openingBook = new OpeningBook();
+                if (openingBook.LoadBook(fileName, true))
+                {
+                   
+                    var fileInfo = new FileInfo(fileName);
                     if (_installedBooks.Contains(fileInfo.Name))
                     {
                         MessageBox.Show(
@@ -105,7 +137,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                         {
                                             Id = "bk"+Guid.NewGuid().ToString("N"),
                                             Name = fileInfo.Name,
-                                            FileName = openFileDialog.FileName,
+                                            FileName = fileName,
                                             Size = fileInfo.Length,
                                             PositionsCount = openingBook.PositionsCount,
                                             MovesCount = openingBook.MovesCount,
@@ -119,6 +151,32 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _openingBooks.Add(bookInfo);
                 }
             }
+        }
+
+        private void MenuItemSetDefaultBook_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (SelectedBook == null)
+            {
+                return;
+            }
+
+            Configuration.Instance.SetConfigValue("defaultBook",SelectedBook.Id);
+            foreach (var openingBook in _openingBooks)
+            {
+                openingBook.IsDefaultBook = false;
+            }
+
+            SelectedBook.IsDefaultBook = true;
+
+        }
+
+        private void SelectInstalledBookWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            Configuration.Instance.SetDoubleValue("InstalledBookWindowLeft", Left);
+            Configuration.Instance.SetDoubleValue("InstalledBookWindowTop", Top);
+            Configuration.Instance.SetDoubleValue("InstalledBookWindowWidth", Width);
+            Configuration.Instance.SetDoubleValue("InstalledBookWindowHeight", Height);
+
         }
     }
 }

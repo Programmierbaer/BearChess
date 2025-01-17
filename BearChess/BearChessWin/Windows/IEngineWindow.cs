@@ -17,6 +17,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         double Top { get; set; }
 
+        int EnginesCount { get; }
+
         void Show();
         void Close();
         void CloseLogWindow();

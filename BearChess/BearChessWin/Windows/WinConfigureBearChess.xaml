@@ -4,12 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
-        xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Closing="WinConfigureBearChess_OnClosing"
         xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties" KeyDown="WinConfigureBearChess_OnKeyDown"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="Height"
         Title="{x:Static p:Resources.BearChessConfiguration}" Height="570" Width="350">
     <StackPanel>
-        <GroupBox Width="300" Margin="5" Header="{x:Static p:Resources.Layout}" Visibility="Collapsed" HorizontalAlignment="Left">
+        <GroupBox Width="300" Margin="5" Name="GroupBoxLayout" Header="{x:Static p:Resources.Layout}" HorizontalAlignment="Left">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -26,7 +26,7 @@
                 </RadioButton>
             </Grid>
         </GroupBox>
-        <GroupBox Width="300" Margin="5" Header="{x:Static p:Resources.Language}" HorizontalAlignment="Left">
+        <GroupBox Width="300" Margin="5" Header="{x:Static p:Resources.Language}" HorizontalAlignment="Left" >
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -34,21 +34,24 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="country" Name="radioButtonGlob" IsChecked="True"
+                <RadioButton Grid.Row="0" Grid.Column="0" GroupName="country" Name="radioButtonGlob" IsChecked="True" GotFocus="RadioButton_OnGotFocus"
+                             AutomationProperties.HelpText="{x:Static p:Resources.LocalCountry}" Checked="RadioButton_OnGotFocus"
                              Margin="10,5" ToolTip="{x:Static p:Resources.LocalCountry}">
                     <Image Width="16" Height="16" Source="../Assets/Icons/globe_model.png" />
                 </RadioButton>
-                <RadioButton Grid.Row="0" Grid.Column="1" GroupName="country" Name="radioButtonGB" Margin="10,5"
-                             ToolTip="English">
+                <RadioButton Grid.Row="0" Grid.Column="1" GroupName="country" Name="radioButtonGB" Margin="10,5" 
+                             AutomationProperties.HelpText="English language" Checked="RadioButton_OnGotFocus" 
+                             ToolTip="English" GotFocus="RadioButton_OnGotFocus"> 
                     <Image Width="16" Height="16" Source="../Assets/Icons/flag_great_britain.png" />
                 </RadioButton>
                 <RadioButton Grid.Row="0" Grid.Column="2" GroupName="country" Margin="10,5" Name="radioButtonDE"
+                             GotFocus="RadioButton_OnGotFocus" AutomationProperties.HelpText="Deutsche Sprache" Checked="RadioButton_OnGotFocus" 
                              ToolTip="Deutsch">
                     <Image Width="16" Height="16" Source="../Assets/Icons/flag_germany.png" />
                 </RadioButton>
             </Grid>
         </GroupBox>
-        <GroupBox Width="300" Margin="5" Header="{x:Static p:Resources.Blind}" Visibility="Collapsed"  HorizontalAlignment="Left">
+        <GroupBox Width="300" Margin="5" Header="{x:Static p:Resources.Blind}" HorizontalAlignment="Left">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
@@ -56,15 +59,18 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <CheckBox Name="checkBoxBlind" Margin="5" Grid.Column="0" Grid.Row="0"
+                <CheckBox Name="checkBoxBlind" Margin="5" Grid.Column="0" Grid.Row="0" GotFocus="CheckBox_OnGotFocus"
+                          AutomationProperties.HelpText="{x:Static p:Resources.IAmBlind}"
                           Content="{x:Static p:Resources.IAmBlind}" />
-                <CheckBox Name="checkBoxBlindSayExtended" Margin="5" Grid.Column="0" Grid.Row="1"
+                <CheckBox Name="checkBoxBlindSayExtended" Margin="5" Grid.Column="0" Grid.Row="1" GotFocus="CheckBox_OnGotFocus"
+                          AutomationProperties.HelpText="{x:Static p:Resources.BlindSayExtended}"
                           Content="{x:Static p:Resources.BlindSayExtended}" />
-                <CheckBox Name="checkBoxBlindSayMoveTime" Margin="5" Grid.Column="0" Grid.Row="2"
+                <CheckBox Name="checkBoxBlindSayMoveTime" Margin="5" Grid.Column="0" Grid.Row="2" GotFocus="CheckBox_OnGotFocus"
+                          AutomationProperties.HelpText="{x:Static p:Resources.BlindSayMoveTime}"
                           Content="{x:Static p:Resources.BlindSayMoveTime}" />
             </Grid>
         </GroupBox>
-        <GroupBox Width="300" Margin="5" Header="{x:Static p:Resources.Games}" HorizontalAlignment="Left">
+        <GroupBox Name="GroupBoxGames" Width="300" Margin="5" Header="{x:Static p:Resources.Games}" HorizontalAlignment="Left">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
@@ -99,17 +105,17 @@
                 </GroupBox>
             </Grid>
         </GroupBox>
-        <GroupBox Width="300" Margin="5" Header="{x:Static p:Resources.Internal}" HorizontalAlignment="Left">
+        <GroupBox Name="GroupBoxInternal" Width="300" Margin="5" Header="{x:Static p:Resources.Internal}" HorizontalAlignment="Left">
             <CheckBox Name="checkBoxWriteLogFiles" Margin="5" Content="{x:Static p:Resources.WriteLogFiles}" />
         </GroupBox>
         <DockPanel Margin="5" DockPanel.Dock="Bottom" LastChildFill="False">
             <Button Name="buttonOk" Margin="5,5,5,5" DockPanel.Dock="Left" Width="28" Height="28"
-                    ToolTip="{x:Static p:Resources.Ok}"
+                    ToolTip="{x:Static p:Resources.Ok}" GotFocus="ButtonOk_OnGotFocus"   AutomationProperties.HelpText="{x:Static p:Resources.Ok}"
                     Background="Transparent" BorderBrush="Transparent" IsDefault="True" Click="ButtonOk_OnClick">
                 <Image Source="../Assets/Icons/accept_button.png"></Image>
             </Button>
-            <Button Name="buttonCancel" Margin="5,5,5,5" DockPanel.Dock="Right" Width="28" Height="28"
-                    ToolTip="{x:Static p:Resources.Cancel}"
+            <Button Name="buttonCancel" Margin="5,5,5,5" DockPanel.Dock="Right" Width="28" Height="28" GotFocus="ButtonOk_OnGotFocus"
+                    ToolTip="{x:Static p:Resources.Cancel}"   AutomationProperties.HelpText="{x:Static p:Resources.Cancel}"
                     Background="Transparent" BorderBrush="Transparent" IsCancel="True">
                 <Image Source="../Assets/Icons/cancel.png"></Image>
             </Button>

@@ -182,20 +182,20 @@ namespace www.SoLaNoSoft.com.BearChess.HoSChessBoard
                             continue;
                         }
                         if (!readLine.Equals(prevLine))
-                            _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
+                        {
+                            _logger?.LogDebug($"SC: Read changed {readLine.Length} bytes from board: {readLine}");
+                        }
+
                         prevLine = readLine;
                         _dataFromBoard.Enqueue(readLine);
-
-
-
                     }
 
                 }
                 catch (Exception ex)
                 {
                     withConnection = false;
-                    _logger?.LogError($"SC: Error with BTLE port: {readLine} ");
-                    _logger?.LogError($"SC: Error with BTLE port: {ex.Message} ");
+                    _logger?.LogError($"SC: Error with COM port: {readLine} ");
+                    _logger?.LogError($"SC: Error with COM port: {ex.Message} ");
                     //break;
                 }
             }

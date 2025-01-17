@@ -63,7 +63,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             FileName = string.Empty;
             ShowPossibleMoves = false;
             ShowPossibleMovesEval = false;
-            ShowOwnMoves = true;
+            ShowOwnMoves = false;
             ShowHintMoves = true;
             ClockBeep = false;
             BeepDuration = 1;

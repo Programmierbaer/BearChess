@@ -18,10 +18,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             int hourWhite = 0;
             int minuteWhite = 0;
-            int secWhite = 0;
+            //int secWhite = 0;
             int hourBlack = 0;
             int minuteBlack = 0;
-            int secBlack = 0;
+            //int secBlack = 0;
             chessClocksWindowWhite.CountDown = true;
             chessClocksWindowBlack.CountDown = true;
 
@@ -46,7 +46,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 hourWhite = hour;
                 minuteWhite = timeControl.Value1 - hour * 60;
-                secWhite = 0;
+                
               //  eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60,0,hourH, timeControl.Value1 - hour * 60,0);
             }
 
@@ -70,7 +70,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 hourWhite = hour;
                 minuteWhite = timeControl.Value1 - hour * 60;
-                secWhite = 0;
+                
                // eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60, 0, hourH, timeControl.Value1 - hour * 60, 0);
             }
 
@@ -94,7 +94,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 hourWhite = hour;
                 minuteWhite = timeControl.Value1 - hour * 60;
-                secWhite = 0;
+                
                 //eChessBoard?.SetClock(hour, timeControl.Value2 - hour * 60, 0, hourH, timeControl.Value2 - hour * 60, 0);
             }
 
@@ -151,7 +151,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 hourBlack = hourH;
                 minuteBlack = timeControlBlack.Value1 - hour * 60;
-                secBlack = 0;
+                
                 //eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60, 0, hourH, timeControlBlack.Value1 - hour * 60, 0);
             }
 
@@ -174,7 +174,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 hourBlack = hourH;
                 minuteBlack = timeControlBlack.Value1 - hour * 60;
-                secBlack = 0;
+                
 
                // eChessBoard?.SetClock(hour, timeControl.Value1 - hour * 60, 0, hourH, timeControl.Value1 - hour * 60, 0);
             }
@@ -199,7 +199,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 hourBlack = hourH;
                 minuteBlack = timeControlBlack.Value2 - hour * 60;
-                secBlack = 0;
+                
               //  eChessBoard?.SetClock(hour, timeControl.Value2 - hour * 60, 0, hourH, timeControl.Value2 - hour * 60, 0);
             }
 

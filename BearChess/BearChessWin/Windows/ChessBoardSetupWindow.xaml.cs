@@ -124,7 +124,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
-                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                var result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     var confirmBoardImageWindow = new ConfirmBoardImageWindow(dialog.SelectedPath, _installedFields.Keys.ToArray()) {Owner = this};
@@ -132,7 +132,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (confirm.HasValue && confirm.Value)
                     {
                         var boardFieldsSetup = confirmBoardImageWindow.BoardFieldsSetup;
-                        XmlSerializer serializer = new XmlSerializer(typeof(BoardFieldsSetup));
+                        var serializer = new XmlSerializer(typeof(BoardFieldsSetup));
                         TextWriter textWriter = new StreamWriter(Path.Combine(_boardPath, boardFieldsSetup.Id + ".cfg"), false);
                         serializer.Serialize(textWriter, boardFieldsSetup);
                         textWriter.Close();
@@ -161,7 +161,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
-                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                var result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     var confirmPiecesWindow = new ConfirmPiecesWindow(_configuration, dialog.SelectedPath, Array.Empty<string>(),string.Empty) { Owner = this };
@@ -169,7 +169,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (confirm.HasValue && confirm.Value)
                     {
                         var boardPiecesSetup = confirmPiecesWindow.BoardPiecesSetup;
-                        XmlSerializer serializer = new XmlSerializer(typeof(BoardPiecesSetup));
+                        if (Configuration.Instance.Standalone)
+                        {
+                            boardPiecesSetup.BlackBishopFileName = boardPiecesSetup.BlackBishopFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackKingFileName = boardPiecesSetup.BlackKingFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackKnightFileName = boardPiecesSetup.BlackKnightFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackPawnFileName = boardPiecesSetup.BlackPawnFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackQueenFileName = boardPiecesSetup.BlackQueenFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackRookFileName = boardPiecesSetup.BlackRookFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteBishopFileName = boardPiecesSetup.WhiteBishopFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteKingFileName = boardPiecesSetup.WhiteKingFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteKnightFileName = boardPiecesSetup.WhiteKnightFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhitePawnFileName = boardPiecesSetup.WhitePawnFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteQueenFileName = boardPiecesSetup.WhiteQueenFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteRookFileName = boardPiecesSetup.WhiteRookFileName.Replace(Configuration.Instance.BinPath, @".\");
+                        }
+                        var serializer = new XmlSerializer(typeof(BoardPiecesSetup));
                         TextWriter textWriter = new StreamWriter(Path.Combine(_piecesPath, boardPiecesSetup.Id + ".cfg"), false);
                         serializer.Serialize(textWriter, boardPiecesSetup);
                         textWriter.Close();
@@ -187,12 +202,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (e.AddedItems.Count > 0)
             {
                 BoardFieldsSetup = _installedFields[((BoardFieldsSetup)e.AddedItems[0]).Id];
-                BoardSetupChangedEvent?.Invoke(this, new EventArgs());
+                BoardSetupChangedEvent?.Invoke(this, EventArgs.Empty);
             }
             else
             {
                 BoardFieldsSetup = _installedFields.First(f => f.Value.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase)).Value;
-                BoardSetupChangedEvent?.Invoke(this, new EventArgs());
+                BoardSetupChangedEvent?.Invoke(this, EventArgs.Empty);
                 File.Delete(Path.Combine(_boardPath, ((BoardFieldsSetup)e.RemovedItems[0]).Id+".cfg"));                
             }
         }
@@ -202,12 +217,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (e.AddedItems.Count > 0)
             {
                 BoardPiecesSetup = _installedPieces[((BoardPiecesSetup)e.AddedItems[0]).Id];
-                PiecesSetupChangedEvent?.Invoke(this, new EventArgs());
+                PiecesSetupChangedEvent?.Invoke(this, EventArgs.Empty);
             }
             else
             {
                 BoardPiecesSetup = _installedPieces.First(f => f.Value.Name.Equals(Constants.BearChess, StringComparison.OrdinalIgnoreCase)).Value;
-                PiecesSetupChangedEvent?.Invoke(this, new EventArgs());
+                PiecesSetupChangedEvent?.Invoke(this, EventArgs.Empty);
                 File.Delete(Path.Combine(_piecesPath, ((BoardPiecesSetup)e.RemovedItems[0]).Id + ".cfg"));
             }
         }
@@ -255,7 +270,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 if (files != null)
                 {
                     var fileInfo = new FileInfo(files[0]);
@@ -264,7 +279,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     if (confirm.HasValue && confirm.Value)
                     {
                         var boardPiecesSetup = confirmPiecesWindow.BoardPiecesSetup;
-                        XmlSerializer serializer = new XmlSerializer(typeof(BoardPiecesSetup));
+                        {
+                            boardPiecesSetup.BlackBishopFileName = boardPiecesSetup.BlackBishopFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackKingFileName = boardPiecesSetup.BlackKingFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackKnightFileName = boardPiecesSetup.BlackKnightFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackPawnFileName = boardPiecesSetup.BlackPawnFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackQueenFileName = boardPiecesSetup.BlackQueenFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.BlackRookFileName = boardPiecesSetup.BlackRookFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteBishopFileName = boardPiecesSetup.WhiteBishopFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteKingFileName = boardPiecesSetup.WhiteKingFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteKnightFileName = boardPiecesSetup.WhiteKnightFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhitePawnFileName = boardPiecesSetup.WhitePawnFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteQueenFileName = boardPiecesSetup.WhiteQueenFileName.Replace(Configuration.Instance.BinPath, @".\");
+                            boardPiecesSetup.WhiteRookFileName = boardPiecesSetup.WhiteRookFileName.Replace(Configuration.Instance.BinPath, @".\");
+                        }
+                        var serializer = new XmlSerializer(typeof(BoardPiecesSetup));
                         TextWriter textWriter = new StreamWriter(Path.Combine(_piecesPath, boardPiecesSetup.Id + ".cfg"), false);
                         serializer.Serialize(textWriter, boardPiecesSetup);
                         textWriter.Close();
@@ -286,7 +315,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 e.Handled = true;
                 return;
             }
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (files == null || files.Length !=1 || !files[0].EndsWith(".png",StringComparison.OrdinalIgnoreCase))
             {
                 e.Effects = DragDropEffects.None;

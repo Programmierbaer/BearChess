@@ -73,7 +73,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             _useChesstimation = configuration.UseChesstimation;
             _useBluetooth = configuration.UseBluetooth;
             _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
-            _calibrateStorage = new CalibrateStorage(basePath,_useChesstimation);
+            _calibrateStorage = new CalibrateStorage(basePath, _useChesstimation);
             _logger = logger;
             _logger?.LogDebug($"B: Config: {configuration}");
             BatteryLevel = "---";
@@ -128,7 +128,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
             {
                 var readLine = string.Empty;
                 var count = 0;
-                while (string.IsNullOrWhiteSpace(readLine) && count<10)
+                while (string.IsNullOrWhiteSpace(readLine) && count < 10)
                 {
                     readLine = _serialCommunication.GetRawFromBoard(string.Empty);
                     count++;
@@ -632,7 +632,7 @@ namespace www.SoLaNoSoft.com.BearChess.CertaboChessBoard
                     }
                     _lastFenLine = fenLine;
                     //return new DataFromBoard( fenLine, boardData.Repeated);
-                    return new DataFromBoard( fenLine, 3);
+                    return new DataFromBoard(fenLine, 3);
                 }
                 catch (Exception ex)
                 {

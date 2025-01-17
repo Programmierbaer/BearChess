@@ -6,84 +6,64 @@
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" FontSize="18" WindowStartupLocation="CenterOwner"
-        Loaded="BlindMainWindow_OnLoaded"
-        Title="BearChess" Height="450" Width="900">
-    <Grid>
+        Loaded="BlindMainWindow_OnLoaded" SizeToContent="WidthAndHeight" Closed="BlindMainWindow_OnClosed"
+        Title="BearChess" Height="550" Width="900">
+    <StackPanel>
+        <Button Name="ButtonNewGame" Tag="NewGame" Margin="5" Content="{x:Static p:Resources.NewGame}"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Name="ButtonConnect" Tag="ConnectTactum" Margin="5" Content="{x:Static p:Resources.ConnectToTabuTronicTactumTip}"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Name="ButtonDisconnect" Tag="ConnectTactum" Margin="5" Content="{x:Static p:Resources.DisConnectTabuTronicTactum}"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Tag="ConfigureTactum" Margin="5" Content="{x:Static p:Resources.ConfigureTactum}"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Tag="SettingsPlayer" Margin="5" Content="{x:Static p:Resources.Player}"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Tag="SettingsBearChess" Margin="5" Content="{x:Static p:Resources.BearChessConfiguration}" GotFocus="UIElement_OnGotFocus"
+                Click="ActionMenuButton_OnClick" />
+        <Button Margin="5" Tag="CloseBearChess" Content="{x:Static p:Resources.CloseBearChess}"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Margin="5" Tag="Exit" Content="{x:Static p:Resources.Exit}"
+                GotFocus="UIElement_OnGotFocus" Click="MainMenuButton_OnClick" />
 
-        <TabControl Name="TabControlMain" Margin="5"  SelectionChanged="TabControlMain_OnSelectionChanged">
-            <TabItem Name="TabItemMain" Tag="Main" AutomationProperties.HelpText="{x:Static p:Resources.BearChessMainWindowsSpeech}"  Header="{x:Static p:Resources.MainMenu}">
-                <StackPanel Orientation="Vertical">
-                    <Button Margin="5" Tag="Actions" Content="{x:Static p:Resources.Actions}" GotFocus="UIElement_OnGotFocus" Click="MainMenuButton_OnClick" />
-                    <Button Margin="5" Tag="Tactum" Content="TabuTronic Tactum" GotFocus="UIElement_OnGotFocus" Click="MainMenuButton_OnClick" />
-                    <Button Margin="5" Tag="Analysis" Content="{x:Static p:Resources.Analysis}" GotFocus="UIElement_OnGotFocus" Click="MainMenuButton_OnClick" />
-                    <Button Margin="5" Tag="Duel" Content="{x:Static p:Resources.Duel}" GotFocus="UIElement_OnGotFocus"  Click="MainMenuButton_OnClick" />
-                    <Button Margin="5" Tag="Games" Content="{x:Static p:Resources.Games}" GotFocus="UIElement_OnGotFocus" Click="MainMenuButton_OnClick" />
-                    <Button Margin="5" Tag="Engines" Content="{x:Static p:Resources.Engines}" GotFocus="UIElement_OnGotFocus" Click="MainMenuButton_OnClick" />
-                    <Button Margin="5" Tag="Books" Content="{x:Static p:Resources.Books}" GotFocus="UIElement_OnGotFocus" Click="MainMenuButton_OnClick" />
-                    <Button Margin="5" Tag="Settings" Content="{x:Static p:Resources.Settings}" GotFocus="UIElement_OnGotFocus" Click="MainMenuButton_OnClick" />
-                    <Button Margin="5" Tag="Exit" Content="{x:Static p:Resources.Exit}" GotFocus="UIElement_OnGotFocus" Click="MainMenuButton_OnClick" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Tag="Actions" AutomationProperties.HelpText="Schaltflächen für Aktionen" Header="{x:Static p:Resources.Actions}" >
-                <StackPanel Margin="5" Orientation="Vertical">
-                    <Button Tag="NewGame" Margin="5" Content="{x:Static p:Resources.NewGame}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="SetupPosition"  Margin="5" Content="{x:Static p:Resources.SetupPosition}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Tag="Analysis" Header="{x:Static p:Resources.Analysis}"  AutomationProperties.HelpText="Schaltflächen für Analysen"  >
-                <StackPanel Orientation="Vertical">
-                    <Button Tag="FreeAnalysis" Margin="5" Content="{x:Static p:Resources.FreeAnalysis}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="GameAnalysis" Margin="5" Content="{x:Static p:Resources.GameAnalysis}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="StopAnalysis" Margin="5" Content="{x:Static p:Resources.StopAnalysis}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Tag="Duel"  Header="{x:Static p:Resources.Duel}" AutomationProperties.HelpText="Schaltflächen für Duelle"  >
-                <StackPanel Orientation="Vertical">
-                    <Button Tag="NewDuel"  Margin="5" Content="{x:Static p:Resources.NewDuel}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="EstimateElo" Margin="5" Content="{x:Static p:Resources.EstimateElo}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="DuelManager" Margin="5" Content="{x:Static p:Resources.DuelManager}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Tag="Games" Header="{x:Static p:Resources.Games}" AutomationProperties.HelpText="Schaltflächen zur Verwaltung von Spielen"  >
-                <StackPanel Orientation="Vertical">
-                    <Button Tag="GamesSave"  Margin="5" Content="{x:Static p:Resources.GamesSave}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="GamesManager"  Margin="5" Content="{x:Static p:Resources.GamesManager}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="GamesCopy"  Margin="5" Content="{x:Static p:Resources.GamesCopy}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="GamesPaste"  Margin="5" Content="{x:Static p:Resources.GamesPaste}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Tag="Engines"  Header="{x:Static p:Resources.Engines}" AutomationProperties.HelpText="Schaltflächen zru Verwaltung von Engines"  >
-                <StackPanel Orientation="Vertical">
-                    <Button Tag="LoadManageEngines"  Margin="5" Content="{x:Static p:Resources.LoadAndManageEngines}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Tag="Books"  Header="{x:Static p:Resources.Books}" AutomationProperties.HelpText="Schaltflächen zur Verwaltung von Eröffnungsbüchern" >
-                <StackPanel Orientation="Vertical">
-                    <Button Tag="LoadManageBooks"  Margin="5" Content="{x:Static p:Resources.LoadAndManageBooks}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Tag="Settings"  Header="{x:Static p:Resources.Settings}" AutomationProperties.HelpText="Schaltflächen für Einstellungen" >
-                <StackPanel Orientation="Vertical">
-                    <Button Tag="SettingsBearChess"  Margin="5" Content="BearChess" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="SettingsPlayer"  Margin="5" Content="{x:Static p:Resources.Player}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="SettingsSpeech"  Margin="5" Content="{x:Static p:Resources.SpeechAndSound}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                </StackPanel>
-            </TabItem>
-            <TabItem Tag="Tactum"  Header="TabuTronic Tactum" AutomationProperties.HelpText="Schaltflächen für das TabuTronic Tactum" >
-                <StackPanel Orientation="Vertical">
-                    <Button Tag="ConnectTactum"  Margin="5" Content="{x:Static p:Resources.Connect}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="ConfigureTactum"  Margin="5" Content="{x:Static p:Resources.Configure}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                    <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}" GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-                </StackPanel>
-            </TabItem>
 
-        </TabControl>
-    </Grid>
+        <Button Tag="SettingsSpeech" Margin="5" Content="{x:Static p:Resources.SpeechAndSound}" Visibility="Collapsed"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Tag="GamesSave" Margin="5" Content="{x:Static p:Resources.GamesSave}" Visibility="Collapsed"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Tag="GamesManager" Margin="5" Content="{x:Static p:Resources.GamesManager}" Visibility="Collapsed"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Tag="GamesCopy" Margin="5" Content="{x:Static p:Resources.GamesCopy}" Visibility="Collapsed"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Tag="GamesPaste" Margin="5" Content="{x:Static p:Resources.GamesPaste}" Visibility="Collapsed"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Tag="LoadManageEngines" Margin="5"
+                Content="{x:Static p:Resources.LoadAndManageEngines}" GotFocus="UIElement_OnGotFocus" Visibility="Collapsed"
+                Click="ActionMenuButton_OnClick" />
+        <Button Tag="LoadManageBooks" Margin="5" Content="{x:Static p:Resources.LoadAndManageBooks}" Visibility="Collapsed"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <StackPanel Visibility="Collapsed">
+
+
+            <Button Tag="FreeAnalysis" Margin="5" Content="{x:Static p:Resources.FreeAnalysis}"
+                    GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+            <Button Tag="GameAnalysis" Margin="5" Content="{x:Static p:Resources.GameAnalysis}"
+                    GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+            <Button Tag="StopAnalysis" Margin="5" Content="{x:Static p:Resources.StopAnalysis}"
+                    GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+            <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}"
+                    GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+            <Button Tag="SettingsBearChess" Margin="5" Content="BearChess" GotFocus="UIElement_OnGotFocus"
+                    Click="ActionMenuButton_OnClick" />
+
+            <Button Tag="NewDuel" Margin="5" Content="{x:Static p:Resources.NewDuel}"
+                    GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+            <Button Tag="DuelManager" Margin="5" Content="{x:Static p:Resources.DuelManager}"
+                    GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+            <Button Tag="Main" Margin="5" Content="{x:Static p:Resources.BackToMainMenu}"
+                    GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+
+
+        </StackPanel>
+    </StackPanel>
 </Window>

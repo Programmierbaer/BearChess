@@ -53,8 +53,11 @@
     <Compile Include="AsyncHelper.cs" />
     <Compile Include="BasicPipe.cs" />
     <Compile Include="BearChessClient.cs" />
+    <Compile Include="BearChessServer.cs" />
     <Compile Include="ClientPipe.cs" />
     <Compile Include="CRCConversions.cs" />
+    <Compile Include="IBearChessClient.cs" />
+    <Compile Include="IBearChessServer.cs" />
     <Compile Include="IComPort.cs" />
     <Compile Include="lichess.cs" />
     <Compile Include="PipeEventArgs.cs" />

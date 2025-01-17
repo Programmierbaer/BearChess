@@ -333,6 +333,30 @@ namespace www.SoLaNoSoft.com.BearChessBase
         }
 
 
+        public void SetOpeningBook(string bookFileName)
+        {
+            if (IsPlayer || IsChessServer)
+            {
+                return;
+            }
+            List<string> newOptionValues = new List<string>();
+            for (int i = 0; i < OptionValues.Length; i++)
+            {
+                var optionValue = OptionValues[i];
+                if (optionValue.StartsWith("setoption name BookFile"))
+                {
+                    optionValue = $"setoption name BookFile value {bookFileName}";
+                }
+                if (optionValue.StartsWith("setoption name OwnBook_File"))
+                {
+                    optionValue = $"setoption name OwnBook_File value {bookFileName}";
+                }
+
+                newOptionValues.Add(optionValue);
+            }
+            OptionValues = newOptionValues.ToArray();
+        }
+
         private void CheckIsValidForAnalysis()
         {
             ValidForAnalysis = true;

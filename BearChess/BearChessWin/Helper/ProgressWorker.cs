@@ -188,7 +188,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 finally
                 {

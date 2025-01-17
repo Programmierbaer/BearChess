@@ -20,6 +20,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string RGBHelp { get; set; }
         public bool FlashHelp { get; set; }
         public int DimHelp { get; set; }
+        public int DimBook { get; set; }
         public string RGBMoveFrom { get; set; }
         public bool FlashMoveFrom { get; set; }
         public int DimMoveFrom { get; set; }
@@ -52,9 +53,24 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool ShowInvalidMoves { get; set; }
         public bool ShowTakeBackMoves { get; set; }
         public bool ShowHintMoves { get; set; }
+        public bool ShowBookMoves { get; set; }
         public bool ShowMoveLine { get; set; }
         public bool ShowCurrentColor { get; set; }
         public bool ShowEvaluationValue { get; set; }
+        public string BuzzerConnected { get; set; }
+        public string BuzzerInvalid { get; set; }
+        public string BuzzerEngineMove { get; set; }
+        public string BuzzerCheck { get; set; }
+        public string BuzzerDraw { get; set; }
+        public string BuzzerCheckMate { get; set; }
+        public bool SendBuzzerConnected { get; set; }
+        public bool SendBuzzerInvalid { get; set; }
+        public bool SendBuzzerEngineMove { get; set; }
+        public bool SendBuzzerCheck { get; set; }
+        public bool SendBuzzerDraw { get; set; }
+        public bool SendBuzzerCheckMate { get; set; }
+        public string RGBBookMove { get; set; }
+        public bool FlashBookMove { get; set; }
 
 
         public ExtendedEChessBoardConfiguration()
@@ -68,6 +84,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             RGBInvalid = "F00";
             RGBTakeBack = "0FF";
             RGBHelp = "00F";
+            RGBBookMove = "00F";
             RGBMoveFrom = "0F0";
             RGBMoveTo = "0F0";
             RGBEvalAdvantage = "0F0";
@@ -76,7 +93,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             RGBPossibleMovesGood = "0F0";
             RGBPossibleMovesBad = "F00";
             RGBPossibleMovesPlayable = "00F";
-
+            BuzzerConnected = "000000";
+            BuzzerInvalid = "000000";
+            BuzzerEngineMove = "000000";
+            BuzzerCheck = "000000";
+            BuzzerDraw = "000000";
+            BuzzerCheckMate = "000000";
             FlashCurrentColor = false;
             FlashEvalAdvantage = false;
             FlashEvalDisAdvantage  = false;
@@ -85,6 +107,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             FlashMoveTo = false;
             FlashTakeBack = true;
             FlashInvalid = false;
+            FlashBookMove = false;
             IsCurrent = false;
             ScanIntervall = 250;
             InterruptMode = true;
@@ -92,6 +115,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             DimEvalAdvantage = 4;
             DimEvalDisAdvantage = 4;
             DimHelp = 4;
+            DimBook = 4;
             DimInvalid = 4;
             DimMoveFrom = 4;
             DimMoveTo = 4;
@@ -106,6 +130,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             ShowInvalidMoves = true;
             ShowTakeBackMoves = true;
             ShowHintMoves = true;
+            ShowBookMoves = false;
         }
 
         public override string ToString()

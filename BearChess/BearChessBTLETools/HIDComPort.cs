@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading;
-using Windows.Storage.Streams;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.HidDriver;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
@@ -12,22 +11,16 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
     public class HIDComPort : IComPort
     {
         public string PortName => "HID";
-
         public string DeviceName { get; }
-
         public string Baud => string.Empty;
         private readonly DeviceHandling _device = null;
 
 
-        //private static ushort vendorId = 0x2D80;
-        //private static ushort productId = 0x8002;
-        //private ushort usagePage = 0xFF00;
-        //private ushort usageId = 0x01;
         private readonly ConcurrentQueue<byte[]> _byteArrayQueue = new ConcurrentQueue<byte[]>();
         private Thread _readingThread;
         private bool _stopReading;
         private bool _isOpen;
-        private ILogging _logger;
+        private readonly ILogging _logger;
 
         public static IComPort GetComPort(ushort vendorId, ushort usagePage, string deviceName, ILogging logger)
         {
@@ -38,7 +31,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             {
              
                 var productName = deviceHandling.GetProduct();
-                return new HIDComPort(deviceHandling,string.IsNullOrWhiteSpace(productName) ? deviceName : productName,logger);
+                return new HIDComPort(deviceHandling, string.IsNullOrWhiteSpace(productName) ? deviceName : productName, logger);
             }
             return null;
         }
@@ -52,7 +45,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         }
 
 
-        private void readFromDevice()
+        private void ReadFromDevice()
         {
             while (!_stopReading)
             {
@@ -60,11 +53,11 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 {
                     if (IsOpen)
                     {
-                        byte[] buffer = _device.Read();
+                        var buffer = _device.Read();
                         if (buffer.Length > 0)
                         {
-                            _logger.LogDebug($"HID: Reading {buffer.Length} bytes");
-                            _byteArrayQueue.Enqueue(buffer);
+                           _logger.LogDebug($"HID: Reading {buffer.Length} bytes");
+                           _byteArrayQueue.Enqueue(buffer);
                         }
 
                     }
@@ -83,7 +76,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             {
                 _isOpen = true;
                 _stopReading = false;
-                _readingThread = new Thread(readFromDevice) { IsBackground = true };
+                _readingThread = new Thread(ReadFromDevice) { IsBackground = true };
                 _readingThread.Start();
             }
             catch

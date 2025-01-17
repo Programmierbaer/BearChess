@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Resources;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -165,8 +164,8 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
             _serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth);
             if (_serialCommunication.CheckConnect(portName))
             {
-                string readLine = string.Empty;
-                int count = 0;
+                var readLine = string.Empty;
+                var count = 0;
                 while (string.IsNullOrWhiteSpace(readLine) && count < 10)
                 {
                     readLine = _serialCommunication.GetRawFromBoard(string.Empty);
@@ -195,6 +194,7 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
 
             lock (_locker)
             {
+                _logger?.LogDebug($"B: set LEDs  {ledsParameter}");
                 if (!ledsParameter.IsThinking)
                 {
                     lock (_lockThinking)
@@ -240,12 +240,17 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                     return;
                 }
 
-                string[] fieldNames = ledsParameter.FieldNames.Length > 0
-                    ? new List<string>(ledsParameter.FieldNames).ToArray()
-                    : new List<string>(ledsParameter.InvalidFieldNames).ToArray();
-                if (fieldNames.Length == 0)
+                var fieldNames = new List<string>(ledsParameter.FieldNames);
+                fieldNames.AddRange(ledsParameter.InvalidFieldNames);
+                //string[] fieldNames = new List<string>(ledsParameter.FieldNames).AddRange(ledsParameter.InvalidFieldNames.ToList())
+                if (fieldNames.Count == 0)
                 {
-                    return;
+                    fieldNames.AddRange(ledsParameter.BookFieldNames);
+                    if (fieldNames.Count == 0)
+                    {
+                        return;
+                    }
+
                 }
 
                 var joinedString = string.Join(" ", fieldNames);
@@ -256,16 +261,14 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 }
                 if (ledsParameter.InvalidFieldNames.Length > 0)
                 {
-
                     for (int i = 0; i < ledsParameter.InvalidFieldNames.Length; i++)
                     {
-                        _synthesizer.SpeakAsync($"Invalid {ledsParameter.InvalidFieldNames[i]}");
+                        _synthesizer?.SpeakAsync($"{_rm.GetString("Invalid")} {ledsParameter.InvalidFieldNames[i]}");
                     }
                 }
                 _logger?.LogDebug($"Set LEDs for {joinedString}");
                 _prevJoinedString = joinedString;
                 byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
-              //  _serialCommunication.Send(result, joinedString);
             }
         }
 
@@ -425,9 +428,8 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                    
                   //  NewGamePositionEvent?.Invoke(this, null);
                     //string basePos = _workingChessBoard.GetFenPosition().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                   if (_equalReadCount==15)
+                    if (_equalReadCount == 15)
                     {
-
                         _synthesizer?.SpeakForce($"{SpeechTranslator.ResourceManager.GetString("NewGame")}");
                         _synthesizer?.SpeakForce($"{SpeechTranslator.ResourceManager.GetString("GoBackToBasePosition")}");
                         NewGamePositionEvent?.Invoke(this, null);
@@ -619,8 +621,9 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                                 _logger?.LogDebug($"GetPiecesFen: Make move: {Fields.GetFieldName(_liftUpFigure.Field)} {Fields.GetFieldName(liftDownField)}");
                                 _lastFromField = _liftUpFigure.Field;
                                 _lastToField = liftDownField;
-                                _synthesizer?.Clear();
-                                SpeakMove(_liftUpFigure.Figure,FigureId.NO_PIECE,_liftUpFigure.FieldName,Fields.GetFieldName(liftDownField),FigureId.NO_PIECE,string.Empty);
+                                // _synthesizer?.Clear();
+                                _synthesizer?.SpeakAsync(Fields.GetFieldName(liftDownField),true);
+                                //SpeakMove(_liftUpFigure.Figure,FigureId.NO_PIECE,_liftUpFigure.FieldName,Fields.GetFieldName(liftDownField),FigureId.NO_PIECE,string.Empty);
                                 _chessBoard.MakeMove(_liftUpFigure.Field, liftDownField);
                                 _awaitingMoveFromField = Fields.COLOR_OUTSIDE;
                                 _awaitingMoveToField = Fields.COLOR_OUTSIDE;
@@ -696,75 +699,64 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
 
         private void SpeakMove(int fromFieldFigureId, int toFieldFigureId, string fromFieldFieldName, string toFieldFieldName, int promoteFigureId, string shortMoveIdentifier)
         {
-           
-            bool isDone = false;
-            if (fromFieldFigureId == FigureId.WHITE_KING)
+
+            var isDone = false;
+            switch (fromFieldFigureId)
             {
-                if (fromFieldFieldName.Equals("E1"))
-                {
-                    if (toFieldFieldName.Equals("G1"))
+                case FigureId.WHITE_KING:
                     {
-                        _synthesizer.SpeakAsync(SpeechTranslator.GetCastleKingsSide(_speechLanguageTag,Configuration.Instance));
-                        isDone = true;
+                        if (fromFieldFieldName.Equals("E1"))
+                        {
+                            if (toFieldFieldName.Equals("G1"))
+                            {
+                                _synthesizer.SpeakAsync($"{_rm.GetString("YourMove")} { SpeechTranslator.GetCastleKingsSide(_speechLanguageTag, Configuration.Instance)}");
+                                isDone = true;
+                            }
+                            if (toFieldFieldName.Equals("C1"))
+
+                            {
+                                _synthesizer.SpeakAsync($"{_rm.GetString("YourMove")} {SpeechTranslator.GetCastleQueensSide(_speechLanguageTag, Configuration.Instance)}");
+                                isDone = true;
+                            }
+                        }
+
+                        break;
                     }
-                    if (toFieldFieldName.Equals("C1"))
+                case FigureId.BLACK_KING:
                     {
-                        _synthesizer.SpeakAsync(SpeechTranslator.GetCastleQueensSide(_speechLanguageTag, Configuration.Instance));
-                        isDone = true;
+                        if (fromFieldFieldName.Equals("E8"))
+                        {
+                            if (toFieldFieldName.Equals("G8"))
+                            {
+                                _synthesizer.SpeakAsync($"{_rm.GetString("YourMove")} {SpeechTranslator.GetCastleKingsSide(_speechLanguageTag, Configuration.Instance)}");
+                                isDone = true;
+                            }
+                            if (toFieldFieldName.Equals("C8"))
+                            {
+                                _synthesizer.SpeakAsync($"{_rm.GetString("YourMove")} {SpeechTranslator.GetCastleQueensSide(_speechLanguageTag, Configuration.Instance)}");
+                                isDone = true;
+                            }
+                        }
+
+                        break;
                     }
-                }
-            }
-            if (fromFieldFigureId == FigureId.BLACK_KING)
-            {
-                if (fromFieldFieldName.Equals("E8"))
-                {
-                    if (toFieldFieldName.Equals("G8"))
-                    {
-                        _synthesizer.SpeakAsync(SpeechTranslator.GetCastleKingsSide(_speechLanguageTag, Configuration.Instance));
-                        isDone = true;
-                    }
-                    if (toFieldFieldName.Equals("C8"))
-                    {
-                        _synthesizer.SpeakAsync(SpeechTranslator.GetCastleQueensSide(_speechLanguageTag, Configuration.Instance));
-                        isDone = true;
-                    }
-                }
             }
 
             if (!isDone)
             {
-                if (true)
-                {
-                    if (toFieldFigureId == FigureId.NO_PIECE)
-                    {
 
-                        _synthesizer.SpeakAsync(
-                            $"{SpeechTranslator.GetFigureName(fromFieldFigureId, _speechLanguageTag, Configuration.Instance)} {SpeechTranslator.GetFrom(_speechLanguageTag, Configuration.Instance)} {fromFieldFieldName}, " +
-                            $"{SpeechTranslator.GetTo(_speechLanguageTag, Configuration.Instance)} {toFieldFieldName} {SpeechTranslator.GetFigureName(promoteFigureId, _speechLanguageTag, Configuration.Instance)}");
-                    }
-                    else
-                    {
-                        _synthesizer.SpeakAsync(
-                            $"{SpeechTranslator.GetFigureName(fromFieldFigureId, _speechLanguageTag, Configuration.Instance)} {SpeechTranslator.GetFrom(_speechLanguageTag, Configuration.Instance)} {fromFieldFieldName}, " +
-                            $"{SpeechTranslator.GetCapture(_speechLanguageTag, Configuration.Instance)} {SpeechTranslator.GetFigureName(toFieldFigureId, _speechLanguageTag, Configuration.Instance)} {toFieldFieldName} {SpeechTranslator.GetFigureName(promoteFigureId, _speechLanguageTag, Configuration.Instance)}");
-                    }
+                if (toFieldFigureId == FigureId.NO_PIECE)
+                {
+
+                    _synthesizer.SpeakAsync(
+                        $"{_rm.GetString("YourMove")} {SpeechTranslator.GetFigureName(fromFieldFigureId, _speechLanguageTag, Configuration.Instance)} {SpeechTranslator.GetFrom(_speechLanguageTag, Configuration.Instance)} {fromFieldFieldName}, " +
+                        $"{SpeechTranslator.GetTo(_speechLanguageTag, Configuration.Instance)} {toFieldFieldName} {SpeechTranslator.GetFigureName(promoteFigureId, _speechLanguageTag, Configuration.Instance)}");
                 }
                 else
                 {
-                    string figureName =
-                        fromFieldFigureId == FigureId.WHITE_PAWN || fromFieldFigureId == FigureId.BLACK_PAWN
-                            ? string.Empty
-                            : SpeechTranslator.GetFigureName(fromFieldFigureId, _speechLanguageTag, Configuration.Instance);
-                    if (toFieldFigureId == FigureId.NO_PIECE)
-                    {
-                        _synthesizer.SpeakAsync($"{figureName} {shortMoveIdentifier} {toFieldFieldName} {SpeechTranslator.GetFigureName(promoteFigureId, _speechLanguageTag, Configuration.Instance)}");
-                    }
-                    else
-                    {
-                        _synthesizer.SpeakAsync(
-                            $"{SpeechTranslator.GetFigureName(fromFieldFigureId, _speechLanguageTag, Configuration.Instance)} {shortMoveIdentifier} {SpeechTranslator.GetCapture(_speechLanguageTag, Configuration.Instance)} {toFieldFieldName} {SpeechTranslator.GetFigureName(promoteFigureId, _speechLanguageTag, Configuration.Instance)}");
-                    }
-
+                    _synthesizer.SpeakAsync(
+                        $"{_rm.GetString("YourMove")} {SpeechTranslator.GetFigureName(fromFieldFigureId, _speechLanguageTag, Configuration.Instance)} {SpeechTranslator.GetFrom(_speechLanguageTag, Configuration.Instance)} {fromFieldFieldName}, " +
+                        $"{SpeechTranslator.GetCapture(_speechLanguageTag, Configuration.Instance)} {SpeechTranslator.GetFigureName(toFieldFigureId, _speechLanguageTag, Configuration.Instance)} {toFieldFieldName} {SpeechTranslator.GetFigureName(promoteFigureId, _speechLanguageTag, Configuration.Instance)}");
                 }
             }
         }
@@ -833,7 +825,10 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 _fromBoard.Enqueue(dataFromBoard);
             }
 
-            while (_fromBoard.TryDequeue(out _)) ;
+            while (_fromBoard.TryDequeue(out _))
+            {
+                ;
+            }
         }
 
     }

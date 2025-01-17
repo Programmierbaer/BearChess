@@ -59,7 +59,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
             _eChessBoardConfiguration.ShowPossibleMoves = checkBoxPossibleMoves.IsChecked.HasValue && checkBoxPossibleMoves.IsChecked.Value;
             _eChessBoardConfiguration.ShowPossibleMovesEval = checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
             _eChessBoardConfiguration.UseBluetooth = _useBluetooth;
-            _eChessBoardConfiguration.PortName = _useBluetooth ? "BTLE" : "HDI";
+            _eChessBoardConfiguration.PortName = _useBluetooth ? "BTLE" : "HID";
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }

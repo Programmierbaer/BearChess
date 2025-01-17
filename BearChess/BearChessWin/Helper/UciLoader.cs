@@ -2,11 +2,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
-using System.Speech.Synthesis;
 using System.Threading;
 using System.Windows;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -15,8 +12,6 @@ using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
-using www.SoLaNoSoft.com.BearChessTools;
-
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -96,7 +91,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public bool IsTeddy => _uciInfo.AdjustStrength;
         public bool IsBuddy => _uciInfo.IsBuddy;
         public bool IsProbing => _uciInfo.IsProbing;
-        public bool isLoaded { get; private set; }
+        public bool IsLoaded { get; private set; }
 
         public event EventHandler<EngineEventArgs> EngineReadingEvent;
 
@@ -104,7 +99,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public UciLoader(UciInfo uciInfo, ILogging logger, IFICSClient ficsClient, string gameNumber)
         {
-            isLoaded = false;
+            IsLoaded = false;
             _uciInfo = uciInfo;
             _logger = logger;
             _lookForBookMoves = false;
@@ -117,7 +112,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             threadReading.Start();
             var threadSending = new Thread(SendToEngine) { IsBackground = true };
             threadSending.Start();
-            isLoaded = true;
+            IsLoaded = true;
             _initFen = string.Empty;
             _rect = new RECT
                     {
@@ -130,7 +125,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public UciLoader(UciInfo uciInfo, ILogging logger, IElectronicChessBoard eChessBoard, string boardName)
         {
-            isLoaded = false;
+            IsLoaded = false;
             _uciInfo = uciInfo;
             _logger = logger;
             _lookForBookMoves = false;
@@ -156,7 +151,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             threadReading.Start();
             var threadSending = new Thread(SendToEngine) { IsBackground = true };
             threadSending.Start();
-            isLoaded = true;
+            IsLoaded = true;
             _initFen = string.Empty;
             _rect = new RECT
                     {
@@ -168,7 +163,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
         public UciLoader(UciInfo uciInfo, ILogging logger, Configuration configuration, bool lookForBookMoves)
         {
-            isLoaded = false;
+            IsLoaded = false;
             _uciInfo = uciInfo;
             _logger = logger;
             _configuration = configuration;
@@ -176,7 +171,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _logger?.LogInfo($"Load engine {uciInfo.Name} with id {uciInfo.Id}");
             _openingBook = null;
             _bookMove = null;
-            string fileName = _uciInfo.FileName;
+            var fileName = _uciInfo.FileName;
             if (fileName.ToLower().Contains("wasp") || !_uciInfo.CanMultiPV())
             {
                 _uciInfo.SupportChangeMultiPV = false;
@@ -188,8 +183,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             if (_uciInfo.AdjustStrength)
             {
-                string exeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                string workPath = Path.GetDirectoryName(exeFilePath);
+                var exeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                var workPath = Path.GetDirectoryName(exeFilePath);
                 fileName = Path.Combine(workPath ?? string.Empty, "Teddy.exe");
                
             }
@@ -198,7 +193,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 throw new FileNotFoundException(fileName);
             }
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 _engineProcess = new Process
                                  {
@@ -251,10 +246,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _rect = new RECT
                         {
-                            Top = int.Parse(_configuration.GetConfigValue($"{_uciInfo.Id}_top", "0")),
-                            Left = int.Parse(_configuration.GetConfigValue($"{_uciInfo.Id}_left", "0")),
-                            Bottom = int.Parse(_configuration.GetConfigValue($"{_uciInfo.Id}_bottom", "0")),
-                            Right = int.Parse(_configuration.GetConfigValue($"{_uciInfo.Id}_right", "0"))
+                            Top = _configuration.GetIntValue($"{_uciInfo.Id}_top", 0),
+                            Left = _configuration.GetIntValue($"{_uciInfo.Id}_left", 0),
+                            Bottom = _configuration.GetIntValue($"{_uciInfo.Id}_bottom", 0),
+                            Right = _configuration.GetIntValue($"{_uciInfo.Id}_right", 0)
                         };
                 if (_rect.Right != 0)
                 {
@@ -280,12 +275,29 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                      _rect.Bottom - _rect.Top, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_NOACTIVATE);
                     }
                 }
+                else
+                {
+                    _rect = new RECT();
+                    if (DwmGetWindowAttribute(_engineProcess.MainWindowHandle, DWMWA_EXTENDED_FRAME_BOUNDS, out _rect, Marshal.SizeOf(typeof(RECT))) != 0)
+                    {
+                        GetWindowRect(_engineProcess.MainWindowHandle, out _rect);
+                    }
+                    if (_rect.Right != 0)
+                    {
+                        var left = _rect.Left;
+                        _rect.Left = (int)(CurrentMainWindowDimension.Left + CurrentMainWindowDimension.Width + 2);
+                        _rect.Right = _rect.Right + (_rect.Left - left);
+                        SetWindowPos(_engineProcess.MainWindowHandle, 0, _rect.Left, (int) CurrentMainWindowDimension.Top,
+                                     _rect.Right - _rect.Left,
+                                     _rect.Bottom - _rect.Top, SWP_NOZORDER | SWP_SHOWWINDOW | SWP_NOACTIVATE);
+                    }
+                }
             }
             var threadReading = new Thread(ReadFromEngine) { IsBackground = true };
             threadReading.Start();
             var threadSending = new Thread(SendToEngine) { IsBackground = true };
             threadSending.Start();
-            isLoaded = true;
+            IsLoaded = true;
             _initFen = string.Empty;
           
         }
@@ -590,8 +602,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (_uciInfo.FileName.EndsWith("MessChess.exe", StringComparison.InvariantCultureIgnoreCase) || (_uciInfo.FileName.EndsWith("MessNew.exe", StringComparison.InvariantCultureIgnoreCase)))
             {
-                RECT rect = new RECT();
-                if (DwmGetWindowAttribute(_engineProcess.MainWindowHandle, DWMWA_EXTENDED_FRAME_BOUNDS, out rect, Marshal.SizeOf(typeof(RECT))) == 0)
+                if (DwmGetWindowAttribute(_engineProcess.MainWindowHandle, DWMWA_EXTENDED_FRAME_BOUNDS, out var rect, Marshal.SizeOf(typeof(RECT))) == 0)
                 {
                     rect.Left -= delta;
                     rect.Bottom += delta;
@@ -622,7 +633,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetOptions()
         {
-            foreach (string uciInfoOptionValue in _uciInfo.OptionValues)
+            foreach (var uciInfoOptionValue in _uciInfo.OptionValues)
             {
                 SendToEngine(uciInfoOptionValue);
             }
@@ -634,7 +645,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 while (!_waitForFromEngine.IsEmpty)
                 {
-                    _waitForFromEngine.TryDequeue(out string _);
+                    _waitForFromEngine.TryDequeue(out var _);
                 }
 
                 _waitFor = false;
@@ -644,12 +655,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ReadFromEngine()
         {
-            string waitingFor = string.Empty;
+            var waitingFor = string.Empty;
             try
             {
                 while (!_quit)
                 {
-                    string readToEnd = string.Empty;
+                    var readToEnd = string.Empty;
                     try
                     {
                         if (_uciInfo.IsChessServer || _uciInfo.IsChessComputer)
@@ -716,7 +727,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                         }
                     }
 
-                    if (_sendToUciEngine.TryDequeue(out string commandToEngine))
+                    if (_sendToUciEngine.TryDequeue(out var commandToEngine))
                     {
                         if (commandToEngine.Equals("isready"))
                         {
@@ -747,7 +758,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                             _logger?.LogError("Send ", ex);
                         }
 
-                        if (commandToEngine.Equals("quit",StringComparison.OrdinalIgnoreCase))
+                        if (commandToEngine.Equals("quit", StringComparison.OrdinalIgnoreCase))
                         {
                             _quit = true;
                             break;
@@ -776,7 +787,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _engineProcess?.StandardInput.Write("\n");
                 }
 
-                string waitingFor = "uciok";
+                var waitingFor = "uciok";
                 while (true)
                 {
                     var readToEnd = _uciInfo.IsChessServer ? _uciWrapper?.ToGui() : _uciInfo.IsChessComputer ? _uciWrapper?.ToGui() :  _engineProcess?.StandardOutput.ReadLine();

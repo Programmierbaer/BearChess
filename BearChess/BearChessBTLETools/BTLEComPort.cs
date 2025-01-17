@@ -37,6 +37,9 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
         private readonly string _iChessOneServiceRead     = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _chessUpServiceWrite      = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
         private readonly string _chessUpServiceRead       = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
+        private readonly string _hosService               = "00001800-0000-1000-8000-00805F9B34FB";
+        private readonly string _hosServiceRead           = "00002A03-0000-1000-8000-00805F9B34FB";
+        private readonly string _hosServiceWrite          = "00002A03-0000-1000-8000-00805F9B34FB";
         private readonly string _batteryRead              = "Battery";
         private readonly string _deviceId;
         private readonly ILogging _logging;
@@ -78,9 +81,9 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             _deviceId = deviceId;
             _logging = logging;
             _deviceName = deviceName;
-            _allServices = new List<string>() { _pegasusService, _mChessLinkService, _chessnutAirServiceR, _chessnutAirServiceW, _iChessOneService,_iChessOneServiceRead,_iChessOneServiceWrite, _chessUpServiceRead , _chessUpServiceWrite };
-            _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead, _squareOffProServiceRead, _chessnutAirServiceRead, _chessnutAirServiceReadC, _iChessOneServiceRead, _chessUpServiceRead};
-            _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite, _squareOffProServiceWrite, _chessnutAirServiceWrite, _iChessOneServiceWrite, _chessUpServiceWrite };
+            _allServices = new List<string>() { _pegasusService, _mChessLinkService, _chessnutAirServiceR, _chessnutAirServiceW, _iChessOneService,_iChessOneServiceRead,_iChessOneServiceWrite, _chessUpServiceRead , _chessUpServiceWrite, _hosServiceWrite, _hosService };
+            _allReadCharServices = new List<string>() { _mChessLinkServiceRead, _pegasusServiceRead, _squareOffProServiceRead, _chessnutAirServiceRead, _chessnutAirServiceReadC, _iChessOneServiceRead, _chessUpServiceRead, _hosServiceRead};
+            _allWriteCharServices = new List<string>() { _mChessLinkServiceWrite, _pegasusServiceWrite, _squareOffProServiceWrite, _chessnutAirServiceWrite, _iChessOneServiceWrite, _chessUpServiceWrite, _hosServiceWrite };
 
         }
 
@@ -166,8 +169,15 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                 {
                     _readCharacteristicC.ValueChanged += _readCharacteristicC_ValueChanged;
                 }
-                GattCommunicationStatus status = AsyncHelper.RunSync(async () => await _readCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
-                                                                         GattClientCharacteristicConfigurationDescriptorValue.Notify));
+
+                try
+                {
+                    GattCommunicationStatus status = AsyncHelper.RunSync(async () =>
+                        await _readCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
+                            GattClientCharacteristicConfigurationDescriptorValue.Notify));
+                }
+                catch { }
+
                 if (_readBatteryCharacteristic != null)
                 {
                     
@@ -191,7 +201,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
 
                         }
                     }
-                    status = AsyncHelper.RunSync(async () => await _readBatteryCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
+                    GattCommunicationStatus status = AsyncHelper.RunSync(async () => await _readBatteryCharacteristic.WriteClientCharacteristicConfigurationDescriptorAsync(
                         GattClientCharacteristicConfigurationDescriptorValue.Notify));
                     _readBatteryCharacteristic.ValueChanged += _readBatteryCharacteristic_ValueChanged;
                 }

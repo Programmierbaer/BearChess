@@ -229,6 +229,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
             lock (_locker)
             {
+                // _logger?.LogDebug($"B: set LEDs  {ledsParameter}");
                 if (!ledsParameter.IsThinking)
                 {
                     lock (_lockThinking)
@@ -255,7 +256,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                 }
                 if (ledsParameter.IsProbing && (_configuration.ShowPossibleMoves || _configuration.ShowPossibleMovesEval))
                 {
-                    _logger?.LogDebug($"B: set LEDs for probing {ledsParameter}");
+                   // _logger?.LogDebug($"B: set LEDs for probing {ledsParameter}");
                     _probingFields.TryDequeue(out _);
                     _probingFields.Enqueue(ledsParameter.ProbingMoves);
                     lock (_lockThinking)
@@ -272,7 +273,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                     : new List<string>(ledsParameter.InvalidFieldNames).ToArray();
                 if (fieldNames.Length == 0)
                 {
-                    return;
+                    fieldNames = new List<string>(ledsParameter.BookFieldNames).ToArray();
+                    if (fieldNames.Length == 0)
+                    {
+                        return;
+                    }
+
                 }
                 _probingFields.TryDequeue(out _);
                 var joinedString = string.Join(" ", fieldNames);
@@ -281,7 +287,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                 {
                     return;
                 }
-                _logger?.LogDebug($"Set LEDs for {joinedString}");
+                _logger?.LogDebug($"B: Set LEDs for {joinedString}");
                 _prevJoinedString = joinedString;
                 byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
                 if (fieldNames.Length == 2 && _configuration.ShowMoveLine)
@@ -785,7 +791,9 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                 _fromBoard.Enqueue(dataFromBoard);
             }
 
-            while (_fromBoard.TryDequeue(out _)) ;
+            while (_fromBoard.TryDequeue(out _))
+            {
+            }
         }
 
         private void HandleThinkingLeds()
@@ -797,15 +805,13 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                 {
                     if (!string.IsNullOrWhiteSpace(_lastThinking0) && !string.IsNullOrWhiteSpace(_lastThinking1))
                     {
-
-                        _lastThinking0 = string.Empty;
-                        _lastThinking1 = string.Empty;
-                        string fieldName = _lastThinking0;
+                        
+                        var fieldName = _lastThinking0;
                         byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
                         Array.Copy(AllOff, result, AllOff.Length);
                         result = UpdateLedsForField(fieldName, result);
                         //Array.Copy(result, _lastSendBytes, result.Length);
-                        _serialCommunication.Send(result,$"Thinking {fieldName}");
+                        _serialCommunication.Send(result, $"Thinking {fieldName}");
                         Thread.Sleep(200);
                         fieldName = _lastThinking1;
                         result = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -813,6 +819,8 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                         result = UpdateLedsForField(fieldName, result);
                         // Array.Copy(result, _lastSendBytes, result.Length);
                         _serialCommunication.Send(result, $"Thinking {fieldName}");
+                        //_lastThinking0 = string.Empty;
+                        ///lastThinking1 = string.Empty;
                         Thread.Sleep(200);
                     }
                 }
@@ -821,7 +829,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
         private void ShowProbingMoves()
         {
-            bool switchSide = false;
+            var switchSide = false;
 
             while (!_release)
             {
@@ -872,7 +880,6 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                     Thread.Sleep(200);
                     continue;
                 }
-
 
                 Thread.Sleep(10);
             }

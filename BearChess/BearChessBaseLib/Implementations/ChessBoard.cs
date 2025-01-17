@@ -660,7 +660,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                             figurCharacter = "P";
                         }
 
-                        if (pgnMove.Length == 4)
+                        if (pgnMove.Length == 4 || pgnMove.Length == 5)
                         {
                             fromField = pgnMove.Substring(1, 1).ToUpper();
                             if (fromField.Equals("X"))
@@ -1045,6 +1045,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         /// <inheritdoc />
         public void SetPosition(string fenPosition, bool calculateCastle = false)
         {
+         
             var currentPosition = GetFenPosition();
             try
             {

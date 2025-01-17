@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using System.Globalization;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 {
@@ -31,31 +32,51 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
     public class EcoCodeReader
     {
 
-        private string _fileName { get; }
-        
+        private string _fileName_DE { get; }
+        private string _fileName_EN { get; }
+
         public EcoCodeReader(string[] pathNames)
         {
-            _fileName = string.Empty;
+            _fileName_EN = string.Empty;
+            _fileName_DE = string.Empty;
             foreach (var pathName in pathNames)
             {
                 var combine = Path.Combine(pathName, "bearchess.eco");
                 if (File.Exists(combine))
                 {
-                    _fileName = combine;
-                    return;
+                    _fileName_EN = combine;
+
                 }
+                combine = Path.Combine(pathName, "bearchess_de.eco");
+                if (File.Exists(combine))
+                {
+                    _fileName_DE = combine;
+                }
+                if (!string.IsNullOrEmpty(_fileName_DE) && !string.IsNullOrEmpty(_fileName_EN))
+                {
+                    break;
+                }
+            }
+            if (string.IsNullOrEmpty(_fileName_EN))
+            {
+                _fileName_EN = Path.Combine(pathNames[0], "bearchess.eco");
+            }
+            if (string.IsNullOrEmpty(_fileName_DE))
+            {
+                _fileName_DE = Path.Combine(pathNames[0], "bearchess_de.eco");
             }
         }
 
 
-        public EcoCode[] Load()
+        public EcoCode[] Load(CultureInfo info)
         {
-            if (File.Exists(_fileName))
+            string fileName = info.Name.Contains("en") ? _fileName_EN :_fileName_DE;
+            if (File.Exists(fileName))
             {
                 try
                 {
                     var serializer = new XmlSerializer(typeof(EcoCode[]));
-                    TextReader textReader = new StreamReader(_fileName);
+                    TextReader textReader = new StreamReader(fileName);
                     var result = (EcoCode[])serializer.Deserialize(textReader);
                     textReader.Close();
                     return result;
@@ -69,12 +90,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             return Array.Empty<EcoCode>();
         }
 
-        public void Save(EcoCode[] ecoCodes)
+        public void Save(EcoCode[] ecoCodes, CultureInfo info)
         {
+            string fileName = info.Name.Contains("en") ? _fileName_EN : _fileName_DE;
             try
             {
                 var serializer = new XmlSerializer(typeof(EcoCode[]));
-                TextWriter textWriter = new StreamWriter(_fileName, false);
+                TextWriter textWriter = new StreamWriter(fileName, false);
                 serializer.Serialize(textWriter, ecoCodes);
                 textWriter.Close();
             }
@@ -85,7 +107,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
 
-        public EcoCode[] LoadCsvFile(string fileName)
+        public EcoCode[] LoadCsvFile(string fileName, CultureInfo info)
         {
             if (!File.Exists(fileName))
             {
@@ -117,7 +139,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     }
                 }
 
-                Save(result.ToArray());
+                Save(result.ToArray(), info);
             }
             catch
             {
@@ -142,7 +164,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
 
-        public EcoCode[] LoadFile(string fileName)
+        public EcoCode[] LoadFile(string fileName, CultureInfo info)
         {
             if (!File.Exists(fileName))
             {
@@ -186,11 +208,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 moves += line + " ";
             }
 
-            Save(result.ToArray());
+            Save(result.ToArray(), info);
             return result.ToArray();
         }
 
-        public EcoCode[] LoadArenaFile(string fileName)
+        public EcoCode[] LoadArenaFile(string fileName, CultureInfo info)
         {
             if (!File.Exists(fileName))
             {
@@ -198,7 +220,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
             }
 
             var result = new List<EcoCode>();
-            var allLines = File.ReadAllLines(fileName);
+            var allLines = File.ReadAllLines(fileName, System.Text.Encoding.UTF8);
             var allFenCodes = new HashSet<string>();
             foreach (var line in allLines)
             {
@@ -220,7 +242,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 result.Add(new EcoCode(code, openingName.Replace(code, string.Empty).Trim(), moves, fenCode));
             }
 
-            Save(result.ToArray());
+            Save(result.ToArray(), info);
             return result.ToArray();
         }
     }

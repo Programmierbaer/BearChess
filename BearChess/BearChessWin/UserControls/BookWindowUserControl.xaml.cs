@@ -15,7 +15,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class BookWindowUserControl : UserControl, IBookWindow
     {
-        private Dictionary<string, BookUserControl> _loadedBooks = new Dictionary<string, BookUserControl>();
+        private readonly Dictionary<string, BookUserControl> _loadedBooks = new Dictionary<string, BookUserControl>();
         public BookWindowUserControl()
         {
             InitializeComponent();
@@ -23,8 +23,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
 
         public string BookName => string.Empty;
+        public string BookId => string.Empty;
 
         public event EventHandler<IBookMoveBase> SelectedMoveChanged;
+        public event EventHandler<IBookMoveBase> BestMoveChanged;
+
+        public IBookMoveBase GetBestMove()
+        {
+            var bookUserControls = stackPanelBooks.Children.Cast<BookUserControl>().ToList();
+            return bookUserControls.FirstOrDefault()?.GetBestMove();
+        }
+
+        public IBookMoveBase GetBestMove(int index)
+        {
+            var bookUserControls = stackPanelBooks.Children.Cast<BookUserControl>().ToList();
+            return bookUserControls.FirstOrDefault()?.GetBestMove(index);
+        }
+
+        public IBookMoveBase GetNextMove()
+        {
+            var bookUserControls = stackPanelBooks.Children.Cast<BookUserControl>().ToList();
+            return bookUserControls.FirstOrDefault()?.GetNextMove();
+        }
 
         public void SetMoves(IBookMoveBase[] bookMoves)
         {
@@ -80,8 +100,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             var bookUserControl = new BookUserControl();
             bookUserControl.SetConfiguration(configuration, bookInfo);
-            bookUserControl.Closed += BookUserControl_Closed;
+            bookUserControl.BookClosed += BookUserControl_Closed;
             bookUserControl.SelectedMoveChanged += BookUserControl_SelectedMoveChanged;
+            if (_loadedBooks.Count == 0)
+            {
+                bookUserControl.BestMoveChanged += BookUserControl_BestMoveChanged;
+            }
+
             stackPanelBooks.Children.Add(bookUserControl);
             _loadedBooks.Add(bookInfo.Name,bookUserControl);
         }
@@ -91,12 +116,34 @@ namespace www.SoLaNoSoft.com.BearChessWin
             SelectedMoveChanged?.Invoke(sender, e);
         }
 
+        private void BookUserControl_BestMoveChanged(object sender, IBookMoveBase e)
+        {
+            BestMoveChanged?.Invoke(sender, e);
+        }
+
         private void BookUserControl_Closed(object sender, string e)
         {
-            var bookUserControl = stackPanelBooks.Children.Cast<BookUserControl>().FirstOrDefault(b => b.BookName.Equals(e));
+            foreach (var result in stackPanelBooks.Children.Cast<BookUserControl>())
+            {
+                result.BestMoveChanged -= BookUserControl_BestMoveChanged;
+            }
+
+            var bookUserControl = stackPanelBooks.Children.Cast<BookUserControl>()
+                .FirstOrDefault(b => b.BookName.Equals(e));
             if (bookUserControl != null)
             {
                 stackPanelBooks.Children.Remove(bookUserControl);
+            }
+
+            var firstOrDefault = stackPanelBooks.Children.Cast<BookUserControl>().FirstOrDefault();
+            if (firstOrDefault != null)
+            {
+
+                firstOrDefault.BestMoveChanged += BookUserControl_BestMoveChanged;
+            }
+            else
+            {
+                BookUserControl_BestMoveChanged(this, null);
             }
 
             _loadedBooks.Remove(e);
@@ -113,6 +160,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         }
 
-        public event EventHandler<string> Closed;
+        public event EventHandler<string> BookClosed;
     }
 }

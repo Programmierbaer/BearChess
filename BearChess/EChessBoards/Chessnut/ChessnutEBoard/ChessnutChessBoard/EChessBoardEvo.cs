@@ -218,6 +218,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                     var strings = ledsParameter.FenString.Split(" ".ToCharArray());
                     _serialCommunication.Send($"displayFen {strings[0]}");
                 }
+
                 var fieldNamesList = new List<string>();
                 var allFieldNamesList = new List<string>();
                 var rgbMoveFrom = _extendedConfiguration.RGBMoveFrom;
@@ -229,6 +230,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                 var rgbInvalid = _extendedConfiguration.RGBInvalid;
                 var rgbHelp = _extendedConfiguration.RGBHelp;
                 var rgbTakeBack = _extendedConfiguration.RGBTakeBack;
+                var rgbBookMove = _extendedConfiguration.RGBBookMove;
                 if (ledsParameter.IsProbing && _extendedConfiguration.ShowPossibleMoves)
                 {
                     string currentBestMove = string.Empty;
@@ -237,12 +239,15 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                     {
                         SetLedForFields(ledsParameter.FieldNames, rgbMoveFrom, _extendedConfiguration.FlashMoveFrom,
                             _extendedConfiguration.DimMoveFrom.ToString(), false, "Move from");
-                        //if (ledsParameter.HintFieldNames.Length > 1)
-                        {
-                            SetLedForFields(ledsParameter.HintFieldNames, _extendedConfiguration.RGBPossibleMoves,
-                                _extendedConfiguration.FlashPossibleMoves,
-                                _extendedConfiguration.DimPossibleMoves.ToString(), true, "Possible moves");
-                        }
+
+                        SetLedForFields(ledsParameter.HintFieldNames, _extendedConfiguration.RGBPossibleMoves,
+                            _extendedConfiguration.FlashPossibleMoves,
+                            _extendedConfiguration.DimPossibleMoves.ToString(), true, "Possible moves");
+
+
+                        SetLedForFields(ledsParameter.BookFieldNames, rgbBookMove, _extendedConfiguration.FlashBookMove,
+                            _extendedConfiguration.DimBook.ToString(), true, "Book fields");
+
 
                         _lastSend.Clear();
                         _lastSend = new HashSet<string>(ledsParameter.HintFieldNames);
@@ -259,6 +264,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                                 _extendedConfiguration.FlashPossibleMovesBad,
                                 _extendedConfiguration.DimPossibleMovesBad.ToString(), true, "Bad moves");
                         }
+
                         strings = ledsParameter.ProbingMoves.Where(p => p.Score <= 1 && p.Score >= -1)
                             .OrderByDescending(p => p.Score).Select(p => p.FieldName).ToArray();
                         if (strings.Length > 0)
@@ -289,11 +295,15 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                             }
                         }
 
+                        SetLedForFields(ledsParameter.BookFieldNames, rgbBookMove, _extendedConfiguration.FlashBookMove,
+                            _extendedConfiguration.DimBook.ToString(), true, "Book fields");
                         _lastSend.Clear();
                         _lastSend = new HashSet<string>(ledsParameter.HintFieldNames);
                     }
+
                     return;
                 }
+
                 if (ledsParameter.FieldNames.Length == 2)
                 {
                     if (_showMoveLine && !ledsParameter.IsError)
@@ -315,6 +325,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
 
                 allFieldNamesList.AddRange(fieldNamesList);
                 allFieldNamesList.AddRange(ledsParameter.InvalidFieldNames);
+                allFieldNamesList.AddRange(ledsParameter.BookFieldNames);
                 if (allFieldNamesList.Count == 0)
                 {
                     return;
@@ -356,6 +367,8 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                             false, "Thinking fields");
                     }
 
+                    SetLedForFields(ledsParameter.BookFieldNames, rgbBookMove, _extendedConfiguration.FlashBookMove,
+                        _extendedConfiguration.DimBook.ToString(), true, "Book fields");
                     _lastSendThinkingParameters = ledsParameter;
                     return;
                 }
@@ -387,6 +400,11 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                         fieldNamesList.ToArray().Length > 0 || ledsParameter.InvalidFieldNames.ToArray().Length > 0,
                         "Hint fields");
 
+                    SetLedForFields(ledsParameter.BookFieldNames, rgbBookMove, _extendedConfiguration.FlashBookMove,
+                        _extendedConfiguration.DimHelp.ToString(),
+                        fieldNamesList.ToArray().Length > 0 || ledsParameter.InvalidFieldNames.ToArray().Length > 0
+                                                            || ledsParameter.HintFieldNames.ToArray().Length > 0,
+                        "Book fields");
                     return;
                 }
 
@@ -412,11 +430,14 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutChessBoard
                     return;
                 }
 
+
+                SetLedForFields(ledsParameter.BookFieldNames, rgbBookMove, _extendedConfiguration.FlashBookMove,
+                    _extendedConfiguration.DimHelp.ToString("X"), false, "Book fields");
+                _logger.LogError($"EB: Request without valid indicator set LEDs for {ledsParameter}");
+
                 _logger.LogError($"EB: Request without valid indicator set LEDs for {ledsParameter}");
             }
 
-          
-           
         }
 
         public override void SetAllLedsOff(bool forceOff)

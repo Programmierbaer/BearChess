@@ -20,7 +20,7 @@ namespace www.SoLaNoSoft.com.BearChess.HoSEBoardWrapper
         public HoSImpl(string name, string basePath, EChessBoardConfiguration configuration) : base(
             name, basePath, configuration)
         {
-
+         
         }
 
         public override bool Calibrate()

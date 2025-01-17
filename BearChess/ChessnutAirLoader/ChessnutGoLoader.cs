@@ -54,7 +54,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessnutAirLoader
             eChessBoardConfiguration.UseBluetooth = useBluetooth;
             eChessBoardConfiguration.ShowMoveLine = showMoveLine;
             eChessBoardConfiguration.ShowOwnMoves = showOwnMove;
-            eChessBoardConfiguration.PortName = useBluetooth ? "BTLE" : "HDI";
+            eChessBoardConfiguration.PortName = useBluetooth ? "BTLE" : "HID";
             EChessBoardConfiguration.Save(eChessBoardConfiguration, fileName);
         }
 

@@ -84,14 +84,23 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                     {
                         if (_byteDataToBoard.TryDequeue(out ByteDataWithInfo byteData))
                         {
+                            
+                            
                             var convertFromArray = ConvertFromRead(byteData.Data);
-                            if (convertFromArray.Equals(lastReadToSend))
+                            bool force = false;
+                            if (_forcedSend)
+                            {
+                                force = ConvertFromRead(_forcedSendValue).Equals(convertFromArray);
+                            }
+                            if (convertFromArray.Equals(lastReadToSend) && !force)
                             {
                                 Thread.Sleep(5);
                                 _logger?.LogDebug($"SC: Same as previous: {byteData.Info}");
                                 _logger?.LogDebug($"SC:                   {convertFromArray}");
                                 continue;
                             }
+                           
+                            
                             lastReadToSend = convertFromArray;
 
                             _logger?.LogDebug($"SC: Send info: {byteData.Info}");

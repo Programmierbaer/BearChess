@@ -1,7 +1,10 @@
-﻿using System.Resources;
-using System.Runtime.InteropServices;
+﻿using System.ComponentModel;
+using System.Linq;
+using System.Resources;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Controls;
 using System.Windows.Input;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
@@ -14,24 +17,30 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class WinConfigureBearChess : Window
     {
         private readonly Configuration _configuration;
-        private ISpeech _synthesizer;
-        private ResourceManager _rm;
+        private readonly ISpeech _synthesizer;
+        private readonly ResourceManager _rm;
         private string _currentHelpText;
+        private readonly bool _blindUser;
 
         public WinConfigureBearChess(Configuration configuration)
         {
             _configuration = configuration;
             InitializeComponent();
-            checkBoxBlind.IsChecked = bool.Parse(_configuration.GetConfigValue("blindUser", "false"));
-            checkBoxBlindSayExtended.IsChecked = bool.Parse(configuration.GetConfigValue("blindUserSaySelection", "false"));
-            checkBoxBlindSayMoveTime.IsChecked = bool.Parse(configuration.GetConfigValue("blindUserSayMoveTime", "false"));
-            checkBoxStartBasePosition.IsChecked = bool.Parse(_configuration.GetConfigValue("startFromBasePosition", "false"));
-            checkBoxSaveGames.IsChecked = bool.Parse(_configuration.GetConfigValue("autoSaveGames", "false"));
-            checkBoxAllowEarly.IsChecked = bool.Parse(_configuration.GetConfigValue("allowEarly", "true"));
+            _blindUser = _configuration.GetBoolValue("blindUser", false);
+            checkBoxBlind.IsChecked = _blindUser;
+            checkBoxBlindSayExtended.IsChecked = _configuration.GetBoolValue("blindUserSaySelection", false);
+            checkBoxBlindSayMoveTime.IsChecked = _configuration.GetBoolValue("blindUserSayMoveTime", false);
+            checkBoxStartBasePosition.IsChecked = _blindUser || _configuration.GetBoolValue("startFromBasePosition", true);
+            checkBoxSaveGames.IsChecked =  _blindUser || _configuration.GetBoolValue("autoSaveGames", _blindUser);
+            checkBoxAllowEarly.IsChecked = _configuration.GetBoolValue("allowEarly", true);
             numericUpDownUserControlEvaluation.Value = int.Parse(_configuration.GetConfigValue("earlyEvaluation", "4"));
-            checkBoxWriteLogFiles.IsChecked = bool.Parse(_configuration.GetConfigValue("writeLogFiles", "true"));
-            radioButtonSDI.IsChecked = _configuration.GetBoolValue("sdiLayout",true);
-            radioButtonMDI.IsChecked = !_configuration.GetBoolValue("sdiLayout", true);
+            checkBoxWriteLogFiles.IsChecked = _configuration.GetBoolValue("writeLogFiles",true);
+            radioButtonSDI.IsChecked = _configuration.GetBoolValue("sdiLayout",true) && !_blindUser;
+            radioButtonMDI.IsChecked = !_configuration.GetBoolValue("sdiLayout", true) || _blindUser;
+            GroupBoxLayout.Visibility = _blindUser ? Visibility.Collapsed : Visibility.Visible;
+            GroupBoxGames.Visibility = _blindUser ? Visibility.Collapsed : Visibility.Visible;
+            GroupBoxInternal.Visibility = _blindUser ? Visibility.Collapsed : Visibility.Visible;
+            
             var configValueLanguage = _configuration.GetConfigValue("Language", "default");
             if (configValueLanguage.Equals("default"))
             {
@@ -46,33 +55,85 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 radioButtonDE.IsChecked = true;
             }
             _rm = SpeechTranslator.ResourceManager;
-            _synthesizer = BearChessSpeech.Instance;
-            _currentHelpText = string.Empty;
+            if (_blindUser)
+            {
+                _synthesizer = BearChessSpeech.Instance;
+                _currentHelpText = _rm.GetString("DefineBearChessConfiguration");
+                _synthesizer?.Clear();
+                _synthesizer?.SpeakAsync(_currentHelpText);
+            }
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
-            _synthesizer.Clear();
-            _configuration.SetConfigValue("blindUser", (checkBoxBlind.IsChecked.HasValue && checkBoxBlind.IsChecked.Value).ToString());
-            _configuration.SetConfigValue("blindUserSaySelection", (checkBoxBlindSayExtended.IsChecked.HasValue && checkBoxBlindSayExtended.IsChecked.Value).ToString());
-            _configuration.SetConfigValue("blindUserSayMoveTime", (checkBoxBlindSayMoveTime.IsChecked.HasValue && checkBoxBlindSayMoveTime.IsChecked.Value).ToString());
-            _configuration.SetConfigValue("startFromBasePosition",(checkBoxStartBasePosition.IsChecked.HasValue && checkBoxStartBasePosition.IsChecked.Value).ToString());
-            _configuration.SetConfigValue("autoSaveGames", (checkBoxSaveGames.IsChecked.HasValue && checkBoxSaveGames.IsChecked.Value).ToString());
-            _configuration.SetConfigValue("allowEarly", (checkBoxAllowEarly.IsChecked.HasValue && checkBoxAllowEarly.IsChecked.Value).ToString());
+            _synthesizer?.Clear();
+            _configuration.SetConfigValue("blindUser",
+                (checkBoxBlind.IsChecked.HasValue && checkBoxBlind.IsChecked.Value).ToString());
+            _configuration.SetConfigValue("blindUserSaySelection",
+                (checkBoxBlindSayExtended.IsChecked.HasValue && checkBoxBlindSayExtended.IsChecked.Value).ToString());
+            _configuration.SetConfigValue("blindUserSayMoveTime",
+                (checkBoxBlindSayMoveTime.IsChecked.HasValue && checkBoxBlindSayMoveTime.IsChecked.Value).ToString());
+            _configuration.SetConfigValue("startFromBasePosition",
+                (checkBoxStartBasePosition.IsChecked.HasValue && checkBoxStartBasePosition.IsChecked.Value).ToString());
+            _configuration.SetConfigValue("autoSaveGames",
+                (checkBoxSaveGames.IsChecked.HasValue && checkBoxSaveGames.IsChecked.Value).ToString());
+            _configuration.SetConfigValue("allowEarly",
+                (checkBoxAllowEarly.IsChecked.HasValue && checkBoxAllowEarly.IsChecked.Value).ToString());
             _configuration.SetConfigValue("earlyEvaluation", numericUpDownUserControlEvaluation.Value.ToString());
-            _configuration.SetConfigValue("writeLogFiles", (checkBoxWriteLogFiles.IsChecked.HasValue && checkBoxWriteLogFiles.IsChecked.Value).ToString());
-            _configuration.SetBoolValue("sdiLayout", (radioButtonSDI.IsChecked.HasValue && radioButtonSDI.IsChecked.Value));
+            _configuration.SetConfigValue("writeLogFiles",
+                (checkBoxWriteLogFiles.IsChecked.HasValue && checkBoxWriteLogFiles.IsChecked.Value).ToString());
+            if (!_blindUser)
+            {
+                _configuration.SetBoolValue("sdiLayout",
+                    (radioButtonSDI.IsChecked.HasValue && radioButtonSDI.IsChecked.Value));
+            }
+
             if (radioButtonGlob.IsChecked.HasValue && radioButtonGlob.IsChecked.Value)
             {
                 _configuration.SetConfigValue("Language", "default");
+                if (_blindUser)
+                {
+                    var lTag = _configuration.SystemCultureInfo.IetfLanguageTag.ToLower();
+                    var readOnlyCollection = _synthesizer?.GetInstalledVoices();
+                    var firstOrDefault = _synthesizer?
+                        .GetInstalledVoices()
+                        .FirstOrDefault(v => v.VoiceInfo.Culture.IetfLanguageTag.ToLower().Contains(lTag));
+                    if (firstOrDefault != null)
+                    {
+                        _configuration.SetConfigValue("selectedSpeech", firstOrDefault.VoiceInfo.Name);
+                    }
+                }
             }
+
             if (radioButtonDE.IsChecked.HasValue && radioButtonDE.IsChecked.Value)
             {
                 _configuration.SetConfigValue("Language", "de");
+                if (_blindUser)
+                {
+                    var firstOrDefault = _synthesizer?
+                        .GetInstalledVoices()
+                        .FirstOrDefault(v => v.VoiceInfo.Culture.IetfLanguageTag.ToLower().Contains("de"));
+                    if (firstOrDefault != null)
+                    {
+                        _configuration.SetConfigValue("selectedSpeech", firstOrDefault.VoiceInfo.Name);
+                    }
+                }
             }
+
             if (radioButtonGB.IsChecked.HasValue && radioButtonGB.IsChecked.Value)
             {
                 _configuration.SetConfigValue("Language", "en");
+                if (_blindUser)
+                {
+                    var firstOrDefault = _synthesizer?
+                        .GetInstalledVoices()
+                        .FirstOrDefault(v => v.VoiceInfo.Culture.IetfLanguageTag.ToLower().Contains("en"));
+                    if (firstOrDefault != null)
+
+                    {
+                        _configuration.SetConfigValue("selectedSpeech", firstOrDefault.VoiceInfo.Name);
+                    }
+                }
             }
             DialogResult = true;
         }
@@ -89,7 +150,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void SayCurrentHelpText()
         {
-            bool selected = checkBoxBlind.IsChecked.HasValue && checkBoxBlind.IsChecked.Value;
+            if (!_blindUser)
+            {
+                return;
+            }
+            var selected = checkBoxBlind.IsChecked.HasValue && checkBoxBlind.IsChecked.Value;
             _currentHelpText = $"{_rm.GetString("IAmBlind")} ";
             _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
             _currentHelpText += ".";
@@ -151,6 +216,54 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-       
+
+        private void ButtonOk_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUser && _rm != null)
+            {
+                var helpText = $" {_rm.GetString("Button")} {AutomationProperties.GetHelpText(sender as UIElement)}";
+                _synthesizer?.SpeakAsync(helpText);
+            }
+        }
+
+        private void CheckBox_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUser && _rm!=null)
+            {
+                var helpText = $"{_rm.GetString("Blind")}: {AutomationProperties.GetHelpText(sender as UIElement)}";
+                if (sender is CheckBox checkBox)
+                {
+                    var selected = checkBox.IsChecked.HasValue && checkBox.IsChecked.Value;
+                    helpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
+                }
+
+                _synthesizer?.SpeakAsync(helpText, true);
+            }
+        }
+
+        private void RadioButton_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            if (_blindUser && _rm != null)
+            {
+                var helpText = $"{_rm.GetString("Language")}: {AutomationProperties.GetHelpText(sender as UIElement)}";
+                if (sender is RadioButton radioButton)
+                {
+
+                    var selected = radioButton.IsChecked.HasValue && radioButton.IsChecked.Value;
+                    helpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
+                }
+
+                _synthesizer?.SpeakAsync(helpText, true);
+            }
+        }
+
+
+        private void WinConfigureBearChess_OnClosing(object sender, CancelEventArgs e)
+        {
+            if(_blindUser)
+            {
+                _synthesizer?.Clear();
+            }
+        }
     }
 }

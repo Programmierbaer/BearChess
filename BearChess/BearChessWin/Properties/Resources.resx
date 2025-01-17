@@ -217,7 +217,7 @@
     <value>Black's move</value>
   </data>
   <data name="Blind" xml:space="preserve">
-    <value>Blind</value>
+    <value>Visually impaired</value>
   </data>
   <data name="BlindSayExtended" xml:space="preserve">
     <value>Extented speech </value>
@@ -409,7 +409,7 @@
     <value>Connect to Certabo chessboard</value>
   </data>
   <data name="ConnectToChessnutAirProTip" xml:space="preserve">
-    <value>Connect to Chessnut Air/Pro</value>
+    <value>Connect to Chessnut Air/Ari+/Pro</value>
   </data>
   <data name="ConnectToChessnutEvoTip" xml:space="preserve">
     <value>Connect to Chessnut Evo</value>
@@ -706,7 +706,7 @@
     <value>Hide buddy engine</value>
   </data>
   <data name="IAmBlind" xml:space="preserve">
-    <value>I am blind</value>
+    <value>I am visually impaired </value>
   </data>
   <data name="Info" xml:space="preserve">
     <value>Info</value>
@@ -1318,10 +1318,10 @@
     <value>Cannot delete selected game</value>
   </data>
   <data name="GameIsPartOfADuel" xml:space="preserve">
-    <value>Game is part of a duel. Use duel manager to delete duel games</value>
+    <value>The game belongs to a duel and cannot be deleted. Use the Duel Manager to repeat the game.</value>
   </data>
   <data name="GameIsPartOfATournament" xml:space="preserve">
-    <value>Game is part of a tournament. Use tournament manager to delete tournament games</value>
+    <value>The game belongs to a tournament. Use tournament manager to repeat  the game.</value>
   </data>
   <data name="DeleteGames" xml:space="preserve">
     <value>Delete games</value>
@@ -1372,7 +1372,7 @@
     <value>Unable to restore database</value>
   </data>
   <data name="GameIsPartOfADuelContinue" xml:space="preserve">
-    <value>Game is part of a duel. Use duel manager to continue duel games</value>
+    <value>The game belongs to  a duel. Use duel manager to continue duel games</value>
   </data>
   <data name="CannotContinue" xml:space="preserve">
     <value>Cannot continue selected game</value>
@@ -1381,7 +1381,7 @@
     <value>Game is part of a tournament. Use tournament manager to continue tournament games</value>
   </data>
   <data name="GameIsPartOfDuelRepeat" xml:space="preserve">
-    <value>Game is part of a duel. Use duel manager to repeat duel games</value>
+    <value>The game belongs to a duel. Use duel manager to repeat duel games</value>
   </data>
   <data name="GamesOn" xml:space="preserve">
     <value>games on</value>
@@ -1598,6 +1598,12 @@
   </data>
   <data name="Path" xml:space="preserve">
     <value>Path:</value>
+  </data>
+  <data name="PathBin" xml:space="preserve">
+    <value>Program path:</value>
+  </data>
+  <data name="PathConfig" xml:space="preserve">
+    <value>Configuration path:</value>
   </data>
   <data name="OpenDialog" xml:space="preserve">
     <value>Open...</value>
@@ -2471,5 +2477,163 @@
   </data>
   <data name="Layout" xml:space="preserve">
     <value>Layout</value>
+  </data>
+  <data name="UseEngineConfigForTC" xml:space="preserve">
+    <value>Use engine configuration for time control settings</value>
+  </data>
+  <data name="SwitchDifferenceAll" xml:space="preserve">
+    <value>Switch 'Difference'/'All'</value>
+  </data>
+  <data name="ConnectFirst" xml:space="preserve">
+    <value>You need to connect to the board first</value>
+  </data>
+  <data name="LoadDefaultBook" xml:space="preserve">
+    <value>Load default book on start</value>
+  </data>
+  <data name="DefaultBook" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="SetBookAsDefault" xml:space="preserve">
+    <value>Set selected book as default</value>
+  </data>
+  <data name="CannotUninstallInternalBook" xml:space="preserve">
+    <value>It is not allowed to uninstall  this book</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="ShowBestBookMove" xml:space="preserve">
+    <value>Show best book move on board</value>
+  </data>
+  <data name="BestBookMove" xml:space="preserve">
+    <value>Best book move</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="PrevQuestion" xml:space="preserve">
+    <value>Back to previous question</value>
+  </data>
+  <data name="QueryDialogCancel" xml:space="preserve">
+    <value>Cancel dialog sequence</value>
+  </data>
+  <data name="CancelNewGameDialog" xml:space="preserve">
+    <value>Cancel new game dialog</value>
+  </data>
+  <data name="DoYouLike" xml:space="preserve">
+    <value>Do you like</value>
+  </data>
+  <data name="StartNewGameWithThisSetting" xml:space="preserve">
+    <value>Start a new game with these settings?</value>
+  </data>
+  <data name="ShouldWhiteBeAPerson" xml:space="preserve">
+    <value>Should White be a person?</value>
+  </data>
+  <data name="EngineForWhite" xml:space="preserve">
+    <value>Engine for White</value>
+  </data>
+  <data name="ShouldBlackBeAPerson" xml:space="preserve">
+    <value>Should Black be a person?</value>
+  </data>
+  <data name="EngineForBlack" xml:space="preserve">
+    <value>Engine for Black</value>
+  </data>
+  <data name="DifferentTCForWhiteAndBlack" xml:space="preserve">
+    <value>Do you want different time controls for white and black?</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+    <comment>Übernehmen</comment>
+  </data>
+  <data name="PlusSecPerMove" xml:space="preserve">
+    <value>seconds per move increment</value>
+  </data>
+  <data name="Versus" xml:space="preserve">
+    <value>versus</value>
+  </data>
+  <data name="ConnectToTabuTronicTactumTip" xml:space="preserve">
+    <value>Connect to TabuTronic Tactum chessboard</value>
+  </data>
+  <data name="YourMove" xml:space="preserve">
+    <value>Your move</value>
+  </data>
+  <data name="DisConnectTabuTronicTactum" xml:space="preserve">
+    <value>Disconnect from TabuTronic Tactum</value>
+  </data>
+  <data name="EditField" xml:space="preserve">
+    <value>Edit field</value>
+  </data>
+  <data name="CurrentInput" xml:space="preserve">
+    <value>Current input value</value>
+  </data>
+  <data name="DefineBearChessConfiguration" xml:space="preserve">
+    <value>This dialog allows you to configure BearChess</value>
+  </data>
+  <data name="ConfigureHoS" xml:space="preserve">
+    <value>Configure House of Staunton</value>
+    <comment>House of Staunton Schachbrett Konfigurieren</comment>
+  </data>
+  <data name="NoAdditionalInfo" xml:space="preserve">
+    <value>No additional information</value>
+  </data>
+  <data name="StartAnalysis" xml:space="preserve">
+    <value>Start analysis</value>
+  </data>
+  <data name="BookMove" xml:space="preserve">
+    <value>Book move</value>
+  </data>
+  <data name="AutoPositionMessChessWindow" xml:space="preserve">
+    <value>Automatic positioning of the MessChess window</value>
+  </data>
+  <data name="AutoPositionMessChessWindowTip" xml:space="preserve">
+    <value>Try to position the MessChess windows to the right of the main window</value>
+  </data>
+  <data name="Buzzer" xml:space="preserve">
+    <value>Buzzer</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="InCheck" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="InvalidMove" xml:space="preserve">
+    <value>Invalid move</value>
+  </data>
+  <data name="ConnectTestBuzzer" xml:space="preserve">
+    <value>Connect to the board to test buzzer</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="BuzzerDuration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="BuzzerVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="BuzzerPause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="BuzzerRepeat" xml:space="preserve">
+    <value>Repeat</value>
+  </data>
+  <data name="BearChessPDFDENotFound" xml:space="preserve">
+    <value>File BearChess_DE.pdf not found</value>
+  </data>
+  <data name="ConnectToBCServer" xml:space="preserve">
+    <value>Connect to BearChess Server</value>
+  </data>
+  <data name="DisconnectFromBCServer" xml:space="preserve">
+    <value>Disconnect from BearChess Server</value>
+  </data>
+  <data name="BearChessServer" xml:space="preserve">
+    <value>BearChess Server</value>
+  </data>
+  <data name="BearChessServerTip" xml:space="preserve">
+    <value>Configure the BearChess Server connection</value>
   </data>
 </root>

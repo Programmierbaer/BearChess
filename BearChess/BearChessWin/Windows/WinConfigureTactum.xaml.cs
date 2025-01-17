@@ -232,9 +232,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ComboBoxComPorts_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            buttonCheck.ToolTip = $"{_rm.GetString("CheckSelectedCOMPortTip")} {e.AddedItems[0]}";
-            _currentHelpText = $"{_rm.GetString("CurrentCOMPort")} {e.AddedItems[0]}";
-            _synthesizer?.SpeakAsync(_currentHelpText);
+            if (e.AddedItems.Count > 0)
+            {
+                buttonCheck.ToolTip = $"{_rm.GetString("CheckSelectedCOMPortTip")} {e.AddedItems[0]}";
+                _currentHelpText = $"{_rm.GetString("CurrentCOMPort")} {e.AddedItems[0]}";
+                _synthesizer?.SpeakAsync(_currentHelpText);
+            }
         }
 
         private void ButtonOk_OnGotFocus(object sender, RoutedEventArgs e)

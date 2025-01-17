@@ -26,15 +26,24 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private DisplayFigureType _displayFigureType;
         private DisplayMoveType _displayMoveType;
         private DisplayCountryType _displayCountryType;
+        private int _lastMoveIndex = 0;
+        private string _currentFenPosition;
 
 
         public string BookName      
         {
             get;
-            set;
+            private set;
+        }
+
+        public string BookId
+        {
+            get;
+            private set;
         }
 
         public event EventHandler<IBookMoveBase> SelectedMoveChanged;
+        public event EventHandler<IBookMoveBase> BestMoveChanged;
 
         public BookWindow()
         {
@@ -45,24 +54,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void SetConfiguration(Configuration configuration, BookInfo bookInfo)
         {
             _configuration = configuration;
-            var bookInfo1 = bookInfo;
-            Title += $" {bookInfo1.Name}";
-            BookName = bookInfo1.Name;
-
+            Title += $" {bookInfo.Name}";
+            BookName = bookInfo.Name;
+            BookId = bookInfo.Id;
             _displayFigureType = (DisplayFigureType)Enum.Parse(typeof(DisplayFigureType),
-                _configuration.GetConfigValue(
-                    "DisplayFigureTypeBooks",
-                    DisplayFigureType.Symbol.ToString()));
+                _configuration.GetConfigValue("DisplayFigureTypeBooks", DisplayFigureType.Symbol.ToString()));
             _displayMoveType = (DisplayMoveType)Enum.Parse(typeof(DisplayMoveType),
-                _configuration.GetConfigValue(
-                    "DisplayMoveTypeBooks",
-                    DisplayMoveType.FromToField.ToString()));
+                _configuration.GetConfigValue("DisplayMoveTypeBooks", DisplayMoveType.FromToField.ToString()));
             _displayCountryType = (DisplayCountryType)Enum.Parse(typeof(DisplayCountryType),
-                _configuration.GetConfigValue(
-                    "DisplayCountryTypeBooks",
-                    DisplayCountryType.GB.ToString()));
+                _configuration.GetConfigValue("DisplayCountryTypeBooks", DisplayCountryType.GB.ToString()));
             _openingBook = new OpeningBook(_displayFigureType, _displayMoveType, _displayCountryType);
-            _openingBook.LoadBook(bookInfo1.FileName, false);
+            _openingBook.LoadBook(bookInfo.FileName, false);
             var thread = new Thread(ReadFenPositions)
             {
                 IsBackground = true
@@ -70,8 +72,68 @@ namespace www.SoLaNoSoft.com.BearChessWin
             thread.Start();
         }
 
-        public event EventHandler<string> Closed;
+        public event EventHandler<string> BookClosed;
 
+        public IBookMoveBase GetBestMove()
+        {
+            _lastMoveIndex = 0;
+            if (!string.IsNullOrWhiteSpace(_currentFenPosition))
+            {
+                var bookMoveBases = _openingBook.GetMoveList(_currentFenPosition);
+
+                if (bookMoveBases.Length > 0)
+                {
+                    return bookMoveBases[0];
+                }
+            }
+
+            return null;
+        }
+
+        public IBookMoveBase GetBestMove(int index)
+        {
+            if (!string.IsNullOrWhiteSpace(_currentFenPosition))
+            {
+                var bookMoveBases = _openingBook.GetMoveList(_currentFenPosition);
+
+                if (bookMoveBases.Length == 0)
+                {
+                    return null;
+                }
+
+                if (bookMoveBases.Length <= index)
+                {
+                    return null;
+                }
+
+                return bookMoveBases[index];
+            }
+
+            return null;
+        }
+        public IBookMoveBase GetNextMove()
+        {
+            if (!string.IsNullOrWhiteSpace(_currentFenPosition))
+            {
+                var bookMoveBases = _openingBook.GetMoveList(_currentFenPosition);
+
+                if (bookMoveBases.Length == 0)
+                {
+                    _lastMoveIndex = 0;
+                    return null;
+                }
+
+                _lastMoveIndex++;
+                if (bookMoveBases.Length <= _lastMoveIndex)
+                {
+                    _lastMoveIndex = 0;
+                }
+
+                return bookMoveBases[_lastMoveIndex];
+            }
+
+            return null;
+        }
 
         public void SetMoves(IBookMoveBase[] bookMoves) 
         {
@@ -95,7 +157,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SetMoves(string fenPosition)
         {
-            if (_openingBook.AcceptFenPosition)
+            if (_openingBook!= null && _openingBook.AcceptFenPosition)
             {
                 _concurrentFenPositions.Enqueue(fenPosition);
             }
@@ -110,13 +172,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _openingBook.SetDisplayTypes(_displayFigureType, _displayMoveType, _displayCountryType);
         }
 
-        public void ReadFenPositions()
+        private void ReadFenPositions()
         {
             while (true)
             {
                 if (_concurrentFenPositions.TryDequeue(out string fenPosition))
                 {
-                    Dispatcher?.Invoke(() => { dataGridMoves.ItemsSource = _openingBook.GetMoveList(fenPosition); });
+                    _currentFenPosition = fenPosition;
+                    var bookMoveBases = _openingBook.GetMoveList(fenPosition);
+                    Dispatcher?.Invoke(() => { dataGridMoves.ItemsSource = bookMoveBases; });
+                    if (bookMoveBases.Length > 0)
+                    {
+                        BestMoveChanged?.Invoke(this, bookMoveBases[0]);
+                    }
+                    else
+                    {
+                        BestMoveChanged?.Invoke(this, null);
+                    }
                 }
                 Thread.Sleep(10);
             }
@@ -147,6 +219,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
         protected virtual void OnSelectedMoveChanged(IBookMoveBase e)
         {
             SelectedMoveChanged?.Invoke(this, e);
+        }
+
+        private void BookWindow_OnClosed(object sender, EventArgs e)
+        {
+            BookClosed?.Invoke(this, BookName);
         }
     }
 }

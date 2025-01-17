@@ -215,6 +215,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public event EventHandler<EngineEventArgs> EngineEvent;
 
+        public int EnginesCount => 1;
+
         public void CloseLogWindow()
         {
             //
@@ -285,7 +287,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 uciLoader = new UciLoader(uciInfo, fileLogger, ficsClient, gameNumber);
 
-                if (uciLoader.isLoaded)
+                if (uciLoader.IsLoaded)
                 {
                     break;
                 }
@@ -293,7 +295,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _logger?.LogError($"Could not load engine {uciInfo.Name}. Try again {i} of 3 ");
             }
 
-            if (uciLoader == null || !uciLoader.isLoaded)
+            if (uciLoader == null || !uciLoader.IsLoaded)
             {
                 return false;
             }

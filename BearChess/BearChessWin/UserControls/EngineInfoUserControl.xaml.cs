@@ -110,8 +110,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (File.Exists(uciInfo.LogoFileName))
                 {
-                    imageEngine.Visibility = Visibility.Visible;
-                    imageEngine.Source = new BitmapImage(new Uri(uciInfo.LogoFileName));
+                    try
+                    {
+                        imageEngine.Visibility = Visibility.Visible;
+                        var fi = new FileInfo(uciInfo.LogoFileName);
+                        imageEngine.Source = new BitmapImage(new Uri(fi.FullName));
+                    }
+                    catch
+                    {
+                        imageEngine.Visibility = Visibility.Hidden;
+                    }
                 }
             }
 
@@ -254,8 +262,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void ShowInfo(string infoLine, bool tournamentMode, int color)
         {
-            if (!_stopVisible)
+            if (!_stopVisible || _stopInfo)
             {
+                _stopInfo = false;
                 return;
             }
             if (Color==Fields.COLOR_EMPTY)
@@ -308,6 +317,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             _stopInfo = true;
             ShowHidePlay(false);
+            while (_infoLine.TryDequeue(out _));
         }
 
         public void ShowTeddy(bool showTeddy)

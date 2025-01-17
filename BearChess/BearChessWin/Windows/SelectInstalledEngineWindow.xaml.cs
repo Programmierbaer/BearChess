@@ -305,7 +305,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 return;
             }
-
+            if (Configuration.Instance.Standalone)
+            {
+                fileName = fileName.Replace(Configuration.Instance.BinPath, @".\");
+                if (!File.Exists(fileName))
+                {
+                    MessageBox.Show("For standalone, the file must be local to the BearChess directory", "File is placed incorrectly", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+            if (!File.Exists(fileName))
+            {
+                return;
+            }
             ParameterSelection[] multiParameters = null;
             var multiSelection = false;
             var skipWarnings = false;

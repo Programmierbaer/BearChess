@@ -1,4 +1,5 @@
-﻿using System.Resources;
+﻿using System;
+using System.Resources;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -15,18 +16,17 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         private readonly Configuration _configuration;
         private readonly ISpeech _synthesizer;
         private readonly ResourceManager _rm;
-        private readonly bool _blindUserSaySelection;
-        // public event EventHandler<IBookMoveBase> SelectedMoveChanged;
         public string SelectedMenuAction { get; private set; }
 
-        public BlindMainWindow(Configuration configuration)
+        public BlindMainWindow(Configuration configuration, bool isConnected)
         {
             _configuration = configuration;
             InitializeComponent();
             _rm = SpeechTranslator.ResourceManager;
             _synthesizer = BearChessSpeech.Instance;
-            _blindUserSaySelection = bool.Parse(_configuration.GetConfigValue("blindUserSaySelection", "false"));
             SelectedMenuAction = string.Empty;
+            ButtonConnect.Visibility = isConnected ? Visibility.Collapsed : Visibility.Visible;
+            ButtonDisconnect.Visibility = isConnected ? Visibility.Visible : Visibility.Collapsed;
             _synthesizer?.SpeakAsync(_rm.GetString("BearChessMainWindowsSpeech"));
         }
 
@@ -43,31 +43,32 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
 
         private void UIElement_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            //var helpText = AutomationProperties.GetHelpText(sender as UIElement);
-            //if (!string.IsNullOrWhiteSpace(helpText))
-            //{
-            //    _synthesizer.SpeakAsync(helpText);
-            //    return;
-            //}
             if (sender is Button button)
             {
+                if (!button.Tag.Equals("NewGame"))
+                {
+                    _synthesizer.Clear();
+                }
+
                 _synthesizer.SpeakAsync($"{_rm.GetString("Button")} {button.Content}");
             }
-
         }
 
         private void ActionMenuButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (sender is Button button)
             {
-                if (button.Tag.Equals("Main"))
+                if (button.Tag.Equals("Exit"))
                 {
-                    TabControlMain.SelectedIndex = 0;
-                    return;
+                    SelectedMenuAction = string.Empty;
+                    _synthesizer?.Clear();
+                    DialogResult = false;
                 }
-
-                SelectedMenuAction = button.Tag.ToString();
-                DialogResult = true;
+                else
+                {
+                    SelectedMenuAction = button.Tag.ToString();
+                    DialogResult = true;
+                }
             }
         }
 
@@ -81,48 +82,21 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
                     _synthesizer?.Clear();
                     DialogResult = false;
                 }
-                foreach (var item in TabControlMain.Items)
-                {
-                    if (item is TabItem tabItem)
-                    {
-                        if (tabItem.Tag!=null &&  tabItem.Tag.Equals(button.Tag))
-                        {
-                            _synthesizer?.Clear();
-                            TabControlMain.SelectedItem = tabItem;
-                            return;
-                        }
-                    }
-                }
+               
             }
         }
 
      
-        private void TabControlMain_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (e.Source is TabControl)
-            {
-                foreach (var item in TabControlMain.Items)
-                {
-                    if (item is TabItem tabItem)
-                    {
-                        if (tabItem.IsSelected)
-                        {
-                            var helpText = AutomationProperties.GetHelpText(tabItem);
-                            if (!string.IsNullOrWhiteSpace(helpText))
-                            {
-                                _synthesizer.SpeakAsync(helpText);
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         private void BlindMainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TabControlMain.SelectedIndex = 0;
-            TabItemMain.Focus();
+            ButtonNewGame.Focus();
+
+        }
+
+        private void BlindMainWindow_OnClosed(object sender, EventArgs e)
+        {
+            _synthesizer?.Clear();
         }
     }
 }

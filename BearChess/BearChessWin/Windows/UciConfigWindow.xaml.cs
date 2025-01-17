@@ -754,10 +754,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonLogoFile_OnClick(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog { Filter = "Logo|*.bmp;*.jpg;*.png|All Files|*.*" };
-            
-            if (File.Exists(textBlockFileName.Text))
+            string checkFilename = !string.IsNullOrWhiteSpace(textBlockLogoFileName.Text) ? textBlockLogoFileName.Text : textBlockFileName.Text;
+            if (!File.Exists(checkFilename))
             {
-                var fileInfo = new FileInfo(textBlockFileName.Text);
+                checkFilename = textBlockFileName.Text;
+            }
+            if (!File.Exists(checkFilename))
+            {
+                checkFilename = string.Empty;
+
+            }
+
+            if (!string.IsNullOrWhiteSpace(checkFilename))
+            {
+                var fileInfo = new FileInfo(checkFilename);
                 openFileDialog.InitialDirectory = fileInfo.DirectoryName;
             }
 
@@ -766,6 +776,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 textBlockLogoFileName.Text = openFileDialog.FileName;
                 textBlockLogoFileName.ToolTip = openFileDialog.FileName;
+                if (Configuration.Instance.Standalone)
+                {
+                    textBlockLogoFileName.Text = textBlockLogoFileName.Text.Replace(Configuration.Instance.BinPath, @".\");
+                    textBlockLogoFileName.ToolTip = textBlockLogoFileName.Text;
+                }
             }
         }
 

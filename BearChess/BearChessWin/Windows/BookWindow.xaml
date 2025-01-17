@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Icon="../Assets/Icons/book_open.png"
-        mc:Ignorable="d" Closing="BookWindow_OnClosing"
+        mc:Ignorable="d" Closing="BookWindow_OnClosing" Closed="BookWindow_OnClosed"
         Title="{x:Static p:Resources.Book}" MinHeight="290" Height="290" Width="410">
     <Grid>
         <Grid.RowDefinitions>

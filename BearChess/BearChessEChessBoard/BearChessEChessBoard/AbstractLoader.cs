@@ -420,6 +420,37 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.AcceptProbingMoves(acceptProbingMoves);
         }
 
+        public  void BuzzerOnMove()
+        {
+            _eChessBoard.BuzzerOnMove();
+        }
+
+        public void BuzzerOnConnected()
+        {
+            _eChessBoard.BuzzerOnConnected();
+        }
+
+
+        public virtual void BuzzerOnCheck()
+        {
+            _eChessBoard.BuzzerOnCheck();
+        }
+
+        public void BuzzerOnDraw() => _eChessBoard.BuzzerOnDraw();
+
+        public virtual void BuzzerOnCheckMate()
+        {
+            _eChessBoard.BuzzerOnCheckMate();
+        }
+
+        public virtual void BuzzerOnInvalid()
+        {
+            _eChessBoard.BuzzerOnInvalid();
+        }
+
+        public void BuzzerSound(string soundCode) => _eChessBoard.PlayBuzzer(soundCode);
+
+
         #region private
 
         private void EChessBoard_MoveEvent(object sender, string move)

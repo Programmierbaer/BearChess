@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
@@ -30,75 +31,74 @@ namespace www.SoLaNoSoft.com.BearChess.HoSChessBoard
         private static readonly Dictionary<string, byte> _adaptedFieldName = new Dictionary<string, byte>()
                                                                             {
                                                                                 { "A1", 100 },
-                                                                                { "A2", 101 },
-                                                                                { "A3", 102 },
-                                                                                { "A4", 103 },
-                                                                                { "A5", 104 },
-                                                                                { "A6", 105 },
-                                                                                { "A7", 106 },
-                                                                                { "A8", 107 },
-                                                                                { "B1", 108 },
+                                                                                { "B1", 101 },
+                                                                                { "C1", 102 },
+                                                                                { "D1", 103 },
+                                                                                { "E1", 104 },
+                                                                                { "F1", 105 },
+                                                                                { "G1", 106 },
+                                                                                { "H1", 107 },
+                                                                                { "A2", 108 },
                                                                                 { "B2", 109 },
-                                                                                { "B3", 110 },
-                                                                                { "B4", 111 },
-                                                                                { "B5", 112 },
-                                                                                { "B6", 113 },
-                                                                                { "B7", 114 },
-                                                                                { "B8", 115 },
-                                                                                { "C1", 116 },
-                                                                                { "C2", 117 },
+                                                                                { "C2", 110 },
+                                                                                { "D2", 111 },
+                                                                                { "E2", 112 },
+                                                                                { "F2", 113 },
+                                                                                { "G2", 114 },
+                                                                                { "H2", 115 },
+                                                                                { "A3", 116 },
+                                                                                { "B3", 117 },
                                                                                 { "C3", 118 },
-                                                                                { "C4", 119 },
-                                                                                { "C5", 120 },
-                                                                                { "C6", 121 },
-                                                                                { "C7", 122 },
-                                                                                { "C8", 123 },
-                                                                                { "D1", 124 },
-                                                                                { "D2", 125 },
-                                                                                { "D3", 126 },
+                                                                                { "D3", 119 },
+                                                                                { "E3", 120 },
+                                                                                { "F3", 121 },
+                                                                                { "G3", 122 },
+                                                                                { "H3", 123 },
+                                                                                { "A4", 124 },
+                                                                                { "B4", 125 },
+                                                                                { "C4", 126 },
                                                                                 { "D4", 127 },
-                                                                                { "D5", 128 },
-                                                                                { "D6", 129 },
-                                                                                { "D7", 130 },
-                                                                                { "D8", 131 },
-                                                                                { "E1", 132 },
-                                                                                { "E2", 133 },
-                                                                                { "E3", 134 },
-                                                                                { "E4", 135 },
+                                                                                { "E4", 128 },
+                                                                                { "F4", 129 },
+                                                                                { "G4", 130 },
+                                                                                { "H4", 131 },
+                                                                                { "A5", 132 },
+                                                                                { "B5", 133 },
+                                                                                { "C5", 134 },
+                                                                                { "D5", 135 },
                                                                                 { "E5", 136 },
-                                                                                { "E6", 137 },
-                                                                                { "E7", 138 },
-                                                                                { "E8", 139 },
-                                                                                { "F1", 140 },
-                                                                                { "F2", 141 },
-                                                                                { "F3", 142 },
-                                                                                { "F4", 143 },
-                                                                                { "F5", 144 },
+                                                                                { "F5", 137 },
+                                                                                { "G5", 138 },
+                                                                                { "H5", 139 },
+                                                                                { "A6", 140 },
+                                                                                { "B6", 141 },
+                                                                                { "C6", 142 },
+                                                                                { "D6", 143 },
+                                                                                { "E6", 144 },
                                                                                 { "F6", 145 },
-                                                                                { "F7", 146 },
-                                                                                { "F8", 147 },
-                                                                                { "G1", 148 },
-                                                                                { "G2", 149 },
-                                                                                { "G3", 150 },
-                                                                                { "G4", 151 },
-                                                                                { "G5", 152 },
-                                                                                { "G6", 153 },
+                                                                                { "G6", 146 },
+                                                                                { "H6", 147 },
+                                                                                { "A7", 148 },
+                                                                                { "B7", 149 },
+                                                                                { "C7", 150 },
+                                                                                { "D7", 151 },
+                                                                                { "E7", 152 },
+                                                                                { "F7", 153 },
                                                                                 { "G7", 154 },
-                                                                                { "G8", 155 },
-                                                                                { "H1", 156 },
-                                                                                { "H2", 157 },
-                                                                                { "H3", 158 },
-                                                                                { "H4", 159 },
-                                                                                { "H5", 160 },
-                                                                                { "H6", 161 },
-                                                                                { "H7", 162 },
+                                                                                { "H7", 155 },
+                                                                                { "A8", 156 },
+                                                                                { "B8", 157 },
+                                                                                { "C8", 158 },
+                                                                                { "D8", 159 },
+                                                                                { "E8", 160 },
+                                                                                { "F8", 161 },
+                                                                                { "G8", 162 },
                                                                                 { "H8", 163 },
                                                                             };
+        private ConcurrentBag<byte> _ledBag = new ConcurrentBag<byte>();
+        private static object _lock = new object();
 
-
-
-
-
+        
         public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
         {
             _boardConfiguration = configuration;
@@ -110,6 +110,8 @@ namespace www.SoLaNoSoft.com.BearChess.HoSChessBoard
             _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
             Information = Constants.Zmartfun;
             _acceptProbingMoves = false;
+            var handleLedThread = new Thread(LedThreadHandle) { IsBackground = true };
+            handleLedThread.Start();
         }
         public EChessBoard(ILogging logger)
         {
@@ -117,6 +119,30 @@ namespace www.SoLaNoSoft.com.BearChess.HoSChessBoard
             BatteryLevel = "---";
             BatteryStatus = "Full";
             Information = Constants.Zmartfun;
+        }
+
+        private void LedThreadHandle()
+        {
+            byte[] array;
+            while (true)
+            {
+                
+                lock (_lock)
+                {
+                    array = _ledBag.ToArray();
+                }
+
+                if (array.Length == 0)
+                {
+                    Thread.Sleep(30);
+                }
+
+                foreach (var b in array)
+                {
+                    _serialCommunication.Send(new byte[] { 0, b });
+                    Thread.Sleep(30);
+                }
+            }
         }
 
         public override void AdditionalInformation(string information)
@@ -131,7 +157,7 @@ namespace www.SoLaNoSoft.com.BearChess.HoSChessBoard
             {
                 return;
             }
-            Information = _serialCommunication.DeviceName;
+            
         }
 
         public override bool CheckComPort(string portName)
@@ -180,9 +206,13 @@ namespace www.SoLaNoSoft.com.BearChess.HoSChessBoard
 
             if (dataFromBoard.FromBoard.Equals(_lastData) || dataFromBoard.FromBoard.StartsWith("FF") || dataFromBoard.FromBoard.Length<66)
             {
-                return new DataFromBoard(_lastResult, dataFromBoard.Repeated);
+//                return new DataFromBoard(_lastResult, dataFromBoard.Repeated);
             }
             _lastData = dataFromBoard.FromBoard;
+            if (string.IsNullOrWhiteSpace(_lastData))
+            {
+                return new DataFromBoard(_lastResult, dataFromBoard.Repeated);
+            }
             return new DataFromBoard(ConvertToFen(_lastData), 3);
 
         }
@@ -209,15 +239,23 @@ namespace www.SoLaNoSoft.com.BearChess.HoSChessBoard
 
         public override void SetAllLedsOff(bool forceOff)
         {
-            _serialCommunication.Send(new []{(byte)186});
+            lock (_lock)
+            {
+                while (_ledBag.TryTake(out _))
+                {
+
+                }
+            }
+
+            _serialCommunication.ClearToBoard();
+            _serialCommunication.Send(new[] { (byte)0, (byte)186 }, forceOff);
         }
 
         public override void SetAllLedsOn()
         {
-            for (byte b = 100; b < 164; b++)
-            {
-                _serialCommunication.Send(new[] { b });
-            }
+            //SetLedForFields(new SetLEDsParameter() {FieldNames = new []{"E4","E5","D5","D4"}});
+            //Thread.Sleep(1000);
+            //SetAllLedsOff(true);
         }
 
         public override void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack, int secondBlack)
@@ -252,12 +290,76 @@ namespace www.SoLaNoSoft.com.BearChess.HoSChessBoard
 
         public override void SetLedForFields(SetLEDsParameter ledsParameter)
         {
-            foreach (var ledsParameterFieldName in ledsParameter.FieldNames)
+
+
+            if (ledsParameter.FieldNames.Length == 0 && ledsParameter.HintFieldNames.Length == 0 &&
+                ledsParameter.InvalidFieldNames.Length == 0)
             {
-                if (_adaptedFieldName.ContainsKey(ledsParameterFieldName.ToUpper())) 
+                return;
+                SetAllLedsOff(true);
+            }
+            else
+            {
+                lock (_lock)
                 {
-                    byte fieldNumber = _adaptedFieldName[ledsParameterFieldName.ToUpper()];
-                    _serialCommunication.Send(new byte[] { fieldNumber });
+                    while (_ledBag.TryTake(out _))
+                    {
+
+                    }
+                }
+
+                _serialCommunication.ClearToBoard();
+                
+            }
+
+            lock (_lock)
+            {
+                if (ledsParameter.IsProbing)
+                {
+
+                    var firstOrDefault = ledsParameter.ProbingMoves.OrderByDescending(p => p.Score).FirstOrDefault();
+                    if (firstOrDefault != null)
+                    {
+                        if (_adaptedFieldName.ContainsKey(firstOrDefault.FieldName))
+                        {
+                            var fieldNumber = _adaptedFieldName[firstOrDefault.FieldName];
+                            _ledBag.Add(fieldNumber);
+                        }
+                    }
+                }
+                else
+                {
+                    if (ledsParameter.FieldNames.Length > 0)
+                    {
+                        foreach (var parameterFieldName in ledsParameter.FieldNames)
+                        {
+                            if (_adaptedFieldName.ContainsKey(parameterFieldName.ToUpper()))
+                            {
+                                var fieldNumber = _adaptedFieldName[parameterFieldName.ToUpper()];
+                                _ledBag.Add(fieldNumber);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var parameterFieldName in ledsParameter.InvalidFieldNames)
+                        {
+                            if (_adaptedFieldName.ContainsKey(parameterFieldName.ToUpper()))
+                            {
+                                var fieldNumber = _adaptedFieldName[parameterFieldName.ToUpper()];
+                                _ledBag.Add(fieldNumber);
+                            }
+                        }
+
+                        foreach (var parameterFieldName in ledsParameter.HintFieldNames)
+                        {
+                            if (_adaptedFieldName.ContainsKey(parameterFieldName.ToUpper()))
+                            {
+                                var fieldNumber = _adaptedFieldName[parameterFieldName.ToUpper()];
+                                _ledBag.Add(fieldNumber);
+                            }
+                        }
+                    }
                 }
             }
         }

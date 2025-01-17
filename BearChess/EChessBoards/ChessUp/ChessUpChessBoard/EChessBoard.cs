@@ -14,13 +14,7 @@ namespace www.SoLaNoSoft.com.BearChess.ChessUpChessBoard
     public  class EChessBoard : AbstractEBoard
     {
         private readonly bool _useBluetooth;
-        private readonly bool _showMoveLine;
-        private bool _flashSync = false;
-        private bool _release = false;
-        private readonly byte[] _lastSendBytes = { 0, 0, 0, 0, 0, 0, 0, 0 };
-        private string _prevJoinedString = string.Empty;
         private string _lastFromBoardString = string.Empty;
-        private int _prevLedField = 0;
         private byte _requestPosition = 0x67;
         private byte _resetGame = 0x64;
         private byte _gameSettings = 0xB9;
@@ -59,7 +53,6 @@ namespace www.SoLaNoSoft.com.BearChess.ChessUpChessBoard
         public EChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
         {
             _useBluetooth = configuration.UseBluetooth;
-            _showMoveLine = configuration.ShowMoveLine;
             _logger = logger;
             BatteryLevel = "---";
             BatteryStatus = "\ud83d\udd0b";
@@ -403,22 +396,33 @@ namespace www.SoLaNoSoft.com.BearChess.ChessUpChessBoard
         private string BuildBoardInformation(string information)
         {
             // 178 0 1 9 0 1 0 0 13 239 54 208 1 4 0 1 
-            
-            
+            // 178 0 1 6 1 0 1 1  8 168 87 192 0 2 7 2
+
+
                 // 190 Firmware
                 // 100 BLE Firmware
-                // 140 Boottloader
+                // 140 Bootloader
                 // 13 239 54 208
                 // DEF36D0
+                string version = string.Empty;
                 var strings = information.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                
                 if (strings.Length == 16)
                 {
                     string firmware = $"{strings[2]}.{strings[3]}.{strings[4]}";
                     string BLEfirmware = $"{strings[5]}.{strings[6]}.{strings[7]}";
                     string bootLoader = $"{strings[12]}.{strings[13]}.{strings[14]}";
-                    string version = Convert.ToInt32(strings[8] + strings[9] + strings[10] + strings[11],16).ToString();
+                    try
+                    {
+                        version = Convert.ToUInt64(strings[8] + strings[9] + strings[10] + strings[11], 16).ToString();
+                    }
+                    catch
+                    {
+                        version = strings[8] + strings[9] + strings[10] + strings[11];
+                    }
+
                     return
-                        $"ChessUp{Environment.NewLine}Firmware: {firmware}{Environment.NewLine}BLE-Firmware: {BLEfirmware}{Environment.NewLine}Bootloader: {bootLoader}{Environment.NewLine} Serial#: {version}";
+                        $"ChessUp {strings[15]}{Environment.NewLine}Firmware: {firmware}{Environment.NewLine}BLE-Firmware: {BLEfirmware}{Environment.NewLine}Bootloader: {bootLoader}{Environment.NewLine} Serial#: {version}";
                 }
 
                 return "ChessUp";

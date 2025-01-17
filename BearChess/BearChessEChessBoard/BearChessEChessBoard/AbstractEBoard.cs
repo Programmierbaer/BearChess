@@ -30,10 +30,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract void Reset();
 
-        
+
         public abstract bool CheckComPort(string portName);
         public abstract bool CheckComPort(string portName, string baud);
-        
+
         public abstract void SetLedForFields(SetLEDsParameter ledsParameter);
 
         public abstract void SetAllLedsOff(bool forceOff);
@@ -62,7 +62,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             return string.Empty;
         }
-        
+
         public abstract void AdditionalInformation(string information);
 
         public abstract void RequestDump();
@@ -103,10 +103,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _ignoreReading = ignore;
         }
 
-        public  string BatteryLevel { get; protected set; }
-        public  string BatteryStatus { get; protected set; }
-        public  string Information { get; protected set; }
-        public  string Level { get; protected set; }
+        public string BatteryLevel { get; protected set; }
+        public string BatteryStatus { get; protected set; }
+        public string Information { get; protected set; }
+        public string Level { get; protected set; }
 
 
         public abstract void SetClock(int hourWhite, int minuteWhite, int secWhite, int hourBlack, int minuteBlack,
@@ -127,6 +127,18 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         {
             _acceptProbingMoves = acceptProbingMoves;
         }
+
+        public virtual void BuzzerOnConnected() { }
+        public virtual void BuzzerOnMove() { }
+
+        public virtual void BuzzerOnCheck(){ }
+
+        public virtual void BuzzerOnDraw(){ }
+        public virtual void PlayBuzzer(string soundCode){ }
+
+        public virtual void BuzzerOnCheckMate() { }
+
+        public virtual void BuzzerOnInvalid() { }
 
         public void SetDemoMode(bool inDemoMode)
         {

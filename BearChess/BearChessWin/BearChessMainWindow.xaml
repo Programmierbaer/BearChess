@@ -16,6 +16,15 @@
             <RoutedUICommand x:Key="CtrE" Text="Engines" />
             <RoutedUICommand x:Key="CtrR" Text="Repeat" />
             <RoutedUICommand x:Key="CtrM" Text="BlindMain" />
+            <RoutedUICommand x:Key="CtrT" Text="CurrentClock" />
+            <RoutedUICommand x:Key="CtrO" Text="OpeningBook" />
+            <RoutedUICommand x:Key="AltO" Text="OpeningBookAlternate" />
+            <RoutedUICommand x:Key="Alt0" Text="OpeningBookAlternate" />
+            <RoutedUICommand x:Key="Alt1" Text="OpeningBookBestMove1" />
+            <RoutedUICommand x:Key="Alt2" Text="OpeningBookBestMove2" />
+            <RoutedUICommand x:Key="Alt3" Text="OpeningBookBestMove3" />
+            <RoutedUICommand x:Key="AltS" Text="Score" />
+
         </ResourceDictionary>
     </Window.Resources>
     <Window.InputBindings>
@@ -24,6 +33,16 @@
         <KeyBinding Key="E" Modifiers="Ctrl" Command="{StaticResource CtrE}" />
         <KeyBinding Key="R" Modifiers="Ctrl" Command="{StaticResource CtrR}" />
         <KeyBinding Key="M" Modifiers="Ctrl" Command="{StaticResource CtrM}" />
+        <KeyBinding Key="T" Modifiers="Ctrl" Command="{StaticResource CtrT}" />
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{StaticResource CtrO}" />
+        <KeyBinding Key="O" Modifiers="Alt" Command="{StaticResource AltO}" />
+        <KeyBinding Key="D0" Modifiers="Alt" Command="{StaticResource Alt0}" />
+        <KeyBinding Key="D1" Modifiers="Alt" Command="{StaticResource Alt1}" />
+        <KeyBinding Key="D2" Modifiers="Alt" Command="{StaticResource Alt2}" />
+        <KeyBinding Key="D3" Modifiers="Alt" Command="{StaticResource Alt3}" />
+        <KeyBinding Key="S" Modifiers="Alt" Command="{StaticResource AltS}" />        
+        
+
 
     </Window.InputBindings>
 
@@ -37,6 +56,14 @@
         <CommandBinding Command="{StaticResource CtrE}" Executed="MenuItemEngineLoad_OnClick" />
         <CommandBinding Command="{StaticResource CtrR}" Executed="ButtonSoundRepeat_OnClick" />
         <CommandBinding Command="{StaticResource CtrM}" Executed="MenuItemMainMenue_OnClick" />
+        <CommandBinding Command="{StaticResource CtrT}" Executed="SayCurrentClock_OnClick" />
+        <CommandBinding Command="{StaticResource CtrO}" Executed="MenuItemLoadBook_OnClick" />
+        <CommandBinding Command="{StaticResource AltO}" Executed="BookAlternate_OnClick" />
+        <CommandBinding Command="{StaticResource Alt0}" Executed="BookAlternate0_OnClick" />
+        <CommandBinding Command="{StaticResource Alt1}" Executed="BestBookMove1_OnClick" />
+        <CommandBinding Command="{StaticResource Alt2}" Executed="BestBookMove2_OnClick" />
+        <CommandBinding Command="{StaticResource Alt3}" Executed="BestBookMove3_OnClick" />
+        <CommandBinding Command="{StaticResource AltS}" Executed="SayCurrentScore_OnClick" />
 
     </Window.CommandBindings>
     <Grid Name="GridMain">
@@ -70,11 +97,29 @@
                             <Image Source="Assets/Icons/robot.png" />
                         </MenuItem.Icon>
                         <MenuItem Tag="FreeAnalysis" Header="{x:Static p:Resources.FreeAnalysis}"
-                                  Name="menuItemAnalyseFreeMode"
-                                  Click="MenuItemAnalyzeFreeMode_OnClick">
+                                  Name="menuItemAnalyseFreeMode">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/robot.png" />
                             </MenuItem.Icon>
+                            <MenuItem Tag="FreeAnalysis" Header="{x:Static p:Resources.StartAnalysis}"
+                                      Name="menuItemAnalyseFreeModeStart"
+                                      Click="MenuItemAnalyzeFreeMode_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/robot.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="{x:Static p:Resources.ForWhite}" Name="menuItemFreeAnalysisWhite"
+                                      Click="MenuItemFreeAnalysisWhite_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/tick.png" Name="imageFreeAnalysisWhite" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="{x:Static p:Resources.ForBlack}" Name="menuItemFreeAnalysisBlack"
+                                      Click="MenuItemFreeAnalysisBlack_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/tick.png" Name="imageFreeAnalysisBlack" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
                         <MenuItem Tag="GameAnalysis" Header="{x:Static p:Resources.GameAnalysis}"
                                   Name="menuItemAnalyseAGame" IsEnabled="False"
@@ -82,6 +127,7 @@
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/6-2-chess-png.png" />
                             </MenuItem.Icon>
+
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Tag="StopAnalyses" Header="{x:Static p:Resources.StopAnalysis}"
@@ -154,6 +200,12 @@
                             <Image Source="Assets/Icons/FicsLogo.png" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="{x:Static p:Resources.ConnectToBCServer}" Name="menuItemConnectBearChessServer" 
+                              Click="menuItemConnectBearChessServer_Click" Visibility="Collapsed">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/BearChessServer.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <Separator />
                     <MenuItem Header="{x:Static p:Resources.RunStartupGameOnStart}" Name="menuItemRunLastGame"
                               AutomationProperties.HelpText="{x:Static p:Resources.IsUnSelected}"
@@ -165,7 +217,7 @@
 
                     </MenuItem>
 
-                    <MenuItem Header="{x:Static p:Resources.CloseBearChess}" Name="menuItemClose"
+                    <MenuItem Tag="CloseBearChess"  Header="{x:Static p:Resources.CloseBearChess}" Name="menuItemClose"
                               Click="MenuItemClose_OnClick">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/door_out.png" />
@@ -312,9 +364,10 @@
                                        Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
+                       
                     </MenuItem>
                 </MenuItem>
-                <MenuItem Header="{x:Static p:Resources.Books}">
+                <MenuItem Header="{x:Static p:Resources.Books}" >
 
                     <MenuItem Tag="LoadManageBooks" Header="{x:Static p:Resources.LoadAndManageBooks}"
                               Name="menuItemLoadBook"
@@ -328,6 +381,26 @@
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/text_list_numbers.png" />
                         </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="menuItemLoadDefaultBook" Header="{x:Static p:Resources.LoadDefaultBook}"
+                              Click="MenuItemLoadDefaultBook_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageLoadDefaultBook" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{x:Static p:Resources.BestMove}">
+                        <MenuItem Name="menuItemShowBestBookMove" Header="{x:Static p:Resources.ShowBestBookMove}"
+                                  Click="MenuItemShowBestBookMove_OnClick">
+                            <MenuItem.Icon>
+                                <Image Name="imageShowBestBookMove" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="{x:Static p:Resources.Color}" ToolTip="{x:Static p:Resources.ColorForTheArrow}"
+                                  Click="MenuItemBestBookMoveArrowColor_OnClick">
+                            <MenuItem.Icon>
+                                <TextBlock Name="textBlockBookMoveArrowColor" Text=" " />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="{x:Static p:Resources.Settings}">
@@ -372,7 +445,7 @@
                                            Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Header="Color" ToolTip="{x:Static p:Resources.ColorForTheArrow}"
+                            <MenuItem Header="{x:Static p:Resources.Color}" ToolTip="{x:Static p:Resources.ColorForTheArrow}"
                                       Click="MenuItemPossibleMoveArrowColor_OnClick">
                                 <MenuItem.Icon>
                                     <TextBlock Name="textBlockHintArrowColor" Text=" " />
@@ -495,6 +568,12 @@
                               ToolTip="{x:Static p:Resources.FICSTip}">
                         <MenuItem.Icon>
                             <Image Source="Assets/Icons/FicsLogo.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="menuItemBCServer" Header="{x:Static p:Resources.BearChessServer}" Click="MenuItemFICS_OnClick"
+           ToolTip="{x:Static p:Resources.BearChessServerTip}" Visibility="Collapsed">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/BearChessServer.png" />
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
@@ -641,7 +720,7 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Name="menuItemSentioTactum" Visibility="Collapsed" Header="Tactum">
+                        <MenuItem Name="menuItemSentioTactum" Header="Tactum">
                             <MenuItem.Icon>
                                 <Image Source="Assets/tabutronic_logo_def.png" />
                             </MenuItem.Icon>
@@ -897,7 +976,7 @@
                                 <Image Source="Assets/Icons/connect.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Visibility="Collapsed" Name="menuItemConfigureZmartfun"
+                        <MenuItem Visibility="Visible" Name="menuItemConfigureZmartfun"
                                   Header="{x:Static p:Resources.Configure}"
                                   Click="MenuItemConfigureZmartfun_OnClick">
                             <MenuItem.Icon>
@@ -961,9 +1040,9 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="ChessUp" Name="menuItemChessUp">
+                    <MenuItem Header="ChessUp/ChessUp 2" Name="menuItemChessUp">
                         <MenuItem.Icon>
-                            <Image Source="/Assets/ChessUp.png" />
+                            <Image Source="/Assets/ChessUpLogo.png" />
                         </MenuItem.Icon>
                         <MenuItem Name="menuItemConnectToChessUp" Header="{x:Static p:Resources.Connect}"
                                   Click="MenuItemConnectChessUp_OnClick">
@@ -1055,12 +1134,13 @@
                 </MenuItem>
                 <MenuItem Header="{x:Static p:Resources.Info}" Click="MenuItemInfo_OnClick" />
                 <MenuItem Header="{x:Static p:Resources.Help}" Click="MenuItemHelp_OnClick" />
-                <MenuItem Header="{x:Static p:Resources.Blind}" Visibility="Collapsed"
-                          Click="MenuItemMainMenue_OnClick" />
             </Menu>
-            <Border Margin="1" Grid.Column="0" Grid.Row="1" BorderBrush="DarkGray" BorderThickness="1">
-                <local:GraphicsChessBoardUserControl Margin="5,5,5,0" x:Name="chessBoardUcGraphics"
-                                                     Visibility="Visible" />
+            <Border Name="BorderChessBoard"  Margin="1" Grid.Column="0" Grid.Row="1" BorderBrush="DarkGray" BorderThickness="1">
+                <StackPanel>
+                    <local:GraphicsChessBoardUserControl Margin="5,5,5,0" x:Name="chessBoardUcGraphics"
+                                                         Visibility="Visible" />
+                    <local:MaterialUserControl x:Name="materialUserControl" Margin="5,5,5,0" VerticalAlignment="Center" HorizontalAlignment="Left"></local:MaterialUserControl>
+                </StackPanel>
             </Border>
             <StackPanel x:Name="StackPanelClockAndMoves" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left">
                 <Border Margin="1" BorderThickness="1" BorderBrush="DarkGray">
@@ -1092,10 +1172,8 @@
                             </Grid>
                         </TabItem>
                     </TabControl>
-                    <Border Margin="1" BorderThickness="1" BorderBrush="DarkGray" >
-                  
-                    </Border>
                 </Grid>
+              
             </StackPanel>
             <Canvas Name="canvasBoard" Grid.Row="1" Grid.Column="0" />
             <local:EngineWindowUserControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"
@@ -1146,6 +1224,7 @@
             <Image DockPanel.Dock="Left" VerticalAlignment="Center" Margin="5,0" Source="Assets/Icons/book_open.png"
                    Width="16" />
             <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="5" Name="textBlockEcoCode" Text="---" />
+            <TextBlock VerticalAlignment="Center" DockPanel.Dock="Left" Margin="5" Name="textBlockBestBookMove" Text="" />
         </DockPanel>
 
 

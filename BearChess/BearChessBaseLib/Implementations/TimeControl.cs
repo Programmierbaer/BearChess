@@ -20,8 +20,25 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public bool SeparateControl { get; set; }
     }
 
+  
+
     public static class TimeControlHelper
     {
+        public static TimeControl GetDefaultTimeControl()
+        {
+            TimeControl defauktTC = new TimeControl();
+            defauktTC.AllowTakeBack = false;
+            defauktTC.AverageTimInSec = false;
+            defauktTC.HumanValue = 0;
+            defauktTC.SeparateControl = false;
+            defauktTC.TimeControlType = TimeControlEnum.TimePerGame;
+            defauktTC.TournamentMode = false;
+            defauktTC.Value1 = 5;
+            defauktTC.Value2 = 0;
+            defauktTC.WaitForMoveOnBoard = true;
+            return defauktTC;
+        }
+
         public static string GetDescription(TimeControl timeControl, ResourceManager rm)
         {
         

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Xml.Serialization;
 using InTheHand.Net;
-using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
@@ -27,23 +26,71 @@ namespace www.SoLaNoSoft.com.BearChessBase
         private static Configuration _instance;
         private static readonly object Locker = new object();
         private readonly ConfigurationSettings<string, string> _appSettings;
-        private string ConfigFileName { get; }
-        private string BTConfigFileName { get; }
-        private string TimeControlFileName { get; }
-        private string TimeControlBlackFileName { get; }
-        private string FicTimeControlFileName { get; }
-        private string StartupTimeControlFileName { get; }
-        private string StartupTimeControlBlackFileName { get; }
-        private string DatabaseFilterFileName { get; }
+
+        private string ConfigFileName
+        {
+            get;
+        }
+
+        private string BTConfigFileName
+        {
+            get;
+        }
+
+        private string TimeControlFileName
+        {
+            get;
+        }
+
+        private string TimeControlBlackFileName
+        {
+            get;
+        }
+
+        private string FicTimeControlFileName
+        {
+            get;
+        }
+
+        private string StartupTimeControlFileName
+        {
+            get;
+        }
+
+        private string StartupTimeControlBlackFileName
+        {
+            get;
+        }
+
+        private string DatabaseFilterFileName
+        {
+            get;
+        }
 
         public const string STARTUP_WHITE_ENGINE_ID = "startupWhite.uci";
         public const string STARTUP_BLACK_ENGINE_ID = "startupBlack.uci";
 
         public const string MESSCHESS_LEVELS_FILE = "MessChessLevels.txt";
 
-        public string FolderPath { get; }
+        public string FolderPath
+        {
+            get;
+        }
 
-        public string BinPath { get; }
+        public string BinPath
+        {
+            get;
+        }
+
+        public bool RunOn64Bit
+        {
+            get;
+        }
+
+        public bool Standalone
+        {
+            get;
+        }
 
         public PgnConfiguration GetPgnConfiguration()
         {
@@ -55,7 +102,6 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 IncludeMoveTime = bool.Parse(GetConfigValue("gamesPGNExportMoveTime", "true")),
                 IncludeSymbols = bool.Parse(GetConfigValue("gamesPGNExportSymbols", "true")),
             };
-
         }
 
         public void SavePgnConfiguration(PgnConfiguration pgnConfiguration)
@@ -78,23 +124,37 @@ namespace www.SoLaNoSoft.com.BearChessBase
             }
         }
 
+        public CultureInfo SystemCultureInfo
+        {
+            get;
+        }
+
         private Configuration()
         {
-            FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.BearChess);
+            RunOn64Bit = Environment.Is64BitProcess;
+            SystemCultureInfo = Thread.CurrentThread.CurrentUICulture;
+            var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
+            BinPath = fileInfo.DirectoryName;
+            FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),  Constants.BearChess);
             var args = Environment.GetCommandLineArgs();
-            for (int i = 1; i < args.Length; i++)
+            Standalone = false;
+            for (var i = 1; i < args.Length; i++)
             {
-                if (args[i].Equals("-path", StringComparison.InvariantCultureIgnoreCase))
+                if (args[i].Equals("-path", StringComparison.InvariantCultureIgnoreCase) && !Standalone)
                 {
                     if (i < args.Length - 1)
                     {
                         try
                         {
                             var pathValue = args[i + 1];
-                            if (pathValue.Equals("doc", StringComparison.InvariantCultureIgnoreCase) || pathValue.Equals("dok", StringComparison.InvariantCultureIgnoreCase))
+                            if (pathValue.Equals("doc", StringComparison.InvariantCultureIgnoreCase) ||
+                                pathValue.Equals("dok", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Constants.BearChess);
+                                FolderPath =
+                                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                                        Constants.BearChess);
                             }
+
                             else
                             {
                                 var pathName = Path.Combine(pathValue, Constants.BearChess);
@@ -108,9 +168,18 @@ namespace www.SoLaNoSoft.com.BearChessBase
                         }
                     }
                 }
+
+                if (args[i].Equals("-standalone", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (BinPath != null)
+                    {
+                        FolderPath = Path.Combine(BinPath, Constants.BearChess);
+                    }
+
+                    Standalone = true;
+                }
             }
-            var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
-            BinPath = fileInfo.DirectoryName;
+
             if (!Directory.Exists(FolderPath))
             {
                 try
@@ -119,9 +188,11 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 }
                 catch
                 {
-                    FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Constants.BearChess);
+                    FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        Constants.BearChess);
                 }
             }
+
             TimeControlFileName = Path.Combine(FolderPath, "bearchess_tc.xml");
             TimeControlBlackFileName = Path.Combine(FolderPath, "bearchess_tc2.xml");
             FicTimeControlFileName = Path.Combine(FolderPath, "bearchess_ficstc.xml");
@@ -136,7 +207,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 {
                     var serializer = new XmlSerializer(typeof(ConfigurationSettings<string, string>));
                     TextReader textReader = new StreamReader(ConfigFileName);
-                    _appSettings = (ConfigurationSettings<string, string>) serializer.Deserialize(textReader);
+                    _appSettings = (ConfigurationSettings<string, string>)serializer.Deserialize(textReader);
                     textReader.Close();
                 }
                 else
@@ -150,17 +221,25 @@ namespace www.SoLaNoSoft.com.BearChessBase
             }
         }
 
-        public double GetWinDoubleValue(string winName, WinScreenInfo screenInfo, double vScreenHeight, double vScreenWidth,  string defaultValue="0")
+        public double GetWinDoubleValue(string winName, WinScreenInfo screenInfo, double vScreenHeight,
+            double vScreenWidth, string defaultValue = "0")
         {
-            var winDoubleValue = double.Parse(GetConfigValue(_appSettings, winName, defaultValue), CultureInfo.InvariantCulture);
+            var winDoubleValue = double.Parse(GetConfigValue(_appSettings, winName, defaultValue),
+                CultureInfo.InvariantCulture);
+            if (winDoubleValue < 0)
+            {
+                winDoubleValue = 0;
+            }
             double winValue;
             switch (screenInfo)
             {
-                case WinScreenInfo.Top: winValue = vScreenHeight;
+                case WinScreenInfo.Top:
+                    winValue = vScreenHeight;
                     if (winDoubleValue > winValue - 50)
                     {
                         winDoubleValue = 0;
                     }
+
                     break;
                 case WinScreenInfo.Height:
                     winValue = vScreenHeight;
@@ -168,6 +247,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
                     {
                         winDoubleValue = winValue - 50;
                     }
+
                     break;
                 case WinScreenInfo.Left:
                     winValue = vScreenWidth;
@@ -175,23 +255,31 @@ namespace www.SoLaNoSoft.com.BearChessBase
                     {
                         winDoubleValue = 0;
                     }
-                    break; 
+
+                    break;
                 case WinScreenInfo.Width:
                     winValue = vScreenWidth;
                     if (winDoubleValue > winValue - 50)
                     {
                         winDoubleValue = winValue - 50;
                     }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(screenInfo), screenInfo, null);
             }
+
             return winDoubleValue;
         }
 
-        public double GetDoubleValue(string winName,  string defaultValue = "0")
+        public double GetDoubleValue(string winName, string defaultValue = "0")
         {
             return double.Parse(GetConfigValue(_appSettings, winName, defaultValue), CultureInfo.InvariantCulture);
+        }
+
+        public double GetDoubleValue(string winName, double defaultValue = 0)
+        {
+            return double.Parse(GetConfigValue(_appSettings, winName, defaultValue.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
         }
 
         public void SetDoubleValue(string winName, double position)
@@ -205,6 +293,16 @@ namespace www.SoLaNoSoft.com.BearChessBase
         }
 
         public void SetBoolValue(string key, bool value)
+        {
+            SetConfigValue(key, value.ToString());
+        }
+
+        public int GetIntValue(string key, int defaultValue)
+        {
+            return int.Parse(GetConfigValue(key, defaultValue.ToString()));
+        }
+
+        public void SetIntValue(string key, int value)
         {
             SetConfigValue(key, value.ToString());
         }
@@ -228,7 +326,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         {
             if (!File.Exists(DatabaseFilterFileName))
             {
-                return new GamesFilter() {FilterIsActive = false};
+                return new GamesFilter() { FilterIsActive = false };
             }
 
             try
@@ -243,6 +341,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             {
                 //
             }
+
             return new GamesFilter() { FilterIsActive = false };
         }
 
@@ -250,7 +349,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         {
             try
             {
-                var fileName = Path.Combine(FolderPath, boardName,$"{boardName}_{identifier}_bt.xml");
+                var fileName = Path.Combine(FolderPath, boardName, $"{boardName}_{identifier}_bt.xml");
                 var serializer = new XmlSerializer(typeof(BluetoothAddress));
                 TextWriter textWriter = new StreamWriter(fileName, false);
                 serializer.Serialize(textWriter, btAddress);
@@ -273,8 +372,10 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 {
                     return null;
                 }
-                migrateConfig  = true;
+
+                migrateConfig = true;
             }
+
             try
             {
                 var serializer = new XmlSerializer(typeof(BluetoothAddress));
@@ -285,6 +386,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 {
                     SaveBTAddress(boardName, btAddress);
                 }
+
                 return btAddress;
             }
             catch
@@ -316,7 +418,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
         /// <param name="timeControl"></param>
         /// <param name="white"></param>
         /// <param name="asStartup"></param>
-        public void Save(TimeControl timeControl,bool white, bool asStartup)
+        public void Save(TimeControl timeControl, bool white, bool asStartup)
         {
             try
             {
@@ -344,8 +446,6 @@ namespace www.SoLaNoSoft.com.BearChessBase
         }
 
 
-
-
         public TimeControl LoadTimeControl(bool white, bool asStartup)
         {
             return white ? LoadWhiteTimeControl(asStartup) : LoadBlackTimeControl(asStartup);
@@ -357,6 +457,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             {
                 return null;
             }
+
             var serializer = new XmlSerializer(typeof(TimeControl));
             TextReader textReader = new StreamReader(asStartup ? StartupTimeControlFileName : TimeControlFileName);
             var timeControl = (TimeControl)serializer.Deserialize(textReader);
@@ -370,8 +471,10 @@ namespace www.SoLaNoSoft.com.BearChessBase
             {
                 return LoadWhiteTimeControl(asStartup);
             }
+
             var serializer = new XmlSerializer(typeof(TimeControl));
-            TextReader textReader = new StreamReader(asStartup ? StartupTimeControlBlackFileName : TimeControlBlackFileName);
+            TextReader textReader =
+                new StreamReader(asStartup ? StartupTimeControlBlackFileName : TimeControlBlackFileName);
             var timeControl = (TimeControl)serializer.Deserialize(textReader);
             textReader.Close();
             return timeControl;
@@ -400,6 +503,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             {
                 return new FicsTimeControl(number);
             }
+
             var serializer = new XmlSerializer(typeof(FicsTimeControl));
             TextReader textReader = new StreamReader(fileName);
             var timeControl = (FicsTimeControl)serializer.Deserialize(textReader);
@@ -435,8 +539,9 @@ namespace www.SoLaNoSoft.com.BearChessBase
 
         public string GetSecureConfigValue(string key, string defaultValue)
         {
-
-            return _appSettings.TryGetValue(key, out var appSetting) ? EnDeCryption.DecryptCipherTextToPlainText(appSetting) : defaultValue;
+            return _appSettings.TryGetValue(key, out var appSetting)
+                ? EnDeCryption.DecryptCipherTextToPlainText(appSetting)
+                : defaultValue;
         }
 
 

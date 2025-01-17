@@ -699,10 +699,28 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                             return false;
                         }
                     }
-                    //else
-                    //{
-                    //    _comPort = new SerialComportForByteArraySim("BearChessPipe");
-                    //}
+
+                    if (comPort.StartsWith("B"))
+                    {
+                        int counter = 0;
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "HOSBoard3064" }))
+                        {
+                            while (SerialBTLECommunicationTools.DeviceIdList.Count == 0)
+                            {
+                                Thread.Sleep(100);
+                                counter++;
+                                if (counter > 100)
+                                {
+                                    _logger?.LogInfo("No BTLE port for HOSBoard");
+                                    SerialBTLECommunicationTools.StopWatching();
+                                    return false;
+                                }
+                            }
+                        }
+                        var firstOrDefault = SerialBTLECommunicationTools.DeviceIdList.FirstOrDefault();
+                        _comPort = new BTLEComPort(firstOrDefault.ID, firstOrDefault.Name, _logger);
+                        SerialBTLECommunicationTools.StopWatching();
+                    }
                 }
 
                 if (_boardName.Equals(Constants.IChessOne, StringComparison.OrdinalIgnoreCase))

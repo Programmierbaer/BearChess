@@ -3,32 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows" ResizeMode="NoResize"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
+        xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        ResizeMode="NoResize"
         mc:Ignorable="d" WindowStyle="ToolWindow" Closing="MaterialWindow_OnClosing"
-        Title="Captured Pieces" Height="120" MinHeight="100" Width="520">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Button Name="buttonBalance" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="30" Margin="5"  Click="ButtonBalance_OnClick" ToolTip="Switch 'Difference'/'All'">
-            <Image Source="../Assets/Icons/balance_unbalance.png" ></Image>
-        </Button>
-        <TextBlock Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Name="textBlockDifference" Grid.Row="1" Grid.Column="0" >Diff.</TextBlock>
-        <Grid Grid.Column="1" Grid.Row="0" Name="gridTop" >
+        Title="{x:Static p:Resources.CapturedPieces}" Height="120" MinHeight="100" Width="520">
+    <StackPanel>
         
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="0"  Name="textBlockTopLine" ></TextBlock>
-        
-        </Grid>
-        <Grid Grid.Column="1" Grid.Row="1" Name="gridBottom" >
-      
-            <TextBlock Margin="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"  Grid.Column="0"  Name="textBlockBottomLine" ></TextBlock>
-      
-        </Grid>
-    
-    </Grid>
+        <bearChessWin:MaterialUserControl HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="MaterialUserControl"></bearChessWin:MaterialUserControl>
+
+    </StackPanel>
 </Window>

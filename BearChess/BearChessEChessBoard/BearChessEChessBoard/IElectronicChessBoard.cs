@@ -242,5 +242,13 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         void AcceptProbingMoves(bool acceptProbingMoves);
 
+        void BuzzerOnConnected();
+        void BuzzerOnMove();
+        void BuzzerOnCheck();
+        void BuzzerOnDraw();
+        void BuzzerOnCheckMate();
+        void BuzzerOnInvalid();
+        void BuzzerSound(string soundCode);
+
     }
 }

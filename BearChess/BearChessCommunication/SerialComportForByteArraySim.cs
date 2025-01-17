@@ -13,18 +13,17 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         public string Baud { get; }
         public string DeviceName => string.Empty;
 
-        private ServerPipe _serverPipe;
-        private bool _clientConnected;
-
-        private bool _anyBytesRead = false;
+        private ServerPipe _serverPipe;        
+        
 
         private readonly ILogging _logger;
         private readonly ConcurrentQueue<byte> _allBytes = new ConcurrentQueue<byte>();
 
-        public SerialComportForByteArraySim(string comport)
+        public SerialComportForByteArraySim(string comport, ILogging logger)
         {
             PortName = comport;
             _serverPipe = null;
+            _logger = logger;
 
         }
 
@@ -67,8 +66,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 
             _serverPipe.Connected += (sndr, args) =>
             {
-                _logger?.LogDebug("S: Pipe client connected");
-                _clientConnected = true;
+                _logger?.LogDebug("S: Pipe client connected");                
             };
         }
 

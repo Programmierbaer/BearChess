@@ -64,7 +64,39 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneEBoardWrapper
             //throw new System.NotImplementedException();
         }
 
+        public override void BuzzerOnConnected()
+        {
+            _board.BuzzerOnConnected();
+        }
 
+
+        public override void BuzzerOnMove()
+        {
+            _board.BuzzerOnMove();
+        }
+        public override void BuzzerOnCheck()
+        {
+            _board.BuzzerOnCheck();
+        }
+
+        public override void BuzzerOnDraw()
+        {
+            _board.BuzzerOnDraw();
+        }
+        public override void PlayBuzzer(string soundCode)
+        {
+            _board.PlayBuzzer(soundCode);
+        }
+
+        public override void BuzzerOnCheckMate()
+        {
+            _board.BuzzerOnCheckMate();
+        }
+
+        public override void BuzzerOnInvalid()
+        {
+            _board.BuzzerOnInvalid();
+        }
         protected override IEBoard GetEBoard()
         {
             return new IChessOneChessBoard.EChessBoard(_basePath, _fileLogger, _configuration);

@@ -131,7 +131,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
             string prevLine = string.Empty;
             string comment = string.Empty;
             string emt = string.Empty;
-            string currentSign = string.Empty;
+            string currentSign = string.Empty;           
            
             for (int i = ji; i < line.Length; i++)
             {
@@ -255,6 +255,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                         currentSign = string.Empty;
                         continue;
                     }
+
+                    foreach (var key in PgnDefinitions.SymbolToNag.Keys)
+                    {
+                        if (prevLine.EndsWith(key))
+                        {
+                            prevLine = prevLine.Replace(key, string.Empty);
+                            comment = $" {PgnDefinitions.SymbolToNag[key]} {comment}";
+                            break;
+                        }
+                    }
                     currentGame?.AddMove(prevLine, comment, emt);
                     prevLine = newLine;
                     newLine = string.Empty;
@@ -263,6 +273,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                     continue;
                 }
                 newLine += line[i];
+              
             }
            
             return currentGame;

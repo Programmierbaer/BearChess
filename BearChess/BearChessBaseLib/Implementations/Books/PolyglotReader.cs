@@ -257,6 +257,17 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         }
 
         public int PositionsCount => _keyToBookMoves.Keys.Count;
+        public int AllPositionsCount
+        {
+            get; private set;
+        }
+
+        public int AllMovesCount
+        {
+            get;
+            private set;
+        }
+
         public int MovesCount
         {
             get
@@ -297,6 +308,41 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 HasHeader = false;
                 _book = null;
             }
+        }
+
+        public void SetAllMovesAndPositionsCount()
+        {
+            AllMovesCount = 0;
+            AllPositionsCount = 0;
+            if (_book == null || _book.Length == 0)
+            {
+                if (string.IsNullOrWhiteSpace(_fileName))
+                {
+                    return;
+                }
+
+                ReadFile(_fileName);
+                if (_book == null)
+                {
+                    return;
+                }
+            }
+
+            var allBookKeys = new HashSet<ulong>();
+            var allMovesCount = 0;
+            var target = new byte[16];
+            var targetKey = new byte[8];
+            for (var i = 0; i < _book.Length - 16; i += 16)
+            {
+                Array.Copy(_book, i, target, 0, 16);
+                Array.Copy(target, 0, targetKey, 0, 8);
+                allBookKeys.Add(BitConverter.ToUInt64(targetKey.Reverse().ToArray(), 0));
+                allMovesCount++;
+            }
+
+            AllMovesCount = allMovesCount;
+            AllPositionsCount = allBookKeys.Count;
+
         }
 
         public IBookMoveBase[] GetMoves(string fenPosition)
@@ -413,7 +459,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                             Array.Copy(_book, i, target, 0, 16);
                             Array.Copy(target, 0, targetKey, 0, 8);
                             ulong bookKey = BitConverter.ToUInt64(targetKey.Reverse().ToArray(), 0);
-                            if (!key.Equals(bookKey))
+                            if (!key.Equals(bookKey) )
                             {
                                 continue;
                             }
@@ -552,6 +598,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 TimeSpan sp = DateTime.Now - start;
                 _book = Array.Empty<byte>();
                 GC.Collect();
+                
                 return _keyToBookMoves.TryGetValue(key, out var bookMove) ? bookMove.OrderByDescending(r => r.Weight).ToArray() : Array.Empty<IBookMoveBase>();
             }
             catch

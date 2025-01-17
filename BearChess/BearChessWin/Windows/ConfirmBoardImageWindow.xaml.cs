@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Resources;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -42,7 +43,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 MessageBox.Show(_rm.GetString("BoardNameAlreadyTaken"), _rm.GetString("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
+            if (Configuration.Instance.Standalone)
+            {
+                _whiteFileName = _whiteFileName.Replace(Configuration.Instance.BinPath, @".\");
+                _blackFileName = _blackFileName.Replace(Configuration.Instance.BinPath, @".\");
+            }
             BoardFieldsSetup = new BoardFieldsSetup()
             {
                 Id = "board_" + Guid.NewGuid().ToString("N"),

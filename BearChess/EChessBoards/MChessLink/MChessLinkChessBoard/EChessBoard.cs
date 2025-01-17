@@ -370,7 +370,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             }
             if (ledsParameter.FieldNames.Length==0)
             {
-                return;
+                ledsParameter.FieldNames = ledsParameter.BookFieldNames.ToArray();
+                if (ledsParameter.FieldNames.Length == 0)
+                {
+                    return;
+                }
             }
             if (ledsParameter.IsProbing && (_boardConfiguration.ShowPossibleMoves || _boardConfiguration.ShowPossibleMovesEval))
             {
@@ -386,12 +390,11 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
             {
                 string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
                 _logger.LogDebug($"Extend move line: {string.Join(" ", moveLine)} ");
-                ledForFields = GetLedForFields(moveLine, ledsParameter.IsThinking,_ledCorner);
+                ledForFields = GetLedForFields(moveLine, ledsParameter.IsThinking, _ledCorner);
             }
             else
             {
-
-                ledForFields = GetLedForFields(ledsParameter.FieldNames, ledsParameter.IsThinking,_ledCorner);
+                ledForFields = GetLedForFields(ledsParameter.FieldNames, ledsParameter.IsThinking, _ledCorner);
             }
 
             if (!string.IsNullOrWhiteSpace(_lastSendLeds) && _lastSendLeds.Equals($"L22{ledForFields}"))

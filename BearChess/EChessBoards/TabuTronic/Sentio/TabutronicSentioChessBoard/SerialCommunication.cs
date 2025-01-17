@@ -32,7 +32,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
         public override void SendRawToBoard(string param)
         {
-            //  Ignored for Certabo
+            //  Ignored for TabuTronic
         }
 
         public override void SendRawToBoard(byte[] param)
@@ -165,7 +165,10 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
                             {
                                 while (_byteDataToBoard.Count > 1)
                                 {
-                                    _byteDataToBoard.TryDequeue(out _);
+                                    _byteDataToBoard.TryDequeue(out var ignore);
+                                    var s = BitConverter.ToString(ignore.Data);
+                                    _logger?.LogDebug($"SC: Ignore info: {ignore.Info}");
+                                    _logger?.LogDebug($"SC: As byte array: {s}");
                                 }
 
                                 if (_byteDataToBoard.TryDequeue(out var data))

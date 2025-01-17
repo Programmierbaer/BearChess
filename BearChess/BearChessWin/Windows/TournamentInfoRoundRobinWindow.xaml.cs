@@ -223,7 +223,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
-            _currentGameNumber++;
+           
             if (_currentGameNumber <= _totalGames)
             {
                 textBlockStatus.Text = $"{_rm.GetString("Game")} {_currentGameNumber} {_rm.GetString("Of")} {_totalGames}";
@@ -240,7 +240,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _canClose = true;
                 //
             }
-
+            _currentGameNumber++;
             textBlock1 = (TextBlock) gridDuel.Children.Cast<UIElement>()
                                              .Where(r => Grid.GetRow(r) == pairing[0] + 1)
                                              .Where(c => Grid.GetColumn(c) == 2)

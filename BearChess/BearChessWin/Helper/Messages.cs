@@ -9,7 +9,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public static MessageBoxResult Show(string messageBoxText, string caption,
             MessageBoxButton button, MessageBoxImage icon)
         {
-            if (bool.Parse(Configuration.Instance.GetConfigValue("blindUser", "false")))
+            if (Configuration.Instance.GetBoolValue("blindUser", false))
             {
                 var synthesizer = BearChessSpeech.Instance;
                 synthesizer.SpeakAsync(caption);

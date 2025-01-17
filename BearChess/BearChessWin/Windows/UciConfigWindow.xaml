@@ -96,7 +96,7 @@
                         <TextBlock DockPanel.Dock="Left" Margin="5" Text="Logo:" FontWeight="DemiBold"></TextBlock>
                         <TextBlock DockPanel.Dock="Left" Name="textBlockLogoFileName" Margin="0,5,5,5"></TextBlock>
                         <Button DockPanel.Dock="Right" Name="buttonLogoClear" Click="ButtonLogoClear_OnClick"
-                                BorderBrush="Transparent" Background="Transparent">
+                                BorderBrush="Transparent" Background="Transparent" Width="20">
                             <Image Source="../Assets/Icons/cancel.png" Width="16" Height="16"></Image>
                         </Button>
                         <Button DockPanel.Dock="Right" Name="buttonLogoFile" Click="ButtonLogoFile_OnClick"

@@ -165,5 +165,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockNumber.Text = currentValue;
             }
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            textBlockNumber.Focus();
+        }
     }
 }

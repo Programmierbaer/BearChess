@@ -115,6 +115,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public event EventHandler<EngineEventArgs> EngineEvent;
 
+        public int EnginesCount => _loadedEnginesControls.Count;
+
         public void CloseLogWindow()
         {
             _logWindow?.CloseLogWindow();
@@ -306,10 +308,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void SwitchColor()
         {
- //           _firstEngineName = string.Empty;
-            
-            EngineInfoUserControl whiteEngineInfoUserControl = stackPanelEngines.Children.Cast<EngineInfoUserControl>().FirstOrDefault(c => c.Color==Fields.COLOR_WHITE);
-            EngineInfoUserControl blackEngineInfoUserControl = stackPanelEngines.Children.Cast<EngineInfoUserControl>().FirstOrDefault(c => c.Color==Fields.COLOR_BLACK);
+ 
+            var whiteEngineInfoUserControl = stackPanelEngines.Children.Cast<EngineInfoUserControl>().FirstOrDefault(c => c.Color==Fields.COLOR_WHITE);
+            var blackEngineInfoUserControl = stackPanelEngines.Children.Cast<EngineInfoUserControl>().FirstOrDefault(c => c.Color==Fields.COLOR_BLACK);
             if (whiteEngineInfoUserControl != null)
             {
                 whiteEngineInfoUserControl.CurrentColor(Fields.COLOR_BLACK);
@@ -340,8 +341,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             LoadedUciEngine wEngine = null;
             LoadedUciEngine bEngine = null;
-            UciLoader.RECT whiteRect = new UciLoader.RECT() { Top = 0, Bottom = 0, Right = 0, Left = 0 };
-            UciLoader.RECT blackRect = new UciLoader.RECT() { Top = 0, Bottom = 0, Right = 0, Left = 0 };
+            var whiteRect = new UciLoader.RECT() { Top = 0, Bottom = 0, Right = 0, Left = 0 };
+            var blackRect = new UciLoader.RECT() { Top = 0, Bottom = 0, Right = 0, Left = 0 };
             foreach (var loadedUciEngine in _loadedEngines)
             {
              
@@ -360,8 +361,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     if (whiteRect.Top < blackRect.Top)
                     {
-                        UciLoader.RECT whiteRectNew = new UciLoader.RECT();
-                        UciLoader.RECT blackRectNew = new UciLoader.RECT();
+                        var whiteRectNew = new UciLoader.RECT();
+                        var blackRectNew = new UciLoader.RECT();
                         whiteRectNew.Top = blackRect.Top;
                         whiteRectNew.Bottom = whiteRect.Bottom - whiteRect.Top + whiteRectNew.Top;
                         whiteRectNew.Left = whiteRect.Left;
@@ -835,7 +836,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                     : uciInfo.IsChessComputer
                                         ? new UciLoader(uciInfo, fileLogger, chessBoard, uciInfo.Name)
                                         : new UciLoader(uciInfo, fileLogger, _configuration, lookForBookMoves);
-                    if (uciLoader.isLoaded)
+                    if (uciLoader.IsLoaded)
                     {
                         break;
                     }
@@ -843,7 +844,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _fileLogger?.LogError($"Could not load engine {uciInfo.Name}. Try again {i} of 3 ");
                 }
 
-                if (uciLoader == null || !uciLoader.isLoaded)
+                if (uciLoader == null || !uciLoader.IsLoaded)
                 {
                     _fileLogger?.LogError($"Could not load engine {uciInfo.Name}. Give up ");
                     return false;
