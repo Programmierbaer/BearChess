@@ -1,0 +1,135 @@
+
+2025-01-18T21:34:37.9909652Z Info:    Start BearChess v1.1.0.0 18.01.2025 21:12:46 Development
+2025-01-18T21:34:37.9939656Z Info:    Speech available: True
+2025-01-18T21:34:37.9939656Z Info:    Voices:
+2025-01-18T21:34:38.0370531Z Info:      Microsoft Hedda Desktop - German
+2025-01-18T21:34:38.0370531Z Info:      Microsoft Zira Desktop - English (United States)
+2025-01-18T21:34:38.0380515Z Debug:   Read all board definitions from 'C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\board'
+2025-01-18T21:34:38.0380515Z Info:      0 boards read
+2025-01-18T21:34:38.0380515Z Debug:   Read all pieces definitions from 'C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\pieces'
+2025-01-18T21:34:38.0380515Z Info:      0 pieces read
+2025-01-18T21:34:38.1160764Z Info:    Reading installed engines from C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci 
+2025-01-18T21:34:38.1160764Z Info:      File: C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uci5EFDC788C1354A02B46816D584EE0D1B\uci5EFDC788C1354A02B46816D584EE0D1B.uci 
+2025-01-18T21:34:38.1250854Z Info:        Engine: Fruit 2.3.1 BearChess 
+2025-01-18T21:34:38.1250854Z Info:      File: C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uci786394AR61D34D84AC17D8E80BBB70B3\uci786394AR61D34D84AC17D8E80BBB70B3.uci 
+2025-01-18T21:34:38.1260843Z Warning:   Engine file C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\Wasp700-windows-ancient.exe not found
+2025-01-18T21:34:38.1260843Z Info:      File: C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uciCCF089128BFD4C57881D3D85B804F5A5\uciCCF089128BFD4C57881D3D85B804F5A5.uci 
+2025-01-18T21:34:38.1260843Z Info:        Engine: Spike 1.4 Internal BearChess 
+2025-01-18T21:34:38.1260843Z Info:      File: C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uciE7E6DD5EC01E4CBC808A77AC7201AF7E\uciE7E6DD5EC01E4CBC808A77AC7201AF7E.uci 
+2025-01-18T21:34:38.1270858Z Info:        Engine: Stockfish 13 BearChess 
+2025-01-18T21:34:38.1270858Z Info:      File: C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uciF4CB8D89254F4891A3E7F7D4209C3F55\uciF4CB8D89254F4891A3E7F7D4209C3F55.uci 
+2025-01-18T21:34:38.1270858Z Info:        Engine: Spike 1.4 BearChess 
+2025-01-18T21:34:38.1270858Z Info:     4 installed engines read
+2025-01-18T21:34:38.1270858Z Warning:  1 engines could not read
+2025-01-18T21:34:38.1362296Z Info:    Read installed books...
+2025-01-18T21:34:38.1362296Z Info:      File C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\book\bk20F7AC5489F347C7A8D7C87492B67BA5.book
+2025-01-18T21:34:38.1362296Z Info:       Add book C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\bk20F7AC5489F347C7A8D7C87492B67BA5\Perfect2023.bin as Perfect 2023 Polyglot
+2025-01-18T21:34:38.1372369Z Info:      File C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\book\bkBE73C64DBAC142FA8F89BE74B3E75CDD.book
+2025-01-18T21:34:38.1372369Z Info:       Add book C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\bkBE73C64DBAC142FA8F89BE74B3E75CDD\Perfect2023.ctg as Perfect 2023
+2025-01-18T21:34:38.1372369Z Info:     2 books read
+2025-01-18T21:34:42.6718223Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:34:42.6718223Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:34:46.9513911Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:34:46.9513911Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:34:51.2326133Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:34:51.2326133Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:34:55.5179560Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:34:55.5179560Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:34:59.8178194Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:34:59.8178194Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:04.1006808Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:04.1006808Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:07.5210932Z Debug:   StartANewGame Repaint board
+2025-01-18T21:35:08.3868012Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:08.3868012Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:12.6871467Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:12.6871467Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:16.9822614Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:16.9822614Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:21.2742331Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:21.2742331Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:25.5542457Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:25.5542457Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:29.8311878Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:29.8311878Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:30.4165907Z Debug:   ChessBoardUc MakeMoveEvent 35-55
+2025-01-18T21:35:30.4316064Z Debug:   Receive move from GUI: E2-E4
+2025-01-18T21:35:34.1405141Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:34.1405141Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:38.4289919Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:38.4289919Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:41.5638946Z Debug:   ChessBoardUc MakeMoveEvent 85-65
+2025-01-18T21:35:41.5638946Z Debug:   Receive move from GUI: E7-E5
+2025-01-18T21:35:42.7069913Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:42.7069913Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:47.0194578Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:47.0194578Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:51.3010489Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:51.3010489Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:55.5929184Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:55.5929184Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:35:59.8873169Z Error:   Art der Ausnahme: System.Net.Sockets.SocketException
+2025-01-18T21:35:59.8873169Z Error:   Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte 127.0.0.1:51111
+   bei System.Net.Sockets.TcpClient..ctor(String hostname, Int32 port)
+   bei www.SoLaNoSoft.com.BearChess.BearChessCommunication.BearChessClient.SendKeepConnection() in C:\Users\larsn\source\repos\BearChess\BearChess\BearChessCommunication\BearChessClient.cs:Zeile 158.
+2025-01-18T21:36:04.3746562Z Debug:   BCC: Waiting for answer...
+2025-01-18T21:36:08.0341248Z Debug:   BCC: Received: ACK#e3f4d772cbd84ca8a3d2c95c0504a62a
+2025-01-18T21:36:08.2418309Z Debug:   BCC: Waiting for answer...
+2025-01-18T21:36:08.2429907Z Debug:   BCC: Received: ACK#
+2025-01-18T21:36:08.4451077Z Debug:   BCC: Waiting for answer...
+2025-01-18T21:36:08.4451077Z Debug:   BCC: Received: ACK#
+2025-01-18T21:36:08.6601469Z Debug:   BCC: Waiting for answer...
+2025-01-18T21:36:08.6601469Z Debug:   BCC: Received: ACK#
+2025-01-18T21:36:24.7404386Z Debug:   ChessBoardUc MakeMoveEvent 92-27
+2025-01-18T21:36:26.4247247Z Debug:   ChessBoardUc MakeMoveEvent 27-46
+2025-01-18T21:36:26.4247247Z Debug:   Receive move from GUI: G1-F3
+2025-01-18T21:36:26.4327176Z Debug:   BCC: Waiting for answer...
+2025-01-18T21:36:26.4337208Z Debug:   BCC: Received: ACK#
+2025-01-18T21:36:28.5465267Z Debug:   ChessBoardUc MakeMoveEvent 92-73
+2025-01-18T21:36:28.5465267Z Debug:   Receive move from GUI: B8-C6
+2025-01-18T21:36:28.6544483Z Debug:   BCC: Waiting for answer...
+2025-01-18T21:36:28.6544483Z Debug:   BCC: Received: ACK#
+2025-01-18T21:37:10.5331330Z Debug:   ChessBoardUc MakeMoveEvent 46-65
+2025-01-18T21:37:10.5331330Z Debug:   Receive move from GUI: F3-E5
+2025-01-18T21:37:10.5787318Z Debug:   BCC: Waiting for answer...
+2025-01-18T21:37:10.5802202Z Debug:   BCC: Received: ACK#
+2025-01-18T21:37:13.9330094Z Debug:   ChessBoardUc MakeMoveEvent 73-65
+2025-01-18T21:37:13.9330094Z Debug:   Receive move from GUI: C6-E5
+2025-01-18T21:37:14.0663236Z Debug:   BCC: Waiting for answer...
+2025-01-18T21:37:14.0663236Z Debug:   BCC: Received: ACK#

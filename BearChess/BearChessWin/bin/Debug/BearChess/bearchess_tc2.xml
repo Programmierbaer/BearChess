@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TimeControl xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <TimeControlType>TimePerGame</TimeControlType>
+  <Value1>5</Value1>
+  <Value2>0</Value2>
+  <HumanValue>0</HumanValue>
+  <WaitForMoveOnBoard>true</WaitForMoveOnBoard>
+  <AverageTimInSec>false</AverageTimInSec>
+  <AllowTakeBack>false</AllowTakeBack>
+  <TournamentMode>false</TournamentMode>
+  <SeparateControl>false</SeparateControl>
+</TimeControl>

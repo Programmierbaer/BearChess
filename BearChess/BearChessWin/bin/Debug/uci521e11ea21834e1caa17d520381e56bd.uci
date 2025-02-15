@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UciInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>uci521e11ea21834e1caa17d520381e56bd</Id>
+  <Name>Komodo 10 64-bit</Name>
+  <Author>Don Dailey, Larry Kaufman, Mark Lefler</Author>
+  <Options>
+    <string>option name Threads type spin default 1 min 1 max 64</string>
+    <string>option name Ponder type check default true</string>
+    <string>option name Hash type spin default 128 min 1 max 65536</string>
+    <string>option name Clear Hash type button</string>
+    <string>option name Table Memory type spin default 128 min 1 max 1024</string>
+    <string>option name MultiPV type spin default 1 min 1 max 218</string>
+    <string>option name OwnBook type check default true</string>
+    <string>option name Book File type string default komodo.bin</string>
+    <string>option name Best Book Line type check default false</string>
+    <string>option name Log File type string default &lt;empty&gt;</string>
+    <string>option name Hash File Name type string default &lt;empty&gt;</string>
+    <string>option name Save Hash to File type button</string>
+    <string>option name Load Hash from File type button</string>
+    <string>option name UCI_Chess960 type check default false</string>
+    <string>option name UCI_AnalyseMode type check default false</string>
+    <string>option name Use LMR type check default true</string>
+    <string>option name Null Move Pruning type check default true</string>
+    <string>option name Minimal Reporting type check default false</string>
+    <string>option name Suppress type spin default 0 min 0 max 200</string>
+    <string>option name Overhead ms type spin default 30 min 0 max 10000</string>
+    <string>option name Time Usage type spin default 0 min -9 max 9</string>
+    <string>option name Use Syzygy type check default true</string>
+    <string>option name SyzygyPath type string default &lt;empty&gt;</string>
+    <string>option name Syzygy Probe Depth type spin default 2 min 0 max 99</string>
+    <string>option name Syzygy Probe Limit type spin default 6 min 0 max 6</string>
+    <string>option name Syzygy 50 Move Rule type check default true</string>
+    <string>option name King Safety type spin default 65 min 0 max 200</string>
+    <string>option name Selectivity type spin default 131 min 10 max 200</string>
+    <string>option name Reduction type spin default 0 min -1000 max 150</string>
+    <string>option name Dynamism type spin default 110 min 0 max 200</string>
+    <string>option name Contempt type spin default 10 min -500 max 500</string>
+    <string>option name White Contempt type check default false</string>
+    <string>option name Magnify type spin default 88 min 0 max 200</string>
+  </Options>
+  <FileName>D:\engines\komodo-10_ae4bdf\Windows\komodo-10-64bit.exe</FileName>
+  <Valid>true</Valid>
+  <OpeningBook />
+  <OptionValues>
+    <string>setoption name Threads value 1</string>
+    <string>setoption name Ponder value true</string>
+    <string>setoption name Hash value 128</string>
+    <string>setoption name Table Memory value 128</string>
+    <string>setoption name MultiPV value 1</string>
+    <string>setoption name OwnBook value true</string>
+    <string>setoption name Best Book Line value false</string>
+    <string>setoption name Hash File Name value 128</string>
+    <string>setoption name UCI_Chess960 value false</string>
+    <string>setoption name UCI_AnalyseMode value false</string>
+    <string>setoption name Use LMR value true</string>
+    <string>setoption name Null Move Pruning value true</string>
+    <string>setoption name Minimal Reporting value false</string>
+    <string>setoption name Suppress value 0</string>
+    <string>setoption name Overhead ms value 30</string>
+    <string>setoption name Time Usage value 0</string>
+    <string>setoption name Use Syzygy value true</string>
+    <string>setoption name Syzygy Probe Depth value 2</string>
+    <string>setoption name Syzygy Probe Limit value 6</string>
+    <string>setoption name Syzygy 50 Move Rule value true</string>
+    <string>setoption name King Safety value 65</string>
+    <string>setoption name Selectivity value 10</string>
+    <string>setoption name Reduction value 0</string>
+    <string>setoption name Dynamism value 110</string>
+    <string>setoption name Contempt value 10</string>
+    <string>setoption name White Contempt value false</string>
+    <string>setoption name Magnify value 88</string>
+  </OptionValues>
+</UciInfo>

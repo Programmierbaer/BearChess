@@ -1,0 +1,136 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBTLETools\\BearChessBTLETools.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\BearChessBaseLib.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\BearChessBaseLib.csproj",
+        "projectName": "BearChessBaseLib",
+        "projectPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\BearChessBaseLib.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
+      }
+    },
+    "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBTLETools\\BearChessBTLETools.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBTLETools\\BearChessBTLETools.csproj",
+        "projectName": "BearChessBTLETools",
+        "projectPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBTLETools\\BearChessBTLETools.csproj",
+        "packagesPath": "C:\\Users\\larsn\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBTLETools\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "UsingMicrosoftNETSdk": false,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\larsn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "projectReferences": {
+              "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\BearChessBaseLib.csproj": {
+                "projectPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\BearChessBaseLib.csproj"
+              },
+              "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessCommunication\\BearChessCommunication.csproj": {
+                "projectPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessCommunication\\BearChessCommunication.csproj"
+              },
+              "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\HidDriver\\HidDriver.csproj": {
+                "projectPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\HidDriver\\HidDriver.csproj"
+              }
+            }
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "dependencies": {
+            "Microsoft.Windows.SDK.Contracts": {
+              "target": "Package",
+              "version": "[10.0.26100.1742, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-arm64": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    },
+    "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessCommunication\\BearChessCommunication.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessCommunication\\BearChessCommunication.csproj",
+        "projectName": "BearChessCommunication",
+        "projectPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessCommunication\\BearChessCommunication.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net48": {
+            "projectReferences": {
+              "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\BearChessBaseLib.csproj": {
+                "projectPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\BearChessBaseLib.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
+      }
+    },
+    "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\HidDriver\\HidDriver.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\HidDriver\\HidDriver.csproj",
+        "projectName": "HidDriver",
+        "projectPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\HidDriver\\HidDriver.csproj",
+        "UsingMicrosoftNETSdk": false,
+        "frameworks": {
+          "net48": {
+            "projectReferences": {
+              "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\BearChessBaseLib.csproj": {
+                "projectPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\BearChessBaseLib.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
+      }
+    }
+  }
+}

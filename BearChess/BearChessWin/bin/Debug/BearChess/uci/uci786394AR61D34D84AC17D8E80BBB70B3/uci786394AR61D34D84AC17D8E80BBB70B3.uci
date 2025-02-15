@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UciInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>uci786394AR61D34D84AC17D8E80BBB70B3</Id>
+  <Name>Wasp 7.00 BearChess</Name>
+  <OriginName>Wasp 7.00</OriginName>
+  <Author>John Stanback</Author>
+  <Options>
+    <string>option name ConfigFilePath type string default </string>
+    <string>option name Hash type spin default 64 min 0 max 32768</string>
+    <string>option name Threads type spin default 1 min 1 max 160</string>
+    <string>option name Clear Hash type button</string>
+    <string>option name NN_File type string default embedded</string>
+    <string>option name Use_NN_eval type check default true</string>
+    <string>option name OwnBook type check default false</string>
+    <string>option name OwnBook_File type string default </string>
+    <string>option name OwnBook_Depth type spin default 24 min 0 max 60</string>
+    <string>option name OwnBook2_File type string default </string>
+    <string>option name OwnBook2_Depth type spin default 0 min 0 max 60</string>
+    <string>option name OwnBook_Variety type spin default 25 min 0 max 100</string>
+    <string>option name SyzygyPath type string default </string>
+    <string>option name SyzygyProbeDepth6 type spin default 1 min -5 max 100</string>
+    <string>option name Log type check default false</string>
+    <string>option name Ponder type check default true</string>
+    <string>option name MultiPV type spin default 1 min 1 max 255</string>
+    <string>option name UCI_Chess960 type check default false</string>
+    <string>option name MoveOverhead type spin default 50 min 0 max 1000</string>
+    <string>option name UCI_LimitStrength type check default false</string>
+    <string>option name UCI_Elo type spin default 3333 min 1500 max 3333</string>
+    <string>option name UCI_Opponent type string default </string>
+    <string>option name Contempt type spin default 0 min -150 max 150</string>
+    <string>option name Selectivity type spin default 100 min 0 max 200</string>
+  </Options>
+  <FileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\Wasp700-windows-ancient.exe</FileName>
+  <LogoFileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\wasp_logo_small.jpg</LogoFileName>
+  <Valid>true</Valid>
+  <OpeningBook />
+  <OpeningBookVariation>1</OpeningBookVariation>
+  <OptionValues>
+    <string>setoption name Hash value 64</string>
+    <string>setoption name Threads value 1</string>
+    <string>setoption name NN_File value embedded</string>
+    <string>setoption name Use_NN_eval value true</string>
+    <string>setoption name OwnBook value true</string>
+    <string>setoption name OwnBook_File value C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\wasp_book_20200514.bin</string>
+    <string>setoption name OwnBook_Depth value 24</string>
+    <string>setoption name OwnBook2_Depth value 0</string>
+    <string>setoption name OwnBook_Variety value 25</string>
+    <string>setoption name SyzygyProbeDepth6 value 1</string>
+    <string>setoption name Log value false</string>
+    <string>setoption name Ponder value true</string>
+    <string>setoption name MultiPV value 1</string>
+    <string>setoption name UCI_Chess960 value false</string>
+    <string>setoption name MoveOverhead value 50</string>
+    <string>setoption name UCI_LimitStrength value false</string>
+    <string>setoption name UCI_Elo value 3333</string>
+    <string>setoption name Contempt value 0</string>
+    <string>setoption name Selectivity value 100</string>
+  </OptionValues>
+  <AdjustStrength>false</AdjustStrength>
+  <CommandParameter />
+  <WaitForStart>false</WaitForStart>
+  <WaitSeconds>0</WaitSeconds>
+  <ValidForAnalysis>true</ValidForAnalysis>
+  <ChangeDateTime>0001-01-01T00:00:00</ChangeDateTime>
+  <IsPlayer>false</IsPlayer>
+  <IsChessServer>false</IsChessServer>
+  <IsChessComputer>false</IsChessComputer>
+  <IsActive>true</IsActive>
+  <IsBuddy>false</IsBuddy>
+  <IsProbing>false</IsProbing>
+  <IsInternalBearChessEngine>false</IsInternalBearChessEngine>
+  <IsInternalChessEngine>true</IsInternalChessEngine>
+  <IsMessChessEngine>false</IsMessChessEngine>
+  <IsMessChessNewEngine>false</IsMessChessNewEngine>
+</UciInfo>

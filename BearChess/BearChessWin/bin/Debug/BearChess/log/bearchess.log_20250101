@@ -1,0 +1,25 @@
+
+2025-01-01T20:13:23.6268222Z Info:    Start BearChess v1.1.0.0 01.01.2025 20:12:09 Development
+2025-01-01T20:13:23.6288444Z Info:    Speech available: True
+2025-01-01T20:13:23.6308526Z Debug:   Read all board definitions from 'C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\board'
+2025-01-01T20:13:23.6308526Z Info:    0 boards read
+2025-01-01T20:13:23.6308526Z Debug:   Read all pieces definitions from 'C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\pieces'
+2025-01-01T20:13:23.6308526Z Info:    0 pieces read
+2025-01-01T20:13:23.6930731Z Info:    Reading installed engines from C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci 
+2025-01-01T20:13:23.6941424Z Info:      Reading C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uci5EFDC788C1354A02B46816D584EE0D1B\uci5EFDC788C1354A02B46816D584EE0D1B.uci 
+2025-01-01T20:13:23.7041497Z Info:      Add Fruit 2.3.1 BearChess 
+2025-01-01T20:13:23.7041497Z Info:      Reading C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uci786394AR61D34D84AC17D8E80BBB70B3\uci786394AR61D34D84AC17D8E80BBB70B3.uci 
+2025-01-01T20:13:23.7061496Z Info:      Add Wasp 7.00 BearChess 
+2025-01-01T20:13:23.7061496Z Info:      Reading C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uciCCF089128BFD4C57881D3D85B804F5A5\uciCCF089128BFD4C57881D3D85B804F5A5.uci 
+2025-01-01T20:13:23.7071488Z Info:      Add Spike 1.4 Internal BearChess 
+2025-01-01T20:13:23.7071488Z Info:      Reading C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uciE7E6DD5EC01E4CBC808A77AC7201AF7E\uciE7E6DD5EC01E4CBC808A77AC7201AF7E.uci 
+2025-01-01T20:13:23.7081495Z Info:      Add Stockfish 13 BearChess 
+2025-01-01T20:13:23.7081495Z Info:      Reading C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\uci\uciF4CB8D89254F4891A3E7F7D4209C3F55\uciF4CB8D89254F4891A3E7F7D4209C3F55.uci 
+2025-01-01T20:13:23.7091502Z Info:      Add Spike 1.4 BearChess 
+2025-01-01T20:13:23.7091502Z Info:    7 installed engines read
+2025-01-01T20:13:23.7206086Z Info:    Read installed books...
+2025-01-01T20:13:23.7206086Z Info:      Reading C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\book\bk20F7AC5489F347C7A8D7C87492B67BA5.book
+2025-01-01T20:13:23.7226152Z Info:      Add book C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\bk20F7AC5489F347C7A8D7C87492B67BA5\Perfect2023.bin as Perfect 2023 Polyglot
+2025-01-01T20:13:23.7226152Z Info:      Reading C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\book\bkBE73C64DBAC142FA8F89BE74B3E75CDD.book
+2025-01-01T20:13:23.7238918Z Info:      Add book C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\bkBE73C64DBAC142FA8F89BE74B3E75CDD\Perfect2023.ctg as Perfect 2023
+2025-01-01T20:13:23.7238918Z Info:    2 books read

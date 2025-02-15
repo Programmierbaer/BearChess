@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UciInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>ucia5e660aaf652412b99efe854107d072f</Id>
+  <Name>Hermann 2.8</Name>
+  <Author>Volker Annuss</Author>
+  <Options>
+    <string>option name Hash type spin default 3 min 1 max 32767</string>
+    <string>option name Ponder type check default true</string>
+    <string>option name OwnBook type check default true</string>
+    <string>option name Clear Hash type button</string>
+    <string>option name MultiPV type spin default 1 min 1 max 255</string>
+    <string>option name UCI_Chess960 type check default false</string>
+    <string>option name BookFile type string default Hermann.opn</string>
+    <string>option name Opponent type string default unknown</string>
+    <string>option name NumberOfProcessors type spin default 1 min 1 max 8</string>
+    <string>option name NeuroMaterial type spin default 40 min 0 max 100</string>
+    <string>option name NeuroWidth type spin default 800 min 1 max 10000</string>
+    <string>option name MaterialFile type string default (internal)</string>
+    <string>option name TimeLogfile type string default nul:</string>
+  </Options>
+  <FileName>D:\Program Files (x86)\Arena\Engines\Hermann\Hermann28_64.exe</FileName>
+  <Valid>true</Valid>
+  <OpeningBook />
+  <OptionValues>
+    <string>setoption name Hash value 3</string>
+    <string>setoption name Ponder value true</string>
+    <string>setoption name OwnBook value true</string>
+    <string>setoption name MultiPV value 1</string>
+    <string>setoption name UCI_Chess960 value false</string>
+    <string>setoption name Opponent value icg</string>
+    <string>setoption name NumberOfProcessors value 1</string>
+    <string>setoption name NeuroMaterial value 40</string>
+    <string>setoption name NeuroWidth value 800</string>
+  </OptionValues>
+</UciInfo>

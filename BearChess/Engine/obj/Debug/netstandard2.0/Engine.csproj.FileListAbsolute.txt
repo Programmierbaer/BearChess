@@ -1,0 +1,13 @@
+D:\source\Repos\BearChess\BearChess\Engine\bin\Debug\netstandard2.0\Engine.deps.json
+D:\source\Repos\BearChess\BearChess\Engine\bin\Debug\netstandard2.0\Engine.dll
+D:\source\Repos\BearChess\BearChess\Engine\bin\Debug\netstandard2.0\Engine.pdb
+D:\source\Repos\BearChess\BearChess\Engine\bin\Debug\netstandard2.0\BearChessBase.dll
+D:\source\Repos\BearChess\BearChess\Engine\bin\Debug\netstandard2.0\BearChessBase.pdb
+D:\source\Repos\BearChess\BearChess\Engine\obj\Debug\netstandard2.0\Engine.csproj.AssemblyReference.cache
+D:\source\Repos\BearChess\BearChess\Engine\obj\Debug\netstandard2.0\Engine.AssemblyInfoInputs.cache
+D:\source\Repos\BearChess\BearChess\Engine\obj\Debug\netstandard2.0\Engine.AssemblyInfo.cs
+D:\source\Repos\BearChess\BearChess\Engine\obj\Debug\netstandard2.0\Engine.csproj.CoreCompileInputs.cache
+D:\source\Repos\BearChess\BearChess\Engine\obj\Debug\netstandard2.0\Engine.csproj.CopyComplete
+D:\source\Repos\BearChess\BearChess\Engine\obj\Debug\netstandard2.0\Engine.dll
+D:\source\Repos\BearChess\BearChess\Engine\obj\Debug\netstandard2.0\Engine.pdb
+D:\source\Repos\BearChess\BearChess\Engine\obj\Debug\netstandard2.0\Engine.GeneratedMSBuildEditorConfig.editorconfig

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BearChess>
+  <Config Title="DatabaseFile" Value="C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\BearChess\db\bearchess.db" />
+  <Config Title="MainWinLeft" Value="1509" />
+  <Config Title="MainWinTop" Value="460" />
+  <Config Title="MainWinWidth" Value="600" />
+  <Config Title="MainWinHeight" Value="680" />
+  <Config Title="ChessBoardUcGraphicsChessBackgroundFieldSize" Value="57.8" />
+  <Config Title="ChessBoardUcGraphicsChessFieldSize" Value="50.8" />
+  <Config Title="ChessBoardUcGraphicsControlButtonSize" Value="42.8" />
+  <Config Title="BookWindowTop" Value="52" />
+  <Config Title="BookWindowLeft" Value="52" />
+  <Config Title="RelaxedMode" Value="False" />
+  <Config Title="LastBlackEngine" Value="" />
+  <Config Title="LastWhiteEngine" Value="" />
+  <Config Title="BCClientToken" Value="e3f4d772cbd84ca8a3d2c95c0504a62a" />
+  <Config Title="ChessClockSimpleWindowWeißTop" Value="310" />
+  <Config Title="ChessClockSimpleWindowWeißLeft" Value="1509" />
+  <Config Title="ChessClockSimpleWindowSchwarzTop" Value="310" />
+  <Config Title="ChessClockSimpleWindowSchwarzLeft" Value="1709" />
+  <Config Title="MoveListPlainWindowTop" Value="480" />
+  <Config Title="MoveListPlainWindowLeft" Value="2119" />
+  <Config Title="MoveListPlainWindowHeight" Value="340" />
+  <Config Title="MoveListPlainWindowWidth" Value="300" />
+  <Config Title="MoveListPlainWindowFontSize" Value="18" />
+  <Config Title="extendMoveList" Value="false" />
+  <Config Title="extendFull" Value="false" />
+  <Config Title="extendComments" Value="false" />
+</BearChess>

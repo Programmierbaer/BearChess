@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UciInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>uciCCF089128BFD4C57881D3D85B804F5A5</Id>
+  <Name>Spike 1.4 Internal BearChess</Name>
+  <OriginName>Spike 1.4</OriginName>
+  <Author>Ralf Schäfer und Volker Böhm</Author>
+  <Options>
+    <string>option name UCI_ShowCurrLine type check default false</string>
+    <string>option name UCI_ShowRefutations type check default false</string>
+    <string>option name MultiPV type spin default 1 min 1 max 99</string>
+    <string>option name CPUs type spin default 1 min 1 max 12</string>
+    <string>option name OwnBook type check default true</string>
+    <string>option name Hash type spin default 32 min 2 max 1024</string>
+    <string>option name Logfile type check default false</string>
+    <string>option name Position Learn type check default false</string>
+    <string>option name Position Learn Filename type string default </string>
+    <string>option name Book Learn type check default false</string>
+    <string>option name Book Learn Filename type string default </string>
+    <string>option name NalimovPath type string default </string>
+    <string>option name NalimovCache type spin min 1 max 2048 default 4</string>
+    <string>option name EGTB depth type combo default desktop var never var rootonly var laptop var desktop var server var usb var allways</string>
+    <string>option name UCI_Chess960 type check default false</string>
+    <string>option name UCI_LimitStrength type check default false</string>
+    <string>option name UCI_Elo type spin default 1300 min 1100 max 2500</string>
+    <string>option name UCI_EngineAbout type string default Spike by Ralf Schäfer &amp; Volker Böhm, http:\spike.lazypics.de</string>
+  </Options>
+  <FileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uciCCF089128BFD4C57881D3D85B804F5A5\Spike1.4.exe</FileName>
+  <LogoFileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uciCCF089128BFD4C57881D3D85B804F5A5\spike.bmp</LogoFileName>
+  <Valid>true</Valid>
+  <OpeningBook />
+  <OpeningBookVariation>1</OpeningBookVariation>
+  <OptionValues>
+    <string>setoption name UCI_ShowCurrLine value false</string>
+    <string>setoption name UCI_ShowRefutations value false</string>
+    <string>setoption name MultiPV value 1</string>
+    <string>setoption name CPUs value 1</string>
+    <string>setoption name OwnBook value true</string>
+    <string>setoption name Hash value 32</string>
+    <string>setoption name Logfile value false</string>
+    <string>setoption name Position Learn value false</string>
+    <string>setoption name Book Learn value false</string>
+    <string>setoption name NalimovCache value 4</string>
+    <string>setoption name EGTB depth value desktop</string>
+    <string>setoption name UCI_Chess960 value false</string>
+    <string>setoption name UCI_LimitStrength value false</string>
+    <string>setoption name UCI_Elo value 1300</string>
+  </OptionValues>
+  <AdjustStrength>false</AdjustStrength>
+  <CommandParameter />
+  <WaitForStart>false</WaitForStart>
+  <WaitSeconds>0</WaitSeconds>
+  <ValidForAnalysis>true</ValidForAnalysis>
+  <ChangeDateTime>0001-01-01T00:00:00</ChangeDateTime>
+  <IsPlayer>false</IsPlayer>
+  <IsChessServer>false</IsChessServer>
+  <IsChessComputer>false</IsChessComputer>
+  <IsActive>true</IsActive>
+  <IsBuddy>false</IsBuddy>
+  <IsProbing>false</IsProbing>
+  <IsInternalBearChessEngine>true</IsInternalBearChessEngine>
+  <IsInternalChessEngine>false</IsInternalChessEngine>
+  <IsMessChessEngine>false</IsMessChessEngine>
+  <IsMessChessNewEngine>false</IsMessChessNewEngine>
+</UciInfo>

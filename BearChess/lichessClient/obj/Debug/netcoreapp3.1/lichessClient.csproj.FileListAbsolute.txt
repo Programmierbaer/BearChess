@@ -1,0 +1,9 @@
+D:\source\Repos\BearChess\BearChess\lichessClient\bin\Debug\netcoreapp3.1\lichessClient.deps.json
+D:\source\Repos\BearChess\BearChess\lichessClient\bin\Debug\netcoreapp3.1\lichessClient.dll
+D:\source\Repos\BearChess\BearChess\lichessClient\bin\Debug\netcoreapp3.1\lichessClient.pdb
+D:\source\Repos\BearChess\BearChess\lichessClient\obj\Debug\netcoreapp3.1\lichessClient.csprojAssemblyReference.cache
+D:\source\Repos\BearChess\BearChess\lichessClient\obj\Debug\netcoreapp3.1\lichessClient.AssemblyInfoInputs.cache
+D:\source\Repos\BearChess\BearChess\lichessClient\obj\Debug\netcoreapp3.1\lichessClient.AssemblyInfo.cs
+D:\source\Repos\BearChess\BearChess\lichessClient\obj\Debug\netcoreapp3.1\lichessClient.csproj.CoreCompileInputs.cache
+D:\source\Repos\BearChess\BearChess\lichessClient\obj\Debug\netcoreapp3.1\lichessClient.dll
+D:\source\Repos\BearChess\BearChess\lichessClient\obj\Debug\netcoreapp3.1\lichessClient.pdb

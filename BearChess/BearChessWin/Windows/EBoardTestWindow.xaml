@@ -1,0 +1,31 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.EBoardTestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        mc:Ignorable="d"
+        Title="EBoardTestWindow" Height="600" Width="600">
+    <StackPanel Margin="5">
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <Button Name="buttonConnectCertabo" Margin="5" Click="ButtonConnectCertabo_OnClick">Connect Certabo</Button>
+            <Button Name="buttonConnectMChessLink" Margin="5" Click="ButtonConnectMChessLink_OnClick">Connect MChessLink</Button>
+        </StackPanel>
+        <StackPanel>
+            <bearChessWin:GraphicsChessBoardUserControl x:Name="boardUserControl"></bearChessWin:GraphicsChessBoardUserControl>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Margin="5">Fields:</TextBlock>
+            <TextBox Margin="5" Name="textBoxFields" Width="200"></TextBox>
+            <Button Name="buttonGo" Margin="5" Click="ButtonGo_OnClick">Send</Button>
+            <Button Name="buttonAllOff" Margin="5" Click="ButtonAllOff_OnClick">All Off</Button>
+            <Button Name="buttonAllOn" Margin="5" Click="ButtonAllOn_OnClick">All On</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Margin="5">Fen:</TextBlock>
+            <TextBox Name="textBoxFen" Margin="5" Width="300"/>
+            <TextBlock Margin="5">Move:</TextBlock>
+            <TextBox Margin="5" Name="textBoxMove" Width="90"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UciInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>uciE7E6DD5EC01E4CBC808A77AC7201AF7E</Id>
+  <Name>Stockfish 13 BearChess</Name>
+  <OriginName>Stockfish 13</OriginName>
+  <Author>the Stockfish developers (see AUTHORS file)</Author>
+  <Options>
+    <string>option name Debug Log File type string default </string>
+    <string>option name Contempt type spin default 24 min -100 max 100</string>
+    <string>option name Analysis Contempt type combo default Both var Off var White var Black var Both</string>
+    <string>option name Threads type spin default 1 min 1 max 512</string>
+    <string>option name Hash type spin default 16 min 1 max 33554432</string>
+    <string>option name Clear Hash type button</string>
+    <string>option name Ponder type check default false</string>
+    <string>option name MultiPV type spin default 1 min 1 max 500</string>
+    <string>option name Skill Level type spin default 20 min 0 max 20</string>
+    <string>option name Move Overhead type spin default 10 min 0 max 5000</string>
+    <string>option name Slow Mover type spin default 100 min 10 max 1000</string>
+    <string>option name nodestime type spin default 0 min 0 max 10000</string>
+    <string>option name UCI_Chess960 type check default false</string>
+    <string>option name UCI_AnalyseMode type check default false</string>
+    <string>option name UCI_LimitStrength type check default false</string>
+    <string>option name UCI_Elo type spin default 1350 min 1350 max 2850</string>
+    <string>option name UCI_ShowWDL type check default false</string>
+    <string>option name SyzygyPath type string default &lt;empty&gt;</string>
+    <string>option name SyzygyProbeDepth type spin default 1 min 1 max 100</string>
+    <string>option name Syzygy50MoveRule type check default true</string>
+    <string>option name SyzygyProbeLimit type spin default 7 min 0 max 7</string>
+    <string>option name Use NNUE type check default true</string>
+    <string>option name EvalFile type string default nn-62ef826d1a6d.nnue</string>
+  </Options>
+  <FileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uciE7E6DD5EC01E4CBC808A77AC7201AF7E\stockfish_13_win_x64.exe</FileName>
+  <LogoFileName />
+  <Valid>true</Valid>
+  <OpeningBook />
+  <OpeningBookVariation>1</OpeningBookVariation>
+  <OptionValues>
+    <string>setoption name Contempt value 24</string>
+    <string>setoption name Analysis Contempt value Both</string>
+    <string>setoption name Threads value 1</string>
+    <string>setoption name Hash value 16</string>
+    <string>setoption name Ponder value false</string>
+    <string>setoption name MultiPV value 1</string>
+    <string>setoption name Skill Level value 20</string>
+    <string>setoption name Move Overhead value 10</string>
+    <string>setoption name Slow Mover value 100</string>
+    <string>setoption name nodestime value 0</string>
+    <string>setoption name UCI_Chess960 value false</string>
+    <string>setoption name UCI_AnalyseMode value false</string>
+    <string>setoption name UCI_LimitStrength value false</string>
+    <string>setoption name UCI_Elo value 1350</string>
+    <string>setoption name UCI_ShowWDL value false</string>
+    <string>setoption name SyzygyPath value &lt;empty&gt;</string>
+    <string>setoption name SyzygyProbeDepth value 1</string>
+    <string>setoption name Syzygy50MoveRule value true</string>
+    <string>setoption name SyzygyProbeLimit value 7</string>
+    <string>setoption name Use NNUE value true</string>
+    <string>setoption name EvalFile value nn-62ef826d1a6d.nnue</string>
+  </OptionValues>
+  <AdjustStrength>false</AdjustStrength>
+  <CommandParameter />
+  <WaitForStart>false</WaitForStart>
+  <WaitSeconds>0</WaitSeconds>
+  <ValidForAnalysis>true</ValidForAnalysis>
+  <ChangeDateTime>0001-01-01T00:00:00</ChangeDateTime>
+  <IsPlayer>false</IsPlayer>
+  <IsChessServer>false</IsChessServer>
+  <IsChessComputer>false</IsChessComputer>
+  <IsActive>true</IsActive>
+  <IsBuddy>false</IsBuddy>
+  <IsProbing>false</IsProbing>
+  <IsInternalBearChessEngine>false</IsInternalBearChessEngine>
+  <IsInternalChessEngine>true</IsInternalChessEngine>
+  <IsMessChessEngine>false</IsMessChessEngine>
+  <IsMessChessNewEngine>false</IsMessChessNewEngine>
+</UciInfo>
