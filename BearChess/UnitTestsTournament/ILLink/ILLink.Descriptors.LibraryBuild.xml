@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿<linker>
   <assembly fullname="System.Diagnostics.DiagnosticSource">
     <type fullname="System.Diagnostics.Metrics.MetricsEventSource">
@@ -6,3 +7,13 @@
     </type>
   </assembly>
 </linker>
+=======
+﻿<linker>
+  <assembly fullname="System.Diagnostics.DiagnosticSource">
+    <type fullname="System.Diagnostics.Metrics.MetricsEventSource">
+      <!-- Used by System.Private.CoreLib via reflection to init the EventSource -->
+      <method name="GetInstance" />
+    </type>
+  </assembly>
+</linker>
+>>>>>>> 8518a6af845115312447d910f9ab6fd242951937
