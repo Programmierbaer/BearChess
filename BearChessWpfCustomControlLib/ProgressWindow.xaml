@@ -1,0 +1,26 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWpfCustomControlLib.ProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWpfCustomControlLib"
+        mc:Ignorable="d" SizeToContent="Height" WindowStyle="ToolWindow" WindowStartupLocation="CenterOwner"
+        Title="Information" Height="270" Width="300" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" ></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Name="textBlockWait" Margin="20" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" FontWeight="DemiBold" VerticalAlignment="Center">Please wait...</TextBlock>
+        <ProgressBar Name="progressBar" Margin="20" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="20" ></ProgressBar>
+        <TextBlock Name="textBlockInfo" Margin="20" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" TextAlignment="Center"></TextBlock>
+        <Button Margin="5,5,5,5" HorizontalAlignment="Right" Grid.Column="0" Grid.Row="3" Name="buttonCancel" Click="buttonCancel_Click" Background="Transparent" BorderBrush="Transparent" >
+            <Image Source="Assets/Icons/cancel.png" Width="32" Height="32" />
+        </Button>
+    </Grid>
+</Window>

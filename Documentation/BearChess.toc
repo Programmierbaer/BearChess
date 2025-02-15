@@ -86,110 +86,111 @@
 \contentsline {subsubsection}{\numberline {12.10.3}Test your LED configuration}{97}{subsubsection.12.10.3}%
 \contentsline {subsubsection}{\numberline {12.10.4}Save your LED configuration}{97}{subsubsection.12.10.4}%
 \contentsline {subsubsection}{\numberline {12.10.5}Connect Chessnut Evo}{98}{subsubsection.12.10.5}%
-\contentsline {subsection}{\numberline {12.11}Connect Square Off Pro}{99}{subsection.12.11}%
-\contentsline {subsubsection}{\numberline {12.11.1}Verify position}{100}{subsubsection.12.11.1}%
-\contentsline {subsection}{\numberline {12.12}Connect ChessUp}{101}{subsection.12.12}%
-\contentsline {subsection}{\numberline {12.13}Configure House of Staunton}{102}{subsection.12.13}%
-\contentsline {subsubsection}{\numberline {12.13.1}Connect}{103}{subsubsection.12.13.1}%
-\contentsline {subsection}{\numberline {12.14}Configure NOVAG Citrine}{103}{subsection.12.14}%
-\contentsline {subsubsection}{\numberline {12.14.1}Connect}{104}{subsubsection.12.14.1}%
-\contentsline {subsubsection}{\numberline {12.14.2}Important information and restrictions}{104}{subsubsection.12.14.2}%
-\contentsline {subsection}{\numberline {12.15}Configure NOVAG UCB}{105}{subsection.12.15}%
-\contentsline {subsubsection}{\numberline {12.15.1}Connect}{106}{subsubsection.12.15.1}%
-\contentsline {subsubsection}{\numberline {12.15.2}Important information and restrictions}{106}{subsubsection.12.15.2}%
-\contentsline {subsection}{\numberline {12.16}Configure Saitek OSA}{107}{subsection.12.16}%
-\contentsline {subsubsection}{\numberline {12.16.1}Connect}{108}{subsubsection.12.16.1}%
-\contentsline {subsubsection}{\numberline {12.16.2}Important information and restrictions}{108}{subsubsection.12.16.2}%
-\contentsline {subsection}{\numberline {12.17}Switch side}{108}{subsection.12.17}%
-\contentsline {section}{\numberline {13}Play a game}{110}{section.13}%
-\contentsline {subsection}{\numberline {13.1}Select opponent}{111}{subsection.13.1}%
-\contentsline {subsection}{\numberline {13.2}Playing in relaxed mode}{112}{subsection.13.2}%
-\contentsline {subsection}{\numberline {13.3}Time control}{112}{subsection.13.3}%
-\contentsline {subsection}{\numberline {13.4}Tournament mode}{114}{subsection.13.4}%
-\contentsline {subsection}{\numberline {13.5}Allow to take a move back}{114}{subsection.13.5}%
-\contentsline {subsection}{\numberline {13.6}Extra time for human player}{114}{subsection.13.6}%
-\contentsline {subsection}{\numberline {13.7}Start the clock after the move is executed on the electronic board}{114}{subsection.13.7}%
-\contentsline {subsection}{\numberline {13.8}Start from}{115}{subsection.13.8}%
-\contentsline {subsection}{\numberline {13.9}Configuration for startup game}{115}{subsection.13.9}%
-\contentsline {subsection}{\numberline {13.10}Request for help}{115}{subsection.13.10}%
-\contentsline {section}{\numberline {14}Move list}{115}{section.14}%
-\contentsline {section}{\numberline {15}Pause and continue a game}{117}{section.15}%
-\contentsline {section}{\numberline {16}Force a move}{118}{section.16}%
-\contentsline {section}{\numberline {17}Switch side}{118}{section.17}%
-\contentsline {section}{\numberline {18}Easy start or restart of a game}{118}{section.18}%
-\contentsline {subsubsection}{\numberline {18.0.1}Continue a game}{119}{subsubsection.18.0.1}%
-\contentsline {subsubsection}{\numberline {18.0.2}Electronic chessboard}{119}{subsubsection.18.0.2}%
-\contentsline {subsection}{\numberline {18.1}Influence of BearChess in engine games}{120}{subsection.18.1}%
-\contentsline {section}{\numberline {19}Relaxed mode}{121}{section.19}%
-\contentsline {section}{\numberline {20}Analysis mode}{122}{section.20}%
-\contentsline {subsection}{\numberline {20.1}Free analyse}{123}{subsection.20.1}%
-\contentsline {subsection}{\numberline {20.2}With electronic chessboard}{123}{subsection.20.2}%
-\contentsline {subsection}{\numberline {20.3}Without electronic chessboard}{124}{subsection.20.3}%
-\contentsline {subsection}{\numberline {20.4}Analyse a game}{125}{subsection.20.4}%
-\contentsline {subsubsection}{\numberline {20.4.1}Analyse a loaded game}{125}{subsubsection.20.4.1}%
-\contentsline {subsubsection}{\numberline {20.4.2}Analyse a new game}{128}{subsubsection.20.4.2}%
-\contentsline {section}{\numberline {21}Duel}{129}{section.21}%
-\contentsline {subsection}{\numberline {21.1}Start a new duel}{130}{subsection.21.1}%
-\contentsline {subsubsection}{\numberline {21.1.1}Engine duel information}{130}{subsubsection.21.1.1}%
-\contentsline {subsection}{\numberline {21.2}Estimate ELO}{133}{subsection.21.2}%
-\contentsline {subsection}{\numberline {21.3}Manage duels}{134}{subsection.21.3}%
-\contentsline {subsubsection}{\numberline {21.3.1}Rename a duel}{135}{subsubsection.21.3.1}%
-\contentsline {subsubsection}{\numberline {21.3.2}Repeat a game}{135}{subsubsection.21.3.2}%
-\contentsline {section}{\numberline {22}Engine tournament}{136}{section.22}%
-\contentsline {subsection}{\numberline {22.1}Start a new engine tournament}{136}{subsection.22.1}%
-\contentsline {subsubsection}{\numberline {22.1.1}Engine tournament information}{139}{subsubsection.22.1.1}%
-\contentsline {subsection}{\numberline {22.2}Manage engine tournaments}{140}{subsection.22.2}%
-\contentsline {subsubsection}{\numberline {22.2.1}Rename a tournament}{141}{subsubsection.22.2.1}%
-\contentsline {subsubsection}{\numberline {22.2.2}Repeat a game}{141}{subsubsection.22.2.2}%
-\contentsline {subsubsection}{\numberline {22.2.3}Tournament information}{142}{subsubsection.22.2.3}%
-\contentsline {section}{\numberline {23}Setup position}{143}{section.23}%
-\contentsline {subsection}{\numberline {23.1}With support of an electronic chessboard}{143}{subsection.23.1}%
-\contentsline {subsection}{\numberline {23.2}Without support of an electronic chessboard}{144}{subsection.23.2}%
-\contentsline {section}{\numberline {24}Free Internet Chess Server (FICS)}{146}{section.24}%
-\contentsline {subsection}{\numberline {24.1}Configure FICS connection}{146}{subsection.24.1}%
-\contentsline {subsection}{\numberline {24.2}Connect to FICS}{148}{subsection.24.2}%
-\contentsline {subsection}{\numberline {24.3}FICS window}{148}{subsection.24.3}%
-\contentsline {subsubsection}{\numberline {24.3.1}Main}{150}{subsubsection.24.3.1}%
-\contentsline {paragraph}{\numberline {24.3.1.1}Offer a game}{150}{paragraph.24.3.1.1}%
-\contentsline {paragraph}{\numberline {24.3.1.2}Send a message to your opponent}{151}{paragraph.24.3.1.2}%
-\contentsline {paragraph}{\numberline {24.3.1.3}Send and define your commands}{151}{paragraph.24.3.1.3}%
-\contentsline {paragraph}{\numberline {24.3.1.4}Send and receive messages}{151}{paragraph.24.3.1.4}%
-\contentsline {subsubsection}{\numberline {24.3.2}Advertisements}{152}{subsubsection.24.3.2}%
-\contentsline {subsubsection}{\numberline {24.3.3}Users}{153}{subsubsection.24.3.3}%
-\contentsline {subsubsection}{\numberline {24.3.4}Log}{154}{subsubsection.24.3.4}%
-\contentsline {section}{\numberline {25}Run startup game on start}{155}{section.25}%
-\contentsline {section}{\numberline {26}Games}{156}{section.26}%
-\contentsline {subsection}{\numberline {26.1}Save}{156}{subsection.26.1}%
-\contentsline {subsection}{\numberline {26.2}Games manager}{157}{subsection.26.2}%
-\contentsline {subsubsection}{\numberline {26.2.1}The Week in Chess (TWIC)}{158}{subsubsection.26.2.1}%
-\contentsline {subsection}{\numberline {26.3}Copy \& Paste from clipboard}{160}{subsection.26.3}%
-\contentsline {subsection}{\numberline {26.4}Configure PGN export}{160}{subsection.26.4}%
-\contentsline {section}{\numberline {27}Engine window}{161}{section.27}%
-\contentsline {section}{\numberline {28}Extended engine support}{164}{section.28}%
-\contentsline {section}{\numberline {29}Define the location of the configuration files}{166}{section.29}%
-\contentsline {subsection}{\numberline {29.1}path parameter}{166}{subsection.29.1}%
-\contentsline {subsection}{\numberline {29.2}Standalone mode}{166}{subsection.29.2}%
-\contentsline {section}{\numberline {30}Important To Know}{166}{section.30}%
-\contentsline {subsection}{\numberline {30.1}Install a new version}{166}{subsection.30.1}%
-\contentsline {subsection}{\numberline {30.2}Configuration and log files}{166}{subsection.30.2}%
-\contentsline {subsection}{\numberline {30.3}Usage of "Buddy" and "BearChess" engines}{167}{subsection.30.3}%
-\contentsline {subsection}{\numberline {30.4}MessChess engines}{167}{subsection.30.4}%
-\contentsline {subsection}{\numberline {30.5}Certabo: board orientation}{167}{subsection.30.5}%
-\contentsline {subsection}{\numberline {30.6}Certabo: Calibration}{167}{subsection.30.6}%
-\contentsline {subsection}{\numberline {30.7}TabuTronic Cerno: Calibration}{167}{subsection.30.7}%
-\contentsline {subsection}{\numberline {30.8}TabuTronic Sentio: Piece recognition}{167}{subsection.30.8}%
-\contentsline {subsection}{\numberline {30.9}Millennium ChessLink (not eOne): board orientation}{168}{subsection.30.9}%
-\contentsline {subsection}{\numberline {30.10}DGT Pegasus: Piece recognition}{168}{subsection.30.10}%
-\contentsline {subsection}{\numberline {30.11}Square Off Pro: Piece recognition}{168}{subsection.30.11}%
-\contentsline {subsection}{\numberline {30.12}ChessUp}{168}{subsection.30.12}%
-\contentsline {subsection}{\numberline {30.13}Electronic chessboard and engine duels}{168}{subsection.30.13}%
-\contentsline {subsection}{\numberline {30.14}FICS and game types}{168}{subsection.30.14}%
-\contentsline {subsection}{\numberline {30.15}FICS and engines}{169}{subsection.30.15}%
-\contentsline {subsection}{\numberline {30.16}NOVAG and Saitek boards}{169}{subsection.30.16}%
-\contentsline {subsection}{\numberline {30.17}Available COM-Ports}{169}{subsection.30.17}%
-\contentsline {section}{\numberline {31}Trouble shooting}{169}{section.31}%
-\contentsline {subsection}{\numberline {31.1}The chess moves are not or not correctly displayed}{169}{subsection.31.1}%
-\contentsline {section}{\numberline {32}Known Issues}{170}{section.32}%
-\contentsline {section}{\numberline {33}Acknowledgments}{170}{section.33}%
-\contentsline {section}{\numberline {34}Next Steps}{170}{section.34}%
-\contentsline {section}{\numberline {35}Change log}{177}{section.35}%
+\contentsline {subsection}{\numberline {12.11}Configure Square Off Pro}{99}{subsection.12.11}%
+\contentsline {subsubsection}{\numberline {12.11.1}Connect Square Off Pro}{100}{subsubsection.12.11.1}%
+\contentsline {subsubsection}{\numberline {12.11.2}Verify position}{101}{subsubsection.12.11.2}%
+\contentsline {subsection}{\numberline {12.12}Connect ChessUp}{102}{subsection.12.12}%
+\contentsline {subsection}{\numberline {12.13}Configure House of Staunton}{103}{subsection.12.13}%
+\contentsline {subsubsection}{\numberline {12.13.1}Connect}{104}{subsubsection.12.13.1}%
+\contentsline {subsection}{\numberline {12.14}Configure NOVAG Citrine}{105}{subsection.12.14}%
+\contentsline {subsubsection}{\numberline {12.14.1}Connect}{105}{subsubsection.12.14.1}%
+\contentsline {subsubsection}{\numberline {12.14.2}Important information and restrictions}{106}{subsubsection.12.14.2}%
+\contentsline {subsection}{\numberline {12.15}Configure NOVAG UCB}{106}{subsection.12.15}%
+\contentsline {subsubsection}{\numberline {12.15.1}Connect}{107}{subsubsection.12.15.1}%
+\contentsline {subsubsection}{\numberline {12.15.2}Important information and restrictions}{107}{subsubsection.12.15.2}%
+\contentsline {subsection}{\numberline {12.16}Configure Saitek OSA}{108}{subsection.12.16}%
+\contentsline {subsubsection}{\numberline {12.16.1}Connect}{109}{subsubsection.12.16.1}%
+\contentsline {subsubsection}{\numberline {12.16.2}Important information and restrictions}{109}{subsubsection.12.16.2}%
+\contentsline {subsection}{\numberline {12.17}Switch side}{109}{subsection.12.17}%
+\contentsline {section}{\numberline {13}Play a game}{111}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Select opponent}{112}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Playing in relaxed mode}{113}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Time control}{113}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Tournament mode}{115}{subsection.13.4}%
+\contentsline {subsection}{\numberline {13.5}Allow to take a move back}{115}{subsection.13.5}%
+\contentsline {subsection}{\numberline {13.6}Extra time for human player}{115}{subsection.13.6}%
+\contentsline {subsection}{\numberline {13.7}Start the clock after the move is executed on the electronic board}{115}{subsection.13.7}%
+\contentsline {subsection}{\numberline {13.8}Start from}{116}{subsection.13.8}%
+\contentsline {subsection}{\numberline {13.9}Configuration for startup game}{116}{subsection.13.9}%
+\contentsline {subsection}{\numberline {13.10}Request for help}{116}{subsection.13.10}%
+\contentsline {section}{\numberline {14}Move list}{116}{section.14}%
+\contentsline {section}{\numberline {15}Pause and continue a game}{118}{section.15}%
+\contentsline {section}{\numberline {16}Force a move}{119}{section.16}%
+\contentsline {section}{\numberline {17}Switch side}{119}{section.17}%
+\contentsline {section}{\numberline {18}Easy start or restart of a game}{119}{section.18}%
+\contentsline {subsubsection}{\numberline {18.0.1}Continue a game}{120}{subsubsection.18.0.1}%
+\contentsline {subsubsection}{\numberline {18.0.2}Electronic chessboard}{120}{subsubsection.18.0.2}%
+\contentsline {subsection}{\numberline {18.1}Influence of BearChess in engine games}{121}{subsection.18.1}%
+\contentsline {section}{\numberline {19}Relaxed mode}{122}{section.19}%
+\contentsline {section}{\numberline {20}Analysis mode}{123}{section.20}%
+\contentsline {subsection}{\numberline {20.1}Free analyse}{124}{subsection.20.1}%
+\contentsline {subsection}{\numberline {20.2}With electronic chessboard}{124}{subsection.20.2}%
+\contentsline {subsection}{\numberline {20.3}Without electronic chessboard}{125}{subsection.20.3}%
+\contentsline {subsection}{\numberline {20.4}Analyse a game}{126}{subsection.20.4}%
+\contentsline {subsubsection}{\numberline {20.4.1}Analyse a loaded game}{126}{subsubsection.20.4.1}%
+\contentsline {subsubsection}{\numberline {20.4.2}Analyse a new game}{129}{subsubsection.20.4.2}%
+\contentsline {section}{\numberline {21}Duel}{130}{section.21}%
+\contentsline {subsection}{\numberline {21.1}Start a new duel}{131}{subsection.21.1}%
+\contentsline {subsubsection}{\numberline {21.1.1}Engine duel information}{131}{subsubsection.21.1.1}%
+\contentsline {subsection}{\numberline {21.2}Estimate ELO}{134}{subsection.21.2}%
+\contentsline {subsection}{\numberline {21.3}Manage duels}{135}{subsection.21.3}%
+\contentsline {subsubsection}{\numberline {21.3.1}Rename a duel}{136}{subsubsection.21.3.1}%
+\contentsline {subsubsection}{\numberline {21.3.2}Repeat a game}{136}{subsubsection.21.3.2}%
+\contentsline {section}{\numberline {22}Engine tournament}{137}{section.22}%
+\contentsline {subsection}{\numberline {22.1}Start a new engine tournament}{137}{subsection.22.1}%
+\contentsline {subsubsection}{\numberline {22.1.1}Engine tournament information}{140}{subsubsection.22.1.1}%
+\contentsline {subsection}{\numberline {22.2}Manage engine tournaments}{141}{subsection.22.2}%
+\contentsline {subsubsection}{\numberline {22.2.1}Rename a tournament}{142}{subsubsection.22.2.1}%
+\contentsline {subsubsection}{\numberline {22.2.2}Repeat a game}{142}{subsubsection.22.2.2}%
+\contentsline {subsubsection}{\numberline {22.2.3}Tournament information}{143}{subsubsection.22.2.3}%
+\contentsline {section}{\numberline {23}Setup position}{144}{section.23}%
+\contentsline {subsection}{\numberline {23.1}With support of an electronic chessboard}{144}{subsection.23.1}%
+\contentsline {subsection}{\numberline {23.2}Without support of an electronic chessboard}{145}{subsection.23.2}%
+\contentsline {section}{\numberline {24}Free Internet Chess Server (FICS)}{147}{section.24}%
+\contentsline {subsection}{\numberline {24.1}Configure FICS connection}{147}{subsection.24.1}%
+\contentsline {subsection}{\numberline {24.2}Connect to FICS}{149}{subsection.24.2}%
+\contentsline {subsection}{\numberline {24.3}FICS window}{149}{subsection.24.3}%
+\contentsline {subsubsection}{\numberline {24.3.1}Main}{151}{subsubsection.24.3.1}%
+\contentsline {paragraph}{\numberline {24.3.1.1}Offer a game}{151}{paragraph.24.3.1.1}%
+\contentsline {paragraph}{\numberline {24.3.1.2}Send a message to your opponent}{152}{paragraph.24.3.1.2}%
+\contentsline {paragraph}{\numberline {24.3.1.3}Send and define your commands}{152}{paragraph.24.3.1.3}%
+\contentsline {paragraph}{\numberline {24.3.1.4}Send and receive messages}{152}{paragraph.24.3.1.4}%
+\contentsline {subsubsection}{\numberline {24.3.2}Advertisements}{153}{subsubsection.24.3.2}%
+\contentsline {subsubsection}{\numberline {24.3.3}Users}{154}{subsubsection.24.3.3}%
+\contentsline {subsubsection}{\numberline {24.3.4}Log}{155}{subsubsection.24.3.4}%
+\contentsline {section}{\numberline {25}Run startup game on start}{156}{section.25}%
+\contentsline {section}{\numberline {26}Games}{157}{section.26}%
+\contentsline {subsection}{\numberline {26.1}Save}{157}{subsection.26.1}%
+\contentsline {subsection}{\numberline {26.2}Games manager}{158}{subsection.26.2}%
+\contentsline {subsubsection}{\numberline {26.2.1}The Week in Chess (TWIC)}{159}{subsubsection.26.2.1}%
+\contentsline {subsection}{\numberline {26.3}Copy \& Paste from clipboard}{161}{subsection.26.3}%
+\contentsline {subsection}{\numberline {26.4}Configure PGN export}{161}{subsection.26.4}%
+\contentsline {section}{\numberline {27}Engine window}{162}{section.27}%
+\contentsline {section}{\numberline {28}Extended engine support}{165}{section.28}%
+\contentsline {section}{\numberline {29}Define the location of the configuration files}{167}{section.29}%
+\contentsline {subsection}{\numberline {29.1}path parameter}{167}{subsection.29.1}%
+\contentsline {subsection}{\numberline {29.2}Standalone mode}{167}{subsection.29.2}%
+\contentsline {section}{\numberline {30}Important To Know}{167}{section.30}%
+\contentsline {subsection}{\numberline {30.1}Install a new version}{167}{subsection.30.1}%
+\contentsline {subsection}{\numberline {30.2}Configuration and log files}{167}{subsection.30.2}%
+\contentsline {subsection}{\numberline {30.3}Usage of "Buddy" and "BearChess" engines}{168}{subsection.30.3}%
+\contentsline {subsection}{\numberline {30.4}MessChess engines}{168}{subsection.30.4}%
+\contentsline {subsection}{\numberline {30.5}Certabo: board orientation}{168}{subsection.30.5}%
+\contentsline {subsection}{\numberline {30.6}Certabo: Calibration}{168}{subsection.30.6}%
+\contentsline {subsection}{\numberline {30.7}TabuTronic Cerno: Calibration}{168}{subsection.30.7}%
+\contentsline {subsection}{\numberline {30.8}TabuTronic Sentio: Piece recognition}{168}{subsection.30.8}%
+\contentsline {subsection}{\numberline {30.9}Millennium ChessLink (not eOne): board orientation}{169}{subsection.30.9}%
+\contentsline {subsection}{\numberline {30.10}DGT Pegasus: Piece recognition}{169}{subsection.30.10}%
+\contentsline {subsection}{\numberline {30.11}Square Off Pro: Piece recognition}{169}{subsection.30.11}%
+\contentsline {subsection}{\numberline {30.12}ChessUp}{169}{subsection.30.12}%
+\contentsline {subsection}{\numberline {30.13}Electronic chessboard and engine duels}{169}{subsection.30.13}%
+\contentsline {subsection}{\numberline {30.14}FICS and game types}{169}{subsection.30.14}%
+\contentsline {subsection}{\numberline {30.15}FICS and engines}{170}{subsection.30.15}%
+\contentsline {subsection}{\numberline {30.16}NOVAG and Saitek boards}{170}{subsection.30.16}%
+\contentsline {subsection}{\numberline {30.17}Available COM-Ports}{170}{subsection.30.17}%
+\contentsline {section}{\numberline {31}Trouble shooting}{170}{section.31}%
+\contentsline {subsection}{\numberline {31.1}The chess moves are not or not correctly displayed}{170}{subsection.31.1}%
+\contentsline {section}{\numberline {32}Known Issues}{171}{section.32}%
+\contentsline {section}{\numberline {33}Acknowledgments}{171}{section.33}%
+\contentsline {section}{\numberline {34}Next Steps}{171}{section.34}%
+\contentsline {section}{\numberline {35}Change log}{178}{section.35}%

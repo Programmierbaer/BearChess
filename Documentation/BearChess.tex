@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.1.0.0}
+\fancyhead[R]{Version 1.1.1.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{17.01.2025} 
+\date{15.02.2025} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -1037,7 +1037,7 @@ linkcolor=black
 	
 	\section{Electronic chessboards} \label{ElectronicChessBoard}
 	BearChess supports many electronic chessboards: \textbf{Certabo} and \textbf{TabuTronic}  boards, \textbf{iChessOne}, \textbf{Millennium} boards via the ChessLink module (incl. \textbf{eOne}), \textbf{DGT e-Boards} (incl. Revelation), \textbf{DGT Pegasus}, \textbf{Square Off Pro},\\ \textbf{Chessnut Air/Air+/Go/Pro/Evo}, \textbf{ChessUp}/\textbf{ChessUp 2}, \textbf{House of Staunton}, \textbf{NOVAG} and \textbf{Saitek} boards.
-	\\Certabo, TabuTronic, iChessOne, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth or Bluetooth LE. DGT Pegasus, ChessUp and Square Off Pro communicate only via Bluetooth LE. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Air+/Go/Pro and House of Staunton from ZMARTFUN communicates via an USB port as a Human Interface Device (HID). Chessnut Evo
+	\\Certabo, TabuTronic, iChessOne, Millennium boards and DGT e-Boards communicate via an USB port as serial COM port or via Bluetooth or Bluetooth LE. DGT Pegasus, ChessUp and Square Off Pro communicate only via Bluetooth LE. Which COM port is used is not the same for all computers and can change over time, especially if you have more than one COM port available on your computer. Chessnut Air/Air+/Go/Pro and House of Staunton from ZMARTFUN communicates via an USB port as a Human Interface Device (HID) or Bluetooth LE. Chessnut Evo
 	communicates via Wi-Fi.\\ 
 	For Bluetooth, BearChess distinguishes between the classic (no official designation, but used here) and the Low Energy (LE) variant.
 	In the classic variant, pairing is necessary and the connection is then made to a serial COM port. The LE variant is even more user-friendly. No pairing is necessary and there is no conversion to a COM port.
@@ -1908,8 +1908,25 @@ You can configure and save as many configurations as you like. For example, diff
 \end{figure}
 
 
+\subsection{Configure Square Off Pro} \label{ConfigureSquareOff}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{SquareOffPro0.png}
+	\caption{Configure to Square Off Pro }
+	\label{fig:SquareOffPro0}
+\end{figure}
 
-\subsection{Connect Square Off Pro} \label{ConfigureSquareOff}
+Unfortunately, the board do not send position changes, but the board must be queried regularly.
+You can set the scan frequency. However, if the setting is too short, data may no longer be transmitted.\\
+
+\begin{itemize}
+	\item \textbf{Activate all LEDs along the move} activates all LEDs along the from and to fields of a move.
+	\item \textbf{No additional information} if you raised a figure.
+	\item \textbf{Show all moves for the selected figure} lights up the LEDs of all possible target fields of the currently raised figure.
+	\item \textbf{Show the best move for the selected figure} lights up the LED for the best target field of the currently raised figure.
+\end{itemize}
+
+\subsubsection{Connect Square Off Pro} \label{ConnnectSquareOff}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{SquareOffPro1.png}
@@ -1917,7 +1934,7 @@ You can configure and save as many configurations as you like. For example, diff
 	\label{fig:SquareOffPro1}
 \end{figure}
 
-No configuration is required for your Square Off Pro chessboard.\\
+
 Square Off Pro requires a Bluetooth LE connection. Make sure that your Bluetooth adapter also supports LE.
 
 \begin{figure}[H]
@@ -1982,14 +1999,15 @@ ChessUp only allows limited access to the board for third party programs and the
 	\label{fig:HOS1}
 \end{figure}
 
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=1.0]{HOS2.png}
 	\caption{Configure House of Staunton }
 	\label{fig:HOS2}
 \end{figure}
-No connection configuration is required for your House of Staunton chessboard. Only the USB connection is currently supported.\\ 
+
+You can connect to a House of Staunton chessboard via USB or Bluetooth LE if your board has LEDs. 
+When connected via Bluetooth LE, the individual commands for controlling the LEDs can only be issued with a relatively long delay. Here you can configure the delay between 1000ms (1 sec.) and 3500ms (3.5 sec.). Unfortunately, only one LED can be active at a time. This means that at least two LED commands must always be sent to indicate a move.\\\\
 You can activate one of the additional functions:\\
 
 \begin{itemize}
@@ -2289,7 +2307,7 @@ For your convenience, you can configure and save a game definition that will be 
 \subsection{Request for help}
 If you play a game and you have "Show move when help is request" activated, raise your king for a short time and set it down again to see the best move on the board.\\
 Do it again to stop showing the best move.\\
-{\color{red}\textbf{*}} This is not on supported Square Off Pro, ChessUp, NOVAG and Saitek OSA boards.
+{\color{red}\textbf{*}} This is not on supported ChessUp, NOVAG and Saitek OSA boards.
 
 \section{Move list}
 The move list shows all moves of your game.
@@ -3388,8 +3406,7 @@ Figure recognition assumes that the board is oriented so that the company sign f
 The DGT Pegasus board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible.
 
 \subsection{Square Off Pro: Piece recognition}
-The Square Off Pro board has no chess piece detection but only detects if a piece is taken away from a square or if a piece is placed. But it does not know what figure was set. That's why some functions that require real piece recognition, such as analysis mode, are not possible. Due to firmware changes in the SquareOff Pro board, the communication between the board and BearChess has become worse. Important commands are no longer sent from the board.
-That is why some functions are no longer possible with this board and the stability is limited.
+The Square Off Pro board has no chess piece detection. That's why some functions that require real piece recognition, such as analysis mode, are not possible. Due to firmware changes in the SquareOff Pro board, the position on the board must be actively queried. This can lead to changes not being recognized. This applies in particular to moves that beat a figure.
 
 \subsection{ChessUp}
 ChessUp only allows limited access to the board for third party programs and the functionality is limited. For example, the LEDs of the individual fields cannot be controlled. The board only allows correct positions or moves within a chess game. Therefore, from BearChess point of view, the board is only suitable for playing a game against an engine or on FICS. ChessUp does not support the withdrawal of a move. The help function is limited to displaying the valid moves, but not their evaluation. Under promotion is currently not supported by BearChess.
@@ -3459,6 +3476,14 @@ These are some ideas what will come in one of the next versions.
 
 \section{Change log}
 
+\subsection*{Version 1.0.10.0 $\Rightarrow$  1.1.1.0}
+\begin{itemize}			
+		\item {\color{blue}New}: BTLE support for House of Staunton.
+		\item {\color{blue}New}: Configuration for Square Off Pro.
+		\item {\color{red}Fix}: Corrections when continuing a game.
+		\item {\color{red}Fix}: Position detection for Square Off Pro.
+\end{itemize}
+	
 \subsection*{Version 1.0.10.0 $\Rightarrow$  1.1.0.0}
 \begin{itemize}			
 	\item {\color{blue}New}: Extra mode and adapted GUI design for visually impaired players.

@@ -1,0 +1,104 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.SelectInstalledBookWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        Icon="../Assets/Icons/book_open.png" Closing="SelectInstalledBookWindow_OnClosing"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
+        Title="{x:Static p:Resources.LoadAndManageBooks}" Height="250" Width="600">
+    <Window.Resources>
+        <bearChessWin:BoolToContentConverter x:Key="BoolToContentConverter" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <DataGrid Name="dataGridBook" ItemsSource="{Binding}" Grid.Row="0" Margin="5" AutoGenerateColumns="False"
+                  MouseDoubleClick="DataGridBook_OnMouseDoubleClick" VerticalScrollBarVisibility="Auto"
+                  SelectionMode="Single" IsReadOnly="True">
+            <DataGrid.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                 Color="CornflowerBlue" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White" />
+            </DataGrid.Resources>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{x:Static p:Resources.SetBookAsDefault}" Click="MenuItemSetDefaultBook_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="../Assets/Icons/bookmark.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name}" Width="Auto">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Name}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding FileName}" Width="100">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.FileName}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding PositionsCount}" Width="Auto">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Positions}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding MovesCount}" Width="Auto">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Moves}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding GamesCount}" Width="Auto">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.Games}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Size}" Width="Auto">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.SizeBytes}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn
+                    Binding="{Binding IsDefaultBook, Converter={StaticResource BoolToContentConverter}}" Width="Auto">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{x:Static p:Resources.DefaultBook}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DockPanel Margin="5" Grid.Row="1" LastChildFill="False">
+            <Button Margin="5" DockPanel.Dock="Left" Name="buttonOk" Click="ButtonOk_OnClick" Background="Transparent"
+                    BorderBrush="Transparent" ToolTip="{x:Static p:Resources.LoadBook}">
+                <Image Source="../Assets/Icons/book_open.png" Width="32" Height="32" />
+            </Button>
+
+            <Button Margin="25,5,5,5" DockPanel.Dock="Right" Name="buttonCancel" Click="ButtonCancel_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.Exit}">
+                <Image Source="../Assets/Icons/door_out.png" Width="32" Height="32" />
+            </Button>
+            <Button Margin="5,5,20,5" DockPanel.Dock="Right" Name="buttonDelete" Click="ButtonDelete_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.UninstallBook}">
+                <Image Source="../Assets/Icons/bin.png" Width="32" Height="32" />
+            </Button>
+            <Button Margin="5,5,20,5" DockPanel.Dock="Right" Name="buttonInstall" Click="ButtonInstall_OnClick"
+                    Background="Transparent" BorderBrush="Transparent" ToolTip="{x:Static p:Resources.InstallBook}">
+                <Image Source="../Assets/Icons/book_add.png" Width="32" Height="32" />
+            </Button>
+            <Button Margin="5,5,20,5" DockPanel.Dock="Right" Name="buttonDefault"
+                    Click="MenuItemSetDefaultBook_OnClick" Background="Transparent" BorderBrush="Transparent"
+                    ToolTip="{x:Static p:Resources.SetBookAsDefault}">
+                <Image Source="../Assets/Icons/bookmark.png" Width="32" Height="32" />
+            </Button>
+        </DockPanel>
+    </Grid>
+
+</Window>
