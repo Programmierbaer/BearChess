@@ -1609,6 +1609,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Configure chessboard connection ähnelt.
+        /// </summary>
+        public static string ConfigureBoardConnection {
+            get {
+                return ResourceManager.GetString("ConfigureBoardConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Configure TabuTronic Cerno chessboard ähnelt.
         /// </summary>
         public static string ConfigureCerno {
@@ -1857,6 +1866,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         public static string ConnectedTo {
             get {
                 return ResourceManager.GetString("ConnectedTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Connected via BearChess ähnelt.
+        /// </summary>
+        public static string ConnectedViaBearChess {
+            get {
+                return ResourceManager.GetString("ConnectedViaBearChess", resourceCulture);
             }
         }
         
@@ -2383,11 +2401,20 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Delay between two LED commands (only BTLE) ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Delay between two LED commands ähnelt.
         /// </summary>
         public static string DelaySendLED {
             get {
                 return ResourceManager.GetString("DelaySendLED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Delay between two LED commands (only BTLE) ähnelt.
+        /// </summary>
+        public static string DelaySendLEDbtle {
+            get {
+                return ResourceManager.GetString("DelaySendLEDbtle", resourceCulture);
             }
         }
         
@@ -2676,6 +2703,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         public static string DifferentTCForWhiteAndBlack {
             get {
                 return ResourceManager.GetString("DifferentTCForWhiteAndBlack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Direct connection ähnelt.
+        /// </summary>
+        public static string DirectConnection {
+            get {
+                return ResourceManager.GetString("DirectConnection", resourceCulture);
             }
         }
         
@@ -5641,6 +5677,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Reset to default with delay of 100 ms ähnelt.
+        /// </summary>
+        public static string ResetDefault100ms {
+            get {
+                return ResourceManager.GetString("ResetDefault100ms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Reset to default with delay of 2500 ms ähnelt.
         /// </summary>
         public static string ResetDefault2500 {
@@ -5650,11 +5695,20 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die reset to default witch scans every 250 ms ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Reset to default witch scans every 250 ms ähnelt.
         /// </summary>
         public static string ResetDefault250ms {
             get {
                 return ResourceManager.GetString("ResetDefault250ms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Reset to default with delay of 50 ms ähnelt.
+        /// </summary>
+        public static string ResetDefault50ms {
+            get {
+                return ResourceManager.GetString("ResetDefault50ms", resourceCulture);
             }
         }
         
@@ -5754,6 +5808,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         public static string RunStartupGameOnStart {
             get {
                 return ResourceManager.GetString("RunStartupGameOnStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Some connection for white and black ähnelt.
+        /// </summary>
+        public static string SameConnectionWhiteAndBlack {
+            get {
+                return ResourceManager.GetString("SameConnectionWhiteAndBlack", resourceCulture);
             }
         }
         
@@ -5871,6 +5934,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         public static string SayAllMovesSelectedFigure {
             get {
                 return ResourceManager.GetString("SayAllMovesSelectedFigure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Say best move when help is requested ähnelt.
+        /// </summary>
+        public static string SayBestMoveHelpRequested {
+            get {
+                return ResourceManager.GetString("SayBestMoveHelpRequested", resourceCulture);
             }
         }
         

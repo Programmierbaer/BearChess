@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UciInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Id>uci786394AR61D34D84AC17D8E80BBB70B3</Id>
-  <Name>Wasp 7.00 BearChess</Name>
-  <OriginName>Wasp 7.00</OriginName>
+  <Name>Wasp 7.04 BearChess</Name>
+  <OriginName>Wasp 7.04</OriginName>
   <Author>John Stanback</Author>
   <Options>
     <string>option name ConfigFilePath type string default </string>
@@ -30,8 +30,8 @@
     <string>option name Contempt type spin default 0 min -150 max 150</string>
     <string>option name Selectivity type spin default 100 min 0 max 200</string>
   </Options>
-  <FileName>C:\lars\Repos\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\Wasp700-windows-ancient.exe</FileName>
-  <LogoFileName>C:\lars\Repos\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\wasp_logo_small.jpg</LogoFileName>
+  <FileName>E:\BearChessDeploy\Version 1.1.1.0\BearChessWin\uci786394AR61D34D84AC17D8E80BBB70B3\Wasp704-windows-avx.exe</FileName>
+  <LogoFileName>E:\BearChessDeploy\Version 1.1.1.0\BearChessWin\uci786394AR61D34D84AC17D8E80BBB70B3\wasp_logo_small.jpg</LogoFileName>
   <Valid>true</Valid>
   <OpeningBook />
   <OpeningBookVariation>1</OpeningBookVariation>
@@ -41,7 +41,7 @@
     <string>setoption name NN_File value embedded</string>
     <string>setoption name Use_NN_eval value true</string>
     <string>setoption name OwnBook value true</string>
-    <string>setoption name OwnBook_File value C:\lars\Repos\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\wasp_book_20200514.bin</string>
+    <string>setoption name OwnBook_File value E:\BearChessDeploy\Version 1.1.1.0\BearChessWin\uci786394AR61D34D84AC17D8E80BBB70B3\wasp_book_20200514.bin</string>
     <string>setoption name OwnBook_Depth value 24</string>
     <string>setoption name OwnBook2_Depth value 0</string>
     <string>setoption name OwnBook_Variety value 25</string>

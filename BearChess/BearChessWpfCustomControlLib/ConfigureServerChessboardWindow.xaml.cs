@@ -19,9 +19,11 @@ using www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.Loader;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChess.DGTLoader;
 using www.SoLaNoSoft.com.BearChess.ChessnutAirLoader;
+using www.SoLaNoSoft.com.BearChess.HoSLoader;
 using www.SoLaNoSoft.com.BearChess.MChessLinkLoader;
 using www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.Loader;
 using www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.Loader;
+using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 
 namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
 {
@@ -34,6 +36,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
         private string _configPathWhite;
         private string _configPathBlack;
         private bool _isInitialized = false;
+        private readonly ILogging _logging;
 
         public string WhiteConnectionId { get; private set; }
         public string BlackConnectionId { get; private set; }
@@ -41,11 +44,12 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
         public IElectronicChessBoard WhiteEboard { get; private set; }
         public IElectronicChessBoard BlackEboard { get; private set; }
 
-        public ConfigureServerChessboardWindow(string serverBoardId, BearChessClientInformation[] bcClientToken)
+        public ConfigureServerChessboardWindow(string serverBoardId, BearChessClientInformation[] bcClientToken, ILogging logging)
         {
             InitializeComponent();
             var serverPath = Path.Combine(Configuration.Instance.FolderPath,"server");
             var configPath = Path.Combine(serverPath, "boards", serverBoardId);
+            _logging = logging;
             _configPathWhite = Path.Combine(configPath,"white");
             _configPathBlack = Path.Combine(configPath, "black");
             comboboxWhiteEBoardNames.Items.Clear();
@@ -58,6 +62,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             comboboxWhiteEBoardNames.Items.Add(Constants.TabutronicCerno);
             comboboxWhiteEBoardNames.Items.Add(Constants.TabutronicSentio);
             comboboxWhiteEBoardNames.Items.Add(Constants.TabutronicTactum);
+            comboboxWhiteEBoardNames.Items.Add(Constants.Zmartfun);
             comboboxBlackEBoardNames.Items.Clear();
             comboboxBlackEBoardNames.Items.Add(Constants.Certabo);
             comboboxBlackEBoardNames.Items.Add(Constants.ChessnutAir);
@@ -68,6 +73,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             comboboxBlackEBoardNames.Items.Add(Constants.TabutronicCerno);
             comboboxBlackEBoardNames.Items.Add(Constants.TabutronicSentio);
             comboboxBlackEBoardNames.Items.Add(Constants.TabutronicTactum);
+            comboboxBlackEBoardNames.Items.Add(Constants.Zmartfun);
             for (int i=0; i< bcClientToken.Length; i++)
             {
                 comboboxWhiteBCNames.Items.Add(bcClientToken[i]);
@@ -77,145 +83,255 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             BlackEboard = null;
             WhiteConnectionId = string.Empty;
             BlackConnectionId = string.Empty;
-            _isInitialized = true;
+            comboboxWhiteBCNames.IsEnabled = false;
+            comboboxBlackEBoardNames.IsEnabled = true;
+            ButtonConfigureWhiteConnection.IsEnabled = true;
             CheckBoxSameConnection.IsChecked = true;
             radioButtonWhiteDirectConnected.IsChecked = true;
+            BoarderBlack.IsEnabled = false;
+            _isInitialized = true;
         }
 
 
-        private void ConfigureBoardConnection(string selectedBoard, IElectronicChessBoard eBoard, string configPath, bool forWhite)
+        private bool ConfigureBoardConnection(string selectedBoard, string configPath, bool forWhite)
         {
+            _logging.LogDebug($"Configure {selectedBoard}");
             if (selectedBoard.Equals(Constants.IChessOne))
-            {
-                var configIChessOne = new ConfigureIChessOneWindow(Configuration.Instance, false, configPath);
+            { 
+                var configIChessOne = new ConfigureIChessOneWindow(Configuration.Instance, false, configPath) { Owner = this};
                 var dialogResult = configIChessOne.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
                 {
                     if (forWhite)
+                    {
                         WhiteConnectionId = configIChessOne.SelectedPortName;
+                        WhiteEboard = new IChessOneLoader(configPath);
+                    }
                     else
+                    {
                         BlackConnectionId = configIChessOne.SelectedPortName;
-                    eBoard = new IChessOneLoader(configPath);
+                        BlackEboard = new IChessOneLoader(configPath);
+                    }
+                    
+                    return true;
                 }
-                return;
+
+                return false;
             }
+
             if (selectedBoard.Equals(Constants.Certabo))
             {
-                var configCertabo = new ConfigureCertaboWindow(Configuration.Instance, false, false, false, configPath);
+                var configCertabo = new ConfigureCertaboWindow(Configuration.Instance, false, false, false, configPath) { Owner = this };
                 var dialogResult = configCertabo.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
-                {                    
+                {
                     if (forWhite)
+                    {
                         WhiteConnectionId = configCertabo.SelectedPortName;
+                        WhiteEboard = new IChessOneLoader(configPath);
+                    }
                     else
+                    {
                         BlackConnectionId = configCertabo.SelectedPortName;
-                    eBoard = new IChessOneLoader(configPath);
+                        BlackEboard = new IChessOneLoader(configPath);
+                    }
+
+                    return true;
                 }
-                return;
+
+                return false;
             }
+
             if (selectedBoard.Equals(Constants.DGT))
             {
-                var configDGT = new ConfigureDGTWindow(Configuration.Instance, false, configPath);
+                var configDGT = new ConfigureDGTWindow(Configuration.Instance, false, configPath) { Owner = this };
                 var dialogResult = configDGT.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
-                {                    
+                {
                     if (forWhite)
+                    {
                         WhiteConnectionId = configDGT.SelectedPortName;
+                        WhiteEboard = new DGTLoader(configPath);
+                    }
                     else
+                    {
                         BlackConnectionId = configDGT.SelectedPortName;
-                    eBoard = new DGTLoader(configPath);
+                        BlackEboard = new DGTLoader(configPath);
+                    }
+
+                    return true;
+
                 }
-                return;
+
+                return false;
             }
+
             if (selectedBoard.Equals(Constants.ChessnutAir))
             {
-                var configChessnut = new ConfigureChessnutWindow(Constants.ChessnutAir, Configuration.Instance, false, configPath);
+                var configChessnut =
+                    new ConfigureChessnutWindow(Constants.ChessnutAir, Configuration.Instance, false, configPath) { Owner = this };
                 var dialogResult = configChessnut.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
-                {                 
+                {
                     if (forWhite)
+                    {
                         WhiteConnectionId = configChessnut.SelectedPortName;
+                        WhiteEboard = new ChessnutAirLoader(configPath);
+                    }
                     else
+                    {
                         BlackConnectionId = configChessnut.SelectedPortName;
-                    eBoard = new ChessnutAirLoader(configPath);
+                        BlackEboard = new ChessnutAirLoader(configPath);
+                    }
+
+                    return true;
+
                 }
-                return;
+
+                return false;
             }
+
             if (selectedBoard.Equals(Constants.ChessnutEvo))
             {
-                var configEvo = new ConfigureChessnutEvoWindow(Configuration.Instance, configPath);
+                var configEvo = new ConfigureChessnutEvoWindow(Configuration.Instance, configPath) { Owner = this };
                 var dialogResult = configEvo.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
                 {
-                    WhiteConnectionId = configEvo.SelectedPortName;
                     if (forWhite)
+                    {
                         WhiteConnectionId = configEvo.SelectedPortName;
+                        WhiteEboard = new ChessnutEvoLoader(configPath);
+                    }
                     else
+                    {
                         BlackConnectionId = configEvo.SelectedPortName;
-                    eBoard = new ChessnutEvoLoader(configPath);
+                        BlackEboard = new ChessnutEvoLoader(configPath);
+                    }
+
+                    return true;
                 }
-                return;
+
+                return false;
             }
+
             if (selectedBoard.Equals(Constants.MChessLink))
             {
-                var configWindow = new ConfigureMChessLinkWindow(Configuration.Instance,false,false,false,false, configPath);
+                var configWindow =
+                    new ConfigureMChessLinkWindow(Configuration.Instance, false, true, false, false, configPath) { Owner = this };
                 var dialogResult = configWindow.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
                 {
-                    WhiteConnectionId = configWindow.SelectedPortName;
                     if (forWhite)
+                    {
                         WhiteConnectionId = configWindow.SelectedPortName;
+                        WhiteEboard = new MChessLinkLoader(configPath);
+                    }
                     else
+                    {
                         BlackConnectionId = configWindow.SelectedPortName;
-                    eBoard = new MChessLinkLoader(configPath);
+                        BlackEboard = new MChessLinkLoader(configPath);
+                    }
+
+                    return true;
                 }
-                return;
+
+                return false;
             }
+
             if (selectedBoard.Equals(Constants.TabutronicCerno))
             {
-                var configWindow = new ConfigureCernoWindow(Configuration.Instance, false, false, configPath);
+                var configWindow = new ConfigureCernoWindow(Configuration.Instance, false, false, configPath) { Owner = this };
                 var dialogResult = configWindow.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
                 {
-                    WhiteConnectionId = configWindow.SelectedPortName;
                     if (forWhite)
+                    {
                         WhiteConnectionId = configWindow.SelectedPortName;
+                        WhiteEboard = new TabutronicCernoLoader(configPath);
+                    }
                     else
+                    {
                         BlackConnectionId = configWindow.SelectedPortName;
-                    eBoard = new TabutronicCernoLoader(configPath);
+                        BlackEboard = new TabutronicCernoLoader(configPath);
+                    }
+
+                    return true;
                 }
-                return;
+
+                return false;
             }
+
             if (selectedBoard.Equals(Constants.TabutronicSentio))
             {
-                var configWindow = new ConfigureSentioWindow(Configuration.Instance, false, false, configPath);
+                var configWindow = new ConfigureSentioWindow(Configuration.Instance, false, false, configPath) { Owner = this };
                 var dialogResult = configWindow.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
                 {
-                    WhiteConnectionId = configWindow.SelectedPortName;
+                 
                     if (forWhite)
+                    {
                         WhiteConnectionId = configWindow.SelectedPortName;
+                        WhiteEboard = new TabutronicSentioLoader(configPath);
+                    }
                     else
+                    {
                         BlackConnectionId = configWindow.SelectedPortName;
-                    eBoard = new TabutronicSentioLoader(configPath);
+                        BlackEboard = new TabutronicSentioLoader(configPath);
+                    }
+
+                    return true;
                 }
-                return;
+
+                return false;
             }
+
             if (selectedBoard.Equals(Constants.TabutronicTactum))
             {
-                var configWindow = new ConfigureTactumWindow(Configuration.Instance, false, configPath);
+                var configWindow = new ConfigureTactumWindow(Configuration.Instance, false, configPath) { Owner = this };
                 var dialogResult = configWindow.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
                 {
-                    WhiteConnectionId = configWindow.SelectedPortName;
                     if (forWhite)
+                    {
                         WhiteConnectionId = configWindow.SelectedPortName;
+                        WhiteEboard = new TabuTronicTactumLoader(configPath);
+                    }
                     else
+                    {
                         BlackConnectionId = configWindow.SelectedPortName;
-                    eBoard = new TabuTronicTactumLoader(configPath);
+                        BlackEboard = new TabuTronicTactumLoader(configPath);
+                    }
+
+                    return true;
                 }
-                return;
+
+                return false;
             }
+
+            if (selectedBoard.Equals(Constants.Zmartfun))
+            {
+                var configWindow = new ConfigureHoSWindow(Configuration.Instance, configPath) { Owner = this };
+                var dialogResult = configWindow.ShowDialog();
+                if (dialogResult.HasValue && dialogResult.Value)
+                {
+                    if (forWhite)
+                    {
+                        WhiteConnectionId = configWindow.SelectedPortName;
+                        WhiteEboard = new HoSLoader(configPath);
+                    }
+                    else
+                    {
+                        BlackConnectionId = configWindow.SelectedPortName;
+                        BlackEboard = new HoSLoader(configPath);
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            return false;
         }
 
         private void ButtonConfigureWhiteConnection_Click(object sender, RoutedEventArgs e)
@@ -225,8 +341,11 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 return;
             }
             var selectedBoard = comboboxWhiteEBoardNames.SelectedItem as string;
-            ConfigureBoardConnection(selectedBoard,WhiteEboard,_configPathWhite, true);
-            
+            if (ConfigureBoardConnection(selectedBoard, _configPathWhite, true))
+            {
+                TextBlockPortNameWhite.Text = WhiteConnectionId;
+            }
+
         }
 
         private void ButtonConfigureBlackConnection_Click(object sender, RoutedEventArgs e)
@@ -236,7 +355,10 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 return;
             }
             var selectedBoard = comboboxBlackEBoardNames.SelectedItem as string;
-            ConfigureBoardConnection(selectedBoard, BlackEboard, _configPathBlack, false);
+            if (ConfigureBoardConnection(selectedBoard, _configPathBlack, false))
+            {
+                TextBlockPortNameBlack.Text = BlackConnectionId;
+            }
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -282,6 +404,16 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 comboboxBlackEBoardNames.IsEnabled = false;
                 ButtonConfigureWhiteConnection.IsEnabled = false;
             }
+        }
+
+        private void CheckBoxSameConnection_OnChecked(object sender, RoutedEventArgs e)
+        {
+            BoarderBlack.IsEnabled = false;
+        }
+
+        private void CheckBoxSameConnection_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            BoarderBlack.IsEnabled = true;
         }
     }
 }

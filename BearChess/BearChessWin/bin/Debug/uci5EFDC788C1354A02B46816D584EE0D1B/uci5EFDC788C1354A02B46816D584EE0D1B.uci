@@ -85,8 +85,8 @@
     <string>option name Piece Pawn Score Adjustment type check default false</string>
     <string>option name Contempt Factor type spin default 0 min -1000 max 1000</string>
   </Options>
-  <FileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uci5EFDC788C1354A02B46816D584EE0D1B\Fruit-2-3-1.exe</FileName>
-  <LogoFileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uci5EFDC788C1354A02B46816D584EE0D1B\fruit-logo.jpg</LogoFileName>
+  <FileName>C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\uci5EFDC788C1354A02B46816D584EE0D1B\Fruit-2-3-1.exe</FileName>
+  <LogoFileName>C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\uci5EFDC788C1354A02B46816D584EE0D1B\fruit-logo.jpg</LogoFileName>
   <Valid>true</Valid>
   <OpeningBook />
   <OpeningBookVariation>1</OpeningBookVariation>

@@ -14,6 +14,7 @@ using System.Xml.Serialization;
 using Microsoft.Win32;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -35,14 +36,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public SelectInstalledEngineWindow()
         {
             InitializeComponent();
-            Top =    Configuration.Instance.GetWinDoubleValue("InstalledEngineWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, "300"); 
-            Left =   Configuration.Instance.GetWinDoubleValue("InstalledEngineWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth,"400");
+            Top = Configuration.Instance.GetWinDoubleValue("InstalledEngineWindowTop", Configuration.WinScreenInfo.Top, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, "300");
+            Left = Configuration.Instance.GetWinDoubleValue("InstalledEngineWindowLeft", Configuration.WinScreenInfo.Left, SystemParameters.VirtualScreenHeight, SystemParameters.VirtualScreenWidth, "400");
             Height = Configuration.Instance.GetDoubleValue("InstalledEngineWindowHeight",  "390");
-            Width =  Configuration.Instance.GetDoubleValue("InstalledEngineWindowWidth",  "500");
+            Width = Configuration.Instance.GetDoubleValue("InstalledEngineWindowWidth",  "500");
             _rm = SpeechTranslator.ResourceManager;
             _synthesizer = BearChessSpeech.Instance;
-            _blindUserSaySelection = bool.Parse(Configuration.Instance.GetConfigValue("blindUserSaySelection", "false"));
-            _blindUser = bool.Parse(Configuration.Instance.GetConfigValue("blindUserSaySelection", "false"));
+            _blindUserSaySelection = Configuration.Instance.GetBoolValue("blindUserSaySelection", false);
+            _blindUser = Configuration.Instance.GetBoolValue("blindUser", false);
         }
 
         public SelectInstalledEngineWindow(IEnumerable<UciInfo> uciInfos, string lastEngineId, string uciPath) : this()
@@ -78,7 +79,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 if (SelectedEngine.IsInternalBearChessEngine || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
                 {
-                    Messages.Show($"{_rm.GetString("CannotPlayAgainstBuddy")} '{SelectedEngine.Name}'", _rm.GetString("LoadUCIEngne"),
+                    BearChessMessageBox.Show($"{_rm.GetString("CannotPlayAgainstBuddy")} '{SelectedEngine.Name}'", _rm.GetString("LoadUCIEngne"),
                              MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
@@ -93,16 +94,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DataGridEngine_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (SelectedEngine != null)
+            if (SelectedEngine == null)
             {
-                if (SelectedEngine.IsInternalBearChessEngine || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
-                {
-                    Messages.Show($"{_rm.GetString("CannotPlayAgainstBuddy")} '{SelectedEngine.Name}'", _rm.GetString("LoadUCIEngne"),
-                             MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                DialogResult = true;
+                return;
             }
+
+            if (SelectedEngine.IsInternalBearChessEngine || SelectedEngine.IsProbing || SelectedEngine.IsBuddy)
+            {
+                BearChessMessageBox.Show($"{_rm.GetString("CannotPlayAgainstBuddy")} '{SelectedEngine.Name}'", _rm.GetString("LoadUCIEngne"),
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            DialogResult = true;
         }
 
         private void ButtonConfigure_OnClick(object sender, RoutedEventArgs e)
@@ -113,7 +116,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (SelectedEngine.IsInternalBearChessEngine)
             {
-                Messages.Show($"{_rm.GetString("CannotChangeInternalEngine")} '{SelectedEngine.Name}'", _rm.GetString("ConfigureEngine"),
+                BearChessMessageBox.Show($"{_rm.GetString("CannotChangeInternalEngine")} '{SelectedEngine.Name}'", _rm.GetString("ConfigureEngine"),
                          MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -137,7 +140,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 {
                     Directory.CreateDirectory(uciPath);
                 }
-                XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
+                var serializer = new XmlSerializer(typeof(UciInfo));
                 TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
                 serializer.Serialize(textWriter, uciInfo);
                 textWriter.Close();
@@ -160,7 +163,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     SelectedEngine.AddOptionValue(uciInfoOptionValue);
                 }
                 var uciPath = Path.Combine(_uciPath, SelectedEngine.Id);
-                XmlSerializer serializer = new XmlSerializer(typeof(UciInfo));
+                var serializer = new XmlSerializer(typeof(UciInfo));
                 TextWriter textWriter = new StreamWriter(Path.Combine(uciPath, SelectedEngine.Id + ".uci"), false);
                 serializer.Serialize(textWriter, SelectedEngine);
                 textWriter.Close();
@@ -186,7 +189,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     return;
                 }
 
-                List<UciInfo> enginesToDelete = new List<UciInfo>();
+                var enginesToDelete = new List<UciInfo>();
                 foreach (var selectedItem in dataGridEngine.SelectedItems)
                 {
                     if (selectedItem is UciInfo uciInfo)
@@ -200,7 +203,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 foreach (var uciInfo in enginesToDelete)
                 {
-
                     try
                     {
                         var uciId = uciInfo.Id;
@@ -232,7 +234,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (SelectedEngine.IsInternalBearChessEngine  || SelectedEngine.IsInternalChessEngine)
             {
-                Messages.Show($"{_rm.GetString("CannotUninstallInternalEngine")} '{SelectedEngine.Name}'", _rm.GetString("UninstallEngine"),
+                BearChessMessageBox.Show($"{_rm.GetString("CannotUninstallInternalEngine")} '{SelectedEngine.Name}'", _rm.GetString("UninstallEngine"),
                               MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
@@ -264,8 +266,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             catch (Exception ex)
             {
-                Messages.Show($"{_rm.GetString("ErrorOnUninstallEngine")} '{engineName}'{Environment.NewLine}{ex.Message}", _rm.GetString("UninstallEngine"),
-                                MessageBoxButton.OK, MessageBoxImage.Error);
+                BearChessMessageBox.Show($"{_rm.GetString("ErrorOnUninstallEngine")} '{engineName}'{Environment.NewLine}{ex.Message}", _rm.GetString("UninstallEngine"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -415,7 +416,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                        
                         if (!uciInfo.Valid)
                         {
-                            throw new Exception($"{uciInfo.FileName} is not a valid UCI engine");
+                            throw new Exception($"{uciInfo.FileName} {_rm.GetString("IsNotValidEngine")}");
                         }
 
                         uciInfo.Name = multiParameter.ParameterDisplay;
@@ -571,13 +572,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                if (files != null)
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files == null)
                 {
-                    e.Handled = true;
-                    var fileInfo = new FileInfo(files[0]);
-                    LoadNewEngine(fileInfo.FullName, string.Empty, string.Empty);
+                    return;
                 }
+
+                e.Handled = true;
+                var fileInfo = new FileInfo(files[0]);
+                LoadNewEngine(fileInfo.FullName, string.Empty, string.Empty);
             }
         }
 
@@ -589,7 +592,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 e.Handled = true;
                 return;
             }
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (files == null || files.Length != 1 || !files[0].EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
             {
                 e.Effects = DragDropEffects.None;
@@ -651,19 +654,19 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (!SelectedEngine.ValidForAnalysis)
             {
-                Messages.Show(_rm.GetString("NotSuitableForBuddy"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
+                BearChessMessageBox.Show(_rm.GetString("NotSuitableForBuddy"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
                 return;
             }
             if (SelectedEngine.IsProbing)
             {
-                Messages.Show(_rm.GetString("BearChessCannotBuddy"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
+                BearChessMessageBox.Show(_rm.GetString("BearChessCannotBuddy"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
                 return;
             }
             if (SelectedEngine.IsInternalBearChessEngine)
             {
-                Messages.Show(_rm.GetString("NotSuitableForBuddy"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
+                BearChessMessageBox.Show(_rm.GetString("NotSuitableForBuddy"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
                 return;
             }
@@ -673,20 +676,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
             SelectedEngine.IsBuddy = !SelectedEngine.IsBuddy;
             foreach (var uciInfo in _uciInfos)
             {
-                if (!uciInfo.Id.Equals(SelectedEngine.Id))
+                if (uciInfo.Id.Equals(SelectedEngine.Id))
                 {
-                    if (uciInfo.IsBuddy)
-                    {
-                        uciInfo.IsBuddy = false;
-                        uciPath = Path.Combine(_uciPath, uciInfo.Id);
-                        serializer = new XmlSerializer(typeof(UciInfo));
-                        textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
-                        serializer.Serialize(textWriter, uciInfo);
-                        textWriter.Close();
-                        break;
-                    }
-                    
+                    continue;
                 }
+
+                if (!uciInfo.IsBuddy)
+                {
+                    continue;
+                }
+
+                uciInfo.IsBuddy = false;
+                uciPath = Path.Combine(_uciPath, uciInfo.Id);
+                serializer = new XmlSerializer(typeof(UciInfo));
+                textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
+                serializer.Serialize(textWriter, uciInfo);
+                textWriter.Close();
+                break;
             }
             uciPath = Path.Combine(_uciPath, SelectedEngine.Id);
             serializer = new XmlSerializer(typeof(UciInfo));
@@ -704,13 +710,13 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
             if (!SelectedEngine.ValidForAnalysis)
             {
-                Messages.Show(_rm.GetString("NotSuitableForBearChess"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
+                BearChessMessageBox.Show(_rm.GetString("NotSuitableForBearChess"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return;
             }
             if (SelectedEngine.IsBuddy)
             {
-                Messages.Show(_rm.GetString("BuddyCannotBearChess"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
+                BearChessMessageBox.Show(_rm.GetString("BuddyCannotBearChess"), _rm.GetString("NotSuitable"), MessageBoxButton.OK,
                                 MessageBoxImage.Error);
                 return;
             }
@@ -721,20 +727,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
             SelectedEngine.IsProbing = !SelectedEngine.IsProbing;
             foreach (var uciInfo in _uciInfos)
             {
-                if (!uciInfo.Id.Equals(SelectedEngine.Id))
+                if (uciInfo.Id.Equals(SelectedEngine.Id))
                 {
-                    if (uciInfo.IsProbing)
-                    {
-                        uciInfo.IsProbing = false;
-                        uciPath = Path.Combine(_uciPath, uciInfo.Id);
-                        serializer = new XmlSerializer(typeof(UciInfo));
-                        textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
-                        serializer.Serialize(textWriter, uciInfo);
-                        textWriter.Close();
-                        break;
-                    }
-
+                    continue;
                 }
+
+                if (!uciInfo.IsProbing)
+                {
+                    continue;
+                }
+
+                uciInfo.IsProbing = false;
+                uciPath = Path.Combine(_uciPath, uciInfo.Id);
+                serializer = new XmlSerializer(typeof(UciInfo));
+                textWriter = new StreamWriter(Path.Combine(uciPath, uciInfo.Id + ".uci"), false);
+                serializer.Serialize(textWriter, uciInfo);
+                textWriter.Close();
+                break;
             }
             uciPath = Path.Combine(_uciPath, SelectedEngine.Id);
             serializer = new XmlSerializer(typeof(UciInfo));
@@ -746,8 +755,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void DataGridEngine_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var u = e.OriginalSource as UIElement;
-            if (e.Key == Key.Enter && u != null)
+            if (e.Key == Key.Enter && e.OriginalSource is UIElement u)
             {
                 e.Handled = true;
                 DialogResult = true;

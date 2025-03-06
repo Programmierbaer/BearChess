@@ -345,6 +345,18 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                       {FH8, 8}
                                                                   };
 
+        private static readonly Dictionary<string, string> BlindFieldNames = new Dictionary<string, string>
+        {
+             {"A","Anna"},
+             {"B","Bella"},
+             {"C","Cäsar"},
+             {"D","David"},
+             {"E","Eva"},
+             {"F","Felix"},
+             {"G","Gustav"},
+             {"H","Hektor"},
+        };
+
         public static Lines GetLine(int field)
         {
             return FieldToLines[field];
@@ -478,6 +490,29 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                 default:
                     return new Lines[0];
             }
+        }
+
+        public static string GetBlindFieldName(string fieldName)
+        {
+            string row, col;
+            if (string.IsNullOrWhiteSpace(fieldName))
+            {
+                return string.Empty;
+            }
+            if (fieldName.Length > 1)
+            {
+                row = fieldName[0].ToString().ToUpper();
+                col = fieldName[1].ToString().ToUpper();
+            }
+            else
+            {
+                row = fieldName.ToUpper();
+                col = string.Empty;
+            }
+            if (BlindFieldNames.ContainsKey(row)) {
+                return $"{BlindFieldNames[row]}{col}";
+            }
+            return fieldName;
         }
 
         public static string GetFieldName(int field)

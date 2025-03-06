@@ -473,6 +473,15 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public void IsADraw() => _board?.IsADraw();
 
+        public void SetFen(string fen)
+        {
+            SetAllLedsOff(false);
+            _board?.SetFen(fen);
+            _internalChessBoard = new InternalChessBoard();
+
+            _internalChessBoard.NewGame();
+            _internalChessBoard.SetPosition(fen);
+        }
         public void SetFen(string fen, string allMoves)
         {
             if (string.IsNullOrWhiteSpace(fen))

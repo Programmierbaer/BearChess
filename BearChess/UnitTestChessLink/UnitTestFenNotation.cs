@@ -2,12 +2,24 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
+using www.SoLaNoSoft.com.BearChess.SquareOffChessBoard;
 
 namespace UnitTestChessLink
 {
     [TestClass]
     public class UnitTestFenNotation
     {
+        private const string BASEPOSITION = "1100001111000011110000111100001111000011110000111100001111000011";
+
+        [TestMethod]
+        public void TestSquareOffProCodeConverter()
+        {
+            var converter = new BoardCodeConverter(BASEPOSITION);
+            var fieldsWith = converter.GetFieldsWithPieces();
+            Assert.IsTrue(fieldsWith.Length == 32);
+            Assert.AreEqual(string.Join(" ", fieldsWith), "A1 A2 A7 A8 B1 B2 B7 B8 C1 C2 C7 C8 D1 D2 D7 D8 E1 E2 E7 E8 F1 F2 F7 F8 G1 G2 G7 G8 H1 H2 H7 H8");
+        }
+
 
         // 178 0 1 6 1 0 1 1  8 168 87 192 0 2 7 2
         [TestMethod]

@@ -96,7 +96,10 @@ namespace www.SoLaNoSoft.com.BearChessBase
 
         public void Speak(string text)
         {
-            _lastSpeak = text;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                _lastSpeak = text;
+            }
             _synthesizer?.Speak(text);
         }
 
@@ -151,8 +154,11 @@ namespace www.SoLaNoSoft.com.BearChessBase
         }
 
         public void SpeakAsync(string text, bool force)
-        {
-            _lastSpeak = text;
+        {            
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                _lastSpeak = text;
+            }
             _synthesizer?.SpeakAsync(text);
         }
     }

@@ -1222,6 +1222,11 @@
                     Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonAccept_OnClick">
                 <Image Source="Assets/Icons/emotion_question.png" Width="16" />
             </Button>
+            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonForcePosition"
+                    ToolTip="{x:Static p:Resources.ShowBoardInformationTip}"
+                    Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonForcePosition_OnClick">
+                <Image Source="Assets/Icons/lightning_go.png" Width="16" />
+            </Button>
             <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonSoundRepeat"
                     ToolTip="{x:Static p:Resources.SpeechRepeat}"
                     Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonSoundRepeat_OnClick">

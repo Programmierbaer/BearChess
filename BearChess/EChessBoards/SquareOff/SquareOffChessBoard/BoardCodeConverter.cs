@@ -9,9 +9,8 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 {
     public class BoardCodeConverter
     {
-        private readonly bool _playWithWhite;
-
-        private Dictionary<string, bool> _chessFields = new Dictionary<string, bool>()
+        
+        private readonly Dictionary<string, bool> _chessFields = new Dictionary<string, bool>()
         {
             { "A1", false },
             { "A2", false },
@@ -88,33 +87,35 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             {48, "G1" }, {49, "G2" }, {50, "G3" }, {51, "G4" }, {52, "G5" }, {53, "G6" }, {54, "G7" }, {55, "G8" },
             {56, "H1" }, {57, "H2" }, {58, "H3" }, {59, "H4" }, {60, "H5" }, {61, "H6" }, {62, "H7" }, {63, "H8" }
         };
-
-        public BoardCodeConverter(string boardCodes, bool playWithWhite)
+        public BoardCodeConverter()
         {
-            _playWithWhite = playWithWhite;
-            for (byte i = 0; i < 64; i++)
+
+        }
+
+        public BoardCodeConverter(string boardCodes)
+        {
+            if (string.IsNullOrWhiteSpace(boardCodes))
             {
+                return;
+            }
+            for (byte i = 0; i < boardCodes.Length; i++)
+            {
+
                 var key = boardCodes.Substring(i, 1);
                 _chessFields[_fieldByte2FieldName[i]] = key == "1";
             }
         }
 
-        public BoardCodeConverter(bool playWithWhite)
+        public string[] GetFieldsWithPieces()
         {
-            _playWithWhite = playWithWhite;
+            return _chessFields.Keys.Where(field => _chessFields[field]).ToArray();
         }
+
+      
 
         public bool SamePosition(BoardCodeConverter boardCodeConverter)
         {
-            foreach (var chessFieldsKey in _chessFields.Keys)
-            {
-                if (_chessFields[chessFieldsKey] != boardCodeConverter.IsFigureOn(chessFieldsKey))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return _chessFields.Keys.All(chessFieldsKey => _chessFields[chessFieldsKey] == boardCodeConverter.IsFigureOn(chessFieldsKey));
         }
 
         public void ClearFields()
@@ -128,19 +129,27 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
         public void SetFigureOn(int fieldId)
         {
             var fieldName = Fields.GetFieldName(fieldId);
-            _chessFields[fieldName] = true;
+            if (!string.IsNullOrWhiteSpace(fieldName) && _chessFields.ContainsKey(fieldName))
+            {
+                _chessFields[fieldName] = true;
+            }
         }
 
 
         public bool IsFigureOn(int fieldId)
         {
             var fieldName = Fields.GetFieldName(fieldId);
-            return _chessFields[fieldName];
+            return IsFigureOn(Fields.GetFieldName(fieldId));
         }
 
         public bool IsFigureOn(string fieldName)
         {
-            return _chessFields[fieldName.ToUpper()];
+            if (!string.IsNullOrWhiteSpace(fieldName) && _chessFields.ContainsKey(fieldName))
+            {
+                return _chessFields[fieldName.ToUpper()];
+            }
+
+            return false;
         }
 
     }

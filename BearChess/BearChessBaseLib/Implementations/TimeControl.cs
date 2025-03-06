@@ -47,6 +47,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                 return string.Empty;
             }
 
+            if (timeControl.TimeControlType == TimeControlEnum.NoControl)
+            {
+                return rm.GetString("NoControl");
+            }
+
             if (timeControl.TimeControlType == TimeControlEnum.TimePerGame)
             {
                 return timeControl.Value1 == 1 ?  $"{timeControl.Value1} {rm.GetString("TCMinutePerGame")}" : $"{timeControl.Value1} {rm.GetString("TCMinutesPerGame")}"; 

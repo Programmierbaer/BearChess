@@ -385,6 +385,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die as shown on the chessboard ähnelt.
+        /// </summary>
+        public static string AsShownOnChessboard {
+            get {
+                return ResourceManager.GetString("AsShownOnChessboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die At least one engine must allow configuring the ELO number ähnelt.
         /// </summary>
         public static string AtLeastOnEngineELO {
@@ -1663,6 +1672,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Would you like to adjust the playing strength of the engine? ähnelt.
+        /// </summary>
+        public static string ConfigureElo {
+            get {
+                return ResourceManager.GetString("ConfigureElo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Configure engine ähnelt.
         /// </summary>
         public static string ConfigureEngine {
@@ -1722,6 +1740,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string ConfigurePGN {
             get {
                 return ResourceManager.GetString("ConfigurePGN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Configure the name of the player ähnelt.
+        /// </summary>
+        public static string ConfigurePlayer {
+            get {
+                return ResourceManager.GetString("ConfigurePlayer", resourceCulture);
             }
         }
         
@@ -1830,6 +1857,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string ConfirmPosition {
             get {
                 return ResourceManager.GetString("ConfirmPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Then confirm with &apos;OK&apos; ähnelt.
+        /// </summary>
+        public static string ConfirmWithOk {
+            get {
+                return ResourceManager.GetString("ConfirmWithOk", resourceCulture);
             }
         }
         
@@ -2167,6 +2203,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Correct Position ähnelt.
+        /// </summary>
+        public static string CorrectPosition {
+            get {
+                return ResourceManager.GetString("CorrectPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Could not load ähnelt.
         /// </summary>
         public static string CouldNotLoad {
@@ -2217,6 +2262,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string CurrentCOMPort {
             get {
                 return ResourceManager.GetString("CurrentCOMPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Current ELO value ähnelt.
+        /// </summary>
+        public static string CurrentElo {
+            get {
+                return ResourceManager.GetString("CurrentElo", resourceCulture);
             }
         }
         
@@ -4534,6 +4588,24 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Maximum ELO value ähnelt.
+        /// </summary>
+        public static string MaximumELO {
+            get {
+                return ResourceManager.GetString("MaximumELO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Minimum ELO value ähnelt.
+        /// </summary>
+        public static string MinimumELO {
+            get {
+                return ResourceManager.GetString("MinimumELO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die min. ähnelt.
         /// </summary>
         public static string Minutes {
@@ -5254,6 +5326,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Place the figures on your  ähnelt.
+        /// </summary>
+        public static string PlaceTheFiguresOnYour {
+            get {
+                return ResourceManager.GetString("PlaceTheFiguresOnYour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Place your chessmen ähnelt.
         /// </summary>
         public static string PlaceYourChessmen {
@@ -5875,6 +5956,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Say best move when help is requested ähnelt.
+        /// </summary>
+        public static string SayBestMoveHelpRequested {
+            get {
+                return ResourceManager.GetString("SayBestMoveHelpRequested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Say the best move for the selected figure ähnelt.
         /// </summary>
         public static string SayBestMoveSelectedFigure {
@@ -6280,7 +6370,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Show best move ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show best move when help is requested ähnelt.
         /// </summary>
         public static string ShowBestMove {
             get {

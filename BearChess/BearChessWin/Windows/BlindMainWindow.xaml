@@ -1,9 +1,8 @@
-﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.Windows.BlindMainWindow"
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.BlindMainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Windows"
         xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
         mc:Ignorable="d" FontSize="18" WindowStartupLocation="CenterOwner"
         Loaded="BlindMainWindow_OnLoaded" SizeToContent="WidthAndHeight" Closed="BlindMainWindow_OnClosed"
@@ -17,7 +16,9 @@
                 GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
         <Button Tag="ConfigureTactum" Margin="5" Content="{x:Static p:Resources.ConfigureTactum}"
                 GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
-        <Button Tag="SettingsPlayer" Margin="5" Content="{x:Static p:Resources.Player}"
+        <Button Tag="SettingsPlayer" Margin="5" Content="{x:Static p:Resources.ConfigurePlayer}"
+                GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
+        <Button Tag="LoadManageEngines" Margin="5" Content="{x:Static p:Resources.LoadAndManageEngines}"
                 GotFocus="UIElement_OnGotFocus" Click="ActionMenuButton_OnClick" />
         <Button Tag="SettingsBearChess" Margin="5" Content="{x:Static p:Resources.BearChessConfiguration}" GotFocus="UIElement_OnGotFocus"
                 Click="ActionMenuButton_OnClick" />

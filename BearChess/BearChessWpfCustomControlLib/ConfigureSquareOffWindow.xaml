@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWpfCustomControlLib"
         xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties"     
         mc:Ignorable="d"  SizeToContent="Height" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
-        Title="{x:Static p:Resources.ConfigureSquareOffPro}" Height="350" Width="490">
+        Title="{x:Static p:Resources.ConfigureSquareOffPro}" Height="440" Width="490">
     <StackPanel>
         <Border Name="borderScans" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <StackPanel Margin="0,5,0,5">
@@ -46,6 +46,44 @@
                     <TextBlock VerticalAlignment="Center" Text="{x:Static p:Resources.ResetDefault250ms}"></TextBlock>
                 </StackPanel>
             </StackPanel>
+        </Border>
+        <Border Name="borderDelay" Margin="5" BorderBrush="Gray" BorderThickness="1">
+        <StackPanel Margin="0,5,0,5" >
+            <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.DelaySendLED}" FontWeight="DemiBold"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <DockPanel LastChildFill="False">
+                <Button DockPanel.Dock="Left" Margin="0,0,0,0" HorizontalAlignment="Left" Name="buttonDelay"
+                     Width="32"
+                     Height="32"
+                     Click="ButtonDelayTimeDelete_OnClick" Background="Transparent" BorderBrush="Transparent"
+                     ToolTip="{x:Static p:Resources.DecrementDelay}">
+                    <Image Source="Assets/Icons/time_delete.png" />
+                </Button>
+
+                <Slider DockPanel.Dock="Left" Name="sliderDelayTime" Margin="15,5,5,5" Minimum="20" Maximum="250" TickPlacement="Both"
+                     Width="200" Value="100"
+                     ValueChanged="SliderDelay_OnValueChanged" />
+
+                <Button DockPanel.Dock="Left" Margin="5,0,0,0" HorizontalAlignment="Left" Name="buttonPlusDelay"
+                     Width="32"
+                     Height="32"
+                     Click="ButtonDelayTimeAdd_OnClick" Background="Transparent" BorderBrush="Transparent"
+                     ToolTip="{x:Static p:Resources.IncrementDelay}">
+                    <Image Source="Assets/Icons/time_add.png" />
+                </Button>
+                <TextBlock Name="textBlockDelayPerSec" DockPanel.Dock="Left" HorizontalAlignment="Left"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center" Text="every 3500 ms" />
+            </DockPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="10,5,10,5" Name="buttonDelayDefault" Background="Transparent"
+                     ToolTip="Reset to default"
+                     BorderBrush="Transparent" Width="32" Height="32" Click="ButtonResetDefault_OnClick">
+                    <Image Source="Assets/Icons/time.png" />
+                </Button>
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static p:Resources.ResetDefault100ms}"></TextBlock>
+            </StackPanel>
+        </StackPanel>
         </Border>
         <Border  Visibility="Visible" Margin="5" BorderBrush="Gray" BorderThickness="1" >
             <StackPanel >

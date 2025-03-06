@@ -52,6 +52,7 @@
                 <CheckBox VerticalContentAlignment="Center" Visibility="Visible" Margin="5" Name="checkBoxSayLiftUpDown" Content="{x:Static p:Resources.SayLiftUpDown}" GotFocus="CheckBoxSayLiftUpDown_OnGotFocus" Checked="CheckBox_OnChecked" Unchecked="CheckBox_OnUnchecked"/>
                 <CheckBox VerticalContentAlignment="Center"  Visibility="Visible" Margin="5" Name="checkBoxPossibleMoves" Content="{x:Static p:Resources.SayAllMovesSelectedFigure}" GotFocus="CheckBoxPossibleMoves_OnGotFocus" Checked="CheckBox_OnChecked" Unchecked="CheckBox_OnUnchecked"/>
                 <CheckBox VerticalContentAlignment="Center"  Visibility="Visible" Margin="5" Name="checkBoxBestMove"  Content="{x:Static p:Resources.SayBestMoveSelectedFigure}" GotFocus="CheckBoxBestMove_OnGotFocus" Checked="CheckBox_OnChecked" Unchecked="CheckBox_OnUnchecked"/>
+                <CheckBox VerticalContentAlignment="Center"  Visibility="Visible" Margin="5" Name="checkBoxBestMoveHelpRequested"  Content="{x:Static p:Resources.SayBestMoveHelpRequested}" GotFocus="CheckBoxBestHelpRequested_OnGotFocus" Checked="CheckBox_OnChecked" Unchecked="CheckBox_OnUnchecked"/>                
             </StackPanel>
         </Border>
         <Grid>

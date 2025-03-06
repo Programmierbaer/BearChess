@@ -1003,7 +1003,7 @@
     <value>Zeige</value>
   </data>
   <data name="ShowBestMove" xml:space="preserve">
-    <value>Zeige besten Zug</value>
+    <value>Zeige besten Zug bei Hilfeanforderung</value>
   </data>
   <data name="ShowBestMoveFromBuddy" xml:space="preserve">
     <value>Zeige bei Hilfeanforderung den Zug der Buddy-Engine</value>
@@ -2639,5 +2639,35 @@
   </data>
   <data name="HideClocks" xml:space="preserve">
     <value>Uhren verbergen</value>
+  </data>
+  <data name="CorrectPosition" xml:space="preserve">
+    <value>Stellung korrigieren</value>
+  </data>
+  <data name="ConfirmWithOk" xml:space="preserve">
+    <value>Dann Bestätigen Sie mit 'OK'</value>
+  </data>
+  <data name="PlaceTheFiguresOnYour" xml:space="preserve">
+    <value>Platzieren Sie die Figuren auf dem</value>
+  </data>
+  <data name="AsShownOnChessboard" xml:space="preserve">
+    <value>wie sie auf dem Schachbrett dargestellt sind.</value>
+  </data>
+  <data name="SayBestMoveHelpRequested" xml:space="preserve">
+    <value>Besten Zug bei Hilfeanforderung ansagen</value>
+  </data>
+  <data name="ConfigurePlayer" xml:space="preserve">
+    <value>Name des Spielers Konfigurieren</value>
+  </data>
+  <data name="ConfigureElo" xml:space="preserve">
+    <value>Möchten sie die Spielstärke der Engine einstellen?</value>
+  </data>
+  <data name="CurrentElo" xml:space="preserve">
+    <value>Aktueller ELO-Wert</value>
+  </data>
+  <data name="MinimumELO" xml:space="preserve">
+    <value>Minimaler ELO Wert</value>
+  </data>
+  <data name="MaximumELO" xml:space="preserve">
+    <value>Maximaler ELO Wert</value>
   </data>
 </root>

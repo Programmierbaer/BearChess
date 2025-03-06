@@ -148,18 +148,14 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                     {
                         if (_stringDataToBoard.TryDequeue(out var data))
                         {
-                            if (!data.Equals("30#R*"))
-                            {
-                                _logger?.LogDebug($"SC: Send string data: {data}");
-                            }
-
+                            
                             if (!lastSend.Equals(data) || data.Equals("30#R*"))
                             {
                                 if (!data.Equals("30#R*"))
                                 {
                                     lastSend = data;
+                                    _logger?.LogDebug($"SC: Send string data: {data}");
                                 }
-
                                 var convertToSend = ConvertToSend(data);
                                 _comPort.Write(convertToSend, 0, convertToSend.Length);
                             }

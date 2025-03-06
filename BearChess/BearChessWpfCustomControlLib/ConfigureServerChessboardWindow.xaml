@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWpfCustomControlLib"
-        mc:Ignorable="d"
-        Title="Configure Chessboard" Height="450" Width="800">
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties"     
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
+        Title="{x:Static p:Resources.ConfigureBoardConnection}" Height="450" Width="800">
     <Grid>
         <StackPanel Margin="5">
-            <CheckBox Margin="5" Name="CheckBoxSameConnection"  Content="Same connection for white and black"></CheckBox>
+            <CheckBox Margin="5" Name="CheckBoxSameConnection"  Content="{x:Static p:Resources.SameConnectionWhiteAndBlack}" Unchecked="CheckBoxSameConnection_OnUnchecked" Checked="CheckBoxSameConnection_OnChecked"></CheckBox>
             <Border  Name="BoarderWhite"  Margin="5" BorderBrush="Gray" BorderThickness="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -20,8 +21,8 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0"  Margin="5" FontWeight="Bold" Text="White"></TextBlock>
-                    <RadioButton Grid.Column="0" Grid.Row="1" Name="radioButtonWhiteDirectConnected" Checked="radioButtonWhiteDirectConnected_Checked" Margin="6,3,4,7" GroupName="WhiteConnected" IsChecked="true" Content="Direct connected"></RadioButton>
+                    <TextBlock Grid.Column="0" Grid.Row="0"  Margin="5" FontWeight="Bold" Text="{x:Static p:Resources.White}"></TextBlock>
+                    <RadioButton Grid.Column="0" Grid.Row="1" Name="radioButtonWhiteDirectConnected" Checked="radioButtonWhiteDirectConnected_Checked" Margin="6,3,4,7" GroupName="WhiteConnected" IsChecked="true" Content="{x:Static p:Resources.DirectConnection}"></RadioButton>
                     <Grid Margin="5"  Grid.Column="0" Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
@@ -32,13 +33,15 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <ComboBox  Margin="5"  Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" Name="comboboxWhiteEBoardNames" ></ComboBox>
-                        <Button Name="ButtonConfigureWhiteConnection"  Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"  Margin="5" Click="ButtonConfigureWhiteConnection_Click"  >Configure</Button>
+                        <Button Name="ButtonConfigureWhiteConnection"  Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"  Margin="5" Click="ButtonConfigureWhiteConnection_Click"  >
+                            <TextBlock Text="{x:Static p:Resources.Configure}"></TextBlock>
+                        </Button>
                         <StackPanel Margin="5"  Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                            <TextBlock Margin="5"  Text="Port:"  ></TextBlock>
-                            <TextBlock Margin="5" Text="BTLE"  ></TextBlock>
+                            <TextBlock Margin="5"  Text="{x:Static p:Resources.Port}"  ></TextBlock>
+                            <TextBlock Name="TextBlockPortNameWhite" Margin="5" Text="BTLE"  ></TextBlock>
                         </StackPanel>
                     </Grid>
-                    <RadioButton Grid.Column="1" Grid.Row="1"  Checked="radioButtonWhiteConnectedViaBC_Checked" Name="radioButtonWhiteConnectedViaBC" Margin="5" GroupName="WhiteConnected" Content="Connected via BearChess"></RadioButton>
+                    <RadioButton Grid.Column="1" Grid.Row="1"  Checked="radioButtonWhiteConnectedViaBC_Checked" Name="radioButtonWhiteConnectedViaBC" Margin="5" GroupName="WhiteConnected" Content="{x:Static p:Resources.ConnectedViaBearChess}"></RadioButton>
                     <ComboBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Name="comboboxWhiteBCNames"  Margin="5,10,5,5"></ComboBox>
 
                 </Grid>
@@ -54,8 +57,8 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0"  Margin="5" FontWeight="Bold" Text="Black"></TextBlock>
-                    <RadioButton Grid.Column="0" Grid.Row="1" Name="radioButtonBlackDirectConnected"  Margin="5" GroupName="BlackConnected" IsChecked="true" Content="Direct connected"></RadioButton>
+                    <TextBlock Grid.Column="0" Grid.Row="0"  Margin="5" FontWeight="Bold" Text="{x:Static p:Resources.Black}"></TextBlock>
+                    <RadioButton Grid.Column="0" Grid.Row="1" Name="radioButtonBlackDirectConnected"  Margin="5" GroupName="BlackConnected" IsChecked="true" Content="{x:Static p:Resources.DirectConnection}"></RadioButton>
                     <Grid Margin="5"  Grid.Column="0" Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
@@ -66,13 +69,15 @@
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
                         <ComboBox  Margin="5"  Grid.Column="0" Grid.Row="0" VerticalAlignment="Top" Name="comboboxBlackEBoardNames" ></ComboBox>
-                        <Button Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"  Margin="5"  Click="ButtonConfigureBlackConnection_Click" >Configure</Button>
+                        <Button Grid.Column="1" Grid.Row="0" VerticalAlignment="Top"  Margin="5"  Click="ButtonConfigureBlackConnection_Click" >
+                            <TextBlock Text="{x:Static p:Resources.Configure}"></TextBlock>
+                        </Button>
                         <StackPanel Margin="5"  Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                            <TextBlock Margin="5"  Text="Port:"  ></TextBlock>
-                            <TextBlock Margin="5" Text="BTLE"  ></TextBlock>
+                            <TextBlock Margin="5"  Text="{x:Static p:Resources.Port}"  ></TextBlock>
+                            <TextBlock Name="TextBlockPortNameBlack" Margin="5" Text="BTLE"  ></TextBlock>
                         </StackPanel>
                     </Grid>
-                    <RadioButton Grid.Column="1" Grid.Row="1"  Name="radioButtonBlackConnectedViaBC" Margin="5" GroupName="WhiteConnected" Content="Connected via BearChess"></RadioButton>
+                    <RadioButton Grid.Column="1" Grid.Row="1"  Name="radioButtonBlackConnectedViaBC" Margin="5" GroupName="BlackConnected" Content="{x:Static p:Resources.ConnectedViaBearChess}"></RadioButton>
                     <ComboBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Top" Name="comboboxBlackBCNames"  Margin="5,10,5,5"></ComboBox>
                 </Grid>
             </Border>

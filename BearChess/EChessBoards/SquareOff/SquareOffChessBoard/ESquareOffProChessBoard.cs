@@ -58,6 +58,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
         private string _prevRead = string.Empty;
         private string _prevSend = string.Empty;
         private int _equalReadCount = 0;
+        private volatile int _delay = 50;
 
         public override event EventHandler BasePositionEvent;
         public override event EventHandler NewGamePositionEvent;
@@ -69,7 +70,8 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
         private bool _stopLoop;
         private DataFromBoard _dumpDataFromBoard = new DataFromBoard(string.Empty);
         private ConcurrentBag<string> _ledBag = new ConcurrentBag<string>();
-        private bool _dumpRequested;
+        private volatile bool _dumpRequested;
+
         private readonly Dictionary<byte, string> _fieldByte2FieldName = new Dictionary<byte, string>()
         { { 0, "A1" }, { 1, "A2" }, { 2, "A3" }, { 3, "A4" }, { 4, "A5" }, { 5, "A6" }, { 6, "A7" }, { 7, "A8" },
             { 8, "B1" }, { 9, "B2" }, {10, "B3" }, {11, "B4" }, {12, "B5" }, {13, "B6" }, {14, "B7" }, {15, "B8" },
@@ -126,8 +128,8 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 {
                     if (_ledBag.Count > 0)
                     {
-                        string fieldNames = string.Empty;
-                        while (_ledBag.TryTake(out string fieldName))
+                        var fieldNames = string.Empty;
+                        while (_ledBag.TryTake(out var fieldName))
                         {
                             fieldNames += fieldName;
                         }
@@ -135,7 +137,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                     }
 
                 }
-                Thread.Sleep(30);
+                Thread.Sleep(_delay);
             }
             while (_ledBag.TryTake(out _)) { }
         }
@@ -171,7 +173,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                 _lastToField = Fields.COLOR_OUTSIDE;
                 _liftUpFigure = null;
                 _liftUpEnemyFigure = null;
-              
+
                 while (_ledBag.TryTake(out _)) { }
 
                 _serialCommunication.Send("14#1*");
@@ -273,14 +275,12 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             {
                 return;
             }
-            else
+
+            lock (_locker)
             {
-                lock (_locker)
-                {
-                    while (_ledBag.TryTake(out _)){}
-                }
-                _serialCommunication.ClearToBoard();
+                while (_ledBag.TryTake(out _)){}
             }
+            _serialCommunication.ClearToBoard();
             lock (_locker)
             {
                 if (ledsParameter.IsProbing)
@@ -308,8 +308,8 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                     {
                         if (ledsParameter.FieldNames.Length == 2 && _configuration.ShowMoveLine)
                         {
-                            string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
-                            foreach (string fieldName in moveLine)
+                            var moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0], ledsParameter.FieldNames[1]);
+                            foreach (var fieldName in moveLine)
                             {
                                 _ledBag.Add(fieldName.ToLower());
                             }
@@ -344,7 +344,6 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
             {
                 while (_ledBag.TryTake(out _)) { }
             }
-
             _serialCommunication.Send($"{LED_CMD_PREFIX}*");
         }
 
@@ -355,12 +354,12 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         public override void DimLeds(bool dimLeds)
         {
-            //throw new NotImplementedException();
+            // ignore
         }
 
         public override void DimLeds(int level)
         {
-            //throw new NotImplementedException();
+            // ignore
         }
 
         public override void SetScanTime(int scanTime)
@@ -370,9 +369,11 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         public override void SetDebounce(int debounce)
         {
-            // ignore
+            if (debounce >= 10)
+            {
+                _delay = debounce;
+            }
         }
-
         public override void FlashMode(EnumFlashMode flashMode)
         {
             // ignore
@@ -419,356 +420,334 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         public override DataFromBoard GetPiecesFen()
         {
-            // return GetDumpPiecesFen();
-            string[] changes = { "", "" };
-            if (_fromBoard.TryDequeue(out var dataFromBoard))
+            if (!_fromBoard.TryDequeue(out var dataFromBoard))
             {
-                if (dataFromBoard.FromBoard.StartsWith(FIELD_CMD_PREFIX))
+                return new DataFromBoard(_prevSend, 3);
+            }
+
+            if (dataFromBoard.FromBoard.StartsWith(FIELD_CMD_PREFIX))
+            {
+                var fieldNames = dataFromBoard.FromBoard.Substring(3, dataFromBoard.FromBoard.Length - 3).Replace("*", string.Empty);
+                    
+                if (_dumpRequested)
                 {
-                    var fieldNames = dataFromBoard.FromBoard.Substring(3, dataFromBoard.FromBoard.Length - 3)
-                        .Replace("*", string.Empty);
-
-                     if (_dumpRequested)
+                    var bc = new BoardCodeConverter(fieldNames);
+                    _dumpDataFromBoard = new DataFromBoard(string.Join(",", bc.GetFieldsWithPieces()), 3)
                     {
-                        var dumpFields = new List<string>();
-                        _dumpRequested = false;
-                        for (byte i = 0; i < 64; i++)
-                        {
-                            var key = fieldNames.Substring(i, 1);
-                            if (key == "1")
-                            {
-                                dumpFields.Add(_fieldByte2FieldName[i]);
-                            }
+                        IsFieldDump = true,
+                        BasePosition =  fieldNames.StartsWith(BASEPOSITION)
+                    };
+                }
+                if (_prevRead.Equals(dataFromBoard.FromBoard))
+                {
+                    _equalReadCount++;
+                }
+                else
+                {
+                    _logger?.LogDebug($"GetPiecesFen: Changes from {_prevRead} to {dataFromBoard.FromBoard}");
+                    _prevRead = dataFromBoard.FromBoard;
+                    _equalReadCount = 0;
+                }
 
-                        }
-                        _dumpDataFromBoard = new DataFromBoard(string.Join(",", dumpFields), 3)
-                        {
-                            IsFieldDump = true,
-                            BasePosition =  fieldNames.StartsWith(BASEPOSITION)
-                        };
-                    }
-                    if (_prevRead.Equals(dataFromBoard.FromBoard))
+                if (_equalReadCount < 5)
+                {
+                    if (string.IsNullOrWhiteSpace(_prevSend))
                     {
-                        _equalReadCount++;
-                    }
-                    else
-                    {
-                        _logger?.LogDebug($"GetPiecesFen: Changes from {_prevRead} to {dataFromBoard.FromBoard}");
-                        _prevRead = dataFromBoard.FromBoard;
-
-                        _equalReadCount = 0;
-                    }
-
-                    if (_equalReadCount < 5)
-                    {
-                        if (string.IsNullOrWhiteSpace(_prevSend))
-                        {
-                            _prevSend = _workingChessBoard.GetFenPosition()
-                                .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                        }
-
-                        // _logger?.LogDebug($"GetPiecesFen: _equalReadCount {_equalReadCount} return {_prevSend}");
-                        return new DataFromBoard(_prevSend, 3);
-                    }
-
-                    // _logger?.LogDebug($"GetPiecesFen: fromBoard: {dataFromBoard.FromBoard}");
-                    if (fieldNames.StartsWith(BASEPOSITION))
-                    {
-                        _chessBoard.Init();
-                        _chessBoard.NewGame();
-                        _workingChessBoard.Init();
-                        _workingChessBoard.NewGame();
-                        _startFenPosition = string.Empty;
-                        BasePositionEvent?.Invoke(this, null);
-                        var basePos = _workingChessBoard.GetFenPosition()
+                        _prevSend = _workingChessBoard.GetFenPosition()
                             .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                        //if (_configuration.SayLiftUpDownFigure && _prevSend != basePos)
-
-
-                        _prevSend = basePos;
-                        return new DataFromBoard(_prevSend, 3)
-                        {
-                            BasePosition = true,
-                            Invalid = false,
-                            IsFieldDump = false
-                        };
                     }
 
+                    _logger?.LogDebug($"GetPiecesFen: _equalReadCount {_equalReadCount} return {_prevSend}");
+                    return new DataFromBoard(_prevSend, 3);
+                }
 
-                    var boardCodeConverter = new BoardCodeConverter(fieldNames, _playWithWhite);
-                    // _logger?.LogDebug($"strings: {string.Join(" ",strings)}");
-                    changes[0] = string.Empty;
-                    changes[1] = string.Empty;
-                    IChessFigure liftUpFigure = null;
-                    var liftDownField = Fields.COLOR_OUTSIDE;
-                    foreach (var boardField in Fields.BoardFields)
+                // _logger?.LogDebug($"GetPiecesFen: fromBoard: {dataFromBoard.FromBoard}");
+                if (fieldNames.StartsWith(BASEPOSITION))
+                {
+                    _chessBoard.Init();
+                    _chessBoard.NewGame();
+                    _workingChessBoard.Init();
+                    _workingChessBoard.NewGame();
+                    _startFenPosition = string.Empty;
+                    BasePositionEvent?.Invoke(this, null);
+                    var basePos = _workingChessBoard.GetFenPosition()
+                        .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];                       
+                    _prevSend = basePos;
+                    return new DataFromBoard(_prevSend, 3)
                     {
-                        var isFigureOnBoard = boardCodeConverter.IsFigureOn(boardField);
-                        var chessFigure = _workingChessBoard.GetFigureOn(boardField);
-                        if (isFigureOnBoard && chessFigure.Color == Fields.COLOR_EMPTY)
-                        {
-                            changes[1] = Fields.GetFieldName(boardField);
-                            _logger?.LogDebug($"GetPiecesFen: Downfield: {boardField}/{changes[1]}");
-                            liftDownField = boardField;
+                        BasePosition = true,
+                        Invalid = false,
+                        IsFieldDump = false
+                    };
+                }
 
-                        }
-
-                        if (!isFigureOnBoard && chessFigure.Color != Fields.COLOR_EMPTY)
-                        {
-                            changes[0] = Fields.GetFieldName(boardField);
-                            _logger?.LogDebug(
-                                $"GetPiecesFen: Lift up field: {boardField}/{changes[0]} {FigureId.FigureIdToEnName[chessFigure.FigureId]}");
-
-                            liftUpFigure = chessFigure;
-
-                        }
+                var boardCodeConverter = new BoardCodeConverter(fieldNames);
+                // _logger?.LogDebug($"Field names: {string.Join(" ",boardCodeConverter.GetFieldsWithPieces())}");
+                IChessFigure liftUpFigure = null;
+                var liftDownField = Fields.COLOR_OUTSIDE;
+                foreach (var boardField in Fields.BoardFields)
+                {
+                    var isFigureOnBoard = boardCodeConverter.IsFigureOn(boardField);
+                    var chessFigure = _workingChessBoard.GetFigureOn(boardField);
+                    if (isFigureOnBoard && chessFigure.Color == Fields.COLOR_EMPTY)
+                    {
+                            
+                        _logger?.LogDebug($"GetPiecesFen: Downfield: {boardField}/{Fields.GetFieldName(boardField)}");
+                        liftDownField = boardField;
                     }
 
-                    // Nothing changed?
-                    if (liftDownField == Fields.COLOR_OUTSIDE && liftUpFigure == null)
+                    if (!isFigureOnBoard && chessFigure.Color != Fields.COLOR_EMPTY)
                     {
-                        return new DataFromBoard(_prevSend, 3);
-                    }
+                        _logger?.LogDebug(
+                            $"GetPiecesFen: Lift up field: {boardField}/{Fields.GetFieldName(boardField)} {FigureId.FigureIdToEnName[chessFigure.FigureId]}");
 
-                    var codeConverter = new BoardCodeConverter(_playWithWhite);
-                    var chessFigures = _chessBoard.GetFigures(Fields.COLOR_WHITE);
-                    foreach (var chessFigure in chessFigures)
-                    {
-                        codeConverter.SetFigureOn(chessFigure.Field);
-                    }
+                        liftUpFigure = chessFigure;
 
-                    chessFigures = _chessBoard.GetFigures(Fields.COLOR_BLACK);
-                    foreach (var chessFigure in chessFigures)
-                    {
-                        codeConverter.SetFigureOn(chessFigure.Field);
                     }
+                }
 
-                    if (boardCodeConverter.SamePosition(codeConverter))
+                // Nothing changed?
+                if (liftDownField == Fields.COLOR_OUTSIDE && liftUpFigure == null)
+                {
+                    return new DataFromBoard(_prevSend, 3);
+                }
+
+                var codeConverter = new BoardCodeConverter();
+                var chessFigures = _chessBoard.GetFigures(Fields.COLOR_WHITE);
+                foreach (var chessFigure in chessFigures)
+                {
+                    codeConverter.SetFigureOn(chessFigure.Field);
+                }
+
+                chessFigures = _chessBoard.GetFigures(Fields.COLOR_BLACK);
+                foreach (var chessFigure in chessFigures)
+                {
+                    codeConverter.SetFigureOn(chessFigure.Field);
+                }
+
+                if (boardCodeConverter.SamePosition(codeConverter))
+                {
+                    _workingChessBoard.Init(_chessBoard);
+                    _prevSend = _chessBoard.GetFenPosition()
+                        .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                    _logger?.LogDebug($"GetPiecesFen: back to current position: {_prevSend}");
+                    _liftUpFigure = null;
+                    _liftUpEnemyFigure = null;
+                    _lastFromField = Fields.COLOR_OUTSIDE;
+                    _lastToField = Fields.COLOR_OUTSIDE;
+                    return new DataFromBoard(_prevSend, 3);
+                }
+
+                if (!_inDemoMode && _liftUpEnemyFigure != null)
+                {
+                    if (liftDownField == _liftUpEnemyFigure.Field && (_liftUpFigure == null && liftUpFigure==null))
                     {
+                        _logger?.LogDebug(
+                            $"GetPiecesFen: Equal lift up/down enemy field: {_liftUpEnemyFigure.Field} == {liftDownField}");
                         _workingChessBoard.Init(_chessBoard);
-                        _prevSend = _chessBoard.GetFenPosition()
-                            .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                        _logger?.LogDebug($"GetPiecesFen: back to current position: {_prevSend}");
                         _liftUpFigure = null;
                         _liftUpEnemyFigure = null;
-                        _lastFromField = Fields.COLOR_OUTSIDE;
-                        _lastToField = Fields.COLOR_OUTSIDE;
-                        return new DataFromBoard(_prevSend, 3);
-                    }
-
-                    if (!_inDemoMode && _liftUpEnemyFigure != null)
-                    {
-                        if (liftDownField == _liftUpEnemyFigure.Field && _liftUpFigure == null)
-                        {
-                            _logger?.LogDebug(
-                                $"GetPiecesFen: Equal lift up/down field: {_liftUpEnemyFigure.Field} == {liftDownField}");
-                            _workingChessBoard.Init(_chessBoard);
-                            _liftUpFigure = null;
-                            _liftUpEnemyFigure = null;
-                            //    _logger?.LogDebug($"GetPiecesFen: return valid {fenPosition1}");
-                            _prevSend = _chessBoard.GetFenPosition()
-                                .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                            _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
-
-                            return new DataFromBoard(_prevSend, 3);
-
-                        }
-                    }
-
-                    if (_liftUpEnemyFigure != null &&
-                        (!_inDemoMode && _allowTakeBack && liftDownField.Equals(_lastFromField) &&
-                         _liftUpEnemyFigure.Field.Equals(_lastToField)))
-                    {
-                        _logger?.LogInfo("TC: Take move back. Replay all previous moves");
-                        var playedMoveList = _chessBoard.GetPlayedMoveList();
-                        _chessBoard.Init();
-                        _chessBoard.NewGame();
-                        if (!string.IsNullOrWhiteSpace(_startFenPosition))
-                        {
-                            _chessBoard.SetPosition(_startFenPosition, false);
-                        }
-
-                        for (int i = 0; i < playedMoveList.Length - 1; i++)
-                        {
-                            _logger?.LogDebug($"TC: Move {playedMoveList[i]}");
-                            _chessBoard.MakeMove(playedMoveList[i]);
-                            _lastFromField = playedMoveList[i].FromField;
-                            _lastToField = playedMoveList[i].ToField;
-                        }
-
-                        _workingChessBoard.Init(_chessBoard);
                         _prevSend = _chessBoard.GetFenPosition()
                             .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
                         _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
+
+                        return new DataFromBoard(_prevSend, 3);
+
+                    }
+                }
+
+                if (_liftUpEnemyFigure != null &&
+                    (!_inDemoMode && _allowTakeBack && liftDownField.Equals(_lastFromField) &&
+                     _liftUpEnemyFigure.Field.Equals(_lastToField)))
+                {
+                    _logger?.LogInfo("TC: Take move back. Replay all previous moves");
+                    var playedMoveList = _chessBoard.GetPlayedMoveList();
+                    _chessBoard.Init();
+                    _chessBoard.NewGame();
+                    if (!string.IsNullOrWhiteSpace(_startFenPosition))
+                    {
+                        _chessBoard.SetPosition(_startFenPosition, false);
+                    }
+
+                    for (var i = 0; i < playedMoveList.Length - 1; i++)
+                    {
+                        _logger?.LogDebug($"TC: Move {playedMoveList[i]}");
+                        _chessBoard.MakeMove(playedMoveList[i]);
+                        _lastFromField = playedMoveList[i].FromField;
+                        _lastToField = playedMoveList[i].ToField;
+                    }
+
+                    _workingChessBoard.Init(_chessBoard);
+                    _prevSend = _chessBoard.GetFenPosition()
+                        .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                    _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
+                    _liftUpFigure = null;
+                    _liftUpEnemyFigure = null;
+                    return new DataFromBoard(_prevSend, 3);
+                }
+
+                if (_liftUpFigure != null)
+                {
+                    // Put the same figure back
+                    if (liftDownField == _liftUpFigure.Field)
+                    {
+                        _logger?.LogDebug(
+                            $"GetPiecesFen: Equal lift up/down field: {_liftUpFigure.Field} == {liftDownField}");
+                        _workingChessBoard.Init(_chessBoard);
                         _liftUpFigure = null;
                         _liftUpEnemyFigure = null;
+                        _prevSend = _chessBoard.GetFenPosition()
+                            .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                        _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
+
                         return new DataFromBoard(_prevSend, 3);
                     }
 
-                    if (_liftUpFigure != null)
+                    if (liftDownField != Fields.COLOR_OUTSIDE)
                     {
-                        // Put the same figure back
-                        if (liftDownField == _liftUpFigure.Field)
+                        if (!_inDemoMode)
                         {
-                            _logger?.LogDebug(
-                                $"GetPiecesFen: Equal lift up/down field: {_liftUpFigure.Field} == {liftDownField}");
-                            _workingChessBoard.Init(_chessBoard);
-                            _liftUpFigure = null;
-                            _liftUpEnemyFigure = null;
-                            _prevSend = _chessBoard.GetFenPosition()
-                                .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                            _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
-
-                            return new DataFromBoard(_prevSend, 3);
-
-                        }
-
-                        if (liftDownField != Fields.COLOR_OUTSIDE)
-                        {
-
-                            if (!_inDemoMode)
+                            if (!_inDemoMode && _allowTakeBack && liftDownField.Equals(_lastFromField) &&
+                                _liftUpFigure.Field.Equals(_lastToField))
                             {
-                                if (!_inDemoMode && _allowTakeBack && liftDownField.Equals(_lastFromField) &&
-                                    _liftUpFigure.Field.Equals(_lastToField))
+
+                                _logger?.LogInfo("TC: Take move back. Replay all previous moves");
+                                var playedMoveList = _chessBoard.GetPlayedMoveList();
+                                _chessBoard.Init();
+                                _chessBoard.NewGame();
+                                if (!string.IsNullOrWhiteSpace(_startFenPosition))
                                 {
-
-                                    _logger?.LogInfo("TC: Take move back. Replay all previous moves");
-                                    var playedMoveList = _chessBoard.GetPlayedMoveList();
-                                    _chessBoard.Init();
-                                    _chessBoard.NewGame();
-                                    if (!string.IsNullOrWhiteSpace(_startFenPosition))
-                                    {
-                                        _chessBoard.SetPosition(_startFenPosition, false);
-                                    }
-
-                                    for (var i = 0; i < playedMoveList.Length - 1; i++)
-                                    {
-                                        _logger?.LogDebug($"TC: Move {playedMoveList[i]}");
-                                        _chessBoard.MakeMove(playedMoveList[i]);
-                                        _lastFromField = playedMoveList[i].FromField;
-                                        _lastToField = playedMoveList[i].ToField;
-                                    }
-
-                                    _workingChessBoard.Init(_chessBoard);
-                                    _prevSend = _chessBoard.GetFenPosition()
-                                        .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                                    _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
-                                    _liftUpFigure = null;
-                                    _liftUpEnemyFigure = null;
-
-                                    return new DataFromBoard(_prevSend, 3);
+                                    _chessBoard.SetPosition(_startFenPosition, false);
                                 }
 
-                                if (_chessBoard.MoveIsValid(_liftUpFigure.Field, liftDownField))
+                                for (var i = 0; i < playedMoveList.Length - 1; i++)
                                 {
-                                    if (_awaitingMoveFromField != Fields.COLOR_OUTSIDE)
-                                    {
-                                        if (_awaitingMoveFromField != _liftUpFigure.Field ||
-                                            _awaitingMoveToField != liftDownField)
-                                        {
-                                            _logger?.LogDebug($"GetPiecesFen: move not awaited!");
-                                            _logger?.LogDebug(
-                                                $"GetPiecesFen: Awaited: {Fields.GetFieldName(_awaitingMoveFromField)} {Fields.GetFieldName(_awaitingMoveToField)}");
-                                            _logger?.LogDebug(
-                                                $"GetPiecesFen: Read: {Fields.GetFieldName(_liftUpFigure.Field)} {Fields.GetFieldName(liftDownField)}");
-                                            return new DataFromBoard(_prevSend, 3);
-                                        }
-                                    }
-
-                                    _logger?.LogDebug(
-                                        $"GetPiecesFen: Make move: {Fields.GetFieldName(_liftUpFigure.Field)} {Fields.GetFieldName(liftDownField)}");
-                                    _lastFromField = _liftUpFigure.Field;
-                                    _lastToField = liftDownField;
-
-                                    _chessBoard.MakeMove(_liftUpFigure.Field, liftDownField);
-                                    _awaitingMoveFromField = Fields.COLOR_OUTSIDE;
-                                    _awaitingMoveToField = Fields.COLOR_OUTSIDE;
-
-                                    _workingChessBoard.Init(_chessBoard);
-                                    _liftUpFigure = null;
-                                    _liftUpEnemyFigure = null;
-                                    _prevSend = _chessBoard.GetFenPosition()
-                                        .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                                    _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
-
-                                    return new DataFromBoard(_prevSend, 3);
+                                    _logger?.LogDebug($"TC: Move {playedMoveList[i]}");
+                                    _chessBoard.MakeMove(playedMoveList[i]);
+                                    _lastFromField = playedMoveList[i].FromField;
+                                    _lastToField = playedMoveList[i].ToField;
                                 }
 
-                                _lastFromField = _liftUpFigure.Field;
-                                _lastToField = liftDownField;
-                                //_logger?.LogDebug($"1. Remove working chessboard from {_liftUpFigure.Field} and set to {liftDownField}");   
-                                _workingChessBoard.RemoveFigureFromField(_liftUpFigure.Field);
-                                _workingChessBoard.SetFigureOnPosition(_liftUpFigure.Figure, liftDownField);
-                                _workingChessBoard.CurrentColor = _liftUpFigure.FigureColor == Fields.COLOR_WHITE
-                                    ? Fields.COLOR_BLACK
-                                    : Fields.COLOR_WHITE;
-
-                                _liftUpFigure = null;
-                                _liftUpEnemyFigure = null;
-                                _prevSend = _workingChessBoard.GetFenPosition()
+                                _workingChessBoard.Init(_chessBoard);
+                                _prevSend = _chessBoard.GetFenPosition()
                                     .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
                                 _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
+                                _liftUpFigure = null;
+                                _liftUpEnemyFigure = null;
+
+                                return new DataFromBoard(_prevSend, 3);
+                            }
+
+                            if (_chessBoard.MoveIsValid(_liftUpFigure.Field, liftDownField))
+                            {
+                                if (_awaitingMoveFromField != Fields.COLOR_OUTSIDE)
+                                {
+                                    if (_awaitingMoveFromField != _liftUpFigure.Field ||
+                                        _awaitingMoveToField != liftDownField)
+                                    {
+                                        _logger?.LogDebug($"GetPiecesFen: move not awaited!");
+                                        _logger?.LogDebug(
+                                            $"GetPiecesFen: Awaited: {Fields.GetFieldName(_awaitingMoveFromField)} {Fields.GetFieldName(_awaitingMoveToField)}");
+                                        _logger?.LogDebug(
+                                            $"GetPiecesFen: Read: {Fields.GetFieldName(_liftUpFigure.Field)} {Fields.GetFieldName(liftDownField)}");
+                                        return new DataFromBoard(_prevSend, 3);
+                                    }
+                                }
+
+                                _logger?.LogDebug(
+                                    $"GetPiecesFen: Make move: {Fields.GetFieldName(_liftUpFigure.Field)} {Fields.GetFieldName(liftDownField)}");
+                                _lastFromField = _liftUpFigure.Field;
+                                _lastToField = liftDownField;
+
+                                _chessBoard.MakeMove(_liftUpFigure.Field, liftDownField);
+                                _awaitingMoveFromField = Fields.COLOR_OUTSIDE;
+                                _awaitingMoveToField = Fields.COLOR_OUTSIDE;
+
+                                _workingChessBoard.Init(_chessBoard);
+                                _liftUpFigure = null;
+                                _liftUpEnemyFigure = null;
+                                _prevSend = _chessBoard.GetFenPosition()
+                                    .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                                _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
+
                                 return new DataFromBoard(_prevSend, 3);
                             }
 
                             _lastFromField = _liftUpFigure.Field;
                             _lastToField = liftDownField;
-                            // _logger?.LogDebug($"2. Remove working chessboard from {_liftUpFigure.Field} and set to {liftDownField}");
-                            _chessBoard.RemoveFigureFromField(_liftUpFigure.Field);
-                            _chessBoard.SetFigureOnPosition(_liftUpFigure.Figure, liftDownField);
-                            _chessBoard.CurrentColor = _liftUpFigure.FigureColor == Fields.COLOR_WHITE
+                            //_logger?.LogDebug($"1. Remove working chessboard from {_liftUpFigure.Field} and set to {liftDownField}");   
+                            _workingChessBoard.RemoveFigureFromField(_liftUpFigure.Field);
+                            _workingChessBoard.SetFigureOnPosition(_liftUpFigure.Figure, liftDownField);
+                            _workingChessBoard.CurrentColor = _liftUpFigure.FigureColor == Fields.COLOR_WHITE
                                 ? Fields.COLOR_BLACK
                                 : Fields.COLOR_WHITE;
-                            _workingChessBoard.Init(_chessBoard);
+
                             _liftUpFigure = null;
                             _liftUpEnemyFigure = null;
-                            _prevSend = _chessBoard.GetFenPosition()
+                            _prevSend = _workingChessBoard.GetFenPosition()
                                 .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
                             _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
                             return new DataFromBoard(_prevSend, 3);
                         }
+
+                        _lastFromField = _liftUpFigure.Field;
+                        _lastToField = liftDownField;
+                        // _logger?.LogDebug($"2. Remove working chessboard from {_liftUpFigure.Field} and set to {liftDownField}");
+                        _chessBoard.RemoveFigureFromField(_liftUpFigure.Field);
+                        _chessBoard.SetFigureOnPosition(_liftUpFigure.Figure, liftDownField);
+                        _chessBoard.CurrentColor = _liftUpFigure.FigureColor == Fields.COLOR_WHITE
+                            ? Fields.COLOR_BLACK
+                            : Fields.COLOR_WHITE;
+                        _workingChessBoard.Init(_chessBoard);
+                        _liftUpFigure = null;
+                        _liftUpEnemyFigure = null;
+                        _prevSend = _chessBoard.GetFenPosition()
+                            .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                        _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
+                        return new DataFromBoard(_prevSend, 3);
                     }
+                }
 
-                    if (liftUpFigure != null)
+                if (liftUpFigure != null)
+                {
+                    // _logger?.LogDebug($"3. Remove working chessboard from {liftUpFigure.Field} ");
+                    _workingChessBoard.RemoveFigureFromField(liftUpFigure.Field);
+                    if (_inDemoMode || liftUpFigure.Color == _chessBoard.CurrentColor)
                     {
-                        // _logger?.LogDebug($"3. Remove working chessboard from {liftUpFigure.Field} ");
-                        _workingChessBoard.RemoveFigureFromField(liftUpFigure.Field);
-                        if (_inDemoMode || liftUpFigure.Color == _chessBoard.CurrentColor)
+                        if (_liftUpFigure == null || _liftUpFigure.Field != liftUpFigure.Field)
                         {
-                            if (_liftUpFigure == null || _liftUpFigure.Field != liftUpFigure.Field)
+                            _liftUpFigure = new SOProFigure()
                             {
-                                _liftUpFigure = new SOProFigure()
-                                {
-                                    Field = liftUpFigure.Field, Figure = liftUpFigure.FigureId,
-                                    FigureColor = liftUpFigure.Color
-                                };
-                                _logger?.LogDebug(
-                                    $"GetPiecesFen: new _liftUpFigure {FigureId.FigureIdToEnName[_liftUpFigure.Figure]}");
-
-                            }
-                        }
-                        else
-                        {
-                            _liftUpEnemyFigure = new SOProFigure
-                            {
-                                Field = liftUpFigure.Field, Figure = liftUpFigure.FigureId,
+                                Field = liftUpFigure.Field, 
+                                Figure = liftUpFigure.FigureId,
                                 FigureColor = liftUpFigure.Color
                             };
                             _logger?.LogDebug(
-                                $"GetPiecesFen: new _liftUpEnemyFigure {FigureId.FigureIdToEnName[_liftUpEnemyFigure.Figure]}");
+                                $"GetPiecesFen: new _liftUpFigure {FigureId.FigureIdToEnName[_liftUpFigure.Figure]}");
                         }
                     }
+                    else
+                    {
+                        _liftUpEnemyFigure = new SOProFigure
+                        {
+                            Field = liftUpFigure.Field, 
+                            Figure = liftUpFigure.FigureId,
+                            FigureColor = liftUpFigure.Color
+                        };
+                        _logger?.LogDebug(
+                            $"GetPiecesFen: new _liftUpEnemyFigure {FigureId.FigureIdToEnName[_liftUpEnemyFigure.Figure]}");
+                    }
                 }
-
-                var newSend = _workingChessBoard.GetFenPosition()
-                    .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
-                if (!newSend.Equals((_prevSend)))
-                {
-                    _logger?.LogDebug($"GetPiecesFen: return changes from {_prevSend} to {newSend}");
-                }
-
-                _prevSend = newSend;
             }
+
+            var newSend = _workingChessBoard.GetFenPosition()
+                .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+            if (!newSend.Equals((_prevSend)))
+            {
+                _logger?.LogDebug($"GetPiecesFen: return changes from {_prevSend} to {newSend}");
+            }
+
+            _prevSend = newSend;
 
             return new DataFromBoard(_prevSend, 3);
         }

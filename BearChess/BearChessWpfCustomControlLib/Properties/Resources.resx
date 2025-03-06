@@ -2329,7 +2329,7 @@
     <value>Scan interval in ms</value>
   </data>
   <data name="ResetDefault250ms" xml:space="preserve">
-    <value>reset to default witch scans every 250 ms</value>
+    <value>Reset to default witch scans every 250 ms</value>
   </data>
   <data name="WhatDoYouLikeToDo" xml:space="preserve">
     <value>What do you like to do?</value>
@@ -2643,6 +2643,30 @@
     <value>Reset to default with delay of 2500 ms</value>
   </data>
   <data name="DelaySendLED" xml:space="preserve">
+    <value>Delay between two LED commands</value>
+  </data>
+  <data name="DelaySendLEDbtle" xml:space="preserve">
     <value>Delay between two LED commands (only BTLE)</value>
+  </data>
+  <data name="ResetDefault50ms" xml:space="preserve">
+    <value>Reset to default with delay of 50 ms</value>
+  </data>
+  <data name="ResetDefault100ms" xml:space="preserve">
+    <value>Reset to default with delay of 100 ms</value>
+  </data>
+  <data name="SameConnectionWhiteAndBlack" xml:space="preserve">
+    <value>Some connection for white and black</value>
+  </data>
+  <data name="ConfigureBoardConnection" xml:space="preserve">
+    <value>Configure chessboard connection</value>
+  </data>
+  <data name="DirectConnection" xml:space="preserve">
+    <value>Direct connection</value>
+  </data>
+  <data name="ConnectedViaBearChess" xml:space="preserve">
+    <value>Connected via BearChess</value>
+  </data>
+  <data name="SayBestMoveHelpRequested" xml:space="preserve">
+    <value>Say best move when help is requested</value>
   </data>
 </root>

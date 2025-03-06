@@ -521,7 +521,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Sentio.ChessBoard
 
                 if (!_inDemoMode && _liftUpEnemyFigure != null)
                 {
-                    if (liftDownField == _liftUpEnemyFigure.Field && _liftUpFigure == null)
+                    if (liftDownField == _liftUpEnemyFigure.Field && (_liftUpFigure == null && liftUpFigure == null))
                     {
                         _logger?.LogDebug($"GetPiecesFen: Equal lift up/down field: {_liftUpEnemyFigure.Field} == {liftDownField}");
                         _workingChessBoard.Init(_chessBoard);

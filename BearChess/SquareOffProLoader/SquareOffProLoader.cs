@@ -26,7 +26,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffProLoader
 
         public static EChessBoardConfiguration Load(string basePath)
         {
-            string fileName = Path.Combine(basePath, Constants.SquareOffPro,
+            var fileName = Path.Combine(basePath, Constants.SquareOffPro,
                 $"{Constants.SquareOffPro}Cfg.xml");
             var config = EChessBoardConfiguration.Load(fileName);
             config.ShowOwnMoves = false;
@@ -36,7 +36,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffProLoader
 
         public static void Save(string basePath, EChessBoardConfiguration eChessBoardConfiguration)
         {
-            string fileName = Path.Combine(basePath, Constants.SquareOffPro,
+            var fileName = Path.Combine(basePath, Constants.SquareOffPro,
                 $"{Constants.SquareOffPro}Cfg.xml");
             EChessBoardConfiguration.Save(eChessBoardConfiguration, fileName);
         }
@@ -49,6 +49,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffProLoader
             }
 
             var eBoardWrapper = new SquareOffImpl(Name, basePath, configuration);
+            eBoardWrapper.SetDebounce(configuration.Debounce);
             eBoardWrapper.SetScanTime(configuration.ScanTime);
 
             return eBoardWrapper;

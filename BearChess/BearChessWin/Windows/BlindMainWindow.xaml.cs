@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
 
-namespace www.SoLaNoSoft.com.BearChessWin.Windows
+namespace www.SoLaNoSoft.com.BearChessWin
 {
     /// <summary>
     /// Interaktionslogik für BlindMainWindow.xaml

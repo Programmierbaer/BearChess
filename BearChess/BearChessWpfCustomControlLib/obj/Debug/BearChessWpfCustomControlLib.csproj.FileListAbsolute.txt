@@ -234,6 +234,8 @@ C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigurePegasusWindow.baml
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureSentioWindow.baml
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureSquareOffWindow.baml
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QueryDialogWindow.g.cs
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QueryDialogWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\bin\Debug\BearChessWpfCustomControlLib.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\bin\Debug\BearChessWpfCustomControlLib.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\bin\Debug\de\BearChessWpfCustomControlLib.resources.dll
@@ -424,6 +426,7 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCust
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\InfoWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\NumericUpDownUserControl.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ProgressWindow.g.cs
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QueryDialogWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QuerySelectionWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\BearChessWpfCustomControlLib_MarkupCompile.cache
@@ -447,6 +450,7 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCust
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\InfoWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\NumericUpDownUserControl.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ProgressWindow.baml
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QueryDialogWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QuerySelectionWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\BearChessWpfCustomControlLib.g.resources
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties.Resources.resources

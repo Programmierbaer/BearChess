@@ -23,11 +23,16 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
 
         public string SelectedPortName => comboBoxComPorts.SelectedIndex == 0 ? "BTLE" : "HID";
 
-        public ConfigureHoSWindow(Configuration configuration)
+        public ConfigureHoSWindow(Configuration configuration) : this (configuration, configuration.FolderPath)
+        {
+
+        }
+
+        public ConfigureHoSWindow(Configuration configuration, string configPath)
         {
             InitializeComponent();
             _rm = SpeechTranslator.ResourceManager;
-            _fileName = Path.Combine(configuration.FolderPath, HoSLoader.EBoardName, $"{HoSLoader.EBoardName}Cfg.xml");
+            _fileName = Path.Combine(configPath, HoSLoader.EBoardName, $"{HoSLoader.EBoardName}Cfg.xml");
             var fileInfo = new FileInfo(_fileName);
             if (!Directory.Exists(fileInfo.DirectoryName))
             {

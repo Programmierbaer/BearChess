@@ -234,6 +234,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonContinue_OnClick(object sender, RoutedEventArgs e)
         {
             buttonStop.Visibility = Visibility.Visible;
+            buttonStopOnPaused.Visibility = Visibility.Collapsed;
             buttonContinue.Visibility = Visibility.Collapsed;
             buttonClose.Visibility = Visibility.Collapsed;
             ContinueDuel?.Invoke(this, EventArgs.Empty);

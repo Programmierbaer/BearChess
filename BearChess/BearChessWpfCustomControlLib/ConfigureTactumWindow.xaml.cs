@@ -2,15 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.IO;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
@@ -36,7 +30,9 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
         private string _currentHelpText;
         private readonly ISpeech _synthesizer;
         private readonly ResourceManager _rm;
+        private bool _isInitialized = false;
         public string SelectedPortName => comboBoxComPorts.SelectionBoxItem.ToString();
+        public bool SayBestNoveHelpRequested => checkBoxBestMoveHelpRequested.IsChecked.HasValue && checkBoxBestMoveHelpRequested.IsChecked.Value;
 
         public ConfigureTactumWindow(Configuration configuration, bool useBluetoothLE): this(configuration, useBluetoothLE, configuration.FolderPath) 
         {
@@ -97,19 +93,20 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
 
             _portNames.ForEach(f => _allPortNames.Add(f));
             comboBoxComPorts.ItemsSource = _allPortNames;
-            comboBoxComPorts.SelectedIndex = 0;
 
             _eChessBoardConfiguration = EChessBoardConfiguration.Load(_fileName);
             _eChessBoardConfiguration.UseBluetooth = useBluetoothLE;
             checkBoxSayLiftUpDown.IsChecked = _eChessBoardConfiguration.SayLiftUpDownFigure;
             checkBoxPossibleMoves.IsChecked = _eChessBoardConfiguration.ShowPossibleMoves;
             checkBoxBestMove.IsChecked = _eChessBoardConfiguration.ShowPossibleMovesEval;
+            checkBoxBestMoveHelpRequested.IsChecked = _eChessBoardConfiguration.ShowHintMoves;
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
-
+            _isInitialized = true;
             _synthesizer?.SpeakAsync(_rm.GetString("ConfigureTactumSpeech"));
 
             if (_portNames.Count == 0)
             {
+                comboBoxComPorts.SelectedIndex = 0;
                 textBlockInformation.Visibility = Visibility.Visible;
                 _synthesizer?.SpeakAsync(textBlockInformation.Text);
             }
@@ -187,6 +184,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 checkBoxPossibleMoves.IsChecked.HasValue && checkBoxPossibleMoves.IsChecked.Value;
             _eChessBoardConfiguration.ShowPossibleMovesEval =
                 checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
+            _eChessBoardConfiguration.ShowHintMoves = checkBoxBestMoveHelpRequested.IsChecked.HasValue && checkBoxBestMoveHelpRequested.IsChecked.Value;
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -214,6 +212,10 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             _synthesizer?.SpeakAsync(_currentHelpText);
             selected = checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
             _currentHelpText = $"{_rm.GetString("SayBestMoveSelectedFigure")} ";
+            _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
+            _currentHelpText += ".";
+            selected = checkBoxBestMoveHelpRequested.IsChecked.HasValue && checkBoxBestMoveHelpRequested.IsChecked.Value;
+            _currentHelpText = $"{_rm.GetString("SayBestMoveHelpRequested")} ";
             _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
             _currentHelpText += ".";
             _synthesizer?.SpeakAsync(_currentHelpText);
@@ -290,18 +292,32 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
 
         private void CheckBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            _synthesizer?.SpeakAsync(_rm.GetString("IsSelected"));
+            if (_isInitialized)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsSelected"));
+            }
         }
 
         private void CheckBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            _synthesizer?.SpeakAsync(_rm.GetString("IsUnSelected"));
+            if (_isInitialized)
+            {
+                _synthesizer?.SpeakAsync(_rm.GetString("IsUnSelected"));
+            }
         }
 
         private void ComboBoxComPorts_OnGotFocus(object sender, RoutedEventArgs e)
         {
             _currentHelpText = $"{_rm.GetString("ComboBox")} {_rm.GetString("ComPorts")} ";
             _currentHelpText += $"{_rm.GetString("CurrentCOMPort")} {comboBoxComPorts.SelectionBoxItem}";
+            _synthesizer?.SpeakAsync(_currentHelpText);
+        }
+
+        private void CheckBoxBestHelpRequested_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            bool selected = checkBoxBestMoveHelpRequested.IsChecked.HasValue && checkBoxBestMoveHelpRequested.IsChecked.Value;
+            _currentHelpText = $"{_rm.GetString("SayBestMoveHelpRequested")} ";
+            _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
             _synthesizer?.SpeakAsync(_currentHelpText);
         }
     }

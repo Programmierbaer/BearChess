@@ -16,7 +16,8 @@ using System.Windows.Shapes;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessTools;
-using static www.SoLaNoSoft.com.BearChessWin.Windows.QueryDialogWindow;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
+
 
 
 namespace www.SoLaNoSoft.com.BearChessWin.Windows
@@ -35,7 +36,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         public int Value1 => numericUpDownUserControl.Value;
         public int Value2 => numericUpDownUserControl2.Value;
 
-        public QueryDialogResult QueryResult { get; set; }
+        public QueryDialogWindow.QueryDialogResult QueryResult { get; set; }
 
         public QueryTCValueDialogWindow(string tcTitle, int initialValue, string valueUnit)
         {
@@ -76,7 +77,8 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         {
             if (_initialzed)
             {
-                _synthesizer.Speak($"{e} {_valueUnit}");
+                _synthesizer?.Clear();
+                _synthesizer?.Speak($"{e} {_valueUnit}");
             }
         }
 
@@ -84,7 +86,8 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         {
             if (_initialzed)
             {
-                _synthesizer.Speak($"{e} {_valueUnit2}");
+                _synthesizer?.Clear();
+                _synthesizer?.Speak($"{e} {_valueUnit2}");
             }
         }
 
@@ -96,14 +99,14 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         }
         private void PrevButton_Click(object sender, RoutedEventArgs e)
         {
-            QueryResult = new QueryDialogResult() { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
+            QueryResult = new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
             _synthesizer?.Clear();
             DialogResult = true;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            QueryResult = new QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = true, Repeat = false };
+            QueryResult = new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = true, Repeat = false };
             _synthesizer?.Clear();
             DialogResult = true;
         }
@@ -111,18 +114,24 @@ namespace www.SoLaNoSoft.com.BearChessWin.Windows
         private void numericUpDownUserControl_GotFocus(object sender, RoutedEventArgs e)
         {
             if (_initialzed)
-                _synthesizer.Speak($"{numericUpDownUserControl.Value} {_valueUnit}");
+            {
+                _synthesizer?.Clear();
+                _synthesizer?.Speak($"{numericUpDownUserControl.Value} {_valueUnit}");
+            }
         }
 
         private void numericUpDownUserControl2_GotFocus(object sender, RoutedEventArgs e)
         {
             if (_initialzed)
-                _synthesizer.Speak($"{numericUpDownUserControl2.Value} {_valueUnit2}");
+            {
+                _synthesizer?.Clear();
+                _synthesizer?.Speak($"{numericUpDownUserControl2.Value} {_valueUnit2}");
+            }
         }
 
         private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
-            QueryResult = new QueryDialogResult() { No = false, Yes = true, Previous = false, Cancel = false, Repeat = false };
+            QueryResult = new QueryDialogWindow.QueryDialogResult() { No = false, Yes = true, Previous = false, Cancel = false, Repeat = false };
             _synthesizer?.Clear();
             DialogResult = true;
         }

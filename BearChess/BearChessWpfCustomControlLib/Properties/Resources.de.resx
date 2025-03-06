@@ -2326,7 +2326,7 @@
     <value>Scan-Intervall in ms</value>
   </data>
   <data name="ResetDefault250ms" xml:space="preserve">
-    <value>Auf Standardwert mit Scans alle 250ms zurücksetzen</value>
+    <value>Auf Standardwert mit Scans alle 250 ms zurücksetzen</value>
   </data>
   <data name="WhatDoYouLikeToDo" xml:space="preserve">
     <value>Was möchten sie tun?</value>
@@ -2635,9 +2635,33 @@
     <value>Ihr Anmeldename</value>
   </data>
   <data name="ResetDefault2500" xml:space="preserve">
-    <value>Auf Standardwert mit einer Verzögerung von 2500ms zurücksetzen</value>
+    <value>Auf Standardwert mit einer Verzögerung von 2500 ms zurücksetzen</value>
   </data>
   <data name="DelaySendLED" xml:space="preserve">
+    <value>Verzögerung zwischen zwei LED-Kommandos </value>
+  </data>
+  <data name="DelaySendLEDbtle" xml:space="preserve">
     <value>Verzögerung zwischen zwei LED-Kommandos (nur für BTLE)</value>
+  </data>
+  <data name="ResetDefault50ms" xml:space="preserve">
+    <value>Auf Standardwert mit einer Verzögerung von 50 ms zurücksetzen</value>
+  </data>
+  <data name="ResetDefault100ms" xml:space="preserve">
+    <value>Auf Standardwert mit einer Verzögerung von 100 ms zurücksetzen</value>
+  </data>
+  <data name="SameConnectionWhiteAndBlack" xml:space="preserve">
+    <value>Gleiche Verbindung für Weiß und Schwarz</value>
+  </data>
+  <data name="ConfigureBoardConnection" xml:space="preserve">
+    <value>Verbindungen zum Schachbrett Konfigurieren</value>
+  </data>
+  <data name="DirectConnection" xml:space="preserve">
+    <value>Direkte Verbindung</value>
+  </data>
+  <data name="ConnectedViaBearChess" xml:space="preserve">
+    <value>Verbunden über BearChess</value>
+  </data>
+  <data name="SayBestMoveHelpRequested" xml:space="preserve">
+    <value>Besten Zug bei Hilfeanforderung ansagen</value>
   </data>
 </root>

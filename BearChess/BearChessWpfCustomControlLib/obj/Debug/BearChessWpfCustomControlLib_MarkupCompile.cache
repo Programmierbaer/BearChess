@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-20-295669325
+21536745322
 
-241099505611
-54902372279
-CalibrateBaseWindow.xaml;COMPortSearchWindow.xaml;ConfigureCernoWindow.xaml;ConfigureCertaboWindow.xaml;ConfigureChessnutEvoWindow.xaml;ConfigureChessnutWindow.xaml;ConfigureDGTWindow.xaml;ConfigureHoSWindow.xaml;ConfigureIChessOneWindow.xaml;ConfigureMChessLinkWindow.xaml;ConfigurePegasusWindow.xaml;ConfigureSentioWindow.xaml;ConfigureServerChessboardWindow.xaml;ConfigureSquareOffWindow.xaml;ConfigureTactumWindow.xaml;EditWindow.xaml;InfoWindow.xaml;NumericUpDownUserControl.xaml;ProgressWindow.xaml;QuerySelectionWindow.xaml;
+261336611273
+55-593613751
+CalibrateBaseWindow.xaml;COMPortSearchWindow.xaml;ConfigureCernoWindow.xaml;ConfigureCertaboWindow.xaml;ConfigureChessnutEvoWindow.xaml;ConfigureChessnutWindow.xaml;ConfigureDGTWindow.xaml;ConfigureHoSWindow.xaml;ConfigureIChessOneWindow.xaml;ConfigureMChessLinkWindow.xaml;ConfigurePegasusWindow.xaml;ConfigureSentioWindow.xaml;ConfigureServerChessboardWindow.xaml;ConfigureSquareOffWindow.xaml;ConfigureTactumWindow.xaml;EditWindow.xaml;InfoWindow.xaml;NumericUpDownUserControl.xaml;ProgressWindow.xaml;QueryDialogWindow.xaml;QuerySelectionWindow.xaml;
 
-True
+False
 

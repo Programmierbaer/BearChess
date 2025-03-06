@@ -125,12 +125,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="QueryDialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="QuerySelectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BearChessMessageBox.cs" />
     <Compile Include="CalibrateBaseWindow.xaml.cs">
       <DependentUpon>CalibrateBaseWindow.xaml</DependentUpon>
     </Compile>
@@ -205,6 +210,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="QueryDialogWindow.xaml.cs">
+      <DependentUpon>QueryDialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="QuerySelectionWindow.xaml.cs">
       <DependentUpon>QuerySelectionWindow.xaml</DependentUpon>

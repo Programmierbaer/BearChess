@@ -104,6 +104,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// Set a new position from fen and all following moves
         /// </summary>
         void SetFen(string fen, string allMoves);
+        void SetFen(string fen);
 
         void AwaitingMove(int fromField, int toField);
 

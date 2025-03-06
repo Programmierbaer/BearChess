@@ -21,6 +21,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly UciInfo _uciInfo;
         private readonly bool _showButtons;
         private readonly Configuration _configuration;
+        private bool _blindUser;
 
         public bool SaveAsNew { get; private set; }
         public bool AdjustStrength { get; private set; }
@@ -43,6 +44,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         {
             InitializeComponent();
             _configuration = Configuration.Instance;
+            _blindUser = _configuration.GetBoolValue("blindUser", false);
         }
 
         public UciConfigWindow(UciInfo uciInfo,  bool canChangeName, bool showButtons, bool canSaveAs) : this()
@@ -51,6 +53,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _uciInfo = uciInfo;
             _showButtons = showButtons;
             buttonParameterFile.Visibility =  Visibility.Collapsed;
+            BorderLogo.Visibility = _blindUser ? Visibility.Collapsed : Visibility.Visible;
             if (uciInfo.FileName.EndsWith("avatar.exe",StringComparison.OrdinalIgnoreCase))
             {
                 buttonParameterFile.Visibility = Visibility.Visible;
@@ -80,7 +83,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             radioButtonBest.IsEnabled = false;
             radioButtonFlexible.IsEnabled = false;
             radioButtonWide.IsEnabled = false;
-            OpeningBook.VariationsEnum variation = (OpeningBook.VariationsEnum)int.Parse(uciInfo.OpeningBookVariation);
+            var variation = (OpeningBook.VariationsEnum)int.Parse(uciInfo.OpeningBookVariation);
             radioButtonBest.IsChecked = variation == OpeningBook.VariationsEnum.BestMove;
             radioButtonFlexible.IsChecked = variation == OpeningBook.VariationsEnum.Flexible;
             radioButtonWide.IsChecked = variation == OpeningBook.VariationsEnum.Wide;
@@ -89,7 +92,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             numericUpDownUserControlWait.Value = uciInfo.WaitSeconds;
             if (!string.IsNullOrWhiteSpace(uciInfo.OpeningBook))
             {
-                for (int i = 0; i < installedBooks.Length; i++)
+                for (var i = 0; i < installedBooks.Length; i++)
                 {
                     if (installedBooks[i].Equals(uciInfo.OpeningBook))
                     {
@@ -117,7 +120,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 optionsLength++;
             }
 
-            string currentMessChessLevel = string.Empty;
+            var currentMessChessLevel = string.Empty;
             foreach (var option in uciInfo.Options)
             {
                 if (option.StartsWith("option name UCI_EngineAbout", StringComparison.OrdinalIgnoreCase))
@@ -130,7 +133,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
 
                 var currentValue = string.Empty;
-                foreach (string optionValue in uciInfo.OptionValues)
+                foreach (var optionValue in uciInfo.OptionValues)
                 {
                     var optionSplit = optionValue.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     if (optionSplit.Length < 3
@@ -226,7 +229,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private UciConfigValue[] GetValues()
         {
-            List<UciConfigValue> result = new List<UciConfigValue>();
+            var result = new List<UciConfigValue>();
             foreach (UIElement gridMainChild in gridMain.Children)
             {
                 if (!(gridMainChild is IUciConfigUserControl))
@@ -234,7 +237,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     continue;
                 }
 
-                IUciConfigUserControl uciConfigUserControl = gridMainChild as IUciConfigUserControl;
+                var uciConfigUserControl = gridMainChild as IUciConfigUserControl;
                 if (uciConfigUserControl.ConfigValue.Ignore)
                 {
                     continue;
@@ -250,23 +253,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
             uciInfo.ReadMessChessLevels(Path.Combine(_configuration.BinPath, Configuration.MESSCHESS_LEVELS_FILE));
             if (!uciInfo.MessChessLevelsAreManual)
             {
-                UciConfigValue uciConfigValue = new UciConfigValue();
-                uciConfigValue.CurrentValue = currentValue;
-                uciConfigValue.OptionType = "combo";
-                uciConfigValue.Ignore = true;
+                var uciConfigValue = new UciConfigValue
+                {
+                    CurrentValue = currentValue,
+                    OptionType = "combo",
+                    Ignore = true
+                };
                 foreach (UIElement gridMainChild in gridMain.Children)
                 {
-                    if (gridMainChild is UciTextBoxUserControl)
+                    if (gridMainChild is UciTextBoxUserControl control)
                     {
-                        currentValue = ((UciTextBoxUserControl)gridMainChild).ConfigValue.CurrentValue;
+                        currentValue = control.ConfigValue.CurrentValue;
                         break;
                     }
 
-                    if (gridMainChild is UciNumericUpDownUserControl)
+                    if (gridMainChild is UciNumericUpDownUserControl userControl)
                     {
-                        if (((UciNumericUpDownUserControl)gridMainChild).ConfigValue.OptionName.StartsWith("Level"))
+                        if (userControl.ConfigValue.OptionName.StartsWith("Level"))
                         {
-                            currentValue = ((UciNumericUpDownUserControl)gridMainChild).ConfigValue.CurrentValue;
+                            currentValue = userControl.ConfigValue.CurrentValue;
                             break;
                         }
 
@@ -312,8 +317,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            UciConfigValue uciConfigValue = new UciConfigValue {CurrentValue = currentValue};
-            uciConfigValue.InputWidth = inputWidth;
+            var uciConfigValue = new UciConfigValue
+            {
+                CurrentValue = currentValue,
+                InputWidth = inputWidth
+            };
 
             var i = 2;
             do
@@ -395,7 +403,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (optionSplit[i].Equals("var"))
                 {
                     i++;
-                    string comboItem = string.Empty;
+                    var comboItem = string.Empty;
                     while (true)
                     {
 
@@ -442,7 +450,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
                 i++;
             } while (i < optionSplit.Length);
-            string firstOrDefault = _uciInfo.OptionValues.FirstOrDefault(o => o.Contains(uciConfigValue.OptionName));
+            var firstOrDefault = _uciInfo.OptionValues.FirstOrDefault(o => o.Contains(uciConfigValue.OptionName));
             if (string.IsNullOrWhiteSpace(currentValue))
             {
                 if (!string.IsNullOrWhiteSpace(firstOrDefault))
@@ -572,26 +580,28 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void UciComboBoxUserControl_SelectionChanged(object sender, string e)
         {
-            if (_uciInfo.IsMessChessEngine)
+            if (!_uciInfo.IsMessChessEngine)
             {
-                for (int i = 0; i < _uciInfo.MessChessLevels.Length; i = i + 2)
+                return;
+            }
+
+            for (int i = 0; i < _uciInfo.MessChessLevels.Length; i = i + 2)
+            {
+                if (e.StartsWith(_uciInfo.MessChessLevels[i]))
                 {
-                    if (e.StartsWith(_uciInfo.MessChessLevels[i]))
+                    foreach (UIElement gridMainChild in gridMain.Children)
                     {
-                        foreach (UIElement gridMainChild in gridMain.Children)
+                        if (gridMainChild is UciTextBoxUserControl control)
                         {
-                            if (gridMainChild is UciTextBoxUserControl)
+                            control.SetInputValue(_uciInfo.MessChessLevels[i]);
+                            break;
+                        }
+                        if (gridMainChild is UciNumericUpDownUserControl userControl)
+                        {
+                            if (userControl.ConfigValue.OptionName.StartsWith("Level"))
                             {
-                                ((UciTextBoxUserControl)gridMainChild).SetInputValue(_uciInfo.MessChessLevels[i]);
+                                userControl.SetInputValue(_uciInfo.MessChessLevels[i]);
                                 break;
-                            }
-                            if (gridMainChild is UciNumericUpDownUserControl)
-                            {
-                                if (((UciNumericUpDownUserControl)gridMainChild).ConfigValue.OptionName.StartsWith("Level"))
-                                {
-                                    ((UciNumericUpDownUserControl)gridMainChild).SetInputValue(_uciInfo.MessChessLevels[i]);
-                                    break;
-                                }
                             }
                         }
                     }
@@ -709,7 +719,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBoxName.Text = _uciInfo.Name;
             foreach (UIElement gridMainChild in gridMain.Children)
             {
-                if (!(gridMainChild is IUciConfigUserControl)) continue;
+                if (!(gridMainChild is IUciConfigUserControl))
+                {
+                    continue;
+                }
+
                 var uciConfigUserControl = gridMainChild as IUciConfigUserControl;
                 uciConfigUserControl.ResetToDefault();
             }
@@ -754,7 +768,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void ButtonLogoFile_OnClick(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog { Filter = "Logo|*.bmp;*.jpg;*.png|All Files|*.*" };
-            string checkFilename = !string.IsNullOrWhiteSpace(textBlockLogoFileName.Text) ? textBlockLogoFileName.Text : textBlockFileName.Text;
+            var checkFilename = !string.IsNullOrWhiteSpace(textBlockLogoFileName.Text) ? textBlockLogoFileName.Text : textBlockFileName.Text;
             if (!File.Exists(checkFilename))
             {
                 checkFilename = textBlockFileName.Text;
@@ -795,7 +809,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             if (textBlockFileName.Text.EndsWith("MessChess.exe",StringComparison.OrdinalIgnoreCase))
             {
                 var fileInfo = new FileInfo(textBlockFileName.Text);
-                string enginesList = Path.Combine(fileInfo.DirectoryName, "Hiarcs", "MessChess.lst");
+                var enginesList = Path.Combine(fileInfo.DirectoryName, "Hiarcs", "MessChess.lst");
                 if (!File.Exists(enginesList))
                 {
                     enginesList = Path.Combine(fileInfo.DirectoryName, "Shredder", "MessChess.lst");
@@ -822,12 +836,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 
                 var fileInfo = new FileInfo(textBlockFileName.Text);
-                string avatars = Path.Combine(fileInfo.DirectoryName, "avatar_weights");
+                var avatars = Path.Combine(fileInfo.DirectoryName, "avatar_weights");
                 var parameterSelectionWindow = new ParameterSelectionWindow() { Owner = this };
                 if (Directory.Exists(avatars))
                 {
                     var avatarList = Directory.GetFiles(avatars, "*.zip", SearchOption.TopDirectoryOnly);
-                    List<string> avList = new List<string>();
+                    var avList = new List<string>();
                     foreach (var s in avatarList)
                     {
                         if (s.Contains(@"\"))

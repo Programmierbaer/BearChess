@@ -383,6 +383,9 @@ C:\Users\larsn\source\repos\BearChess\BearChess\UnitTestChessLink\bin\Debug\Syst
 C:\Users\larsn\source\repos\BearChess\BearChess\UnitTestChessLink\bin\Debug\System.ValueTuple.xml
 C:\Users\larsn\source\repos\BearChess\BearChess\UnitTestChessLink\bin\Debug\System.Text.Encodings.Web.xml
 C:\Users\larsn\source\repos\BearChess\BearChess\UnitTestChessLink\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\larsn\source\repos\BearChess\BearChess\UnitTestChessLink\bin\Debug\SquareOffChessBoard.dll
+C:\Users\larsn\source\repos\BearChess\BearChess\UnitTestChessLink\bin\Debug\SquareOffChessBoard.pdb
+C:\Users\larsn\source\repos\BearChess\BearChess\UnitTestChessLink\bin\Debug\SquareOffChessBoard.dll.config
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\de\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\de\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
@@ -405,6 +408,7 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLin
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\NuGet.Frameworks.dll
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\SquareOffChessBoard.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\System.Buffers.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\System.Collections.Immutable.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\System.Diagnostics.DiagnosticSource.dll
@@ -440,6 +444,8 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLin
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\BearChessBase.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\MChessLinkChessBoard.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\MChessLinkChessBoard.dll.config
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\SquareOffChessBoard.pdb
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\SquareOffChessBoard.dll.config
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\Microsoft.ApplicationInsights.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\Microsoft.ApplicationInsights.xml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\UnitTestChessLink\bin\Debug\Microsoft.Testing.Extensions.Telemetry.xml

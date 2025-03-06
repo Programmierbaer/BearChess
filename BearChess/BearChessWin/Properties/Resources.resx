@@ -1003,7 +1003,7 @@
     <value>Show</value>
   </data>
   <data name="ShowBestMove" xml:space="preserve">
-    <value>Show best move</value>
+    <value>Show best move when help is requested</value>
   </data>
   <data name="ShowBestMoveFromBuddy" xml:space="preserve">
     <value>Show move from buddy when help is requested</value>
@@ -2644,5 +2644,35 @@
   </data>
   <data name="HideClocks" xml:space="preserve">
     <value>Hide clocks</value>
+  </data>
+  <data name="CorrectPosition" xml:space="preserve">
+    <value>Correct Position</value>
+  </data>
+  <data name="ConfirmWithOk" xml:space="preserve">
+    <value>Then confirm with 'OK'</value>
+  </data>
+  <data name="PlaceTheFiguresOnYour" xml:space="preserve">
+    <value>Place the figures on your </value>
+  </data>
+  <data name="AsShownOnChessboard" xml:space="preserve">
+    <value>as shown on the chessboard</value>
+  </data>
+  <data name="SayBestMoveHelpRequested" xml:space="preserve">
+    <value>Say best move when help is requested</value>
+  </data>
+  <data name="ConfigurePlayer" xml:space="preserve">
+    <value>Configure the name of the player</value>
+  </data>
+  <data name="ConfigureElo" xml:space="preserve">
+    <value>Would you like to adjust the playing strength of the engine?</value>
+  </data>
+  <data name="CurrentElo" xml:space="preserve">
+    <value>Current ELO value</value>
+  </data>
+  <data name="MinimumELO" xml:space="preserve">
+    <value>Minimum ELO value</value>
+  </data>
+  <data name="MaximumELO" xml:space="preserve">
+    <value>Maximum ELO value</value>
   </data>
 </root>

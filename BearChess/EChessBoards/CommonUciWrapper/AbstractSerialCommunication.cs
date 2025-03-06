@@ -181,15 +181,18 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
         public void Send(string data)
         {
             if (!data.Equals("30#R*"))
-            _logger.LogDebug($"S: Enqueue to board {data}");
+            {
+                _logger.LogDebug($"S: Enqueue to board {data}");
+            }
+
             if (data.Equals("X"))
             {
-                _logger.LogDebug($"S: Clear queue");
+                _logger.LogDebug("S: Clear queue");
                 while (_stringDataToBoard.TryDequeue(out _))
                 {
 
                 }
-                _logger.LogDebug($"S: queue empty");
+                _logger.LogDebug("S: queue empty");
             }
             //_logger.LogDebug($"S: Enqueue to board {data}");
             _stringDataToBoard.Enqueue(data);
@@ -704,7 +707,7 @@ namespace www.SoLaNoSoft.com.BearChess.CommonUciWrapper
                     if (comPort.StartsWith("B"))
                     {
                         int counter = 0;
-                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "HOSBoard3064" }))
+                        if (SerialBTLECommunicationTools.StartWatching(_logger, new string[] { "HOSBoard" }))
                         {
                             while (SerialBTLECommunicationTools.DeviceIdList.Count == 0)
                             {

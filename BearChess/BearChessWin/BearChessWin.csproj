@@ -135,7 +135,6 @@
     <Compile Include="Helper\EgineEventArgs.cs" />
     <Compile Include="Helper\ExportGames.cs" />
     <Compile Include="Helper\ExtensionMethods.cs" />
-    <Compile Include="Helper\Messages.cs" />
     <Compile Include="Helper\ProgressWorker.cs" />
     <Compile Include="Helper\SplashProgressControlContent.cs" />
     <Compile Include="Helper\ValueConverter.cs" />
@@ -351,8 +350,8 @@
     <Compile Include="Windows\PromoteWindow.xaml.cs">
       <DependentUpon>PromoteWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\QueryDialogWindow.xaml.cs">
-      <DependentUpon>QueryDialogWindow.xaml</DependentUpon>
+    <Compile Include="Windows\QueryEloDialogWindow.xaml.cs">
+      <DependentUpon>QueryEloDialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\QueryTCValueDialogWindow.xaml.cs">
       <DependentUpon>QueryTCValueDialogWindow.xaml</DependentUpon>
@@ -698,7 +697,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\QueryDialogWindow.xaml">
+    <Page Include="Windows\QueryEloDialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

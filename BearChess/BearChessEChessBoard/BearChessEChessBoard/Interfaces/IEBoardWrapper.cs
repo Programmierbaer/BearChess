@@ -94,6 +94,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         void SetFen(string fen, string allMoves);
 
+        void SetFen(string fen);
+
         void AwaitingMove(int fromField, int toField);
 
         /// <summary>

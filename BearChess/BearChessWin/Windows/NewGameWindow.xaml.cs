@@ -14,6 +14,7 @@ using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBaseLib.Definitions;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -844,7 +845,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textWriter.Close();
             }
 
-            Messages.Show(_rm.GetString("StartupGameDefinitionSaved"), _rm.GetString("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
+            BearChessMessageBox.Show(_rm.GetString("StartupGameDefinitionSaved"), _rm.GetString("Information"), MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
 
@@ -906,7 +907,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 return;
             }
 
-            Messages.Show(_rm.GetString("StartupDefinitionNotFound"), _rm.GetString("ErrorOnLoad"),
+            BearChessMessageBox.Show(_rm.GetString("StartupDefinitionNotFound"), _rm.GetString("ErrorOnLoad"),
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
 

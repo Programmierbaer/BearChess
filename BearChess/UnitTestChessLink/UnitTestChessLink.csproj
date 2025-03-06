@@ -123,6 +123,10 @@
       <Project>{D984142B-AF41-4348-A3E4-51FFB4D30502}</Project>
       <Name>MChessLinkChessBoard</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\SquareOff\SquareOffChessBoard\SquareOffChessBoard.csproj">
+      <Project>{ef78a244-ad37-497f-b2df-e2b5fed30cf6}</Project>
+      <Name>SquareOffChessBoard</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

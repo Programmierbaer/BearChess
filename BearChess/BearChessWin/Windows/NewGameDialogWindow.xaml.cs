@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
 using System.Windows;
-using System.Windows.Media;
+//using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
-using static www.SoLaNoSoft.com.BearChessWin.Windows.QueryDialogWindow;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
+//using static www.SoLaNoSoft.com.BearChessWin.Windows.QueryDialogWindow;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -54,6 +55,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly ResourceManager _rm;
         private readonly List<Func<QueryDialogWindow.QueryDialogResult>> _functions = new List<Func<QueryDialogWindow.QueryDialogResult>>();
         private int _currentQueryIndex = 0;
+        private bool _callPrevious = false;
         private UciInfo _player;
 
         public NewGameDialogWindow(Configuration configuration, bool bcServerConnected)
@@ -61,8 +63,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration = configuration;
             InitializeComponent();
             _bearChessServerConnected = bcServerConnected;
-            _functions.Add(QueryForWhite);    
-            _functions.Add(QueryForBlack);    
+            _functions.Add(QueryForWhite);
+            _functions.Add(QueryForWhiteElo);
+            _functions.Add(QueryForBlack);
+            _functions.Add(QueryForBlackElo);
             _functions.Add(QueryDifferentTimeControl);    
             _functions.Add(QueryTimeControlForWhite);    
             _functions.Add(QueryTimeControlForBlack);    
@@ -152,22 +156,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 var result = func();
                 if (result.Cancel)
                 {
+                    _callPrevious = false;
                     return false;
+
                 }
                 if (result.Yes || result.No)
                 {
+                    _callPrevious = false;
                     _currentQueryIndex++;
                     if (_currentQueryIndex == _functions.Count)
                     {
-                        if (result.Yes)
-                        {
-                            return true;
-                        }
-                        return false;
+                        return result.Yes;
                     }
                 }
                 if (result.Previous)
                 {
+                    _callPrevious = true;
                     if (_currentQueryIndex > 0)
                     {
                         _currentQueryIndex--;
@@ -183,6 +187,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private QueryDialogWindow.QueryDialogResult FinalQuery()
         {
+            _callPrevious = false;
             var player = _configuration.GetConfigValue("player", _rm.GetString("Player"));
             if (PlayerWhiteConfigValues.IsPlayer)
             {
@@ -202,10 +207,18 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 _synthesizer?.SpeakAsync(PlayerBlackConfigValues.Name, false);
             }
-
+            if (_timeControlWhite.SeparateControl)
+            {
+                _synthesizer?.Speak($"{_rm.GetString("TimeControl")} {_rm.GetString("ForWhite")}");
+            }
+            else
+            {
+                _synthesizer?.Speak($"{_rm.GetString("TimeControl")} {_rm.GetString("ForWhiteAndBlack")}");
+            }
             _synthesizer?.SpeakAsync(TimeControlHelper.GetDescription(_timeControlWhite, _rm), false);
             if (_timeControlWhite.SeparateControl)
             {
+                _synthesizer?.Speak($"{_rm.GetString("TimeControl")} {_rm.GetString("ForBlack")}");
                 _synthesizer?.SpeakAsync(TimeControlHelper.GetDescription(_timeControlBlack, _rm), false);
             }
             var dialog = new QueryDialogWindow(_rm.GetString("StartNewGameWithThisSetting"),
@@ -214,8 +227,92 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return dialog.QueryResult;
         }
 
+
+        private QueryDialogWindow.QueryDialogResult QueryForWhiteElo()
+        {
+            if (_callPrevious)
+            {
+                return new QueryDialogWindow.QueryDialogResult()
+                    { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
+            }
+
+            if (!PlayerWhiteConfigValues.CanConfigureElo())
+            {
+                return new QueryDialogWindow.QueryDialogResult()
+                    { No = false, Yes = true, Previous = false, Cancel = false, Repeat = false };
+            }
+
+            var currentElo = PlayerWhiteConfigValues.GetConfiguredElo();
+            if (currentElo < 0)
+            {
+                currentElo = PlayerWhiteConfigValues.GetMaximumElo();
+            }
+
+            var dialog = new QueryDialogWindow(
+                    $"{_rm.GetString("ConfigureElo")} {_rm.GetString("CurrentElo")}  {currentElo}",
+                    $"{_rm.GetString("CancelNewGameDialog")}?", false)
+                { Owner = this };
+            var dialogResult = dialog.ShowDialog();
+            if (!dialog.QueryResult.Yes)
+            {
+                return dialog.QueryResult;
+            }
+
+            var eloDialog = new QueryEloDialogWindow(PlayerWhiteConfigValues.GetMinimumElo(),
+                PlayerWhiteConfigValues.GetMaximumElo(), currentElo) { Owner = this };
+            eloDialog.ShowDialog();
+            if (dialog.QueryResult.Yes)
+            {
+                PlayerWhiteConfigValues.SetElo(eloDialog.Elo);
+            }
+
+            return dialog.QueryResult;
+        }
+
+        private QueryDialogWindow.QueryDialogResult QueryForBlackElo()
+        {
+            if (_callPrevious)
+            {
+                return new QueryDialogWindow.QueryDialogResult()
+                    { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
+            }
+
+            if (!PlayerBlackConfigValues.CanConfigureElo())
+            {
+                return new QueryDialogWindow.QueryDialogResult()
+                    { No = false, Yes = true, Previous = false, Cancel = false, Repeat = false };
+            }
+
+            var currentElo = PlayerBlackConfigValues.GetConfiguredElo();
+            if (currentElo < 0)
+            {
+                currentElo = PlayerBlackConfigValues.GetMaximumElo();
+            }
+
+            var dialog = new QueryDialogWindow(
+                    $"{_rm.GetString("ConfigureElo")} {_rm.GetString("CurrentElo")}  {currentElo}",
+                    $"{_rm.GetString("CancelNewGameDialog")}?", false)
+                { Owner = this };
+            var dialogResult = dialog.ShowDialog();
+            if (!dialog.QueryResult.Yes)
+            {
+                return dialog.QueryResult;
+            }
+
+            var eloDialog = new QueryEloDialogWindow(PlayerBlackConfigValues.GetMinimumElo(),
+                PlayerBlackConfigValues.GetMaximumElo(), currentElo) { Owner = this };
+            eloDialog.ShowDialog();
+            if (dialog.QueryResult.Yes)
+            {
+                PlayerBlackConfigValues.SetElo(eloDialog.Elo);
+            }
+
+            return dialog.QueryResult;
+        }
+
         private QueryDialogWindow.QueryDialogResult QueryForWhite()
         {
+            _callPrevious = false;
             var dialog = new QueryDialogWindow(_rm.GetString("ShouldWhiteBeAPerson"),
                 $"{_rm.GetString("CancelNewGameDialog")}?", true) { Owner = this };
             dialog.ShowDialog();
@@ -243,11 +340,21 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 return dialog.QueryResult;
             }
-            return new QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
+            return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
         }
         
         private QueryDialogWindow.QueryDialogResult QueryForBlack()
         {
+            if (_callPrevious && !PlayerWhiteConfigValues.IsPlayer)
+            {
+                return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
+            }
+            _callPrevious = false;
+            if (!PlayerWhiteConfigValues.IsPlayer)
+            {
+                PlayerBlackConfigValues = _player;
+                return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = true, Previous = false, Cancel = false, Repeat = false };
+            }
             var dialog = new QueryDialogWindow(_rm.GetString("ShouldBlackBeAPerson"), $"{_rm.GetString("CancelNewGameDialog")}?", false) { Owner = this };
             dialog.ShowDialog();
             if (!dialog.QueryResult.No)
@@ -273,11 +380,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 return dialog.QueryResult;
             }
-            return new QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
+            return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
         }
 
         private QueryDialogWindow.QueryDialogResult QueryDifferentTimeControl()
         {
+            _callPrevious = false;
             var dialog = new QueryDialogWindow(_rm.GetString("DifferentTCForWhiteAndBlack"), $"{_rm.GetString("CancelNewGameDialog")}?", false) { Owner = this };
             dialog.ShowDialog();
             _timeControlWhite.SeparateControl = dialog.QueryResult.Yes;
@@ -287,6 +395,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private QueryDialogWindow.QueryDialogResult QueryTimeControlForBlackAndWhite(UciInfo configValue, TimeControl timeControl)
         {
+            if (_callPrevious)
+            {
+                return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
+            }
             QueryDialogWindow dialog = null;
             var values = Enum.GetValues(typeof(TimeControlEnum));
             int i = 0;
@@ -372,7 +484,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
                 if (dialog == null)
                 {
-                    return new QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
+                    return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
                 }
                 dialog?.ShowDialog();
                 if (dialog.QueryResult.Yes)
@@ -381,7 +493,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     var queryResult = QueryForTimeSetting(timeControl);
                     if (queryResult.Repeat)
                     {
-                        return new QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
+                        return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
                     }
                     if (queryResult.Yes || queryResult.Cancel)
                     {
@@ -408,14 +520,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 }
             }
 
-            return new QueryDialogResult() { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
+            return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
         }
 
         private QueryDialogWindow.QueryDialogResult QueryTimeControlForBlack()
         {
+            if (_callPrevious)
+            {
+                return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
+            }
             if (!_timeControlWhite.SeparateControl)
             {
-
                 _timeControlBlack.TimeControlType = _timeControlWhite.TimeControlType;
                 _timeControlBlack.Value1 = _timeControlWhite.Value1;
                 _timeControlBlack.Value2 = _timeControlWhite.Value2;
@@ -425,7 +540,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _timeControlBlack.AllowTakeBack = _timeControlWhite.AllowTakeBack;
                 _timeControlBlack.TournamentMode = _timeControlWhite.TournamentMode;
        
-                 return new QueryDialogResult() { No = false, Yes = true, Previous = false, Cancel = false, Repeat = false };
+                 return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = true, Previous = false, Cancel = false, Repeat = false };
             }
             
             _synthesizer?.Speak($"{_rm.GetString("TimeControl")} {_rm.GetString("ForBlack")}");
@@ -434,6 +549,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         
         private QueryDialogWindow.QueryDialogResult QueryTimeControlForWhite()
         {
+            if (_callPrevious)
+            {
+                return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = true, Cancel = false, Repeat = false };
+            }
             if (_timeControlWhite.SeparateControl)
             {
                 _synthesizer?.Speak($"{_rm.GetString("TimeControl")} {_rm.GetString("ForWhite")}");
@@ -452,7 +571,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             switch (timeControl.TimeControlType)
             {
                 case TimeControlEnum.NoControl:
-                    return new QueryDialogResult() { No = false, Yes = true, Previous = false, Cancel = false, Repeat = false };
+                    return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = true, Previous = false, Cancel = false, Repeat = false };
                 case TimeControlEnum.AverageTimePerMove:
                     timeControl.Value1 = 10;
                     timeControl.Value2 = 0;
@@ -501,7 +620,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             }
 
-            return new QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
+            return new QueryDialogWindow.QueryDialogResult() { No = false, Yes = false, Previous = false, Cancel = false, Repeat = true };
         }
     }
 }

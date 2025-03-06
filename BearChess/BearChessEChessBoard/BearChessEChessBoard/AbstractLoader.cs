@@ -220,6 +220,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _eChessBoard.SetFen(fen, allMoves);
         }
 
+        public void SetFen(string fen)
+        {
+            _eChessBoard.SetFen(fen);
+        }
+
+
         public void AwaitingMove(int fromField, int toField)
         {
             _eChessBoard.AwaitingMove(fromField, toField);

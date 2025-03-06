@@ -226,13 +226,15 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
             CryptographicBuffer.CopyToByteArray(args.CharacteristicValue, out var data);
             if (data != null)
             {
-                //_logging.LogDebug($"BTLE: array length: {data.Length}");
+                // _logging?.LogDebug($"BTLE: array length: {data.Length}");
                 _byteArrayQueue.Enqueue(data);
+                var dataString = string.Empty;
                 foreach (var b in data)
                 {
-                    //_logging.LogDebug($"BTLE: {b} = {b:x}");
+                    dataString += $"{b} ";
                     _byteQueue.Enqueue(b);
                 }
+                // _logging?.LogDebug($"BTLE: {dataString}");
             }
         }
         private void _readBatteryCharacteristic_ValueChanged(GattCharacteristic sender, GattValueChangedEventArgs args)
@@ -245,7 +247,7 @@ namespace www.SoLaNoSoft.com.BearChessBTLETools
                     lock (_lock)
                     {
                         _batteryValue = data[0].ToString();
-                        _logging?.LogDebug($"battery changed {_batteryValue}");
+                        _logging?.LogDebug($"BTLE: battery changed {_batteryValue}");
                     }
                 }
                 catch

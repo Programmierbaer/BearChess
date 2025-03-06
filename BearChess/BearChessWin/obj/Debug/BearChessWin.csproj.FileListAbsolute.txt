@@ -743,7 +743,6 @@ C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\P
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PlayerWindow.g.cs
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PositionSetupWindow.g.cs
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PromoteWindow.g.cs
-C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryDialogWindow.g.cs
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryTCValueDialogWindow.g.cs
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\SaveGameWindow.g.cs
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\SelectFigureWindow.g.cs
@@ -823,7 +822,6 @@ C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\UserContr
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PlayerWindow.baml
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PositionSetupWindow.baml
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PromoteWindow.baml
-C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryDialogWindow.baml
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryTCValueDialogWindow.baml
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\SaveGameWindow.baml
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\SelectFigureWindow.baml
@@ -872,6 +870,8 @@ C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\Microsoft
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\de\BearChessWpfCustomControlLib.resources.dll
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\BCServerConfigureWindow.g.cs
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\BCServerConfigureWindow.baml
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryEloDialogWindow.g.cs
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryEloDialogWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\x86\sqlite3.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\x64\sqlite3.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\BearChessWin.exe.config
@@ -1189,7 +1189,7 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PlayerWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PositionSetupWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PromoteWindow.g.cs
-C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryDialogWindow.g.cs
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryEloDialogWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryTCValueDialogWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\SaveGameWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\SelectFigureWindow.g.cs
@@ -1270,7 +1270,7 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PlayerWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PositionSetupWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\PromoteWindow.baml
-C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryDialogWindow.baml
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryEloDialogWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\QueryTCValueDialogWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\SaveGameWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\obj\Debug\Windows\SelectFigureWindow.baml

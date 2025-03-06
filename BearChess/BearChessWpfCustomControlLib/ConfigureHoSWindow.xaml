@@ -35,7 +35,7 @@
         </Border>
         <Border Name="borderDelay" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <StackPanel Margin="0,5,0,5" >
-                <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.DelaySendLED}" FontWeight="DemiBold"
+                <TextBlock DockPanel.Dock="Left" Margin="5" Text="{x:Static p:Resources.DelaySendLEDbtle}" FontWeight="DemiBold"
                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                 <DockPanel LastChildFill="False">
                     <Button DockPanel.Dock="Left" Margin="0,0,0,0" HorizontalAlignment="Left" Name="buttonDelScan"
