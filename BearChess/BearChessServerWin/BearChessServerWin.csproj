@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B449F4D1-0625-42B8-8D95-5E383A944430}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>www.SoLaNoSoft.com.BearChessServerWin</RootNamespace>
+    <AssemblyName>BearChessServerWin</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>BearChessServer.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Properties\Resources.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ChessboardUserControl.xaml.cs">
+      <DependentUpon>ChessboardUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ConfigureServerWindow.xaml.cs">
+      <DependentUpon>ConfigureServerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\QueryTournamentWindow.xaml.cs">
+      <DependentUpon>QueryTournamentWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Styles\FieldStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ChessboardUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ConfigureServerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QueryTournamentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Resource Include="Assets\Fonts\MERIFONT.TTF" />
+    <Resource Include="Assets\Fonts\MISCHESS.TTF" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="BearChessServer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\server_edit.png" />
+    <Resource Include="Assets\server_error.png" />
+    <Resource Include="Assets\server_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\BearChessServer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BearChessBaseLib\BearChessBaseLib.csproj">
+      <Project>{b298b210-c007-4f95-84ca-b0b8ad26281b}</Project>
+      <Name>BearChessBaseLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessBTLETools\BearChessBTLETools.csproj">
+      <Project>{c7f82597-f6ca-4b6c-8749-3cf04f1aa9bc}</Project>
+      <Name>BearChessBTLETools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessBTTools\BearChessBTTools.csproj">
+      <Project>{60232d5e-5f8a-48d8-8429-b5003dc3e844}</Project>
+      <Name>BearChessBTTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessCommunication\BearChessCommunication.csproj">
+      <Project>{a8118cc3-827d-4635-8613-345b190ee763}</Project>
+      <Name>BearChessCommunication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessDatabase\BearChessDatabase.csproj">
+      <Project>{fbc89b8a-e40d-4464-8aeb-ca963f7554ad}</Project>
+      <Name>BearChessDatabase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessEChessBoard\BearChessEChessBoard\BearChessEChessBoard.csproj">
+      <Project>{a6bcdc78-1edc-40c7-936f-880423360ba3}</Project>
+      <Name>BearChessEChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessServerLib\BearChessServerLib.csproj">
+      <Project>{e96ee862-76da-45b9-8774-b47af9fb8510}</Project>
+      <Name>BearChessServerLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessTools\BearChessTools.csproj">
+      <Project>{58eab818-7176-4ba9-a62a-ac2f27b089ae}</Project>
+      <Name>BearChessTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessTournament\BearChessTournament.csproj">
+      <Project>{36a83fb3-f131-426b-ae74-cd36ef110658}</Project>
+      <Name>BearChessTournament</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BearChessWpfCustomControlLib\BearChessWpfCustomControlLib.csproj">
+      <Project>{b5899481-4c32-4267-8547-9dc0198ff7a1}</Project>
+      <Name>BearChessWpfCustomControlLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CertaboLoader\CertaboLoader\CertaboLoader.csproj">
+      <Project>{40462629-633b-4944-873d-5beed2a60d88}</Project>
+      <Name>CertaboLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChessnutAirLoader\ChessnutAirLoader.csproj">
+      <Project>{95124641-45a1-4c23-aca7-ed7525718656}</Project>
+      <Name>ChessnutAirLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChessUpLoader\ChessUpLoader.csproj">
+      <Project>{3b5dc9c0-77e8-424d-96e2-95f09621954d}</Project>
+      <Name>ChessUpLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DGTLoader\DGTLoader.csproj">
+      <Project>{32ea5f2d-ae7b-4364-823e-8f0eaaf6d6ec}</Project>
+      <Name>DGTLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\Certabo\CertaboEBoardWrapper\CertaboEBoardWrapper.csproj">
+      <Project>{e2b652f0-1692-459a-bca5-c5bd88760256}</Project>
+      <Name>CertaboEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\Certabo\ChessBoard\CertaboChessBoard.csproj">
+      <Project>{9cc15609-f971-4954-a978-9c4a7412173d}</Project>
+      <Name>CertaboChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\Chessnut\ChessnutEBoardWrapper\ChessnutEBoardWrapper.csproj">
+      <Project>{b9b0de3e-57f4-4d05-9b03-892b9cddef8f}</Project>
+      <Name>ChessnutEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\Chessnut\ChessnutEBoard\ChessnutChessBoard\ChessnutChessBoard.csproj">
+      <Project>{3b7651f1-e9ef-4ee0-9671-dfeeb2ddd64f}</Project>
+      <Name>ChessnutChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\ChessUp\ChessUpChessBoard\ChessUpChessBoard.csproj">
+      <Project>{6846fbe2-99a7-4706-bb7b-a0a90fdfce12}</Project>
+      <Name>ChessUpChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\ChessUp\ChessUpEBoardWrapper\CheswUpEBoardWrapper\ChessUpEBoardWrapper.csproj">
+      <Project>{1deba49f-7dc7-40b2-8d00-18f9ae1a3f54}</Project>
+      <Name>ChessUpEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\CommonUciWrapper\CommonUciWrapper.csproj">
+      <Project>{66ab214e-2281-4d97-99c7-b54b0e31df1a}</Project>
+      <Name>CommonUciWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\DGT\DGTChessBoard\DGTChessBoard.csproj">
+      <Project>{93d92ac0-72ed-42f6-9778-ce7f83be7c6b}</Project>
+      <Name>DGTChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\DGT\DGTEBoardWrapper\DGTEBoardWrapper.csproj">
+      <Project>{a44299ec-a6da-497f-a8be-cac696ca18c7}</Project>
+      <Name>DGTEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\DGT\PegasusChessBoard\PegasusChessBoard.csproj">
+      <Project>{2558f310-ad20-4993-9388-b1c44cff4c40}</Project>
+      <Name>PegasusChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\HoS\HoSChessBoard\HoSChessBoard.csproj">
+      <Project>{0a6e2932-e63e-455c-85f6-27c6fd557028}</Project>
+      <Name>HoSChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\HoS\HoSEBoardWrapper\HoSEBoardWrapper.csproj">
+      <Project>{5ac6fe79-3f3a-4e6b-bdea-5fd10820218c}</Project>
+      <Name>HoSEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\iChessOne\IChessOneChessBoard\IChessOneChessBoard.csproj">
+      <Project>{e346fcd3-ce59-4838-b58e-506ff299896b}</Project>
+      <Name>IChessOneChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\iChessOne\IChessOneEBoardWrapper\IChessOneEBoardWrapper.csproj">
+      <Project>{d496d955-b7d8-4d15-883d-955e0a291aaa}</Project>
+      <Name>IChessOneEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\MChessLink\MChessLinkChessBoard\MChessLinkChessBoard.csproj">
+      <Project>{d984142b-af41-4348-a3e4-51ffb4d30502}</Project>
+      <Name>MChessLinkChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\MChessLink\MChessLinkEBoardWrapper\MChessLinkEBoardWrapper\MChessLinkEBoardWrapper.csproj">
+      <Project>{43db45b8-75b3-4877-9287-0007c8ae420d}</Project>
+      <Name>MChessLinkEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\SquareOff\SquareOffChessBoard\SquareOffChessBoard.csproj">
+      <Project>{ef78a244-ad37-497f-b2df-e2b5fed30cf6}</Project>
+      <Name>SquareOffChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\SquareOff\SquareOffEBoardWrapper\SquareOffEBoardWrapper.csproj">
+      <Project>{13640649-4f20-45f2-9368-77b33fd31d1e}</Project>
+      <Name>SquareOffEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\TabuTronic\Cerno\TabuTronicCernoChessBoard\TabuTronicCernoChessBoard.csproj">
+      <Project>{1403e918-b016-43fa-9a01-807bfe1d49cd}</Project>
+      <Name>TabuTronicCernoChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\TabuTronic\Cerno\TabuTronicCernoEBoardWrapper\TabuTronicCernoEBoardWrapper.csproj">
+      <Project>{76d579cd-3d7f-42d5-9657-36f357e4c5af}</Project>
+      <Name>TabuTronicCernoEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\TabuTronic\Sentio\TabotronicSentioEBoardWrapper\TabutronicSentioEBoardWrapper.csproj">
+      <Project>{c33a8a6d-ce21-4574-8f44-d2bc6a2def3c}</Project>
+      <Name>TabutronicSentioEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\TabuTronic\Sentio\TabutronicSentioChessBoard\TabutronicSentioChessBoard.csproj">
+      <Project>{19d16aaa-ffe7-4ee5-bc3c-20b6f1d205c2}</Project>
+      <Name>TabutronicSentioChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\TabuTronic\Tactum\TabuTronicTactumChessBoard\TabuTronicTactumChessBoard.csproj">
+      <Project>{4b209b47-7de1-4d06-8233-ed21db11b054}</Project>
+      <Name>TabuTronicTactumChessBoard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EChessBoards\TabuTronic\Tactum\TabuTronicTactumEBoardWrapper\TabuTronicTactumEBoardWrapper.csproj">
+      <Project>{6ae1ec45-9eb8-447a-afdf-19bd0ab260f8}</Project>
+      <Name>TabuTronicTactumEBoardWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EngineDefs\EngineDefs.csproj">
+      <Project>{af37ad09-e359-497a-94af-e4cb12fc5ded}</Project>
+      <Name>EngineDefs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HidDriver\HidDriver.csproj">
+      <Project>{33c08548-4bdd-4b0f-9bbe-12eda4805f19}</Project>
+      <Name>HidDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HoSLoader\HoSLoader.csproj">
+      <Project>{48dcdb24-2b69-4f05-b41e-01a650b075aa}</Project>
+      <Name>HoSLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IChessOneLoader\IChessOneLoader.csproj">
+      <Project>{f77d1637-7997-4cc9-a954-e928ef93eb40}</Project>
+      <Name>IChessOneLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MChessLinkLoader\MChessLinkLoader\MChessLinkLoader.csproj">
+      <Project>{fee3096b-8a9c-496b-b7f5-03e733614dd2}</Project>
+      <Name>MChessLinkLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SquareOffProLoader\SquareOffProLoader.csproj">
+      <Project>{519d9a7a-b72f-4922-9341-445cd2fc9a85}</Project>
+      <Name>SquareOffProLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TabuTronicCernoLoader\TabuTronicCernoLoader.csproj">
+      <Project>{89b1ef07-b67a-4750-a4bc-5a25bd0dd225}</Project>
+      <Name>TabuTronicCernoLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TabutronicSentioLoader\TabutronicSentioLoader.csproj">
+      <Project>{14cca0fe-80d5-402b-81ac-e544854b994c}</Project>
+      <Name>TabutronicSentioLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TabuTronicTactumLoader\TabuTronicTactumLoader.csproj">
+      <Project>{3cd30737-ce5f-4487-80f8-80a0dbcb0346}</Project>
+      <Name>TabuTronicTactumLoader</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\ChessUpLogo.png" />
+    <Resource Include="Assets\Icons\tabutronic_logo_def.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Fields\BearChess\BishopB.png" />
+    <Resource Include="Assets\Fields\BearChess\BishopW.png" />
+    <Resource Include="Assets\Fields\BearChess\black.png" />
+    <Resource Include="Assets\Fields\BearChess\KingB.png" />
+    <Resource Include="Assets\Fields\BearChess\KingW.png" />
+    <Resource Include="Assets\Fields\BearChess\KnightB.png" />
+    <Resource Include="Assets\Fields\BearChess\KnightW.png" />
+    <Resource Include="Assets\Fields\BearChess\PawnB.png" />
+    <Resource Include="Assets\Fields\BearChess\PawnW.png" />
+    <Resource Include="Assets\Fields\BearChess\QueenB.png" />
+    <Resource Include="Assets\Fields\BearChess\QueenW.png" />
+    <Resource Include="Assets\Fields\BearChess\RookB.png" />
+    <Resource Include="Assets\Fields\BearChess\RookW.png" />
+    <Resource Include="Assets\Fields\BearChess\white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Icons\6-2-chess-png.png" />
+    <Resource Include="Assets\Icons\accept_button.png" />
+    <Resource Include="Assets\Icons\Array.ico" />
+    <Resource Include="Assets\Icons\arrow_down.png" />
+    <Resource Include="Assets\Icons\arrow_refresh.png" />
+    <Resource Include="Assets\Icons\arrow_right.png" />
+    <Resource Include="Assets\Icons\arrow_rotate_anticlockwise.png" />
+    <Resource Include="Assets\Icons\arrow_up.png" />
+    <Resource Include="Assets\Icons\balance_unbalance.png" />
+    <Resource Include="Assets\Icons\BearChess.ico" />
+    <Resource Include="Assets\Icons\bearchess.png" />
+    <Resource Include="Assets\Icons\bearchess_2.png" />
+    <Resource Include="Assets\Icons\bin.png" />
+    <Resource Include="Assets\Icons\Black B.ico" />
+    <Resource Include="Assets\Icons\Black K.ico" />
+    <Resource Include="Assets\Icons\Black N.ico" />
+    <Resource Include="Assets\Icons\Black P.ico" />
+    <Resource Include="Assets\Icons\Black Q.ico" />
+    <Resource Include="Assets\Icons\Black R.ico" />
+    <Resource Include="Assets\Icons\bluetooth.png" />
+    <Resource Include="Assets\Icons\Board2DPieces32.png" />
+    <Resource Include="Assets\Icons\Board64 black.ico" />
+    <Resource Include="Assets\Icons\book.png" />
+    <Resource Include="Assets\Icons\bookmark.png" />
+    <Resource Include="Assets\Icons\books_stack.png" />
+    <Resource Include="Assets\Icons\book_add.png" />
+    <Resource Include="Assets\Icons\book_open.png" />
+    <Resource Include="Assets\Icons\bullet_blue.png" />
+    <Resource Include="Assets\Icons\bullet_go.png" />
+    <Resource Include="Assets\Icons\bullet_green.png" />
+    <Resource Include="Assets\Icons\bullet_red.png" />
+    <Resource Include="Assets\Icons\bullet_toggle_plus.png" />
+    <Resource Include="Assets\Icons\CalibrateBase.png" />
+    <Resource Include="Assets\Icons\cancel.png" />
+    <Resource Include="Assets\Icons\Certabo_icon.ico" />
+    <Resource Include="Assets\Icons\chart_line.png" />
+    <Resource Include="Assets\Icons\checkerboard.png" />
+    <Resource Include="Assets\Icons\chessboard_base.png" />
+    <Resource Include="Assets\Icons\chessboard_base_small.png" />
+    <Resource Include="Assets\Icons\chessnut.png" />
+    <Resource Include="Assets\Icons\Chess_Board.png" />
+    <Resource Include="Assets\Icons\clear_formatting.png" />
+    <Resource Include="Assets\Icons\clipboard_sign.png" />
+    <Resource Include="Assets\Icons\clipboard_sign_out.png" />
+    <Resource Include="Assets\Icons\clock_pause.png" />
+    <Resource Include="Assets\Icons\clock_play.png" />
+    <Resource Include="Assets\Icons\cog.png" />
+    <Resource Include="Assets\Icons\cog_add.png" />
+    <Resource Include="Assets\Icons\cog_edit.png" />
+    <Resource Include="Assets\Icons\comments.png" />
+    <Resource Include="Assets\Icons\connect.png" />
+    <Resource Include="Assets\Icons\control_pause_blue.png" />
+    <Resource Include="Assets\Icons\control_play_blue.png" />
+    <Resource Include="Assets\Icons\control_power_blue.png" />
+    <Resource Include="Assets\Icons\control_repeat_blue.png" />
+    <Resource Include="Assets\Icons\control_stop.png" />
+    <Resource Include="Assets\Icons\control_stop_blue.png" />
+    <Resource Include="Assets\Icons\cup_gold.png" />
+    <Resource Include="Assets\Icons\database.png" />
+    <Resource Include="Assets\Icons\database_add.png" />
+    <Resource Include="Assets\Icons\database_cleanup.png" />
+    <Resource Include="Assets\Icons\database_delete.png" />
+    <Resource Include="Assets\Icons\database_refresh.png" />
+    <Resource Include="Assets\Icons\database_repeat_delete.png" />
+    <Resource Include="Assets\Icons\database_save.png" />
+    <Resource Include="Assets\Icons\delete.png" />
+    <Resource Include="Assets\Icons\dgt48.PNG" />
+    <Resource Include="Assets\Icons\digit_separator.png" />
+    <Resource Include="Assets\Icons\disconnect.png" />
+    <Resource Include="Assets\Icons\diskette.png" />
+    <Resource Include="Assets\Icons\door_out.png" />
+    <Resource Include="Assets\Icons\download.png" />
+    <Resource Include="Assets\Icons\emotion_question.png" />
+    <Resource Include="Assets\Icons\Empty.png" />
+    <Resource Include="Assets\Icons\eye.png" />
+    <Resource Include="Assets\Icons\eye_close.png" />
+    <Resource Include="Assets\Icons\eye_half.png" />
+    <Resource Include="Assets\Icons\FicsLogo.png" />
+    <Resource Include="Assets\Icons\file_extension_exe.png" />
+    <Resource Include="Assets\Icons\file_extension_html.png" />
+    <Resource Include="Assets\Icons\file_extension_log.png" />
+    <Resource Include="Assets\Icons\file_extension_wav.png" />
+    <Resource Include="Assets\Icons\file_manager.png" />
+    <Resource Include="Assets\Icons\file_save_as.png" />
+    <Resource Include="Assets\Icons\filter.png" />
+    <Resource Include="Assets\Icons\filter_advanced.png" />
+    <Resource Include="Assets\Icons\filter_clear.png" />
+    <Resource Include="Assets\Icons\filter_reapply.png" />
+    <Resource Include="Assets\Icons\flag_denmark.png" />
+    <Resource Include="Assets\Icons\flag_france.png" />
+    <Resource Include="Assets\Icons\flag_germany.png" />
+    <Resource Include="Assets\Icons\flag_great_britain.png" />
+    <Resource Include="Assets\Icons\flag_iceland.png" />
+    <Resource Include="Assets\Icons\flag_italy.png" />
+    <Resource Include="Assets\Icons\flag_poland.png" />
+    <Resource Include="Assets\Icons\flag_spain.png" />
+    <Resource Include="Assets\Icons\folder.png" />
+    <Resource Include="Assets\Icons\folder_add.png" />
+    <Resource Include="Assets\Icons\folder_database.png" />
+    <Resource Include="Assets\Icons\font_size_decrease.png" />
+    <Resource Include="Assets\Icons\font_size_increase.png" />
+    <Resource Include="Assets\Icons\globe_model.png" />
+    <Resource Include="Assets\Icons\GreenBorder.png" />
+    <Resource Include="Assets\Icons\handshake.png" />
+    <Resource Include="Assets\Icons\hide_detail.png" />
+    <Resource Include="Assets\Icons\highlighter_text.png" />
+    <Resource Include="Assets\Icons\hos.png" />
+    <Resource Include="Assets\Icons\iChessOneIcon.png" />
+    <Resource Include="Assets\Icons\image.png" />
+    <Resource Include="Assets\Icons\images_flickr - 2.png" />
+    <Resource Include="Assets\Icons\images_flickr.png" />
+    <Resource Include="Assets\Icons\information.png" />
+    <Resource Include="Assets\Icons\layer_open.png" />
+    <Resource Include="Assets\Icons\layer_save.png" />
+    <Resource Include="Assets\Icons\lightbulb.png" />
+    <Resource Include="Assets\Icons\lightbulb_add.png" />
+    <Resource Include="Assets\Icons\lightbulb_delete.png" />
+    <Resource Include="Assets\Icons\lightbulb_off.png" />
+    <Resource Include="Assets\Icons\lightning.png" />
+    <Resource Include="Assets\Icons\lightning_go.png" />
+    <Resource Include="Assets\Icons\link.png" />
+    <Resource Include="Assets\Icons\link_break.png" />
+    <Resource Include="Assets\Icons\mark_to_download.png" />
+    <Resource Include="Assets\Icons\Millennium ChessLink.png" />
+    <Resource Include="Assets\Icons\new_window.png" />
+    <Resource Include="Assets\Icons\novag48.PNG" />
+    <Resource Include="Assets\Icons\Novag_logo.png" />
+    <Resource Include="Assets\Icons\outlook_calendar_week.png" />
+    <Resource Include="Assets\Icons\pegasus.png" />
+    <Resource Include="Assets\Icons\plus_light_blue.png" />
+    <Resource Include="Assets\Icons\RedBorder.png" />
+    <Resource Include="Assets\Icons\robot.png" />
+    <Resource Include="Assets\Icons\robotPause.png" />
+    <Resource Include="Assets\Icons\Saitek_logo.png" />
+    <Resource Include="Assets\Icons\saved_imports.png" />
+    <Resource Include="Assets\Icons\save_as.png" />
+    <Resource Include="Assets\Icons\script_add.png" />
+    <Resource Include="Assets\Icons\script_delete.png" />
+    <Resource Include="Assets\Icons\script_gear.png" />
+    <Resource Include="Assets\Icons\setpieces.png" />
+    <Resource Include="Assets\Icons\show_detail.png" />
+    <Resource Include="Assets\Icons\slideshow_volume.png" />
+    <Resource Include="Assets\Icons\sound.png" />
+    <Resource Include="Assets\Icons\sound_mute.png" />
+    <Resource Include="Assets\Icons\squareoff.png" />
+    <Resource Include="Assets\Icons\stopwatch_pause.png" />
+    <Resource Include="Assets\Icons\stopwatch_start.png" />
+    <Resource Include="Assets\Icons\switch_windows.png" />
+    <Resource Include="Assets\Icons\table_filter.png" />
+    <Resource Include="Assets\Icons\table_link.png" />
+    <Resource Include="Assets\Icons\table_refresh.png" />
+    <Resource Include="Assets\Icons\text_exports.png" />
+    <Resource Include="Assets\Icons\text_list_numbers.png" />
+    <Resource Include="Assets\Icons\text_replace.png" />
+    <Resource Include="Assets\Icons\text_smallcaps.png" />
+    <Resource Include="Assets\Icons\tick.png" />
+    <Resource Include="Assets\Icons\time.png" />
+    <Resource Include="Assets\Icons\time_add.png" />
+    <Resource Include="Assets\Icons\time_delete.png" />
+    <Resource Include="Assets\Icons\time_go.png" />
+    <Resource Include="Assets\Icons\toggle.png" />
+    <Resource Include="Assets\Icons\toggle_expand.png" />
+    <Resource Include="Assets\Icons\undo.png" />
+    <Resource Include="Assets\Icons\users_3.png" />
+    <Resource Include="Assets\Icons\user_comment.png" />
+    <Resource Include="Assets\Icons\user_silhouette.png" />
+    <Resource Include="Assets\Icons\White B.ico" />
+    <Resource Include="Assets\Icons\White K.ico" />
+    <Resource Include="Assets\Icons\White N.ico" />
+    <Resource Include="Assets\Icons\White P.ico" />
+    <Resource Include="Assets\Icons\White Q.ico" />
+    <Resource Include="Assets\Icons\White R.ico" />
+    <Resource Include="Assets\Icons\world_edit.png" />
+    <Resource Include="Assets\Icons\YellowBorder.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

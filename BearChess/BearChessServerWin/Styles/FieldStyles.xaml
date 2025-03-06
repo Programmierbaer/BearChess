@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="whiteFieldImage" UriSource="../Assets/Fields/BearChess/white.png" />
+    <BitmapImage x:Key="blackFieldImage" UriSource="../Assets/Fields/BearChess/black.png" />
+
+    <BitmapImage x:Key="whitePawnImage"   UriSource="../Assets/Fields/BearChess/PawnW.png" />
+    <BitmapImage x:Key="blackPawnImage"   UriSource="../Assets/Fields/BearChess/PawnB.png" />
+    <BitmapImage x:Key="whiteKingImage"   UriSource="../Assets/Fields/BearChess/KingW.png" />
+    <BitmapImage x:Key="blackKingImage"   UriSource="../Assets/Fields/BearChess/KingB.png" />
+    <BitmapImage x:Key="whiteQueenImage"  UriSource="../Assets/Fields/BearChess/QueenW.png" />
+    <BitmapImage x:Key="blackQueenImage"  UriSource="../Assets/Fields/BearChess/QueenB.png" />
+    <BitmapImage x:Key="whiteRookImage"   UriSource="../Assets/Fields/BearChess/RookW.png" />
+    <BitmapImage x:Key="blackRookImage"   UriSource="../Assets/Fields/BearChess/RookB.png" />
+    <BitmapImage x:Key="whiteKnightImage" UriSource="../Assets/Fields/BearChess/KnightW.png" />
+    <BitmapImage x:Key="blackKnightImage" UriSource="../Assets/Fields/BearChess/KnightB.png" />
+    <BitmapImage x:Key="whiteBishopImage" UriSource="../Assets/Fields/BearChess/BishopW.png" />
+    <BitmapImage x:Key="blackBishopImage" UriSource="../Assets/Fields/BearChess/BishopB.png" />
+
+</ResourceDictionary>

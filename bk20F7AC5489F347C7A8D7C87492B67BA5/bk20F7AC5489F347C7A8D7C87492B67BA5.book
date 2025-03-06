@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BookInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>bk20F7AC5489F347C7A8D7C87492B67BA5</Id>
+  <Name>Perfect 2023 Polyglot</Name>
+  <FileName>C:\lars\Repos\BearChess\BearChess\BearChessWin\bin\Debug\bk20F7AC5489F347C7A8D7C87492B67BA5\Perfect2023.bin</FileName>
+  <Size>50032</Size>
+  <PositionsCount>2443</PositionsCount>
+  <MovesCount>3126</MovesCount>
+  <GamesCount>0</GamesCount>
+  <IsInternalBook>true</IsInternalBook>
+  <IsHidddenInternalBook>true</IsHidddenInternalBook>
+  <IsDefaultBook>false</IsDefaultBook>
+</BookInfo>

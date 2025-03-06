@@ -1,0 +1,16 @@
+﻿<Application x:Class="BearChessServerWin.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BearChessServerWin"
+             xmlns:resource="clr-namespace:www.SoLaNoSoft.com.BearChessServerWin.Properties"                 
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/FieldStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="Merida">pack://application:,,,/Assets/Fonts/#Chess Merida</FontFamily>
+            <FontFamily x:Key="Miscel">pack://application:,,,/Assets/Fonts/#Chess Miscel</FontFamily>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

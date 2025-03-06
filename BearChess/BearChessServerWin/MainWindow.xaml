@@ -1,0 +1,43 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessServerWin.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessServerWin"        
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessServerWin.Properties"        
+        Background="AliceBlue" SizeChanged="Window_SizeChanged"
+        mc:Ignorable="d" Icon="Assets/BearChessServer.ico" WindowStartupLocation="CenterOwner"
+        Title="BearChess Server" Height="450" Width="900">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu Name="MenuMain" Grid.Row="0" Grid.Column="0"  Margin="5,0,5,0" Background="Transparent">
+            <MenuItem  Header="{x:Static p:Resources.Server}" >
+                <MenuItem Name="MenuItemOpen"  Header="{x:Static p:Resources.Start}" Click="MenuItemOpen_Click"></MenuItem>
+                <MenuItem Header="{x:Static p:Resources.Configure}" Click="MenuItemConfigure_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="{x:Static p:Resources.Tournaments}">
+                <MenuItem Header="Neues Turnier" Click="MenItemNewTournament_Click"></MenuItem>
+                <MenuItem Header="Turnier speichern"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <TabControl Name="tabControlTournaments"  Grid.Row="1" Margin="5"/>
+
+        <StatusBar Grid.Row="2" VerticalAlignment="Bottom"  Background="AliceBlue" BorderThickness="1" BorderBrush="Gray">
+            <StatusBarItem>
+                <TextBlock Name="textBlockRunningMode" Text="Initial" />
+            </StatusBarItem>
+            <Separator />
+
+            <StatusBarItem>
+                <TextBlock Name="textBlockServer" Text="{x:Static p:Resources.Closed}" />
+            </StatusBarItem>
+            <StatusBarItem>
+                <Image Name="imageServer" Width="16" Height="16" Source="Assets/server_go.png"  />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

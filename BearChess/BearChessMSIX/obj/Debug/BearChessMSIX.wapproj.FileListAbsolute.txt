@@ -1,0 +1,2 @@
+D:\source\Repos\BearChess\BearChess\BearChessMSIX\obj\Debug\BearChessMSIX.wapprojAssemblyReference.cache
+D:\source\Repos\BearChess\BearChess\BearChessMSIX\obj\Debug\BearChessMSIX.wapproj.CoreCompileInputs.cache

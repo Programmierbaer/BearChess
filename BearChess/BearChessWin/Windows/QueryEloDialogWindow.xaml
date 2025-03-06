@@ -1,0 +1,21 @@
+﻿<Window x:Class="www.SoLaNoSoft.com.BearChessWin.QueryEloDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+        mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStyle="None" Loaded="Window_Loaded" FontSize="20"
+        xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties" WindowStartupLocation="CenterOwner"
+        Title="QueryEloDialogWindow" Height="450" Width="800">
+    <StackPanel FocusManager.FocusedElement="{Binding ElementName=numericUpDownUserControl}">
+        <TextBlock Margin="10" Name="TextBlockMinValue"></TextBlock>
+        <TextBlock Margin="10" Name="TextBlockMaxValue"></TextBlock>
+        <local:NumericUpDownUserControl Focusable="True" GotFocus="numericUpDownUserControl_GotFocus" Visibility="Visible"  x:Name="numericUpDownUserControl"  ValueChanged="numericUpDownUserControl_ValueChanged"/>
+        <Button Margin="10"  Click="ApplyButton_OnClick" Name="ApplyButton"  AutomationProperties.HelpText="{x:Static p:Resources.Apply}"
+              GotFocus="YesButton_GotFocus" Content="{x:Static p:Resources.Apply}"></Button>
+
+        <Button Margin="10"   Click="PrevButton_Click" Name="PrevButton"  GotFocus="YesButton_GotFocus" AutomationProperties.HelpText="{x:Static p:Resources.PrevQuestion}" Content="{x:Static p:Resources.PrevQuestion}"></Button>
+        <Button Margin="10"   Click="CancelButton_Click" Name="CancelButton"  GotFocus="YesButton_GotFocus" AutomationProperties.HelpText="{x:Static p:Resources.QueryDialogCancel}" Content="{x:Static p:Resources.QueryDialogCancel}"></Button>
+
+    </StackPanel>
+</Window>
