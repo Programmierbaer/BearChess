@@ -104,7 +104,7 @@
               "RelativeDocumentMoniker": "BearChessWin\\Properties\\AssemblyInfo.cs",
               "ToolTip": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessWin\\Properties\\AssemblyInfo.cs",
               "RelativeToolTip": "BearChessWin\\Properties\\AssemblyInfo.cs",
-              "ViewState": "AgIAABUAAAAAzczMzMwXwCMAAABhAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAzczMzMwXwDMAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-15T20:02:06.576Z",
               "EditorCaption": ""
@@ -129,9 +129,10 @@
               "RelativeDocumentMoniker": "BearChessWin\\BearChessMainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessWin\\BearChessMainWindow.xaml.cs",
               "RelativeToolTip": "BearChessWin\\BearChessMainWindow.xaml.cs",
-              "ViewState": "AgIAAC4BAAAAAAAAAAAAAEoBAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAACEOAAAAAAAAAAAYwDUOAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-17T19:13:47.616Z"
+              "WhenOpened": "2025-01-17T19:13:47.616Z",
+              "EditorCaption": ""
             }
           ]
         }
