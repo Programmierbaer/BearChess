@@ -24,6 +24,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class NewGameWindow : Window, INewGameWindow
     {
         private readonly Configuration _configuration;
+        private readonly bool _eBoardConnected;
+        private readonly bool _pieceRecognition;
         private readonly Dictionary<string, UciInfo> _allUciInfos = new Dictionary<string, UciInfo>();
         private readonly bool _isInitialized;
 
@@ -66,12 +68,15 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public bool SeparateControl =>
             checkBox2TimeControls.IsChecked.HasValue && checkBox2TimeControls.IsChecked.Value;
 
-        public NewGameWindow(Configuration configuration, bool bcServerConnected)
+        public NewGameWindow(Configuration configuration, bool bcServerConnected, bool eBoardConnected, bool pieceRecognition)
         {
             _configuration = configuration;
+            _eBoardConnected = eBoardConnected;
+            _pieceRecognition = pieceRecognition;
             InitializeComponent();
             buttonPlayerWhiteBCS.Visibility = bcServerConnected ? Visibility.Visible : Visibility.Hidden;
             buttonPlayerBlackBCS.Visibility = bcServerConnected ? Visibility.Visible : Visibility.Hidden;
+            checkBoxStartAfterMoveOnBoard.Visibility = eBoardConnected ? Visibility.Visible : Visibility.Hidden;
             _rm = SpeechTranslator.ResourceManager;
             textBlockTimeControl2.Text = $"{SpeechTranslator.ResourceManager.GetString("TimeControl")} \u265a:";
             comboBoxTimeControl.Items.Clear();
@@ -143,6 +148,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _isInitialized = true;
             textBlockTimeControlEmu11.Text = SpeechTranslator.ResourceManager.GetString("UseEngineConfigForTC");
             textBlockTimeControlEmu22.Text = SpeechTranslator.ResourceManager.GetString("UseEngineConfigForTC");
+            checkBoxAlternateMove.IsChecked = _configuration.GetBoolValue("allowAlternateMoves", false);
         }
 
      
@@ -532,6 +538,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
+            _configuration.SetBoolValue("allowAlternateMoves", checkBoxAlternateMove.IsChecked.HasValue && checkBoxAlternateMove.IsChecked.Value);
+            _configuration.SetBoolValue("checkForAlternateMoves", 
+            checkBoxAlternateMove.IsChecked.HasValue && checkBoxAlternateMove.IsChecked.Value &&
+                checkBoxAlternateMove.Visibility == Visibility.Visible);
             DialogResult = true;
         }
 
@@ -727,6 +737,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void SetRelaxedVisibility()
         {
+            checkBoxAlternateMove.Visibility = _pieceRecognition && buttonConfigureWhite.Visibility == Visibility.Hidden && buttonConfigureBlack.Visibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden;
             if ((buttonConfigureBlack.Visibility == Visibility.Visible &&
                  buttonConfigureWhite.Visibility == Visibility.Hidden)
                 || (buttonConfigureBlack.Visibility == Visibility.Hidden &&

@@ -130,7 +130,19 @@ namespace www.SoLaNoSoft.com.BearChessTools
                     boardDevice = "raspberrypi";
                     boardDevice2 = "Certabo";
                     break;
+                case Constants.TabutronicCernoSpectrum:
+                    boardDevice = "raspberrypi";
+                    boardDevice2 = "Certabo";
+                    break;
                 case Constants.TabutronicSentio:
+                    boardDevice = "raspberrypi";
+                    boardDevice2 = "Certabo";
+                    break;
+                case Constants.TabutronicSentioSpectrum:
+                    boardDevice = "raspberrypi";
+                    boardDevice2 = "Certabo";
+                    break;
+                case Constants.TabutronicTactum:
                     boardDevice = "raspberrypi";
                     boardDevice2 = "Certabo";
                     break;
@@ -249,6 +261,38 @@ namespace www.SoLaNoSoft.com.BearChessTools
 
                             break;
                         }
+                        if (boardName.Equals(Constants.TabutronicCernoSpectrum, StringComparison.OrdinalIgnoreCase) &&
+                            deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
+                        {
+                            // TabuTronic
+                            try
+                            {
+                                fileLogger?.LogInfo("Open TabuTronic Cerno Spectrum BT endpoint");
+                                var bluetoothEndPoint =
+                                    new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress,
+                                        BluetoothService.SerialPort,
+                                        10);
+                                if (!cli.Connected)
+                                {
+                                    cli.Connect(bluetoothEndPoint);
+                                    if (cli.Connected)
+                                    {
+                                        fileLogger?.LogInfo("Connected");
+                                        cli.Close();
+                                        configuration.SaveBTAddress(boardName, bluetoothDeviceInfo.DeviceAddress);
+                                        var list = new List<string> { "BT" };
+                                        //list.AddRange(GetPortNames());
+                                        return list.ToArray();
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                fileLogger?.LogError(ex);
+                            }
+
+                            break;
+                        }
 
                         if (boardName.Equals(Constants.TabutronicSentio, StringComparison.OrdinalIgnoreCase) &&
                             deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
@@ -271,6 +315,39 @@ namespace www.SoLaNoSoft.com.BearChessTools
                                         configuration.SaveBTAddress(boardName, bluetoothDeviceInfo.DeviceAddress);
                                         var list = new List<string> { "BT" };
                                      //   list.AddRange(GetPortNames());
+                                        return list.ToArray();
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                fileLogger?.LogError(ex);
+                            }
+
+                            break;
+
+                        }
+                        if (boardName.Equals(Constants.TabutronicSentioSpectrum, StringComparison.OrdinalIgnoreCase) &&
+                            deviceName.Equals(boardDevice, StringComparison.OrdinalIgnoreCase))
+                        {
+                            // TabuTronic
+                            try
+                            {
+                                fileLogger?.LogInfo("Open TabuTronic Sentio Spectrum BT endpoint");
+                                var bluetoothEndPoint =
+                                    new BluetoothEndPoint(bluetoothDeviceInfo.DeviceAddress,
+                                        BluetoothService.SerialPort,
+                                        10);
+                                if (!cli.Connected)
+                                {
+                                    cli.Connect(bluetoothEndPoint);
+                                    if (cli.Connected)
+                                    {
+                                        fileLogger?.LogInfo("Connected");
+                                        cli.Close();
+                                        configuration.SaveBTAddress(boardName, bluetoothDeviceInfo.DeviceAddress);
+                                        var list = new List<string> { "BT" };
+                                        //   list.AddRange(GetPortNames());
                                         return list.ToArray();
                                     }
                                 }
@@ -345,11 +422,23 @@ namespace www.SoLaNoSoft.com.BearChessTools
                 {
                     resultList.Add("BTLE");
                 }
+                if (boardName.Equals(Constants.TabutronicTactum, StringComparison.OrdinalIgnoreCase))
+                {
+                    resultList.Add("BTLE");
+                }
                 if (boardName.Equals(Constants.TabutronicCerno, StringComparison.OrdinalIgnoreCase))
                 {
                     resultList.Add("BTLE");
                 }
+                if (boardName.Equals(Constants.TabutronicCernoSpectrum, StringComparison.OrdinalIgnoreCase))
+                {
+                    resultList.Add("BTLE");
+                }
                 if (boardName.Equals(Constants.TabutronicSentio, StringComparison.OrdinalIgnoreCase))
+                {
+                    resultList.Add("BTLE");
+                }
+                if (boardName.Equals(Constants.TabutronicSentioSpectrum, StringComparison.OrdinalIgnoreCase))
                 {
                     resultList.Add("BTLE");
                 }
@@ -366,11 +455,23 @@ namespace www.SoLaNoSoft.com.BearChessTools
             {
                 return resultList.ToArray();
             }
+            if (boardName.Equals(Constants.TabutronicTactum, StringComparison.OrdinalIgnoreCase))
+            {
+                return resultList.ToArray();
+            }
             if (boardName.Equals(Constants.TabutronicCerno, StringComparison.OrdinalIgnoreCase))
             {
                 return resultList.ToArray();
             }
+            if (boardName.Equals(Constants.TabutronicCernoSpectrum, StringComparison.OrdinalIgnoreCase))
+            {
+                return resultList.ToArray();
+            }
             if (boardName.Equals(Constants.TabutronicSentio, StringComparison.OrdinalIgnoreCase))
+            {
+                return resultList.ToArray();
+            }
+            if (boardName.Equals(Constants.TabutronicSentioSpectrum, StringComparison.OrdinalIgnoreCase))
             {
                 return resultList.ToArray();
             }

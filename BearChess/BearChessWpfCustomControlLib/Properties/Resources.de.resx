@@ -376,7 +376,7 @@
     <value>TabuTronic Tactum Schachbrett Konfigurieren</value>
   </data>
   <data name="ConfigureTactumSpeech" xml:space="preserve">
-    <value>Das ist das Fenster zur Konfiguration des TabuTronic Tactum Schachbretts</value>
+    <value>Konfiguration des TabuTronic Tactum Schachbretts</value>
   </data>
   <data name="ConfigureWhiteButton" xml:space="preserve">
     <value>Schaltfläche zum Konfigurieren der weißen Engine</value>
@@ -2663,5 +2663,26 @@
   </data>
   <data name="SayBestMoveHelpRequested" xml:space="preserve">
     <value>Besten Zug bei Hilfeanforderung ansagen</value>
+  </data>
+  <data name="SayBestMoveFromBuddyEngine" xml:space="preserve">
+    <value>Say move from buddy when help is requested</value>
+  </data>
+  <data name="ConfigureCernoSpectrum" xml:space="preserve">
+    <value>TabuTronic Cerno Spectrum Schachbrett Konfigurieren</value>
+  </data>
+  <data name="ConfigureSentioSpectrum" xml:space="preserve">
+    <value>TabuTronic Sentio Spectrum Konfigurieren</value>
+  </data>
+  <data name="ConnectToTabuTronicCernoSpectrumTip" xml:space="preserve">
+    <value>Verbinden mit TabbuTronic Cerno Spectrum Schachbrett</value>
+  </data>
+  <data name="ConnectToTabuTronicSentioSpectrumTip" xml:space="preserve">
+    <value>Verbinden mit TabuTronic Sentio Spectrum Schachbrett</value>
+  </data>
+  <data name="ShowHideBuddyComments" xml:space="preserve">
+    <value>Buddy-Kommentare anzeigen oder verbergen</value>
+  </data>
+  <data name="AndWithBestLineBuddy" xml:space="preserve">
+    <value>und mit bester Zugfolge vom Buddy</value>
   </data>
 </root>

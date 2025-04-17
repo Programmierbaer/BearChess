@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Resources;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
@@ -28,9 +26,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
             InitializeComponent();
             _rm = SpeechTranslator.ResourceManager;
             _currentHelpText = _rm.GetString("DefinePlayerSpeech");
-            _blindUser = bool.Parse(Configuration.Instance.GetConfigValue("blindUser", "false"));
+            _blindUser = Configuration.Instance.GetBoolValue("blindUser", false);
 
-            if (_blindUser || bool.Parse(Configuration.Instance.GetConfigValue("speechActive", "true")))
+            if (_blindUser || Configuration.Instance.GetBoolValue("speechActive", true))
             {
                 _synthesizer = BearChessSpeech.Instance;
             }

@@ -18,31 +18,34 @@ namespace www.SoLaNoSoft.com.BearChessServerLib
         public event EventHandler<string> ClientConnected;
         public event EventHandler<string> ClientDisconnected;
         public event EventHandler<BearChessServerMessage> ClientMessage;
-        public bool ServerIsOpen { get => _bearChessServer!=null &&  _bearChessServer.IsRunning; }
-      
+
+        public bool ServerIsOpen => _bearChessServer != null && _bearChessServer.IsRunning;
+
         private IBearChessComServer _bearChessServer;
         private readonly ILogging _logging;
-        private Dictionary<int, string> _awaitedFens = new Dictionary<int, string>();
-        private Dictionary<int, List<IElectronicChessBoard>> _allBoards = new  Dictionary<int, List<IElectronicChessBoard>>();
+        private readonly Dictionary<int, Dictionary<string, string>> _awaitedFens = new Dictionary<int, Dictionary<string,string>>();
+        private readonly Dictionary<int, List<IElectronicChessBoard>> _allBoards = new  Dictionary<int, List<IElectronicChessBoard>>();
 
         public BearChessController(ILogging logging)
         {
             _logging = logging;
-            _awaitedFens[Fields.COLOR_WHITE] = string.Empty;
-            _awaitedFens[Fields.COLOR_BLACK] = string.Empty;
-            _awaitedFens[Fields.COLOR_EMPTY] = string.Empty;
+            _awaitedFens[Fields.COLOR_WHITE] = new Dictionary<string, string>();
+            _awaitedFens[Fields.COLOR_BLACK] = new Dictionary<string, string>();
+            _awaitedFens[Fields.COLOR_EMPTY] = new Dictionary<string, string>();
             _allBoards[Fields.COLOR_WHITE] = new List<IElectronicChessBoard>();
             _allBoards[Fields.COLOR_BLACK] = new List<IElectronicChessBoard>();
         }
 
-        public void MoveMade(string fromField, string toField, string awaitedFen, int color)
+        public void MoveMade(string identification, string fromField, string toField, string awaitedFen, int color)
         {
-            var eBoard =  _allBoards[color].FirstOrDefault();
+            _logging?.LogDebug($"BCC: Move {fromField} {toField} Awaited FEN: {awaitedFen} Color: {color}");
+            var eBoard =  _allBoards[color].FirstOrDefault(b => b.Identification.Equals(identification));
             if (eBoard != null)
             {
                 eBoard.SetAllLedsOff(true);
                 eBoard.SetLedsFor(new SetLEDsParameter() { FieldNames = new string[] { fromField, toField }, IsMove = true });
-                _awaitedFens[color] = awaitedFen;
+                var dict =_awaitedFens[color];
+                dict[identification] = awaitedFen.Split(" ".ToCharArray())[0];
             }
         }
 
@@ -58,7 +61,6 @@ namespace www.SoLaNoSoft.com.BearChessServerLib
                 _bearChessServer.ClientMessage += _bearChessServer_ClientMessage;
                 _bearChessServer.ServerStarted += _bearChessServer_ServerStarted;
                 _bearChessServer.ServerStopped += _bearChessServer_ServerStopped;
-
             }
 
             if (_bearChessServer.IsRunning)
@@ -88,7 +90,10 @@ namespace www.SoLaNoSoft.com.BearChessServerLib
             {
                 return;
             }
+            _logging?.LogInfo($"BCC: Add e-Board for white: {eBoard.Information} on {eBoard.GetCurrentComPort()} as {eBoard.Identification}");
             _allBoards[Fields.COLOR_WHITE].Add(eBoard);
+            var dict = _awaitedFens[Fields.COLOR_WHITE];
+            dict[eBoard.Identification] = string.Empty;
 
             eBoard.FenEvent += WhiteEBoard_FenEvent;
             eBoard.MoveEvent += WhiteEBoard_MoveEvent;
@@ -99,7 +104,10 @@ namespace www.SoLaNoSoft.com.BearChessServerLib
             {
                 return;
             }
-            _allBoards[Fields.COLOR_BLACK].Add(eBoard);            
+            _logging?.LogInfo($"BCC: Add e-Board for black: {eBoard.Information} on {eBoard.GetCurrentComPort()} as {eBoard.Identification}");
+            _allBoards[Fields.COLOR_BLACK].Add(eBoard);
+            var dict = _awaitedFens[Fields.COLOR_BLACK];
+            dict[eBoard.Identification] = string.Empty;
             eBoard.FenEvent += BlackEBoard_FenEvent;
             eBoard.MoveEvent += BlackEBoard_MoveEvent;
         }
@@ -110,9 +118,9 @@ namespace www.SoLaNoSoft.com.BearChessServerLib
             {
                 return;
             }
-            _logging?.LogDebug($"Remove board {eBoard.GetCurrentComPort()} ");
+            _logging?.LogDebug($"BCC: Remove e-Board {eBoard.Information} on {eBoard.GetCurrentComPort()} as {eBoard.Identification} ");
             _allBoards[Fields.COLOR_WHITE].Remove(eBoard);
-            _allBoards[Fields.COLOR_BLACK].Add(eBoard);
+            _allBoards[Fields.COLOR_BLACK].Remove(eBoard);
         }
 
         private void _bearChessServer_ServerStopped(object sender, EventArgs e) => ServerStopped?.Invoke(this, null);
@@ -133,48 +141,48 @@ namespace www.SoLaNoSoft.com.BearChessServerLib
             ClientConnected?.Invoke(this, e);
         }
 
-       
 
         private void WhiteEBoard_FenEvent(object sender, string fen)
         {
             var eBoard = (IElectronicChessBoard)sender;
-            _logging?.LogDebug($"White board: {eBoard.GetCurrentComPort()}  FEN: {fen}");
-            var awaited = _awaitedFens[Fields.COLOR_WHITE];
+            _logging?.LogDebug($"BCC: White board: {eBoard.Information} as {eBoard.Identification}  FEN: {fen}");
+            var dict = _awaitedFens[Fields.COLOR_WHITE];
+            var awaited = dict[eBoard.Identification];
             if (!string.IsNullOrEmpty(awaited) && fen.StartsWith(awaited))
             {
-                _awaitedFens[Fields.COLOR_WHITE] = string.Empty;
+                dict[eBoard.Identification] = string.Empty;
                 eBoard.SetAllLedsOff(true);
             }
-            ClientMessage?.Invoke(this, new BearChessServerMessage() { Address=eBoard.GetCurrentComPort(), ActionCode="FEN",Message=fen, Color = "w"});
+            ClientMessage?.Invoke(this, new BearChessServerMessage() { Address=eBoard.Identification, ActionCode="FEN",Message=fen, Color = "w"});
         }
 
         private void WhiteEBoard_MoveEvent(object sender, string move)
         {
             var eBoard = (IElectronicChessBoard)sender;
-            _logging?.LogDebug($"White board: {eBoard.GetCurrentComPort()}  MOVE: {move}");
-            ClientMessage?.Invoke(this, new BearChessServerMessage() { Address = eBoard.GetCurrentComPort(), ActionCode = "MOVE", Message = move, Color = "w" });
+            _logging?.LogDebug($"BCC: White board: {eBoard.Information} as {eBoard.Identification}  MOVE: {move}");
+            ClientMessage?.Invoke(this, new BearChessServerMessage() { Address = eBoard.Identification, ActionCode = "MOVE", Message = move, Color = "w" });
         }
 
         private void BlackEBoard_FenEvent(object sender, string fen)
         {
             var eBoard = (IElectronicChessBoard)sender;
-            _logging?.LogDebug($"Black board: {eBoard.GetCurrentComPort()}  FEN: {fen}");
-            var awaited = _awaitedFens[Fields.COLOR_BLACK];
+            _logging?.LogDebug($"BCC: Black board: {eBoard.Information} as {eBoard.Identification}  FEN: {fen}");
+            
+            var dict = _awaitedFens[Fields.COLOR_BLACK];
+            var awaited = dict[eBoard.Identification];
             if (!string.IsNullOrEmpty(awaited) && fen.StartsWith(awaited))
             {
-                _awaitedFens[Fields.COLOR_BLACK] = string.Empty;
+                dict[eBoard.Identification] = string.Empty;
                 eBoard.SetAllLedsOff(true);
             }
-            ClientMessage?.Invoke(this, new BearChessServerMessage() { Address = eBoard.GetCurrentComPort(), ActionCode = "FEN", Message = fen, Color = "b"});
+            ClientMessage?.Invoke(this, new BearChessServerMessage() { Address = eBoard.Identification, ActionCode = "FEN", Message = fen, Color = "b"});
         }
 
         private void BlackEBoard_MoveEvent(object sender, string move)
         {
             var eBoard = (IElectronicChessBoard)sender;
-            _logging?.LogDebug($"Black board: {eBoard.GetCurrentComPort()}  MOVE: {move}");
-            ClientMessage?.Invoke(this, new BearChessServerMessage() { Address = eBoard.GetCurrentComPort(), ActionCode = "MOVE", Message = move, Color = "b" });
+            _logging?.LogDebug($"BCC: Black board: {eBoard.Information} as {eBoard.Identification}  MOVE: {move}");
+            ClientMessage?.Invoke(this, new BearChessServerMessage() { Address = eBoard.Identification, ActionCode = "MOVE", Message = move, Color = "b" });
         }
-
-     
     }
 }

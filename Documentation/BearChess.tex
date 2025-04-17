@@ -22,10 +22,10 @@ linkcolor=black
 \fancyfoot[L,R]{}
 \fancyhead[C]{}
 \fancyhead[L]{BearChess GUI}
-\fancyhead[R]{Version 1.1.1.1}
+\fancyhead[R]{Version 1.2.0.0}
 \title{Chess GUI with support for electronic chessboards}
 \author{Lars Nowak}
-\date{06.03.2025} 
+\date{15.04.2025} 
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
 \titlespacing*{\paragraph}
@@ -52,7 +52,7 @@ linkcolor=black
         Many thanks to the programmers of the chess engines that I have integrated into BearChess
 	 	\begin{itemize}
 	 	  \item \textbf{Spike 1.4} by Ralf Schäfer and Volker Böhm (\url{http://spike.lazypics.de/index.html}).
-	 	  \item \textbf{Wasp 7.04} by John Stanback (\url{https://waspchess.stanback.net/index.html}).
+	 	  \item \textbf{Wasp 7.07} by John Stanback (\url{https://waspchess.stanback.net/index.html}).
 	 	  \item \textbf{Stockfish 13} by the Stockfish developers (\url{https://stockfishchess.org}).        
 	 	  \item \textbf{Fruit 2.3.1} by Fabien Letouzey (\url{https://www.fruitchess.com/}).                
   	    \end{itemize}	
@@ -85,7 +85,7 @@ linkcolor=black
 	BearChess offers among others the following functions:
 	\begin{enumerate}
 		\item Play with \textbf{Certabo} chessboards.
-		\item Play with \textbf{TabuTronic Cerno, Sentio} or \textbf{Tactum} chessboards.
+		\item Play with \textbf{TabuTronic Cerno, Sentio, Cerno Spectrum} or \textbf{Tactum} chessboards.
 		\item Special mode for \textbf{visually impaired people} in combination with the TabuTronic Tactum board. An introductory video will be available shortly.
 		\item Play with \textbf{Millennium} chessboards via \textbf{ChessLink} modul or \textbf{eOne}.
 		\item Play with \textbf{DGT e-Board} or \textbf{Revelation}.	  
@@ -239,6 +239,14 @@ linkcolor=black
 		\item  \includegraphics[scale=0.5]{robot.png} \textbf{Load \& manage engines} opens a new window in which you can install, load or configure your chess engines.
 		\item  \includegraphics[scale=0.5]{user_comment.png} \textbf{Buddy engine} load the as buddy defined engine and configure the behaviour.
 		\item \textbf{Load last engine on start} if you always want to load immediately an engine when you start BearChess. It has no effect if you have activated the option "Run startup game on start".
+		\item \textbf{Show analysis bar} shows the current rating of the buddy engine. Above the center line White has the advantage, below it Black. It is always displayed from White's point of view.
+			\begin{figure}[H]
+			\centering
+			\includegraphics[scale=0.5]{AnalysisBar1.png}
+			\caption{Analysis Bar with advantage for White}
+			\label{fig:AnalysisBar1}
+		\end{figure}
+		
 		\item \textbf{Show communication window} opens a new window where you can follow the communication between BearChess and chess engines. It is useful to detect any problems in communication.
 		\item \textbf{Settings} configure what information you want to see from the engine, e.g. nodes per second.	
 	\end{itemize}
@@ -257,6 +265,7 @@ linkcolor=black
 		\item \textbf{Show hash} Utilization of the hash memory in percent.
 		\item \textbf{From the point of view of White} Always shows the evaluation value from white's point of view.
 		\item  \includegraphics[scale=0.5]{text_list_numbers.png} \textbf{Notation...} Opens a configuration dialog to define the notation for the best move line.
+		\item \textbf{Show evaluation symbols} \; =\; +/=\; +/-\; +-\; -/=\; -/+\; -+\; instead of the numerical values.
 		\item \textbf{Switch MessChess window position} If you let \textbf{two} MessChess engines play against each other and the color changes, BearChess will also swap the window position so that the engines for black and white are in the correct order.
 	\end{itemize}
 	
@@ -312,7 +321,7 @@ linkcolor=black
 	\end{figure}
 	\begin{itemize}
 		\item  \includegraphics[scale=0.1]{Certabo_icon.png} \textbf{Certabo} opens a window where you can configure and connect to Certabo chessboards.  Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
-		\item  \includegraphics[scale=0.05]{tabutronic_logo_def.png} \textbf{TabuTronic} opens a window where you can configure and connect to TabuTronic chessboards (Cerno and Sentio). Read more on chapter \textbf{\ref{ConfigureTabuTronicCerno}  \nameref{ConfigureTabuTronicCerno}} on page \pageref{ConfigureTabuTronicCerno}, chapter \textbf{\ref{ConfigureTabuTronicSentio}  \nameref{ConfigureTabuTronicSentio}} on page \pageref{ConfigureTabuTronicSentio} or \textbf{\ref{ConfigureTabuTronicTactum}  \nameref{ConfigureTabuTronicTactum}} on page \pageref{ConfigureTabuTronicTactum}.	
+		\item  \includegraphics[scale=0.05]{tabutronic_logo_def.png} \textbf{TabuTronic} opens a window where you can configure and connect to TabuTronic chessboards (Cerno and Sentio). Read more on chapter \textbf{\ref{ConfigureTabuTronicCerno}  \nameref{ConfigureTabuTronicCerno}} on page \pageref{ConfigureTabuTronicCerno},chapter \textbf{\ref{ConfigureTabuTronicCernoSpectrum}  \nameref{ConfigureTabuTronicCernoSpectrum}} on page \pageref{ConfigureTabuTronicCernoSpectrum}, chapter \textbf{\ref{ConfigureTabuTronicSentio}  \nameref{ConfigureTabuTronicSentio}} on page \pageref{ConfigureTabuTronicSentio} or \textbf{\ref{ConfigureTabuTronicTactum}  \nameref{ConfigureTabuTronicTactum}} on page \pageref{ConfigureTabuTronicTactum}.	
 		\item  \includegraphics[scale=0.1]{iChessOneIcon.png} \textbf{iChessOne} opens a window in which you can configure and connect to iChessOne chessboards.  Read more on chapter \textbf{\ref{ConfigureIChessOne}  \nameref{ConfigureIChessOne}} on page \pageref{ConfigureIChessOne}.    
 		\item  \includegraphics[scale=0.05]{Millennium ChessLink.png} \textbf{Millennium ChessLink} opens a window in which you can configure chessboards connected to Millennium ChessLink and connect to them.  Read more on chapter \textbf{\ref{ConfigureChessLink}  \nameref{ConfigureChessLink}} on page \pageref{ConfigureChessLink}.
 		\item  \includegraphics[scale=0.3]{dgt48.png} \textbf{DGT} connect to DGT e-Boards, DGT Revelation or DGT Pegasus chessboard.	
@@ -1050,7 +1059,7 @@ linkcolor=black
 	\label{fig:Certabo1}
 \end{figure}
 
-Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the Bluetooth module from Certabo, you can also connect to the Certabo board via bluetooth. If you want to do this, activate the "Bluetooth Classic" option or, if you have the new Bluetooth module with BTLE support, first activate the "Bluetooth LE" option before opening the configuration window.\\
+Certabo requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the Bluetooth module from Certabo, you can also connect to the Certabo board via Bluetooth or Bluetooth LE. If you want to do this, activate the "Bluetooth Classic" option or, if you have the new Bluetooth module with BTLE support, first activate the "Bluetooth LE" option before opening the configuration window.\\
 If you are using a Chesstimation module, check the option first, before opening the configuration window.\\
 The piece recognition assumes that the USB port of the board is on the bottom right.
 
@@ -1192,13 +1201,144 @@ In the lower right corner appears a new button, which allows you to easily conne
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{Cerno1.png}
+	\includegraphics[scale=0.7]{Cerno1.png}
 	\caption{Open a window to configure TabuTronic Cerno}
 	\label{fig:Cerno1}
 \end{figure}
 
 The configuration is exactly as it is for the Certabo boards.
 Read more on chapter \textbf{\ref{ConfigureCertabo}  \nameref{ConfigureCertabo}} on page \pageref{ConfigureCertabo}.
+
+
+\subsection{Configure TabuTronic Cerno Spectrum} \label{ConfigureTabuTronicCernoSpectrum}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{CernoSpectrum1.png}
+	\caption{Open a window to configure TabuTronic Cerno Spectrum}
+	\label{fig:CernoSpectrum1}
+\end{figure}
+
+Spectrum requires two configuration steps. The used COM port and a calibration to detect the chess pieces. If your PC supports bluetooth and you own the Bluetooth module from Certabo, you can also connect to the Spectrum board via Bluetooth or Bluetooth LE. If you want to do this, activate the "Bluetooth Classic" option or, if you have the new Bluetooth module with BTLE support, first activate the "Bluetooth LE" option before opening the configuration window.\\
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{CernoSpectrum2.png}
+	\caption{Configure TabuTronic Cerno Spectrum}
+	\label{fig:CernoSpectrum2}
+\end{figure}
+
+
+Select the COM port if you know it or use the <auto> selection.
+Click on \includegraphics[scale=0.5]{connect.png} to verify your selection.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MillenniumChessLink3.png}
+	\caption{COM port successful detected }
+	\label{fig:CernoSpectrum7}
+\end{figure}
+
+If you select an invalid COM port,e.G. COM7, you will see the following error message:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MillenniumChessLink4.png}
+	\caption{Invalid COM port }
+	\label{fig:CernoSpectrum8}
+\end{figure}
+
+If you select <auto> and no board is found, you will receive the following error message:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{MillenniumChessLink5.png}
+	\caption{No board found }
+	\label{fig:CernoSpectrum9}
+\end{figure}
+
+\textbf{Hint:} You can always use the selection <auto>, but if you have more than one COM port available, it can take some seconds until the right one is recognized.\\
+
+
+\subsubsection{Calibration}
+At the first start, BearChess needs a calibration to identify your chessmen. A new calibration is only required if you use another set of chessmen.\\
+Click on \includegraphics[scale=0.08]{chessboard_base.png} to open the calibration dialog.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{CalibrateBase.png}
+	\caption{Calibrate base position }
+	\label{fig:CalibrateBase2}
+\end{figure}
+If all pieces on the correct position, click the \includegraphics[scale=0.5]{accept_button.png} button. When a calibration is running, you will see the chessboard LEDs flashing. Please wait until all LEDs are off and the confirm dialog appears.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{Calibrate4.png}
+	\caption{Calibration finished }
+	\label{fig:CalibrateFinished}
+\end{figure}
+
+\textbf{Hint:} If the calibration never seems to end, check that the chessmen are correctly placed in the middle of the squares.
+
+\subsubsection{LEDs}
+
+The Spectrum offers multi-colored LEDs. This allows a much more detailed configuration. Each LED can combine three colors ({\color{red}red}, {\color{ForestGreen}green} and {\color{blue}blue}) in different proportions (0 = none to 255 = full).\\
+The following example defines the LED for the square from which you are to take the chess pieces, with {\color{ForestGreen}green} and {\color{blue}blue}.
+The LED for the target square is {\color{ForestGreen}green}.\\
+You can activate the checkbox for “Flash”. However, this only has an effect on the “Move from” and “Move to” fields, which then flash alternately.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{CernoSpectrum3.png}
+	\caption{Set LEDs }
+	\label{fig:CernoSpectrum3}
+\end{figure}
+In addition to "Move from" and "Move to", further information can be assigned to LEDs.
+\begin{itemize}
+	\item \textbf{Invalid} If chess pieces are on the wrong square or missing.
+	\item \textbf{Take back} When a move is to be reversed.
+	\item \textbf{Hint} For a suggestion move from an engine.
+	\item \textbf{Current color} The LED in the corner of field H1 or H8 shows which site is currently taking their turn.	       
+\end{itemize}
+
+The next two options require an engine defined as "BearChess". See \textbf{\ref{BearChessEngine}  \nameref{BearChessEngine}} on page \pageref{BearChessEngine} and \textbf{\ref{BuddyBearChessEngines}  \nameref{BuddyBearChessEngines}} on page \pageref{BuddyBearChessEngines}.
+
+\begin{itemize}
+	\item \textbf{Valuation Advantage/Disadvantage} The LEDs at the bottom indicate whether and how much of an advantage or disadvantage you have.
+	\item \textbf{Possible moves} When you lift a chess piece, all possible target squares are displayed. In addition, they can be shown whether the target field is a good, bad or just playable move.
+\end{itemize}
+
+
+\subsubsection{Active LEDs}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne4.png}
+	\caption{Active LEDs }
+	\label{fig:CernoSpectrum4}
+\end{figure}
+If you check "Activate all LEDs along the move", all fields are displayed that lie on the path between the from and target field. For example, a bishop move from F1 to C4 also activates squares E2 and D3.\\
+If "Show own moves" is not activated, no LEDs are displayed for the fields when you make a move (unless the move is invalid).
+
+\subsubsection{Test your LED configuration}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{iChessOne5.png}
+	\caption{Test your LEDs }
+	\label{fig:CernoSpectrum5}
+\end{figure}
+
+A click on \includegraphics[scale=0.4]{eye.png} connects to the board.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=1.0]{CernoSpectrum6.png}
+	\caption{Test your LEDs }
+	\label{fig:CernoSpectrum6}
+\end{figure}
+The icon changes to \includegraphics[scale=0.4]{eye_half.png} and small \includegraphics[scale=0.3]{eye.png} appears besides every configuration option. Click on the small eyes shows you an example of the LED configuration on your board (with the exception of the “Flash” options).
 
 \subsection{Configure TabuTronic Sentio} \label{ConfigureTabuTronicSentio}
 
@@ -1723,11 +1863,11 @@ DGT Pegasus has no real piece recognition and can only give the information per 
 
 Each pawn represents a piece on a field. Especially at the beginning, a review is useful. 
 
-\subsection{Configure Chessnut Air/Air+/Pro/Go} \label{ConfigureChessnutAir}
+\subsection{Configure Chessnut Air/Air+/Pro} \label{ConfigureChessnutAir}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{ChessnutAir5.png}
-	\caption{Open a window to configure Chessnut Air/Air+/Pro/Go}
+	\caption{Open a window to configure Chessnut Air/Air+/Pro}
 	\label{fig:ChessnutAir5}
 \end{figure}
 
@@ -1782,6 +1922,18 @@ For a USB connection, the connection is not simulated as a COM port, but as a Hu
 	\caption{Disconnected}
 	\label{fig:ChessnutAir3}
 \end{figure}
+
+
+\subsection{Configure Chessnut Go} \label{ConfigureChessnutGo}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{ChessnutGo1.png}
+	\caption{Open a window to configure Chessnut Go}
+	\label{fig:ChessnutGo1}
+\end{figure}
+
+The configuration is exactly as it is for the Chessnut Air boards.
+Read more on chapter \textbf{\ref{ConfigureChessnutAir}  \nameref{ConfigureChessnutAir}} on page \pageref{ConfigureChessnutAir}.
 
 
 \subsection{Configure Chessnut Evo} \label{ConfigureChessnutEvo}
@@ -2229,6 +2381,20 @@ Below the engine selection, there are up to three informations which give you a 
 	\item \textbf{Elo} if the engine supports to restrict the Elo performance, the current value is shown.
 	\item  \includegraphics[scale=0.4]{book_open.png} for "yes" and \includegraphics[scale=0.4]{book.png} for "no" shows if an opening book will be used.
 \end{itemize}
+
+
+\subsection{Accepts subsequent corrections}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{NewGame4.png}
+	\caption{Accepts subsequent corrections}
+	\label{fig:NewGame4}
+\end{figure}
+
+If two people are playing against each other, i.e. no engine is selected as the opponent, this option can be activated. In this case, the last move can be corrected until the opponent has made his reply move. This mode is intended for beginners who may want to correct their move again.
+Even the mistake often made by beginners when castling - moving the rook first - is automatically corrected. \\
+{\color{red}\textbf{*}} However, this option is only available when playing on an electronic chessboard with real piece recognition.
 
 \subsection{Playing in relaxed mode}
 
@@ -3394,7 +3560,11 @@ The figure recognition assumes that the board is aligned so that the USB port is
 \subsection{Certabo: Calibration}
 For the first time, the engine assumes that all chessmen are on their initial position and the extra queens on d3 (white queen) and d6 (black queen).
 
-\subsection{TabuTronic Cerno: Calibration}
+\subsection{Cerno Spectrum: board orientation}
+The figure recognition assumes that the board is aligned so that the USB port is on the bottom left.
+
+
+\subsection{TabuTronic Cerno/Spectrum: Calibration}
 For the first time, the engine assumes that all chessmen are on their initial position and the extra queens on d3 (white queen) and d6 (black queen).
 
 \subsection{TabuTronic Sentio: Piece recognition}
@@ -3409,7 +3579,7 @@ The DGT Pegasus board has no chess piece detection but only detects if a piece i
 \subsection{Square Off Pro: Piece recognition}
 The Square Off Pro board has no chess piece detection. That's why some functions that require real piece recognition, such as analysis mode, are not possible. Due to firmware changes in the SquareOff Pro board, the position on the board must be actively queried. This can lead to changes not being recognized. This applies in particular to moves that beat a figure.
 
-\subsection{ChessUp}
+\subsection{ChessUp/ChessUp 2}
 ChessUp only allows limited access to the board for third party programs and the functionality is limited. For example, the LEDs of the individual fields cannot be controlled. The board only allows correct positions or moves within a chess game. Therefore, from BearChess point of view, the board is only suitable for playing a game against an engine or on FICS. ChessUp does not support the withdrawal of a move. The help function is limited to displaying the valid moves, but not their evaluation. Under promotion is currently not supported by BearChess.
 
 \subsection{Electronic chessboard and engine duels}
@@ -3461,6 +3631,7 @@ The code for the CTG opening book is very much based on the Java code by Peter �
 These are some ideas what will come in one of the next versions.
 
 \begin{itemize}			
+	    \item Improvements for the boards without real piece recognition.
 	    \item More time control settings.
 		\item Extend the game analysis.
 		\item Improve electronic chess board handling.  	    
@@ -3476,6 +3647,17 @@ These are some ideas what will come in one of the next versions.
 \pagebreak
 
 \section{Change log}
+
+\subsection*{Version 1.1.1.1 $\Rightarrow$  1.2.0.0}
+\begin{itemize}			
+	\item {\color{blue}New}: Support for TabuTronic Cerno Spectrum.
+	\item {\color{blue}New}: Analysis bar.
+	\item {\color{blue}New}: Transfer of the buddy engine ratings to the game comments.
+	\item {\color{blue}New}: Accepts subsequent corrections on player vs player games.
+	\item {\color{teal}Changes}: Improvements display of best move lines.
+	\item {\color{teal}Changes}: Improvements for visually impared player and TabuTronic Tactum.
+	\item {\color{teal}Changes}: Improvements for free analysis mode.
+\end{itemize}
 
 \subsection*{Version 1.1.1.0 $\Rightarrow$  1.1.1.1}
 \begin{itemize}			

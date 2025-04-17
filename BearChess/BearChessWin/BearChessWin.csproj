@@ -39,7 +39,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -160,6 +160,9 @@
     <Compile Include="UserControls\ChessClockUserControl.xaml.cs">
       <DependentUpon>ChessClockUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\EChessControlBoardUserControl.xaml.cs">
+      <DependentUpon>EChessControlBoardUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\EngineWindowUserControl.xaml.cs">
       <DependentUpon>EngineWindowUserControl.xaml</DependentUpon>
     </Compile>
@@ -175,15 +178,10 @@
     <Compile Include="UserControls\FicsUserUserControl.xaml.cs">
       <DependentUpon>FicsUserUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\IEChessControlBoard.cs" />
     <Compile Include="UserControls\IMaterialUserControl.cs" />
     <Compile Include="UserControls\MaterialUserControl.xaml.cs">
       <DependentUpon>MaterialUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\MoveListPlainUserControl.xaml.cs">
-      <DependentUpon>MoveListPlainUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\MovePlainUserControl.xaml.cs">
-      <DependentUpon>MovePlainUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\BCServerConfigureWindow.xaml.cs">
       <DependentUpon>BCServerConfigureWindow.xaml</DependentUpon>
@@ -207,11 +205,11 @@
     <Compile Include="Windows\DuelWindow.xaml.cs">
       <DependentUpon>DuelWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\EBoardControlWindow.xaml.cs">
+      <DependentUpon>EBoardControlWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\EBoardInfoWindow.xaml.cs">
       <DependentUpon>EBoardInfoWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\EditCommentWindow.xaml.cs">
-      <DependentUpon>EditCommentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\EngineWaitWindow.xaml.cs">
       <DependentUpon>EngineWaitWindow.xaml</DependentUpon>
@@ -231,7 +229,6 @@
     </Compile>
     <Compile Include="Windows\IBookWindow.cs" />
     <Compile Include="Windows\IEngineWindow.cs" />
-    <Compile Include="Windows\IMoveListPlainWindow.cs" />
     <Compile Include="Windows\INewGameWindow.cs" />
     <Compile Include="Windows\ITournamentInfoWindow.cs" />
     <Compile Include="Windows\MessageWindow.xaml.cs">
@@ -424,6 +421,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\FieldStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UciConfigControls\UciButtonUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -437,6 +438,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ChessClockUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\EChessControlBoardUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -461,14 +466,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\MaterialUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\MoveListPlainUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\MovePlainUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -500,11 +497,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\EBoardInfoWindow.xaml">
+    <Page Include="Windows\EBoardControlWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\EditCommentWindow.xaml">
+    <Page Include="Windows\EBoardInfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1731,6 +1728,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\BearChessServer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\TabuTronicSpectrum.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

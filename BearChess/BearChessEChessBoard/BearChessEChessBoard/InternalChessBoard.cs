@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
@@ -9,6 +10,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     {
         private readonly ChessBoard _bearChessBoard = new ChessBoard();
         private List<Move> _moveList = new List<Move>();
+        private List<Move> _moveListWithFen = new List<Move>();
         private List<Move> _enemyMoveList = new List<Move>();
 
         public const int FA1 = 21;
@@ -63,6 +65,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             return _bearChessBoard.GetPrevMove();
         }
 
+        public void TakeBack()
+        {
+            _bearChessBoard.TakeBack();
+            _moveListWithFen = _bearChessBoard.GenerateFenPositionList();
+        }
 
         public static string GetFieldName(int field)
         {
@@ -84,6 +91,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public void MakeMove(string fromField, string toField, string promote)
         {
+            if (Configuration.Instance.GetBoolValue("checkForAlternateMoves", false))
+            {
+                _moveListWithFen = _bearChessBoard.GenerateFenPositionList();
+            }
             if (string.IsNullOrWhiteSpace(promote))
             {
                 _bearChessBoard.MakeMove(fromField, toField);
@@ -101,6 +112,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string GetMove(string newFenPosition, bool ignoreRule)
         {
             return _bearChessBoard.GetMove(newFenPosition, ignoreRule);
+        }
+
+        public Move GetAlternateMove(string newFenPosition)
+        {
+            return _moveListWithFen.FirstOrDefault(m => m.Fen.StartsWith(newFenPosition));
         }
 
         public string GetChangedFigure(string oldFenPosition, string newFenPosition)

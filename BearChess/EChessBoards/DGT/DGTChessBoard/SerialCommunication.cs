@@ -73,36 +73,33 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
                     {
                         withConnection = Connect();
                     }
+
                     if (withConnection && !_pauseReading)
                     {
+                        readLine = string.Empty;
 
-                        
-                            readLine = string.Empty;
-
-                            try
+                        try
+                        {
+                            var readByte = _comPort.ReadByteArray();
+                            if (readByte.Length > 0)
                             {
-                                var readByte = _comPort.ReadByteArray();
-                                if (readByte.Length > 0)
-                                {
-                                    readLine = ConvertFromRead(readByte);
-                                    _logger?.LogDebug($"SC: Read {readByte.Length} bytes from board: {readLine}");
-                                }
+                                readLine = ConvertFromRead(readByte);
+                                _logger?.LogDebug($"SC: Read {readByte.Length} bytes from board: {readLine}");
                             }
+                        }
 
-                            catch (Exception ex2)
-                            {
-                                 _logger?.LogDebug($"SC: Catch {ex2.Message}");
-                            }
+                        catch (Exception ex2)
+                        {
+                            _logger?.LogDebug($"SC: Catch {ex2.Message}");
+                        }
 
 
-                            if (string.IsNullOrWhiteSpace(readLine))
-                            {
-                                continue;
-                            }
-                            _dataFromBoard.Enqueue(readLine);
+                        if (string.IsNullOrWhiteSpace(readLine))
+                        {
+                            continue;
+                        }
 
-                           
-                        
+                        _dataFromBoard.Enqueue(readLine);
                     }
 
                 }
@@ -139,31 +136,27 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
                     {
                         if (_stringDataToBoard.TryDequeue(out string data))
                         {
-
-                            
-                                _logger?.LogDebug($"SC: Send {data}");
-                                var convertToSend = ConvertToSend(data);
-                                _comPort.Write(convertToSend, 0, convertToSend.Length);
-                            
+                            _logger?.LogDebug($"SC: Send {data}");
+                            var convertToSend = ConvertToSend(data);
+                            _comPort.Write(convertToSend, 0, convertToSend.Length);
                         }
 
                         if (_byteDataToBoard.TryDequeue(out ByteDataWithInfo byteData))
                         {
-                         
-                                var convertFromRead = ConvertFromRead(byteData.Data);
-                                bool force = false;
-                                if (_forcedSend)
-                                {
-                                    force = ConvertFromRead(_forcedSendValue).Equals(convertFromRead);
-                                }
-                                if (!lastSend.Equals(convertFromRead) || force)
-                                {
-                                    _forcedSend = false;
-                                    _logger?.LogDebug($"SC: Send byteData {convertFromRead}");
-                                    _comPort.Write(byteData.Data, 0, byteData.Data.Length);
-                                    lastSend = convertFromRead;
-                                }
-                            
+                            var convertFromRead = ConvertFromRead(byteData.Data);
+                            bool force = false;
+                            if (_forcedSend)
+                            {
+                                force = ConvertFromRead(_forcedSendValue).Equals(convertFromRead);
+                            }
+
+                            if (!lastSend.Equals(convertFromRead) || force)
+                            {
+                                _forcedSend = false;
+                                _logger?.LogDebug($"SC: Send byteData {convertFromRead}");
+                                _comPort.Write(byteData.Data, 0, byteData.Data.Length);
+                                lastSend = convertFromRead;
+                            }
                         }
 
                     }
@@ -172,8 +165,8 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
                 catch (Exception ex)
                 {
                     withConnection = false;
-                    _logger?.LogError($"SC: Error with serial port: {readLine} ");
-                    _logger?.LogError($"SC: Error with serial port: {ex.Message} ");
+                    _logger?.LogError($"SC: Error with COM port: {readLine} ");
+                    _logger?.LogError($"SC: Error with COM port: {ex.Message} ");
                     //break;
                 }
             }

@@ -11,7 +11,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
 {
     public class BearChessComServer : IBearChessComServer
     {
-        private TcpListener _listener;
+        private readonly TcpListener _listener;
         private readonly int _portNumber;
         private readonly ILogging _logging;
         private bool _stopServer;
@@ -43,6 +43,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         {
             if (_isRunning)
             {
+                _logging?.LogInfo("ComServer: Stop Server");
                 _stopServer = true;
             }
         }
@@ -88,6 +89,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
         {
             if (!_isRunning)
             {
+                _logging?.LogInfo("ComServer: Run Server");
                 _stopServer = false;
                 _serverThread = new Thread(RunServerLoop)
                 {
@@ -106,38 +108,54 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
             try
             {
                 addr = ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address.ToString();
-                _logging.LogInfo($"Client connected: {addr}");
+                _logging?.LogInfo($"ComServer: Client connected: {addr}");
                 ClientConnected?.Invoke(this, $"{addr}");
                 using (var clientStream = tcpClient.GetStream())
                 {
 
                     var message = new byte[4096];
-                    int bytesRead;
-
+                    var completeMessage = new StringBuilder();
                     while (!_stopServer)
                     {
-                        bytesRead = 0;
+                        completeMessage.Clear();
+                        var bytesRead = 0;
 
                         try
                         {
                             //blocks until a client sends a message
-                            bytesRead = clientStream.Read(message, 0, 4096);
+                            bytesRead = clientStream.Read(message, 0, message.Length);
+                            while (bytesRead > 0)
+                            {
+                                string partMsg = Encoding.Default.GetString(message, 0, bytesRead);
+                                _logging?.LogDebug($"ComServer {addr}: Received: {partMsg}");
+                                completeMessage.Append(partMsg);
+                                if (clientStream.DataAvailable)
+                                {
+                                    bytesRead = clientStream.Read(message, 0, message.Length);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            //a socket error has occured
+                            // a socket error has occured
+                            _logging?.LogWarning($"ComServer {addr}: {ex.Message}");
                             break;
                         }
 
                         if (bytesRead == 0)
                         {
                             //the client has disconnected from the server
-                            break;
+                            //  break;
                         }
 
                         //message has successfully been received
-                        var msg = Encoding.Default.GetString(message, 0, bytesRead).Trim();
-                        _logging?.LogDebug($"Received: {msg}");
+                        var msg = completeMessage.ToString();
+                        _logging?.LogDebug($"ComServer {addr}: Received: {msg}");
                         var msgArray = msg.Split("#".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         for (int i = 0; i < msgArray.Length; i++)
                         {
@@ -145,29 +163,39 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                             if (clientMessage.ActionCode.Equals("CONNECT"))
                             {
                                 var guid = Guid.NewGuid().ToString("N");
-                                var connectMessage = new BearChessServerMessage() { Ack = "ACK", Address = guid, ActionCode = clientMessage.ActionCode, Message = clientMessage.Message };
+                                var connectMessage = new BearChessServerMessage()
+                                {
+                                    Ack = "ACK", Address = guid, ActionCode = clientMessage.ActionCode,
+                                    Message = clientMessage.Message
+                                };
                                 var jsonString = JsonSerializer.Serialize(connectMessage);
                                 var bufferConnect = Encoding.Default.GetBytes(jsonString);
                                 clientStream.Write(bufferConnect, 0, bufferConnect.Length);
                                 clientStream.Flush();
-                                _logging?.LogDebug($"Send: {jsonString}");
+                                _logging?.LogDebug($"ComServer {addr}: Send: {jsonString}");
                                 ClientMessage?.Invoke(this, connectMessage);
                                 continue;
                             }
 
                             ClientMessage?.Invoke(this, clientMessage);
-                            var serverMessage = new BearChessServerMessage() { Ack = "ACK", ActionCode = clientMessage.ActionCode, Message = clientMessage.Message };
+                            var serverMessage = new BearChessServerMessage()
+                                { Ack = "ACK", ActionCode = clientMessage.ActionCode, Message = clientMessage.Message };
                             var serverString = JsonSerializer.Serialize(serverMessage);
                             var buffer = Encoding.Default.GetBytes(serverString);
                             clientStream.Write(buffer, 0, buffer.Length);
                             clientStream.Flush();
-                            _logging?.LogDebug($"Send: {serverString}");
+                            _logging?.LogDebug($"ComServer {addr}: Send: {serverString}");
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                _logging?.LogWarning($"ComServer {addr}: {ex.Message}");
+            }
             finally
             {
+                _logging?.LogDebug($"ComServer {addr}: Disconnected");
                 ClientDisconnected?.Invoke(this, $"{addr}");
                 tcpClient.Dispose();
 

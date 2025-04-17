@@ -1143,6 +1143,10 @@ namespace www.SoLaNoSoft.com.BearChess.MChessLinkChessBoard
 
         private void ShowCurrentColorInfos()
         {
+            if (string.IsNullOrEmpty(_currentEval))
+            {
+                _currentEval = "0";
+            }
             if (decimal.TryParse(_currentEval.Replace(".", ","), out decimal eval))
             {
                 string toField = string.Empty;

@@ -5,6 +5,14 @@ using System.Linq;
 
 namespace www.SoLaNoSoft.com.BearChessBase.Definitions
 {
+    public static class EnumUtil
+    {
+        public static IEnumerable<T> GetValues<T>()
+        {
+            return Enum.GetValues(typeof(T)).Cast<T>();
+        }
+    }
+
     public static class Fields
     {
         public enum Lines
@@ -349,12 +357,35 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
         {
              {"A","Anna"},
              {"B","Bella"},
-             {"C","Cäsar"},
+             {"C","Cesar"},
              {"D","David"},
              {"E","Eva"},
              {"F","Felix"},
              {"G","Gustav"},
-             {"H","Hektor"},
+             {"H","Hector"},
+        };
+        private static readonly Dictionary<string, string> BlindFieldRankDe = new Dictionary<string, string>
+        {
+            {"1","eins"},
+            {"2","zwei"},
+            {"3","drei"},
+            {"4","vier"},
+            {"5","funf"},
+            {"6","sechs"},
+            {"7","sieben"},
+            {"8","acht"},
+        };
+
+        private static readonly Dictionary<string, string> BlindFieldRank = new Dictionary<string, string>
+        {
+            {"1","1"},
+            {"2","2"},
+            {"3","3"},
+            {"4","4"},
+            {"5","5"},
+            {"6","6"},
+            {"7","7"},
+            {"8","8"},
         };
 
         public static Lines GetLine(int field)
@@ -388,7 +419,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                 case 8:
                     return Row8.ToArray();
                 default:
-                    return new int[0];
+                    return Array.Empty<int>();
             }
         }
 
@@ -463,7 +494,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                 case Lines.H:
                     return LineH.ToArray();
                 default:
-                    return new int[0];
+                    return Array.Empty<int>();
             }
         }
 
@@ -488,12 +519,16 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                 case Lines.H:
                     return new[] { Lines.G };
                 default:
-                    return new Lines[0];
+                    return Array.Empty<Lines>();
             }
         }
 
         public static string GetBlindFieldName(string fieldName)
         {
+            if (!Configuration.Instance.GetBoolValue("blindUserSayFideRules", true))
+            {
+                return fieldName;
+            }
             string row, col;
             if (string.IsNullOrWhiteSpace(fieldName))
             {
@@ -509,10 +544,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                 row = fieldName.ToUpper();
                 col = string.Empty;
             }
-            if (BlindFieldNames.ContainsKey(row)) {
-                return $"{BlindFieldNames[row]}{col}";
-            }
-            return fieldName;
+
+            BlindFieldRank.TryGetValue(col, out  col);
+            return BlindFieldNames.TryGetValue(row, out var name) ? $"{name} {col}" : fieldName;
         }
 
         public static string GetFieldName(int field)
@@ -540,7 +574,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
         {
             if (string.IsNullOrWhiteSpace(field) || field == "-" )
             {
-                return -1;
+                return Fields.COLOR_EMPTY;
             }
 
             try
@@ -550,13 +584,13 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                 var r = row.IndexOf(field.Substring(0, 1), StringComparison.OrdinalIgnoreCase);
                 if (r < 0)
                 {
-                    return -1;
+                    return Fields.COLOR_EMPTY;
                 }
                 return s + r;
             }
             catch
             {
-                return -1;
+                return Fields.COLOR_EMPTY;
             }
         }
     }

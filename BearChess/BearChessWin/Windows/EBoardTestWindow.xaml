@@ -8,6 +8,7 @@
         Title="EBoardTestWindow" Height="600" Width="600">
     <StackPanel Margin="5">
         <StackPanel Orientation="Horizontal" Margin="5">
+            <Button Name="buttonReadFile" Margin="5" Click="ButtonReadFile_OnClick">Read file</Button>
             <Button Name="buttonConnectCertabo" Margin="5" Click="ButtonConnectCertabo_OnClick">Connect Certabo</Button>
             <Button Name="buttonConnectMChessLink" Margin="5" Click="ButtonConnectMChessLink_OnClick">Connect MChessLink</Button>
         </StackPanel>

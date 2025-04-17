@@ -376,7 +376,7 @@
     <value>Configure TabuTronic Tactum chessboard</value>
   </data>
   <data name="ConfigureTactumSpeech" xml:space="preserve">
-    <value>This is the TabuTronic Tactum configuration window</value>
+    <value>TabuTronic Tactum configuration window</value>
   </data>
   <data name="ConfigureWhiteButton" xml:space="preserve">
     <value>Button to configure white engine</value>
@@ -1238,15 +1238,12 @@
   </data>
   <data name="LoadAndContinue" xml:space="preserve">
     <value>Load and continue</value>
-    <comment>Laden und fortführen</comment>
   </data>
   <data name="Copy" xml:space="preserve">
     <value>Copy</value>
-    <comment>Kopieren</comment>
   </data>
   <data name="CopyToClipboard" xml:space="preserve">
     <value>Copy to clipboard</value>
-    <comment>In die Zwischenablage kopieren</comment>
   </data>
   <data name="DeleteMyDuplicates" xml:space="preserve">
     <value>Delete my duplicates</value>
@@ -2546,7 +2543,6 @@
   </data>
   <data name="Apply" xml:space="preserve">
     <value>Apply</value>
-    <comment>Übernehmen</comment>
   </data>
   <data name="PlusSecPerMove" xml:space="preserve">
     <value>seconds per move increment</value>
@@ -2574,7 +2570,6 @@
   </data>
   <data name="ConfigureHoS" xml:space="preserve">
     <value>Configure House of Staunton</value>
-    <comment>House of Staunton Schachbrett Konfigurieren</comment>
   </data>
   <data name="NoAdditionalInfo" xml:space="preserve">
     <value>No additional information</value>
@@ -2668,5 +2663,26 @@
   </data>
   <data name="SayBestMoveHelpRequested" xml:space="preserve">
     <value>Say best move when help is requested</value>
+  </data>
+  <data name="SayBestMoveFromBuddyEngine" xml:space="preserve">
+    <value>Say move from buddy when help is requested</value>
+  </data>
+  <data name="ConfigureCernoSpectrum" xml:space="preserve">
+    <value>Configure TabuTronic Cerno Spectrum chessboard</value>
+  </data>
+  <data name="ConfigureSentioSpectrum" xml:space="preserve">
+    <value>Configure TabuTronic Sentio Spectrum chessboard</value>
+  </data>
+  <data name="ConnectToTabuTronicCernoSpectrumTip" xml:space="preserve">
+    <value>Connect to TabuTronic Cerno Spectrum chessboard</value>
+  </data>
+  <data name="ConnectToTabuTronicSentioSpectrumTip" xml:space="preserve">
+    <value>Connect to TabuTronic Sention Spectrum chessboard</value>
+  </data>
+  <data name="ShowHideBuddyComments" xml:space="preserve">
+    <value>Show or hide buddy comments</value>
+  </data>
+  <data name="AndWithBestLineBuddy" xml:space="preserve">
+    <value>and with buddy best line</value>
   </data>
 </root>

@@ -18,6 +18,11 @@
         CalibrateData GetCalibrationData();
 
         /// <summary>
+        /// Deletes existing calibration file
+        /// </summary>
+        void DeleteCalibrationData();
+
+        /// <summary>
         /// Returns the saved queen codes for both colors
         /// </summary>
         string GetQueensCodes(bool white);

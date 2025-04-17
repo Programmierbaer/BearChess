@@ -11,24 +11,12 @@ using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.pgn;
 using www.SoLaNoSoft.com.BearChessTools;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
 
-    public class SelectedMoveOfMoveList
-    {
-
-        public int MoveNumber { get; }
-        public Move Move { get; }
-        public SelectedMoveOfMoveList(Move move, int moveNumber)
-        {
-            MoveNumber = moveNumber;
-            Move = move;
-        }
-
-    }
-
-
+  
     /// <summary>
     /// Interaktionslogik für MoveListPlainWindow.xaml
     /// </summary>
@@ -51,6 +39,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private int _lastMarkedMoveNumber;
         private int _lastMarkedColor;
         private bool _showForWhite;
+        private bool _showForBuddy;
         private readonly FontFamily _fontFamily;
         private CurrentGame _currentGame;
         private string _gameStartPosition;
@@ -60,10 +49,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler<SelectedMoveOfMoveList> ContentChanged;
         public event EventHandler<SelectedMoveOfMoveList> RestartEvent;
 
-        public MoveListPlainWindow(Configuration configuration, PgnConfiguration pgnConfiguration)
+        public MoveListPlainWindow(Configuration configuration)
         {
             _configuration = configuration;
-            _pgnConfiguration = pgnConfiguration;
+            _pgnConfiguration = configuration.GetPgnConfiguration();
             InitializeComponent();
             _rm = SpeechTranslator.ResourceManager;
             _fontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./Assets/Fonts/#Chess Merida");
@@ -83,6 +72,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showFullInfo = bool.Parse(_configuration.GetConfigValue("extendFull", "false"));
             _showComments = bool.Parse(_configuration.GetConfigValue("extendComments", "false"));
             _showForWhite = bool.Parse(_configuration.GetConfigValue("showForWhite", "false"));
+            _showForBuddy = bool.Parse(_configuration.GetConfigValue("showForBuddy", "false"));
             textBlockBlack.FontFamily = _fontFamily;
             textBlockBlack.Text = FontConverter.ConvertFont("k", "Chess Merida");
             textBlockWhite.FontFamily = _fontFamily;
@@ -106,6 +96,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockResult.Text = result;
         }
 
+        public void SetPlayer(string player, int color)
+        {
+            //
+        }
+
         public void SetStartPosition(string gameStartPosition)
         {
             _gameStartPosition = gameStartPosition;
@@ -118,7 +113,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             textBlockResult.Text = result;
         }
 
-        public MoveListPlainWindow(Configuration configuration, double top, double left, double width, double height, PgnConfiguration pgnConfiguration): this(configuration, pgnConfiguration)
+        public MoveListPlainWindow(Configuration configuration, double top, double left, double width, double height): this(configuration)
         {
             SetSizes(top, left, width, height);
 
@@ -199,7 +194,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public void MarkLastMove()
         {
             MarkMove(_lastMarkedMoveNumber, _lastMarkedColor);
-            ;
         }
 
         public void MarkMove(int number, int color)
@@ -257,7 +251,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
-        public void SetConfiguration(Configuration configuration, PgnConfiguration pgnConfiguration){}
+        public void SetConfiguration(Configuration configuration) {}
+        public void SetServerConfiguration(Configuration configuration) {}
 
         private void SetSizes(double top, double left, double width, double height)
         {
@@ -286,9 +281,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
                                        };
             movePlainUserControl.SelectedChanged += MovePlainUserControl_SelectedChanged;
             movePlainUserControl.ContentChanged += MovePlainUserControl_ContentChanged;
-            movePlainUserControl.RestartEvent += MovePlainUserControl_RestarEvent;
+            movePlainUserControl.RestartEvent += MovePlainUserControl_RestartEvent;
             movePlainUserControl.SetDisplayTypes(_figureType, _moveType, _countryType);
-            movePlainUserControl.SetInformationDetails(_showOnlyMoves, _showFullInfo, _showComments, _showForWhite);
+            movePlainUserControl.SetInformationDetails(_showOnlyMoves, _showFullInfo, _showComments, _showForWhite,_showForBuddy);
             if (move.FigureColor == Fields.COLOR_WHITE || (_lastMoveNumber==0))
             {
                 if (_lastMoveNumber == 0)
@@ -306,7 +301,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _newPanelAdded = true;
                 }
             }
-            movePlainUserControl.SetMove(move, _lastMoveNumber, _newPanelAdded);
+            movePlainUserControl.SetMove(move, _lastMoveNumber, _newPanelAdded,_moveList);
             _wrapPanel.Children.Add(movePlainUserControl);
             _newPanelAdded = false;
             if (!_showOnlyMoves)
@@ -322,7 +317,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         }
 
 
-        private void MovePlainUserControl_RestarEvent(object sender, EventArgs e)
+        private void MovePlainUserControl_RestartEvent(object sender, EventArgs e)
         {
             _movePlainUserControl = sender as MovePlainUserControl;
             if (_movePlainUserControl != null)
@@ -619,6 +614,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void SetContentInfo()
         {
+            textBlockContent.Text = string.Empty;
             string comments = _rm.GetString("WithoutComments");
             if (_showComments)
             {
@@ -629,12 +625,22 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 textBlockContent.Text = $"{_rm.GetString("ContentOnlyMoves")} {comments}";
                 return;
             }
-            if (_showFullInfo)
+            if (_showForBuddy)
             {
-                textBlockContent.Text = $"{_rm.GetString("ContentMoves")} {comments} {_rm.GetString("AndWithBestLine")}";
+                textBlockContent.Text = $"{_rm.GetString("ContentMoves")} {comments} {_rm.GetString("AndWithBestLineBuddy")} ";
+                if (_showFullInfo)
+                {
+                    textBlockContent.Text += $"{_rm.GetString("AndWithBestLine")}";
+                }
+
                 return;
             }
-            textBlockContent.Text = $"{_rm.GetString("ContentMoves")} {comments} {_rm.GetString("AndWithFirstBestMove")}";
+            if (_showFullInfo)
+            {
+                textBlockContent.Text += $"{_rm.GetString("ContentMoves")} {comments} {_rm.GetString("AndWithBestLine")}";
+                return;
+            }
+            textBlockContent.Text += $"{_rm.GetString("ContentMoves")} {comments} {_rm.GetString("AndWithFirstBestMove")}";
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -647,6 +653,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration.SetConfigValue("extendMoveList", _showOnlyMoves ? "true" : "false");
             _configuration.SetConfigValue("extendFull", _showFullInfo ? "true" : "false");
             _configuration.SetConfigValue("extendComments", _showComments ? "true" : "false");
+            _configuration.SetBoolValue("showForBuddy", _showForBuddy);
         }
 
         private void ButtonFontInc_OnClick(object sender, RoutedEventArgs e)
@@ -705,6 +712,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void MenuItemCopy_OnClick(object sender, ExecutedRoutedEventArgs e)
         {
             ButtonCopy_OnClick(sender, e);
+        }
+
+        private void ButtonShowHideBuddy_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showForBuddy = !_showForBuddy;
+            Refresh();
         }
     }
 }

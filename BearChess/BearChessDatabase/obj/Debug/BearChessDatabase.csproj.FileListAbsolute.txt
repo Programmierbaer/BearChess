@@ -247,8 +247,8 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabas
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\System.Data.SQLite.Linq.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\InTheHand.Net.Personal.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\ClosedXML.dll
-C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\BearChessEChessBoard.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\TabuTronicCernoLoader.dll
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\BearChessEChessBoard.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\CertaboLoader.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\ChessnutAirLoader.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\DGTLoader.dll
@@ -316,10 +316,10 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabas
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\InTheHand.Net.Personal.xml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\ClosedXML.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\ClosedXML.xml
-C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\BearChessEChessBoard.pdb
-C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\BearChessEChessBoard.dll.config
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\TabuTronicCernoLoader.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\TabuTronicCernoLoader.dll.config
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\BearChessEChessBoard.pdb
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\BearChessEChessBoard.dll.config
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\CertaboLoader.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\CertaboLoader.dll.config
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessDatabase\bin\Debug\ChessnutAirLoader.pdb

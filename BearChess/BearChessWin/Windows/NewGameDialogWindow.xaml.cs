@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Resources;
 using System.Windows;
-//using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessTools;
 using www.SoLaNoSoft.com.BearChessWin.Windows;
 using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
-//using static www.SoLaNoSoft.com.BearChessWin.Windows.QueryDialogWindow;
 
 
 namespace www.SoLaNoSoft.com.BearChessWin
@@ -63,6 +61,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _configuration = configuration;
             InitializeComponent();
             _bearChessServerConnected = bcServerConnected;
+            _functions.Add(QueryForLastGame);
             _functions.Add(QueryForWhite);
             _functions.Add(QueryForWhiteElo);
             _functions.Add(QueryForBlack);
@@ -85,15 +84,25 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
             _allUciInfos.Clear();
             _player = uciInfos.FirstOrDefault(u => u.IsPlayer);
+            PlayerWhiteConfigValues = _player;
+            PlayerBlackConfigValues = _player;
             var array = uciInfos.Where(u => u.IsActive && !u.IsProbing && !u.IsBuddy && !u.IsInternalBearChessEngine && !u.IsPlayer)
                 .OrderBy(u => u.Name).ToArray();         
             for (var i = 0; i < array.Length; i++)
             {
                 var uciInfo = array[i];
                 _allUciInfos[uciInfo.Name] = uciInfo;
+                if (uciInfo.Id.Equals(lastSelectedEngineIdWhite, StringComparison.OrdinalIgnoreCase))
+                {
+                    PlayerWhiteConfigValues = uciInfo;
+                }
+
+                if (uciInfo.Id.Equals(lastSelectedEngineIdBlack, StringComparison.OrdinalIgnoreCase))
+                {
+                    PlayerBlackConfigValues = uciInfo;
+                }
             }
-            PlayerWhiteConfigValues = _player;
-            PlayerBlackConfigValues = _player;
+           
         }
 
         public void SetTimeControlWhite(TimeControl timeControl)
@@ -163,6 +172,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (result.Yes || result.No)
                 {
                     _callPrevious = false;
+                    if (_currentQueryIndex == 0 && result.Yes)
+                    {
+                        return result.Yes;
+                    }
                     _currentQueryIndex++;
                     if (_currentQueryIndex == _functions.Count)
                     {
@@ -185,7 +198,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
            DialogResult = HandleQueryQueue();
         }
 
-        private QueryDialogWindow.QueryDialogResult FinalQuery()
+        private QueryDialogWindow.QueryDialogResult GameQuery(bool isFirst)
         {
             _callPrevious = false;
             var player = _configuration.GetConfigValue("player", _rm.GetString("Player"));
@@ -196,6 +209,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             else
             {
                 _synthesizer?.SpeakAsync(PlayerWhiteConfigValues.Name, true);
+                var currentElo = PlayerWhiteConfigValues.GetConfiguredElo();
+                if (currentElo > 0)
+                {
+                    _synthesizer?.SpeakAsync($"{_rm.GetString("CurrentElo")}  {currentElo}", true);
+                }
             }
 
             _synthesizer?.SpeakAsync(_rm.GetString("Versus"), false);
@@ -206,6 +224,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             else
             {
                 _synthesizer?.SpeakAsync(PlayerBlackConfigValues.Name, false);
+                var currentElo = PlayerBlackConfigValues.GetConfiguredElo();
+                if (currentElo > 0)
+                {
+                    _synthesizer?.SpeakAsync($"{_rm.GetString("CurrentElo")}  {currentElo}", true);
+                }
             }
             if (_timeControlWhite.SeparateControl)
             {
@@ -222,11 +245,17 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _synthesizer?.SpeakAsync(TimeControlHelper.GetDescription(_timeControlBlack, _rm), false);
             }
             var dialog = new QueryDialogWindow(_rm.GetString("StartNewGameWithThisSetting"),
-                $"{_rm.GetString("CancelNewGameDialog")}?", false) { Owner = this };
+                $"{_rm.GetString("CancelNewGameDialog")}?", isFirst)
+            {
+                Owner = this
+            };
             var dialogResult = dialog.ShowDialog();
             return dialog.QueryResult;
         }
-
+        private QueryDialogWindow.QueryDialogResult FinalQuery()
+        {
+            return GameQuery(false);
+        }
 
         private QueryDialogWindow.QueryDialogResult QueryForWhiteElo()
         {
@@ -310,11 +339,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             return dialog.QueryResult;
         }
 
+        private QueryDialogWindow.QueryDialogResult QueryForLastGame()
+        {
+            return GameQuery(true);
+        }
+
         private QueryDialogWindow.QueryDialogResult QueryForWhite()
         {
             _callPrevious = false;
             var dialog = new QueryDialogWindow(_rm.GetString("ShouldWhiteBeAPerson"),
-                $"{_rm.GetString("CancelNewGameDialog")}?", true) { Owner = this };
+                $"{_rm.GetString("CancelNewGameDialog")}?", false) { Owner = this };
             dialog.ShowDialog();
             if (!dialog.QueryResult.No)
             {

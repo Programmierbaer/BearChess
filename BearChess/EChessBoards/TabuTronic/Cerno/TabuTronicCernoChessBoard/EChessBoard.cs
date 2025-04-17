@@ -57,7 +57,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
         private static readonly byte ColH = 0x1 << 7;
         private static readonly byte[] AllOff = { 0, 0, 0, 0, 0, 0, 0, 0 };
         private static readonly byte[] AllOn = { 255, 255, 255, 255, 255, 255, 255, 255 };
-        private bool _flashLeds;
+        private bool _flashLEDs;
         private readonly ConcurrentQueue<string[]> _flashFields = new ConcurrentQueue<string[]>();
         private readonly ConcurrentQueue<ProbingMove[]> _probingFields = new ConcurrentQueue<ProbingMove[]>();
         private bool _release = false;
@@ -69,7 +69,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             _boardConfiguration = configuration;
             _showMoveLine = configuration.ShowMoveLine;
             _useBluetooth = configuration.UseBluetooth;
-            _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth);
+            _serialCommunication = new SerialCommunication(logger, configuration.PortName, _useBluetooth, Constants.TabutronicCerno);
             _calibrateStorage = new CalibrateStorage(basePath);
             _logger = logger;
             BatteryLevel = "---";
@@ -86,7 +86,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             }
             IsConnected = EnsureConnection();
             Information = Constants.TabutronicCerno;
-            var thread = new Thread(FlashLeds) { IsBackground = true };
+            var thread = new Thread(FlashLEDs) { IsBackground = true };
             thread.Start();
             var probingThread = new Thread(ShowProbingMoves) { IsBackground = true };
             probingThread.Start();
@@ -111,7 +111,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
         public override bool CheckComPort(string portName)
         {
-            _serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth);
+            _serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth, Constants.TabutronicCerno);
             if (_serialCommunication.CheckConnect(portName))
             {
                 string readLine = string.Empty;
@@ -124,7 +124,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                 }
 
                 _serialCommunication.DisConnectFromCheck();
-                return readLine.Length > 0;
+                return !string.IsNullOrEmpty(readLine);
             }
             _serialCommunication.DisConnectFromCheck();
             return false;
@@ -146,7 +146,6 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                     if (!_acceptProbingMoves)
                     {
                         _probingFields.TryDequeue(out _);
-                        // SetAllLedsOff(true);
                         continue;
                     }
                     var probingMove = fields.OrderByDescending(f => f.Score).First();
@@ -162,7 +161,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
                             if (_boardConfiguration.ShowPossibleMoves)
                             {
-                                result = UpdateLedsForField(field.FieldName, result);
+                                result = UpdateLEDsForField(field.FieldName, result);
                             }
                         }
 
@@ -173,12 +172,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                         {
                             if (_boardConfiguration.ShowPossibleMovesEval && field.FieldName.Equals(probingMove.FieldName))
                             {
-                                result = UpdateLedsForField(field.FieldName, result);
+                                result = UpdateLEDsForField(field.FieldName, result);
                             }
 
                             if (_boardConfiguration.ShowPossibleMoves)
                             {
-                                result = UpdateLedsForField(field.FieldName, result);
+                                result = UpdateLEDsForField(field.FieldName, result);
                             }
                         }
                     }
@@ -193,7 +192,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             }
         }
 
-        private void FlashLeds()
+        private void FlashLEDs()
         {
             bool switchSide = false;
             while (!_release)
@@ -203,13 +202,13 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                     byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
                     if (switchSide)
                     {
-                        result = UpdateLedsForField(fields[1], result);
-                        result = UpdateLedsForField(fields[1], result);
+                        result = UpdateLEDsForField(fields[1], result);
+                        result = UpdateLEDsForField(fields[1], result);
                     }
                     else
                     {
-                        result = UpdateLedsForField(fields[0], result);
-                        result = UpdateLedsForField(fields[0], result);
+                        result = UpdateLEDsForField(fields[0], result);
+                        result = UpdateLEDsForField(fields[0], result);
                     }
                     switchSide = !switchSide;
                     _serialCommunication.Send(result);
@@ -282,25 +281,24 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                     Array.Copy(AllOff, result, AllOff.Length);
                     if (ledsParameter.IsThinking && ledsParameter.FieldNames.Length == 2)
                     {
-                        result = UpdateLedsForField(ledsParameter.FieldNames[_prevLedField], result);
+                        result = UpdateLEDsForField(ledsParameter.FieldNames[_prevLedField], result);
                     }
                     else
                     {
-                        //if (ledsParameter.FieldNames.Length == 2 && _showMoveLine && !ledsParameter.IsError)
                         if (ledsParameter.FieldNames.Length == 2 && _showMoveLine && !ledsParameter.IsProbing)
                         {
                             string[] moveLine = MoveLineHelper.GetMoveLine(ledsParameter.FieldNames[0],
                                 ledsParameter.FieldNames[1]);
                             foreach (string fieldName in moveLine)
                             {
-                                result = UpdateLedsForField(fieldName, result);
+                                result = UpdateLEDsForField(fieldName, result);
                             }
                         }
                         else
                         {
                             foreach (string fieldName in ledsParameter.FieldNames)
                             {
-                                result = UpdateLedsForField(fieldName, result);
+                                result = UpdateLEDsForField(fieldName, result);
                             }
                         }
                     }
@@ -373,7 +371,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
         public override void FlashMode(EnumFlashMode flashMode)
         {
-            _flashLeds = flashMode==EnumFlashMode.FlashSync;
+            _flashLEDs = flashMode==EnumFlashMode.FlashSync;
         }
 
      
@@ -445,11 +443,10 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
         {
             var codes = new string[40];
             var fenLine = string.Empty;
-            string[] unknownCodes;
             if (_playWithWhite)
             {
                 Array.Copy(dataArray, 0, codes, 0, 40);
-                fenLine = GetFenLine(codes, out unknownCodes);
+                fenLine = GetFenLine(codes, out _);
             
                 Array.Copy(dataArray, 40, codes, 0, 40);
                 fenLine += GetFenLine(codes, out _);
@@ -464,7 +461,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                 Array.Copy(dataArray, 240, codes, 0, 40);
                 fenLine += GetFenLine(codes, out _);
                 Array.Copy(dataArray, 280, codes, 0, 40);
-                fenLine += GetFenLine(codes, out unknownCodes).Replace("/", string.Empty);
+                fenLine += GetFenLine(codes, out _).Replace("/", string.Empty);
              
             }
             else
@@ -472,7 +469,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                 try
                 {
                     Array.Copy(dataArray, 280, codes, 0, 40);
-                    fenLine = GetFenLine(codes, out unknownCodes);
+                    fenLine = GetFenLine(codes, out _);
                   
                     Array.Copy(dataArray, 240, codes, 0, 40);
                     fenLine += GetFenLine(codes, out _);
@@ -487,7 +484,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                     Array.Copy(dataArray, 40, codes, 0, 40);
                     fenLine += GetFenLine(codes, out _);
                     Array.Copy(dataArray, 0, codes, 0, 40);
-                    fenLine += GetFenLine(codes, out unknownCodes).Replace("/", string.Empty);
+                    fenLine += GetFenLine(codes, out _).Replace("/", string.Empty);
                   
                 }
                 catch (Exception ex)
@@ -553,7 +550,6 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
                     var codes = new string[40];
                     var fenLine = string.Empty;
-                    string[] unknownCodes;
                     if (string.Join(" ", dataArray).Contains(
                             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"))
                     {
@@ -584,7 +580,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                     if (_playWithWhite)
                     {
                         Array.Copy(dataArray, 0, codes, 0, 40);
-                        fenLine = GetFenLine(codes, out unknownCodes);
+                        fenLine = GetFenLine(codes, out _);
                         Array.Copy(dataArray, 40, codes, 0, 40);
                         fenLine += GetFenLine(codes, out _);
                         Array.Copy(dataArray, 80, codes, 0, 40);
@@ -598,12 +594,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                         Array.Copy(dataArray, 240, codes, 0, 40);
                         fenLine += GetFenLine(codes, out _);
                         Array.Copy(dataArray, 280, codes, 0, 40);
-                        fenLine += GetFenLine(codes, out unknownCodes).Replace("/", string.Empty);
+                        fenLine += GetFenLine(codes, out _).Replace("/", string.Empty);
                     }
                     else
                     {
                         Array.Copy(dataArray, 280, codes, 0, 40);
-                        fenLine = GetFenLine(codes, out unknownCodes);
+                        fenLine = GetFenLine(codes, out _);
 
                         Array.Copy(dataArray, 240, codes, 0, 40);
                         fenLine += GetFenLine(codes, out _);
@@ -618,7 +614,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                         Array.Copy(dataArray, 40, codes, 0, 40);
                         fenLine += GetFenLine(codes, out _);
                         Array.Copy(dataArray, 0, codes, 0, 40);
-                        fenLine += GetFenLine(codes, out unknownCodes).Replace("/", string.Empty);
+                        fenLine += GetFenLine(codes, out _).Replace("/", string.Empty);
                     }
 
                     return new DataFromBoard(fenLine.Contains(UnknownPieceCode) ? string.Empty : fenLine,
@@ -692,8 +688,6 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
 
         #region private
-
-      
 
         private bool Calibrate(CalibrateData codes)
         {
@@ -805,12 +799,9 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             return true;
         }
 
-        private byte[] GetLedForFields(string fromFieldName, string toFieldName)
-        {
-            return UpdateLedsForField(toFieldName, UpdateLedsForField(fromFieldName, AllOff));
-        }
+      
 
-        private byte[] UpdateLedsForField(string fieldName, byte[] current)
+        private byte[] UpdateLEDsForField(string fieldName, byte[] current)
         {
             // Exact two letters expected, e.g. "E2"
             if (string.IsNullOrWhiteSpace(fieldName) || fieldName.Length != 2)

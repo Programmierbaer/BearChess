@@ -27,7 +27,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public string GetFen(int color)
         {
-            return _fens.ContainsKey(color) ? _fens[color] : null;
+            return _fens.TryGetValue(color, out var fen) ? fen : null;
         }
 
       

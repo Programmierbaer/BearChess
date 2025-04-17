@@ -8,6 +8,7 @@ using System.Threading;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
 using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 
@@ -57,11 +58,13 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
         private string _startFenPosition = string.Empty;
         private readonly bool _useBluetooth;
         private readonly ISpeech _synthesizer;
-        private ResourceManager _rm;
+        private readonly ResourceManager _rm;
         private readonly string _speechLanguageTag;
         private string _lastThinking0 = string.Empty;
         private string _lastThinking1 = string.Empty;
         private string _lastProbing = string.Empty;
+        private BoardCodeConverter _awaitingFromBoard = null;
+        private int _engineColor = Fields.COLOR_OUTSIDE;
 
 
         public ETactumChessBoard(string basePath, ILogging logger, EChessBoardConfiguration configuration)
@@ -116,6 +119,7 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
         {
             lock (_locker)
             {
+                _awaitingFromBoard = null;
                 _chessBoard.Init();
                 _chessBoard.NewGame();
                 _chessBoard.SetPosition(fen, true);
@@ -125,6 +129,9 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 _startFenPosition = _workingChessBoard.GetFenPosition();
                 _lastFromField = Fields.COLOR_OUTSIDE;
                 _lastToField = Fields.COLOR_OUTSIDE;
+                _awaitingMoveFromField = Fields.COLOR_OUTSIDE;
+                _awaitingMoveToField = Fields.COLOR_OUTSIDE;
+                _logger?.LogDebug($"Set FEN: {fen}");
             }
         }
 
@@ -193,14 +200,13 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
 
             lock (_locker)
             {
-                _logger?.LogDebug($"B: set LEDs  {ledsParameter}");
+               // _logger?.LogDebug($"B: set LEDs  {ledsParameter}");
                 if (!ledsParameter.IsThinking)
                 {
                     lock (_lockThinking)
                     {
                         _lastThinking0 = string.Empty;
                         _lastThinking1 = string.Empty;
-                        
                     }
                 }
                 if (ledsParameter.IsThinking)
@@ -213,12 +219,11 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                             _lastThinking0 = ledsParameter.FieldNames[0];
                             _lastThinking1 = ledsParameter.FieldNames[1];
 
-                            if (_configuration.ShowPossibleMovesEval)
-                            {
-                                _synthesizer?.SpeakAsync(
-                                    $"{_rm.GetString("BestMove")} {Fields.GetBlindFieldName(ledsParameter.FieldNames[0])} {Fields.GetBlindFieldName(ledsParameter.FieldNames[1])}");
-                            }
+                            _synthesizer?.SpeakAsync(
+                                $"{_rm.GetString("BestMove")} {Fields.GetBlindFieldName(ledsParameter.FieldNames[0])} {Fields.GetBlindFieldName(ledsParameter.FieldNames[1])}");
+
                         }
+
                         return;
                     }
                 }
@@ -262,12 +267,45 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 {
                     for (int i = 0; i < ledsParameter.InvalidFieldNames.Length; i++)
                     {
+                        if (_awaitingCastleMoveToField != Fields.COLOR_OUTSIDE && _awaitingCastleMoveToField== Fields.GetFieldNumber(ledsParameter.InvalidFieldNames[i]))
+                        {
+                            continue;
+                        }
                         _synthesizer?.SpeakAsync($"{_rm.GetString("Invalid")} { Fields.GetBlindFieldName(ledsParameter.InvalidFieldNames[i])}");
                     }
                 }
                 _logger?.LogDebug($"Set LEDs for {joinedString}");
                 _prevJoinedString = joinedString;
                 byte[] result = { 0, 0, 0, 0, 0, 0, 0, 0 };
+            }
+        }
+
+        public override void AwaitingMove(int fromField, int toField, int promoteFigure = FigureId.NO_PIECE)
+        {
+            lock (_locker)
+            {
+                if ((fromField == toField) || (fromField<=0) || (toField<=0))
+                {
+                    return;
+                }
+
+                _engineColor = _chessBoard.GetFigureOn(fromField).Color;
+                base.AwaitingMove(fromField, toField, promoteFigure);
+                var awaitingChessBoard = new BearChessBase.Implementations.ChessBoard();
+                awaitingChessBoard.Init(_chessBoard);
+                awaitingChessBoard.MakeMove(fromField, toField, promoteFigure);
+                _awaitingFromBoard = new BoardCodeConverter(_playWithWhite);
+                var awaitingChessFigures = awaitingChessBoard.GetFigures(Fields.COLOR_WHITE);
+                foreach (var chessFigure in awaitingChessFigures)
+                {
+                    _awaitingFromBoard.SetFigureOn(chessFigure.Field);
+                }
+
+                awaitingChessFigures = awaitingChessBoard.GetFigures(Fields.COLOR_BLACK);
+                foreach (var chessFigure in awaitingChessFigures)
+                {
+                    _awaitingFromBoard.SetFigureOn(chessFigure.Field);
+                }
             }
         }
 
@@ -286,8 +324,6 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 _lastProbing = string.Empty;
             }
 
-            //_serialCommunication.ClearToBoard();
-            //_serialCommunication.Send(AllOff, forceOff, "All off");
         }
 
         public override void SetAllLedsOn()
@@ -302,10 +338,6 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 _lastThinking1 = string.Empty;
                 _lastProbing = string.Empty;
             }
-
-
-            //_logger?.LogDebug("B: Send all on");
-            //_serialCommunication.Send(AllOn, "All on");
         }
 
         public override void DimLeds(bool dimLeds)
@@ -363,10 +395,13 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
             //
         }
 
+
+
         public override DataFromBoard GetPiecesFen()
         {
-           // return GetDumpPiecesFen();
+           
             string[] changes = { "", "" };
+            BoardCodeConverter boardCodeConverter = null;
             if (_fromBoard.TryDequeue(out DataFromBoard dataFromBoard))
             {
                 var strings = dataFromBoard.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -374,7 +409,6 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 {
                     return new DataFromBoard(_workingChessBoard.GetFenPosition().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0], 3);
                 }
-
                 if (_prevRead.Equals(dataFromBoard.FromBoard))
                 {
                     _equalReadCount++;
@@ -383,9 +417,74 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 {
                     _logger?.LogDebug($"GetPiecesFen: Changes from {_prevRead} to {dataFromBoard.FromBoard}");
                     _prevRead = dataFromBoard.FromBoard;
-
                     _equalReadCount = 0;
                 }
+                if (dataFromBoard.FromBoard.StartsWith(BASE_POSITION))
+                {
+                    _awaitingFromBoard = null;
+                }
+                if (_awaitingFromBoard != null)
+                {
+                    var bc =new BoardCodeConverter(strings, _playWithWhite);
+                    if (bc.SamePosition(_awaitingFromBoard))
+                    {
+                        _logger?.LogDebug($"GetPiecesFen: read awaited board position ");
+                        _liftUpFigure = null;
+                        _liftUpEnemyFigure = null;
+                        _prevSend = _chessBoard.GetFenPosition()
+                            .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                        _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
+                        _awaitingFromBoard = null;
+                        if (_awaitingMoveFromField != Fields.COLOR_OUTSIDE)
+                        {
+                            _chessBoard.MakeMove(_awaitingMoveFromField, _awaitingMoveToField);
+                            _prevSend = _chessBoard.GetFenPosition()
+                                .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                            var allMoveClass = _chessBoard.GetPrevMove();
+                            var move = allMoveClass.GetMove(_chessBoard.EnemyColor);
+                            MoveExtentions.ConfirmMove(move);
+                        }
+
+                        if (_awaitingCastleMoveFromField != Fields.COLOR_OUTSIDE)
+                        {
+                            _chessBoard.MakeMove(_awaitingCastleMoveFromField, _awaitingCastleMoveToField);
+                            _prevSend = _chessBoard.GetFenPosition()
+                                .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                        }
+
+                        _workingChessBoard.Init(_chessBoard);
+                        _awaitingMoveFromField = Fields.COLOR_OUTSIDE;
+                        _awaitingMoveToField = Fields.COLOR_OUTSIDE;
+                        _awaitingCastleMoveFromField = Fields.COLOR_OUTSIDE;
+                        _awaitingCastleMoveToField = Fields.COLOR_OUTSIDE;
+                        _engineColor = Fields.COLOR_OUTSIDE;
+                        return new DataFromBoard(_prevSend, 3);
+                    }
+                    else
+                    {
+                        if (_equalReadCount == 0)
+                        {
+                            boardCodeConverter = new BoardCodeConverter(strings, _playWithWhite);
+                            foreach (var boardField in Fields.BoardFields)
+                            {
+                                var isFigureOnBoard = boardCodeConverter.IsFigureOn(boardField);
+                                var chessFigure = _chessBoard.GetFigureOn(boardField);
+                                if (isFigureOnBoard && chessFigure.Color == Fields.COLOR_EMPTY)
+                                {
+                                    _synthesizer?.SpeakAsync(
+                                        Fields.GetBlindFieldName(Fields.GetFieldName(boardField)), true);
+                                    _logger?.LogDebug(
+                                        $"GetPiecesFen: Invalid for awaiting from board: {boardField}/{Fields.GetFieldName(boardField)}");
+                                  //  break;
+                                }
+                            }
+                        }
+
+                        return new DataFromBoard(_prevSend, 3);
+                    }
+                }
+                
+              
 
                 if (_equalReadCount < 15)
                 {
@@ -411,7 +510,6 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                     if (_prevSend != basePos)
                     {
                         _synthesizer?.SpeakForce($"{SpeechTranslator.ResourceManager.GetString("BasePosition")}");
-                        
                     }
 
                     _prevSend = basePos;
@@ -445,10 +543,8 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                     //};
                 }
 
-                var boardCodeConverter = new BoardCodeConverter(strings, _playWithWhite);
+                boardCodeConverter = new BoardCodeConverter(strings, _playWithWhite);
                // _logger?.LogDebug($"strings: {string.Join(" ",strings)}");
-                changes[0] = string.Empty;
-                changes[1] = string.Empty;
                 IChessFigure liftUpFigure = null;
                 int liftDownField = Fields.COLOR_OUTSIDE;
                 foreach (var boardField in Fields.BoardFields)
@@ -457,8 +553,8 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                     var chessFigure = _workingChessBoard.GetFigureOn(boardField);
                     if (isFigureOnBoard && chessFigure.Color == Fields.COLOR_EMPTY)
                     {
-                        changes[1] = Fields.GetFieldName(boardField);
-                        _logger?.LogDebug($"GetPiecesFen: Downfield: {boardField}/{changes[1]}");
+
+                        _logger?.LogDebug($"GetPiecesFen: Downfield: {boardField}/{Fields.GetFieldName(boardField)}");
                         liftDownField = boardField;
                         if (_configuration.SayLiftUpDownFigure)
                         {
@@ -468,8 +564,7 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
 
                     if (!isFigureOnBoard && chessFigure.Color != Fields.COLOR_EMPTY)
                     {
-                        changes[0] = Fields.GetFieldName(boardField);
-                        _logger?.LogDebug($"GetPiecesFen: Lift up field: {boardField}/{changes[0]} {FigureId.FigureIdToEnName[chessFigure.FigureId]}");
+                        _logger?.LogDebug($"GetPiecesFen: Lift up field: {boardField}/{Fields.GetFieldName(boardField)} {FigureId.FigureIdToEnName[chessFigure.FigureId]}");
                         if (_configuration.SayLiftUpDownFigure)
                         {
                             _synthesizer?.SpeakAsync(SpeechTranslator.GetFigureName(chessFigure.FigureId,_speechLanguageTag,Configuration.Instance)+ " " + Fields.GetBlindFieldName(changes[0]));
@@ -517,7 +612,6 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                         _workingChessBoard.Init(_chessBoard);
                         _liftUpFigure = null;
                         _liftUpEnemyFigure = null;
-                        //    _logger?.LogDebug($"GetPiecesFen: return valid {fenPosition1}");
                         _prevSend = _chessBoard.GetFenPosition()
                             .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
                         _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
@@ -527,7 +621,8 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                     }
                 }
 
-                if (_liftUpEnemyFigure != null && (!_inDemoMode && _allowTakeBack && liftDownField.Equals(_lastFromField) &&
+                if (_liftUpEnemyFigure != null && 
+                    (!_inDemoMode && _allowTakeBack && liftDownField.Equals(_lastFromField) &&
                                                    _liftUpEnemyFigure.Field.Equals(_lastToField)))
                 {
                     _logger?.LogInfo("TC: Take move back. Replay all previous moves");
@@ -566,14 +661,11 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                         _prevSend = _chessBoard.GetFenPosition()
                             .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
                         _logger?.LogDebug($"GetPiecesFen: return {_prevSend}");
-                    
                         return new DataFromBoard(_prevSend, 3);
-
                     }
 
                     if (liftDownField != Fields.COLOR_OUTSIDE)
                     {
-
                         if (!_inDemoMode)
                         {
                             if (!_inDemoMode && _allowTakeBack && liftDownField.Equals(_lastFromField) &&
@@ -604,29 +696,55 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                      
                                 return new DataFromBoard(_prevSend, 3);
                             }
-                            if (_chessBoard.MoveIsValid(_liftUpFigure.Field, liftDownField))
-                            {
-                                if (_awaitingMoveFromField != Fields.COLOR_OUTSIDE)
+                            if ( (_chessBoard.CurrentColor != _engineColor) && (_chessBoard.MoveIsValid(_liftUpFigure.Field, liftDownField)))
+                                //if ( _chessBoard.CurrentColor != _engineColor && _chessBoard.MoveIsValid(_liftUpFigure.Field, liftDownField))
                                 {
-                                    if (_awaitingMoveFromField != _liftUpFigure.Field ||
-                                        _awaitingMoveToField != liftDownField)
-                                    {
-                                        _logger?.LogDebug($"GetPiecesFen: move not awaited!");
-                                        _logger?.LogDebug($"GetPiecesFen: Awaited: {Fields.GetFieldName(_awaitingMoveFromField)} {Fields.GetFieldName(_awaitingMoveToField)}");
-                                        _logger?.LogDebug($"GetPiecesFen: Read: {Fields.GetFieldName(_liftUpFigure.Field)} {Fields.GetFieldName(liftDownField)}");
-                                        return new DataFromBoard(_prevSend, 3);
-                                    }
-                                }
+                              
                                 _logger?.LogDebug($"GetPiecesFen: Make move: {Fields.GetFieldName(_liftUpFigure.Field)} {Fields.GetFieldName(liftDownField)}");
                                 _lastFromField = _liftUpFigure.Field;
                                 _lastToField = liftDownField;
-                                // _synthesizer?.Clear();
-                                _synthesizer?.SpeakAsync(Fields.GetBlindFieldName(Fields.GetFieldName(liftDownField)),true);
-                                //SpeakMove(_liftUpFigure.Figure,FigureId.NO_PIECE,_liftUpFigure.FieldName,Fields.GetFieldName(liftDownField),FigureId.NO_PIECE,string.Empty);
-                                _chessBoard.MakeMove(_liftUpFigure.Field, liftDownField);
+                                var aChessBoard = new BearChessBase.Implementations.ChessBoard();
+                                aChessBoard.Init(_chessBoard);
+                                aChessBoard.MakeMove(_liftUpFigure.Field, liftDownField);
+                                var allMoveClass = aChessBoard.GetPrevMove();
+                                var move = allMoveClass.GetMove(aChessBoard.EnemyColor);
+                                if (_awaitingMoveFromField != Fields.COLOR_OUTSIDE)
+                                {
+                                   MoveExtentions.ConfirmMove(move);
+                                }
+                                else
+                                {
+                                    _synthesizer?.SpeakAsync(
+                                        Fields.GetBlindFieldName(Fields.GetFieldName(liftDownField)), true);
+                                }
                                 _awaitingMoveFromField = Fields.COLOR_OUTSIDE;
                                 _awaitingMoveToField = Fields.COLOR_OUTSIDE;
-                               
+                                _awaitingCastleMoveFromField = Fields.COLOR_OUTSIDE;
+                                _awaitingCastleMoveToField = Fields.COLOR_OUTSIDE;
+                                if (move.IsCastleMove() )
+                                {
+                                    _awaitingCastleMoveFromField = _liftUpFigure.Field;
+                                    _awaitingCastleMoveToField = liftDownField;
+                                    _logger?.LogDebug($"GetPiecesFen: Awaiting castle position ");
+                                    _awaitingFromBoard = new BoardCodeConverter(_playWithWhite);
+                                    var awaitingChessFigures = aChessBoard.GetFigures(Fields.COLOR_WHITE);
+                                    foreach (var chessFigure in awaitingChessFigures)
+                                    {
+                                        _awaitingFromBoard.SetFigureOn(chessFigure.Field);
+                                    }
+                                    awaitingChessFigures = aChessBoard.GetFigures(Fields.COLOR_BLACK);
+                                    foreach (var chessFigure in awaitingChessFigures)
+                                    {
+                                        _awaitingFromBoard.SetFigureOn(chessFigure.Field);
+                                    }
+                                    return new DataFromBoard(_prevSend, 3);
+                                }
+                                else
+                                {
+                                    _awaitingFromBoard = null;
+                                    _chessBoard.MakeMove(_liftUpFigure.Field, liftDownField);
+                                }
+
                                 _workingChessBoard.Init(_chessBoard);
                                 _liftUpFigure = null;
                                 _liftUpEnemyFigure = null;
@@ -639,7 +757,6 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
 
                             _lastFromField = _liftUpFigure.Field;
                             _lastToField = liftDownField;
-                            //_logger?.LogDebug($"1. Remove working chessboard from {_liftUpFigure.Field} and set to {liftDownField}");   
                             _workingChessBoard.RemoveFigureFromField(_liftUpFigure.Field);
                             _workingChessBoard.SetFigureOnPosition(_liftUpFigure.Figure, liftDownField);
                             _workingChessBoard.CurrentColor = _liftUpFigure.FigureColor == Fields.COLOR_WHITE ? Fields.COLOR_BLACK : Fields.COLOR_WHITE;
@@ -654,7 +771,6 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
 
                         _lastFromField = _liftUpFigure.Field;
                         _lastToField = liftDownField;
-                       // _logger?.LogDebug($"2. Remove working chessboard from {_liftUpFigure.Field} and set to {liftDownField}");
                         _chessBoard.RemoveFigureFromField(_liftUpFigure.Field);
                         _chessBoard.SetFigureOnPosition(_liftUpFigure.Figure, liftDownField);
                         _chessBoard.CurrentColor = _liftUpFigure.FigureColor == Fields.COLOR_WHITE ? Fields.COLOR_BLACK : Fields.COLOR_WHITE;
@@ -696,34 +812,20 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
             return new DataFromBoard(_prevSend, 3);
         }
 
-    
-
         public override DataFromBoard GetDumpPiecesFen()
         {
-            if (_fromBoard.TryDequeue(out DataFromBoard dataFromBoard))
+            try
             {
-                var strings =
-                    dataFromBoard.FromBoard.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (strings.Length < 8)
-                {
-                    return new DataFromBoard(string.Empty, 3);
-                }
-
-                var boardCodeConverter = new BoardCodeConverter(strings, _playWithWhite);
-                List<string> dumpFields = new List<string>();
-                foreach (var boardField in Fields.BoardFields)
-                {
-                    if (boardCodeConverter.IsFigureOn(boardField))
-
-                    {
-                        dumpFields.Add(Fields.GetFieldName(boardField));
-                    }
-                }
-
-                return new DataFromBoard(string.Join(",", dumpFields), 3)
-                { IsFieldDump = true, BasePosition = false };
+                var newSend = _workingChessBoard.GetFenPosition()
+                    .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                return new DataFromBoard(newSend, 3);
             }
-            return new DataFromBoard(string.Empty, 3);
+            catch
+            {
+                return new DataFromBoard(_prevSend, 3);
+            }
+
+        
         }
 
         protected override void SetToNewGame()
@@ -737,8 +839,14 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
                 _startFenPosition = string.Empty;
                 _lastFromField = Fields.COLOR_OUTSIDE;
                 _lastToField = Fields.COLOR_OUTSIDE;
+                _awaitingCastleMoveFromField = Fields.COLOR_OUTSIDE;
+                _awaitingCastleMoveToField = Fields.COLOR_OUTSIDE;
+                _awaitingMoveFromField = Fields.COLOR_OUTSIDE;
+                _awaitingMoveToField = Fields.COLOR_OUTSIDE;
+                _engineColor = Fields.COLOR_OUTSIDE;
                 _liftUpFigure = null;
                 _liftUpEnemyFigure = null;
+                _awaitingFromBoard = null;
                 lock (_lockThinking)
                 {
                     _lastThinking0 = string.Empty;

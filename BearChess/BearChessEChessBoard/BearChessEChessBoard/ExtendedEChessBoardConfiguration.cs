@@ -72,27 +72,31 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public string RGBBookMove { get; set; }
         public bool FlashBookMove { get; set; }
 
+        public ExtendedEChessBoardConfiguration() : this(false)
+        {
+            
+        }
 
-        public ExtendedEChessBoardConfiguration()
+        public ExtendedEChessBoardConfiguration(bool isSpectrum = false)
         {
             Name = "BearChess";
             DimLevel = 4;
             ShowMoveLine = false;
             ShowCurrentColor = true;
             ShowEvaluationValue = true;
-            RGBCurrentColor = "099";
-            RGBInvalid = "F00";
-            RGBTakeBack = "0FF";
-            RGBHelp = "00F";
-            RGBBookMove = "00F";
-            RGBMoveFrom = "0F0";
-            RGBMoveTo = "0F0";
-            RGBEvalAdvantage = "0F0";
-            RGBEvalDisAdvantage = "F00";
-            RGBPossibleMoves = "00F";
-            RGBPossibleMovesGood = "0F0";
-            RGBPossibleMovesBad = "F00";
-            RGBPossibleMovesPlayable = "00F";
+            RGBCurrentColor =          isSpectrum ? "000009009" : "099";
+            RGBInvalid =               isSpectrum ? "015000000" : "F00";
+            RGBTakeBack =              isSpectrum ? "000015015" : "0FF";
+            RGBHelp =                  isSpectrum ? "000000015" : "00F";
+            RGBBookMove =              isSpectrum ? "000000015" : "00F";
+            RGBMoveFrom =              isSpectrum ? "000015000" : "0F0";
+            RGBMoveTo =                isSpectrum ? "000015000" : "0F0";
+            RGBEvalAdvantage =         isSpectrum ? "000015000" : "0F0";
+            RGBEvalDisAdvantage =      isSpectrum ? "015000000" : "F00";
+            RGBPossibleMoves =         isSpectrum ? "000000015" : "00F";
+            RGBPossibleMovesGood =     isSpectrum ? "000015000" : "0F0";
+            RGBPossibleMovesBad =      isSpectrum ? "015000000" : "F00";
+            RGBPossibleMovesPlayable = isSpectrum ? "000000015" : "00F";
             BuzzerConnected = "000000";
             BuzzerInvalid = "000000";
             BuzzerEngineMove = "000000";

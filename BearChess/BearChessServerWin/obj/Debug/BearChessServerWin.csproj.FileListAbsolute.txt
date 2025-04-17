@@ -212,6 +212,8 @@ C:\Users\larsn\source\repos\BearChess\BearChess\BearChessServerWin\bin\Debug\Peg
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessServerWin\bin\Debug\PegasusEBoardWrapper.dll.config
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessServerWin\obj\Debug\Windows\ConfigureServerWindow.g.cs
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessServerWin\obj\Debug\Windows\ConfigureServerWindow.baml
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessServerWin\obj\Debug\UserControls\SmallChessboardUserControl.g.cs
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessServerWin\obj\Debug\UserControls\SmallChessboardUserControl.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\bin\Debug\BearChessServerWin.exe.config
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\bin\Debug\BearChessServerWin.exe
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\bin\Debug\BearChessServerWin.pdb
@@ -407,6 +409,7 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerW
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\Styles\FieldStyles.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\MainWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\UserControls\ChessboardUserControl.g.cs
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\UserControls\SmallChessboardUserControl.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\Windows\ConfigureServerWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\Windows\QueryTournamentWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\App.g.cs
@@ -415,6 +418,7 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerW
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\App.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\MainWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\UserControls\ChessboardUserControl.baml
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\UserControls\SmallChessboardUserControl.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\Windows\ConfigureServerWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\Windows\QueryTournamentWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessServerWin\obj\Debug\BearChessServerWin.g.resources

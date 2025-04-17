@@ -777,6 +777,10 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
                 return;
             }
             Thread.Sleep(100);
+            if (string.IsNullOrEmpty(_currentEval))
+            {
+                _currentEval = "0";
+            }
             if (decimal.TryParse(_currentEval.Replace(".", ","), out decimal eval))
             {
                 string dimLevelEval = _extendedConfiguration.DimEvalAdvantage.ToString("X");
@@ -912,7 +916,6 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
         }
 
 
-
         private void SetLedForFields(string[] fieldNames, string rgbCode, bool flash, string dimLevel, bool addLEDs, string info)
         {
             if (fieldNames.Length == 0)
@@ -1030,6 +1033,19 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
             _serialCommunication.Send(soundCmd.Concat(byteArray).ToArray(), true, "Buzzer to play");
         }
 
+        public override bool CheckComPort(string portName)
+        {
+            _serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth);
+            if (_serialCommunication.CheckConnect(portName))
+            {
+                var readLine = _serialCommunication.GetRawFromBoard(string.Empty);
+                _serialCommunication.DisConnectFromCheck();
+                return readLine.Length > 0;
+            }
+            _serialCommunication.DisConnectFromCheck();
+            return false;
+        }
+
         #region Ignored
         public override void SetFen(string fen)
         {
@@ -1057,18 +1073,7 @@ namespace www.SoLaNoSoft.com.BearChess.IChessOneChessBoard
         }
 
 
-        public override bool CheckComPort(string portName)
-        {
-            _serialCommunication = new SerialCommunication(_logger, portName, _useBluetooth);
-            if (_serialCommunication.CheckConnect(portName))
-            {
-                var readLine = _serialCommunication.GetRawFromBoard(string.Empty);
-                _serialCommunication.DisConnectFromCheck();
-                return readLine.Length > 0;
-            }
-            _serialCommunication.DisConnectFromCheck();
-            return false;
-        }
+      
 
         public override bool CheckComPort(string portName, string baud)
         {

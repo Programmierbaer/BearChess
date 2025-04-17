@@ -60,6 +60,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             comboboxWhiteEBoardNames.Items.Add(Constants.IChessOne);
             comboboxWhiteEBoardNames.Items.Add(Constants.MChessLink);
             comboboxWhiteEBoardNames.Items.Add(Constants.TabutronicCerno);
+            comboboxWhiteEBoardNames.Items.Add(Constants.TabutronicCernoSpectrum);
             comboboxWhiteEBoardNames.Items.Add(Constants.TabutronicSentio);
             comboboxWhiteEBoardNames.Items.Add(Constants.TabutronicTactum);
             comboboxWhiteEBoardNames.Items.Add(Constants.Zmartfun);
@@ -71,6 +72,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             comboboxBlackEBoardNames.Items.Add(Constants.IChessOne);
             comboboxBlackEBoardNames.Items.Add(Constants.MChessLink);
             comboboxBlackEBoardNames.Items.Add(Constants.TabutronicCerno);
+            comboboxBlackEBoardNames.Items.Add(Constants.TabutronicCernoSpectrum);
             comboboxBlackEBoardNames.Items.Add(Constants.TabutronicSentio);
             comboboxBlackEBoardNames.Items.Add(Constants.TabutronicTactum);
             comboboxBlackEBoardNames.Items.Add(Constants.Zmartfun);
@@ -88,7 +90,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             ButtonConfigureWhiteConnection.IsEnabled = true;
             CheckBoxSameConnection.IsChecked = true;
             radioButtonWhiteDirectConnected.IsChecked = true;
-            BoarderBlack.IsEnabled = false;
+            BorderBlack.IsEnabled = false;
             _isInitialized = true;
         }
 
@@ -104,13 +106,17 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 {
                     if (forWhite)
                     {
-                        WhiteConnectionId = configIChessOne.SelectedPortName;
+                        
                         WhiteEboard = new IChessOneLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configIChessOne.SelectedPortName;
+                   
                         BlackEboard = new IChessOneLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
                     
                     return true;
@@ -127,13 +133,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 {
                     if (forWhite)
                     {
-                        WhiteConnectionId = configCertabo.SelectedPortName;
-                        WhiteEboard = new IChessOneLoader(configPath);
+                        WhiteEboard = new CertaboLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configCertabo.SelectedPortName;
-                        BlackEboard = new IChessOneLoader(configPath);
+                        BlackEboard = new CertaboLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
 
                     return true;
@@ -150,13 +158,16 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 {
                     if (forWhite)
                     {
-                        WhiteConnectionId = configDGT.SelectedPortName;
+                        
                         WhiteEboard = new DGTLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configDGT.SelectedPortName;
                         BlackEboard = new DGTLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
 
                     return true;
@@ -175,13 +186,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 {
                     if (forWhite)
                     {
-                        WhiteConnectionId = configChessnut.SelectedPortName;
                         WhiteEboard = new ChessnutAirLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configChessnut.SelectedPortName;
                         BlackEboard = new ChessnutAirLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
 
                     return true;
@@ -199,13 +212,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 {
                     if (forWhite)
                     {
-                        WhiteConnectionId = configEvo.SelectedPortName;
                         WhiteEboard = new ChessnutEvoLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configEvo.SelectedPortName;
                         BlackEboard = new ChessnutEvoLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
 
                     return true;
@@ -223,13 +238,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 {
                     if (forWhite)
                     {
-                        WhiteConnectionId = configWindow.SelectedPortName;
                         WhiteEboard = new MChessLinkLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configWindow.SelectedPortName;
                         BlackEboard = new MChessLinkLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
 
                     return true;
@@ -246,18 +263,43 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 {
                     if (forWhite)
                     {
-                        WhiteConnectionId = configWindow.SelectedPortName;
                         WhiteEboard = new TabutronicCernoLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configWindow.SelectedPortName;
                         BlackEboard = new TabutronicCernoLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
 
                     return true;
                 }
 
+                return false;
+            }
+
+            if (selectedBoard.Equals(Constants.TabutronicCernoSpectrum))
+            {
+                var configWindow = new ConfigureCernoSpectrumWindow(Configuration.Instance, false, false, configPath) { Owner = this };
+                var dialogResult = configWindow.ShowDialog();
+                if (dialogResult.HasValue && dialogResult.Value)
+                {
+                    if (forWhite)
+                    {
+                        WhiteEboard = new TabutronicCernoSpectrumLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
+                    }
+                    else
+                    {
+                        BlackEboard = new TabutronicCernoSpectrumLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
+                    }
+                    return true;
+                }
                 return false;
             }
 
@@ -267,21 +309,20 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 var dialogResult = configWindow.ShowDialog();
                 if (dialogResult.HasValue && dialogResult.Value)
                 {
-                 
                     if (forWhite)
                     {
-                        WhiteConnectionId = configWindow.SelectedPortName;
                         WhiteEboard = new TabutronicSentioLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configWindow.SelectedPortName;
                         BlackEboard = new TabutronicSentioLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
-
                     return true;
                 }
-
                 return false;
             }
 
@@ -293,13 +334,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 {
                     if (forWhite)
                     {
-                        WhiteConnectionId = configWindow.SelectedPortName;
                         WhiteEboard = new TabuTronicTactumLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configWindow.SelectedPortName;
                         BlackEboard = new TabuTronicTactumLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
 
                     return true;
@@ -316,13 +359,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 {
                     if (forWhite)
                     {
-                        WhiteConnectionId = configWindow.SelectedPortName;
                         WhiteEboard = new HoSLoader(configPath);
+                        WhiteEboard.Identification = Guid.NewGuid().ToString("N");
+                        WhiteConnectionId = WhiteEboard.Identification;
                     }
                     else
                     {
-                        BlackConnectionId = configWindow.SelectedPortName;
                         BlackEboard = new HoSLoader(configPath);
+                        BlackEboard.Identification = Guid.NewGuid().ToString("N");
+                        BlackConnectionId = BlackEboard.Identification;
                     }
 
                     return true;
@@ -365,7 +410,10 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
         {
             if (radioButtonWhiteConnectedViaBC.IsChecked.HasValue && radioButtonWhiteConnectedViaBC.IsChecked.Value)
             {
-                WhiteConnectionId = (comboboxWhiteBCNames.SelectedItem as BearChessClientInformation).Address;
+                if (comboboxWhiteBCNames?.SelectedItem != null)
+                {
+                    WhiteConnectionId = (comboboxWhiteBCNames.SelectedItem as BearChessClientInformation).Address;
+                }
             }
             if (CheckBoxSameConnection.IsChecked.HasValue && CheckBoxSameConnection.IsChecked.Value)
             {
@@ -375,7 +423,10 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             {
                 if (radioButtonBlackConnectedViaBC.IsChecked.HasValue && radioButtonBlackConnectedViaBC.IsChecked.Value)
                 {
-                    BlackConnectionId = (comboboxBlackBCNames.SelectedItem as BearChessClientInformation).Address;
+                    if (comboboxBlackBCNames?.SelectedItem != null)
+                    {
+                        BlackConnectionId = (comboboxBlackBCNames.SelectedItem as BearChessClientInformation).Address;
+                    }
                 }
             }
             DialogResult = true;
@@ -391,7 +442,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             if (_isInitialized)
             {
                 comboboxWhiteBCNames.IsEnabled = false;
-                comboboxBlackEBoardNames.IsEnabled = true;
+                comboboxWhiteEBoardNames.IsEnabled = true;
                 ButtonConfigureWhiteConnection.IsEnabled = true;
             }
         }
@@ -401,19 +452,19 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             if (_isInitialized)
             {
                 comboboxWhiteBCNames.IsEnabled = true;
-                comboboxBlackEBoardNames.IsEnabled = false;
+                comboboxWhiteEBoardNames.IsEnabled = false;
                 ButtonConfigureWhiteConnection.IsEnabled = false;
             }
         }
 
         private void CheckBoxSameConnection_OnChecked(object sender, RoutedEventArgs e)
         {
-            BoarderBlack.IsEnabled = false;
+            BorderBlack.IsEnabled = false;
         }
 
         private void CheckBoxSameConnection_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            BoarderBlack.IsEnabled = true;
+            BorderBlack.IsEnabled = true;
         }
     }
 }

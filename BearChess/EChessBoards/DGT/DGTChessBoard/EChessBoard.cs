@@ -625,7 +625,6 @@ namespace www.SoLaNoSoft.com.BearChess.DGTChessBoard
                                 _logger?.LogError($"{ex.Message}: Fen: {boardMove.GetFenBytes}");
                                 _currentFen = string.Empty;
                             }
-
                             
                             return new DataFromBoard(_currentFen, 3);
                         }

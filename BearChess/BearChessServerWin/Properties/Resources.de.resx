@@ -163,7 +163,7 @@
     <value>Server</value>
   </data>
   <data name="ServerName" xml:space="preserve">
-    <value>Server Name</value>
+    <value>Hostname</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>

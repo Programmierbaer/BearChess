@@ -18,4 +18,5 @@
         public static string BlackBoardBasePosition = "RNBKQBNR/PPPPPPPP/8/8/8/8/pppppppp/rnbkqbnr";
         public static string WhiteBoardBasePosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
     }
+
 }

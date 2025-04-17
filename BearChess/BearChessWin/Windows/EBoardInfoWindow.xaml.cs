@@ -15,6 +15,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
     public partial class EBoardInfoWindow : Window
     {
         private readonly IElectronicChessBoard _eChessBoard;
+        private readonly bool _isControlBoard;
 
         private readonly Thread _thread;
         private bool _stopRunning;
@@ -27,36 +28,65 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _rm = Properties.Resources.ResourceManager;
         }
 
-        public EBoardInfoWindow(IElectronicChessBoard eChessBoard, string eBoardName) : this()
+        public EBoardInfoWindow(IElectronicChessBoard eChessBoard, string eBoardName, bool isControlBoard) : this()
         {
             buttonReset.Visibility = Visibility.Collapsed;
-
+            _isControlBoard = isControlBoard;
             chessBoardUcGraphics.SetPiecesMaterial();
             chessBoardUcGraphics.SetInPositionMode(true, string.Empty, false);
-            chessBoardUcGraphics.ClearPosition();
-            chessBoardUcGraphics.ShowMultiButton(false);
-            chessBoardUcGraphics.ShowRotateButton(false);
-            _eChessBoard = eChessBoard;
-            _thread = new Thread(ReadFromBoard)
-                      {
-                          IsBackground = true
-                      };
-            _thread.Start();
-            _eChessBoard.RequestDump();
-            _chessBoard = null;
-            if (_eChessBoard.Information.Contains(Constants.MeOne) || _eChessBoard.Information.Contains(Constants.Chesstimation) 
-                                                                   || _eChessBoard.Information.Contains(Constants.Elfacun))
+            if (isControlBoard)
             {
+                chessBoardUcGraphics.SetEBoardControlMode();
                 _chessBoard = new ChessBoard();
-                textBlockBoard.Text =
-                    $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}{_rm.GetString("CurrentPositionReportedByBoard")}{Environment.NewLine}";
-
+                _chessBoard.Init();
+                _chessBoard.NewGame();
+               chessBoardUcGraphics.ClearPosition(); 
             }
             else
             {
-                textBlockBoard.Text =
-                    $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}{_rm.GetString("EachPawnAField")}{Environment.NewLine}{eBoardName} {_rm.GetString("HasNoRecognition")}";
+                chessBoardUcGraphics.ClearPosition();
+                chessBoardUcGraphics.ShowMultiButton(false);
+                chessBoardUcGraphics.ShowRotateButton(false);
+
+
+                _eChessBoard = eChessBoard;
+                _thread = new Thread(ReadFromBoard)
+                {
+                    IsBackground = true
+                };
+                _thread.Start();
+                _eChessBoard.RequestDump();
+                _chessBoard = null;
+                if (_eChessBoard.Information.Contains(Constants.MeOne) || _eChessBoard.Information.Contains(
+                                                                           Constants.Chesstimation)
+                                                                       || _eChessBoard.Information.Contains(
+                                                                           Constants.Elfacun)
+                                                                       || _eChessBoard.Information.Contains(
+                                                                           Constants.TabutronicTactum))
+                {
+                    _chessBoard = new ChessBoard();
+                    textBlockBoard.Text =
+                        $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}{_rm.GetString("CurrentPositionReportedByBoard")}{Environment.NewLine}";
+
+                }
+                else
+                {
+                    textBlockBoard.Text =
+                        $"{eChessBoard.Information}{Environment.NewLine}{Environment.NewLine}{_rm.GetString("EachPawnAField")}{Environment.NewLine}{eBoardName} {_rm.GetString("HasNoRecognition")}";
+                }
             }
+        }
+
+        public EBoardInfoWindow(IElectronicChessBoard eChessBoard, string eBoardName) : this( eChessBoard,eBoardName,false)
+        {
+        
+        }
+
+        public void ShowFenPosition(string fenPosition)
+        {
+            _chessBoard.NewGame();
+            _chessBoard.SetPosition(fenPosition);
+            Dispatcher?.Invoke(() => { chessBoardUcGraphics.RepaintBoard(_chessBoard); });
         }
 
         private void ReadFromBoard()

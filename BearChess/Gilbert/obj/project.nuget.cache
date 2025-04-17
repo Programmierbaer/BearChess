@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "Ou4x0bfQjKZqokPY4MdidE/0+gv545CZEOQHrdE8MGN6wJfmLhxWFsrGxioc4x6SpanQtab0XAfscxqvOurEtA==",
+  "success": true,
+  "projectFilePath": "D:\\source\\Repos\\BearChess\\BearChess\\Gilbert\\Gilbert.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\larsn\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\larsn\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

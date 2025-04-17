@@ -7,7 +7,7 @@
         xmlns:bearChessWin="clr-namespace:www.SoLaNoSoft.com.BearChessWin" Closing="WinConfigureBearChess_OnClosing"
         xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties" KeyDown="WinConfigureBearChess_OnKeyDown"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" SizeToContent="Height"
-        Title="{x:Static p:Resources.BearChessConfiguration}" Height="570" Width="350">
+        Title="{x:Static p:Resources.BearChessConfiguration}" Height="570" Width="320">
     <StackPanel>
         <GroupBox Width="300" Margin="5" Name="GroupBoxLayout" Header="{x:Static p:Resources.Layout}" HorizontalAlignment="Left">
             <Grid>
@@ -57,17 +57,18 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <CheckBox Name="checkBoxBlind" Margin="5" Grid.Column="0" Grid.Row="0" GotFocus="CheckBox_OnGotFocus"
+                <CheckBox Name="checkBoxBlind" Margin="5" Grid.Column="0" Grid.Row="0" GotFocus="CheckBox_OnGotFocus" Checked="CheckBox_OnChecked" Unchecked="CheckBox_OnUnchecked"
                           AutomationProperties.HelpText="{x:Static p:Resources.IAmBlind}"
                           Content="{x:Static p:Resources.IAmBlind}" />
-                <CheckBox Name="checkBoxBlindSayExtended" Margin="5" Grid.Column="0" Grid.Row="1" GotFocus="CheckBox_OnGotFocus"
-                          AutomationProperties.HelpText="{x:Static p:Resources.BlindSayExtended}"
-                          Content="{x:Static p:Resources.BlindSayExtended}" />
-                <CheckBox Name="checkBoxBlindSayMoveTime" Margin="5" Grid.Column="0" Grid.Row="2" GotFocus="CheckBox_OnGotFocus"
+                <CheckBox Name="checkBoxBlindSayMoveTime" Margin="5" Grid.Column="0" Grid.Row="2" GotFocus="CheckBox_OnGotFocus" Checked="CheckBox_OnChecked" Unchecked="CheckBox_OnUnchecked"
                           AutomationProperties.HelpText="{x:Static p:Resources.BlindSayMoveTime}"
                           Content="{x:Static p:Resources.BlindSayMoveTime}" />
+                <CheckBox Name="checkBoxBlindSayFIDERules" Margin="5" Grid.Column="0" Grid.Row="3" GotFocus="CheckBox_OnGotFocus" Checked="CheckBox_OnChecked" Unchecked="CheckBox_OnUnchecked"
+                          AutomationProperties.HelpText="{x:Static p:Resources.FIDERulesForMove}"
+                          Content="{x:Static p:Resources.FIDERulesForMove}" />
             </Grid>
         </GroupBox>
         <GroupBox Name="GroupBoxGames" Width="300" Margin="5" Header="{x:Static p:Resources.Games}" HorizontalAlignment="Left">

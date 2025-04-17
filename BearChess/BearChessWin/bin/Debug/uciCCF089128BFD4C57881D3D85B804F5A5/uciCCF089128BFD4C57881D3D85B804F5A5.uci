@@ -24,8 +24,8 @@
     <string>option name UCI_Elo type spin default 1300 min 1100 max 2500</string>
     <string>option name UCI_EngineAbout type string default Spike by Ralf Schäfer &amp; Volker Böhm, http:\spike.lazypics.de</string>
   </Options>
-  <FileName>C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\uciCCF089128BFD4C57881D3D85B804F5A5\Spike1.4.exe</FileName>
-  <LogoFileName>C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\uciCCF089128BFD4C57881D3D85B804F5A5\spike.bmp</LogoFileName>
+  <FileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uciCCF089128BFD4C57881D3D85B804F5A5\Spike1.4.exe</FileName>
+  <LogoFileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uciCCF089128BFD4C57881D3D85B804F5A5\spike.bmp</LogoFileName>
   <Valid>true</Valid>
   <OpeningBook />
   <OpeningBookVariation>1</OpeningBookVariation>

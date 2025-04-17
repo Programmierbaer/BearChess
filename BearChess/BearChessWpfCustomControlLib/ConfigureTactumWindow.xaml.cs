@@ -24,6 +24,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
     {
         private readonly string _fileName;
         private readonly EChessBoardConfiguration _eChessBoardConfiguration;
+        private readonly Configuration _configuration;
         private readonly List<string> _portNames;
         private readonly List<string> _allPortNames;
         private readonly ILogging _fileLogger;
@@ -32,7 +33,6 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
         private readonly ResourceManager _rm;
         private bool _isInitialized = false;
         public string SelectedPortName => comboBoxComPorts.SelectionBoxItem.ToString();
-        public bool SayBestNoveHelpRequested => checkBoxBestMoveHelpRequested.IsChecked.HasValue && checkBoxBestMoveHelpRequested.IsChecked.Value;
 
         public ConfigureTactumWindow(Configuration configuration, bool useBluetoothLE): this(configuration, useBluetoothLE, configuration.FolderPath) 
         {
@@ -42,6 +42,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
         public ConfigureTactumWindow(Configuration configuration, bool useBluetoothLE, string configPath)
         {
             InitializeComponent();
+            _configuration = configuration;
             _rm = SpeechTranslator.ResourceManager;
             _synthesizer = BearChessSpeech.Instance;
             _currentHelpText = string.Empty;
@@ -59,7 +60,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
 
                 _fileLogger = new FileLogger(Path.Combine(fileInfo.DirectoryName, "log", "TabuTronicTactumCfg.log"), 10,
                     10);
-                _fileLogger.Active = bool.Parse(configuration.GetConfigValue("writeLogFiles", "true"));
+                _fileLogger.Active = bool.Parse(_configuration.GetConfigValue("writeLogFiles", "true"));
             }
             catch
             {
@@ -72,7 +73,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 var comPortSearchWindow = new COMPortSearchWindow();
                 comPortSearchWindow.Show();
                 _portNames = SerialCommunicationTools
-                    .GetBTComPort(TabuTronicTactumLoader.EBoardName, configuration, _fileLogger, false, true, false)
+                    .GetBTComPort(TabuTronicTactumLoader.EBoardName, _configuration, _fileLogger, false, useBluetoothLE, false)
                     .ToList();
                 var btComPort = SerialBTLECommunicationTools.GetBTComPort(Constants.TabutronicTactum);
                 comPortSearchWindow.Close();
@@ -99,7 +100,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             checkBoxSayLiftUpDown.IsChecked = _eChessBoardConfiguration.SayLiftUpDownFigure;
             checkBoxPossibleMoves.IsChecked = _eChessBoardConfiguration.ShowPossibleMoves;
             checkBoxBestMove.IsChecked = _eChessBoardConfiguration.ShowPossibleMovesEval;
-            checkBoxBestMoveHelpRequested.IsChecked = _eChessBoardConfiguration.ShowHintMoves;
+            checkBoxHelpRequest.IsChecked = _configuration.GetBoolValue("showRequestForHelp", false);
             textBlockCurrentPort.Text = _eChessBoardConfiguration.PortName;
             _isInitialized = true;
             _synthesizer?.SpeakAsync(_rm.GetString("ConfigureTactumSpeech"));
@@ -184,7 +185,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
                 checkBoxPossibleMoves.IsChecked.HasValue && checkBoxPossibleMoves.IsChecked.Value;
             _eChessBoardConfiguration.ShowPossibleMovesEval =
                 checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
-            _eChessBoardConfiguration.ShowHintMoves = checkBoxBestMoveHelpRequested.IsChecked.HasValue && checkBoxBestMoveHelpRequested.IsChecked.Value;
+            _configuration.SetBoolValue("showRequestForHelp", checkBoxHelpRequest.IsChecked.HasValue && checkBoxHelpRequest.IsChecked.Value);
             EChessBoardConfiguration.Save(_eChessBoardConfiguration, _fileName);
             DialogResult = true;
         }
@@ -212,10 +213,6 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             _synthesizer?.SpeakAsync(_currentHelpText);
             selected = checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
             _currentHelpText = $"{_rm.GetString("SayBestMoveSelectedFigure")} ";
-            _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
-            _currentHelpText += ".";
-            selected = checkBoxBestMoveHelpRequested.IsChecked.HasValue && checkBoxBestMoveHelpRequested.IsChecked.Value;
-            _currentHelpText = $"{_rm.GetString("SayBestMoveHelpRequested")} ";
             _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
             _currentHelpText += ".";
             _synthesizer?.SpeakAsync(_currentHelpText);
@@ -285,7 +282,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
         private void CheckBoxBestMove_OnGotFocus(object sender, RoutedEventArgs e)
         {
             bool selected = checkBoxBestMove.IsChecked.HasValue && checkBoxBestMove.IsChecked.Value;
-            _currentHelpText = $"{_rm.GetString("SayBestMoveSelectedFigure")} ";
+            _currentHelpText = $"{_rm.GetString("SayBestMoveHelpRequested")} ";
             _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
             _synthesizer?.SpeakAsync(_currentHelpText);
         }
@@ -313,9 +310,9 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
             _synthesizer?.SpeakAsync(_currentHelpText);
         }
 
-        private void CheckBoxBestHelpRequested_OnGotFocus(object sender, RoutedEventArgs e)
+        private void CheckBoxHelpRequest_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            bool selected = checkBoxBestMoveHelpRequested.IsChecked.HasValue && checkBoxBestMoveHelpRequested.IsChecked.Value;
+            bool selected = checkBoxHelpRequest.IsChecked.HasValue && checkBoxHelpRequest.IsChecked.Value;
             _currentHelpText = $"{_rm.GetString("SayBestMoveHelpRequested")} ";
             _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
             _synthesizer?.SpeakAsync(_currentHelpText);

@@ -23,6 +23,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         string GetMove(string newFenPosition, bool ignoreRule);
 
+        Move GetAlternateMove(string newFenPosition);
+
         string GetChangedFigure(string oldFenPosition, string newFenPosition);
 
         /// <summary>
@@ -55,5 +57,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         Move[] CurrentMoveList { get; }
         Move[] EnemyMoveList { get; }
+
+        void TakeBack();
     }
 }

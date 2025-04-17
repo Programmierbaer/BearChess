@@ -15,7 +15,7 @@ namespace www.SoLaNoSoft.com.BearChessServerLib
         event EventHandler<string> ClientDisconnected;
         event EventHandler<BearChessServerMessage> ClientMessage;
         bool ServerIsOpen { get; }
-        void MoveMade(string fromField, string toField, string awaitedFen, int color);
+        void MoveMade(string identification, string fromField, string toField, string awaitedFen, int color);
         void StartStopServer();
         void AddWhiteEBoard(IElectronicChessBoard eBoard);
         void AddBlackEBoard(IElectronicChessBoard eBoard);

@@ -168,13 +168,11 @@ namespace www.SoLaNoSoft.com.BearChess.TabuTronic.Tactum.ChessBoard
 
                                 if (_byteDataToBoard.TryDequeue(out var data))
                                 {
-
                                     var s = BitConverter.ToString(data.Data);
                                     _logger?.LogDebug($"SC: Send info: {data.Info}");
                                     _logger?.LogDebug($"SC: As byte array: {s}");
                                     _comPort.Write(data.Data, 0, data.Data.Length);
                                     Thread.Sleep(50);
-
                                 }
 
                                 readLine = _comPort.ReadLine();

@@ -2,17 +2,18 @@
 using System.IO;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 
+
 namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 {
     public abstract class AbstractLoader : IElectronicChessBoard
     {
         private IEBoardWrapper _eChessBoard;
         private  string _configFile;
+        public string Identification { get; set; }
+
         public EChessBoardConfiguration Configuration { get; private set; }
         protected string Name { get; }
         protected bool Check { get; }
-
-
 
         public event EventHandler<string> MoveEvent;
         public event EventHandler<string> DataEvent;
@@ -33,14 +34,14 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         public bool IsInDemoMode => _eChessBoard.IsInDemoMode;
         public bool IsInReplayMode => _eChessBoard.IsInReplayMode;
         public bool IsConnected => _eChessBoard.IsConnected;
+        public bool IsCalibrated => _eChessBoard.IsCalibrated;
 
 
         protected AbstractLoader(bool check, string name)
         {
             Name = name;
             Check = check;
-            var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                                        Constants.BearChess, Name);
+            var basePath = Path.Combine(BearChessBase.Configuration.Instance.FolderPath, Name);
             _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
             Configuration = ReadConfiguration();
             // ReSharper disable once VirtualMemberCallInConstructor
@@ -56,14 +57,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
             Configuration = ReadConfiguration();
             Init(basePath);
-
         }
 
         protected AbstractLoader(string name)
         {
             Name = name;
-            var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                                        Constants.BearChess, name);
+            var basePath = Path.Combine(BearChessBase.Configuration.Instance.FolderPath, name);
             _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
             Configuration = ReadConfiguration();
             Init(basePath);
@@ -86,7 +85,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 return;
             }
             _configFile = Path.Combine(basePath, $"{Name}Cfg.xml");
-            EChessBoardConfiguration configuration = ReadConfiguration();
+            var configuration = ReadConfiguration();
             // ReSharper disable once VirtualMemberCallInConstructor
             _eChessBoard = GetEBoardImpl(basePath, configuration);
             _eChessBoard.FenEvent += EChessBoard_FenEvent;
@@ -226,9 +225,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
 
-        public void AwaitingMove(int fromField, int toField)
+        public void AwaitingMove(int fromField, int toField, int promoteFigure = FigureId.NO_PIECE)
         {
-            _eChessBoard.AwaitingMove(fromField, toField);
+            _eChessBoard.AwaitingMove(fromField, toField, promoteFigure);
         }
 
         /// <inheritdoc />
@@ -249,9 +248,16 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         }
 
         /// <inheritdoc />
-        public void Calibrate()
+        public bool Calibrate()
         {
-            _eChessBoard.Calibrate();
+            try
+            {
+                return _eChessBoard.Calibrate();
+            }
+            catch
+            {
+                return false;
+            }
 
         }
 

@@ -233,8 +233,8 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournam
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\System.Data.SQLite.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\BearChessWpfCustomControlLib.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\ClosedXML.dll
-C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\BearChessEChessBoard.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\TabuTronicCernoLoader.dll
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\BearChessEChessBoard.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\CertaboLoader.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\ChessnutAirLoader.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\DGTLoader.dll
@@ -301,10 +301,10 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournam
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\BearChessWpfCustomControlLib.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\ClosedXML.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\ClosedXML.xml
-C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\BearChessEChessBoard.pdb
-C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\BearChessEChessBoard.dll.config
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\TabuTronicCernoLoader.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\TabuTronicCernoLoader.dll.config
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\BearChessEChessBoard.pdb
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\BearChessEChessBoard.dll.config
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\CertaboLoader.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\CertaboLoader.dll.config
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessTournament\bin\Debug\ChessnutAirLoader.pdb

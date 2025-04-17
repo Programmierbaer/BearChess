@@ -66,6 +66,7 @@
         <Image DockPanel.Dock="Top" Source="../Assets/novag-citrine.jpeg" Width="150" Name="imageCitrine" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/novag-ucb.jpeg" Width="150" Name="imageUCB" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/TabutronicCerno.jpg" Width="150" Name="imageTabutronicCerno" Visibility="Collapsed"></Image>
+        <Image DockPanel.Dock="Top" Source="../Assets/TabuTronicSpectrum.png" Width="150" Name="imageTabutronicCernoSpectrum" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/TabutronicSentio.jpg" Width="150"  Name="imageTabutronicSentio" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/tactum.png" Width="150"  Name="imageTabutronicTactum" Visibility="Collapsed"></Image>
         <Image DockPanel.Dock="Top" Source="../Assets/Supreme.jpg" Width="150" Name="imageSupreme" Visibility="Collapsed"></Image>

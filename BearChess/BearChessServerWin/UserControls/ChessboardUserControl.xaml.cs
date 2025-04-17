@@ -18,6 +18,9 @@ using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations.CTG;
+using www.SoLaNoSoft.com.BearChessWpfCustomControlLib;
+using Move = www.SoLaNoSoft.com.BearChessBase.Implementations.Move;
+using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 
 namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
 {
@@ -27,7 +30,6 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
     public partial class ChessboardUserControl : UserControl
     {
 
-        public event EventHandler<string> ConfigurationRequested;
         public string BoardId { get; }
 
         private IBearChessController _bearChessController;
@@ -107,10 +109,9 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
             _chessBoard = new ChessBoard();
             _chessBoard.Init();
             _chessBoard.NewGame();
-            textBlockWhitePlayer.Visibility = Visibility.Hidden;
-            textBlockBlackPlayer.Visibility = Visibility.Hidden;
             RepaintBoard();
             BoardId = Guid.NewGuid().ToString("N");
+            moveListPlainUserControl.SetServerConfiguration(Configuration.Instance);
         }
 
         public void SetLogging(ILogging logging)
@@ -135,7 +136,7 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
             {
                 return;
             }
-            _logging?.LogDebug($"Client message: {e.Address} {e.ActionCode} {e.Message} {e.Color}");
+            _logging?.LogDebug($"Chessboard {BoardId}: Handle client message: {e.Address} {e.ActionCode} {e.Message} {e.Color}");
             if (e.ActionCode.Equals("DISCONNECT"))
             {
                 RemoveRemoteClientToken(e.Address);
@@ -151,18 +152,51 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
             }
             if (e.ActionCode.Equals("FEN") && _chessBoard.CurrentColor==color)
             {
+                BCServerMove lastMove = null;
                 Dispatcher?.Invoke(() =>
                 {
-                    var detectedMove =_chessBoard.GetMove(e.Message, false);
-                    if (string.IsNullOrWhiteSpace(detectedMove))
+                    if (e.AllMoves != null && e.AllMoves.Length>0)
                     {
-                        return;
+                        _chessBoard.Init();
+                        _chessBoard.NewGame();
+                        foreach (var eAllMove in e.AllMoves)
+                        {
+                            _chessBoard.MakeMove(eAllMove.FromField,eAllMove.ToField,eAllMove.PromotedFigure);
+                            var prevmove = _chessBoard.GetPrevMove();
+                            var aMove = prevmove.GetMove(_chessBoard.EnemyColor);
+                            moveListPlainUserControl.AddMove(aMove);
+                            lastMove = eAllMove;
+                        }
                     }
-                    _logging?.LogDebug($"Make detected move: {detectedMove}");
-                    _chessBoard.MakePgnMove(detectedMove,string.Empty,string.Empty);
-                    AllMoveClass allMove = _chessBoard.GetPrevMove();
-                    var  move = allMove.GetMove(_chessBoard.EnemyColor);
-                    _bearChessController.MoveMade(move.FromFieldName, move.ToFieldName,_chessBoard.GetFenPosition(),color);
+                    else
+                    {
+                        var detectedMove = _chessBoard.GetMove(e.Message, false);
+                        if (string.IsNullOrWhiteSpace(detectedMove))
+                        {
+                            return;
+                        }
+
+                        _logging?.LogDebug($"Chessboard {BoardId}: Make detected move: {detectedMove}");
+                        _chessBoard.MakeMove(detectedMove.Substring(0, 2), detectedMove.Substring(2, 2),
+                            detectedMove.Length > 4 ? detectedMove.Substring(4, 1) : string.Empty);
+
+                        AllMoveClass allMove = _chessBoard.GetPrevMove();
+                        lastMove =  new BCServerMove(allMove.GetMove(_chessBoard.EnemyColor));
+                        var prevmove = _chessBoard.GetPrevMove();
+                        var aMove = prevmove.GetMove(_chessBoard.EnemyColor);
+                        moveListPlainUserControl.AddMove(aMove);
+                    }
+
+                    string ident = e.Address;
+                    foreach (var s in _clientToken)
+                    {
+                        if (!s.Equals(e.Address))
+                        {
+                            ident = s;
+                        }
+                    }
+                 
+                    _bearChessController.MoveMade(ident, lastMove.FromFieldName, lastMove.ToFieldName,_chessBoard.GetFenPosition(), _chessBoard.CurrentColor);
                     //_chessBoard.SetPosition(e.Message,false);
                     RepaintBoard(_chessBoard);
                     
@@ -174,8 +208,8 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
             {
                 Dispatcher?.Invoke(() =>
                 {
-                    textBlockWhitePlayer.Visibility = Visibility.Hidden;
-                    textBlockBlackPlayer.Visibility = Visibility.Hidden;
+                    moveListPlainUserControl.SetPlayer(string.Empty, Fields.COLOR_WHITE);
+                    moveListPlainUserControl.SetPlayer(string.Empty, Fields.COLOR_BLACK);
                     _chessBoard.NewGame();
                     RepaintBoard(_chessBoard);
                 });
@@ -185,9 +219,7 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
             {
                 Dispatcher?.Invoke(() =>
                 {
-                    textBlockWhitePlayer.Visibility = Visibility.Visible;
-                    textBlockWhitePlayer.Text = e.Message;
-                    RepaintBoard(_chessBoard);
+                    moveListPlainUserControl.SetPlayer(e.Message, Fields.COLOR_WHITE);
                 });
                 return;
             }
@@ -195,9 +227,7 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
             {
                 Dispatcher?.Invoke(() =>
                 {
-                    textBlockBlackPlayer.Visibility = Visibility.Visible;
-                    textBlockBlackPlayer.Text = e.Message;
-                    RepaintBoard(_chessBoard);
+                    moveListPlainUserControl.SetPlayer(e.Message, Fields.COLOR_BLACK);
                 });
                 return;
             }
@@ -215,7 +245,9 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
         }
         private void _bearChessController_NewGame(object sender, CurrentGame e)
         {
-         //   ClearArrows();
+            //   ClearArrows();
+            _logging?.LogDebug($"Chessboard {BoardId}: Handle new game from controller ");
+
             textBlockBlackClock.Visibility = Visibility.Hidden;
             textBlockWhiteClock.Visibility = Visibility.Visible;
          //   _currentGame = e;
@@ -347,14 +379,5 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.UserControls
                                                  : Visibility.Hidden;
         }
 
-        private void ButtonConfig_OnClick(object sender, RoutedEventArgs e)
-        {
-            ConfigurationRequested?.Invoke(this, BoardId);
-        }
-
-        private void ButtonInfo_OnClick(object sender, RoutedEventArgs e)
-        {
-            //
-        }
     }
 }

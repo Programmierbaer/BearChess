@@ -21,6 +21,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private readonly ResourceManager _rm;
         private string _currentHelpText;
         private readonly bool _blindUser;
+        private bool _isInitialized = false;
 
         public WinConfigureBearChess(Configuration configuration)
         {
@@ -28,8 +29,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
             InitializeComponent();
             _blindUser = _configuration.GetBoolValue("blindUser", false);
             checkBoxBlind.IsChecked = _blindUser;
-            checkBoxBlindSayExtended.IsChecked = _configuration.GetBoolValue("blindUserSaySelection", false);
             checkBoxBlindSayMoveTime.IsChecked = _configuration.GetBoolValue("blindUserSayMoveTime", false);
+            checkBoxBlindSayFIDERules.IsChecked = _configuration.GetBoolValue("blindUserSayFideRules", true);
             checkBoxStartBasePosition.IsChecked = _blindUser || _configuration.GetBoolValue("startFromBasePosition", true);
             checkBoxSaveGames.IsChecked =  _blindUser || _configuration.GetBoolValue("autoSaveGames", _blindUser);
             checkBoxAllowEarly.IsChecked = _configuration.GetBoolValue("allowEarly", true);
@@ -62,6 +63,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _synthesizer?.Clear();
                 _synthesizer?.SpeakAsync(_currentHelpText);
             }
+            _isInitialized = true;
         }
 
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
@@ -69,10 +71,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _synthesizer?.Clear();
             _configuration.SetConfigValue("blindUser",
                 (checkBoxBlind.IsChecked.HasValue && checkBoxBlind.IsChecked.Value).ToString());
-            _configuration.SetConfigValue("blindUserSaySelection",
-                (checkBoxBlindSayExtended.IsChecked.HasValue && checkBoxBlindSayExtended.IsChecked.Value).ToString());
             _configuration.SetConfigValue("blindUserSayMoveTime",
                 (checkBoxBlindSayMoveTime.IsChecked.HasValue && checkBoxBlindSayMoveTime.IsChecked.Value).ToString());
+            _configuration.SetBoolValue("blindUserSayFideRules",
+                (checkBoxBlindSayFIDERules.IsChecked.HasValue && checkBoxBlindSayFIDERules.IsChecked.Value));
             _configuration.SetConfigValue("startFromBasePosition",
                 (checkBoxStartBasePosition.IsChecked.HasValue && checkBoxStartBasePosition.IsChecked.Value).ToString());
             _configuration.SetConfigValue("autoSaveGames",
@@ -161,11 +163,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _synthesizer?.SpeakAsync(_currentHelpText);
             if (selected)
             {
-                selected = checkBoxBlindSayExtended.IsChecked.HasValue && checkBoxBlindSayExtended.IsChecked.Value;
-                _currentHelpText = $"{_rm.GetString("BlindSayExtended")} ";
-                _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
-                _currentHelpText += ".";
-                _synthesizer?.SpeakAsync(_currentHelpText);
                 selected = checkBoxBlindSayMoveTime.IsChecked.HasValue && checkBoxBlindSayMoveTime.IsChecked.Value;
                 _currentHelpText = $"{_rm.GetString("blindUserSayMoveTime")} ";
                 _currentHelpText += selected ? _rm.GetString("IsSelected") : _rm.GetString("IsUnSelected");
@@ -228,9 +225,9 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void CheckBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            if (_blindUser && _rm!=null)
+            if (_blindUser && _rm != null)
             {
-                var helpText = $"{_rm.GetString("Blind")}: {AutomationProperties.GetHelpText(sender as UIElement)}";
+                var helpText = $"{AutomationProperties.GetHelpText(sender as UIElement)}";
                 if (sender is CheckBox checkBox)
                 {
                     var selected = checkBox.IsChecked.HasValue && checkBox.IsChecked.Value;
@@ -257,6 +254,27 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        private void CheckBox_OnChecked(object sender, RoutedEventArgs e)
+        {
+            if (_isInitialized)
+            {
+                if (_blindUser && _rm != null)
+                {
+                    _synthesizer?.SpeakAsync(_rm.GetString("IsSelected"));
+                }
+            }
+        }
+
+        private void CheckBox_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            if (_isInitialized)
+            {
+                if (_blindUser && _rm != null)
+                {
+                    _synthesizer?.SpeakAsync(_rm.GetString("IsUnSelected"));
+                }
+            }
+        }
 
         private void WinConfigureBearChess_OnClosing(object sender, CancelEventArgs e)
         {

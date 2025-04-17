@@ -9,7 +9,7 @@ using www.SoLaNoSoft.com.BearChessBase.Implementations;
 
 namespace www.SoLaNoSoft.com.BearChessBase
 {
-    public class MaterialHelper
+    public static class MaterialHelper
     {
         public class WhiteBlackLine
         {

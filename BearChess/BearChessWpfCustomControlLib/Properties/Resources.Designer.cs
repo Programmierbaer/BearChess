@@ -322,6 +322,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die and with buddy best line ähnelt.
+        /// </summary>
+        public static string AndWithBestLineBuddy {
+            get {
+                return ResourceManager.GetString("AndWithBestLineBuddy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die and with first best move ähnelt.
         /// </summary>
         public static string AndWithFirstBestMove {
@@ -1627,6 +1636,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Configure TabuTronic Cerno Spectrum chessboard ähnelt.
+        /// </summary>
+        public static string ConfigureCernoSpectrum {
+            get {
+                return ResourceManager.GetString("ConfigureCernoSpectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Configure Certabo chessboard ähnelt.
         /// </summary>
         public static string ConfigureCertabo {
@@ -1762,6 +1780,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Configure TabuTronic Sentio Spectrum chessboard ähnelt.
+        /// </summary>
+        public static string ConfigureSentioSpectrum {
+            get {
+                return ResourceManager.GetString("ConfigureSentioSpectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Configure SquareOff Pro ähnelt.
         /// </summary>
         public static string ConfigureSquareOffPro {
@@ -1780,7 +1807,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die This is the TabuTronic Tactum configuration window ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die TabuTronic Tactum configuration window ähnelt.
         /// </summary>
         public static string ConfigureTactumSpeech {
             get {
@@ -2059,11 +2086,29 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Connect to TabuTronic Cerno Spectrum chessboard ähnelt.
+        /// </summary>
+        public static string ConnectToTabuTronicCernoSpectrumTip {
+            get {
+                return ResourceManager.GetString("ConnectToTabuTronicCernoSpectrumTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Connect to TabuTronic Cerno chessboard ähnelt.
         /// </summary>
         public static string ConnectToTabuTronicCernoTip {
             get {
                 return ResourceManager.GetString("ConnectToTabuTronicCernoTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Connect to TabuTronic Sention Spectrum chessboard ähnelt.
+        /// </summary>
+        public static string ConnectToTabuTronicSentioSpectrumTip {
+            get {
+                return ResourceManager.GetString("ConnectToTabuTronicSentioSpectrumTip", resourceCulture);
             }
         }
         
@@ -5938,6 +5983,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Say move from buddy when help is requested ähnelt.
+        /// </summary>
+        public static string SayBestMoveFromBuddyEngine {
+            get {
+                return ResourceManager.GetString("SayBestMoveFromBuddyEngine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Say best move when help is requested ähnelt.
         /// </summary>
         public static string SayBestMoveHelpRequested {
@@ -6447,6 +6501,15 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib.Properties {
         public static string ShowHash {
             get {
                 return ResourceManager.GetString("ShowHash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show or hide buddy comments ähnelt.
+        /// </summary>
+        public static string ShowHideBuddyComments {
+            get {
+                return ResourceManager.GetString("ShowHideBuddyComments", resourceCulture);
             }
         }
         

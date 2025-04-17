@@ -196,7 +196,7 @@ namespace www.SoLaNoSoft.com.BearChessServerWin.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Server name ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Hostname ähnelt.
         /// </summary>
         public static string ServerName {
             get {

@@ -1,0 +1,15 @@
+D:\source\Repos\BearChess\BearChess\Gilbert\bin\Debug\netstandard2.0\Gilbert.deps.json
+D:\source\Repos\BearChess\BearChess\Gilbert\bin\Debug\netstandard2.0\Gilbert.dll
+D:\source\Repos\BearChess\BearChess\Gilbert\bin\Debug\netstandard2.0\Gilbert.pdb
+D:\source\Repos\BearChess\BearChess\Gilbert\bin\Debug\netstandard2.0\BearChessBase.dll
+D:\source\Repos\BearChess\BearChess\Gilbert\bin\Debug\netstandard2.0\BearChessBase.pdb
+D:\source\Repos\BearChess\BearChess\Gilbert\obj\Debug\netstandard2.0\Gilbert.csproj.CoreCompileInputs.cache
+D:\source\Repos\BearChess\BearChess\Gilbert\obj\Debug\netstandard2.0\Gilbert.AssemblyInfoInputs.cache
+D:\source\Repos\BearChess\BearChess\Gilbert\obj\Debug\netstandard2.0\Gilbert.AssemblyInfo.cs
+D:\source\Repos\BearChess\BearChess\Gilbert\obj\Debug\netstandard2.0\Gilbert.csproj.CopyComplete
+D:\source\Repos\BearChess\BearChess\Gilbert\obj\Debug\netstandard2.0\Gilbert.dll
+D:\source\Repos\BearChess\BearChess\Gilbert\obj\Debug\netstandard2.0\Gilbert.pdb
+D:\source\Repos\BearChess\BearChess\Gilbert\bin\Debug\netstandard2.0\Engine.dll
+D:\source\Repos\BearChess\BearChess\Gilbert\bin\Debug\netstandard2.0\Engine.pdb
+D:\source\Repos\BearChess\BearChess\Gilbert\obj\Debug\netstandard2.0\Gilbert.csproj.AssemblyReference.cache
+D:\source\Repos\BearChess\BearChess\Gilbert\obj\Debug\netstandard2.0\Gilbert.GeneratedMSBuildEditorConfig.editorconfig

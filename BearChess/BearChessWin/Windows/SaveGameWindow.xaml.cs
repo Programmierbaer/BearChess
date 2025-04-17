@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Resources;
 using System.Windows;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessTools;
 

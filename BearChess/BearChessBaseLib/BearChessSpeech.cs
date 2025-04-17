@@ -48,13 +48,17 @@ namespace www.SoLaNoSoft.com.BearChessBase
                     {
                         if (!_pauseSpeak)
                         {
-                            if (_allTextToSpeech.Count < 11)
+                          //  if (_allTextToSpeech.Count < 11)
                             {
                                 var languageTag = Configuration.Instance.GetConfigValue("selectedSpeechCulture",
                                     CultureInfo.CurrentCulture.IetfLanguageTag).ToLower();
                                 if (languageTag.Contains("de"))
                                 {
                                     text = text.Replace("BearChess", "BärChess");
+                                }
+                                else
+                                {
+                                    text = text.Replace("BearChess", "Bear Chess");
                                 }
 
                                 _synthesizer.Speak(text);

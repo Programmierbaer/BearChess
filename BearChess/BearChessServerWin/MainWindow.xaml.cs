@@ -15,6 +15,9 @@ using System.IO;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using System.Collections.Concurrent;
+using System.Reflection;
+using www.SoLaNoSoft.com.BearChessBase.Definitions;
+using System.Diagnostics;
 
 namespace www.SoLaNoSoft.com.BearChessServerWin
 {
@@ -25,13 +28,15 @@ namespace www.SoLaNoSoft.com.BearChessServerWin
     {
         private readonly IBearChessController _bearChessController;
         private readonly List<BearChessClientInformation> _tokenList = new List<BearChessClientInformation>();        
-        private readonly List<ChessboardUserControl> _chessBoardList = new List<ChessboardUserControl>();
+        private readonly List<SmallChessboardUserControl> _chessBoardList = new List<SmallChessboardUserControl>();
         private readonly ResourceManager _rm;
         private readonly ILogging _logging;
         private readonly ConcurrentBag<string> _tokens = new ConcurrentBag<string>();
         public MainWindow()
         {
             InitializeComponent();
+            var assembly = Assembly.GetExecutingAssembly();
+            Configuration.BearChessProgramAssemblyName = assembly.FullName;
             _rm = Properties.Resources.ResourceManager;
             _rm.GetResourceSet(Thread.CurrentThread.CurrentUICulture, false, true);
             SpeechTranslator.ResourceManager = _rm;
@@ -40,19 +45,20 @@ namespace www.SoLaNoSoft.com.BearChessServerWin
             {
                 Directory.CreateDirectory(logPath);
             }
-            _logging = new FileLogger(Path.Combine(logPath, "bearchessServer.log"), 10, 10)
+            _logging = new FileLogger(Path.Combine(logPath, $"{Constants.BearChessServer}.log"), 10, 10)
             {
                 Active = true
             };
+            var assemblyName = assembly.GetName();
+            var fileInfo = new FileInfo(assembly.Location);
+            var productVersion = FileVersionInfo.GetVersionInfo(Application.ResourceAssembly.Location).ProductVersion;
+            _logging.LogInfo($"Start {Constants.BearChessServer} v{assemblyName.Version} {fileInfo.LastWriteTimeUtc:G} {productVersion}");
             _bearChessController = new BearChessController(_logging);
             _bearChessController.ClientConnected += _bearChessController_ClientConnected;
             _bearChessController.ClientDisconnected += _bearChessController_ClientDisconnected;
             _bearChessController.ClientMessage += _bearChessController_ClientMessage;
             _bearChessController.ServerStarted += _bearChessController_ServerStarted;
             _bearChessController.ServerStopped += _bearChessController_ServerStopped;
-
-            
-
         }
         private void _bearChessController_ServerStopped(object sender, EventArgs e)
         {
@@ -77,13 +83,13 @@ namespace www.SoLaNoSoft.com.BearChessServerWin
         {
             if (e.ActionCode.Equals("CONNECT"))
             {
-                _logging?.LogDebug($"Connect: {e.Message}: {e.Address} ");
+                _logging?.LogDebug($"Main: Connect: {e.Message}: {e.Address} ");
                 _tokenList.Add(new BearChessClientInformation() { Address = e.Address, Name = e.Message });               
                 return;
             }
             if (e.ActionCode.Equals("DISCONNECT"))
             {
-                _logging?.LogDebug($"Disonnect: {e.Message}: {e.Address} ");
+                _logging?.LogDebug($"Main: Disconnect: {e.Message}: {e.Address} ");
                 var clientInfo =_tokenList.FirstOrDefault(t => t.Address.Equals(e.Address));
                 if (clientInfo != null)
                 {
@@ -105,12 +111,24 @@ namespace www.SoLaNoSoft.com.BearChessServerWin
         }
         private void InitTournamentTab(string name, int gamesCount)
         {
+            var uniqueName = Guid.NewGuid().ToString("N");
+            var logPath = Path.Combine(Configuration.Instance.FolderPath, "log",$"T_{uniqueName}");
+            if (!Directory.Exists(logPath))
+            {
+                Directory.CreateDirectory(logPath);
+            }
+            var logging = new FileLogger(Path.Combine(logPath, "Tournament.log"), 10, 10)
+            {
+                Active = true
+            };
+            _logging.LogDebug($"Create logger for tournament {name}: T_{uniqueName}");
+            logging?.LogInfo($"Tournament: {name}");
             var tabItem = new TabItem();
             var sp = new StackPanel() { Orientation = Orientation.Horizontal };
             sp.Children.Add(new TextBlock() { Text = name });
             sp.Children.Add(new Button() { Content = "?", Width = 20, Margin = new Thickness(3, 0, 0, 0) });
             tabItem.Header = sp;
-            var gamesGrid = new Grid() { Name = $"grid{name}" };
+            var gamesGrid = new Grid() { Name = $"grid{uniqueName}" };
             tabControlTournaments.Items.Add(tabItem);
             tabItem.Content = gamesGrid;
             var colsCount = gamesCount>3 ? 4 : gamesCount;
@@ -129,27 +147,25 @@ namespace www.SoLaNoSoft.com.BearChessServerWin
             {
                 for (var c = 0; c < gamesGrid.ColumnDefinitions.Count; c++)
                 {
-                    if (gamesCount > 0)
+                    if (gamesCount <= 0) break;
+                    var boardGrid = new Grid() { Name = $"boardGrid{uniqueName}" };                        
+                    boardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width=new GridLength(1,GridUnitType.Star)});
+                    boardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width= new GridLength(1, GridUnitType.Auto)});
+                    Grid.SetColumn(boardGrid, c);
+                    Grid.SetRow(boardGrid, r);
+                    var view1 = new SmallChessboardUserControl()
                     {
-                        var boardGrid = new Grid() { Name = $"boardGrid{name}" };                        
-                        boardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width=new GridLength(1,GridUnitType.Star)});
-                        boardGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width= new GridLength(1, GridUnitType.Auto)});
-                        Grid.SetColumn(boardGrid, c);
-                        Grid.SetRow(boardGrid, r);
-                        var view1 = new ChessboardUserControl()
-                        {
-                            Margin = new Thickness(5),
-                        };
-                        view1.SetLogging(_logging);
-                        view1.ConfigurationRequested += Board_ConfigurationRequested;
-                        _chessBoardList.Add(view1);
-                        view1.SetBearChessController(_bearChessController);
-                        Grid.SetColumn(view1, 0);
-                        Grid.SetRow(view1, 0);
-                        boardGrid.Children.Add(view1);
-                        gamesGrid.Children.Add(boardGrid);
-                        gamesCount--;
-                    }
+                        Margin = new Thickness(5),
+                    };
+                    view1.SetLogging(logging);
+                    view1.ConfigurationRequested += Board_ConfigurationRequested;
+                    _chessBoardList.Add(view1);
+                    view1.SetBearChessController(_bearChessController);
+                    Grid.SetColumn(view1, 0);
+                    Grid.SetRow(view1, 0);
+                    boardGrid.Children.Add(view1);
+                    gamesGrid.Children.Add(boardGrid);
+                    gamesCount--;
                 }
             }
             // Select new tab item
@@ -164,13 +180,15 @@ namespace www.SoLaNoSoft.com.BearChessServerWin
                 return;
             }
 
-            var configServerBoard = new ConfigureServerChessboardWindow(boardId,_tokenList.ToArray(),_logging);
-            configServerBoard.Owner = this;
+            var configServerBoard = new ConfigureServerChessboardWindow(boardId,_tokenList.ToArray(),_logging)
+                {
+                    Owner = this
+                };
             var dialogResult = configServerBoard.ShowDialog();
             if (dialogResult.HasValue && dialogResult.Value)
             {
-                _logging?.LogDebug($"Configured for white: {configServerBoard.WhiteConnectionId} {configServerBoard.WhiteEboard} ");
-                _logging?.LogDebug($"Configured for black: {configServerBoard.BlackConnectionId} {configServerBoard.BlackEboard} ");
+                _logging?.LogDebug($"Main: Configured e-Board for white: {configServerBoard.WhiteConnectionId} {configServerBoard.WhiteEboard} ");
+                _logging?.LogDebug($"Main: Configured e-Board for black: {configServerBoard.BlackConnectionId} {configServerBoard.BlackEboard} ");
                 configBoard.AddRemoteClientToken(configServerBoard.WhiteConnectionId);
                 configBoard.AddRemoteClientToken(configServerBoard.BlackConnectionId);
                 _bearChessController.AddWhiteEBoard(configServerBoard.WhiteEboard);

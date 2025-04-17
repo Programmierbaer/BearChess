@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessServerWin\App.xaml
-51042136672
+6535365784
 
-10-300010041
+111595595683
 60867554795
-MainWindow.xaml;Styles\FieldStyles.xaml;UserControls\ChessboardUserControl.xaml;Windows\ConfigureServerWindow.xaml;Windows\QueryTournamentWindow.xaml;
+MainWindow.xaml;Styles\FieldStyles.xaml;UserControls\ChessboardUserControl.xaml;UserControls\SmallChessboardUserControl.xaml;Windows\ConfigureServerWindow.xaml;Windows\QueryTournamentWindow.xaml;
 
 True
 

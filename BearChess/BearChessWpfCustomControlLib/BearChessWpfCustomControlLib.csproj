@@ -57,6 +57,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ConfigureCernoSpectrumWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConfigureCernoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,11 +113,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="EditCommentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="InfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MoveListPlainUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MovePlainUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,6 +157,9 @@
     </Compile>
     <Compile Include="COMPortSearchWindow.xaml.cs">
       <DependentUpon>COMPortSearchWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigureCernoSpectrumWindow.xaml.cs">
+      <DependentUpon>ConfigureCernoSpectrumWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConfigureCernoWindow.xaml.cs">
       <DependentUpon>ConfigureCernoWindow.xaml</DependentUpon>
@@ -181,11 +200,21 @@
     <Compile Include="ConfigureTactumWindow.xaml.cs">
       <DependentUpon>ConfigureTactumWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditCommentWindow.xaml.cs">
+      <DependentUpon>EditCommentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IMoveListPlainWindow.cs" />
     <Compile Include="InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MoveListPlainUserControl.xaml.cs">
+      <DependentUpon>MoveListPlainUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MovePlainUserControl.xaml.cs">
+      <DependentUpon>MovePlainUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="NumericUpDownUserControl.xaml.cs">
       <DependentUpon>NumericUpDownUserControl.xaml</DependentUpon>
@@ -225,6 +254,19 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Assets\Fonts\Alpha.ttf" />
+    <Resource Include="Assets\Fonts\AVENFONT.TTF" />
+    <Resource Include="Assets\Fonts\CASEFONT.TTF" />
+    <Resource Include="Assets\Fonts\ChessAlpha2.ttf" />
+    <Resource Include="Assets\Fonts\CONDFONT.TTF" />
+    <Resource Include="Assets\Fonts\KINGFONT.TTF" />
+    <Resource Include="Assets\Fonts\LEIPFONT.TTF" />
+    <Resource Include="Assets\Fonts\LUCEFONT.TTF" />
+    <Resource Include="Assets\Fonts\MAGNFONT.TTF" />
+    <Resource Include="Assets\Fonts\MAYAFONT.TTF" />
+    <Resource Include="Assets\Fonts\MERIFONT.TTF" />
+    <Resource Include="Assets\Fonts\MISCHESS.TTF" />
+    <Resource Include="Assets\Fonts\MVALFONT.TTF" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

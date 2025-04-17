@@ -10,6 +10,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Definitions;
 using www.SoLaNoSoft.com.BearChessBase.Implementations;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
@@ -37,7 +39,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private readonly List<ArrowDescription> _arrowList = new List<ArrowDescription>();
         private readonly ConcurrentDictionary<int, bool> _markedGreenFields = new ConcurrentDictionary<int, bool>();
-        private readonly HashSet<int> _markedNonGreenFields = new HashSet<int>();
 
         private readonly Dictionary<string, BitmapImage> _piecesBitmaps = new Dictionary<string, BitmapImage>();
         private readonly Dictionary<int, Image> _piecesBorderBitmaps = new Dictionary<int, Image>();
@@ -83,6 +84,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private string _whiteFileName;
         private string _whitePlayer = string.Empty;
         private SolidColorBrush _hintArrowColor;
+        private SolidColorBrush _bookArrowColor;
         private readonly ResourceManager _rm;
 
 
@@ -106,6 +108,62 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _showPossibleMoves = false;
             _fastMoveSelection = false;
             _hintArrowColor = Brushes.Khaki;
+            checkBoxCastlesAuto.IsChecked = true;
+            DrawAnalyses(0);
+        }
+
+        public void ShowAnalysisBar(bool showAnalysisBar)
+        {
+            canvasAnalyses.Visibility = showAnalysisBar ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public void DrawAnalyses(double analysisValue)
+        {
+            canvasAnalyses.ToolTip = analysisValue;
+            analysisValue *= 10;
+            if (analysisValue > 100)
+            {
+                analysisValue = 100;
+            }
+            if (analysisValue < -100)
+            {
+                analysisValue = -100;
+            }
+            double middleValue = 460d / 2d;
+
+            var heightWhite = middleValue + (middleValue / 100d * analysisValue);
+            if (heightWhite < 0)
+            {
+                heightWhite = 0;
+            }
+            var heightBlack = 460d - heightWhite;
+            if (heightBlack < 0)
+            {
+                heightBlack = 0;
+            }
+            var lineBlack = new Rectangle
+            {
+                Stroke = System.Windows.Media.Brushes.Black,
+                StrokeThickness = 0.5,
+                Width = 9,
+                Height = heightBlack,
+                Fill = System.Windows.Media.Brushes.DarkGray
+            };
+            var lineWhite = new Rectangle
+            {
+                Stroke = System.Windows.Media.Brushes.Black,
+                StrokeThickness = 0.5,
+                Width = 9,
+                Height = heightWhite,
+                Fill = System.Windows.Media.Brushes.White
+            };
+            canvasAnalyses.Children.Add(lineBlack);
+            canvasAnalyses.Children.Add(lineWhite);
+            Canvas.SetTop(lineBlack,1);
+            Canvas.SetLeft(lineBlack,1);
+            Canvas.SetTop(lineWhite, heightBlack);
+            Canvas.SetLeft(lineWhite, 1);
+  
         }
 
         public bool WhiteOnTop { get; private set; } = true;
@@ -143,6 +201,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public event EventHandler SwitchColorEvent;
         public event EventHandler ForceMoveEvent;
         public event EventHandler<int> RequestForHint;
+        public event EventHandler<bool> EvaluateCastleRightsEvent;
 
         public void SetCanvas(Canvas canvas)
         {
@@ -768,7 +827,16 @@ namespace www.SoLaNoSoft.com.BearChessWin
             ShowControlButtons(true);
         }
 
-        public void SetInAnalyzeMode(bool inAnalyzeMode, string fenPosition)
+        public void SetEBoardControlMode()
+        {
+            ShowControlButtons(false);
+            ShowMultiButton(false);
+            HideRobot();
+            HideForceMove();
+            HidePauseGame();
+        }
+
+        public void SetInAnalyzeMode(bool inAnalyzeMode, string fenPosition, bool allowCastlingSettings)
         {
             _inAnalyzeMode = inAnalyzeMode;
             if (_inAnalyzeMode)
@@ -777,11 +845,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 _chessBoard.Init();
                 _chessBoard.NewGame();
                 _chessBoard.SetPosition(fenPosition);
+                GroupBoxCastling.Visibility = allowCastlingSettings ?  Visibility.Visible : Visibility.Hidden;
             }
             else
             {
                 _chessBoard = null;
                 multiButton.Visibility = Visibility.Visible;
+                GroupBoxCastling.Visibility = Visibility.Hidden;
+                checkBoxCastlesAuto.IsChecked = true;
             }
         }
 
@@ -791,7 +862,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             moveStepAllForward.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
             moveStepBack.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
             moveStepForward.Visibility = showButtons && !_isConnected ? Visibility.Visible : Visibility.Hidden;
-           
         }
 
         public void ShowMultiButton(bool showButton)
@@ -1255,20 +1325,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     return;
                 }
             }
-            else
-            {
-                foreach (var field in fields)
-                {
-                    if (!_markedNonGreenFields.Contains(field))
-                    {
-                        break;
-                    }
-
-                    return;
-                }
-
-                _markedNonGreenFields.Clear();
-            }
 
             foreach (var field in fields)
             {
@@ -1323,7 +1379,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
             RemoveHintArrows();
             _canvas?.Children.Clear();
             _arrowList.Clear();
-            _markedNonGreenFields.Clear();
             _markedGreenFields.Clear();
             if (clearFieldTags)
             {
@@ -1359,6 +1414,23 @@ namespace www.SoLaNoSoft.com.BearChessWin
             }
         }
 
+        public void MarkBookFields(int[] fields, SolidColorBrush color)
+        {
+            _arrowList.RemoveAll(f => f.Color.Equals(color));
+            if (fields.Length > 1)
+            {
+                var arrowDescription = new ArrowDescription
+                {
+                    FromField = fields[0],
+                    ToField = fields[1],
+                    Color = color
+                };
+
+                _arrowList.Add(arrowDescription);
+                RedrawArrows();
+            }
+        }
+
         public void RedrawArrows()
         {
             _canvas?.Children.Clear();
@@ -1374,10 +1446,11 @@ namespace www.SoLaNoSoft.com.BearChessWin
             _arrowList.RemoveAll(f => f.Color.Equals(_hintArrowColor));
             RedrawArrows();
         }
+       
 
         private void DrawArrow(ArrowDescription arrowDescription)
         {
-            if (_canvas == null)
+            if (_canvas == null || !_piecesBorderBitmaps.ContainsKey(arrowDescription.FromField) || !_piecesBorderBitmaps.ContainsKey(arrowDescription.ToField))
             {
                 return;
             }
@@ -2152,5 +2225,37 @@ namespace www.SoLaNoSoft.com.BearChessWin
         #endregion
 
 
+        private void CheckBoxCastlesAuto_OnChecked(object sender, RoutedEventArgs e)
+        {
+            GroupBoxCastleRightsWhite.IsEnabled = false;
+            GroupBoxCastleRightsBlack.IsEnabled = false;
+            EvaluateCastleRightsEvent?.Invoke(this, true);
+
+        }
+
+        private void CheckBoxCastlesAuto_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            GroupBoxCastleRightsWhite.IsEnabled = true;
+            GroupBoxCastleRightsBlack.IsEnabled = true;
+            EvaluateCastleRightsEvent?.Invoke(this, false);
+        }
+
+        public bool WhiteCanCastleKingSide =>
+            checkBoxWhiteShortCastle.IsChecked.HasValue && checkBoxWhiteShortCastle.IsChecked.Value;
+        public bool WhiteCanCastleQueenSide =>
+            checkBoxWhiteLongCastle.IsChecked.HasValue && checkBoxWhiteLongCastle.IsChecked.Value;
+
+        public bool BlackCanCastleKingSide =>
+            checkBoxBlackShortCastle.IsChecked.HasValue && checkBoxBlackShortCastle.IsChecked.Value;
+        public bool BlackCanCastleQueenSide =>
+            checkBoxBlackLongCastle.IsChecked.HasValue && checkBoxBlackLongCastle.IsChecked.Value;
+
+        public bool EvaluateCastleRights =>
+            checkBoxCastlesAuto.IsChecked.HasValue && checkBoxCastlesAuto.IsChecked.Value;
+
+        private void CheckBoxCastleRights_OnCheckedUnChecked(object sender, RoutedEventArgs e)
+        {
+            EvaluateCastleRightsEvent?.Invoke(this, false);
+        }
     }
 }

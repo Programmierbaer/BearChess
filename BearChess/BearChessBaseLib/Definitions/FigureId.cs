@@ -32,6 +32,18 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
         public const int QUEEN = 5;
         public const int KING = 6;
 
+
+
+        public static readonly Dictionary<string, string> FigureDEToGB = new Dictionary<string, string>()
+        {
+            { "K", "K" },
+            { "D", "Q" },
+            { "T", "R" },
+            { "S", "N" },
+            { "L", "B" },
+            { "", "" }
+        };
+
         public static readonly Dictionary<int, string> FigureIdToFenCharacter = new Dictionary<int, string>()
                                                                                 {
                                                                                     {NO_PIECE, string.Empty},
@@ -57,6 +69,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                              { "R","T" },
                                                                              { "N","S" },
                                                                              { "B","L" },
+                                                                             { "k","K" },
+                                                                             { "q","D" },
+                                                                             { "r","T" },
+                                                                             { "n","S" },
+                                                                             { "b","L" },
                                                                              { "","" }
                                                                          };
         public static readonly Dictionary<string, string> FigureGBtoFR = new Dictionary<string, string>()
@@ -66,6 +83,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                              { "R","T" },
                                                                              { "N","C" },
                                                                              { "B","F" },
+                                                                             { "k","R" },
+                                                                             { "q","D" },
+                                                                             { "r","T" },
+                                                                             { "n","C" },
+                                                                             { "b","F" },
                                                                              { "","" }
                                                                          };
         public static readonly Dictionary<string, string> FigureGBtoIT = new Dictionary<string, string>()
@@ -75,6 +97,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                              { "R","T" },
                                                                              { "N","C" },
                                                                              { "B","A" },
+                                                                             { "k","R" },
+                                                                             { "q","D" },
+                                                                             { "r","T" },
+                                                                             { "n","C" },
+                                                                             { "b","A" },
                                                                              { "","" }
                                                                          };
 
@@ -85,6 +112,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                              { "R","T" },
                                                                              { "N","C" },
                                                                              { "B","A" },
+                                                                             { "k","R" },
+                                                                             { "q","D" },
+                                                                             { "r","T" },
+                                                                             { "n","C" },
+                                                                             { "b","A" },
                                                                              { "","" }
                                                                          };
 
@@ -95,6 +127,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                              { "R","T" },
                                                                              { "N","S" },
                                                                              { "B","L" },
+                                                                             { "k","K" },
+                                                                             { "q","D" },
+                                                                             { "r","T" },
+                                                                             { "n","S" },
+                                                                             { "b","L" },
                                                                              { "","" }
                                                                          };
 
@@ -105,6 +142,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
             { "R","W" },
             { "N","S" },
             { "B","G" },
+            { "k","K" },
+            { "q","H" },
+            { "r","W" },
+            { "n","S" },
+            { "b","G" },
             { "","" }
         };
 
@@ -115,6 +157,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
             { "R","H" },
             { "N","R" },
             { "B","B" },
+            { "k","K" },
+            { "q","H" },
+            { "r","W" },
+            { "n","S" },
+            { "b","G" },
             { "","" }
         };
 
@@ -152,6 +199,23 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                               {BLACK_QUEEN, "Dame"},
                                                                               {BLACK_KING, "König"},
                                                                           };
+        public static readonly Dictionary<int, string> FigureIdToFideName = new Dictionary<int, string>()
+        {
+            {NO_PIECE, string.Empty},
+            {OUTSIDE_PIECE, string.Empty},
+            {WHITE_PAWN, "Bauer"},
+            {WHITE_BISHOP, "Laeufer"},
+            {WHITE_KNIGHT,"Springer"},
+            {WHITE_ROOK, "Turm"},
+            {WHITE_QUEEN, "Dame"},
+            {WHITE_KING, "Koenig"},
+            {BLACK_PAWN, "Bauer"},
+            {BLACK_BISHOP, "Laeufer"},
+            {BLACK_KNIGHT, "Springer"},
+            {BLACK_ROOK, "Turm"},
+            {BLACK_QUEEN, "Dame"},
+            {BLACK_KING, "Koenig"},
+        };
 
         private static readonly Dictionary<string, int> FenCharacterToFigureId = new Dictionary<string, int>()
                                                                                 {
@@ -171,9 +235,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Definitions
                                                                                 };
         public static  int GetFenCharacterToFigureId(string fenChar)
         {
-            if (FenCharacterToFigureId.ContainsKey(fenChar))
+            if (FenCharacterToFigureId.TryGetValue(fenChar, out var id))
             {
-                return FenCharacterToFigureId[fenChar];
+                return id;
             }
             return NO_PIECE;
         }

@@ -10,7 +10,7 @@
     <Grid>
         <StackPanel Margin="5">
             <CheckBox Margin="5" Name="CheckBoxSameConnection"  Content="{x:Static p:Resources.SameConnectionWhiteAndBlack}" Unchecked="CheckBoxSameConnection_OnUnchecked" Checked="CheckBoxSameConnection_OnChecked"></CheckBox>
-            <Border  Name="BoarderWhite"  Margin="5" BorderBrush="Gray" BorderThickness="1">
+            <Border  Name="BorderWhite"  Margin="5" BorderBrush="Gray" BorderThickness="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -46,7 +46,7 @@
 
                 </Grid>
             </Border>
-            <Border  Name="BoarderBlack"  Margin="5" BorderBrush="Gray" BorderThickness="1">
+            <Border  Name="BorderBlack"  Margin="5" BorderBrush="Gray" BorderThickness="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>

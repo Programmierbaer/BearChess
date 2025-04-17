@@ -113,6 +113,10 @@ namespace www.SoLaNoSoft.com.BearChessBase
             SetConfigValue("gamesPGNExportSymbols", pgnConfiguration.IncludeSymbols.ToString());
         }
 
+        public static string BearChessProgramAssemblyName { get; set; }
+
+        public bool IsBearChessServer { get; private set; }
+
         public static Configuration Instance
         {
             get
@@ -129,13 +133,19 @@ namespace www.SoLaNoSoft.com.BearChessBase
             get;
         }
 
+        
+
         private Configuration()
         {
             RunOn64Bit = Environment.Is64BitProcess;
             SystemCultureInfo = Thread.CurrentThread.CurrentUICulture;
-            var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
+            IsBearChessServer = !string.IsNullOrWhiteSpace(BearChessProgramAssemblyName) &&
+                                BearChessProgramAssemblyName.Contains("BearChessServer");
+            var assembly = Assembly.GetExecutingAssembly();
+            var fileInfo = new FileInfo(assembly.Location);
             BinPath = fileInfo.DirectoryName;
-            FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),  Constants.BearChess);
+            string bearChessConst = IsBearChessServer ? Constants.BearChessServer : Constants.BearChess;
+            FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), bearChessConst);
             var args = Environment.GetCommandLineArgs();
             Standalone = false;
             for (var i = 1; i < args.Length; i++)
@@ -152,12 +162,12 @@ namespace www.SoLaNoSoft.com.BearChessBase
                             {
                                 FolderPath =
                                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                                        Constants.BearChess);
+                                        bearChessConst);
                             }
 
                             else
                             {
-                                var pathName = Path.Combine(pathValue, Constants.BearChess);
+                                var pathName = Path.Combine(pathValue, bearChessConst);
                                 Directory.Exists(pathName);
                                 FolderPath = pathName;
                             }
@@ -173,7 +183,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 {
                     if (BinPath != null)
                     {
-                        FolderPath = Path.Combine(BinPath, Constants.BearChess);
+                        FolderPath = Path.Combine(BinPath, bearChessConst);
                     }
 
                     Standalone = true;
@@ -189,7 +199,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
                 catch
                 {
                     FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                        Constants.BearChess);
+                        bearChessConst);
                 }
             }
 
@@ -198,7 +208,7 @@ namespace www.SoLaNoSoft.com.BearChessBase
             FicTimeControlFileName = Path.Combine(FolderPath, "bearchess_ficstc.xml");
             StartupTimeControlFileName = Path.Combine(FolderPath, "bearchess_start_tc.xml");
             StartupTimeControlBlackFileName = Path.Combine(FolderPath, "bearchess_start_tc2.xml");
-            ConfigFileName = Path.Combine(FolderPath, "bearchess.xml");
+            ConfigFileName = Path.Combine(FolderPath, $"{bearChessConst}.xml");
             BTConfigFileName = "bearchess_bt.xml";
             DatabaseFilterFileName = Path.Combine(FolderPath, "bearchess_dbfilter.xml");
             try
@@ -282,9 +292,9 @@ namespace www.SoLaNoSoft.com.BearChessBase
             return double.Parse(GetConfigValue(_appSettings, winName, defaultValue.ToString(CultureInfo.InvariantCulture)), CultureInfo.InvariantCulture);
         }
 
-        public void SetDoubleValue(string winName, double position)
+        public void SetDoubleValue(string winName, double value)
         {
-            SetConfigValue(_appSettings, winName, position.ToString(CultureInfo.InvariantCulture));
+            SetConfigValue(_appSettings, winName, value.ToString(CultureInfo.InvariantCulture));
         }
 
         public bool GetBoolValue(string key, bool defaultValue)

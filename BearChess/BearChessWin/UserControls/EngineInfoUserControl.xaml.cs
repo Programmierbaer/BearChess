@@ -68,9 +68,10 @@ namespace www.SoLaNoSoft.com.BearChessWin
                 if (bool.Parse(configuration.GetConfigValue("hideBuddyEngine", "false")))
                 {
                     borderAll.Visibility = Visibility.Collapsed;
+                    this.Width = 0;
+                    this.Height = 0;
                 }
 
-                
             }
             if (uciInfo.IsProbing)
             {

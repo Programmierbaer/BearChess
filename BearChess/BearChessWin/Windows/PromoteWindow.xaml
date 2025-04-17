@@ -9,39 +9,39 @@
     <StackPanel>
         <StackPanel Name="stackPanelBlack" Margin="5" Orientation="Horizontal" Height="Auto" VerticalAlignment="Top"
                     HorizontalAlignment="Left" Visibility="Collapsed">
-            <Button Name="buttonBlackQueen" Margin="5" Width="32" Height="32" Background="Transparent"
-                    Click="ButtonBlackQueen_OnClick">
+            <Button Name="buttonBlackQueen" Margin="5" Width="32" Height="32" Background="Transparent" GotFocus="Button_OnGotFocus"
+                    Click="ButtonBlackQueen_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.Queen}">
                 <Image Source="../Assets/Icons/Black Q.ico" />
             </Button>
-            <Button Name="buttonBlackRook" Margin="5" Width="32" Height="32" Background="Transparent"
-                    Click="ButtonBlackRook_OnClick">
+            <Button Name="buttonBlackRook" Margin="5" Width="32" Height="32" Background="Transparent" GotFocus="Button_OnGotFocus"
+                    Click="ButtonBlackRook_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.Rook}">
                 <Image Source="../Assets/Icons/Black R.ico" />
             </Button>
-            <Button Name="buttonBlackKnight" Margin="5" Width="32" Height="32" Background="Transparent"
-                    Click="ButtonBlackKnight_OnClick">
+            <Button Name="buttonBlackKnight" Margin="5" Width="32" Height="32" Background="Transparent" GotFocus="Button_OnGotFocus"
+                    Click="ButtonBlackKnight_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.Knight}">
                 <Image Source="../Assets/Icons/Black N.ico" />
             </Button>
-            <Button Name="buttonBlackBishop" Margin="5" Width="32" Height="32" Background="Transparent"
-                    Click="ButtonBlackBishop_OnClick">
+            <Button Name="buttonBlackBishop" Margin="5" Width="32" Height="32" Background="Transparent" GotFocus="Button_OnGotFocus"
+                    Click="ButtonBlackBishop_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.Bishop}">
                 <Image Source="../Assets/Icons/Black B.ico" />
             </Button>
         </StackPanel>
         <StackPanel Name="stackPanelWhite" Margin="5" Orientation="Horizontal" Height="Auto" VerticalAlignment="Top"
                     HorizontalAlignment="Left">
-            <Button Name="buttonWhiteQueen" Margin="5" Width="32" Height="32" Background="Transparent"
-                    Click="ButtonBlackQueen_OnClick">
+            <Button Name="buttonWhiteQueen" Margin="5" Width="32" Height="32" Background="Transparent" GotFocus="Button_OnGotFocus"
+                    Click="ButtonBlackQueen_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.Queen}">
                 <Image Source="../Assets/Icons/White Q.ico" />
             </Button>
-            <Button Name="buttonWhiteRook" Margin="5" Width="32" Height="32" Background="Transparent"
-                    Click="ButtonBlackRook_OnClick">
+            <Button Name="buttonWhiteRook" Margin="5" Width="32" Height="32" Background="Transparent" AutomationProperties.HelpText="{x:Static p:Resources.Rook}"
+                    Click="ButtonBlackRook_OnClick" GotFocus="Button_OnGotFocus">
                 <Image Source="../Assets/Icons/White R.ico" />
             </Button>
-            <Button Name="buttonWhiteKnight" Margin="5" Width="32" Height="32" Background="Transparent"
-                    Click="ButtonBlackKnight_OnClick">
+            <Button Name="buttonWhiteKnight" Margin="5" Width="32" Height="32" Background="Transparent" GotFocus="Button_OnGotFocus"
+                    Click="ButtonBlackKnight_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.Knight}">
                 <Image Source="../Assets/Icons/White N.ico" />
             </Button>
-            <Button Name="buttonWhiteBishop" Margin="5" Width="32" Height="32" Background="Transparent"
-                    Click="ButtonBlackBishop_OnClick">
+            <Button Name="buttonWhiteBishop" Margin="5" Width="32" Height="32" Background="Transparent" GotFocus="Button_OnGotFocus"
+                    Click="ButtonBlackBishop_OnClick" AutomationProperties.HelpText="{x:Static p:Resources.Bishop}">
                 <Image Source="../Assets/Icons/White B.ico" />
             </Button>
         </StackPanel>

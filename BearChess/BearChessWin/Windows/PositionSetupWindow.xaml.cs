@@ -35,7 +35,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         public PositionSetupWindow(string fenPosition, bool acceptMouse, bool playWithWhite)
         {
             InitializeComponent();
-
             _fenPosition = fenPosition;
             _acceptMouse = acceptMouse;
             
@@ -79,6 +78,7 @@ namespace www.SoLaNoSoft.com.BearChessWin
             {
                 chessBoardUserControl.RotateBoard();
             }
+            chessBoardUserControl.ShowAnalysisBar(false);
             chessBoardUserControl.RepaintBoard(_chessBoard);
             FigureButton_OnClick(buttonKing,null);
         }

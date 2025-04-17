@@ -85,6 +85,21 @@ namespace  www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                    };
         }
 
+        public void DeleteCalibrationData()
+        {
+            if (File.Exists(_storageFile))
+            {
+                try
+                {
+                    File.Delete(_storageFile);
+                }
+                catch
+                {
+                    //
+                }
+            }
+        }
+
 
         private void Load()
         {

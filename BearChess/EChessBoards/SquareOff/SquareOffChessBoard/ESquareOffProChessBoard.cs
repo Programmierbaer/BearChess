@@ -754,6 +754,16 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         public override DataFromBoard GetDumpPiecesFen()
         {
+            try
+            {
+                var newSend = _workingChessBoard.GetFenPosition()
+                    .Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                return new DataFromBoard(newSend, 3);
+            }
+            catch
+            {
+                return new DataFromBoard(_prevSend, 3);
+            }
             return _dumpDataFromBoard;
             
         }

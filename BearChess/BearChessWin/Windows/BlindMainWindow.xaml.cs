@@ -82,7 +82,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     _synthesizer?.Clear();
                     DialogResult = false;
                 }
-               
             }
         }
 
@@ -91,7 +90,6 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private void BlindMainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             ButtonNewGame.Focus();
-
         }
 
         private void BlindMainWindow_OnClosed(object sender, EventArgs e)

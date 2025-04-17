@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="whiteFieldImage" UriSource="/Assets/Certabo/white.png" />
+    <BitmapImage x:Key="blackFieldImage" UriSource="/Assets/Certabo/black.png" />
+
+    <BitmapImage x:Key="whitePawnImage"   UriSource="/Assets/Stone/Symbol/PawnW.png" />
+    <BitmapImage x:Key="blackPawnImage"   UriSource="/Assets/Stone/Symbol/PawnB.png" />
+    <BitmapImage x:Key="whiteKingImage"   UriSource="/Assets/Stone/Symbol/KingW.png" />
+    <BitmapImage x:Key="blackKingImage"   UriSource="/Assets/Stone/Symbol/KingB.png" />
+    <BitmapImage x:Key="whiteQueenImage"  UriSource="/Assets/Stone/Symbol/QueenW.png" />
+    <BitmapImage x:Key="blackQueenImage"  UriSource="/Assets/Stone/Symbol/QueenB.png" />
+    <BitmapImage x:Key="whiteRookImage"   UriSource="/Assets/Stone/Symbol/RookW.png" />
+    <BitmapImage x:Key="blackRookImage"   UriSource="/Assets/Stone/Symbol/RookB.png" />
+    <BitmapImage x:Key="whiteKnightImage" UriSource="/Assets/Stone/Symbol/KnightW.png" />
+    <BitmapImage x:Key="blackKnightImage" UriSource="/Assets/Stone/Symbol/KnightB.png" />
+    <BitmapImage x:Key="whiteBishopImage" UriSource="/Assets/Stone/Symbol/BishopW.png" />
+    <BitmapImage x:Key="blackBishopImage" UriSource="/Assets/Stone/Symbol/BishopB.png" />
+
+</ResourceDictionary>

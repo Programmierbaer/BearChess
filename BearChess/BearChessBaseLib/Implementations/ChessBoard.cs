@@ -82,10 +82,9 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         
         /// <inheritdoc />
         public List<Move> CurrentMoveList { get; private set; }
-
         public Move[] GetPlayedMoveList()
         {
-            List<Move> result = new List<Move>();
+            var result = new List<Move>();
             foreach (var key in _allPlayedMoves.Keys.OrderBy(k => k))
             {
                 result.Add(_allPlayedMoves[key].GetMove(Fields.COLOR_WHITE));
@@ -98,12 +97,27 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
             return result.ToArray();
         }
+        public BCServerMove[] GetPlayedBCServerMoveList()
+        {
+            var result = new List<BCServerMove>();
+            foreach (var key in _allPlayedMoves.Keys.OrderBy(k => k))
+            {
+                result.Add(new BCServerMove(_allPlayedMoves[key].GetMove(Fields.COLOR_WHITE)));
+                var move = _allPlayedMoves[key].GetMove(Fields.COLOR_BLACK);
+                if (move != null)
+                {
+                    result.Add(new BCServerMove(move));
+                }
+            }
+
+            return result.ToArray();
+        }
 
         public Move GetPlayedMove(int moveNumber, int color)
         {
-            if (_allPlayedMoves.ContainsKey(moveNumber))
+            if (_allPlayedMoves.TryGetValue(moveNumber, out var move))
             {
-                return _allPlayedMoves[moveNumber].GetMove(color);
+                return move.GetMove(color);
             }
 
             return null;
@@ -111,12 +125,28 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
 
         public string GetPlayedFenPosition(int moveNumber, int color)
         {
-            if (_allPlayedMoves.ContainsKey(moveNumber))
+            if (_allPlayedMoves.TryGetValue(moveNumber, out var move))
             {
-                return _allPlayedMoves[moveNumber].GetFen(color);
+                return move.GetFen(color);
             }
 
             return null;
+        }
+
+        public List<Move> GenerateFenPositionList()
+        {
+            var result = new List<Move>();
+            var chessBoard = new ChessBoard();
+            chessBoard.Init(this);
+            var moveList = GenerateMoveList();
+            foreach (var move in moveList)
+            {
+                chessBoard.Init(this);
+                chessBoard.MakeMove(move);
+                move.Fen = chessBoard.GetFenPosition();
+                result.Add(move);
+            }
+            return result;
         }
 
         /// <inheritdoc />
@@ -125,7 +155,6 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
         public void SetGameAnalyzeMode(bool analyzeMode)
         {
             _analyzeMode = analyzeMode;
-//            _fileLogger = new FileLogger(Path.Combine(@"d:\", "chessboard.log"), 10, 10);
         }
 
         /// <inheritdoc />
@@ -219,6 +248,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     _canCastling[color].LongCastling = canCastling && GetFigureOn(Fields.FE8).FigureId == FigureId.BLACK_KING && GetFigureOn(Fields.FA8).FigureId == FigureId.BLACK_ROOK;
                 }
             }
+            _castled[Fields.COLOR_WHITE] =
+                !(_canCastling[Fields.COLOR_WHITE].ShortCastling ||
+                  _canCastling[Fields.COLOR_WHITE].LongCastling);
+            _castled[Fields.COLOR_BLACK] =
+                !(_canCastling[Fields.COLOR_BLACK].ShortCastling ||
+                  _canCastling[Fields.COLOR_BLACK].LongCastling);
         }
 
         /// <inheritdoc />
@@ -657,6 +692,10 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     if (pgnMove.Length > 2)
                     {
                         figurCharacter = pgnMove.Substring(0, 1);
+                        if (FigureId.FigureDEToGB.TryGetValue(figurCharacter, out var value))
+                        {
+                            figurCharacter = value;
+                        }
                         if (figurCharacter.Equals(figurCharacter.ToLower()))
                         {
                             figurCharacter = "P";
@@ -1526,9 +1565,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations
                     }
                     return string.Empty;
                 }
-
                 string promote = fromFenFigure.Equals(toFenFigure) ? string.Empty : toFenFigure;
-                return $"{fromField}{toField}".ToLower()+promote;
+                return $"{fromField}{toField}".ToLower() + promote;
             }
             catch (Exception)
             {

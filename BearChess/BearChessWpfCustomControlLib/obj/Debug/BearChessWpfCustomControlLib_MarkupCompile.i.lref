@@ -2,6 +2,7 @@
 
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\CalibrateBaseWindow.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\COMPortSearchWindow.xaml;;
+FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\ConfigureCernoSpectrumWindow.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\ConfigureCernoWindow.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\ConfigureCertaboWindow.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\ConfigureChessnutEvoWindow.xaml;;
@@ -15,9 +16,13 @@ FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\Co
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\ConfigureServerChessboardWindow.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\ConfigureSquareOffWindow.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\ConfigureTactumWindow.xaml;;
+FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\EditCommentWindow.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\EditWindow.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\InfoWindow.xaml;;
+FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\MoveListPlainUserControl.xaml;;
+FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\MovePlainUserControl.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\NumericUpDownUserControl.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\ProgressWindow.xaml;;
+FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\QueryDialogWindow.xaml;;
 FC:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\QuerySelectionWindow.xaml;;
 

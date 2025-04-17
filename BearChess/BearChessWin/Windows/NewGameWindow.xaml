@@ -150,6 +150,11 @@
                     <Image Margin="15,0,0,0" Width="32" Height="32" Name="imageTeddy"
                            Source="../Assets/Icons/BearChess.ico" Visibility="Visible" />
                     <StackPanel>
+                        <CheckBox Name="checkBoxAlternateMove" VerticalAlignment="Top"
+                                  VerticalContentAlignment="Center"  HorizontalAlignment="Left"
+                                  AutomationProperties.HelpText="{x:Static p:Resources.AlternateMove}"
+                                  Margin="55,5,5,5" Content="{x:Static p:Resources.AlternateMove}">
+                        </CheckBox>
                         <CheckBox Name="checkBoxRelaxed" VerticalAlignment="Center" VerticalContentAlignment="Center"
                                   Margin="55,5,5,5" 
                                   AutomationProperties.HelpText="{x:Static p:Resources.Relaxed}"
@@ -165,6 +170,8 @@
                         </CheckBox>
                     </StackPanel>
                 </StackPanel>
+         
+
                 <Grid Name="gridTimeControlEmu1" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Visibility="Collapsed" Margin="5">
                     <StackPanel Name="stackPanelTCEmu1" Orientation="Horizontal" Margin="5">
                         <TextBlock VerticalAlignment="Center" Name="textBlockTimeControlEmu1" Text="Hallo" Width="90"/>

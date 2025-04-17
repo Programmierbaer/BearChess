@@ -32,6 +32,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// </summary>
         bool IsConnected { get; }
 
+        bool IsCalibrated { get; }
+
         /// <summary>
         /// Shows the LED for the last move in <paramref name="allMoves"/>.
         /// </summary>
@@ -96,7 +98,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         void SetFen(string fen);
 
-        void AwaitingMove(int fromField, int toField);
+        void AwaitingMove(int fromField, int toField, int promoteFigure);
 
         /// <summary>
         /// Close the connection to the chess board
@@ -117,6 +119,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// Calibrate board
         /// </summary>
         bool Calibrate();
+
+        
 
         void SendInformation(string message);
         string RequestInformation(string message);

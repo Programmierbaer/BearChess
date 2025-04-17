@@ -8,6 +8,8 @@
         mc:Ignorable="d" Closing="BearChessMainWindow_OnClosing"  Background="WhiteSmoke"
         LocationChanged="BearChessMainWindow_OnLocationChanged" KeyDown="BearChessMainWindow_OnKeyDown"
         xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
+        xmlns:bearChessWpfCustomControlLib="clr-namespace:www.SoLaNoSoft.com.BearChessWpfCustomControlLib;assembly=BearChessWpfCustomControlLib"
+        Width="1400"
         Title="BearChess" MinHeight="660" MinWidth="600">
     <Window.Resources>
         <ResourceDictionary>
@@ -24,7 +26,6 @@
             <RoutedUICommand x:Key="Alt2" Text="OpeningBookBestMove2" />
             <RoutedUICommand x:Key="Alt3" Text="OpeningBookBestMove3" />
             <RoutedUICommand x:Key="AltS" Text="Score" />
-
         </ResourceDictionary>
     </Window.Resources>
     <Window.InputBindings>
@@ -305,10 +306,22 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
+                    <MenuItem Name="menuItemEnableInternalEngine" Header="{x:Static p:Resources.EnableInternalEngine}"
+                              Click="MenuItemEnableInternalEngine_OnClick">
+                        <MenuItem.Icon>
+                            <Image Name="imageEnableInternalEngine" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Name="menuItemLoadLastEngine" Header="{x:Static p:Resources.LoadLastEngineOnStart}"
                               Click="MenuItemLoadLastEngine_OnClick">
                         <MenuItem.Icon>
                             <Image Name="imageLoadLastEngine" Source="Assets/Icons/tick.png" Visibility="Hidden" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="{x:Static p:Resources.ShowAnalysisBar}" Name="menuItemShowAnalysisBar"
+                              Click="MenuItemShowAnalysisBar_OnClick">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/Icons/tick.png" Name="imageAnalysisBar" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{x:Static p:Resources.ShowCommunicationWindow}" Name="menuItemShowUciLog"
@@ -352,6 +365,12 @@
                                   Click="MenuItemConfigureNotation_OnClick">
                             <MenuItem.Icon>
                                 <Image Source="Assets/Icons/text_list_numbers.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="menuItemShowScoreSymbols" Header="{x:Static p:Resources.ShowEvalutionsSymbols}"
+                                  Click="MenuItemShowScoreSymbols_OnClick" ToolTip="= +/= +/- +- =/+ -/+ -+">
+                            <MenuItem.Icon>
+                                <Image Name="imageShowScoreSymbols" Source="Assets/Icons/tick.png" Visibility="Visible" />
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
@@ -691,6 +710,40 @@
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
+                        <MenuItem Name="menuItemCernoSpectrum" Header="Cerno Spectrum">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/tabutronic_logo_def.png" />
+                            </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToCernoSpectrum" Header="{x:Static p:Resources.Connect}"
+                                      Click="MenuItemConnectCernoSpectrum_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureCernoSpectrum" Header="{x:Static p:Resources.Configure}"
+                                      Click="MenuItemConfigureCernoSpectrum_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemBluetoothCernoSpectrum" Header="{x:Static p:Resources.BTClassic}"
+                                      ToolTip="{x:Static p:Resources.BTClassicTip}"
+                                      Click="MenuItemBluetoothCernoSpectrum_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageCernoSpectrumBluetooth" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLECernoSpectrum"
+                                      Header="{x:Static p:Resources.BTLE}"
+                                      ToolTip="{x:Static p:Resources.BTLETip}"
+                                      Click="MenuItemBluetoothLECernoSpectrum_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageCernoSpectrumBluetoothLE" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
                         <MenuItem Name="menuItemSentio" Header="Sentio">
                             <MenuItem.Icon>
                                 <Image Source="Assets/tabutronic_logo_def.png" />
@@ -722,6 +775,41 @@
                                       Click="MenuItemBluetoothLESentio_OnClick">
                                 <MenuItem.Icon>
                                     <Image Name="imageSentioBluetoothLE" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Name="menuItemSentioSpectrum" Header="Sentio Spectrum" Visibility="Collapsed">
+                            <MenuItem.Icon>
+                                <Image Source="Assets/tabutronic_logo_def.png" />
+                            </MenuItem.Icon>
+                            <MenuItem Name="menuItemConnectToSentioSpectrum" Header="{x:Static p:Resources.Connect}"
+                                      Click="MenuItemConnectSentio_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/connect.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemConfigureSentioSpectrum" Header="{x:Static p:Resources.Configure}"
+                                      Click="MenuItemConfigureSentio_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Source="Assets/Icons/cog.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="menuItemBluetoothSentioSpectrum" Header="{x:Static p:Resources.BTClassic}"
+                                      Visibility="Visible"
+                                      ToolTip="{x:Static p:Resources.BTClassicTip}"
+                                      Click="MenuItemBluetoothSentio_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageSentioSpectrumBluetooth" Source="Assets/Icons/tick.png"
+                                           Visibility="Hidden" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Visibility="Visible" Name="menuItemBluetoothLESentioSpectrum"
+                                      Header="{x:Static p:Resources.BTLE}"
+                                      ToolTip="{x:Static p:Resources.BTLETip}"
+                                      Click="MenuItemBluetoothLESentio_OnClick">
+                                <MenuItem.Icon>
+                                    <Image Name="imageSentioSpectrumBluetoothLE" Source="Assets/Icons/tick.png"
                                            Visibility="Hidden" />
                                 </MenuItem.Icon>
                             </MenuItem>
@@ -1096,7 +1184,7 @@
                                 <Image Name="imageShowBestMoveOnGame" Source="Assets/Icons/tick.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="{x:Static p:Resources.ShowBestMove}"
+                        <MenuItem Header="{x:Static p:Resources.ShowBestMoveFromBuddy}"
                                   Name="menuItemShowRequestForHelp"
                                   Click="MenuItemShowRequestForHelp_OnClick">
                             <MenuItem.Icon>
@@ -1148,38 +1236,52 @@
                     <local:MaterialUserControl x:Name="materialUserControl" Margin="5,5,5,0" VerticalAlignment="Center" HorizontalAlignment="Left"></local:MaterialUserControl>
                 </StackPanel>
             </Border>
-            <StackPanel x:Name="StackPanelClockAndMoves" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left">
-                <Border Margin="1" BorderThickness="1" BorderBrush="DarkGray">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <local:ChessClockUserControl Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                     x:Name="chessBoardUcClockWhite" Visibility="Visible" />
-                        <local:ChessClockUserControl Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                     x:Name="chessBoardUcClockBlack" Visibility="Visible" />
-                    </StackPanel>
-                </Border>
-                <Grid HorizontalAlignment="Left" MinWidth="400">
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left">
+                <Grid Name="GridClockAndMoves">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="450"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="500"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="510"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TabControl  Background="WhiteSmoke">
-                        <TabItem Header="{x:Static p:Resources.Moves}" >
-                            <local:MoveListPlainUserControl HorizontalAlignment="Left" x:Name="moveListPlainUserControl"/>
-                        </TabItem>
-                        <TabItem Header="{x:Static p:Resources.Books}" >
-                            <Grid >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Margin="1" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Click="MenuItemLoadBook_OnClick">
-                                    <Image Width="20" Height="20" Source="Assets/Icons/book_open.png"></Image>
-                                </Button>
-                                <local:BookWindowUserControl Grid.Row="1" x:Name="bookWindowUserControl"/>
-                            </Grid>
-                        </TabItem>
-                    </TabControl>
+                    
+                    <Border Grid.Column="0" Grid.Row="0"  Margin="1" BorderThickness="1" BorderBrush="DarkGray">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <local:ChessClockUserControl Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                         x:Name="chessBoardUcClockWhite" Visibility="Visible" />
+                            <local:ChessClockUserControl Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                         x:Name="chessBoardUcClockBlack" Visibility="Visible" />
+                        </StackPanel>
+                    </Border>
+                        <TabControl  Background="WhiteSmoke" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" MinWidth="400">
+                            <TabItem Header="{x:Static p:Resources.Moves}" >
+                                <bearChessWpfCustomControlLib:MoveListPlainUserControl HorizontalAlignment="Left" x:Name="moveListPlainUserControl"/>
+                            </TabItem>
+                            <TabItem Header="{x:Static p:Resources.Books}" >
+                                <Grid >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Row="0" Margin="1" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Click="MenuItemLoadBook_OnClick">
+                                        <Image Width="20" Height="20" Source="Assets/Icons/book_open.png"></Image>
+                                    </Button>
+                                    <local:BookWindowUserControl Grid.Row="1" x:Name="bookWindowUserControl"/>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Name="GridEBoardControl"  Visibility="Collapsed" Margin="2" Width="300" Height="300" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <local:EChessControlBoardUserControl x:Name="chessControlBoardUserControl"></local:EChessControlBoardUserControl>
                 </Grid>
-              
+                </Grid>
             </StackPanel>
             <Canvas Name="canvasBoard" Grid.Row="1" Grid.Column="0" />
             <local:EngineWindowUserControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left"
@@ -1217,9 +1319,9 @@
                     BorderBrush="Transparent" ToolTip="{x:Static p:Resources.RotateBoard}">
                 <Image Source="Assets/Icons/arrow_rotate_anticlockwise.png" Width="16" Height="16" />
             </Button>
-            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonAccept"
+            <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonShowEBoardPosition"
                     ToolTip="{x:Static p:Resources.ShowBoardInformationTip}"
-                    Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ButtonAccept_OnClick">
+                    Margin="5" Background="Transparent" BorderBrush="Transparent" Click="ShowEBoardPosition_OnClick">
                 <Image Source="Assets/Icons/emotion_question.png" Width="16" />
             </Button>
             <Button VerticalAlignment="Center" Visibility="Hidden" DockPanel.Dock="Right" Name="buttonForcePosition"

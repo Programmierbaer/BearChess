@@ -136,7 +136,11 @@ namespace www.SoLaNoSoft.com.BearChessBase.Implementations.pgn
                 pgnMove += isMate ? "#" : "+";
             }
             string mComment = !_pgnConfiguration.IncludeComment || string.IsNullOrWhiteSpace(move.Comment) ? string.Empty : "{" + ReplaceNagInComment(move.Comment) + "}";
-            string mBestLine = !_pgnConfiguration.IncludeEvaluation || string.IsNullOrWhiteSpace(move.BestLine) ? string.Empty : "{" + move.Score.ToString(CultureInfo.InvariantCulture) + "} (" + AddMoveNumberToBestLine(move.BestLine, moveCnt, move.FigureColor) + ")";
+            string mBestLine = !_pgnConfiguration.IncludeEvaluation || string.IsNullOrWhiteSpace(move.BestLine) ? string.Empty :
+                "(" + AddMoveNumberToBestLine(move.BestLine, moveCnt, move.FigureColor) + "{" + move.Score.ToString(CultureInfo.InvariantCulture) + "})";
+            mBestLine += !_pgnConfiguration.IncludeEvaluation || string.IsNullOrWhiteSpace(move.BestLineBuddy) ? string.Empty : 
+                "({"+move.BuddyEngine+":} " + AddMoveNumberToBestLine(move.BestLineBuddy, moveCnt, move.FigureColor) + "{"+move.ScoreBuddy.ToString(CultureInfo.InvariantCulture) + "})";
+            
             string emt = !_pgnConfiguration.IncludeMoveTime || string.IsNullOrEmpty(move.ElapsedMoveTime)
                              ? string.Empty
                              : "{[%emt " + move.ElapsedMoveTime + "]}";

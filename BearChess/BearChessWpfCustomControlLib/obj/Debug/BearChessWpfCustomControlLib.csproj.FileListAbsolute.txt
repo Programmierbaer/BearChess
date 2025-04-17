@@ -236,6 +236,14 @@ C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureSquareOffWindow.baml
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QueryDialogWindow.g.cs
 C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QueryDialogWindow.baml
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureCernoSpectrumWindow.g.cs
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureCernoSpectrumWindow.baml
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\EditCommentWindow.g.cs
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\MoveListPlainUserControl.g.cs
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\MovePlainUserControl.g.cs
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\EditCommentWindow.baml
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\MoveListPlainUserControl.baml
+C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\MovePlainUserControl.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\bin\Debug\BearChessWpfCustomControlLib.dll
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\bin\Debug\BearChessWpfCustomControlLib.pdb
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\bin\Debug\de\BearChessWpfCustomControlLib.resources.dll
@@ -409,6 +417,7 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCust
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\BearChessWpfCustomControlLib.csproj.AssemblyReference.cache
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\CalibrateBaseWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\COMPortSearchWindow.g.cs
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureCernoSpectrumWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureCernoWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureCertaboWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureChessnutEvoWindow.g.cs
@@ -422,8 +431,11 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCust
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureServerChessboardWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureSquareOffWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureTactumWindow.g.cs
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\EditCommentWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\EditWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\InfoWindow.g.cs
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\MoveListPlainUserControl.g.cs
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\MovePlainUserControl.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\NumericUpDownUserControl.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ProgressWindow.g.cs
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QueryDialogWindow.g.cs
@@ -433,6 +445,7 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCust
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\BearChessWpfCustomControlLib_MarkupCompile.lref
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\CalibrateBaseWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\COMPortSearchWindow.baml
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureCernoSpectrumWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureCernoWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureCertaboWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureChessnutEvoWindow.baml
@@ -446,8 +459,11 @@ C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCust
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureServerChessboardWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureSquareOffWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ConfigureTactumWindow.baml
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\EditCommentWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\EditWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\InfoWindow.baml
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\MoveListPlainUserControl.baml
+C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\MovePlainUserControl.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\NumericUpDownUserControl.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\ProgressWindow.baml
 C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWpfCustomControlLib\obj\Debug\QueryDialogWindow.baml

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-21536745322
+25-381213637
 
-261336611273
+31577627128
 55-593613751
-CalibrateBaseWindow.xaml;COMPortSearchWindow.xaml;ConfigureCernoWindow.xaml;ConfigureCertaboWindow.xaml;ConfigureChessnutEvoWindow.xaml;ConfigureChessnutWindow.xaml;ConfigureDGTWindow.xaml;ConfigureHoSWindow.xaml;ConfigureIChessOneWindow.xaml;ConfigureMChessLinkWindow.xaml;ConfigurePegasusWindow.xaml;ConfigureSentioWindow.xaml;ConfigureServerChessboardWindow.xaml;ConfigureSquareOffWindow.xaml;ConfigureTactumWindow.xaml;EditWindow.xaml;InfoWindow.xaml;NumericUpDownUserControl.xaml;ProgressWindow.xaml;QueryDialogWindow.xaml;QuerySelectionWindow.xaml;
+CalibrateBaseWindow.xaml;COMPortSearchWindow.xaml;ConfigureCernoSpectrumWindow.xaml;ConfigureCernoWindow.xaml;ConfigureCertaboWindow.xaml;ConfigureChessnutEvoWindow.xaml;ConfigureChessnutWindow.xaml;ConfigureDGTWindow.xaml;ConfigureHoSWindow.xaml;ConfigureIChessOneWindow.xaml;ConfigureMChessLinkWindow.xaml;ConfigurePegasusWindow.xaml;ConfigureSentioWindow.xaml;ConfigureServerChessboardWindow.xaml;ConfigureSquareOffWindow.xaml;ConfigureTactumWindow.xaml;EditCommentWindow.xaml;EditWindow.xaml;InfoWindow.xaml;MoveListPlainUserControl.xaml;MovePlainUserControl.xaml;NumericUpDownUserControl.xaml;ProgressWindow.xaml;QueryDialogWindow.xaml;QuerySelectionWindow.xaml;
 
 False
 

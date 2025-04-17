@@ -96,5 +96,7 @@
         bool UseElfacun { get; set; }
 
         string BatteryLevel { get; }
+
+        void ResetLastRead();
     }
 }

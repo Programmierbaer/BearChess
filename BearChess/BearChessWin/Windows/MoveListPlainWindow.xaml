@@ -46,6 +46,10 @@
                     HorizontalAlignment="Left" ToolTip="{x:Static p:Resources.ShowHideComments}">
                 <Image Source="../Assets/Icons/comments.png" />
             </Button>
+            <Button Margin="5" Name="buttonShowHideBuddy" Click="ButtonShowHideBuddy_OnClick" Width="32" Height="32" Background="Transparent" BorderBrush="Transparent"
+                    HorizontalAlignment="Left" ToolTip="{x:Static p:Resources.ShowHideBuddyBestLines}">
+                <Image Source="../Assets/Icons/user_comment.png" />
+            </Button>
             <Button Margin="5" Name="buttonFontInc" Click="ButtonFontInc_OnClick" Width="32" Height="32" Background="Transparent" BorderBrush="Transparent"
                     HorizontalAlignment="Left" ToolTip="{x:Static p:Resources.IncreaseFontSize}">
                 <Image Source="../Assets/Icons/font_size_decrease.png" />

@@ -44,6 +44,7 @@
     <Compile Include="CalibrateData.cs" />
     <Compile Include="CalibrateDataCreator.cs" />
     <Compile Include="CalibrateStorage.cs" />
+    <Compile Include="ECernoSpectrumChessBoard.cs" />
     <Compile Include="EChessBoard.cs" />
     <Compile Include="Interfaces\ICalibrateStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

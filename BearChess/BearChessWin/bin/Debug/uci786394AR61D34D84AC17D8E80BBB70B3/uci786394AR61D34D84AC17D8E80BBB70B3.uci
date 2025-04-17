@@ -30,8 +30,8 @@
     <string>option name Contempt type spin default 0 min -150 max 150</string>
     <string>option name Selectivity type spin default 100 min 0 max 200</string>
   </Options>
-  <FileName>C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\Wasp704-windows-avx.exe</FileName>
-  <LogoFileName>C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\wasp_logo_small.jpg</LogoFileName>
+  <FileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\Wasp704-windows-avx.exe</FileName>
+  <LogoFileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uci786394AR61D34D84AC17D8E80BBB70B3\wasp_logo_small.jpg</LogoFileName>
   <Valid>true</Valid>
   <OpeningBook />
   <OpeningBookVariation>1</OpeningBookVariation>

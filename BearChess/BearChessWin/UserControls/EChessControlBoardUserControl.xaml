@@ -1,0 +1,566 @@
+﻿<UserControl x:Class="www.SoLaNoSoft.com.BearChessWin.EChessControlBoardUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:p="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
+             xmlns:local="clr-namespace:www.SoLaNoSoft.com.BearChessWin"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BitmapImage x:Key="bitmapCertaboSymbolKingB" UriSource="../Assets/Certabo/Symbol/KingB.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolKingW" UriSource="../Assets/Certabo/Symbol/KingW.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolQueenB" UriSource="../Assets/Certabo/Symbol/QueenB.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolQueenW" UriSource="../Assets/Certabo/Symbol/QueenW.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolRookB" UriSource="../Assets/Certabo/Symbol/RookB.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolRookW" UriSource="../Assets/Certabo/Symbol/RookW.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolBishopB" UriSource="../Assets/Certabo/Symbol/BishopB.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolBishopW" UriSource="../Assets/Certabo/Symbol/BishopW.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolKnightB" UriSource="../Assets/Certabo/Symbol/KnightB.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolKnightW" UriSource="../Assets/Certabo/Symbol/KnightW.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolPawnB" UriSource="../Assets/Certabo/Symbol/PawnB.png" />
+        <BitmapImage x:Key="bitmapCertaboSymbolPawnW" UriSource="../Assets/Certabo/Symbol/PawnW.png" />
+        <BitmapImage x:Key="bitmapCertaboA1" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboA2" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboA3" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboA4" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboA5" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboA6" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboA7" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboA8" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboB1" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboB2" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboB3" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboB4" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboB5" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboB6" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboB7" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboB8" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboC1" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboC2" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboC3" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboC4" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboC5" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboC6" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboC7" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboC8" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboD1" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboD2" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboD3" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboD4" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboD5" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboD6" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboD7" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboD8" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboE1" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboE2" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboE3" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboE4" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboE5" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboE6" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboE7" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboE8" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboF1" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboF2" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboF3" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboF4" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboF5" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboF6" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboF7" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboF8" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboG1" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboG2" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboG3" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboG4" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboG5" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboG6" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboG7" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboG8" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboH1" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboH2" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboH3" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboH4" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboH5" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboH6" UriSource="../Assets/Certabo/black.png" />
+        <BitmapImage x:Key="bitmapCertaboH7" UriSource="../Assets/Certabo/white.png" />
+        <BitmapImage x:Key="bitmapCertaboH8" UriSource="../Assets/Certabo/black.png" />
+    </UserControl.Resources>
+
+        <Grid Margin="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="30" />
+            
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">A</TextBlock>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">B</TextBlock>
+            <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">C</TextBlock>
+            <TextBlock Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center">D</TextBlock>
+            <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center">E</TextBlock>
+            <TextBlock Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center">F</TextBlock>
+            <TextBlock Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center">G</TextBlock>
+            <TextBlock Grid.Column="7" VerticalAlignment="Center" HorizontalAlignment="Center">H</TextBlock>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">8</TextBlock>
+            <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">7</TextBlock>
+            <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">6</TextBlock>
+            <TextBlock Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center">5</TextBlock>
+            <TextBlock Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center">4</TextBlock>
+            <TextBlock Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Center">3</TextBlock>
+            <TextBlock Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center">2</TextBlock>
+            <TextBlock Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center">1</TextBlock>
+        </Grid>
+
+        <Border  Grid.Column="0" BorderBrush="Black " BorderThickness="0.3">
+
+            <Grid Name="gridFields" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+
+                </Grid.RowDefinitions>
+
+                <Grid Name="grid00" Grid.Row="0" Grid.Column="0">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="2">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="3">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="4">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="5">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="6">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="7">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="2">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="3">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="4">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="5">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="6">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="7">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+
+                <Grid Grid.Row="2" Grid.Column="0">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="2">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="3">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="4">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="5">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="6">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="7">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+
+                <Grid Grid.Row="3" Grid.Column="0">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="1">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="2">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="3">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="4">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="5">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="6">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="7">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="0">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="1">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="2">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="3">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="4">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="5">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="6">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="4" Grid.Column="7">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+
+                <Grid Grid.Row="5" Grid.Column="0">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="1">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="2">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="3">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="4">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="5">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="6">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="5" Grid.Column="7">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+
+
+                <Grid Grid.Row="6" Grid.Column="0">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="1">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="2">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="3">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="4">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="5">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="6">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="7">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+
+                <Grid Grid.Row="7" Grid.Column="0">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+
+                <Grid Grid.Row="7" Grid.Column="1">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="7" Grid.Column="2">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="7" Grid.Column="3">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="7" Grid.Column="4">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="7" Grid.Column="5">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="7" Grid.Column="6">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/black.png" />
+                    </Grid.Background>
+                </Grid>
+                <Grid Grid.Row="7" Grid.Column="7" AllowDrop="True">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="../Assets/Certabo/white.png" />
+                    </Grid.Background>
+                </Grid>
+
+                <Image Name="gridA1" Grid.Column="0" Grid.Row="7"   />
+                <Image Name="gridB1" Grid.Column="1" Grid.Row="7"    />
+                <Image Name="gridC1" Grid.Column="2" Grid.Row="7"    />
+                <Image Name="gridD1" Grid.Column="3" Grid.Row="7"    />
+                <Image Name="gridE1" Grid.Column="4" Grid.Row="7"    />
+                <Image Name="gridF1" Grid.Column="5" Grid.Row="7"    />
+                <Image Name="gridG1" Grid.Column="6" Grid.Row="7"    />
+                <Image Name="gridH1" Grid.Column="7" Grid.Row="7"    />
+                <Image Name="gridA2" Grid.Column="0" Grid.Row="6"    />
+                <Image Name="gridB2" Grid.Column="1" Grid.Row="6"    />
+                <Image Name="gridC2" Grid.Column="2" Grid.Row="6"    />
+                <Image Name="gridD2" Grid.Column="3" Grid.Row="6"    />
+                <Image Name="gridE2" Grid.Column="4" Grid.Row="6"    />
+                <Image Name="gridF2" Grid.Column="5" Grid.Row="6"    />
+                <Image Name="gridG2" Grid.Column="6" Grid.Row="6"    />
+                <Image Name="gridH2" Grid.Column="7" Grid.Row="6"    />
+                <Image Name="gridA3" Grid.Column="0" Grid.Row="5"    />
+                <Image Name="gridB3" Grid.Column="1" Grid.Row="5"    />
+                <Image Name="gridC3" Grid.Column="2" Grid.Row="5"    />
+                <Image Name="gridD3" Grid.Column="3" Grid.Row="5"    />
+                <Image Name="gridE3" Grid.Column="4" Grid.Row="5"    />
+                <Image Name="gridF3" Grid.Column="5" Grid.Row="5"    />
+                <Image Name="gridG3" Grid.Column="6" Grid.Row="5"    />
+                <Image Name="gridH3" Grid.Column="7" Grid.Row="5"    />
+                <Image Name="gridA4" Grid.Column="0" Grid.Row="4"    />
+                <Image Name="gridB4" Grid.Column="1" Grid.Row="4"    />
+                <Image Name="gridC4" Grid.Column="2" Grid.Row="4"    />
+                <Image Name="gridD4" Grid.Column="3" Grid.Row="4"    />
+                <Image Name="gridE4" Grid.Column="4" Grid.Row="4"    />
+                <Image Name="gridF4" Grid.Column="5" Grid.Row="4"    />
+                <Image Name="gridG4" Grid.Column="6" Grid.Row="4"    />
+                <Image Name="gridH4" Grid.Column="7" Grid.Row="4"    />
+                <Image Name="gridA5" Grid.Column="0" Grid.Row="3"    />
+                <Image Name="gridB5" Grid.Column="1" Grid.Row="3"    />
+                <Image Name="gridC5" Grid.Column="2" Grid.Row="3"    />
+                <Image Name="gridD5" Grid.Column="3" Grid.Row="3"    />
+                <Image Name="gridE5" Grid.Column="4" Grid.Row="3"    />
+                <Image Name="gridF5" Grid.Column="5" Grid.Row="3"    />
+                <Image Name="gridG5" Grid.Column="6" Grid.Row="3"    />
+                <Image Name="gridH5" Grid.Column="7" Grid.Row="3"    />
+                <Image Name="gridA6" Grid.Column="0" Grid.Row="2"    />
+                <Image Name="gridB6" Grid.Column="1" Grid.Row="2"    />
+                <Image Name="gridC6" Grid.Column="2" Grid.Row="2"    />
+                <Image Name="gridD6" Grid.Column="3" Grid.Row="2"    />
+                <Image Name="gridE6" Grid.Column="4" Grid.Row="2"    />
+                <Image Name="gridF6" Grid.Column="5" Grid.Row="2"    />
+                <Image Name="gridG6" Grid.Column="6" Grid.Row="2"    />
+                <Image Name="gridH6" Grid.Column="7" Grid.Row="2"    />
+                <Image Name="gridA7" Grid.Column="0" Grid.Row="1"    />
+                <Image Name="gridB7" Grid.Column="1" Grid.Row="1"    />
+                <Image Name="gridC7" Grid.Column="2" Grid.Row="1"    />
+                <Image Name="gridD7" Grid.Column="3" Grid.Row="1"    />
+                <Image Name="gridE7" Grid.Column="4" Grid.Row="1"    />
+                <Image Name="gridF7" Grid.Column="5" Grid.Row="1"    />
+                <Image Name="gridG7" Grid.Column="6" Grid.Row="1"    />
+                <Image Name="gridH7" Grid.Column="7" Grid.Row="1"    />
+                <Image Name="gridA8" Grid.Column="0" Grid.Row="0"    />
+                <Image Name="gridB8" Grid.Column="1" Grid.Row="0"    />
+                <Image Name="gridC8" Grid.Column="2" Grid.Row="0"    />
+                <Image Name="gridD8" Grid.Column="3" Grid.Row="0"    />
+                <Image Name="gridE8" Grid.Column="4" Grid.Row="0"    />
+                <Image Name="gridF8" Grid.Column="5" Grid.Row="0"    />
+                <Image Name="gridG8" Grid.Column="6" Grid.Row="0"    />
+                <Image Name="gridH8" Grid.Column="7" Grid.Row="0"    />
+            </Grid>
+
+
+        </Border>
+
+
+    </Grid>
+</UserControl>

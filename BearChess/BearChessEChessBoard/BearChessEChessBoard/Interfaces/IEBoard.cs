@@ -122,7 +122,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void AllowTakeBack(bool allowTakeBack);
         void SetFen(string fen);
 
-        void AwaitingMove(int fromField, int toField);
+        void AwaitingMove(int fromField, int toField, int promoteFigure);
         bool PieceRecognition { get; }
         bool SelfControlled { get; }
 

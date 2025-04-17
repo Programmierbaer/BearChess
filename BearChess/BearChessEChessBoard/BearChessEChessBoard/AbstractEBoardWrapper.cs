@@ -329,6 +329,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <inheritdoc />
         public bool IsConnected => _board?.IsConnected ?? false;
 
+        public bool IsCalibrated => _board?.IsCalibrated ?? false;
+        
         public void ShowMove(string allMoves, string startFenPosition, SetLEDsParameter setLeDsParameter, bool waitFor)
         {
             if (string.IsNullOrWhiteSpace(allMoves))
@@ -545,9 +547,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         }
 
-        public void AwaitingMove(int fromField, int toField)
+        public void AwaitingMove(int fromField, int toField, int promoteFigure = FigureId.NO_PIECE)
         {
-            _board?.AwaitingMove(fromField, toField);
+            _board?.AwaitingMove(fromField, toField, promoteFigure);
         }
 
         public void Close()
@@ -555,6 +557,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             _stop = true;
             _allLedOff = false;
             SetAllLedsOff(true);
+            Thread.Sleep(500);
             _stopCommunication = true;
             try
             {
@@ -664,6 +667,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
             string changedFenHelper = string.Empty;
             string batteryLevel = string.Empty;
             string batteryStatus = string.Empty;
+            bool alterMoveDetected = false;
           
             _fileLogger?.LogDebug("AB: Handle board");
             while (!_stopCommunication)
@@ -756,7 +760,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 }
 
 
-
                 if (!string.IsNullOrWhiteSpace(waitForFen))
                 {
 
@@ -774,6 +777,16 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 {
                     continue;
                 }
+                var checkForAlternateMoves = Configuration.Instance.GetBoolValue("checkForAlternateMoves", false);
+                if (checkForAlternateMoves)
+                {
+                    var alternateMove = _internalChessBoard.GetAlternateMove(piecesFen.FromBoard);
+                    if (alternateMove != null)
+                    {
+                        _internalChessBoard.TakeBack();
+                        alterMoveDetected = true;
+                    }
+                }
 
                 var move = _internalChessBoard.GetMove(piecesFen.FromBoard, false);
                 if (move.Length >= 4)
@@ -781,17 +794,22 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                     _fileLogger?.LogDebug($"AB: Move detected: {move}");
 
                     currentFen = piecesFen.FromBoard;
-                    if (string.IsNullOrWhiteSpace(potentialMove))
+                    if (!alterMoveDetected && string.IsNullOrWhiteSpace(potentialMove))
                     {
                         _fileLogger?.LogDebug($"AB: Set as potential move: {move}");
                         potentialMove = move;
                         continue;
                     }
 
+                    if (alterMoveDetected)
+                    {
+                        potentialMove = move;
+                    }
                     if (potentialMove.Equals(move))
                     {
                         _fileLogger?.LogDebug($"AB: OnMoveEvent: move equal to potential move: {move}");
                         potentialMove = string.Empty;
+                        alterMoveDetected = false;
                         OnMoveEvent(piecesFen.FromBoard);
 
                         continue;
@@ -970,12 +988,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                         }
                     }
                     var strings = fenPosition.FromBoard.Split(",".ToCharArray());
-                    foreach (var f in Fields.BoardFields) 
+                    foreach (var field in Fields.BoardFields) 
                     {
                         if (_board != null && _board.UseFieldDumpForFEN && fenPosition.IsFieldDump)
                         {
-                            var figureOnField = _internalChessBoard.GetFigureOnField(f);
-                            var fName = Fields.GetFieldName(f);
+                            var figureOnField = _internalChessBoard.GetFigureOnField(field);
+                            var fName = Fields.GetFieldName(field);
                             if (strings.Contains(fName) && !string.IsNullOrWhiteSpace(figureOnField))
                             {
                                 continue;
@@ -984,7 +1002,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                             {
                                 continue;
                             }
-                            var fieldName = InternalChessBoard.GetFieldName(f);
+                            var fieldName = InternalChessBoard.GetFieldName(field);
                             if (_board != null && _board.MultiColorLEDs)
                             {
                                 if (prevMoveFields.Contains(fieldName))
@@ -1004,10 +1022,10 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                         }
                         else
                         {
-                            if (!_internalChessBoard.GetFigureOnField(f).Equals(internalChessBoard.GetFigureOnField(f)))
+                            if (!_internalChessBoard.GetFigureOnField(field).Equals(internalChessBoard.GetFigureOnField(field)))
                             {
                                 //_fileLogger?.LogDebug($"AB: Not equal on {f}: {_internalChessBoard.GetFigureOnField(f)} vs. {internalChessBoard.GetFigureOnField(f)}");
-                                var fieldName = InternalChessBoard.GetFieldName(f);
+                                var fieldName = InternalChessBoard.GetFieldName(field);
                                 if (_board != null && _board.MultiColorLEDs)
                                 {
                                     if (prevMoveFields.Contains(fieldName))
@@ -1031,7 +1049,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                 if (invalidFields.Count > 0 || validFields.Count > 0)
                 {
                     fenPosition.Invalid = true;
-                    //     if (_board!=null && _board.MultiColorLEDs)
                     if (_board != null)
                     {
                         Move[] checkMoves;
@@ -1053,6 +1070,11 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
                         foreach (var move in checkMoves)
                         {
+                            if (move==null)
+                            {
+                                continue;
+                            }
+
                             if (string.IsNullOrWhiteSpace(move.FromFieldName) ||
                                 string.IsNullOrWhiteSpace(move.ToFieldName))
                             {
@@ -1102,7 +1124,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                         if ((_configuration.ShowPossibleMoves || _configuration.ShowPossibleMovesEval) && setLeDsParameter.IsMove &&
                             setLeDsParameter.FieldNames.Length == 1 && !waitMove)
                         {
-                            List<string> hintFields = new List<string> { setLeDsParameter.FieldNames[0] };
+                            var hintFields = new List<string> { setLeDsParameter.FieldNames[0] };
                             foreach (var move in checkMoves)
                             {
                                 if (move.FromFieldName.Equals(setLeDsParameter.FieldNames[0]))
@@ -1134,19 +1156,6 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
                             _lastInvalidFields = invalidFieldsString;
                         }
-
-                        //if (_board.MultiColorLEDs || _configuration.ShowOwnMoves)
-                        //{
-                        //    _board?.SetLedForFields(setLeDsParameter);
-                        //}
-                        //else
-                        //{
-                        //    if (!setLeDsParameter.IsMove && setLeDsParameter.FieldNames.Length==0)
-                        //    {
-                        //        setLeDsParameter.FieldNames = setLeDsParameter.InvalidFieldNames.ToArray();
-                        //        _board?.SetLedForFields(setLeDsParameter);
-                        //    }
-                        //}
                     }
                     else
                     {
@@ -1205,7 +1214,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
                                 }
                             }
                             if (setLeDsParameter.IsMove)
+                            {
                                 setLeDsParameter.FieldNames = Array.Empty<string>();
+                            }
                         }
 
                         _board?.SetLedForFields(setLeDsParameter);

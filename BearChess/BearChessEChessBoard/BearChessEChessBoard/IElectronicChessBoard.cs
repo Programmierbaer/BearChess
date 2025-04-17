@@ -6,6 +6,8 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
     public interface IElectronicChessBoard: IDisposable
     {
 
+        string Identification { get; set; }
+
         EChessBoardConfiguration Configuration { get; }
 
         void Reset();
@@ -106,7 +108,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         void SetFen(string fen, string allMoves);
         void SetFen(string fen);
 
-        void AwaitingMove(int fromField, int toField);
+        void AwaitingMove(int fromField, int toField, int promoteFigureId);
 
         /// <summary>
         /// Close the connection to the chess board
@@ -126,7 +128,7 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         /// <summary>
         /// Calibrate board
         /// </summary>
-        void Calibrate();
+        bool Calibrate();
 
         /// <summary>
         /// Send a information to display

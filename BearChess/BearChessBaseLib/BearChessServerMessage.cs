@@ -1,4 +1,7 @@
-﻿namespace www.SoLaNoSoft.com.BearChessBase
+﻿using System;
+using www.SoLaNoSoft.com.BearChessBase.Implementations;
+
+namespace www.SoLaNoSoft.com.BearChessBase
 {
     public class BearChessServerMessage
     {
@@ -25,6 +28,8 @@
             get; set;
         }
 
+        public BCServerMove[] AllMoves { get; set; }
+
         public BearChessServerMessage()
         {
             Address = string.Empty;
@@ -32,6 +37,7 @@
             Message = string.Empty;
             Ack = string.Empty;
             Color = string.Empty;
+            AllMoves = Array.Empty<BCServerMove>();
         }
     }
 }

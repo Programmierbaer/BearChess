@@ -17,9 +17,13 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
 
         private Thread _sendingThread;
-        public SerialCommunication(ILogging logger, string portName, bool useBluetooth) : base(logger, portName, Constants.TabutronicCerno)
+        private volatile bool _LEDConfirmRead = true;
+        private readonly bool _isSpectrum = false;
+
+        public SerialCommunication(ILogging logger, string portName, bool useBluetooth, string boardName) : base(logger, portName, boardName)
         {
             _useBluetooth = useBluetooth;
+            _isSpectrum = boardName.Equals(Constants.TabutronicCernoSpectrum);
         }
 
         private DataFromBoard GetFromCernoBoard()
@@ -113,6 +117,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             var withConnection = true;
             _sendingThread = new Thread(SendingToBoard) { IsBackground = true };
             _sendingThread.Start();
+            string prevRead = string.Empty;
             while (!_stopReading)
             {
                 try
@@ -136,10 +141,13 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                                 while (!_stopReading)
                                 {
                                     comReadLine = _comPort.ReadLine();
-                                    if (!string.IsNullOrWhiteSpace(comReadLine))
+                                   if (!string.IsNullOrWhiteSpace(comReadLine))
                                     {
-                                       // _logger?.LogDebug("Read from port:" + comReadLine);
-
+                                        //if (!prevRead.Equals(comReadLine))
+                                        //{
+                                        //    _logger?.LogDebug($"BTLE: Read from port: {comReadLine}");
+                                        //}
+                                        prevRead = comReadLine;
                                         var strings = comReadLine.Split(" ".ToCharArray());
                                         foreach (var s in strings)
                                         {
@@ -149,7 +157,12 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                                                 {
                                                     continue;
                                                 }
-
+                                                if (s.Equals("68"))
+                                                {
+                                                  //  _logger?.LogDebug("BTLE: D found");
+                                                    _LEDConfirmRead = true;
+                                                    //continue;
+                                                }
                                                 readLine += Convert.ToChar(Convert.ToInt32(s));
                                             }
                                             catch
@@ -170,12 +183,11 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                                             if (dataArray.Length >= 320)
                                             {
                                                 readLine = readLine.Substring(readLine.IndexOf(":") + 1);
-                                            //    _logger?.LogDebug($"SC: BTLE Enqueue {readLine}");
+                                                // _logger?.LogDebug($"SC: BTLE Enqueue {readLine}");
                                                 _dataFromBoard.Enqueue(readLine);
                                                 readLine = string.Empty;
                                             }
                                         }
-                                        
                                     }
                                     Thread.Sleep(10);
                                 }
@@ -183,13 +195,28 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                             else
                             {
                                 comReadLine = _comPort.ReadLine();
-                                if (comReadLine.Contains(":"))
+                                if (!string.IsNullOrWhiteSpace(comReadLine))
                                 {
-                                    readLine = comReadLine.Substring(comReadLine.IndexOf(":") + 1);
-                                }
-                                else
-                                {
-                                    readLine += comReadLine;
+                                    //if (!prevRead.Equals(comReadLine))
+                                    //{
+                                    //    _logger?.LogDebug($"USB: Read from port: {comReadLine}");
+                                    //}
+                                    prevRead = comReadLine;
+                                    if (comReadLine.Contains("D"))
+                                    {
+                                        _LEDConfirmRead = true;
+                                      //  _logger?.LogDebug("USB: D found");
+                                        comReadLine = comReadLine.Replace("D", string.Empty).Trim();
+                                    }
+
+                                    if (comReadLine.Contains(":"))
+                                    {
+                                        readLine = comReadLine.Substring(comReadLine.IndexOf(":") + 1);
+                                    }
+                                    else
+                                    {
+                                        readLine += comReadLine;
+                                    }
                                 }
                             }
                             if (!string.IsNullOrWhiteSpace(readLine))
@@ -197,7 +224,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                                 var dataArray = readLine.Replace('\0', ' ').Trim().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                                 if (dataArray.Length >= 320)
                                 {
-                                   // _logger?.LogDebug($"SC: USB Enqueue {readLine}");
+                                    // _logger?.LogDebug($"SC: USB Enqueue {readLine}");
                                     _dataFromBoard.Enqueue(readLine.Replace(":", string.Empty));
                                 }
                             }
@@ -233,7 +260,7 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
             {
                 while (!_stopReading || _byteDataToBoard.Count > 0)
                 {
-                    if (_byteDataToBoard.TryDequeue(out var data))
+                    if (_LEDConfirmRead && _byteDataToBoard.TryDequeue(out var data))
                     {
                         var s = BitConverter.ToString(data.Data);
                         prevDataArrayToBoard = new byte[data.Data.Length];
@@ -243,7 +270,20 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
                             _logger?.LogDebug($"SC: Send byte array: {s}");
                             Thread.Sleep(250);
                             prevDataToBoard = s;
+                            //{
+                            //    for (int i = 0; i < data.Data.Length; i = i + 20)
+                            //    {
+                            //        var sendArray = data.Data.Length - i > 20
+                            //            ? new byte[20]
+                            //            : new byte[data.Data.Length - i];
+                            //        Array.Copy(data.Data, i, sendArray, 0, sendArray.Length);
+                            //        _comPort.Write(sendArray, 0, sendArray.Length);
+                            //        Thread.Sleep(10);
+                            //    }
+                            //}
                             _comPort.Write(data.Data, 0, data.Data.Length);
+                            _LEDConfirmRead = !_isSpectrum;
+                            //_LEDConfirmRead = true;
                             Thread.Sleep(250);
                         }
                         else
@@ -252,7 +292,6 @@ namespace www.SoLaNoSoft.com.BearChess.Tabutronic.Cerno.ChessBoard
 
                         }
                         //_logger?.LogDebug($"SC: bytes send");
-
                     }
                     else
                     {

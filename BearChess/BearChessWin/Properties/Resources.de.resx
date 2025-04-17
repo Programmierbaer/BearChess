@@ -193,10 +193,10 @@
     <value>BearChess Konfiguration</value>
   </data>
   <data name="BearChessConfigurationSpeech" xml:space="preserve">
-    <value>Das ist das Fenster zur Konfiguration von Bärchess</value>
+    <value>Bärchess Konfigurieren</value>
   </data>
   <data name="BearChessMainWindowsSpeech" xml:space="preserve">
-    <value>Das ist das Bärchess Hauptfenster</value>
+    <value>Bärchess Hauptfenster</value>
   </data>
   <data name="BearChessPDFNotFound" xml:space="preserve">
     <value>Datei BearChess.pdf nicht gefunden</value>
@@ -547,22 +547,22 @@
     <value>Elektr. Schachbretter</value>
   </data>
   <data name="EngineCheck" xml:space="preserve">
-    <value>Engine Schach</value>
+    <value>Schachprogramm Schach</value>
   </data>
   <data name="EngineMate" xml:space="preserve">
-    <value>Engine Matt</value>
+    <value>Schachprogramm Matt</value>
   </data>
   <data name="EngineMove" xml:space="preserve">
-    <value>Engine Zug</value>
+    <value>Schachprogramm Zug</value>
   </data>
   <data name="EngineNotSuitable" xml:space="preserve">
     <value>Mit dieser Art von Engines können nur Partien gespielt werden</value>
   </data>
   <data name="Engines" xml:space="preserve">
-    <value>Engines</value>
+    <value>Schachprogramme</value>
   </data>
   <data name="EngineTournament" xml:space="preserve">
-    <value>Engineturniere</value>
+    <value>Schachprogramm-Turniere</value>
   </data>
   <data name="EnterDepthGameFixedDepth" xml:space="preserve">
     <value>Eingabe der Zugtiefe für eine Partie mit fester Zugtiefe</value>
@@ -703,7 +703,7 @@
     <value>Hilfe</value>
   </data>
   <data name="HideBuddyEngine" xml:space="preserve">
-    <value>Buddy Engine verbergen</value>
+    <value>Buddy-Schachprogramm verbergen</value>
   </data>
   <data name="IAmBlind" xml:space="preserve">
     <value>Ich bin sehbehindert</value>
@@ -745,16 +745,16 @@
     <value>Bücher Laden &amp; Verwalten</value>
   </data>
   <data name="LoadAndManageEngines" xml:space="preserve">
-    <value>Engines Laden &amp; Verwalten</value>
+    <value>Schachprogramme Laden &amp; Verwalten</value>
   </data>
   <data name="LoadBuddyEngine" xml:space="preserve">
-    <value>Buddy Engine laden</value>
+    <value>Buddy-Schachprogramm laden</value>
   </data>
   <data name="LoadBuddyEngineOnNewGame" xml:space="preserve">
-    <value>Buddy Engine bei neuer Partie laden</value>
+    <value>Buddy-Schachprogramm bei neuer Partie laden</value>
   </data>
   <data name="LoadLastEngineOnStart" xml:space="preserve">
-    <value>Letzte Engine automatisch laden</value>
+    <value>Letztes Schachprogramm automatisch laden</value>
   </data>
   <data name="LoadSelectedEngineTip" xml:space="preserve">
     <value>Ausgewählte Engine laden</value>
@@ -763,7 +763,7 @@
     <value>Lade Start-Konfiguration</value>
   </data>
   <data name="LoadUCIEngine" xml:space="preserve">
-    <value>UCI-Engine Laden</value>
+    <value>UCI-Schachprogramm Laden</value>
   </data>
   <data name="LosesBecauseTimeout" xml:space="preserve">
     <value>hat durch Zeitüberschreitung verloren</value>
@@ -826,10 +826,10 @@
     <value>*Partie*</value>
   </data>
   <data name="NewGameWindowSpeech" xml:space="preserve">
-    <value>Das ist das Fenster für eine neue Partie</value>
+    <value>Fenster Neue Partie</value>
   </data>
   <data name="NoBuddyEngineFound" xml:space="preserve">
-    <value>Keine Buddy-Engine gefunden</value>
+    <value>Kein Buddy-Schachprogramm gefunden</value>
   </data>
   <data name="NoControl" xml:space="preserve">
     <value>Keine Zeitkontrolle</value>
@@ -844,7 +844,7 @@
     <value>Notation/Züge</value>
   </data>
   <data name="NotPngFilesFound" xml:space="preserve">
-    <value>Keins oder nicht alle PNG Dateien gefunden</value>
+    <value>Kein oder nicht alle PNG Dateien gefunden</value>
   </data>
   <data name="NotSuitable" xml:space="preserve">
     <value>Nicht geeignet</value>
@@ -859,7 +859,7 @@
     <value>Ein Zug vor</value>
   </data>
   <data name="OpenLoadAndManageEngine" xml:space="preserve">
-    <value>Öffnen Sie den 'Engines Laden &amp; Verwalten' Dialog und definieren Sie eine Buddy-Engine</value>
+    <value>Öffnen Sie den 'Schachprogramme Laden &amp; Verwalten' Dialog und definieren Sie ein Buddy-Schachprogramm</value>
   </data>
   <data name="OwnMove" xml:space="preserve">
     <value>Eigenen Zug</value>
@@ -1087,10 +1087,10 @@
     <value>Start von:</value>
   </data>
   <data name="StartNewEngineMatch" xml:space="preserve">
-    <value>Starte ein neues Engine-Duell</value>
+    <value>Starte ein neues Schachprogramm-Duell</value>
   </data>
   <data name="StartNewEngineTournament" xml:space="preserve">
-    <value>Starte ein neues Engine-Turnier</value>
+    <value>Starte ein neues Schachprogramm-Turnier</value>
   </data>
   <data name="StartOnBasePosition" xml:space="preserve">
     <value>Neue Partie in der Grundstellung beginnen</value>
@@ -1102,7 +1102,7 @@
     <value>Neues Turnier beginnen</value>
   </data>
   <data name="StartupDefinitionNotFound" xml:space="preserve">
-    <value>Start-Konfiguration nicht gefunden oder die Engine ist nicht mehr installiert</value>
+    <value>Start-Konfiguration nicht gefunden oder das Schachprogramm ist nicht mehr installiert</value>
   </data>
   <data name="StartupGameDefinitionSaved" xml:space="preserve">
     <value>Start-Konfiugration gespeichert</value>
@@ -1174,7 +1174,7 @@
     <value>Art der Zugansage:</value>
   </data>
   <data name="UCIEngine" xml:space="preserve">
-    <value>UCI Engine</value>
+    <value>UCI Schachprogramm</value>
   </data>
   <data name="UninstallEngine" xml:space="preserve">
     <value>Engine Deinstallieren</value>
@@ -1483,7 +1483,7 @@
     <value>Ausgewählte Engine konfigurieren</value>
   </data>
   <data name="SetAsBuddy" xml:space="preserve">
-    <value>Ausgewählte Engine als Buddy auswählen</value>
+    <value>Ausgewähltes Schachprogramm als Buddy auswählen</value>
   </data>
   <data name="Positions" xml:space="preserve">
     <value>Positionen</value>
@@ -1759,25 +1759,25 @@
     <value>Fehler beim Deinstallieren der Engine</value>
   </data>
   <data name="IsNotValidEngine" xml:space="preserve">
-    <value>ist keine gültige UCI-Engine</value>
+    <value>ist kein gültiges UCI-Schachprogramm</value>
   </data>
   <data name="Engine" xml:space="preserve">
     <value>Engine</value>
   </data>
   <data name="InstallEngine" xml:space="preserve">
-    <value>Installiere UCI-Engine</value>
+    <value>Installiere UCI-Schachprogramm</value>
   </data>
   <data name="ErrorInstallEngine" xml:space="preserve">
     <value>Fehler beim Installiieren der Engine</value>
   </data>
   <data name="NotSuitableForBuddy" xml:space="preserve">
-    <value>Diese Engine ist als Buddy-Engine nicht geeignet</value>
+    <value>Dieses Schachprogramm ist als Buddy-Schachprogramm nicht geeignet</value>
   </data>
   <data name="BearChessCannotBuddy" xml:space="preserve">
     <value>Eine BearChess-Engine kann nicht gleichzeitig eine Buddy-Engine sein</value>
   </data>
   <data name="NotSuitableForBearChess" xml:space="preserve">
-    <value>Diese Engine ist als BearChess-Engine nicht geeignet</value>
+    <value>Dieses Schachprogramm ist als BearChess-Schachprogramm nicht geeignet</value>
   </data>
   <data name="BuddyCannotBearChess" xml:space="preserve">
     <value>Eine Buddy-Engine kann nicht gleichzetig eine BearChess-Engine sein</value>
@@ -1801,7 +1801,7 @@
     <value>Remis</value>
   </data>
   <data name="EngineGame" xml:space="preserve">
-    <value>Engine / Partie</value>
+    <value>Schachprogramm / Partie</value>
   </data>
   <data name="SaveGameAsWinForWhite" xml:space="preserve">
     <value>Partie als für Weiß gewonnen speichern</value>
@@ -1837,7 +1837,7 @@
     <value>Keinen COM-Port gefunden. Überprüfen sie die Verbindung zum Schachbrett.</value>
   </data>
   <data name="EngineTournamentInfo" xml:space="preserve">
-    <value>Engineturnier Informationen</value>
+    <value>Schachprogramm-Tturnier Informationen</value>
   </data>
   <data name="StopCurrentTournament" xml:space="preserve">
     <value>Aktuelles Turnier anhalten</value>
@@ -1930,7 +1930,7 @@
     <value>Engine benutzt ein Eröffnungsbuch</value>
   </data>
   <data name="NotUsingBook" xml:space="preserve">
-    <value>Engine benutzt kein Eröffnungsbuch</value>
+    <value>Schachprogramm benutzt kein Eröffnungsbuch</value>
   </data>
   <data name="HideBestLine" xml:space="preserve">
     <value>Beste Zugfolge verbergen</value>
@@ -2353,7 +2353,7 @@
     <value>Brettauswahl bestätigen</value>
   </data>
   <data name="GiveBoardAName" xml:space="preserve">
-    <value>Vergeben sie einen Namen</value>
+    <value>Vergeben Sie einen Namen</value>
   </data>
   <data name="BoardNameRequired" xml:space="preserve">
     <value>Sie müssen einen Namen angeben</value>
@@ -2446,7 +2446,7 @@
     <value>Auswählen</value>
   </data>
   <data name="EngineAndParameter" xml:space="preserve">
-    <value>Engine und Parameter</value>
+    <value>Schachprogramm und Parameter</value>
   </data>
   <data name="Parameter" xml:space="preserve">
     <value>Parameter</value>
@@ -2476,7 +2476,7 @@
     <value>Layout</value>
   </data>
   <data name="UseEngineConfigForTC" xml:space="preserve">
-    <value>Benutzen Sie für die Zeitkontrolle die Engine-Konfiguration</value>
+    <value>Benutzen Sie für die Zeitkontrolle die Schachprogramm-Konfiguration</value>
   </data>
   <data name="SwitchDifferenceAll" xml:space="preserve">
     <value>Umschalten 'Differenz'/'Alle'</value>
@@ -2530,16 +2530,16 @@
     <value>Soll Weiß eine Person sein?</value>
   </data>
   <data name="EngineForWhite" xml:space="preserve">
-    <value>Engine für Weiß</value>
+    <value>Schachprogramm für Weiß</value>
   </data>
   <data name="ShouldBlackBeAPerson" xml:space="preserve">
     <value>Soll Schwarz eine Person sein?</value>
   </data>
   <data name="EngineForBlack" xml:space="preserve">
-    <value>Engine für Schwarz</value>
+    <value>Schachprogramm für Schwarz</value>
   </data>
   <data name="DifferentTCForWhiteAndBlack" xml:space="preserve">
-    <value>Möchten Sie für Weiß und Schwarz unterschiedliche Zeiktrontrollen?</value>
+    <value>Möchten Sie für Weiß und Schwarz unterschiedliche Zeitkrontrollen?</value>
   </data>
   <data name="Apply" xml:space="preserve">
     <value>Übernehmen</value>
@@ -2632,7 +2632,7 @@
     <value>Konfigurieren Sie die Verbindung zum BearChess Server</value>
   </data>
   <data name="ConnectToBCServerTry" xml:space="preserve">
-    <value>Versuche mit dem  BearChessServer zu verbinden...</value>
+    <value>Versuche mit dem BearChessServer zu verbinden...</value>
   </data>
   <data name="ClientName" xml:space="preserve">
     <value>Ihr Anmeldename:</value>
@@ -2669,5 +2669,68 @@
   </data>
   <data name="MaximumELO" xml:space="preserve">
     <value>Maximaler ELO Wert</value>
+  </data>
+  <data name="HelpRequestedActivated" xml:space="preserve">
+    <value>Hilfeanforderung ist aktiviert</value>
+  </data>
+  <data name="HelpRequestedDeactivated" xml:space="preserve">
+    <value>Hilfeanforderung ist deaktiviert</value>
+  </data>
+  <data name="EnableInternalEngine" xml:space="preserve">
+    <value>Aktiviere BearChess-Schachprogramm</value>
+  </data>
+  <data name="PawnPromotion" xml:space="preserve">
+    <value>Bauernumwandlung</value>
+  </data>
+  <data name="Queen" xml:space="preserve">
+    <value>Dame</value>
+  </data>
+  <data name="Rook" xml:space="preserve">
+    <value>Turm</value>
+  </data>
+  <data name="Knight" xml:space="preserve">
+    <value>Springer</value>
+  </data>
+  <data name="Bishop" xml:space="preserve">
+    <value>Läufer</value>
+  </data>
+  <data name="ShowAnalysisBar" xml:space="preserve">
+    <value>Zeige Analysebalken</value>
+  </data>
+  <data name="ConfirmMove" xml:space="preserve">
+    <value>Bestätigt</value>
+  </data>
+  <data name="FIDERulesForMove" xml:space="preserve">
+    <value>FIDE-Regeln für die Zugansage</value>
+  </data>
+  <data name="GameSaved" xml:space="preserve">
+    <value>Partie gespeichert</value>
+  </data>
+  <data name="as" xml:space="preserve">
+    <value>als</value>
+  </data>
+  <data name="GameSavedInFolder" xml:space="preserve">
+    <value>Partie gespeichert im Verzeichnis</value>
+  </data>
+  <data name="Documents" xml:space="preserve">
+    <value>Dokumente</value>
+  </data>
+  <data name="FinishGame" xml:space="preserve">
+    <value>Spiel beenden</value>
+  </data>
+  <data name="ShowEvalutionsSymbols" xml:space="preserve">
+    <value>Bewertungssymbole anzeigen</value>
+  </data>
+  <data name="Automatic" xml:space="preserve">
+    <value>Automatisch</value>
+  </data>
+  <data name="ShowHideBuddyBestLines" xml:space="preserve">
+    <value>Buddy-Kommentare anzeigen oder verbergen</value>
+  </data>
+  <data name="AndWithBestLineBuddy" xml:space="preserve">
+    <value>und mit bester Zugfolge vom Buddy</value>
+  </data>
+  <data name="AlternateMove" xml:space="preserve">
+    <value>Nachträgliches Korrigieren erlaubt</value>
   </data>
 </root>

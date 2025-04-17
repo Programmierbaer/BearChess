@@ -3,10 +3,13 @@
     public static class Constants
     {
         public const string BearChess = "BearChess";
+        public const string BearChessServer = "BearChessServer";
         public const string Certabo = "Certabo";
         public const string Tabutronic = "TabuTronic";
         public const string TabutronicCerno = "TabuTronic Cerno";
+        public const string TabutronicCernoSpectrum = "TabuTronic Cerno Spectrum";
         public const string TabutronicSentio = "TabuTronic Sentio";
+        public const string TabutronicSentioSpectrum = "TabuTronic Sentio Spectrum";
         public const string TabutronicTactum = "TabuTronic Tactum";
         public const string Pegasus = "Pegasus";
         public const string MChessLink = "MChessLink";
@@ -47,7 +50,7 @@
         public const string InternalChessEngineSpikeFileName = "Spike1.4.exe";
         public const string InternalChessEngineSpikeLogoFileName = "spike.bmp";
         public const string InternalChessEngineWaspGUID = "uci786394AR61D34D84AC17D8E80BBB70B3";
-        public const string InternalChessEngineWaspFileName = "Wasp704-windows-avx.exe";
+        public const string InternalChessEngineWaspFileName = "Wasp707-windows-avx.exe";
         public const string InternalChessEngineWaspLogoFileName = "wasp_logo_small.jpg";
 
         public const string InternalChessEngineStockfishGUID = "uciE7E6DD5EC01E4CBC808A77AC7201AF7E";

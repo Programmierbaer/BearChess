@@ -29,7 +29,7 @@
     <string>option name Use NNUE type check default true</string>
     <string>option name EvalFile type string default nn-62ef826d1a6d.nnue</string>
   </Options>
-  <FileName>C:\Users\larsn\source\repos\Programmierbaer\BearChess\BearChess\BearChessWin\bin\Debug\uciE7E6DD5EC01E4CBC808A77AC7201AF7E\stockfish_13_win_x64.exe</FileName>
+  <FileName>C:\Users\larsn\source\repos\BearChess\BearChess\BearChessWin\bin\Debug\uciE7E6DD5EC01E4CBC808A77AC7201AF7E\stockfish_13_win_x64.exe</FileName>
   <LogoFileName />
   <Valid>true</Valid>
   <OpeningBook />

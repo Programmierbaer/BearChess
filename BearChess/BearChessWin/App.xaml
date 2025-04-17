@@ -4,7 +4,8 @@
              xmlns:resource="clr-namespace:www.SoLaNoSoft.com.BearChessWin.Properties"
              StartupUri="BearChessMainWindow.xaml">
     <Application.Resources>
-        <FontFamily x:Key="Adventure">pack://application:,,,/Assets/Fonts/#Chess Adventurer</FontFamily>
+        <ResourceDictionary>
+            <FontFamily x:Key="Adventure">pack://application:,,,/Assets/Fonts/#Chess Adventurer</FontFamily>
         <FontFamily x:Key="Alpha">pack://application:,,,/Assets/Fonts/#Chess Alpha</FontFamily>
         <FontFamily x:Key="Cases">pack://application:,,,/Assets/Fonts/#Chess Cases</FontFamily>
         <FontFamily x:Key="Alpha2">pack://application:,,,/Assets/Fonts/#Chess Alpha 2</FontFamily>
@@ -17,5 +18,11 @@
         <FontFamily x:Key="Merida">pack://application:,,,/Assets/Fonts/#Chess Merida</FontFamily>
         <FontFamily x:Key="Miscel">pack://application:,,,/Assets/Fonts/#Chess Miscel</FontFamily>
         <FontFamily x:Key="Mediaeval">pack://application:,,,/Assets/Fonts/#Chess Mediaeval</FontFamily>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/FieldStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

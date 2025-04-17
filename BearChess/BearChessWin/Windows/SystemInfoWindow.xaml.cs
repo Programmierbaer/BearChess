@@ -137,10 +137,20 @@ namespace www.SoLaNoSoft.com.BearChessWin
                     imageTabutronicSentio.Visibility = Visibility.Visible;
                     return;
                 }
+                if (chessBoardInfo.Equals(Constants.TabutronicSentioSpectrum))
+                {
+                    imageTabutronicCernoSpectrum.Visibility = Visibility.Visible;
+                    return;
+                }
 
                 if (chessBoardInfo.Equals(Constants.TabutronicCerno))
                 {
                     imageTabutronicCerno.Visibility = Visibility.Visible;
+                    return;
+                }
+                if (chessBoardInfo.Equals(Constants.TabutronicCernoSpectrum))
+                {
+                    imageTabutronicCernoSpectrum.Visibility = Visibility.Visible;
                     return;
                 }
 

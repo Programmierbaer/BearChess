@@ -61,6 +61,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die as ähnelt.
+        /// </summary>
+        public static string _as {
+            get {
+                return ResourceManager.GetString("as", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Abort games ähnelt.
         /// </summary>
         public static string AbortGames {
@@ -259,6 +268,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Accepts subsequent corrections ähnelt.
+        /// </summary>
+        public static string AlternateMove {
+            get {
+                return ResourceManager.GetString("AlternateMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Always choose the best move ähnelt.
         /// </summary>
         public static string AlwaysChooseBestMove {
@@ -318,6 +336,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string AndWithBestLine {
             get {
                 return ResourceManager.GetString("AndWithBestLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die and with buddy best line ähnelt.
+        /// </summary>
+        public static string AndWithBestLineBuddy {
+            get {
+                return ResourceManager.GetString("AndWithBestLineBuddy", resourceCulture);
             }
         }
         
@@ -417,6 +444,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string Author {
             get {
                 return ResourceManager.GetString("Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Automatic ähnelt.
+        /// </summary>
+        public static string Automatic {
+            get {
+                return ResourceManager.GetString("Automatic", resourceCulture);
             }
         }
         
@@ -547,7 +583,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die This is the BearChess configuration window ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die BearChess configuration window ähnelt.
         /// </summary>
         public static string BearChessConfigurationSpeech {
             get {
@@ -556,7 +592,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die This is the BearChess main window ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die BearChess main window ähnelt.
         /// </summary>
         public static string BearChessMainWindowsSpeech {
             get {
@@ -642,6 +678,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string BestMove {
             get {
                 return ResourceManager.GetString("BestMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Bishop ähnelt.
+        /// </summary>
+        public static string Bishop {
+            get {
+                return ResourceManager.GetString("Bishop", resourceCulture);
             }
         }
         
@@ -1834,6 +1879,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Confirm ähnelt.
+        /// </summary>
+        public static string ConfirmMove {
+            get {
+                return ResourceManager.GetString("ConfirmMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Confirm Pieces Selection ähnelt.
         /// </summary>
         public static string ConfirmPiecesSelection {
@@ -2815,6 +2869,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Documents ähnelt.
+        /// </summary>
+        public static string Documents {
+            get {
+                return ResourceManager.GetString("Documents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Do not synchronize with chessboard ähnelt.
         /// </summary>
         public static string DoNotSynchronize {
@@ -3054,6 +3117,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string EnableFilter {
             get {
                 return ResourceManager.GetString("EnableFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enable BearChess engine ähnelt.
+        /// </summary>
+        public static string EnableInternalEngine {
+            get {
+                return ResourceManager.GetString("EnableInternalEngine", resourceCulture);
             }
         }
         
@@ -3445,7 +3517,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Exit ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Close dialog ähnelt.
         /// </summary>
         public static string Exit {
             get {
@@ -3526,6 +3598,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die FIDE rules for move announcement ähnelt.
+        /// </summary>
+        public static string FIDERulesForMove {
+            get {
+                return ResourceManager.GetString("FIDERulesForMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die File date ähnelt.
         /// </summary>
         public static string FileDate {
@@ -3576,6 +3657,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string Finished {
             get {
                 return ResourceManager.GetString("Finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Finish the game ähnelt.
+        /// </summary>
+        public static string FinishGame {
+            get {
+                return ResourceManager.GetString("FinishGame", resourceCulture);
             }
         }
         
@@ -3796,6 +3886,24 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Game saved ähnelt.
+        /// </summary>
+        public static string GameSaved {
+            get {
+                return ResourceManager.GetString("GameSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Game saved in directory ähnelt.
+        /// </summary>
+        public static string GameSavedInFolder {
+            get {
+                return ResourceManager.GetString("GameSavedInFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Copy to clipboard ähnelt.
         /// </summary>
         public static string GamesCopy {
@@ -3945,6 +4053,24 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string Help {
             get {
                 return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Request for help is activated ähnelt.
+        /// </summary>
+        public static string HelpRequestedActivated {
+            get {
+                return ResourceManager.GetString("HelpRequestedActivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Request for help is deactivated ähnelt.
+        /// </summary>
+        public static string HelpRequestedDeactivated {
+            get {
+                return ResourceManager.GetString("HelpRequestedDeactivated", resourceCulture);
             }
         }
         
@@ -4278,6 +4404,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string IsUnSelected {
             get {
                 return ResourceManager.GetString("IsUnSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Knight ähnelt.
+        /// </summary>
+        public static string Knight {
+            get {
+                return ResourceManager.GetString("Knight", resourceCulture);
             }
         }
         
@@ -4849,7 +4984,7 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die This is the window for a new game ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die New game window ähnelt.
         /// </summary>
         public static string NewGameWindowSpeech {
             get {
@@ -5272,6 +5407,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Pawn promotion ähnelt.
+        /// </summary>
+        public static string PawnPromotion {
+            get {
+                return ResourceManager.GetString("PawnPromotion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die per sec. ähnelt.
         /// </summary>
         public static string PerSec {
@@ -5529,6 +5673,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string PurePGNExport {
             get {
                 return ResourceManager.GetString("PurePGNExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Queen ähnelt.
+        /// </summary>
+        public static string Queen {
+            get {
+                return ResourceManager.GetString("Queen", resourceCulture);
             }
         }
         
@@ -5808,6 +5961,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string Result {
             get {
                 return ResourceManager.GetString("Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Rook ähnelt.
+        /// </summary>
+        public static string Rook {
+            get {
+                return ResourceManager.GetString("Rook", resourceCulture);
             }
         }
         
@@ -6361,6 +6523,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show analysis bar ähnelt.
+        /// </summary>
+        public static string ShowAnalysisBar {
+            get {
+                return ResourceManager.GetString("ShowAnalysisBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Show best book move on board ähnelt.
         /// </summary>
         public static string ShowBestBookMove {
@@ -6451,6 +6622,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show evalutions symbols ähnelt.
+        /// </summary>
+        public static string ShowEvalutionsSymbols {
+            get {
+                return ResourceManager.GetString("ShowEvalutionsSymbols", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Show fifty-move rule ähnelt.
         /// </summary>
         public static string ShowFiftyRule {
@@ -6465,6 +6645,15 @@ namespace www.SoLaNoSoft.com.BearChessWin.Properties {
         public static string ShowHash {
             get {
                 return ResourceManager.GetString("ShowHash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Show or hide buddy comments ähnelt.
+        /// </summary>
+        public static string ShowHideBuddyBestLines {
+            get {
+                return ResourceManager.GetString("ShowHideBuddyBestLines", resourceCulture);
             }
         }
         

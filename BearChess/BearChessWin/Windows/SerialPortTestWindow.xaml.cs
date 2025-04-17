@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using WebSocketSharp;
 using www.SoLaNoSoft.com.BearChess.BearChessCommunication;
 using www.SoLaNoSoft.com.BearChess.EChessBoard;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessBase.Interfaces;
 using www.SoLaNoSoft.com.BearChessTools;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
@@ -137,12 +138,14 @@ namespace www.SoLaNoSoft.com.BearChessWin
         private StringBuilder _allLines = new StringBuilder();
         private ClientPipe _clientPipe;
         private string _currentPosition = string.Empty;
+        private readonly ISpeech _synthesizer;
 
         public SerialPortTestWindow()
         {
             InitializeComponent();
-            _readingThread = new Thread(ReadingFromPort) { IsBackground = true };
-            _readingThread.Start();
+            _synthesizer = BearChessSpeech.Instance;
+//            _readingThread = new Thread(ReadingFromPort) { IsBackground = true };
+//            _readingThread.Start();
         }
 
         private void ReadingFromPort()
@@ -374,7 +377,8 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         private void ButtonGet_OnClick(object sender, RoutedEventArgs e)
         {
-           textBoxSend.Text = "L22"+ GetLedForFields(textBoxFrom.Text.Split(",".ToCharArray()), false);
+            _synthesizer.SpeakAsync(textBoxFrom.Text,true);
+           //textBoxSend.Text = "L22"+ GetLedForFields(textBoxFrom.Text.Split(",".ToCharArray()), false);
         }
 
         public  async Task Connect(string uri)

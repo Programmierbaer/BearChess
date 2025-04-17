@@ -12,6 +12,8 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
 
         private Thread _readingThread;
 
+        private volatile string _lastReadLine = string.Empty;
+
         public SerialCommunication(ILogging logger, string portName) : base(logger, portName, Constants.SquareOffPro)
         {
             _useBluetooth = true;
@@ -62,7 +64,7 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
         {
             var withConnection = true;
             var readLine = string.Empty;
-            var lastReadLine = string.Empty;
+            _lastReadLine = string.Empty;
 
             while (!_stopReading)
             {
@@ -97,11 +99,11 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
                             continue;
                         }
 
-                        if (!readLine.Equals(lastReadLine))
+                        if (!readLine.Equals(_lastReadLine))
                         {
                             _logger?.LogDebug($"SC: Read {readLine.Length} bytes from board: {readLine}");
                             _dataFromBoard.Enqueue(readLine);
-                            lastReadLine = readLine;
+                            _lastReadLine = readLine;
                         }
                     }
 
@@ -124,6 +126,11 @@ namespace www.SoLaNoSoft.com.BearChess.SquareOffChessBoard
         private byte[] ConvertToSend(string param)
         {
             return Encoding.ASCII.GetBytes(param);
+        }
+
+        public override void ResetLastRead()
+        {
+            _lastReadLine = string.Empty;
         }
 
         protected override void Communicate()

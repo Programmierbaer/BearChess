@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
+using www.SoLaNoSoft.com.BearChessBase;
 
 namespace www.SoLaNoSoft.com.BearChessWin
 {
@@ -10,10 +12,12 @@ namespace www.SoLaNoSoft.com.BearChessWin
     /// </summary>
     public partial class EngineInfoLineUserControl : UserControl
     {
+        private CultureInfo _ci;
         public EngineInfoLineUserControl()
         {
             InitializeComponent();
             textBlockMV.Text = "1.";
+            _ci = CultureInfo.CreateSpecificCulture("en");
         }
 
         public EngineInfoLineUserControl(int number) : this()
@@ -54,8 +58,43 @@ namespace www.SoLaNoSoft.com.BearChessWin
 
         public void FillLine(string scoreString, string moveLine)
         {
+            var showSymbols = Configuration.Instance.GetBoolValue("showEvaluationSymbol", false);
             if (!string.IsNullOrWhiteSpace(scoreString))
             {
+                if (showSymbols )
+                {
+                    if (double.TryParse(scoreString, NumberStyles.Any, _ci ,out double score))
+                    {
+                        if ((score >= -0.26))
+                        {
+                            scoreString = "=";
+                        }
+                        if ((score >= 0.27))
+                        {
+                            scoreString = "+/=";
+                        }
+                        if ((score >= 0.7))
+                        {
+                            scoreString = "+/-";
+                        }
+                        if ((score >= 1.5))
+                        {
+                            scoreString = "+-";
+                        }
+                        if ((score < -0.26))
+                        {
+                            scoreString = "=/+";
+                        }
+                        if ((score <= -0.7))
+                        {
+                            scoreString = "-/+";
+                        }
+                        if ((score <= -1.5))
+                        {
+                            scoreString = "-+";
+                        }
+                    }
+                }
                 textBlockMVValue.Text = scoreString;
                 textBlockMVValue.Foreground =
                     scoreString.StartsWith("-") ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);

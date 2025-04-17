@@ -3,6 +3,7 @@ using System.Resources;
 using System.Timers;
 using System.Windows;
 using System.Windows.Threading;
+using www.SoLaNoSoft.com.BearChessBase;
 using www.SoLaNoSoft.com.BearChessTools;
 
 namespace www.SoLaNoSoft.com.BearChessWin

@@ -320,10 +320,7 @@ namespace www.SoLaNoSoft.com.BearChessWpfCustomControlLib
 
         private void ButtonSend_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_loader != null)
-            {
-                _loader.AdditionalInformation(textBoxSnd.Text);
-            }
+            _loader?.AdditionalInformation(textBoxSnd.Text);
         }
 
         private void ShowExample(string buttonName)

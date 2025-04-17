@@ -124,6 +124,7 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// </summary>        
         void SetPosition(string fenPosition, bool calculateCastle);
 
+      
         /// <summary>
         /// Set the board positions based on <paramref name="moveNumber"/> and <paramref name="color"/>.
         /// </summary>        
@@ -169,6 +170,8 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// </summary>
         Move[] GetPlayedMoveList();
 
+        BCServerMove[] GetPlayedBCServerMoveList();
+
         /// <summary>
         /// Returns the move based on <paramref name="moveNumber"/> and <paramref name="color"/>.
         /// </summary>
@@ -178,6 +181,12 @@ namespace www.SoLaNoSoft.com.BearChessBase.Interfaces
         /// Returns the fen position based on <paramref name="moveNumber"/> and <paramref name="color"/>.
         /// </summary>
         string GetPlayedFenPosition(int moveNumber, int color);
+
+        /// <summary>
+        /// Returns the fen positions for all possible moves/>.
+        /// </summary>
+        List<Move> GenerateFenPositionList();
+
 
         /// <summary>
         /// Returns the move list for the enemy color.

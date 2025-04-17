@@ -242,23 +242,7 @@ namespace www.SoLaNoSoft.com.BearChess.BearChessCommunication
                             var buffer = Encoding.Default.GetBytes(jsonString);
                             netStream.Write(buffer, 0, buffer.Length);
                             netStream.Flush();
-                            //_logging?.LogDebug("BCC: Waiting for answer...");
-                            //var buffer2 = new byte[1024];
-                            //var received = netStream.Read(buffer2, 0, buffer2.Length);
-                            //if (received <= 0)
-                            //{
-                            //    continue;
-                            //}
-                            
-                            //var msg = Encoding.Default.GetString(buffer2, 0, received).Trim();
-                            //_logging?.LogDebug($"BCC: Received: {msg}");
-                            //var serverMessage = JsonSerializer.Deserialize<BearChessServerMessage>(msg);
-                            //ServerMessage?.Invoke(this, serverMessage);
-                            //if (serverMessage.ActionCode.Equals("CONNECT"))
-                            //{
-                            //        _clientToken = serverMessage.Address;
-                            //        Configuration.Instance.SetConfigValue("BCClientToken", _clientToken);
-                            //}
+                           
                         }
 
                         netStream.Close();

@@ -20,6 +20,9 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
         protected bool _acceptProbingMoves = false;
         protected int _awaitingMoveFromField = Fields.COLOR_OUTSIDE;
         protected int _awaitingMoveToField = Fields.COLOR_OUTSIDE;
+        protected int _awaitingCastleMoveFromField = Fields.COLOR_OUTSIDE;
+        protected int _awaitingCastleMoveToField = Fields.COLOR_OUTSIDE;
+        protected int _awaitingMovePromoteField = FigureId.NO_PIECE;
 
 
         public bool IsCalibrated { get; protected set; }
@@ -78,11 +81,12 @@ namespace www.SoLaNoSoft.com.BearChess.EChessBoard
 
         public abstract void SetFen(string fen);
 
-
-        public void AwaitingMove(int fromField, int toField)
+        public virtual void AwaitingMove(int fromField, int toField, int promoteFigure = FigureId.NO_PIECE)
         {
+            _logger?.LogDebug($"Awaiting move: {Fields.GetFieldName(fromField)}{Fields.GetFieldName(toField)}");
             _awaitingMoveFromField = fromField;
             _awaitingMoveToField = toField;
+            _awaitingMovePromoteField = promoteFigure;
         }
 
         public bool PieceRecognition { get; set; } = true;

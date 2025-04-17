@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{141B2A0E-19B7-4FB4-AA02-B0D9C176FD4A}|BearChessWin\\BearChessWin.csproj|c:\\users\\larsn\\source\\repos\\programmierbaer\\bearchess\\bearchess\\bearchesswin\\properties\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{141B2A0E-19B7-4FB4-AA02-B0D9C176FD4A}|BearChessWin\\BearChessWin.csproj|solutionrelative:bearchesswin\\properties\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B298B210-C007-4F95-84CA-B0B8AD26281B}|BearChessBaseLib\\BearChessBaseLib.csproj|C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\bearchessbaselib\\definitions\\constants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B298B210-C007-4F95-84CA-B0B8AD26281B}|BearChessBaseLib\\BearChessBaseLib.csproj|solutionrelative:bearchessbaselib\\definitions\\constants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{141B2A0E-19B7-4FB4-AA02-B0D9C176FD4A}|BearChessWin\\BearChessWin.csproj|C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\bearchesswin\\bearchessmainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{141B2A0E-19B7-4FB4-AA02-B0D9C176FD4A}|BearChessWin\\BearChessWin.csproj|solutionrelative:bearchesswin\\bearchessmainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AF37AD09-E359-497A-94AF-E4CB12FC5DED}|EngineDefs\\EngineDefs.csproj|C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\enginedefs\\bearchessengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AF37AD09-E359-497A-94AF-E4CB12FC5DED}|EngineDefs\\EngineDefs.csproj|solutionrelative:enginedefs\\bearchessengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{141B2A0E-19B7-4FB4-AA02-B0D9C176FD4A}|BearChessWin\\BearChessWin.csproj|c:\\users\\larsn\\source\\repos\\programmierbaer\\bearchess\\bearchess\\bearchesswin\\properties\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{141B2A0E-19B7-4FB4-AA02-B0D9C176FD4A}|BearChessWin\\BearChessWin.csproj|solutionrelative:bearchesswin\\properties\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B298B210-C007-4F95-84CA-B0B8AD26281B}|BearChessBaseLib\\BearChessBaseLib.csproj|C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\bearchessbaselib\\definitions\\constants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B298B210-C007-4F95-84CA-B0B8AD26281B}|BearChessBaseLib\\BearChessBaseLib.csproj|solutionrelative:bearchessbaselib\\definitions\\constants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AF37AD09-E359-497A-94AF-E4CB12FC5DED}|EngineDefs\\EngineDefs.csproj|C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\enginedefs\\bearchessengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AF37AD09-E359-497A-94AF-E4CB12FC5DED}|EngineDefs\\EngineDefs.csproj|solutionrelative:enginedefs\\bearchessengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B298B210-C007-4F95-84CA-B0B8AD26281B}|BearChessBaseLib\\BearChessBaseLib.csproj|C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\bearchessbaselib\\configuration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Bookmark",
@@ -73,20 +73,25 @@
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "Constants.cs",
               "DocumentMoniker": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\Definitions\\Constants.cs",
               "RelativeDocumentMoniker": "BearChessBaseLib\\Definitions\\Constants.cs",
               "ToolTip": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessBaseLib\\Definitions\\Constants.cs",
               "RelativeToolTip": "BearChessBaseLib\\Definitions\\Constants.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAzwDEAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAABwAAAAAAAAAAAAmwDQAAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T20:16:27.06Z"
+              "WhenOpened": "2025-02-15T20:16:27.06Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "BearChessEngine.cs",
               "DocumentMoniker": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\EngineDefs\\BearChessEngine.cs",
               "RelativeDocumentMoniker": "EngineDefs\\BearChessEngine.cs",
@@ -98,13 +103,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "AssemblyInfo.cs",
               "DocumentMoniker": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessWin\\Properties\\AssemblyInfo.cs",
               "RelativeDocumentMoniker": "BearChessWin\\Properties\\AssemblyInfo.cs",
               "ToolTip": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessWin\\Properties\\AssemblyInfo.cs",
               "RelativeToolTip": "BearChessWin\\Properties\\AssemblyInfo.cs",
-              "ViewState": "AgIAABUAAAAAzczMzMwXwDMAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAzczMzMwXwDUAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-15T20:02:06.576Z",
               "EditorCaption": ""
@@ -129,7 +134,7 @@
               "RelativeDocumentMoniker": "BearChessWin\\BearChessMainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\larsn\\source\\repos\\Programmierbaer\\BearChess\\BearChess\\BearChessWin\\BearChessMainWindow.xaml.cs",
               "RelativeToolTip": "BearChessWin\\BearChessMainWindow.xaml.cs",
-              "ViewState": "AgIAACEOAAAAAAAAAAAYwDUOAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAEkBAAAAAAAAAAAiwGsBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-17T19:13:47.616Z",
               "EditorCaption": ""

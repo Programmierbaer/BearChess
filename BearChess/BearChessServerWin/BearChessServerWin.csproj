@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -66,6 +67,9 @@
     <Compile Include="UserControls\ChessboardUserControl.xaml.cs">
       <DependentUpon>ChessboardUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\SmallChessboardUserControl.xaml.cs">
+      <DependentUpon>SmallChessboardUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ConfigureServerWindow.xaml.cs">
       <DependentUpon>ConfigureServerWindow.xaml</DependentUpon>
     </Compile>
@@ -89,6 +93,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ChessboardUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SmallChessboardUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
